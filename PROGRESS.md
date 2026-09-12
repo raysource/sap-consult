@@ -138,16 +138,28 @@ python3 tools/make_hub_page.py                  # → index.html 再生成
 - **触ってはいけない前提**: `sap_sd_cn/assets/{style.css,main.js,quiz.js}` は共有デザインシステムのコピー。
   見た目の追加は `assets/s4cn.css` / `assets/s4cn.js` にだけ書く（他站と共有しているファイルは書き換えない）。
 
-### `training/` ルートが git 管理下に入った（2026-09-12 深夜・push はまだ）
+### `training/` ルートは **公開リポジトリ `sap-consult` に push 済み**（2026-09-12 23:1x）
 
-- `git init -b main` 済み。`origin = https://github.com/raysource/sap-consult.git`（**PUBLIC・空・未 push**）。
-- `.gitignore` を新設: `*.mp4`（録画 114 MB）・`*.docx`（S4.docx 等）・`*.zip`・`_snapshots/`・
-  `*/work/docx_extract/`・`*/work/render/`・`*/assets/gui_png/`・`*/画面PNG.zip`・PDF・`node_modules/`・`.DS_Store`。
-- **注意（ルートから push する場合）**: `sap_sd_cn/` と `nihong/` は**入れ子リポジトリ**なので、
-  ルートの `git add -A` では **gitlink**（中のファイルは入らない）になる。分けたい場合は
-  `.gitignore` に `/sap_sd_cn/` `/nihong/` を足して別リポジトリのまま運用する。
-- ルート配下を全部入れると **約 2400 ファイル / 約 287 MB**（内訳の大半は実機スクリーンショット:
-  `sap_sd_jp` 1309・`sap_sd` 361 など）。push する範囲は当面は決め打ちせず、都度確認する。
+- `git init -b main` + `origin = https://github.com/raysource/sap-consult.git`（**PUBLIC**）。
+  push 済み HEAD = `982f38374ae381015e6512e50234b27ec2c75fe9`（`ls-remote` と `gh api commits/main` の両方で一致を確認）。
+- 内容: **3669 blobs / 約 189 MB**（API 実測）。内訳の抜粋: `sap_sd_jp` 1310・`sap_sd_cn` 13 页 + 実機截图 1209・
+  `*.svg` 画面イメージ 410・`*.xlsx` 26。**除外が効いている**ことも確認済み
+  （リポジトリ内に `*.docx` / `*.mp4` / `*.zip` / `work/docx_extract` / 配布 PDF は **無し**）。
+- `.gitignore`（ルート）: `*.mp4`（録画 114 MB）・`*.docx`（S4.docx 等）・`*.zip`・`_snapshots/`・
+  `*/work/docx_extract/`・`*/work/render/`・`*/assets/gui_png/`・`*/画面PNG.zip`・`*/講義用画面集.pdf`・
+  `*/学员用記入シート.pdf`・`node_modules/`・`.DS_Store`。
+  つまり「生成すれば戻る派生物」と「配布物 PDF」は公開リポジトリに入れていない（必要なら `git add -f` で追加可能）。
+- **入れ子リポジトリの扱い（重要）**: `git add` は**入れ子リポジトリ内のパスに対して静かに何もしない**
+  （git 2.39 で実測: `git add -f sap_sd_cn/README.md` → exit 0 だが `git ls-files` は空）。
+  そこで plumbing で普通のファイルとして取り込んだ:
+  `git hash-object -w --stdin-paths` → `git update-index --add --index-info`。
+  親リポジトリ側で計算した blob SHA が**入れ子リポジトリの索引の SHA と一致**することをアサートしている（内容一致の証明）。
+  この手順は再利用できるよう `tools/include_nested_repo_files.sh` として残した
+  （`sap_sd_cn/`＝プライベートリポジトリ、`nihong/`＝リポジトリ、はそれぞれの .git を保持したまま、
+   親の `sap-consult` にも実ファイルとして入っている）。
+- **注意**: `sap-consult` は **public** なので、`PROGRESS.md` を含む作業メモも公開されている
+  （トークン等の秘密は含めていない）。教材の実機スクリーンショットも公開状態になった（ユーザー承認済み）。
+  非公開に戻す場合は `gh repo edit raysource/sap-consult --visibility private`。
 
 ### 個別リポジトリの現状（git remote）
 
