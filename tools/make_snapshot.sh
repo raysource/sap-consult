@@ -11,7 +11,7 @@
 #     assets/gui_png/*, *_画面PNG.zip, *_講義用画面集.pdf, *_学员用記入シート.pdf, work/render/*
 set -euo pipefail
 cd /Users/jason/Desktop/work/training
-TS="${TS:-$(date +%Y%m%d_%H%M)}"   # TS を渡せば同名で再作成（進捗メモに書いた名前を維持するため）
+TS="${TS:-$(date +%Y%m%d_%H%M%S)}"   # TS を渡せば同名で再作成（進捗メモに書いた名前を維持するため）
 OUT="_snapshots/sap_training_sites_8sites_${TS}.tar.gz"
 LIST=/tmp/snap_list.txt
 mkdir -p _snapshots
