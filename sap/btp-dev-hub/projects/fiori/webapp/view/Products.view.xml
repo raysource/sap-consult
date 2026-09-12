@@ -1,0 +1,84 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc"
+          xmlns="sap.m"
+          xmlns:core="sap.ui.core"
+          core:require="{ formatter: 'com/training/products/model/formatter' }"
+          displayBlock="true">
+  <Page id="productsPage"
+        title="培训产品目录"
+        titleLevel="H1"
+        showNavButton="false"
+        busy="{products>/busy}">
+
+    <content>
+      <!-- 工具栏: 搜索 + 排序 + 刷新 -->
+      <OverflowToolbar>
+        <SearchField id="searchField"
+                     placeholder="按名称 / 分类搜索…"
+                     width="18rem"
+                     search=".onSearch"
+                     enableClearButton="true"/>
+        <ToolbarSpacer/>
+        <Button id="sortButton"
+                icon="sap-icon://sort-descending"
+                tooltip="按单价从高到低"
+                type="Transparent"
+                press=".onToggleSort"/>
+        <Button id="refreshButton"
+                icon="sap-icon://refresh"
+                tooltip="刷新"
+                type="Transparent"
+                press=".onRefresh"/>
+      </OverflowToolbar>
+
+      <!-- 产品列表 -->
+      <List id="productsList"
+            items="{products>/Products}"
+            growing="true"
+            growingThreshold="10"
+            mode="None"
+            inset="false"
+            itemPress=".onItemPress"
+            noDataText="没有符合条件的产品">
+        <items>
+          <ObjectListItem
+              type="Active"
+              title="{products>name}"
+              description="{products>description}"
+              number="{
+                parts: [{path: 'products>price'}, {path: 'products>currency'}],
+                type: 'sap.ui.model.type.Currency',
+                formatOptions: {showMeasure: false}
+              }"
+              numberState="{= ${products>stock} &lt;= ${products>reorderLevel} ? 'Error' : 'Success' }"
+              numberUnit="{products>currency}"
+              attributes="[
+                {
+                  text: {
+                    parts: ['products>category']
+                  }
+                }
+              ]">
+            <firstStatus>
+              <ObjectStatus
+                  text="库存 {products>stock}"
+                  state="{= ${products>stock} &lt;= ${products>reorderLevel} ? 'Error' : 'None' }"
+                  icon="{= ${products>stock} &lt;= ${products>reorderLevel} ? 'sap-icon://alert' : 'sap-icon://accept' }"/>
+            </firstStatus>
+          </ObjectListItem>
+        </items>
+      </List>
+    </content>
+
+    <footer>
+      <Bar>
+        <contentRight>
+          <Button id="helpButton"
+                  text="这是什么？"
+                  icon="sap-icon://hint"
+                  type="Ghost"
+                  press=".onShowHelp"/>
+        </contentRight>
+      </Bar>
+    </footer>
+  </Page>
+</mvc:View>

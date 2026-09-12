@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>能力测试 28 題 · SAP S/4HANA バリアント設定付き受注生産（VC / AVC）实战训练站</title>
+<meta name="description" content="VC/AVC 能力测试：28 題（概念 10 / 配置 9 / 流程 6 / 故障 3）の四択、点击判分 + 解説つき。合格 75%（21/28）。＋実機验收清单（特徴・クラス・設定プロファイル・受注 BOM・指図への伝搬・変種価格・伝票フロー）。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/vc.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">VC</span><span class="txt">バリアント設定 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①主数据</a>
+      <a href="handson-2.html">②受注与设定</a>
+      <a href="handson-3.html">③依存与BOM</a>
+      <a href="handson-4.html">④制造与出荷</a>
+      <a href="handson-5.html">⑤发展与故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a class="active" href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 能力测试</div>
+<main class="page"><article>
+
+<h1>能力测试（28 題 ＋ 実機验收清单）</h1>
+<div class="box info"><b class="t">用法</b>
+每题点击一个选项即判分并显示解说，页面顶部显示累计成绩。<b>合格判定：正确率 ≥75%（21/28）＋ 実機验收清单全部勾上 ＋ ワークシート記入</b>。
+60〜74% 请回对应页面重读；&lt;60% 请从 <a href="concept.html">概念与设计</a> 重来一遍。<br>
+解说里的标准值同样是「通常情况」——考试式的死记没有意义，<b>要能说出「怎么在系统里验证」</b>。</div>
+
+<h2>一、概念（1〜10）</h2>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">VC の本質</span></div>
+  <h4>1. SAP のバリアント設定（VC）を最も正しく説明しているものは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">受注生産（MTO）の別名であり、生産形態のひとつ</div>
+    <div class="opt" data-key="B">1 つの品目（<code>KMAT</code>）で無数の仕様組合せを表現する「構成エンジン」であり、生産形態は戦略グループで別に決める</div>
+    <div class="opt" data-key="C">在庫品を組み立てる生産方式（組立処理）そのもの</div>
+    <div class="opt" data-key="D">品目マスタを減らすための分類機能で、価格や BOM には影響しない</div>
+  </div>
+  <div class="explain">VC は構成エンジンです。生産形態（受注生産 25 / 受注組立 82 / ETO）は戦略グループ・WBS 側の設計で決まり、VC はそのどれにも乗ります。→ <a href="concept.html#parts">概念 2 節</a></div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">戦略と所要量</span></div>
+  <h4>2. VC の受注生産で一般に使われる戦略グループ <code>25</code> の組み合わせは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A"><code>25</code> → 所要量タイプ <code>KMFA</code> → 所要量クラス <code>201</code>・指図タイプ <code>PP04</code></div>
+    <div class="opt" data-key="B"><code>25</code> → 所要量タイプ <code>KE</code> → 所要量クラス <code>040</code> 系・在庫は自由在庫</div>
+    <div class="opt" data-key="C"><code>25</code> → 所要量タイプ <code>KEK</code> → 所要量クラス <code>046</code> 系・受注在庫（E）</div>
+    <div class="opt" data-key="D"><code>25</code> → 所要量タイプ <code>E21</code> → プロジェクト在庫（Q）</div>
+  </div>
+  <div class="explain"><code>25</code>（Make-to-Order Production w/ Configuration）は <code>KEK</code> → <code>046</code> 系で、受注在庫（E）です。<code>KMFA</code>/<code>201</code>/<code>PP04</code> は戦略 <code>82</code>（受注組立）。確認は <code>OPPS</code>/<code>OPPJ</code>/<code>OVZG</code>。→ <a href="concept.html#forms">概念 7 節</a></div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">クラス</span></div>
+  <h4>3. VC でクラスを作るときに選ぶクラス型は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A"><code>300</code>（品目変種 / Variant class）</div>
+    <div class="opt" data-key="B"><code>001</code>（品目一般）</div>
+    <div class="opt" data-key="C"><code>023</code>（品目バッチ）</div>
+    <div class="opt" data-key="D">クラス型に決まりはなく、どれでも同じように動く</div>
+  </div>
+  <div class="explain">VC（設定可能品目）はクラス型 <code>300</code>。間違えると品目の分類ビューにクラスが出ず、受注で構成画面が出ないなどの症状になります。→ <a href="config.html#c2">C2</a></div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">依存関係</span></div>
+  <h4>4. 「この構成のとき、この BOM 明細を採用するか」を判定する依存関係は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">前提条件（Precondition）</div>
+    <div class="opt" data-key="B">手続き（Procedure）</div>
+    <div class="opt" data-key="C">アクション（Action）</div>
+    <div class="opt" data-key="D">選択条件（Selection condition）</div>
+  </div>
+  <div class="explain">BOM 明細や工程の採用可否は<b>選択条件</b>。前提条件は特徴値の成立条件（<code>$SELF</code>）、手続きは値の計算・上書きです。→ <a href="concept.html#deps">概念 3 節</a></div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">KMAT</span></div>
+  <h4>5. 設定可能品目（<code>KMAT</code>）の在庫の扱いとして正しいものは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">自由在庫として通常どおり在庫管理され、<code>MMBE</code> で見える</div>
+    <div class="opt" data-key="B">原則として在庫管理されない（構成された実体・構成品目・受注在庫の単位で管理する）</div>
+    <div class="opt" data-key="C">品目タイプ <code>KMAT</code> にすると自動的に受注在庫（E）になる</div>
+    <div class="opt" data-key="D">材料バリアントを作ると在庫が二重計上される</div>
+  </div>
+  <div class="explain"><code>KMAT</code> 自体は在庫を持ちません。「在庫が見えない」は仕様です。在庫の持ち方（受注在庫 E・材料バリアント・別品目）は設計判断になります。→ <a href="concept.html#myths">概念 12 節 #2</a></div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">依存関係の適用先</span></div>
+  <h4>6. 「塗装 <code>EPOXY</code> は材質 <code>SUS316</code> のときだけ選べる」ようにする前提条件は、どこに貼る？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">クラス <code>ZVC_PUMP_CL</code> に貼る</div>
+    <div class="opt" data-key="B">特徴 <code>ZVC_COATING</code>（特徴そのもの）に貼る</div>
+    <div class="opt" data-key="C">特徴値 <code>ZVC_COATING</code> = <code>EPOXY</code>（当該の値）に貼る</div>
+    <div class="opt" data-key="D">スーパー BOM の明細に貼る</div>
+  </div>
+  <div class="explain">「この値のときだけ成立する」は<b>特徴値</b>に貼ります。特徴（全体）に貼ると塗装という特徴自体が使えなくなり、症状が全く変わります。→ <a href="config.html#c5">C5</a></div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">処理形式</span></div>
+  <h4>7. 設定プロファイルの処理形式のうち、構成品目が<b>子明細（個別の明細）</b>として受注に並ぶものは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">伝票明細（SET 処理）。品目カテゴリグループ <code>0004</code> が前提という記載がある</div>
+    <div class="opt" data-key="B">明細 / 生産指図（BOM 展開なし）</div>
+    <div class="opt" data-key="C">受注 BOM（Order BOM）方式</div>
+    <div class="opt" data-key="D">多階層展開を選べば必ず子明細になる</div>
+  </div>
+  <div class="explain">SET 処理では構成品目が子明細になり、価格・所要量も子明細単位で転送されます（varconf の記載）。受注 BOM は「受注ごとの BOM を作る」方式で子明細とは別です。→ <a href="concept.html#bom">概念 5 節</a></div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">変種価格</span></div>
+  <h4>8. 変種価格（条件タイプ <code>VA00</code>）で「どのオプションにいくら加算するか」を引くためのキーは、何が決める？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">品目マスタの標準価格（会計ビュー）</div>
+    <div class="opt" data-key="B">受注明細の数量</div>
+    <div class="opt" data-key="C">クラス型 <code>300</code> の定義</div>
+    <div class="opt" data-key="D">特徴の「追加データ」で指定したテーブル/項目（<code>VKOND</code>）に、設定値が入ること</div>
+  </div>
+  <div class="explain">SAP KBA 1934081 も、標準では<b><code>VKOND</code> を参照する特徴の値</b>が変種条件行を決めると説明しています。LO-VC は <code>SDCOM-VKOND</code>、AVC は <code>MMCOM-VKOND</code> という記載があります（<b>自システムで <code>SE11</code> 確認</b>）。→ <a href="concept.html#price">概念 8 節</a></div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">AVC</span></div>
+  <h4>9. S/4HANA の AVC（Advanced Variant Configuration）について正しいものは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">AVC では従来の特徴・クラス・依存関係は使えなくなる</div>
+    <div class="opt" data-key="B">統合モデリング環境 <code>PMEVC</code> が入り口で、従来の <code>CU41</code> 系画面も併存する。環境を片方に統一するのが原則</div>
+    <div class="opt" data-key="C">AVC を入れれば依存関係の設計ミスは自動的に解消される</div>
+    <div class="opt" data-key="D">AVC は Public Cloud では使えない</div>
+  </div>
+  <div class="explain"><code>PMEVC</code>（AVC）と <code>CU41</code> 系（LO-VC）は併存します。AVC では特徴グループ＋Fiori の設定 UI、<code>MMCOM-VKOND</code>、制約（Constraints）などが特徴。Cloud は AVC 前提です。→ <a href="concept.html#avc">概念 9 節</a></div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">品目カテゴリグループ</span></div>
+  <h4>10. 設定可能品目の「品目カテゴリグループ <code>0002</code>」の役割は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">MRP のロットサイズを決める</div>
+    <div class="opt" data-key="B">在庫評価クラスを決める</div>
+    <div class="opt" data-key="C">受注明細の明細カテゴリ決定のキーになる（VC の標準。<code>VOV4</code>）</div>
+    <div class="opt" data-key="D">作業手順の工程を決める</div>
+  </div>
+  <div class="explain">品目カテゴリグループは <code>VOV4</code> による明細カテゴリ決定のキーです（SET 処理は <code>0004</code> という記載）。標準で決まる明細カテゴリの値は環境差があるため<b><code>VOV4</code>＋<code>VA03</code> の実測を正とします</b>。→ <a href="config.html#c10">C10</a></div>
+</div>
+
+<h2>二、配置（11〜19）</h2>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag">配置</span><span class="tag">品目マスタ</span></div>
+  <h4>11. 品目カテゴリグループは、品目マスタのどのビューで設定する？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">販売組織 2（Sales Org 2）</div>
+    <div class="opt" data-key="B">MRP 1</div>
+    <div class="opt" data-key="C">会計 1</div>
+    <div class="opt" data-key="D">分類（Classification）</div>
+  </div>
+  <div class="explain">販売組織 2 です（販売エリア単位で持ちます）。分類ビューにはクラスを割り当てます。→ <a href="config.html#c3">C3</a></div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag">配置</span><span class="tag">MRP4</span></div>
+  <h4>12. 品目マスタ MRP4 の「個別/包括所要量 = 1（個別所要量のみ）」を設定する目的は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">MRP の実行を速くするため</div>
+    <div class="opt" data-key="B">受注在庫（特別在庫 E）を成立させるため（受注単位で所要量と在庫を分ける）</div>
+    <div class="opt" data-key="C">ロットサイズを自動化するため</div>
+    <div class="opt" data-key="D">バックフラッシュを有効にするため</div>
+  </div>
+  <div class="explain">受注在庫・プロジェクト在庫を使う品目は個別所要量が前提です。未設定だと「受注在庫に割当できません」系のエラーになります。→ <a href="config.html#c3">C3</a></div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag">配置</span><span class="tag">特徴</span></div>
+  <h4>13. <code>CT04</code> で特徴を登録するとき、<b>後から変えられない</b>ため最初に決めるべきものは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">名称（説明文）</div>
+    <div class="opt" data-key="B">許可値の件数</div>
+    <div class="opt" data-key="C">データタイプ（<code>CHAR</code> か <code>NUM</code> か）と桁・小数点の構成</div>
+    <div class="opt" data-key="D">使用するクラス</div>
+  </div>
+  <div class="explain"><code>CHAR</code> ⇔ <code>NUM</code> は後から変更できず、作り直しになります。<code>NUM</code> でないと大小比較（<code>&gt;=</code>）の依存関係が書けません。→ <a href="config.html#c1">C1</a></div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag">配置</span><span class="tag">クラス</span></div>
+  <h4>14. 特徴を「必須（未入力では設定を終われない）」にする設定は、どこで行うのが基本か？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A"><code>CT04</code> の基本データ</div>
+    <div class="opt" data-key="B">品目マスタの MRP3</div>
+    <div class="opt" data-key="C">設定プロファイルの名称</div>
+    <div class="opt" data-key="D"><code>CL02</code>（クラス）の特徴行の「必須」列</div>
+  </div>
+  <div class="explain">必須はクラス側で持ちます。同じ特徴を別クラスでは任意にできるためです（特徴の再利用性）。設定プロファイル側にも必須・完全性チェックがあります。→ <a href="config.html#c2">C2</a></div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag">配置</span><span class="tag">設定プロファイル</span></div>
+  <h4>15. 設定プロファイルと品目のひもづけは、どこで指定する？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">品目マスタの基本データ 1 の「設定可能」インジケータだけ</div>
+    <div class="opt" data-key="B"><code>CU41</code>/<code>CU42</code>（または <code>PMEVC</code>）のプロファイル側で「割当品目」を入力する</div>
+    <div class="opt" data-key="C"><code>VOV4</code> の明細カテゴリ決定</div>
+    <div class="opt" data-key="D">BOM ヘッダの項目</div>
+  </div>
+  <div class="explain">割当はプロファイル側で品目を指定します。<b>忘れると <code>CU50</code> は開くのに <code>VA01</code> で構成画面が出ない</b>という症状になります。→ <a href="config.html#c4">C4</a></div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag">配置</span><span class="tag">依存関係の照会</span></div>
+  <h4>16. 「この依存関係がどの適用先に貼られているか」を確認する画面は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A"><code>CU03</code>（照会 → 適用先／使用箇所一覧）</div>
+    <div class="opt" data-key="B"><code>CU50</code> の構成結果</div>
+    <div class="opt" data-key="C"><code>CS03</code> の BOM 明細だけ</div>
+    <div class="opt" data-key="D"><code>MM03</code> の MRP4</div>
+  </div>
+  <div class="explain"><code>CU03</code> の「適用先／使用箇所一覧」に出ない依存関係は発火しません。<b>無反応時の第一チェック</b>です。→ <a href="handson-5.html">练习⑤ 5-3</a></div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag">配置</span><span class="tag">スーパー BOM</span></div>
+  <h4>17. スーパー BOM の作り方として正しいものは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">最も売れる構成の部品だけを入れて、後から追加する</div>
+    <div class="opt" data-key="B">組合せごとに別々の BOM を作る（使用箇所を分ける）</div>
+    <div class="opt" data-key="C">受注のたびに BOM を手で作る</div>
+    <div class="opt" data-key="D">全バリエーション分の構成品目を 1 つの BOM に入れ、選択条件で今回必要な行だけを採用する</div>
+  </div>
+  <div class="explain">「全部入れて、選択条件で絞る」が VC の原則。材質別ケーシングのように<b>行を分けて条件を書き分ける</b>のが保守しやすい設計です。→ <a href="handson-3.html">练习③ 3-2</a></div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag">配置</span><span class="tag">変種価格</span></div>
+  <h4>18. 変種価格で使う条件タイプはどれ？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A"><code>PR00</code></div>
+    <div class="opt" data-key="B"><code>VA00</code></div>
+    <div class="opt" data-key="C"><code>K007</code></div>
+    <div class="opt" data-key="D"><code>MWST</code></div>
+  </div>
+  <div class="explain"><code>PR00</code> は基本価格、変種（加算）は <code>VA00</code> です。条件タイプは <code>V/06</code>、計算手続は <code>V/08</code>、条件レコードは <code>VK11</code>。→ <a href="config.html#c13">C13</a></div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag">配置</span><span class="tag">Public Cloud</span></div>
+  <h4>19. Public Cloud（SSCUI）で一般的に<b>できない</b>とされるものは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">設定可能品目の品目マスタを登録すること</div>
+    <div class="opt" data-key="B">特徴（<code>CT04</code> 相当）を作ること</div>
+    <div class="opt" data-key="C">標準にない明細カテゴリ等の伝票カテゴリを新規作成すること</div>
+    <div class="opt" data-key="D">AVC（<code>PMEVC</code>）でモデリングすること</div>
+  </div>
+  <div class="explain">Cloud は AVC 前提でモデリングは可能ですが、<b>SSCUI の範囲外＝実現できない領域</b>があります（明細カテゴリの新規作成など）。スコープアイテム <code>IYT</code>/<code>7DM</code> の活性も必要です。→ <a href="config.html#c16">C16</a></div>
+</div>
+
+<h2>三、流程（20〜25）</h2>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag teal">流程</span><span class="tag">受注</span></div>
+  <h4>20. <code>VA01</code> で設定可能品目の構成（設定値）を入力する操作は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">初期画面で「構成」を押す</div>
+    <div class="opt" data-key="B">明細を選択した状態で「構成」ボタンを押し、設定画面で特徴値を選ぶ</div>
+    <div class="opt" data-key="C">納入日程行の明細で値を入力する</div>
+    <div class="opt" data-key="D">受注を保存した後に <code>CU50</code> で値を入れる</div>
+  </div>
+  <div class="explain">明細レベルの「構成」です。開かない場合は <a href="config.html#c3">C3</a> の 5 条件・プロファイル・明細カテゴリを確認します。→ <a href="handson-4.html">练习④ 4-1</a></div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag teal">流程</span><span class="tag">受注 BOM</span></div>
+  <h4>21. 受注で選んだ構成に対応する構成品目（受注 BOM）を確認する場所は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A"><code>VA03</code> → 明細 → 「構成品目（受注 BOM）」ボタン</div>
+    <div class="opt" data-key="B"><code>CS03</code> のスーパー BOM</div>
+    <div class="opt" data-key="C"><code>MM03</code> の MRP1</div>
+    <div class="opt" data-key="D"><code>CU03</code> の依存関係一覧</div>
+  </div>
+  <div class="explain">受注明細の構成品目です（<code>CS03</code> はスーパー BOM＝設計側の全量）。設定プロファイルの処理形式が「展開なし」の場合はここに出ません。→ <a href="handson-4.html">练习④ 4-1</a></div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag teal">流程</span><span class="tag">指図への伝搬</span></div>
+  <h4>22. 製造指図に受注の設定値を引き継がせるために、正しい作り方は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A"><code>CO01</code> で品目だけを入力して指図を新規作成する</div>
+    <div class="opt" data-key="B">指図を作った後に明細の構成値を人が入力する</div>
+    <div class="opt" data-key="C">計画手配（MD04）からの変換、または <code>CO40</code>/<code>CO08</code> で<b>受注明細を参照して</b>指図を作る</div>
+    <div class="opt" data-key="D">受注を <code>VA01</code> で作り直す</div>
+  </div>
+  <div class="explain">指図は「受注明細参照」で作ると構成（設定値）を引き継ぎます。品目だけの新規作成では構成が空になります。→ <a href="handson-4.html">练习④ 4-4</a></div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag teal">流程</span><span class="tag">出荷</span></div>
+  <h4>23. VC × 受注生産（戦略 <code>25</code>）の出荷で正しいものは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">自由在庫から出庫する（在庫区分は空）</div>
+    <div class="opt" data-key="B">プロジェクト在庫（Q）から出庫する</div>
+    <div class="opt" data-key="C">構成品目を明細に並べて出荷し、在庫区分は E</div>
+    <div class="opt" data-key="D">受注在庫（特別在庫 E／受注番号つき）から出庫し、出庫確認 601 で在庫が消える</div>
+  </div>
+  <div class="explain">受注在庫（E）からの出庫で、PGI は移動タイプ 601。通常は<b>親品目を出荷</b>し、構成品目は製造で消費します（子明細は SET 処理の設計）。→ <a href="handson-4.html">练习④ 4-6</a></div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag teal">流程</span><span class="tag">変種価格</span></div>
+  <h4>24. 受注の条件画面に <code>VA00</code> の加算が<b>出ない</b>ときの第一嫌疑として適切なものは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">特徴の「追加データ」（テーブル/項目＝<code>VKOND</code>）が未設定、または計算手続に <code>VA00</code> のステップが無い</div>
+    <div class="opt" data-key="B">受注数量が多すぎる</div>
+    <div class="opt" data-key="C">クラス型が <code>300</code> でない</div>
+    <div class="opt" data-key="D">MRP4 の個別所要量が未設定</div>
+  </div>
+  <div class="explain">切り分け順は ① 追加データ（<code>CT04</code>）② 条件タイプ（<code>V/06</code>）③ 計算手続（<code>V/08</code>）④ 条件レコード（<code>VK13</code>）。行はあるのに金額 0 ならキー不一致です。→ <a href="config.html#c13">C13</a></div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag teal">流程</span><span class="tag">戦略 82</span></div>
+  <h4>25. 戦略グループを <code>82</code>（受注組立）にしたときの、戦略 <code>25</code> との決定的な違いは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">受注在庫ではなくプロジェクト在庫（Q）になる</div>
+    <div class="opt" data-key="B">受注と製造指図が 1:1 で、受注保存と同時に指図が作られる（所要量タイプ <code>KMFA</code>／所要量クラス <code>201</code>／指図タイプ <code>PP04</code>）</div>
+    <div class="opt" data-key="C">構成が使えなくなる</div>
+    <div class="opt" data-key="D">BOM が不要になる</div>
+  </div>
+  <div class="explain">戦略 <code>82</code> は受注と指図が 1:1 で、BOM が必須という記載があります（SAP Help 組立処理）。変更は<b>新規受注にだけ</b>効きます。→ <a href="handson-5.html">练习⑤ 5-2</a></div>
+</div>
+
+<h2>四、故障（26〜28）</h2>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag amber">故障</span><span class="tag">症状から引く</span></div>
+  <h4>26. 受注で「構成」ボタンがグレーで構成画面が出ない。第一に確認する組み合わせは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">MRP タイプとロットサイズ</div>
+    <div class="opt" data-key="B">出荷タイプと請求タイプ</div>
+    <div class="opt" data-key="C">設定可能（Configurable）インジケータ／品目タイプ <code>KMAT</code>／品目カテゴリグループ <code>0002</code>／設定プロファイルの品目割当</div>
+    <div class="opt" data-key="D"><code>OBYC</code> の自動転記設定</div>
+  </div>
+  <div class="explain">「構成が出ない」は品目マスタの 5 条件とプロファイル割当に集約されます（<code>MM03</code> → <code>CU43</code> → <code>VOV4</code> の順）。→ <a href="handson-5.html">故障対照表 #1</a></div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag amber">故障</span><span class="tag">症状から引く</span></div>
+  <h4>27. <code>CU50</code> で材質を変えてもケーシング（構成品目）が入れ替わらない。第一嫌疑は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">品目の評価クラスが未設定</div>
+    <div class="opt" data-key="B">条件レコードのキーが違う</div>
+    <div class="opt" data-key="C">作業手順の標準値項目名が違う</div>
+    <div class="opt" data-key="D">選択条件の適用先（BOM 明細に貼っていない）／<code>$ROOT</code> と特徴名の不一致／BOM の有効日</div>
+  </div>
+  <div class="explain"><code>CU03</code> で使用箇所を確認 → <code>CS03</code> の選択条件文字列 → BOM 有効日、の順が最短です（<code>CU50</code> で再現できる＝設計側の問題）。→ <a href="handson-5.html">故障対照表 #2</a></div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag amber">故障</span><span class="tag">変更統制</span></div>
+  <h4>28. 受注後に構成（材質）を変更した。製造指図はどうなる？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">自動的に新しい構成に更新される</div>
+    <div class="opt" data-key="B">自動では変わらない。指図（または明細）の再展開が必要で、運用ルール（変更可否・承認）を決めておかないと事故になる</div>
+    <div class="opt" data-key="C">指図は自動的に削除される</div>
+    <div class="opt" data-key="D">在庫が自動的に引き当て直される</div>
+  </div>
+  <div class="explain">受注 BOM・指図・価格は自動追従しません（価格も再価格決定が必要）。本站は「リリース前は変更可／リリース後は禁止＋例外は作り直し」を推奨案として提示しています。→ <a href="handson-5.html">练习⑤ 5-1</a></div>
+</div>
+
+<h2>五、実機验收清单（これを全部 ✓ にできないと「修了」ではありません）</h2>
+<ul class="check">
+  <li>特徴 4 つ（<code>ZVC_CAPACITY</code> は数値型）とクラス <code>ZVC_PUMP_CL</code>（クラス型 <code>300</code>）を提示できる</li>
+  <li>品目 <code>ZVC-PUMP01</code> の「受注できる 5 条件」を <code>MM03</code> で提示できる（<code>KMAT</code>／設定可能 ON／<code>0002</code>／戦略 <code>25</code>／MRP4 個別所要量）</li>
+  <li>設定プロファイル <code>ZVC_PROFILE01</code> の割当品目・処理形式を <code>CU43</code> で提示できる</li>
+  <li>依存関係の適用先を <code>CU03</code> の使用箇所一覧で提示できる（前提条件・選択条件・手続き）</li>
+  <li><code>CU50</code> で材質・付属品・塗装を変え、構成品目と工程の取捨が変わることを実演できる</li>
+  <li><code>CS03</code> のスーパー BOM に行を分けた材質別ケーシングと選択条件を提示できる</li>
+  <li>受注（<code>VA01</code>）で構成を入力し、受注明細の「構成品目（受注 BOM）」が構成どおりであることを提示できる</li>
+  <li>条件画面で <code>VA00</code> の加算行とキー（設定値）を提示できる</li>
+  <li><code>MD04</code> に得意先所要量が出て、計画手配の在庫区分が受注在庫（E）であることを提示できる</li>
+  <li>製造指図の「構成」に設定値が伝搬していることを <code>CO03</code> で提示できる</li>
+  <li><code>MMBE</code> で受注在庫（E）10 PC を提示し、601 後に 0 になるところまで実演できる</li>
+  <li>請求に <code>PR00</code>＋<code>VA00</code> の金額が乗り、伝票フローが受注→出荷→請求→会計で完結していることを提示できる</li>
+  <li>戦略グループを <code>82</code> に切り替え、受注と指図が 1:1 になることを実演し、<code>25</code> に戻した</li>
+  <li>故障対照表の 5 項以上を、確認手顺を見ずに切り分けの型（<code>CU50</code> で再現 → 設計側／伝票側）で説明できる</li>
+  <li><a href="worksheet.html">ワークシート</a>のシート A〜F を記入し、伝票番号（受注・指図・出荷・請求）を提示できる</li>
+</ul>
+
+<div class="box ok"><b class="t">合格判定</b>
+<b>28 題で 21 問以上（≥75%）＋ 上記验收清单の全項目 ✓ ＋ ワークシート記入</b>＝「VC の受注生産を 1 周できる」レベルです。<br>
+90% 以上（26/28）かつ発展課題を 2 つ以上実施していれば、次の段階（<a href="handson-5.html">练习⑤ の発展課題</a>＝材料バリアント・SET 処理・多階層・制約・AVC 特徴グループ）へ進んでください。</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA バリアント設定付き受注生産（VC / AVC）实战训练站</h5><p>能力测试 28 題（概念 10・配置 9・流程 6・故障 3）＋実機验收清单 15 項。合格 75%。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 特徴とクラス</a><br><a href="handson-2.html">② 設定可能品目とプロファイル</a><br><a href="handson-3.html">③ 依存関係とスーパー BOM</a><br><a href="handson-4.html">④ 受注で構成・製造・出荷</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="worksheet.html">学员版</a><br><a href="instructor.html">讲师版</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/quiz.js"></script>
+</body>
+</html>

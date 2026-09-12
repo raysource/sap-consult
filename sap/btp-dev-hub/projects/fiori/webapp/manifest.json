@@ -1,0 +1,43 @@
+{
+  "sap.app": {
+    "id": "com.training.products",
+    "type": "application",
+    "applicationVersion": { "version": "1.0.0" },
+    "title": "培训产品目录",
+    "description": "Fiori / UI5 入门演示: 列表 + 搜索 + 排序 + 交互 (JSONModel 本地数据)",
+    "tags": {
+      "keywords": ["training", "products", "fiori", "ui5"]
+    }
+  },
+
+  "sap.ui": {
+    "technology": "UI5",
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+
+  "sap.ui5": {
+    "rootView": {
+      "viewName": "com.training.products.view.Products",
+      "type": "XML",
+      "async": true,
+      "id": "productsRootView"
+    },
+    "dependencies": {
+      "minUI5Version": "1.108.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "models": {
+      "products": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "data/products.json"
+      }
+    }
+  }
+}

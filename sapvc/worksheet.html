@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学员版 ワークシート（記入用） · SAP S/4HANA バリアント設定付き受注生産（VC / AVC）实战训练站</title>
+<meta name="description" content="VC/AVC 实训の受講者用ワークシート：シート A 配置 C0〜C16 の確認記入、シート B 練習①〜⑤の記録（特徴名・クラス名・設定値・BOM 構成品目・伝票番号 20 項）、シート C CU50 の結果表、シート D 故障記録（症状→根因→証拠→処置→再発防止）、シート E 用語 10 語、シート F 質問メモと修了判定。印刷して使う記入用ページ。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/vc.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">VC</span><span class="txt">バリアント設定 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①主数据</a>
+      <a href="handson-2.html">②受注与设定</a>
+      <a href="handson-3.html">③依存与BOM</a>
+      <a href="handson-4.html">④制造与出荷</a>
+      <a href="handson-5.html">⑤发展与故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a class="active" href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 学员版 ワークシート（記入用）</div>
+<main class="page"><article>
+
+<h1>学员版 ワークシート（挖空・記入用）</h1>
+<div class="box info"><b class="t">使い方</b>
+① このページを<b>印刷</b>するか、ブラウザで開いたまま埋めていきます（印刷時はナビやボタンが自動的に消えます）。<br>
+② 記入するのは「<b>自分のシステムで実際に見た値・オブジェクト名・伝票番号・表の行</b>」です。講義資料の丸写しは不可（それが理解の証跡になります）。<br>
+③ 各シートは <a href="handson-1.html">練習①</a> 〜 <a href="handson-5.html">練習⑤</a> を進めながら埋めます。分からない欄は空欄で残し、<b>シート F の質問メモ</b>へ回してください。<br>
+④ 最後に <a href="quiz.html">能力测试</a>（28 題・75% 以上）と、このシートの全欄記入で修了です。</div>
+
+<h2>シート A：配置の確認記入（C0〜C16）</h2>
+<p class="mini">「自分の環境での値」には実際の値（または「標準どおり」「差異あり：〜」）を書きます。差異があった場合は必ず理由も推測してください。<b>このシートが故障切り分けの一次資料になります。</b></p>
+<table class="tbl wide fill">
+<tr><th>STEP</th><th>何を見るか</th><th>自分の環境での値（記入）</th><th>OK/NG</th><th>気づき・差異の理由</th></tr>
+<tr><td>C0</td><td>5 T-code（<code>CT04</code>/<code>CL02</code>/<code>CU01</code>/<code>CU41</code>/<code>CU50</code>）の起動可否／<code>PMEVC</code>（AVC）の可否／<code>KMAT</code> の番号範囲</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C1</td><td>特徴 4 つの技術名称・データタイプ・許可値の件数<br>（<code>ZVC_CAPACITY</code>=＿＿＿型/＿件、他 3 つは＿＿＿型）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C2</td><td>クラス名とクラス型（<code>CL03</code>）／特徴の必須の状態</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C3</td><td>品目 <code>ZVC-PUMP01</code>：品目タイプ／設定可能インジケータ／品目カテゴリグループ／MRP1 手配タイプ／MRP3 戦略グループ・在庫確認／MRP4 個別所要量／分類ビューのクラス</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C4</td><td>設定プロファイル名／割当品目／処理形式／必須チェック（<code>CU43</code>）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C5</td><td>前提条件の ID と適用先（特徴 or 特徴値）／<code>CU50</code> で成立しない組合せ</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C6</td><td>選択条件の ID 一覧と適用先（BOM 明細番号／工程番号）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C7</td><td>手続きの ID と適用先／数量・標準値の変化を確認した方法</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C8</td><td><code>CS03</code>：BOM 明細数／選択条件の付いた行数／有効開始日</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C9</td><td><code>CA03</code>：作業手順名／工程番号と選択条件／標準値項目名</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C10</td><td><code>VOV4</code> の決定行（伝票タイプ＋品目カテゴリグループ → 明細カテゴリ）／<code>VA03</code> の実測値／納入日程行カテゴリと所要量転送</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C11</td><td><code>OPPS</code>/<code>OPPJ</code>/<code>OVZG</code>：戦略 <code>25</code> → 所要量タイプ＿＿＿ → 所要量クラス＿＿＿（在庫区分・評価区分）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C12</td><td>在庫確認（確認グループ）の値／<code>CO09</code> の ATP 要素／受注時の納期の挙動</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C13</td><td>条件タイプ <code>VA00</code> の有無／特徴の追加データ（テーブル・項目名）／<code>VK13</code> の条件レコード件数と金額</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C14</td><td>出荷タイプ／請求タイプ／出荷明細の在庫区分／601 後の受注在庫</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C15</td><td>評価クラス（会計1）／<code>OBYC</code> のエントリ有無／<code>FB03</code> で見た仕訳 1 件</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C16</td><td>Cloud：活性スコープアイテム／SSCUI で変更できなかった項目／価格キーの構造名</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+
+<h2>シート B：練習①〜⑤ の記録（自分の環境の実測値）</h2>
+<p class="mini">「丸写し禁止」。<b>自分の画面で見た値</b>を書きます。番号は自分の伝票番号を記入（例：受注 0000001234）。</p>
+<table class="tbl wide fill">
+<tr><th>#</th><th>記録項目</th><th>自分の値（記入）</th><th>確認した画面</th></tr>
+<tr><td>B1</td><td>特徴① 技術名称／データタイプ／許可値</td><td>&nbsp;</td><td><code>CT04</code></td></tr>
+<tr><td>B2</td><td>特徴② 技術名称／許可値</td><td>&nbsp;</td><td><code>CT04</code></td></tr>
+<tr><td>B3</td><td>特徴③ 技術名称／許可値</td><td>&nbsp;</td><td><code>CT04</code></td></tr>
+<tr><td>B4</td><td>特徴④ 技術名称／許可値／複数値の設定</td><td>&nbsp;</td><td><code>CT04</code></td></tr>
+<tr><td>B5</td><td>クラス名／クラス型／クラス名称</td><td>&nbsp;</td><td><code>CL03</code></td></tr>
+<tr><td>B6</td><td>クラスに割当てた特徴の数／必須になっている特徴</td><td>&nbsp;</td><td><code>CL03</code></td></tr>
+<tr><td>B7</td><td>設定可能品目の品目コード／品目タイプ／単位</td><td>&nbsp;</td><td><code>MM03</code></td></tr>
+<tr><td>B8</td><td>品目カテゴリグループ／戦略グループ／在庫確認／MRP4 個別所要量</td><td>&nbsp;</td><td><code>MM03</code></td></tr>
+<tr><td>B9</td><td>設定プロファイル名／処理形式</td><td>&nbsp;</td><td><code>CU43</code></td></tr>
+<tr><td>B10</td><td>依存関係 ID（前提条件／選択条件／手続き）と適用先</td><td>&nbsp;</td><td><code>CU03</code></td></tr>
+<tr><td>B11</td><td>スーパー BOM の明細数／有効開始日</td><td>&nbsp;</td><td><code>CS03</code></td></tr>
+<tr><td>B12</td><td>作業手順名／工程番号と工程名</td><td>&nbsp;</td><td><code>CA03</code></td></tr>
+<tr><td>B13</td><td><b>受注番号</b>／受注明細番号／受注日／希望納期</td><td>&nbsp;</td><td><code>VA03</code></td></tr>
+<tr><td>B14</td><td><b>設定値（構成）</b>：容量／材質／塗装／付属品</td><td>&nbsp;</td><td><code>VA03</code> の構成</td></tr>
+<tr><td>B15</td><td><b>受注 BOM の構成品目</b>（品目コードと数量を全部）</td><td>&nbsp;</td><td><code>VA03</code> の構成品目</td></tr>
+<tr><td>B16</td><td>明細カテゴリ／納入日程行カテゴリ／所要量タイプ</td><td>&nbsp;</td><td><code>VA03</code> 明細</td></tr>
+<tr><td>B17</td><td>条件：<code>PR00</code> の金額／<code>VA00</code> の加算行と金額／合計</td><td>&nbsp;</td><td><code>VA03</code> 条件画面</td></tr>
+<tr><td>B18</td><td><b>製造指図番号</b>／指図の構成値／指図の構成品目数</td><td>&nbsp;</td><td><code>CO03</code></td></tr>
+<tr><td>B19</td><td>受注在庫（E）の数量（入庫後）／出庫確認後の数量</td><td>&nbsp;</td><td><code>MMBE</code></td></tr>
+<tr><td>B20</td><td><b>出荷番号</b>／在庫区分／引当数量／PGI の移動タイプ</td><td>&nbsp;</td><td><code>VL01N</code>/<code>VL02N</code></td></tr>
+<tr><td>B21</td><td><b>請求番号</b>／請求金額（<code>VA00</code> 込みか）／会計伝票番号</td><td>&nbsp;</td><td><code>VF03</code>/<code>FB03</code></td></tr>
+<tr><td>B22</td><td>戦略 <code>82</code> に切り替えたときの受注番号と、指図が自動作成されたか</td><td>&nbsp;</td><td><code>VA01</code>/<code>CO03</code></td></tr>
+<tr><td>B23</td><td>変更統制の実機確認：構成変更後、受注 BOM／指図／価格が変わったか</td><td>&nbsp;</td><td><code>VA02</code>/<code>CO03</code></td></tr>
+<tr><td>B24</td><td>発展課題で実施したこと（2 つ以上）と結果</td><td>&nbsp;</td><td>—</td></tr>
+</table>
+
+<h2>シート C：<code>CU50</code> の結果表（設定値 → BOM／工程の取捨）</h2>
+<p class="mini">4 通りの構成で、<b>構成品目（部品）と工程</b>がどう変わるかを書き出します。「消えたもの」も必ず書くこと（それが選択条件の証跡）。</p>
+<table class="tbl wide fill">
+<tr><th>#</th><th>容量</th><th>材質</th><th>塗装</th><th>付属品</th><th>採用された構成品目（記入）</th><th>採用された工程（記入）</th><th>消えたもの・気づき</th></tr>
+<tr><td>1</td><td><code>80</code></td><td><code>SUS316</code></td><td><code>EPOXY</code></td><td><code>PG_FG</code></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>2</td><td><code>50</code></td><td><code>FC200</code></td><td><code>NONE</code></td><td><code>NONE</code></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>3</td><td><code>120</code></td><td><code>SUS304</code></td><td><code>URETHANE</code></td><td><code>PG</code></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>4</td><td><code>80</code></td><td><code>SUS316</code></td><td><code>EPOXY</code></td><td><code>NONE</code></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+<table class="tbl wide fill">
+<tr><th>確認項目</th><th>結果（記入）</th><th>根拠（画面）</th></tr>
+<tr><td>BOM 展開「しない」と「1 階層展開」で結果はどう変わったか</td><td>&nbsp;</td><td><code>CU50</code></td></tr>
+<tr><td>前提条件（<code>FC200</code>＋<code>EPOXY</code>）はどうなったか</td><td>&nbsp;</td><td><code>CU50</code></td></tr>
+<tr><td>容量 <code>120</code> でモータの数量はどうなったか</td><td>&nbsp;</td><td><code>CU50</code></td></tr>
+<tr><td>手続き（自動セット）が働いた場面はあったか</td><td>&nbsp;</td><td><code>CU50</code></td></tr>
+</table>
+
+<h2>シート D：故障記録（症状 → 根因 → 証拠 → 処置 → 再発防止）</h2>
+<p class="mini">实训中に<b>自分が遭遇した</b>故障を記録します（講師が仕込んだ故障でも可）。<a href="handson-5.html">故障対照表 14 項</a>の番号が分かれば書いてください。</p>
+<table class="tbl wide fill">
+<tr><th>#</th><th>症状（何が起きたか／どの画面で）</th><th>根因（第一嫌疑 → 確定）</th><th>証拠（画面・T-code・表の行）</th><th>処置（何を直したか）</th><th>再発防止（設計・運用）</th><th>対照表 No.</th></tr>
+<tr><td>1</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>2</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>3</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>4</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>5</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+<div class="task"><b class="t">記入のコツ</b>
+「根因」は<b>推測でなく確定</b>まで書きます（例：「適用先違いと推測」→「<code>CU03</code> の使用箇所を見て、選択条件が特徴に貼られていたと確定」）。
+「再発防止」は<b>設計（データを直す）か運用（ルールを決める）</b>のどちらかを明記してください。</div>
+
+<h2>シート E：用語 10 語（自分の言葉で説明する）</h2>
+<p class="mini">右の「自分の言葉での説明」は<b>講義資料を見ずに</b>書きます。書けなかった語は復習対象です。</p>
+<table class="tbl wide fill">
+<tr><th>#</th><th>用語</th><th>自分の言葉での説明（記入）</th><th>関連 T-code / 画面</th></tr>
+<tr><td>1</td><td>構成エンジン（VC の本質）</td><td>&nbsp;</td><td>—</td></tr>
+<tr><td>2</td><td>特徴（Characteristics）</td><td>&nbsp;</td><td><code>CT04</code></td></tr>
+<tr><td>3</td><td>クラス型 <code>300</code></td><td>&nbsp;</td><td><code>CL02</code>/<code>CL03</code></td></tr>
+<tr><td>4</td><td>設定可能品目（<code>KMAT</code>）</td><td>&nbsp;</td><td><code>MM01</code></td></tr>
+<tr><td>5</td><td>設定プロファイル／処理形式</td><td>&nbsp;</td><td><code>CU41</code>/<code>PMEVC</code></td></tr>
+<tr><td>6</td><td>前提条件と選択条件の違い</td><td>&nbsp;</td><td><code>CU01</code>〜<code>CU03</code></td></tr>
+<tr><td>7</td><td>スーパー BOM と受注 BOM</td><td>&nbsp;</td><td><code>CS01</code>/<code>CS03</code></td></tr>
+<tr><td>8</td><td>変種価格（<code>VA00</code>）</td><td>&nbsp;</td><td><code>VK11</code>/<code>VK13</code></td></tr>
+<tr><td>9</td><td>戦略 <code>25</code> と <code>KEK</code>／所要量クラス <code>046</code></td><td>&nbsp;</td><td><code>OPPS</code>/<code>OVZG</code></td></tr>
+<tr><td>10</td><td>受注在庫（特別在庫 E）</td><td>&nbsp;</td><td><code>MMBE</code>/<code>MD04</code></td></tr>
+</table>
+<p class="mini">余裕があれば（加点対象）：<code>CU50</code>／<code>CU03</code>／材料バリアント／SET 処理／AVC の特徴グループ／制約（Constraints）も一言で。</p>
+
+<h2>シート F：質問メモと修了判定</h2>
+<table class="tbl wide fill">
+<tr><th>#</th><th>分からなかったこと・質問</th><th>自分で調べたこと（T-code/画面）</th><th>答え（講師 or 自学）</th><th>解決</th></tr>
+<tr><td>1</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>2</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>3</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>4</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>5</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+<h3>修了判定（自分で確認してから提出）</h3>
+<ul class="check">
+  <li>シート A：C0〜C16 の全 17 行に、自分の環境の値または「差異あり：〜」を記入した</li>
+  <li>シート B：B1〜B24 の記録項目のうち、伝票番号（B13・B18・B20・B21）を含めて記入した</li>
+  <li>シート C：4 通りの <code>CU50</code> 結果と、BOM 展開の切替・前提条件・数量の変化を記入した</li>
+  <li>シート D：故障記録を 1 件以上、「根因の確定」と「再発防止」まで書いた</li>
+  <li>シート E：用語 10 語を資料を見ずに説明できた（書けなかった語は復習リストに）</li>
+  <li>シート F：質問メモを 1 件以上書き、解決状況を記録した</li>
+  <li><a href="quiz.html">能力测试</a> で <b>75% 以上（21/28）</b>を取った</li>
+  <li>受注 → 受注 BOM → MD04（E）→ 指図（設定値）→ 出荷 601 → 請求（<code>VA00</code>）→ 伝票フローの完結を、自分の番号で提示できる</li>
+</ul>
+<table class="tbl wide">
+<tr><th>判定</th><th>条件</th><th>日付／講師署名</th></tr>
+<tr><td>修了 ／ 条件付き ／ 再受講（該当を○）</td><td>テスト ＿＿＿ %（＿＿/28）・验收 ＿＿/＿＿ 項<br>未達項目：＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</td><td>&nbsp;</td></tr>
+</table>
+<div class="box ok"><b class="t">提出前の最終チェック（受講者）</b>
+① 空欄が残っていないか（分からない欄は「未確認」と理由を書く）。② 値は<b>自分の環境で見たものか</b>（丸写ししていないか）。
+③ 故障記録に「推測」が残っていないか。<b>推測が残っている記録は、次に同じ故障で止まったとき役に立ちません。</b></div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA バリアント設定付き受注生産（VC / AVC）实战训练站</h5><p>学员版ワークシート：シート A 配置 C0〜C16／B 練習記録 24 項／C <code>CU50</code> 結果表／D 故障記録／E 用語 10 語／F 質問メモと修了判定（印刷可）。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 特徴とクラス</a><br><a href="handson-2.html">② 設定可能品目とプロファイル</a><br><a href="handson-3.html">③ 依存関係とスーパー BOM</a><br><a href="handson-4.html">④ 受注で構成・製造・出荷</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

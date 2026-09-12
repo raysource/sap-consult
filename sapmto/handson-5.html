@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>练习⑤ 発展課題と故障対応 · SAP S/4HANA SD 受注生産（MTO）实战训练站</title>
+<meta name="description" content="MTO 练习⑤：組立処理（戦略82・受注と同時に製造指図自動作成）、自作明細カテゴリ ZTAK 的切换、受注在庫の差異決済（KKS1/KO88）、部品の購買連携、取消手順，以及 12 项故障对照表与 MD04 读法。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/mto.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MTO</span><span class="txt">SD 受注生産 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①受注</a>
+      <a href="handson-2.html">②MRP</a>
+      <a href="handson-3.html">③出入库</a>
+      <a href="handson-4.html">④出货</a>
+      <a class="active" href="handson-5.html">⑤发展</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 练习⑤ 発展課題と故障対応</div>
+<main class="page"><article>
+
+<h1>练习⑤ 発展課題与故障对应</h1>
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。若是想换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 即可一键替换。</div>
+
+<div class="box info"><b class="t">本练习完成什么</b>
+主线（练习①〜④）已经跑通后，用「变化」把理解钉牢：<b>①</b> 换成组立处理（受注保存即自动建指图）；<b>②</b> 换成自建明細カテゴリ <code>ZTAK</code>（手把手验证配置成果）；
+<b>③</b> 受注在庫的差异与结算（CO 的最后一公里）；<b>④</b> 部品改由采购供给；<b>⑤</b> 取消/退回的处理。最后附一张 <b>12 项故障对照表</b> 与 <b>MD04 读法表</b>，现场排障时直接查。
+预计 90 分钟起（可只挑其中 1〜2 个课题）。</div>
+
+<div class="toc">
+  <a href="#a1">1. 組立処理（戦略82）</a>
+  <a href="#a2">2. 自建明細カテゴリ ZTAK 的切换</a>
+  <a href="#a3">3. 差异与结算（KKS1/KO88）</a>
+  <a href="#a4">4. 部品を購買で賄う</a>
+  <a href="#a5">5. 取消・変更・返品</a>
+  <a href="#trouble">6. 故障对照表（12 项）</a>
+  <a href="#md04">7. MD04 读法表</a>
+</div>
+
+<h2 id="a1">発展 1：組立処理（戦略グループ 82）— 受注保存と同時に製造指図</h2>
+<div class="box info"><b class="t">原理</b>
+戦略グループ <code>82</code>（組立処理 with production order）在标准里已经配好：<b>所要量タイプ <code>KMFA</code> / 所要量クラス <code>201</code> / 指図タイプ <code>PP04</code></b>，且是「静的手法（指図と受注 1:1）」（SAP Help <i>Special Settings for Production Orders</i>）。
+与战略 20 的差别：<b>不需要等 MRP 跑，受注保存那一刻就生成制造指図</b>（受注 = 指令）。</div>
+<p><b>手顺</b></p>
+<ol class="steps">
+  <li>前提确认：<code>ZMTO-FG01</code> 有有效 BOM（<code>CS03</code>）、有作業手順（<code>CA03</code>）。組立処理必须有 BOM（否则会报错/无法展开）。</li>
+  <li><code>MM02</code> → <code>ZMTO-FG01</code> → MRP3 → <b>戦略グループ <code>20</code> → <code>82</code></b>（练习环境建议新开一个品目 <code>ZMTO-FG02</code> 做对照，避免污染主线数据）。</li>
+  <li>（确认）<code>MM03</code> MRP4：個別/包括所要量 = <code>1</code>（個別所要量のみ）はそのまま。MRP1：MRPタイプ <code>PD</code>、手配タイプ <code>E</code>。</li>
+  <li>新建受注（<code>VA01</code>：得意先 1000、品目 <code>ZMTO-FG02</code>、数量 5 PC、纳期 +30 日）→ 保存。</li>
+  <li>看到消息里的<b>指図番号</b>（または「指図が登録されました」）：組立処理なら受注保存時点で製造指図が作られます。数量 5 = 受注数量 5（1:1）。</li>
+  <li><code>MD04</code> を見る：戦略 20 のときのような「計画手配」を経由せず、<b>受注在庫 + 製造指図</b> がいきなり現れます（受注在庫は入庫前なので 0）。</li>
+  <li>確認差异：<code>MM02</code> 戻して <code>20</code> にすれば従来通り。两边的差异（受注保存 → 指図自動 vs MRP → 計画手配 → 変換）请用自己的话总结一句。</li>
+</ol>
+<div class="box warn"><b class="t">注意</b>
+① 战略 82 下受注数量变更会要求同步指図（数量/日の調整が必要）；② 指図タイプ <code>PP04</code> 的调度参数（逆日程、基本日付調整など）由 SAP 标准设定保证，
+若要换成别的指图类型，SAP Help 明确要求把「逆日程」与「基本日付の調整」设好；③ Public Cloud 里战略 82 由 スコープアイテム（BJE 等）交付，不必自己配。</div>
+<figure class="gui"><img src="assets/gui/handson-5_s01_1.svg" alt="VA01 の明細概況。得意先 1000 の受注に品目 ZMTO-FG02 を 5 PC で入力し、明細カテゴリ TAN と納入日程行カテゴリ CN が決定されている。" loading="lazy"><figcaption><b class="t">発展1 VA01 明細概況：ZMTO-FG02 / 5 PC / 明細カテゴリ TAN・納入日程行カテゴリ CN</b><span class="tx">VA01</span><span class="scr">受注伝票の登録：明細概況（戦略グループ 82 の検証用）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 82 の検証は別品目 ZMTO-FG02 で行うと、主线（ZMTO-FG01）のデータを汚さずに 20 と 82 を比較できます</li><li><b>2</b> 数量 5 PC は、この後できあがる指図の数量と一致しているか（1:1）を見る基準になります</li></ol><p class="gui-tip">自システムでの確認：戦略グループ 82 は OPPJ / OPPS で確認します（所要量タイプ KMFA・所要量クラス 201・指図タイプ PP04）。BOM と作業手順は CS03 / CA03 で前提を確認します。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-5_s01_2.svg" alt="CO03 の製造指図ヘッダ。指図 1000201、品目 ZMTO-FG02、数量 5 PC、指図タイプ PP04、受注明細参照 0000001240 / 000010 が表示されている。" loading="lazy"><figcaption><b class="t">発展1 CO03：受注 0000001240 から自動生成された指図 1000201（PP04・数量 5 PC）</b><span class="tx">CO03</span><span class="scr">製造指図の照会：ヘッダ（受注保存と同時に自動作成）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 指図タイプが PP04 なのが組立処理の手がかり。標準の PP01（戦略 20）と違い、受注保存の瞬間にこの指図ができています</li><li><b>2</b> 販売伝票 + 明細が入っている＝この指図はこの受注専用（1:1）。受注数量を変えたら指図の数量も合わせます</li></ol><p class="gui-tip">自システムでの確認：SE16N → AFPO で KDAUF / KDPOS（受注明細参照）を直接確認できます。MD04 では「計画手配」を経由せず、受注在庫 + 製造指図が直接並びます。</p></figure>
+
+
+
+
+
+<h2 id="a2">発展 2：自建明細カテゴリ ZTAK 的切换（验证 C5〜C9 的成果）</h2>
+<ol class="steps">
+  <li><code>MM02</code> → <code>ZMTO-FG01</code> → 販売組織2 → <b>品目カテゴリグループ <code>0001</code> → <code>Z001</code></b> → 保存。</li>
+  <li><code>VA01</code> 新建受注（得意先 1000 / 品目 <code>ZMTO-FG01</code> / 数量 3 PC）→ 保存前确认明細行右侧：<b>明細カテゴリ应自动变成 <code>ZTAK</code></b>。</li>
+  <li>此处应显示 <b>特別在庫 = E</b>（因为 <code>ZTAK</code> 的 SOBKZ=E）。<code>VA03</code> → 明細詳細で确认。</li>
+  <li>保存 → <code>MD04</code>：所要量転送が成立し「得意先所要量 -3 PC」が出れば、C5〜C9 的四步配置全部生效。</li>
+  <li>对照实验：把品目カテゴリグループを <code>0001</code> に戻して同様に受注 → 明細カテゴリが <code>TAN</code> に戻ることを确认。</li>
+  <li>结论（要能答出来的问题）：<b>「受注在庫 E 是靠明細カテゴリ（ZTAK）还是靠 MRP4+所要量クラス（战略 20）成立的？」</b>
+     —— 两者都能让系统知道「这是受注库存货」，实务上常见做法是<b>两个都设</b>（明細カテゴリで明示，战略20/所要量クラスで数量与评价的规则），
+     而只设其中之一也能跑起来（这也是现场容易吵起来的点——请以你系统的实测结果为准，并把结论写进要件定义）。</li>
+</ol>
+<figure class="gui"><img src="assets/gui/handson-5_s02_1.svg" alt="MM02 の販売組織 2 ビュー。ZMTO-FG01 の品目カテゴリグループを 0001 から Z001 に変更する。" loading="lazy"><figcaption><b class="t">発展2 MM02 販売組織2：品目カテゴリグループを 0001 → Z001 に切り替え</b><span class="tx">MM02</span><span class="scr">品目マスタ 変更：販売組織 2 ビュー（品目カテゴリグループ）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> Z001 を入れると VOV4（OR + Z001）で ZTAK が決まるようになります。C6〜C8 の成果がここで使われます</li><li><b>2</b> 変更前に作った受注には効かないので、検証は必ず新規受注で行います</li></ol><p class="gui-tip">自システムでの確認：VOV4 で OR + 品目カテゴリグループ Z001 → 明細カテゴリ ZTAK の割当を確認します。VOV7 の ZTAK には 特別在庫 E（SOBKZ）が必要です。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-5_s02_2.svg" alt="VA03 の明細詳細。受注 0000001241 / 000010、品目 ZMTO-FG01、受注数量 3 PC、明細カテゴリ ZTAK、特別在庫 E、納入日程行カテゴリ ZCP が表示されている。" loading="lazy"><figcaption><b class="t">発展2 VA03 明細詳細：明細カテゴリ ZTAK・特別在庫 E・納入日程行カテゴリ ZCP</b><span class="tx">VA03</span><span class="scr">受注照会：明細詳細（明細カテゴリ ZTAK）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 明細カテゴリが ZTAK に自動で決まった＝C6〜C8（Z001 / VOV7 / VOV4）が効いている証拠です</li><li><b>2</b> 特別在庫 E が出ていれば、この明細は受注在庫で管理されます（ZTAK の SOBKZ = E）</li></ol><p class="gui-tip">自システムでの確認：対照実験として品目カテゴリグループを 0001 に戻し、同じ手順で受注を作ると明細カテゴリは TAN に戻ります。SE16N → VBAP（PSTYV = 明細カテゴリ / SOBKZ = 特別在庫）でも確認できます。</p></figure>
+
+
+
+
+
+<h2 id="a3">発展 3：差异与结算（受注在庫的「最后一公里」）</h2>
+<p>MTO 的制造指図是<b>原价集约的对象</b>：部品费 + 工时费（実際）vs 完成品受注在庫的入庫金额（標準）。差额就是差异。</p>
+<table class="tbl wide">
+<tr><th>步骤</th><th>事务码</th><th>做什么</th><th>看什么</th></tr>
+<tr><td>1</td><td><code>CO03</code> → 「原価分析」/ <code>KKBC_ORD</code></td><td>看指図的 計画/実際 原価（材料費・労務費…）</td><td>実際原価 vs 入庫金额的差</td></tr>
+<tr><td>2</td><td><code>KKS1</code>（製造指図の差異計算）</td><td>计算差异（例：入力数量差异、価格差异、ロット差異）</td><td>差異の種類と金額</td></tr>
+<tr><td>3</td><td><code>KO88</code>（指図の決済）/ <code>CO88</code>（一括）</td><td>把指图的实际成本结算到接收方（MTO 是<b>受注明細/受注在庫</b>）</td><td>決済 → 差異が FI に流れる（<code>FB03</code>/<code>KO88</code> のログ）</td></tr>
+<tr><td>4</td><td><code>VF01</code> 已达成的请求 + <code>S_ALR</code> 系</td><td>看受注的採算（受注在庫が売上原価になった後の粗利）</td><td>粗利の正負と原因</td></tr>
+</table>
+<div class="box warn"><b class="t">深度声明的边界</b>
+CO 侧的差异种别、结算规则（SETTLEMENT RULE）、WIP 的算出等是独立专题。本站只要求你能：<b>①</b> 解释「为什么 MTO 的差异落在指图上」；
+<b>②</b> 会跑 <code>KKS1</code>/<code>KO88</code> 并看懂日志；<b>③</b> 把结论讲给 FI/CO 同事。更深的请走 CO 模块专题。</div>
+<figure class="gui"><img src="assets/gui/handson-5_s03_1.svg" alt="KKS1 の差異計算画面。指図 1000123 を期間 09 で指定し、差異種別ごとの金額 0.00 JPY が一覧表示されている。" loading="lazy"><figcaption><b class="t">発展3 KKS1：指図 1000123 の差異計算（差異種別ごとに金額を確認）</b><span class="tx">KKS1</span><span class="scr">製造指図の差異計算：実行条件と差異結果</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 差異計算は「実際原価 vs 入庫金額（標準）」の差を種類別に出す計算。まず KKS1、次に KO88（決済）</li><li><b>2</b> テスト実行を ON にすると FI に転記せず結果だけ確認できます（本番は OFF）</li></ol><p class="gui-tip">自システムでの確認：KKBC_ORD で指図の計画 / 実際原価の内訳を確認できます。差異があるときは種類（数量 / 価格 / ロットサイズ / 残）で原因を切り分けます。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-5_s03_2.svg" alt="KO88 の決済実行画面。指図 1000123・期間 09 / 会計年度 2026 を指定し、テスト実行を外して決済する。" loading="lazy"><figcaption><b class="t">発展3 KO88：指図 1000123 を決済（差異が FI に流れる）</b><span class="tx">KO88</span><span class="scr">指図の決済：実行画面</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 決済で指図の実際原価が受注在庫（受注明細）へ流れ、差異は FI に転記されます（FB03 の会計伝票で確認）</li><li><b>2</b> テスト実行を ON にすると転記せずログだけ確認できます。ON で予行 → OFF で本番が安全です</li></ol><p class="gui-tip">自システムでの確認：決済ルールは CO02 →「決済ルール」で確認します（MTO では受注明細 / 受注在庫が受取側）。1 件ずつが KO88、一括は CO88 です。</p></figure>
+
+
+
+
+
+<h2 id="a4">発展 4：部品改由采购供给（MRP → 購買依頼 → 発注）</h2>
+<ol class="steps">
+  <li>把 <code>ZMTO-RM01</code> 的初期库存清掉（<code>MIGO 262</code>/<code>MB1A 562</code> 或减少到低于需求），或直接把 MRP1 的<b>手配タイプを <code>F</code></b>（外部調達）にし、購買グループ・購買発注タイプ（<code>NB</code>）を设定。</li>
+  <li><code>MD01N</code>（または <code>MD02</code> on <code>ZMTO-RM01</code>）→ <b>購買依頼</b>が生成される（計画手配ではなく購買依頼になる点が、内製品目との差）。</li>
+  <li><code>ME59N</code>（購買依頼 → 発注の一括変換）または <code>ME21N</code>（手動発注）で発注を作成 → 発注番号を记录。</li>
+  <li><code>MIGO</code> 101（購買発注参照）で部品を入庫 → 在庫が回復します。</li>
+  <li><code>MD04</code> を確認：部品需求（予約）→ 購買依頼/発注 → 入庫予定 → 使用可能 の流れがつながっている。</li>
+  <li>要点：<b>完成品（受注生産）と部品（見込生産）で手配タイプを分ける</b>のが一般的な設計。MTO の「按单」は完成品の話であり、部品は共通材として見込で持つ——この判断ができると設計相談で強い。</li>
+</ol>
+<figure class="gui"><img src="assets/gui/handson-5_s04_1.svg" alt="MD04 の在庫/所要量一覧。ZMTO-RM01 で指図の予約 -20 PC、購買依頼 20 PC、購買発注の入庫予定 20 PC が並んでいる。" loading="lazy"><figcaption><b class="t">発展4 MD04：ZMTO-RM01 に「購買依頼」が出る（＝外部調達の手配）</b><span class="tx">MD04</span><span class="scr">品目在庫/所要量一覧：ZMTO-RM01（手配タイプ F）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 購買依頼が出ている＝MRP がこの部品を外部調達として手配した結果。内製（手配タイプ E）なら計画手配になります</li><li><b>2</b> 発注に変換すると、この行は「購買発注（入庫予定）」に替わって入庫日が見えるようになります</li></ol><p class="gui-tip">自システムでの確認：MM02 の MRP1 / 2 で 手配タイプ F・購買グループ・購買発注タイプ NB を設定後、MD02（単品目）または MD01N を実行します。ME59N（一括変換）/ ME21N（手動）で発注、MIGO 101（購買発注参照）で入庫します。</p></figure>
+
+
+
+
+
+<h2 id="a5">発展 5：取消・変更・返品（练习必须会）</h2>
+<table class="tbl wide">
+<tr><th>やりたいこと</th><th>事务码</th><th>手顺・注意</th></tr>
+<tr><td>出庫確認（PGI）の取消</td><td><code>VL09</code></td><td>出荷伝票を指定 → 执行。受注在庫が戻る。请求が既に作成済みなら<b>先に <code>VF11</code> で請求を取消</b>（順序が逆だとエラー）</td></tr>
+<tr><td>請求の取消</td><td><code>VF11</code></td><td>請求伝票 → 取消理由（例 01）→ 执行。会計伝票も冲销</td></tr>
+<tr><td>入出庫伝票の取消</td><td><code>MIGO</code>（取消）/ <code>MBST</code></td><td>物料传票番号を指定 → 取消。その分の受注在庫・部品在庫が戻る</td></tr>
+<tr><td>実績（工程確認）の取消</td><td><code>CO13</code></td><td>指図 + 工程 + 確認番号 → 取消。歩留/時間が戻る</td></tr>
+<tr><td>指図の削除/技術完了</td><td><code>CO02</code></td><td>「削除フラグ」or「技術完了（TECO）」。入出庫が残っていると删除できない</td></tr>
+<tr><td>受注の変更（数量・納期）</td><td><code>VA02</code></td><td>保存后纳期行更新 → 再 MRP。战略 20 下<b>计划手配/指図的调整需要另外做</b>（数量増は新しい計画手配、減は余剰として表示）</td></tr>
+<tr><td>返品（売上戻し）</td><td><code>VA01</code>（伝票タイプ <code>RE</code>）→ <code>VL01N</code>（返品出荷 <code>LR</code>）→ <code>VF01</code>（貸方伝票）</td><td>返品在庫の扱い（<code>非評価返品在庫</code>等）は別設定。MTO の返品品は「その受注の特注品」なので、别的受注には使えない点に注意</td></tr>
+</table>
+<figure class="gui"><img src="assets/gui/handson-5_s05_1.svg" alt="VA02 の受注明細。受注 0000001234 の受注数量を 10 PC から 8 PC へ、希望納期を 35 日後に変更する。" loading="lazy"><figcaption><b class="t">発展5 VA02：受注 0000001234 の数量を 10 → 8 PC に変更</b><span class="tx">VA02</span><span class="scr">受注の変更：数量と納期の変更</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 数量を変えても指図・計画手配は自動では追随しません。保存後に再 MRP（MD02 / MD01N）と指図の数量調整が必要です</li><li><b>2</b> 戦略 82 は受注と指図が 1:1 なので、数量変更は指図の数量にも影響します</li></ol><p class="gui-tip">自システムでの確認：変更後は MD04 で 得意先所要量 と 計画手配 / 指図がどう変わったかを確認します（数量増は新しい計画手配、減は余剰として表示）。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-5_s05_2.svg" alt="VL09 の出庫確認取消画面。出荷伝票 0080001234 の出庫確認を取り消し、受注在庫 10 PC を戻す。" loading="lazy"><figcaption><b class="t">発展5 VL09：PGI を取り消して受注在庫 10 PC を戻す</b><span class="tx">VL09</span><span class="scr">出庫確認の取消（PGI 取消）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 取消は後続伝票から逆順に：請求 VF11 → PGI VL09 → 入庫 MIGO 取消 → 実績 CO13 → 指図 CO02。順序を間違えるとエラーになります</li><li><b>2</b> 返品は VA01（伝票タイプ RE）→ VL01N（返品出荷 LR）→ VF01（貸方伝票）。MTO の返品品は他の受注には使えません</li></ol><p class="gui-tip">自システムでの確認：PGI 取消後は MMBE で受注在庫 E が 0 → 10 PC に戻っていることを確認します。入出庫伝票の取消は MIGO（取消）/ MBST、実績は CO13、指図は CO02（削除フラグ / TECO）です。</p></figure>
+
+
+
+
+
+<h2 id="trouble">6. 故障对照表（12 项：按症状查，不用背）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>症状</th><th>第一嫌疑</th><th>確認手顺（コマンド順）</th></tr>
+<tr><td>1</td><td>MD04 に需要が<b>出ない</b></td><td>所要量転送 / 納期行 / 明細カテゴリ</td><td><code>VA03</code> 納入日程行カテゴリ → <code>VOV5</code> の決定 → <code>VOV6</code>/<code>SE16N: TVEP-BEDSD</code> → <code>VOV7</code> の納入日程行許可</td></tr>
+<tr><td>2</td><td>需要は出るが<b>計画手配が出ない</b></td><td>MRP 側の品目設定</td><td><code>MM03</code> MRP1（PD / E / EX）→ MRP 対象プラント → <code>MD02</code> で単品目実行 → 結果ログ</td></tr>
+<tr><td>3</td><td>補貨は出るが<b>自由在庫用</b>になる</td><td>個別所要量が成立していない</td><td><code>MM03</code> MRP4（個別/包括所要量）→ <code>OVZG</code> の所要量クラス（個別在庫）→ <code>VA03</code> の 特別在庫 E</td></tr>
+<tr><td>4</td><td>指図が<b>受注在庫へ入庫されない</b>（101 が自由在庫へ）</td><td>指図に受注明細参照がない</td><td><code>CO03</code> ヘッダの受注明細参照 → (<code>SE16N: AFPO-KDAUF/KDPOS</code>) → 無ければ <code>CO08</code> で作り直す</td></tr>
+<tr><td>5</td><td>出荷時に<b>引当できない</b>（在庫不足）</td><td>受注在庫に入庫されていない</td><td><code>MMBE</code> 特別在庫 E の数量 → 指図の入庫済数量（<code>CO03</code>）→ 保管場所</td></tr>
+<tr><td>6</td><td>出荷明細が<b>自由在庫を向いている</b></td><td>受注明細の特別在庫 E が無い</td><td>#3 と同じ手顺（配置起因）→ 修正後は新規受注で再試行</td></tr>
+<tr><td>7</td><td>PGI が <b>FI エラー</b>で止まる</td><td><code>OBYC</code> の勘定決定</td><td><code>OBYC</code>（BSX/GBB 等）→ FI 担当へ。エラーメッセージの「取引キー」を控える</td></tr>
+<tr><td>8</td><td>請求金額が <b>0</b></td><td>条件レコード / 計算手続</td><td><code>VF03</code> の条件タブ → <code>VK13</code> の条件レコード → <code>VA03</code> 明細の条件（価格決定の分析）</td></tr>
+<tr><td>9</td><td>請求対象が<b>出てこない</b></td><td>出荷が未 PGI / コピー制御</td><td><code>VL03N</code> の状態（C か）→ <code>VTFL</code> の出荷→請求コピー制御</td></tr>
+<tr><td>10</td><td>受注在庫が<b>評価されない</b>（金額欄が空）</td><td>所要量クラスの評価区分 / 会计视图</td><td><code>OVZG</code> の所要量クラス（評価）→ <code>MM03</code> 会計1（評価クラス・価格管理）→ <code>MMBE</code> の金額欄</td></tr>
+<tr><td>11</td><td><b>マイナス在庫</b>になる</td><td>過剰出庫 / 引当無視</td><td><code>MMBE</code> で対象（自由在庫 or 受注在庫）を特定 → <code>MBST</code> で取消 → 補給してやり直し</td></tr>
+<tr><td>12</td><td>取消したいのに<b>エラーで戻せない</b></td><td>後続伝票が存在</td><td>逆順に戻す：請求 <code>VF11</code> → PGI <code>VL09</code> → 入庫 <code>MIGO</code>取消 → 実績 <code>CO13</code> → 指図削除 <code>CO02</code></td></tr>
+</table>
+<div class="box ok"><b class="t">排障三步法（请背这个，不用背表）</b>
+<b>①</b> 分层定位：<b>SD 側</b>（要否が MD04 に出るか）→ <b>PP 側</b>（補貨が出るか）→ <b>在庫区分</b>（自由 or 受注在庫 E）→ <b>MM/FI 側</b>（引当・勘定）。
+<b>②</b> 用 MD04 与 MMBE 作为「现场事实」的起点，配置画面只用来验证假设。
+<b>③</b> 每次排障后写一句「根因 + 证据（T-code + 画面/表）」，这就是要件定义与障害票的语言。</div>
+
+<h2 id="md04">7. MD04 读法表（MTO 场景里最常出现的行）</h2>
+<table class="tbl wide">
+<tr><th>MD04 の行（日本語）</th><th>英語/区別</th><th>MTO での意味</th></tr>
+<tr><td>受注在庫（得意先在庫 / 特別在庫 E）</td><td>Sales order stock</td><td>这张受注专属的库存。入库 101 增加、出库确认 601 减少</td></tr>
+<tr><td>得意先所要量</td><td>Customer requirement</td><td>受注产生的需求（带受注番号・明細）。<b>没有这一行 = 所要量転送失败</b></td></tr>
+<tr><td>計画手配</td><td>Planned order</td><td>MRP 的补货提案。MTO 时其「在庫区分」= 受注在庫（E）</td></tr>
+<tr><td>製造指図</td><td>Production order</td><td>计划手配转换/组立处理自动生成的执行指令。ここから 101 入庫</td></tr>
+<tr><td>購買依頼 / 購買発注</td><td>Purchase req. / PO</td><td>部品（外部調達）的补货</td></tr>
+<tr><td>予約（構成品目の所要）</td><td>Reservation</td><td>指图对部品的需求。261 出库的依据</td></tr>
+<tr><td>入庫予定 / 出庫予定</td><td>Receipt / Issue elements</td><td>确定日期的出入库预定（含出荷伝票）</td></tr>
+<tr><td>計画独立所要量（PIR）</td><td>Planned independent req</td><td>見込生産用。MTO（戦略20）では<b>使わない</b>（出てきたら設定ミスを疑う）</td></tr>
+<tr><td>手持在庫 / 利用可能数量</td><td>Stock / ATP qty</td><td>可用量。MTO では受注在庫が入って初めてプラスになる</td></tr>
+<tr><td>「階層変更」「他プラント」等の表示切替</td><td>Display options</td><td>「得意先別」「品目別」表示を切り替えると、いま誰の分を見ているかが分かる</td></tr>
+</table>
+
+<h2>验收（完成基准）</h2>
+<div class="box ok"><b class="t">✓ 练习⑤验收清单</b>
+<ul class="check">
+  <li>発展 1〜5 のうち<b>少なくとも 2 つ</b>を実機で実施し、結果を記録した。</li>
+  <li>組立処理（战略 82）で「受注保存時に指図が自動生成される」ことを確認（またはその環境に無い場合は理由を说明できる）。</li>
+  <li><code>KKS1</code> → <code>KO88</code> を 1 回実行し、差異と決済のログを読んだ（または実行できない理由を说明できる）。</li>
+  <li>故障对照表の 12 項のうち、実際に遭遇したものを自分の言葉で说明できる（根因 + 证据 T-code）。</li>
+  <li>MD04 の主要行（受注在庫/得意先所要量/計画手配/製造指図/予約/利用可能）を图なしで说明できる。</li>
+  <li>取消の順序（請求 → PGI → 入庫 → 実績 → 指図）を言える。</li>
+</ul></div>
+
+<div class="box info"><b class="t">下一步</b> → <a href="quiz.html">能力测试（27 题 + 实机验收清单）</a>：把「能说清楚」和「能做出来」两件事都验证掉。</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SD 受注生産（MTO）实战训练站</h5><p>练习⑤：組立処理、自建明細カテゴリ、差异决算、采购连携、取消手顺、故障对照表、MD04 读法。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 受注と所要量</a><br><a href="handson-2.html">② MRP と製造指図</a><br><a href="handson-3.html">③ 出庫と入庫</a><br><a href="handson-4.html">④ 出荷と請求</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">练习配置手顺</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

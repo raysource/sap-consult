@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>练习⑤ ツール・発展・故障対応 · SAP SD 受注処理（Sales Order Processing）实战训练站</title>
+<meta name="description" content="练习⑤ ツール・発展・故障対応：SAP SD 受注処理の実機練習（動画 Unit 14 準拠）。入力値・手順・期待結果・つまずき・検証（証拠の取り方）・验收清单つき。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/sd.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">SD</span><span class="txt">受注処理 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①受注登録</a>
+      <a href="handson-2.html">②伝票変更</a>
+      <a href="handson-3.html">③情報照会</a>
+      <a href="handson-4.html">④出荷と請求</a>
+      <a class="active" href="handson-5.html">⑤ツールと故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 练习⑤ ツール・発展・故障対応</div>
+<main class="page"><article>
+
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。录像里的画面同样可能与你的版本不同。若要换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 一键替换。</div><h1>练习⑤ ツール・発展・故障対応</h1>
+<div class="box info"><b class="t">本练习完成什么</b>
+動画の到達目標の 2 つ目 <b>“Find and use the tools and help for entering and processing sales orders”</b> を仕上げます。① ツールとヘルプ（<code>SU3</code> ユーザプロファイル、お気に入り、一覧、<code>SE16N</code>、F1／F4 の使い方）→ ② 発展課題 4 本 → ③ <b>故障対照表</b>で「症状から原因を引く」練習。</div>
+<div class="toc">
+  <a href="#s1">5-1 ツールとヘルプ（動画 <code>55:13</code> 付近の <code>SU3</code>）</a>
+  <a href="#s2">5-2 発展①：伝票タイプにブロックを仕込む</a>
+  <a href="#s3">5-3 発展②：出荷プラントの優先順位を実測する</a>
+  <a href="#s4">5-4 発展③：Sales Summary のビューを自作して適用する</a>
+  <a href="#s5">5-5 発展④：不完全性の必須項目を追加し <code>V.02</code> で管理する</a>
+  <a href="#s6">5-6 故障対応の 4 画面（<code>CU50</code> 相当の切り分け手順）</a>
+  <a href="#s7">5-7 故障対照表（症状 → 根因 → 証拠 → 処置）</a>
+  <a href="#s8">5-8 验收（完成基准）</a>
+</div>
+<h2 id="s1">5-1 ツールとヘルプ（動画 <code>55:13</code> 付近）</h2>
+<p>動画の終盤は <b><code>SU3</code>（ユーザプロファイル）</b>の実演です。<b>住所／Defaults／Parameters／Favorites</b> のタブが示され、
+続けて SAP Easy Access のお気に入りとヘルプの使い方が扱われます。<b>「自分の道具を整える」ことが受注処理の効率に直結します</b>。</p>
+<table class="tbl wide">
+<tr><th>ツール</th><th>T-code／場所</th><th>何に使うか</th><th>本站での使いどころ</th></tr>
+<tr><td>ユーザプロファイル</td><td><code>SU3</code>（動画で実演）</td><td>住所・既定値（Defaults：日付書式・通貨など）・<b>パラメータ（Parameters）</b>・お気に入り</td><td>受注の既定値（例：<code>VBAK-VKORG</code> 等のパラメータ）を仕込むと入力が減る。<b>Default の通貨・日付書式は受注の見え方に効く</b></td></tr>
+<tr><td>お気に入り</td><td>SAP Easy Access → Favorites（動画 <code>55:28</code>）</td><td>よく使う T-code を登録</td><td><code>VA01</code>／<code>VA02</code>／<code>VA03</code>／<code>VC/2</code>／<code>V.02</code> を登録</td></tr>
+<tr><td>受注一覧</td><td><code>VA05</code></td><td>期間・得意先・伝票タイプで受注を一覧</td><td>文書一覧からの変更の入口（练习②）</td></tr>
+<tr><td>不完全な受注一覧</td><td><code>V.02</code></td><td>不完全な受注を拾う</td><td>不完全性チェックの運用（C14）</td></tr>
+<tr><td>テーブル照会</td><td><code>SE16N</code></td><td>テーブルを直接見る</td><td><code>VBAK</code>／<code>VBAP</code>／<code>KNVV</code>／<code>MVKE</code>／<code>KNMT</code>（练习①）</td></tr>
+<tr><td>項目ヘルプ</td><td><b>F1</b></td><td>項目の意味と<b>テーブル・項目名</b>を調べる</td><td>「この値はどこから来るのか」を調べる最速の方法</td></tr>
+<tr><td>入力ヘルプ</td><td><b>F4</b></td><td>選択可能値を一覧</td><td>販売エリア・プラント・得意先の存在確認</td></tr>
+<tr><td>与力分析</td><td><code>VA03</code> → 条件 → 与力分析</td><td>条件がどう決定されたかを 1 行ずつ見る</td><td>Net value が想定外のときの切り分け（C12）</td></tr>
+<tr><td>伝票フロー</td><td><code>VA03</code> → 伝票フロー</td><td>受注 → 出荷 → 請求の連鎖</td><td>练习④</td></tr>
+</table>
+<ol class="steps">
+  <li><code>SU3</code> を起動し、動画と同じく <b>Address／Defaults／Parameters</b> のタブを確認する。</li>
+  <li><b>Defaults</b> で日付書式と通貨を確認する（受注の日付・金額の見え方に影響）。</li>
+  <li><b>Parameters</b> に 1 行追加して効果を確かめる（例：<code>VBA</code> 系のパラメータ。<b>値を変える前に元の値をメモ</b>）。</li>
+  <li><b>Favorites</b> に <code>VA01</code>／<code>VA03</code>／<code>VC/2</code>／<code>V.02</code> を登録する。</li>
+  <li>受注の任意の項目にカーソルを置き <b>F1</b> を押して、<b>テーブル名と項目名</b>を読む（例：出荷プラント項目 → <code>VBAP-WERKS</code>）。<b>この習慣が故障切り分けの基本武器</b>です。</li>
+  <li><code>VA03</code> の条件画面で<b>与力分析</b>を開き、条件が 1 行ずつどう決まったかを読む。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① <code>SU3</code> の 4 タブの役割を説明できる。<br>② お気に入りに主要 T-code を登録した。<br>③ <b>F1 でテーブル名・項目名を調べられる</b>（＝「値の出所」を自力で追える）。<br>④ 与力分析を読んで、条件の決定過程（アクセス順序）を指せる。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>Parameters の値を間違える</b>と画面の初期値が変わります。<b>元の値を必ず記録</b>してから変更。<br>② F1 のヘルプが出ない → GUI のヘルプ設定（<code>SU3</code> ではなく GUI 側のオプション）。F1 が使えない環境では <code>SE16N</code> で代用。</div>
+<figure class="gui"><img src="assets/gui/handson-5_s01_1.svg" alt="SU3 のユーザプロファイル画面。ユーザ TSCM6-00、タブは Address／Defaults／Parameters（選択中）。Parameters タブに POP＝01（Plan Version (PD)）と SD_VARIANT_MAINTAIN＝A の 2 行が並ぶ。" loading="lazy"><figcaption><b class="t">SU3（ユーザプロファイル）の Parameters タブ — ユーザ TSCM6-00 に設定された 2 行</b><span class="tx">SU3</span><span class="scr">Maintain User Profile</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> Parameter ID と値の組が「入力の既定値」。受注の F4 や初期値がここで変わるので、変更は元の値を記録してから</li><li><b>2</b> 入力欄にカーソルを置いて F1 を押すと、その欄のテーブル名・項目名（例：出荷プラント → VBAP-WERKS）が読める。値の出所を追う基本武器</li></ol><p class="gui-tip">自システムでの確認：SU3 の 4 タブ（Address／Defaults／Parameters／Favorites）を開き、Defaults で日付書式と通貨、Parameters で既定値、Favorites に VA01／VA03／VC/2／V.02 を登録する。F1 が出ない環境では SE16N で VBAK／VBAP を見て同じことを確認する。</p></figure>
+
+<h2 id="s2">5-2 発展①：伝票タイプにブロックを仕込んで挙動を比べる</h2>
+<ol class="steps">
+  <li><code>VOV8</code> で<b>自分の伝票タイプ（<code>ZOR1</code>）</b>を作る（C1）。</li>
+  <li><code>ZOR1</code> の<b>出荷ブロック</b>に値を 1 つ入れる（C1 の手順を参照）。</li>
+  <li><code>VA01</code> で <code>ZOR1</code> を使い受注を作る → <b>最初から出荷ブロックが付いている</b>ことを確認する。</li>
+  <li>逆に <code>OR</code>（標準）で受注を作り、<b>ブロックが付かない</b>ことを比較する。</li>
+  <li><code>ZOR1</code> の設定を元に戻し、<b>新規受注では設定が反映されない</b>（既存受注は作ったときの設定を保持する）ことも確認する。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① <code>ZOR1</code> の受注に<b>自動でブロック</b>が付く。<br>② 設定を戻しても<b>既存受注のブロックは残る</b>（＝設定は「その時に作った伝票」に焼き付く）。<br>③ 「ブロックが付いている理由は 3 通り」のうち <b>Customizing 由来</b>を実例で示せた。</div>
+<figure class="gui"><img src="assets/gui/handson-5_s02_1.svg" alt="VOV8 の変更画面（伝票タイプ詳細）。伝票タイプ ZOR1、名称 Z受注（練習用）、出荷グループに Delivery Type LF、Delivery Block 01、Immediate Delivery、Incompl. Proced.、Doc. Prc. Procedure A が表示されている。" loading="lazy"><figcaption><b class="t">VOV8 の詳細画面（ZOR1）— 出荷グループの Delivery Block に Customizing 由来のブロックを仕込んだ状態</b><span class="tx">VOV8</span><span class="scr">Change View &quot;Maintain Sales Order Types&quot;: Details</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 標準 OR は変更せず、コピーして作った自分の伝票タイプ ZOR1 を触る（標準を壊すと以降の動作が変わる）</li><li><b>2</b> Delivery Block に値を入れると、この伝票タイプで作る受注は最初から出荷ブロック付きになる。設定を戻しても既存受注のブロックは残る（作ったときの設定が焼き付く）</li></ol><p class="gui-tip">自システムでの確認：ZOR1 で VA01 の受注を作ると Delivery block が自動で入り、OR では入らない。設定を戻したあと、新規受注には反映されず既存受注には残ることを比較する。不完全性手順などの ID は環境の値に読み替える。</p></figure>
+
+<h2 id="s3">5-3 発展②：出荷プラントの優先順位を実測する</h2>
+<ol class="steps">
+  <li>品目マスタ（<code>MM02</code> → 販売組織 1）に<b>出荷プラント A</b> を入れる。</li>
+  <li>得意先マスタ（<code>XD02</code> → 販売エリアデータ → 出荷タブ）に<b>出荷プラント B</b> を入れる → 受注で <b>B が採用</b>されることを確認する。</li>
+  <li>客先品目情報（<code>VD51</code>）に<b>出荷プラント C</b> を入れる → 受注で <b>C が採用</b>されることを確認する。</li>
+  <li>客先品目情報の出荷プラントを<b>空に戻す</b> → 受注で <b>B に戻る</b>ことを確認する（＝優先順位が生きている証拠）。</li>
+  <li>各段階で <code>VBAP-WERKS</code>（<code>SE16N</code>）を記録する。</li>
+  <li><b>元の値に戻す</b>のを忘れないこと（練習環境を汚さない）。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① <b>客先品目情報 > 得意先マスタ > 品目マスタ</b>の順で採用されることを、3 回の受注で示せた。<br>② 動画スライドの「Proposing Plants Automatically」（<code>1400</code>／<code>1100</code>／<code>1000</code>／<code>1200</code>）と<b>同じ仕組み</b>だと説明できる。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <code>VD51</code> で<b>販売組織・チャネルを間違える</b>と受注に効きません（客先品目情報は販売エリア単位）。<br>② 優先順位どおりにならない → ABAP 拡張の可能性（SAP Note <b>2787562</b>）。講師に相談。</div>
+<figure class="gui"><img src="assets/gui/handson-5_s03_1.svg" alt="VD53 の客先品目情報。得意先 1000、品目 T-ATA30、販売組織 1000、流通チャネル 10、Plant 1200 が表示されている。" loading="lazy"><figcaption><b class="t">VD53（客先品目情報）の表示画面 — 得意先 1000 × 品目 T-ATA30 に出荷プラント 1200 を保守した状態</b><span class="tx">VD53</span><span class="scr">Display Customer Material Info Record</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 客先品目情報の出荷プラントは 3 つの供給源のうち最優先。ここに値があると受注の VBAP-WERKS はこの値になる（空に戻すと得意先マスタの値に戻る）</li><li><b>2</b> キーは得意先＋品目＋販売エリア（販売組織・チャネル）。ここを間違えると受注のプラント決定に効かない（つまずき①）</li></ol><p class="gui-tip">自システムでの確認：優先順位は 客先品目情報（VD53）&gt; 得意先マスタ（XD03 の出荷タブ）&gt; 品目マスタ（MM03 の販売組織 1）。3 回受注を作り、各段階で SE16N の VBAP-WERKS を記録すると実測できる（動画スライドの 1400／1100／1000／1200 と同じ仕組み）。終わったら元の値に戻す。</p></figure>
+
+<h2 id="s4">5-4 発展③：Sales Summary のビューを自作して適用する</h2>
+<ol class="steps">
+  <li><b>① Maintain Report Views</b> で新しい情報ビュー（例 ID <code>Z01</code>）を 1 つ作る（説明：<code>Z 受注確認用</code>）。</li>
+  <li><b>② Maintain Views for an Evaluation</b> で、そのビューに<b>情報ブロックを 3〜5 個</b>割り当てる（例：Address／Sales Order Info／Last SD Documents）。</li>
+  <li><b>③ Maintain the Report Views for a User</b> で、<b>自分を <code>Z01</code> に割り当てる</b>。</li>
+  <li><code>VC/2</code> を実行し、<b>初期表示またはビュー選択</b>に <code>Z01</code> が出ることを確認する。</li>
+  <li>表示される情報ブロックが<b>自分で選んだ 3〜5 個</b>になっていることを確認する。</li>
+  <li><b>元に戻す</b>（自分を既定ビューから外す）か、講師の指示に従って残す。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① 自作ビュー <code>Z01</code> が <code>VC/2</code> の「View」に出る。<br>② そのビューに<b>自分が割り当てた情報ブロックだけ</b>が表示される。<br>③ 「Sales Summary の画面は 4 つの Customizing で作られる」ことを、自分の手で示せた。</div>
+<figure class="gui"><img src="assets/gui/handson-5_s04_1.svg" alt="SPRO の Maintain Report Views 画面。Info view／Description／Standard／Form の一覧で、3 行目に追加した Z01（Z 受注確認用、Form SD-SALES-SUMMARY）が選択されている。" loading="lazy"><figcaption><b class="t">SPRO の「Maintain Report Views」— 情報ビュー Z01 を新規追加した 3 行目</b><span class="tx">SPRO</span><span class="scr">Change View &quot;Maintain Report Views&quot;: Overview</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> Info view は VC/2（Sales Summary）で選ぶビューの ID。Z で始めれば標準ビューを壊さない</li><li><b>2</b> ここで行を足しただけでは VC/2 に出ない。② 情報ブロックの割当（Maintain Views for an Evaluation）→ ③ ユーザへの割当 まで進めて初めて使える</li></ol><p class="gui-tip">自システムでの確認：SPRO → 販売と流通 → 販売サポート → リスト → 販売サマリ の 4 画面（Define Reporting Views／Assign Information Blocks To A View／Assign Default View To User／Set Document Display）。動画ではここで ZP2・ZPD が既に定義されている。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-5_s04_2.svg" alt="SPRO の Maintain the Report Views for a User 画面。User／Info view／Description の一覧で、TSCM6-00 に Z01（Z 受注確認用）が割り当てられた行が選択されている。" loading="lazy"><figcaption><b class="t">Maintain the Report Views for a User — 自分のユーザ TSCM6-00 を Z01 に割り当てた状態</b><span class="tx">SPRO</span><span class="scr">Change View &quot;Maintain the Report Views for a User&quot;: Overview</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 自分のユーザを Z01 に紐づける行。ここに入って初めて VC/2 のビュー選択に Z01 が出る</li><li><b>2</b> User はログオン名と完全一致（大文字小文字と - の位置まで）。動画は BAPMS／WF-SD-2 という命名</li></ol><p class="gui-tip">自システムでの確認：割当後に VC/2 を実行し、View 一覧に Z01 が出るか、表示される情報ブロックが自分で選んだ 3〜5 個（Address／Sales Order Info／Last SD Documents など）になっているかを見る。練習後は元に戻すか講師の指示に従う。</p></figure>
+
+<h2 id="s5">5-5 発展④：不完全性の必須項目を追加し <code>V.02</code> で管理する</h2>
+<ol class="steps">
+  <li><code>OVA2</code> で使われている不完全性手順に、<b>項目を 1 つ追加</b>する（例：納入希望日、または出荷先）。</li>
+  <li><code>VUA2</code> で<b>警告</b>に設定する（エラーではなく警告にして、運用で拾う方式を体験する）。</li>
+  <li><code>VA01</code> でその項目を<b>空のまま</b>受注を保存する → <b>警告が出て保存できる</b>ことを確認する。</li>
+  <li><code>V.02</code> を実行し、<b>わざと作った不完全な受注が一覧に出る</b>ことを確認する。</li>
+  <li>受注を直して（項目を埋めて）保存し、<code>V.02</code> の一覧から<b>消える</b>ことを確認する。</li>
+  <li>追加した設定を<b>元に戻す</b>。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① 警告で保存でき、<code>V.02</code> に載る。<br>② 直すと一覧から消える。<br>③ 不完全性チェックの 3 階層（手順／グループ／項目）と、適用先（伝票タイプ・明細カテゴリ・納入日程行カテゴリ）を説明できる。</div>
+<figure class="gui"><img src="assets/gui/handson-5_s05_1.svg" alt="OVA2 の不完全性手順の一覧。Procedure／Field／Status の列に、追加した Delivery Date が Warning、PO Number が Error として表示されている。" loading="lazy"><figcaption><b class="t">OVA2（不完全性手順）— 納入日程関連の項目を 1 つ追加し、VUA2 で Warning にした状態</b><span class="tx">OVA2</span><span class="scr">Change View &quot;Incompletion Procedure&quot;: Overview</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 今回追加した項目。VUA2 で Warning にすると保存はできて、V.02 の一覧に載せて運用で拾える（Error のままだと保存できない）</li><li><b>2</b> 動画で保存時に出る「Enter PO number」エラーはこの行が原因。標準ではなく、その環境の不完全性手順の設定</li></ol><p class="gui-tip">自システムでの確認：OVA2 で OR に割り当てた手順を開き、PO 番号系の項目が入っているかを見て「動画の症状がどの設定から出るか」を説明する。適用先は伝票タイプ（VOV8）／明細カテゴリ（VUP2）／納入日程行カテゴリ（VUE2）の 3 か所。変更前に元の値をメモし、最後に元へ戻す。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-5_s05_2.svg" alt="V.02 の不完全な受注一覧。Sales Doc.／Item／Order Type／Sold-to party の列に、OR の 0000001234 と ZOR1 の 0000001235（得意先 1000）が並んでいる。" loading="lazy"><figcaption><b class="t">V.02（不完全な受注一覧）— 警告で保存した受注が載っている状態</b><span class="tx">V.02</span><span class="scr">List of Incomplete Sales Orders</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 保存時に警告で通した受注がここに載っている＝不完全なまま残っている証拠。放置すると出荷・請求に進めない</li><li><b>2</b> 項目を埋めて保存し直すと、この行は一覧から消える。消えたことをもって直った確認にする</li></ol><p class="gui-tip">自システムでの確認：V.02 の選択条件・列・タイトルは環境により異なる。どの項目が欠けているかは SE16N の VBUV（明細）／VBUK（ヘッダ）で直接見る。受注を直して保存し直し、一覧から消えることまで確認する。</p></figure>
+
+<h2 id="s6">5-6 故障対応の 4 画面（切り分けの手順）</h2>
+<p>受注の異常は、<b>次の 4 画面を順に開く</b>とほぼ特定できます。動画の「データの出所」の考え方を、そのまま手順にしたものです。</p>
+<div class="flow">
+  <div class="node">① 受注（VA03）<br><small>値とステータス</small></div>
+  <div class="arrow">→</div>
+  <div class="node">② 主データ<br><small>XD02 / MM02 / VD51</small></div>
+  <div class="arrow">→</div>
+  <div class="node">③ 設定（決定テーブル）<br><small>VOV4 / VOV5 / VOV8</small></div>
+  <div class="arrow">→</div>
+  <div class="node">④ 拡張を疑う<br><small>ABAP / USEREXIT</small></div>
+</div>
+<table class="tbl wide">
+<tr><th>画面</th><th>見るもの</th><th>分かること</th></tr>
+<tr><td>① <code>VA03</code>（受注）</td><td>ヘッダのブロック・ステータス／明細のカテゴリ・プラント・数量／納入日程行／条件画面</td><td><b>症状の正確な形</b>（何が空か、何が想定と違うか）</td></tr>
+<tr><td>② 主データ</td><td><code>XD03</code>（得意先：販売エリア・出荷先・支払条件）／<code>MM03</code>（品目：販売組織 1・2、MRP3、出荷プラント）／<code>VD53</code>（客先品目情報）／<code>VK13</code>（条件レコード）</td><td>受注に入る<b>はずの値の出所</b>が正しいか</td></tr>
+<tr><td>③ 設定</td><td><code>VOV8</code>（伝票タイプ）／<code>VOV4</code>（明細カテゴリ決定）／<code>VOV5</code>／<code>VOV6</code>（納入日程行）／<code>OVA2</code>（不完全性）／<code>OVZ2</code>（在庫確認）</td><td>決まり方（決定テーブル・優先順位）が意図どおりか</td></tr>
+<tr><td>④ 拡張</td><td>講師に相談（USEREXIT・BAdI・カスタムロジック）</td><td>①②③がすべて正しいのに挙動が違う場合の最後の容疑者</td></tr>
+</table>
+<div class="box ok"><b class="t">切り分けの鉄則（動画の 4 源泉と対応）</b>
+<b>①受注を見る → ②主データを見る → ③設定を見る → ④拡張を疑う</b>の順で進める。逆順（いきなり設定を触る）は<b>最も遠回り</b>で、環境を壊す危険もあります。</div>
+<figure class="gui"><img src="assets/gui/handson-5_s06_1.svg" alt="故障切り分けの 4 画面を示す表。順序／画面／見るもの／分かることの列に、① VA03 受注 ② XD03・MM03・VD53 ③ VOV8・VOV4・OVA2 ④ USEREXIT・BAdI が並んでいる。" loading="lazy"><figcaption><b class="t">故障対応の 4 画面 — 切り分けの順序（① 受注 → ② 主データ → ③ 設定 → ④ 拡張）</b><span class="tx">VA03</span><span class="scr">Diagnosis: Sales Order / Master Data / Customizing / Extension</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> まず受注そのものを見る。何が空か／何が想定と違うかを言葉にしてから次の画面へ進む（症状の形が決まらないと ②③ は見当違いになる）</li><li><b>2</b> ①②③がすべて正しいのに挙動が違うときだけ ④ を疑う。ABAP 拡張（USEREXIT・BAdI）は自分で直さず講師に相談する</li></ol><p class="gui-tip">自システムでの確認：異常が出たら VA03 で症状を記録 → XD03／MM03／VD53 で値の出所 → VOV8／VOV4／VOV5／OVA2 で決まり方 → 最後に拡張を疑う。症状・根因・証拠・処置を 3 件以上記録するのが验收の条件。</p></figure>
+
+<h2 id="s7">5-7 故障対照表（症状 → 根因 → 証拠 → 処置）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>症状</th><th>根因（候補）</th><th>証拠の取り方</th><th>処置</th></tr>
+<tr><td>1</td><td>受注の <b>Net value が 0</b></td><td>条件レコードが無い／有効期間外／与力日付ずれ</td><td><code>VA03</code> 条件画面（与力分析）＋<code>VK13</code></td><td>条件レコードを正しい期間・キーで登録（<code>VK11</code>）</td></tr>
+<tr><td>2</td><td>明細の<b>出荷プラントが空</b></td><td>3 か所（客先品目情報・得意先マスタ・品目マスタ）すべてに値が無い</td><td><code>VD53</code>／<code>XD03</code>／<code>MM03</code> の 3 画面</td><td>優先順位を意識して、どこに入れるかを決めて保守（C10）</td></tr>
+<tr><td>3</td><td>出荷プラントが<b>想定と違う</b></td><td>上位の主データ（客先品目情報／得意先マスタ）に値がある</td><td><code>KNMT</code>／<code>KNVV</code>／<code>VBAP-WERKS</code> を並べる</td><td>上位の値を消すか、意図どおりに修正</td></tr>
+<tr><td>4</td><td>明細カテゴリが <code>TAN</code> に<b>ならない</b></td><td>品目カテゴリグループ／決定テーブルの行／品目使用目的</td><td><code>MM03</code>（販売組織2）＋<code>VOV4</code> 決定テーブル</td><td>決定テーブルの 4 キーを確認して行を整備（C8）</td></tr>
+<tr><td>5</td><td>保存時に<b>「PO Number を入力」</b>エラー</td><td>不完全性手順の必須項目（動画の環境で発生）</td><td><code>OVA2</code>／<code>V.02</code></td><td>値を入れる／警告に変える（C14）</td></tr>
+<tr><td>6</td><td>保存で<b>赤いエラーが消えない</b></td><td>不完全性（エラー設定）／項目ステータス（必須）</td><td>エラーメッセージを F1 で調べる＋<code>OVA2</code>／<code>OVT0</code>（項目ステータス）</td><td>該当項目を埋める／設定を見直す</td></tr>
+<tr><td>7</td><td>受注は保存できたが<b>出荷できない</b></td><td>納入ブロック・請求ブロック・与信ブロック・納入日程行なし</td><td><code>VA03</code> ヘッダの 3 ブロック＋与信ステータス＋納入日程行</td><td>ブロックの由来（手動／Customizing／チェック）を特定して解除</td></tr>
+<tr><td>8</td><td>得意先を変えたのに<b>価格が古いまま</b></td><td>再決定されない項目／手動条件が残る／後続伝票ありで何も変わらない</td><td><code>VA03</code> 条件画面（手動の表示）＋伝票フロー</td><td>意図した再決定か確認。手動条件は入れ直す（练习②）</td></tr>
+<tr><td>9</td><td>変更したのに<b>反映されない</b>（後続伝票あり）</td><td>動画スライドの仕様：先行／後続伝票があると変更されない</td><td>伝票フローで後続伝票の有無</td><td>後続伝票を処理してから変更する（業務判断）</td></tr>
+<tr><td>10</td><td><code>VC/2</code> に<b>情報ビューが出ない</b></td><td>Report Views for a User に未割当／ビュー未定義</td><td><code>VC/2</code> の View 一覧＋SPRO の 4 画面</td><td>C5 の ①③ を整備</td></tr>
+<tr><td>11</td><td><b>Last SD documents が空</b></td><td><code>C Order</code> の統計更新が OFF／伝票が無い／統計未構築</td><td>SPRO「Last Documents for a Customer」＋その得意先の伝票</td><td>統計更新を ON にする（C5 ④）。構築は講師に相談</td></tr>
+<tr><td>12</td><td>在庫があるのに<b>ATP 不足</b>になる</td><td>在庫確認の 3 階層（伝票タイプ／納入日程行カテゴリ／品目マスタ）の設定違い</td><td><code>OVZ2</code>／<code>VOV6</code>／<code>MM03</code>（MRP3）＋<code>CO09</code></td><td>3 か所の値を突き合わせて整備（C13）</td></tr>
+</table>
+<div class="box info"><b class="t">使い方（讲师の指示）</b>
+上の表は<b>答えではなく手順</b>です。练习では<b>症状だけを見せて、根因・証拠・処置を自分で書かせます</b>。講師版（<a href="instructor.html">讲师版</a>）には採点の観点をまとめています。</div>
+<h2 id="s8">5-8 验收（完成基准）</h2>
+<ul class="check">
+  <li><code>SU3</code> の 4 タブ（Address／Defaults／Parameters／Favorites）を説明できる</li>
+  <li>お気に入りに主要 T-code を登録し、<b>F1 でテーブル名・項目名を調べられた</b></li>
+  <li>与力分析（<code>VA03</code> 条件画面）を読んで、条件の決定過程を説明できる</li>
+  <li>発展①：伝票タイプにブロックを仕込み、<b>新規受注に自動で付く</b>ことを確認した</li>
+  <li>発展②：出荷プラントの<b>3 段階の優先順位を実測</b>で示した</li>
+  <li>発展③：Sales Summary のビューを自作し、<b>自分のユーザに適用</b>した</li>
+  <li>発展④：不完全性の項目を追加し、<b><code>V.02</code> で管理</b>する流れを体験した</li>
+  <li>故障切り分けの <b>4 画面（受注 → 主データ → 設定 → 拡張）</b>の順序を説明できる</li>
+  <li>故障対照表から<b>2 件以上を実際に再現</b>し、根因・証拠・処置を記録した</li>
+  <li>つまずいた点を<b>「症状 → 根因 → 証拠 → 処置 → 再発防止」</b>で 3 件以上記録した</li>
+</ul>
+<div class="box ok"><b class="t">本站の総仕上げ</b>
+ここまで終われば、あなたは <b>「受注伝票の値がどこから来るかを説明でき、変更・照会・出荷・請求まで繋げられる」</b>状態です。最後に <a href="quiz.html">能力测试（28 題）</a> と <a href="worksheet.html">学员版</a> の記入で、抜けを確認してください。生産形態別の実習（<code>../sapmto/</code> 等）へ進む準備もできています。</div>
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP SD 受注処理（Sales Order Processing）实战训练站</h5><p>動画「录像45 Sales order processing.mp4」の実演を自分の環境で再現するための练习。各手順に「自系统での確認方法」つき。</p><div><h5>下一步</h5><p><a href="handson-5.html">练习⑤ ツール・発展・故障対応</a> まで通したら、<a href="quiz.html">能力测试</a> で確認します。</p></div></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 受注登録（VA01）</a><br><a href="handson-2.html">② 与力価格と ATP</a><br><a href="handson-3.html">③ 特殊取引</a><br><a href="handson-4.html">④ 出荷と請求</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="worksheet.html">学员版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/quiz.js"></script>
+</body>
+</html>

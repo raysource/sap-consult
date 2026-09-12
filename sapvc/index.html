@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>总览 · SAP S/4HANA バリアント設定付き受注生産（VC / AVC）实战训练站</title>
+<meta name="description" content="SAP S/4HANA バリアント設定付き受注生産（VC / AVC）实战训练站：特徴 CT04 → クラス CL02 → 設定可能品目 KMAT → 設定プロファイル CU41/PMEVC → 依存関係 CU01-CU03 → スーパー BOM CS01 → 受注 VA01 で構成 → MRP/指図 → 出荷/請求 的一条龙练习，含详细配置手顺 C0〜C16、5 个实操练习、验收清单、故障对照表、On-Premise / Public Cloud 差异与变种价格。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/vc.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">VC</span><span class="txt">バリアント設定 训练站</span></a>
+    <nav class="main">
+      <a class="active" href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①主数据</a>
+      <a href="handson-2.html">②受注与设定</a>
+      <a href="handson-3.html">③依存与BOM</a>
+      <a href="handson-4.html">④制造与出荷</a>
+      <a href="handson-5.html">⑤发展与故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero"><div class="hero-inner">
+  <div class="kicker">SAP S/4HANA · VC / AVC · SD × PP × MM × CO 跨模块实训 · 中文 + 日本語术语对照</div>
+  <h1>バリアント設定付き受注生産（VC / AVC）实战训练站</h1>
+  <p class="lead">一条完整可跑的 <b>バリアント設定付き受注生産（Variant Configuration / VC、S/4HANA では AVC）</b> 场景：
+  <b>特徴設計 → クラス → 設定可能品目（<code>KMAT</code>）→ 設定プロファイル → 依存関係 → スーパー BOM → 受注（VA01）で構成 → MRP → 製造指図 → 入庫 → 出荷 → 請求（変種価格の加算つき）</b>。
+  本站分两层：<b>练习配置</b>（CT04 / CL02 / MM01 / CU41・PMEVC / CU01〜CU03 / CS01 / VOV7 / VOV4 / OPPS / OVZG / V/06 / V/08 / VK11 的逐项手顺，给出输入值与「在自系统中的确认方法」）与
+  <b>练习流程</b>（练习①〜⑤，每个练习都有输入值表、操作手顺、期待结果、故障对策、验收清单）。
+  主口径为 <b>S/4HANA On-Premise</b>，同步给出 <b>Public Cloud（SSCUI / スコープアイテム）</b> 的差异对照。</p>
+  <div class="toc">
+    <a href="#scope">1. 这个场景教什么</a>
+    <a href="#story">2. 训练场景设定</a>
+    <a href="#flow">3. 端到端流程</a>
+    <a href="#plan">4. 练习安排</a>
+    <a href="#objects">5. 设定对象一览 C0〜C16</a>
+    <a href="#env">6. 前提与环境</a>
+    <a href="#caveat">7. 关于标准值的立场</a>
+    <a href="#sources">8. 出典</a>
+  </div>
+</div></div>
+
+<div class="wrap">
+<main class="page"><article>
+
+<h2 id="scope">1. 这个场景教什么</h2>
+<p><b>VC 不是生产形态，而是「构成引擎」</b>——这是本站所有内容的出发点。它解决的是「<b>用 1 个品目表达无数种规格组合</b>」的问题：
+特征（特性）定义「能选什么」，依存关系定义「选了 A 就不能选 B、选了 B 就要加零件 C 和工序 D、还要加价 E」，
+系统在<b>受注输入的瞬间</b>把这个逻辑跑一遍，算出这台泵的构成品目、工序、价格。</p>
+<p>所以 VC 从来不单独存在。它一定和某种生产形态组合：本站主场景是 <b>VC × 受注生産（戦略グループ <code>25</code> → 所要量タイプ <code>KEK</code> → 所要量クラス <code>046</code> 系、受注在庫 E）</b>，
+练习⑤ 再把它换成 <b>VC × 受注組立（<code>82</code> → <code>KMFA</code> → <code>201</code> → 指図タイプ <code>PP04</code>、受注と指図 1:1）</b> 做对照。
+读者要能回答的问题是：<b>① 这个规格组合是怎么被「翻译」成 BOM 和工序的？② 加价是从哪里来的？③ 换一种生产形态，哪几个配置项要动？</b></p>
+
+<div class="grid cards">
+  <div class="card">
+    <h3><a href="config.html">① 练习配置手顺（详细 SPRO）</a></h3>
+    <p>C0〜C16 共 17 个 STEP：前提确认 → 特徴 <code>CT04</code> → クラス <code>CL02</code>（クラス型 <code>300</code>）→ 設定可能品目 <code>MM01</code>（<code>KMAT</code>/<code>0002</code>/戦略 <code>25</code>/MRP4 個別所要量）→ 設定プロファイル <code>CU41</code>・<code>PMEVC</code> → 依存関係 <code>CU01</code>〜<code>CU03</code>（前提条件・選択条件・手続き・アクション）→ スーパー BOM <code>CS01</code> → 作業手順 → 明細カテゴリ（<code>VOV7</code>/<code>VOV4</code>）→ 戦略/所要量クラス（<code>OPPS</code>/<code>OPPJ</code>/<code>OVZG</code>）→ ATP → 変種価格（<code>V/06</code>・<code>V/08</code>・<code>VK11</code>）→ 出荷・請求 → 自動転記 <code>OBYC</code> → Public Cloud 差异，每步给出 IMG 路径、事务码、输入值、<b>在自系统中的确认方法</b>。</p>
+    <div class="tags"><span>配置</span><span class="tag amber">约 180 分</span></div>
+  </div>
+  <div class="card">
+    <h3><a href="handson-1.html">② 练习流程（5 个实操）</a></h3>
+    <p>练习① 特徴とクラスの設計（<code>CT04</code>×4 → <code>CL02</code>）→ 练习② 設定可能品目と設定プロファイル（<code>MM01</code>・クラス割当・<code>CU41</code>・<code>CU50</code>）→ 练习③ 依存関係とスーパー BOM（<code>CS01</code>・選択条件・作業手順）→ 练习④ 受注で構成し製造・出荷・請求まで通す → 练习⑤ 発展（戦略 <code>82</code>・変更統制）と故障対応。每页「照做即可」的详细手顺 + 期待结果 + 验收清单。</p>
+    <div class="tags"><span>实操</span><span class="tag teal">约 300 分</span></div>
+  </div>
+  <div class="card">
+    <h3><a href="concept.html">③ 术语与设计（为什么会这样）</a></h3>
+    <p>构成要素 6 つ、依存関係 4 種と適用先、クラス型 <code>300</code>、スーパー BOM と受注 BOM、設定値の流れ、VC × 生産形態（25 / 82 / ETO）、変種価格の仕組み、LO-VC と AVC の違い、関連テーブル、S/4HANA 変更点、<b>10 の誤解</b>、決定链 ASCII 図。</p>
+    <div class="tags"><span>概念</span><span class="tag gray">约 90 分</span></div>
+  </div>
+  <div class="card">
+    <h3><a href="quiz.html">④ 能力测试 + 验收清单</a></h3>
+    <p>28 題（概念 10 / 配置 9 / 流程 6 / 故障 3）× 点击判分 + 解说，外加一份实机验收清单：把系统里的证据（特徴・クラス・設定プロファイル・受注の構成画面・受注 BOM・指図の構成・変種価格・伝票フロー）逐条核对，才能算「这个场景跑通了」。</p>
+    <div class="tags"><span>测试</span><span class="tag green">约 40 分</span></div>
+  </div>
+</div>
+
+<h2 id="story">2. 训练场景设定</h2>
+<p>场景取自典型的<b>「産業用ポンプのバリアント設定付き受注生産」</b>：客户按自己的用途选容量・材質・塗装・付属品，工厂按这张受注单独制造（不做库存）。
+选泵的理由是它天然具备 VC 的三要素：<b>连续的容量等级</b>（50/80/120 m³/h）、<b>可选材质</b>（影响价格与交期）、<b>可选附属装置</b>（决定 BOM 里多不多那几个零件）。</p>
+
+<h3>组织与主数据（本教程统一使用的值，可按自己环境改）</h3>
+<table class="tbl wide">
+<tr><th>区分</th><th>值</th><th>说明</th></tr>
+<tr><td>会社コード / プラント</td><td><code>1000</code> / <code>1000</code></td><td>工厂即出荷プラント</td></tr>
+<tr><td>販売組織 / 販売チャネル / 部門</td><td><code>1000</code> / <code>10</code> / <code>00</code></td><td>销售区域（販売エリア）</td></tr>
+<tr><td>得意先（受注先・出荷先）</td><td><code>1000</code></td><td>ポンプ成套设备商社 B（要已建 販売ビュー）</td></tr>
+<tr><td><b>設定可能品目（親）</b></td><td><code>ZVC-PUMP01</code></td><td>品目タイプ <code>KMAT</code>、品目カテゴリグループ <code>0002</code>、単位 <code>PC</code>（台）</td></tr>
+<tr><td>クラス（クラス型 <code>300</code>）</td><td><code>ZVC_PUMP_CL</code></td><td>承载 4 个特徴。品目マスタの分類ビューで <code>ZVC-PUMP01</code> に割当</td></tr>
+<tr><td>設定プロファイル</td><td><code>ZVC_PROFILE01</code></td><td><code>CU41</code> / <code>PMEVC</code> で作成し品目に割当</td></tr>
+<tr><td>特徴①（容量）</td><td><code>ZVC_CAPACITY</code></td><td>値：<code>50</code> / <code>80</code> / <code>120</code>（m³/h）。1 値のみ選択</td></tr>
+<tr><td>特徴②（材質）</td><td><code>ZVC_MATERIAL</code></td><td>値：<code>FC200</code> / <code>SUS304</code> / <code>SUS316</code>。1 値のみ選択</td></tr>
+<tr><td>特徴③（塗装）</td><td><code>ZVC_COATING</code></td><td>値：<code>NONE</code> / <code>EPOXY</code> / <code>URETHANE</code>。1 値のみ選択</td></tr>
+<tr><td>特徴④（付属品）</td><td><code>ZVC_ACCESSORY</code></td><td>値：<code>NONE</code> / <code>PG</code>（圧力計）/ <code>FG</code>（流量計）/ <code>PG_FG</code>。<b>複数選択（複数値）を許可</b>する練習用特徴</td></tr>
+<tr><td>構成品目（スーパー BOM）</td><td><code>ZVC-PUMP01</code> → 部品 6 点</td><td>ケーシング / 羽根車 / 軸 / モータ / 圧力計 / 流量計（選択条件で取捨）</td></tr>
+<tr><td>作業区 / 作業手順</td><td><code>ZVC_WC01</code> / <code>ZVC_RT01</code></td><td>工程 0010 組立・0020 塗装・0030 検査（塗装工程は依存関係で選択）</td></tr>
+<tr><td>明細カテゴリグループ / 明細カテゴリ</td><td><code>0002</code> / 通常は <code>TAN</code> 系</td><td>VC 品目の決定キー。実システム値は <code>VOV4</code>/<code>VOV7</code> で確認</td></tr>
+<tr><td>戦略グループ / 所要量タイプ</td><td><code>25</code> / <code>KEK</code></td><td>VC の受注生産 → 所要量クラス <code>046</code> 系（練習⑤で <code>82</code>/<code>KMFA</code>/<code>201</code>）</td></tr>
+<tr><td>条件タイプ（変種価格）</td><td><code>VA00</code>（ほか <code>PR00</code>）</td><td>加算額は特徴の値にひもづく条件レコードで決まる</td></tr>
+<tr><td>指図タイプ / 出荷タイプ / 請求タイプ</td><td><code>PP01</code> / <code>LF</code> / <code>F2</code></td><td>標準（練習⑤の戦略 82 では <code>PP04</code>）</td></tr>
+</table>
+
+<div class="box info"><b class="t">练习量（业务故事）</b>
+得意先 <code>1000</code> 下达：<b><code>ZVC-PUMP01</code> × 10 台</b>，基本価格 <b>850,000 JPY/台</b>（合計 8,500,000 JPY），
+构成：容量 <code>80</code>、材質 <code>SUS316</code>、塗装 <code>EPOXY</code>、付属品 <code>PG</code>＋<code>FG</code>。
+变种价格（<code>VA00</code>）按所选值加算（例：SUS316 +120,000、EPOXY +35,000、流量計 +48,000），希望纳期 = 受注日 + 45 日。<br>
+系统应产生：①受注明細に<b>設定値（構成）</b> → ②設定値に従って<b>受注 BOM の構成品目</b>が決まる → ③個別所要量（戦略 <code>25</code>・受注在庫 E）
+→ ④計画手配 → 製造指図（<b>設定値が引き継がれる</b>）→ ⑤部品出庫・実績・完成入庫 → ⑥出荷（<code>VL01N</code>/601）→ ⑦請求（<code>VF01</code>、変種価格の加算込み）。
+全程在 <code>CU50</code>（設定シミュレーション）/ <code>MD04</code> / <code>CO03</code> / <code>MMBE</code> / 伝票フロー 中可追踪。</div>
+
+<h2 id="flow">3. 端到端流程（练习要跑通的 12 个动作）</h2>
+<div class="flow">
+  <div class="node">0 設計<br><small>CT04 → CL02</small></div><div class="arrow">→</div>
+  <div class="node">1 MM01 KMAT<br><small>+ クラス割当</small></div><div class="arrow">→</div>
+  <div class="node">2 CU41<br><small>設定プロファイル</small></div><div class="arrow">→</div>
+  <div class="node">3 CU01〜03<br><small>依存関係</small></div><div class="arrow">→</div>
+  <div class="node">4 CS01<br><small>スーパー BOM</small></div><div class="arrow">→</div>
+  <div class="node">5 CU50<br><small>シミュレーション</small></div><div class="arrow">→</div>
+  <div class="node">6 VA01 受注<br><small>構成画面</small></div><div class="arrow">→</div>
+  <div class="node">7 受注 BOM<br><small>構成品目</small></div><div class="arrow">→</div>
+  <div class="node">8 MD04/MRP<br><small>KEK・在庫 E</small></div><div class="arrow">→</div>
+  <div class="node">9 指図 CO03<br><small>設定値伝搬</small></div><div class="arrow">→</div>
+  <div class="node">10 入出庫<br><small>261/101/601</small></div><div class="arrow">→</div>
+  <div class="node">11 VF01<br><small>変種価格</small></div>
+</div>
+<table class="tbl wide">
+<tr><th>#</th><th>动作</th><th>事务码</th><th>系统里要看什么（证据）</th><th>对应练习</th></tr>
+<tr><td>1</td><td>特徴の登録（値・必須・複数選択・追加データ）</td><td><code>CT04</code></td><td>4 つの特徴が作られ、値が「許可値」として見える</td><td><a href="handson-1.html">练习①</a></td></tr>
+<tr><td>2</td><td>クラス登録と特徴の割当</td><td><code>CL02</code></td><td>クラス型 <code>300</code>、特徴が 4 つ並ぶ、特徴の「必須」フラグ</td><td><a href="handson-1.html">练习①</a></td></tr>
+<tr><td>3</td><td>設定可能品目の登録とクラス割当</td><td><code>MM01</code></td><td>品目タイプ <code>KMAT</code> / カテゴリグループ <code>0002</code> / MRP3 戦略 <code>25</code> / MRP4 個別所要量 / 分類ビューに <code>ZVC_PUMP_CL</code></td><td><a href="handson-2.html">练习②</a></td></tr>
+<tr><td>4</td><td>設定プロファイルの作成と品目への割当</td><td><code>CU41</code>・<code>PMEVC</code></td><td>プロファイルが品目 <code>ZVC-PUMP01</code> に割当てられている（処理形式もここ）</td><td><a href="handson-2.html">练习②</a></td></tr>
+<tr><td>5</td><td>シミュレーション（設定の単体テスト）</td><td><code>CU50</code></td><td>値を選ぶと「依存関係が発火」し、構成結果と BOM 展開が変わる</td><td><a href="handson-2.html">练习②</a></td></tr>
+<tr><td>6</td><td>依存関係の登録</td><td><code>CU01</code>〜<code>CU03</code></td><td>前提条件・選択条件・手続き・アクションが各適用先に割り付いている</td><td><a href="handson-3.html">练习③</a></td></tr>
+<tr><td>7</td><td>スーパー BOM と選択条件</td><td><code>CS01</code>・<code>CS03</code></td><td>BOM 明細に「選択条件」が入り、構成品目が設定値で取捨される</td><td><a href="handson-3.html">练习③</a></td></tr>
+<tr><td>8</td><td>作業手順と依存関係</td><td><code>CA01</code>・<code>CA03</code></td><td>塗装工程が「塗装なし」のとき消える（工程の選択条件）</td><td><a href="handson-3.html">练习③</a></td></tr>
+<tr><td>9</td><td>受注登録と構成入力</td><td><code>VA01</code></td><td>明細カテゴリ、設定画面（特徴値）、<b>受注 BOM の構成品目</b>、変種価格の条件行</td><td><a href="handson-4.html">练习④</a></td></tr>
+<tr><td>10</td><td>所要量と MRP</td><td><code>MD04</code>・<code>MD01N</code></td><td>「得意先所要量」行、計画手配の在庫区分（受注在庫 E）</td><td><a href="handson-4.html">练习④</a></td></tr>
+<tr><td>11</td><td>製造指図への設定値伝搬</td><td><code>CO40</code>・<code>CO03</code></td><td>指図の「構成」に設定値、構成品目が設定どおり</td><td><a href="handson-4.html">练习④</a></td></tr>
+<tr><td>12</td><td>出荷・請求（変種価格込み）</td><td><code>VL01N</code>・<code>VL02N</code>・<code>VF01</code></td><td>601 で受注在庫が消え、請求に <code>VA00</code> の加算行が見える</td><td><a href="handson-4.html">练习④</a></td></tr>
+</table>
+
+<div class="box ok"><b class="t">授课用の成果物</b>
+① <a href="instructor.html"><b>讲师版（解答・採点ポイント）</b></a>：時間割（3 日 / 2 日 / 1 日）・事前準備・板書用図・C0〜C16 の解答と採点ポイント・練習①〜⑤の期待值・必出 Q&amp;A 11 件・故障の教え方・評価基準。<br>
+② <a href="worksheet.html"><b>学员版ワークシート（挖空・記入用）</b></a>：シート A 配置記録 / B 練習記録（特徴名・クラス名・設定値・BOM 構成品目・伝票番号 など約 20 項）/ C <code>CU50</code> 結果表 / D 故障記録 / E 用語 10 語 / F 質問メモと修了判定（印刷可）。<br>
+③ <b>Excel 版</b>：<span class="mono">SDバリアント設定VC_要件定義・手順書.xlsx</span>（11 シート：概要 / 環境前提 / 設定一覧 / 配置手順 / 練習手順 / 期待結果 / 故障対照表 / 用語集 / 出典 / 受講者チェック / 講師用ガイド）。
+再生成は <span class="mono">python3 tools/make_vc_xlsx.py</span>（openpyxl が必要）。</div>
+
+<h2 id="plan">4. 练习安排（建议 3 天；2 日 / 1 日 压缩版见讲师版）</h2>
+<table class="tbl wide">
+<tr><th>时段</th><th>内容</th><th>页面</th><th>完成基准</th></tr>
+<tr><td>Day1 上午</td><td>概念与设计：VC 是构成引擎、构成要素 6 つ、依存関係 4 種、設定値の流れ</td><td><a href="concept.html">概念与设计</a></td><td>能画出发注（設定値）→ 受注 BOM → 指図的传递链，并说明戦略 25 与 82 的差别</td></tr>
+<tr><td>Day1 下午</td><td>练习① 特徴とクラス（<code>CT04</code>×4 → <code>CL02</code>）</td><td><a href="handson-1.html">练习①</a></td><td>4 特徴＋クラス <code>ZVC_PUMP_CL</code>（型 300）建成，<code>CL03</code> 能看到特徴与值的完整列表</td></tr>
+<tr><td>Day2 上午</td><td>练习② 設定可能品目と設定プロファイル</td><td><a href="handson-2.html">练习②</a></td><td><code>ZVC-PUMP01</code> 可设定（<code>KMAT</code>/<code>0002</code>/戦略 <code>25</code>），<code>CU50</code> 能打开设定画面并保存一个配置</td></tr>
+<tr><td>Day2 下午</td><td>练习③ 依存関係とスーパー BOM</td><td><a href="handson-3.html">练习③</a></td><td>选 <code>SUS316</code> 时 BOM 里出现/替换对应构成品目；<code>NONE</code> 涂装时涂装工程消失</td></tr>
+<tr><td>Day3 上午</td><td>练习④ 受注で構成し制造・出荷・請求まで</td><td><a href="handson-4.html">练习④</a></td><td>受注 10 台 → 受注 BOM 正确 → MD04 有需求 → 指図有設定值 → 出荷・請求闭合，变种价格加算出现</td></tr>
+<tr><td>Day3 下午</td><td>练习⑤ 発展（戦略 <code>82</code>・変更統制）＋故障対照表＋测试</td><td><a href="handson-5.html">练习⑤</a>・<a href="quiz.html">测试</a></td><td>12 项故障能说出「症状→根因→确认手顺」；测试 ≥75%（21/28）且验收清单全勾</td></tr>
+</table>
+<div class="box warn"><b class="t">环境要求</b>
+① S/4HANA On-Premise（2020〜2024 均可，画面路径以 2023/2024 为准）；② 拥有可写入的カスタマイジング依頼（Customizing Request）与開発権限（<code>CT04</code>・<code>CL02</code>・<code>CU01</code>・<code>CU41</code> 属于要登记的定制对象）；
+③ SD・MM・PP 的基本组织构造已就绪（販売組織/プラント/得意先/会計ビュー）；④ <b>AVC を使う場合は <code>PMEVC</code> 権限と該当ライセンス／スコープアイテムの確認</b>（C0 参照）。<br>
+若用 Public Cloud，请先读 <a href="config.html#c16">C16 Public Cloud 差异对照</a>：<b>AVC が前提で、SSCUI では作れないものがある</b>（明細カテゴリの新規作成など）。</div>
+
+<h2 id="objects">5. 设定对象一览（C0〜C16 = 17 项）</h2>
+<p>下表是「标准值的通常情况 + 本站练习值 + 确认方法」的总表。<b>标准值在不同版本/不同系统可能不同</b>，所以每一项都给出「在自系统中怎么确认」。
+详细手顺见 <a href="config.html">配置手顺</a>。</p>
+<table class="tbl wide">
+<tr><th>#</th><th>设定项目</th><th>标准值的通常情况</th><th>本站练习值</th><th>设定/确认处</th></tr>
+<tr><td>C0</td><td>前提确认（権限・AVC/PMEVC の利用可否）</td><td>オンプレは LO-VC と AVC が併存。作業環境は IMG/権限で確認</td><td><code>CT04</code>/<code>CL02</code>/<code>CU41</code>/<code>CU50</code> が実行可能か確認</td><td><code>SU01</code>・<code>ST04</code> 系ではなく実機で直接起動</td></tr>
+<tr><td>C1</td><td>特徴（Characteristics）</td><td>値の型（CHAR/NUM）、必須、複数値、追加データを持つ</td><td><code>ZVC_CAPACITY</code> / <code>ZVC_MATERIAL</code> / <code>ZVC_COATING</code> / <code>ZVC_ACCESSORY</code></td><td><code>CT04</code>（<code>CT04</code> = 登録・変更・照会兼用）</td></tr>
+<tr><td>C2</td><td>クラス（Class）</td><td>クラス型 <code>300</code> = 品目変種（Variant class）。他に 023（品目バッチ）等</td><td><code>ZVC_PUMP_CL</code>（型 <code>300</code>）＋4 特徴の割当</td><td><code>CL02</code>（<code>CL01</code>/<code>CL03</code>）</td></tr>
+<tr><td>C3</td><td>設定可能品目（<code>KMAT</code>）</td><td>品目タイプ <code>KMAT</code>、品目カテゴリグループ <code>0002</code>（SET 処理は <code>0004</code>）、MRP1 手配タイプ <code>E</code>、MRP3 戦略 <code>25</code>、MRP4 個別所要量</td><td>その通り（+ 分類ビューにクラス割当）</td><td><code>MM01</code>/<code>MM02</code>/<code>MM03</code></td></tr>
+<tr><td>C4</td><td>設定プロファイル</td><td>処理形式（明細/生産指図・SET・受注 BOM）、画面構成、必須チェック</td><td><code>ZVC_PROFILE01</code>（練習③で受注 BOM 形式）</td><td><code>CU41</code>/<code>CU42</code>/<code>CU43</code>、S/4HANA は <code>PMEVC</code></td></tr>
+<tr><td>C5</td><td>依存関係①：前提条件</td><td>特徴または特徴値に付く「成立条件」。満たさないとエラー/無効値</td><td>「塗装 <code>EPOXY</code> は材質 <code>SUS316</code> を要求」</td><td><code>CU01</code>（登録）/<code>CU02</code>（変更）/<code>CU03</code>（照会）</td></tr>
+<tr><td>C6</td><td>依存関係②：選択条件</td><td>BOM 明細・工程・特徴値に付く「採用条件」。<code>$parent.</code> 構文</td><td>圧力計は <code>PG</code> 選択時のみ、流量計は <code>FG</code> 選択時のみ</td><td>BOM 側（<code>CS02</code>）／工程側（<code>CA02</code>）</td></tr>
+<tr><td>C7</td><td>依存関係③：手続き・アクション</td><td>手続きは値を計算・上書き（数量・標準時間）。アクションは他オブジェクトを操作</td><td>容量 <code>120</code> のとき モータ数量を 2 に、組立時間を 1.4 倍に</td><td><code>CU01</code>〜<code>CU03</code>＋特徴値/IDoc 用途</td></tr>
+<tr><td>C8</td><td>スーパー BOM と選択条件</td><td>1 品目に複数 BOM 用途/代替を持ち、設定値で構成を選ぶ</td><td>ケーシング（材質別 3 行）＋ 付属品行</td><td><code>CS01</code>/<code>CS03</code>（構成品目の「選択条件」画面）</td></tr>
+<tr><td>C9</td><td>作業手順と依存関係</td><td>工程にも選択条件・手続きが付く（工程の取捨、標準値の変更）</td><td>塗装工程（<code>NONE</code> なら非採用）、検査工程</td><td><code>CA01</code>/<code>CA02</code>/<code>CA03</code></td></tr>
+<tr><td>C10</td><td>明細カテゴリの確認（VC 用）</td><td>VC 品目には構成入力可能な明細カテゴリが決まる（<code>0002</code> のグループ→ <code>TAN</code> 系という記載が一般的）</td><td>標準のまま確認（新規定義は不要）</td><td><code>VOV7</code>（定義）/ <code>VOV4</code>（割当、決定の優先順）</td></tr>
+<tr><td>C11</td><td>戦略グループと所要量クラス</td><td>戦略 <code>25</code> → <code>KEK</code> → 所要量クラス <code>046</code> 系。戦略 <code>82</code> → <code>KMFA</code> → <code>201</code>・指図タイプ <code>PP04</code></td><td><code>25</code> で実施（練習⑤で <code>82</code>）</td><td><code>OPPS</code>（戦略）/ <code>OPPJ</code>（方可）/ <code>OVZG</code>（所要量クラス）</td></tr>
+<tr><td>C12</td><td>ATP・在庫確認</td><td>VC 受注生産は個別所要量ベースの在庫確認（<code>02</code> 系）が前提</td><td>MRP3 在庫確認 <code>02</code>、必要なら <code>CU50</code>/<code>CO09</code> で検証</td><td><code>MM02</code> MRP3 / <code>OVZ2</code> 系（確認グループ）</td></tr>
+<tr><td>C13</td><td>変種価格</td><td>条件タイプ <code>VA00</code>＋計算手続＋特徴の追加データ（LO-VC は <code>SDCOM-VKOND</code>、AVC は <code>MMCOM-VKOND</code> という記載）</td><td>材質/塗装/付属品の加算を条件レコードで定義</td><td><code>V/06</code>・<code>V/08</code>・<code>VK11</code>・<code>VA03</code></td></tr>
+<tr><td>C14</td><td>出荷・請求の前提</td><td>出荷タイプ <code>LF</code>・請求タイプ <code>F2</code>、コピー制御が有効</td><td>标准のまま使用（確認のみ）</td><td><code>VL01N</code>・<code>VF01</code>・<code>VTFL</code></td></tr>
+<tr><td>C15</td><td>自動転記（在庫・差異の勘定）</td><td><code>OBYC</code> の <code>BSX</code>/<code>WRX</code>/<code>GBB</code> が設定済み</td><td>確認のみ（受注在庫の入出庫が仕訳されること）</td><td><code>OBYC</code>＋<code>FB03</code></td></tr>
+<tr><td>C16</td><td>Public Cloud 差异</td><td>AVC 前提、SSCUI では明細カテゴリ等の新規作成ができない領域がある</td><td>スコープアイテム <code>IYT</code>・<code>7DM</code> の確認</td><td>SSCUI・スコープアイテム一覧</td></tr>
+</table>
+
+<h2 id="env">6. 前提与环境（练习前 30 分钟做完）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>前提</th><th>确认方法</th></tr>
+<tr><td>1</td><td>販売組織/販売チャネル/部門/プラント 已建并互相分配</td><td>SPRO 组织构造 + <code>OX10</code>・<code>OVX5</code> 系确认；<code>VA01</code> 能选到销售区域</td></tr>
+<tr><td>2</td><td>得意先 1000 已建（一般/会社/販売エリア/出荷先）</td><td><code>BP</code> / <code>XD03</code>，需有出荷先（船積先）</td></tr>
+<tr><td>3</td><td>品目タイプ <code>KMAT</code> の品目番号範囲可用（<b>KMAT 是 VC 的前提</b>）</td><td><code>MMNR</code>；<code>OMS2</code> 系で品目タイプの属性も確認可</td></tr>
+<tr><td>4</td><td><code>CT04</code>・<code>CL02</code>・<code>CU01</code>・<code>CU41</code>・<code>CU50</code> が使える権限（<b>AVC は <code>PMEVC</code></b>）</td><td>实机直接起動。使えない場合は講師に連絡（この 5 つが無いと练习①〜③ は実施不可）</td></tr>
+<tr><td>5</td><td>スーパー BOM／作業手順を作れる PP 権限（<code>CS01</code>/<code>CA01</code>）</td><td>既存 BOM の照会（<code>CS03</code>）→ 変更できるかで判断</td></tr>
+<tr><td>6</td><td>カスタマイジング依頼（Customizing Request）に書ける権限</td><td>配置作业时会要求输入请求；<code>CT04</code>/<code>CL02</code> は「カスタマイジング」扱い</td></tr>
+<tr><td>7</td><td>练习用の番号範囲（受注・出荷・請求・指図）に空き</td><td><code>VN01</code>（販売伝票）、PP/出荷/請求の番号範囲</td></tr>
+</table>
+
+<h2 id="caveat">7. 关于标准值的立场（请务必读）</h2>
+<div class="box warn"><b class="t">本教程的做法</b>
+VC 是<b>设计判断（モデリング）决定成败的领域</b>，标准值本身的可变性也大：
+① VC 用の明細カテゴリは「<code>KMAT</code>＋品目カテゴリグループ <code>0002</code> なら通常 <code>TAN</code>」という記載（varconf）がある一方、ACE/TA 系の専用カテゴリ（<code>TAC</code>＝Configurable material item 等）を使う設計もある —— <b>必ず <code>VOV4</code>/<code>VOV7</code> と受注明細で確認</b>。
+② 変種価格の追加データは <b>LO-VC は <code>SDCOM-VKOND</code></b>、<b>AVC は <code>MMCOM-VKOND</code></b> という記載がある —— <b><code>CT04</code> の追加データ画面と <code>SE11</code> で自分の環境の構造を確認</b>。
+③ AVC では <b>CU50 相当の画面が Fiori の特徴グループ（Characteristic Groups）ベース</b>に置き換わる —— <b><code>PMEVC</code> の有無と Fiori アプリの導入状況を確認</b>。
+④ 所要量クラス（<code>046</code> 系）・評価の有無は環境差が大きい —— <b><code>OVZG</code> で自分の環境の <code>046</code> の属性を確認</b>。<br>
+因此本站原则是：<b>把「标准值的通常情况」写清，但每个值都配一条「在你自己的系统里怎么确认」的手顺</b>，
+并让所有练习都建自己的 Z 对象（<code>ZVC_*</code>），这样即使标准值与本站不同，练习依然成立。教学以「机制正确」为优先，不以背标准值为目标。</div>
+
+<h2 id="sources">8. 出典与参考</h2>
+<ul>
+  <li>SAP Help（S/4HANA On-Premise）<i>Advanced Variant Configuration</i>：AVC の位置づけとツールセット。<span class="mini">help.sap.com/docs/SAP_S4HANA_ON-PREMISE/36802406aebb4b96b1598246e1d316ee/76276945f5d24a119ff4aeaca6ded355.html</span></li>
+  <li>SAP Help（S/4HANA On-Premise, Variant Configuration (LO-VC)）<i>Configurable Materials in Sales Documents</i>／（SAP ERP）同題：BOM 展開レベル（No BOM / Single-Level / Multi-Level）と明細カテゴリ。<span class="mini">help.sap.com/docs/SAP_S4HANA_ON-PREMISE/a73402f511734e6eac56063e631bf24e/291db853dcfcb44ce10000000a174cb4.html</span></li>
+  <li>SAP Help Portal（Support Content, Variant Configuration）<i>Configuration Profile</i>：設定プロファイルの機能グループ（<code>CUCO</code> = 設定プロファイルマスタの維持、<code>CUCP</code> = 使用箇所一覧）。<span class="mini">help.sap.com/docs/SUPPORT_CONTENT/varconf/3363506066.html</span></li>
+  <li>SAP Help <i>Creating a Variant Condition for Pricing</i>：条件タイプ <code>VA00</code> と特徴の追加データ（テーブル/項目）の設定。<span class="mini">help.sap.com/docs/SAP_ERP_SPV/15f6005df5a343d096f63b554e47e14a/b1dcc353b677b44ce10000000a174cb4.html</span></li>
+  <li>SAP Help <i>Special Settings for Production Orders</i>：組立処理の標準設定（戦略グループ <code>82</code> / 所要量タイプ <code>KMFA</code> / 所要量クラス <code>201</code> / 指図タイプ <code>PP04</code>）。</li>
+  <li>varconf.com <i>Make-to-Order with SAP Variant Configuration: End-to-End Process</i>：VC 品目の必須設定（<code>KMAT</code>／カテゴリグループ <code>0002</code>（SET は <code>0004</code>）／手配タイプ <code>E</code>／戦略 <code>25</code>／在庫確認 <code>02</code>／クラス型 <code>300</code>／<code>CU41</code>）、戦略 <code>25</code> → <code>KEK</code> → <code>046</code>、設定プロファイルの 3 処理形式、<code>MD50</code>、<code>KO88</code>（要件クラス <code>046</code> が決済プロファイルを統制）、材料バリアント（<code>TAN</code>）。</li>
+  <li>varconf.com <i>Multi-Value to Pricing: Filtering and Transforming VC Characteristics</i>（AVC 価格は <code>MMCOM-VKOND</code>）／<i>AVC Characteristic Groups and Interface Design: The Fiori Way</i>（AVC は CU50 の画面を特徴グループ＋Fiori に置換）／<i>SAP VC Material Variants</i>（<code>VCHMOVMVAR</code> スイッチ）。</li>
+  <li>SAP Community：<i>Variant Configuration tables</i>・<i>List of Tables for VC</i>・<i>Do you know the links among tables in Classification and Variant Configuration?</i>（<code>CABN</code>・<code>CAWN</code>・<code>CAWNT</code>・<code>KLAH</code>・<code>KLAT</code>・<code>KSML</code>・<code>KSSK</code>・<code>AUSP</code>）、<i>When to use item categories TAC, TAM and TAQ</i>（<code>0002</code>/<code>LUMF</code> と BOM 明細の <code>ERLA</code>/<code>LUMF</code>）、<i>Variant Configuration (LO-VC) in SAP S/4HANA</i>（戦略 <code>25</code>）。</li>
+  <li>SAP Community / SAP Support：KBA <b>1934081</b>（<i>variant condition line and Characteristic value</i>：標準では <code>VKOND</code> を参照する特徴値が変種条件行 <code>VA00</code> を決める）、KBA <b>3623492</b>（プロジェクト在庫 Q と PGI）。</li>
+  <li>SAP Learning <i>Explaining Classic and Advanced Variant Configuration</i>（Implementing Variant Configuration in SAP S/4HANA Cloud）：クラシック VC と AVC の対比。</li>
+  <li>SAP Community blog <i>Advanced Intercompany Sales MTO and Variant Configuration (7DM) in S/4HANA Cloud</i>：スコープアイテム <code>7DM</code>（MTO＋AVC。2502 で <code>5D2</code> とも組合せ可）と <code>IYT</code> の関係。</li>
+  <li>thesdvault.com <i>SAP SD Item Category Determination in S/4HANA — VOV4 &amp; VOV7</i>：<code>TAC</code> = Configurable material item、<code>ERLA</code>/<code>LUMF</code> と <code>TAP</code>/<code>TAE</code> の関係。</li>
+  <li>テーブル実在確認（フィールド一覧）：sapstack.com の table details（<code>CABN</code>/<code>CAWN</code>/<code>CAWNT</code>/<code>KLAH</code>/<code>KLAT</code>/<code>KSML</code>/<code>KSSK</code>/<code>AUSP</code>/<code>CUOB</code>/<code>CUCO</code>/<code>TCLA</code> は確認済み。ただし<b>リリースにより項目は異なる</b>ので <code>SE11</code>/<code>SE16N</code> で自分の環境を確認すること）。</li>
+</ul>
+<div class="box info"><b class="t">下一步</b>
+想先理解机制 → <a href="concept.html">概念与设计</a>；想直接动手配 → <a href="config.html">配置手顺</a>；想直接跑流程 → <a href="handson-1.html">练习① 特徴とクラス</a>。</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA バリアント設定付き受注生産（VC / AVC）实战训练站</h5><p>面向 SAP S/4HANA SD/PP 学习者的跨模块实训：構成エンジンの設計 + 全流程实操 + 验收清单。<br>内容为教学整理，标准值请以自系统为准。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 特徴とクラス</a><br><a href="handson-2.html">② 設定可能品目と設定プロファイル</a><br><a href="handson-3.html">③ 依存関係とスーパー BOM</a><br><a href="handson-4.html">④ 受注で構成・製造・出荷</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺 C0〜C16</a><br><a href="instructor.html">讲师版</a><br><a href="worksheet.html">学员版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

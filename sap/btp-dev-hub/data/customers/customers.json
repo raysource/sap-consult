@@ -1,0 +1,37 @@
+[
+  {
+    "ID": "CUST-01",
+    "name": "张伟",
+    "company": "上海华悦信息科技",
+    "city": "上海",
+    "email": "zhangwei@huayue.example.cn"
+  },
+  {
+    "ID": "CUST-02",
+    "name": "李娜",
+    "company": "深圳蓝海软件",
+    "city": "深圳",
+    "email": "lina@blueocean.example.cn"
+  },
+  {
+    "ID": "CUST-03",
+    "name": "王强",
+    "company": "北京中科数联",
+    "city": "北京",
+    "email": "wangqiang@zkd.example.cn"
+  },
+  {
+    "ID": "CUST-04",
+    "name": "陈静",
+    "company": "杭州云帆数据",
+    "city": "杭州",
+    "email": "chenjing@yunfan.example.cn"
+  },
+  {
+    "ID": "CUST-05",
+    "name": "刘洋",
+    "company": "广州星河网络",
+    "city": "广州",
+    "email": "liuyang@xinghe.example.cn"
+  }
+]

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>能力测试 · RAP 专项训练站</title>
+<meta name="description" content="RAP 能力测试：按 WBS 知识点的单选题（点击即判分+解说），以及按统合项目 STEP10 验收拆解的实作检查表与达标判定。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">RAP</span><span class="txt">RAP 专项训练站</span></a>
+    <nav class="main">
+      <a href="index.html">首页</a>
+      <a href="concept.html">概念与架构</a>
+      <a href="project.html">完整项目</a>
+      <a href="handson-1.html">手顺① 数据模型</a>
+      <a href="handson-2.html">手顺② CDS 视图</a>
+      <a href="handson-3.html">手顺③ RAP 行为</a>
+      <a href="handson-4.html">手顺④ 服务与 Fiori</a>
+      <a href="code.html">项目代码</a>
+      <a class="active" href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">首页</a> / 能力测试</div>
+<main class="page"><article>
+
+<h1>能力测试（RAP）</h1>
+<div class="box info"><b class="t">怎么用</b>
+分「A. 笔试（单选，点击即判分）」与「B. 实作验收（按统合项目 STEP10 的检查表）」。笔试 ≥75% 且实作清单全勾 ⇒ 判定「具备 RAP 基础开发能力」。测试知识点均来自 WBS PH3（3.1〜3.8）。</div>
+
+<h2>A. 笔试（30 题）</h2>
+
+<h3>A1 概念与架构（对应 concept / WBS 2.3）</h3>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag amber">WBS 2.3</span></div>
+  <h4>1. RAP 中，从数据库表到 Fiori 的标准链路顺序是？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">表 → Behavior → CDS → Service Binding → OData V4</div>
+    <div class="opt" data-key="B">表 → Interface CDS → Projection CDS → Behavior → Service Definition → Service Binding → OData V4 → Fiori Elements</div>
+    <div class="opt" data-key="C">表 → SEGW → OData V2 → Fiori Elements</div>
+    <div class="opt" data-key="D">CDS → 表 → ABAP 报表 → SM30</div>
+  </div>
+  <div class="explain">WBS 2.3 给出的主线：Table → Interface CDS (ZI) → Projection CDS (ZC) → Behavior → Service Definition → Service Binding → OData V4 → Fiori Elements。SEGW/OData V2 是旧路线。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag teal">Sheet「RAP Layer」</span></div>
+  <h4>2. Sheet「RAP Layer」中，下列“层 → 对象类型”对应正确的是？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">BO 层 → Service Binding</div>
+    <div class="opt" data-key="B">消费层 → Behavior Definition</div>
+    <div class="opt" data-key="C">服务层 → Root View Entity</div>
+    <div class="opt" data-key="D">BO 层 → Behavior Definition；消费层 → Projection View；服务层 → Service Definition / Binding</div>
+  </div>
+  <div class="explain">Basic/Interface 层放 Root View Entity，BO 层放 Behavior Definition，Consumption 层放 Projection View，Service 层放 Service Definition / Binding，UI 层是 Fiori Elements。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag amber">WBS 1.4</span></div>
+  <h4>3. VDM 命名中 I / C / P 分别代表？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">Interface / Check / Private</div>
+    <div class="opt" data-key="B">Input / Consumption / Public</div>
+    <div class="opt" data-key="C">Interface（接口）/ Consumption（消费投影）/ Private（私有）</div>
+    <div class="opt" data-key="D">Internal / Central / Projection</div>
+  </div>
+  <div class="explain">I_ 接口视图（可带行为）、C_ 消费视图（供 UI/OData）、P_ 私有视图。WBS 1.4 要求 ZI_→ZC_→ZP_ 三层都能说明。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag red">必考</span></div>
+  <h4>4. Composition 与 Association 的本质区别是？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">Composition = 整体-部分（子随父增删，级联）；Association = 独立对象间的引用（可 to-one/to-many）</div>
+    <div class="opt" data-key="B">两者相同，只是写法不同</div>
+    <div class="opt" data-key="C">Association 有生命周期，Composition 没有</div>
+    <div class="opt" data-key="D">Composition 只能用于报表，Association 用于事务</div>
+  </div>
+  <div class="explain">Composition 是包含关系（父删则子级联删、不能脱离父创建），Association 只是导航引用。订单头→明细用 Composition，订单头→供应商用 Association（WBS 1.2）。</div>
+</div>
+
+<h3>A2 CDS / 数据模型（对应手顺② / WBS 3.1）</h3>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">CDS</span><span class="tag amber">WBS 3.1</span></div>
+  <h4>5. 要作为 RAP 的 root BO（可在其上创建 BDEF），CDS 必须是？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">任意 view entity</div>
+    <div class="opt" data-key="B">define root view entity（根视图实体）</div>
+    <div class="opt" data-key="C">define table</div>
+    <div class="opt" data-key="D">SE11 的经典视图（/nSE11 View）</div>
+  </div>
+  <div class="explain">只有 root view entity 才能承载 behavior（BDEF 的根实体）。SE11 旧视图与 CDS view entity 是不同体系（WBS 1.1 备注）。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">CDS</span><span class="tag amber">WBS 3.1</span></div>
+  <h4>6. RAP BO 根实体的数据源（select from）应该是什么？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">SAP 标准表 EKKO（直接改标准）</div>
+    <div class="opt" data-key="B">任意 JOIN 的复合视图</div>
+    <div class="opt" data-key="C">自定义 Z 表（如 z_po_hdr），managed 场景下实体字段与表字段对应</div>
+    <div class="opt" data-key="D">透明表 + 附加结构即可，来源无所谓</div>
+  </div>
+  <div class="explain">Managed RAP 中根实体通常直接基于一张表（或映射到表字段），行为由框架生成 SQL。WBS 3.1 备注：先用 Z 表练手，不要直接在标准 EKKO 上建（需 unmanaged 等特殊处理）。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">CDS</span></div>
+  <h4>7. Data Preview 的作用是？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">不用激活服务就能查看 CDS 视图的结果数据，快速验证 join/关联/过滤</div>
+    <div class="opt" data-key="B">给表自动生成 Fiori 应用</div>
+    <div class="opt" data-key="C">检查 ABAP 语法</div>
+    <div class="opt" data-key="D">发布 OData 服务</div>
+  </div>
+  <div class="explain">Data Preview 是 ADT 内置的结果预览。WBS 1.1/3.1 用它在写 BDEF 前先确认数据正确。</div>
+</div>
+
+<h3>A3 Behavior 定义与实现（对应手顺③ / WBS 3.2〜3.7）</h3>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">BDEF</span><span class="tag amber">WBS 3.2</span></div>
+  <h4>8. BDEF 写 managed implementation 意味着？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">所有 CRUD 由开发者手写 SQL</div>
+    <div class="opt" data-key="B">标准 CRUD、保存、锁等由 RAP 框架自动处理</div>
+    <div class="opt" data-key="C">只能读不能写</div>
+    <div class="opt" data-key="D">必须使用 BAPI</div>
+  </div>
+  <div class="explain">Managed = 框架替你完成 create/update/delete 与 DB 持久化（WBS 3.2 备注「managed=フレームワークがDB保存を担う」）。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">BDEF</span><span class="tag red">必考</span></div>
+  <h4>9. field ( readonly : update ) PoNum 的含义是？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">永远可写</div>
+    <div class="opt" data-key="B">永远只读</div>
+    <div class="opt" data-key="C">创建时可提供（或由编号填充），更新时客户端不可改</div>
+    <div class="opt" data-key="D">只在删除时可写</div>
+  </div>
+  <div class="explain">readonly:update = 创建阶段允许赋值，更新阶段只读。主键（如订单号）通常这样设，配合 early numbering。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">Draft</span><span class="tag amber">WBS 3.5</span></div>
+  <h4>10. 启用 draft 后，“保存”与“正式生效”如何区分？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">保存直接写正式表，无需其他步骤</div>
+    <div class="opt" data-key="B">保存 = 写日志</div>
+    <div class="opt" data-key="C">只有管理员能 Activate</div>
+    <div class="opt" data-key="D">普通保存只存草稿表，点击 Activate（激活）后才写入正式表</div>
+  </div>
+  <div class="explain">Draft 的 Save 只落草稿表；Activate 才写正式表。BDEF 中启用后框架自动生成草稿表并提供 Edit/Activate/Discard/Resume。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">Determination</span><span class="tag amber">WBS 3.3</span></div>
+  <h4>11. Determination（派生/默认值）与 Validation（校验）的触发时机区别是？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">Determination 在 modify 时（如 create）触发；Validation 在 save 时触发</div>
+    <div class="opt" data-key="B">Validation 在 create 触发；Determination 在 save 触发</div>
+    <div class="opt" data-key="C">两者都在 save 后触发</div>
+    <div class="opt" data-key="D">两者没有区别</div>
+  </div>
+  <div class="explain">Determination 用 <code>on modify</code>（自动补默认值：日期/创建人/状态）；Validation 用 <code>on save</code>（提交前检查：金额&gt;0、供应商存在等）。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">Validation</span><span class="tag amber">WBS 3.3</span></div>
+  <h4>12. 校验失败时，handler 如何通知调用方？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">直接 RAISE EXCEPTION 即可</div>
+    <div class="opt" data-key="B">写 MESSAGE ... TYPE 'E'</div>
+    <div class="opt" data-key="C">同时往 failed-xxx 与 reported-xxx（含 %msg）里追加条目</div>
+    <div class="opt" data-key="D">更新数据库回滚标志</div>
+  </div>
+  <div class="explain">RAP 用 failed（哪条数据失败）+ reported（对应消息，%msg 用 new_message_with_text 等构造）两个隐式参数传达错误。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">Action</span><span class="tag amber">WBS 3.6</span></div>
+  <h4>13. 声明 <code>action ConfirmOrder result [1] self</code> 的效果是？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">动作不能返回值</div>
+    <div class="opt" data-key="B">动作执行后把更新后的自身实体作为 result 返回，UI 可立即刷新该行</div>
+    <div class="opt" data-key="C">必须返回一个新实体类型</div>
+    <div class="opt" data-key="D">自动弹出报表</div>
+  </div>
+  <div class="explain">result [1] self = 把当前实体（更新后）返回给调用方。这正是 WBS 3.6 备注「Action後のRefreshはResponse Entityで制御」。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">Numbering</span><span class="tag amber">WBS 3.7</span></div>
+  <h4>14. Managed BO + draft 场景，主键编号一般用哪种？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">只能 late numbering</div>
+    <div class="opt" data-key="B">编号只能在 SAVE 后由数据库自增</div>
+    <div class="opt" data-key="C">必须手工输入，无法自动</div>
+    <div class="opt" data-key="D">UUID（managed numbering）或早编号 early numbering（CREATE 时即获得主键）</div>
+  </div>
+  <div class="explain">Draft 行也需要主键，因此主键必须在 CREATE 时就确定：UUID 由框架生成，或 CHAR 主键用 early numbering + 番号范围。late numbering 是 unmanaged 的 SAVE 序列概念。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">Numbering</span><span class="tag amber">WBS 3.7</span></div>
+  <h4>15. early numbering 方法（FOR NUMBERING）把新主键告诉框架的途径是？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">把带 %cid 与主键的行追加到 mapped-实体 参数</div>
+    <div class="opt" data-key="B">直接 UPDATE 数据库</div>
+    <div class="opt" data-key="C">修改 entities 参数本身</div>
+    <div class="opt" data-key="D">调用 BAPI_PO_CREATE</div>
+  </div>
+  <div class="explain">编号方法通过 mapped 响应参数返回 %cid ↔ 新主键 的映射；框架据此继续后续操作。禁止在 behavior 方法里直接 UPDATE 表。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">Draft</span><span class="tag red">必考</span></div>
+  <h4>16. 关于 early numbering 与番号范围的跳号（gap）现象：</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">不会有跳号，号码保证连续</div>
+    <div class="opt" data-key="B">号码在创建草稿时就消耗，放弃草稿会造成跳号——这是正常行为</div>
+    <div class="opt" data-key="C">跳号说明程序有 bug</div>
+    <div class="opt" data-key="D">跳号会导致激活失败</div>
+  </div>
+  <div class="explain">Early numbering 在 CREATE 时取号，草稿被丢弃则号被浪费 → 跳号。生产上若必须无跳号（如发票号），需用 late numbering（unmanaged）或特殊设计。</div>
+</div>
+
+<h3>A4 服务 / Fiori（对应手顺④ / WBS 3.4、PH4 最小集）</h3>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">Projection</span><span class="tag amber">WBS 3.4</span></div>
+  <h4>17. Projection 视图（ZC_）的作用是？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">保存业务数据</div>
+    <div class="opt" data-key="B">实现行为逻辑</div>
+    <div class="opt" data-key="C">按服务/UI 裁剪字段并附加 UI 注解、值帮助，行为继承自下层 BO</div>
+    <div class="opt" data-key="D">生成番号范围</div>
+  </div>
+  <div class="explain">ZC_ 是“消费投影”：只读投影 BO 视图的字段/关联，可加 @UI/@Consumption 注解；事务行为由下层 BDEF 提供。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">Service</span><span class="tag red">必考</span></div>
+  <h4>18. Service Definition 与 Service Binding 的区别是？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">没有区别</div>
+    <div class="opt" data-key="B">Binding 定义实体，Definition 定义协议</div>
+    <div class="opt" data-key="C">Definition 只用于 OData V2</div>
+    <div class="opt" data-key="D">Definition 声明暴露哪些实体；Binding 把服务绑定到具体协议（OData V4 UI/API）并生成 URL</div>
+  </div>
+  <div class="explain">SD 选实体（expose），SB 定协议（OData V4 UI/API）并产出可调用 URL。WBS 3.4：Binding 预览能看到 Fiori 列表即成功。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">Fiori</span></div>
+  <h4>19. 想让某字段出现在 Fiori Elements 列表列，最直接注解是？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">@UI.lineItem</div>
+    <div class="opt" data-key="B">@UI.selectionField</div>
+    <div class="opt" data-key="C">@Semantics.amount</div>
+    <div class="opt" data-key="D">@Search.searchable</div>
+  </div>
+  <div class="explain">lineItem = 列表列；selectionField = 搜索/筛选字段；两者可以同时出现在同一字段上（列表又筛选项）。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">Fiori</span><span class="tag amber">WBS 4.3</span></div>
+  <h4>20. 给供应商代码做 F4 值帮助（下拉选择）应使用？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">@UI.hidden</div>
+    <div class="opt" data-key="B">@AbapCatalog.sqlViewName</div>
+    <div class="opt" data-key="C">@Consumption.valueHelpDefinition（引用一个 CDS 值帮助视图）</div>
+    <div class="opt" data-key="D">@ObjectModel.query.implementedBy</div>
+  </div>
+  <div class="explain">valueHelpDefinition 指向一个可作为值帮助的 CDS（本站供应商主数据视图），UI 弹出选择列表。（WBS 4.3 自建 ZVH_VENDOR 同思路。）</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">OData</span></div>
+  <h4>21. RAP 生成的 OData 版本与站点关系是？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">只能生成 OData V2</div>
+    <div class="opt" data-key="B">通过 Service Binding 选 OData V4（UI/API），配合 Fiori Elements；SEGW 是旧的 V2 路线</div>
+    <div class="opt" data-key="C">OData V4 只能手动写</div>
+    <div class="opt" data-key="D">与 CDS 注解无关</div>
+  </div>
+  <div class="explain">RAP 面向 OData V4，Binding 时选 UI/API 类型；SEGW(V2) 是 WBS Phase2 的旧概念。</div>
+</div>
+
+<h3>A5 项目综合（对应 code / 统合项目）</h3>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">综合</span><span class="tag amber">统合 STEP4</span></div>
+  <h4>22. 在统合项目 STEP4 中，BIL 里“金额必须大于 0”应实现为？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">Determination on modify</div>
+    <div class="opt" data-key="B">early numbering</div>
+    <div class="opt" data-key="C">Association 的 ON 条件</div>
+    <div class="opt" data-key="D">子实体的 Validation（on save 检查 net_price/qty）</div>
+  </div>
+  <div class="explain">“金额&gt;0”是数据正确性校验，属于 validation on save（本站 validateItemAmount）。determination 是用来赋默认值的。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">综合</span><span class="tag amber">统合 STEP4/6</span></div>
+  <h4>23. “確定订单”按钮把状态从 NEW 改成 CONFIRMED，实现载体是？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">BDEF 里声明 action，BIL 实现修改状态并返回 self</div>
+    <div class="opt" data-key="B">直接 UPDATE z_po_hdr 的 ABAP 报表</div>
+    <div class="opt" data-key="C">CDS 的 WHERE 条件</div>
+    <div class="opt" data-key="D">SE16N 手工维护</div>
+  </div>
+  <div class="explain">RAP 中“有副作用的业务动作”＝ Action（instance action）。UI 按钮通过注解 dataAction 绑定到 ConfirmOrder。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">综合</span><span class="tag amber">统合 STEP10</span></div>
+  <h4>24. 统合项目最终验收（STEP10）的第一步是？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">打印 PDF</div>
+    <div class="opt" data-key="B">在 Fiori 画面新建一张采购订单</div>
+    <div class="opt" data-key="C">删除所有测试数据</div>
+    <div class="opt" data-key="D">创建番号范围</div>
+  </div>
+  <div class="explain">STEP10：①新建购买订单 → ②明细 2 行 → ③Draft 保存→Activate → ④確定按钮→CONFIRMED → ⑤（后续扩展的 PDF 输出）→ ⑥扩展字段保存显示。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">综合</span><span class="tag amber">WBS 3.8</span></div>
+  <h4>25. 在 RAP 中做行级/实例级权限（如按购买组织限制），正确做法是？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">SE16N 设授权</div>
+    <div class="opt" data-key="B">在 CDS WHERE 里写死用户</div>
+    <div class="opt" data-key="C">BDEF 声明 authorization master + BIL 实现 get_instance_authorizations / 检查授权对象，配合 PFCG 角色与 DCL</div>
+    <div class="opt" data-key="D">给 SAP_ALL 所有人</div>
+  </div>
+  <div class="explain">RAP 权限 = DCL（读）+ behavior 授权控制（写/动作）+ PFCG 角色。开发期常先用 #NOT_REQUIRED 跳过（WBS 1.6 备注）。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">综合</span><span class="tag red">必考</span></div>
+  <h4>26. EML（Entity Manipulation Language）能做什么？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">只能在 Fiori 里用</div>
+    <div class="opt" data-key="B">直接改 SAP 标准表</div>
+    <div class="opt" data-key="C">代替 SE11 建表</div>
+    <div class="opt" data-key="D">在 ABAP 程序中用 MODIFY/READ ENTITIES 对 BO 做增删改查（含 action/draft）</div>
+  </div>
+  <div class="explain">EML 是 ABAP 代码操作 BO 的官方接口（CREATE / READ / UPDATE / DELETE / EXECUTE action / draft 控制），本站代码页的 ZRAP_EML_DEMO 即示例。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">综合</span></div>
+  <h4>27. RAP 开发中最推荐的起步方式是（WBS 备注）？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">用 Generator/Quick Assist 自动生成骨架 → 读代码 → 手动修改</div>
+    <div class="opt" data-key="B">从零手写全部 DDL</div>
+    <div class="opt" data-key="C">只改 SAP 标准程序</div>
+    <div class="opt" data-key="D">不建包直接用 $TMP</div>
+  </div>
+  <div class="explain">WBS 备注与 Tips：生成器生成 → 代码解读 → 手修正的顺序最不容易卡住（STEP4 卡住的人最多）。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">综合</span><span class="tag red">必考</span></div>
+  <h4>28. 关于行为实现类（BIL）中直接写 SQL UPDATE 表：</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">推荐，性能好</div>
+    <div class="opt" data-key="B">禁止——应通过 EML（MODIFY ENTITIES / IN LOCAL MODE）操作，由框架统一处理锁与 draft</div>
+    <div class="opt" data-key="C">只在 validation 里可以</div>
+    <div class="opt" data-key="D">必须用 SE38 程序代替</div>
+  </div>
+  <div class="explain">Managed RAP 中直接 UPDATE 会绕过框架（锁、草稿、etag 全失效）。读可以 SELECT，写一律走 EML。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">Draft</span></div>
+  <h4>29. 激活 BDEF（含 draft）后，草稿表从哪来？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">需要手工去 SE11 一张张建</div>
+    <div class="opt" data-key="B">不需要表，草稿存内存</div>
+    <div class="opt" data-key="C">ADT 激活时自动生成（必要时用 Quick Assist 补建/重建）</div>
+    <div class="opt" data-key="D">草稿表就是正式表本身</div>
+  </div>
+  <div class="explain">启用 draft 后框架/ADT 自动维护草稿表（形如实体名_D）。若报 draft table 相关错误，用 Ctrl+1 的 Quick Assist。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">综合</span><span class="tag amber">WBS 3.4</span></div>
+  <h4>30. Service Binding 预览成功打开 Fiori Elements 列表，说明？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">Fiori 前端代码写完</div>
+    <div class="opt" data-key="B">CDS 层可以删了</div>
+    <div class="opt" data-key="C">无需再做测试</div>
+    <div class="opt" data-key="D">OData V4 服务发布成功、实体可被前端消费——RAP 全链路已打通（WBS 3.4 完成基准）</div>
+  </div>
+  <div class="explain">“UI5 Preview が動けば OData V4 生成成功”（WBS 3.4）。列表可开 = 服务通了；之后重点是行为验收（CRUD/action/draft）。</div>
+</div>
+
+<h2>B. 实作验收检查表（对应统合项目 STEP10 与 WBS 完了基準）</h2>
+<div class="box info"><b class="t">做法</b>在真实 S/4 系统按顺序完成下列动作并勾选。全部完成 ⇒ 通过统合项目 RAP 部分的最终验收。</div>
+<table class="tbl" id="accept">
+<tr><th>#</th><th>验收动作（期望结果）</th><th>对应</th><th>确认</th></tr>
+<tr><td>1</td><td>ADT 中创建/打开包 Z_WBS_DEV，对象在 Transport Request 上</td><td>PH0.2</td><td>□</td></tr>
+<tr><td>2</td><td>三张 Z 表激活，SE16N 可见数据（≥5 条）</td><td>STEP1</td><td>□</td></tr>
+<tr><td>3</td><td>ZR_ZPOHEADER / ZR_ZPOITEM / ZR_VENDOR_TXT 激活，Data Preview 有数据、关联可导航</td><td>STEP2</td><td>□</td></tr>
+<tr><td>4</td><td>BDEF（managed+draft）激活，草稿表自动生成无报错</td><td>WBS 3.2/3.5</td><td>□</td></tr>
+<tr><td>5</td><td>创建订单自动带出：订单号（编号）、日期、创建人、状态 NEW</td><td>WBS 3.3/3.7</td><td>□</td></tr>
+<tr><td>6</td><td>明细金额/数量 ≤0 → 保存报错；供应商不存在 → 报错</td><td>WBS 3.3</td><td>□</td></tr>
+<tr><td>7</td><td>对 NEW 订单执行 ConfirmOrder → CONFIRMED；再执行 → 报错</td><td>WBS 3.6</td><td>□</td></tr>
+<tr><td>8</td><td>Service Binding 激活，Fiori Elements Preview 可打开</td><td>WBS 3.4</td><td>□</td></tr>
+<tr><td>9</td><td>UI：新建（抬头+2 明细）→ Draft 保存 → Activate → 状态变化可见</td><td>STEP6/STEP10</td><td>□</td></tr>
+<tr><td>10</td><td>能向他人讲解：层与对象命名、managed、draft、为什么不用 direct UPDATE</td><td>全 PH3</td><td>□</td></tr>
+</table>
+
+<div class="box ok"><b class="t">判定基准（参考 WBS ①「完了基準」精神）</b>
+笔试 ≥75% 且 实作 10 项全勾：具备 RAP 基础开发能力 → 可进入统合项目后续扩展（Developer 扩展 / SVF 报表，不在本站）。
+笔试 ≥60%：概念大体清楚，建议回看对应手顺（错题知识点旁有 tag 指引）。</div>
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>RAP 专项训练站</h5><p>基于《SAP_S4HANA_BTP-学習WBS.xlsx》整理。</p></div>
+  <div class="cols">
+    <div><h5>手顺</h5><a href="handson-1.html">① 数据模型</a><br><a href="handson-2.html">② CDS 视图</a><br><a href="handson-3.html">③ RAP 行为</a><br><a href="handson-4.html">④ 服务与 Fiori</a></div>
+    <div><h5>其他</h5><a href="project.html">完整项目</a><br><a href="code.html">项目代码</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/quiz.js"></script>
+<script src="assets/main.js"></script>
+</body>
+</html>

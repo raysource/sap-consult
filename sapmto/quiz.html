@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>能力测试 · SAP S/4HANA SD 受注生産（MTO）实战训练站</title>
+<meta name="description" content="SD 受注生産（MTO）能力测试：28 题概念 / 配置 / 流程 / 故障选择题（点击判分 + 解说）＋ 实机验收清单与合格判定标准。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/mto.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MTO</span><span class="txt">SD 受注生産 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①受注</a>
+      <a href="handson-2.html">②MRP</a>
+      <a href="handson-3.html">③出入库</a>
+      <a href="handson-4.html">④出货</a>
+      <a href="handson-5.html">⑤发展</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a class="active" href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 能力测试</div>
+<main class="page"><article>
+
+<h1>能力测试（28 题 + 实机验收）</h1>
+<div class="box info"><b class="t">用法</b>
+每题点击一个选项即判分并显示解说，页面顶部显示累计成绩。<b>合格判定：正确率 ≥75%（21/28）+ 实机验收清单全部勾上</b>。
+60〜74% 请回对应页面重读；&lt;60% 请从 <a href="concept.html">概念与设计</a> 重来一遍。<br>
+解说里的标准值同样是「通常情况」——考试式的死记没有意义，<b>要能说出「怎么在系统里验证」</b>。</div>
+
+<h2>一、概念（1〜10）</h2>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">MTO 的本质</span></div>
+  <h4>1. SAP 的「受注生産（MTO）」与見込生産（MTS）最本质的差别是？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 受注生産不需要跑 MRP</div>
+    <div class="opt" data-key="B">B. 受注生産不能按标准价格评价</div>
+    <div class="opt" data-key="C">C. 需求与库存按「受注明細」切分（得意先個別在庫・特別在庫区分 E）</div>
+    <div class="opt" data-key="D">D. 受注生産只能用戦略グループ 82</div>
+  </div>
+  <div class="explain">MTO 的核心是「按单切分」：需求（得意先所要量）与库存（受注在庫 E）都挂在受注明細上，别的受注不能占用。MRP 照跑（战略 20），评价与否取决于所要量クラス（战略 82 只是「何时建指图」的另一选项）。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">特別在庫</span></div>
+  <h4>2. 特别库存区分 <code>E</code> 指的是？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 外注先預託在庫（下請在庫）</div>
+    <div class="opt" data-key="B">B. 得意先個別在庫（受注在庫・sales order stock）</div>
+    <div class="opt" data-key="C">C. プロジェクト在庫</div>
+    <div class="opt" data-key="D">D. 返品在庫</div>
+  </div>
+  <div class="explain">E = 得意先（受注）ごとの個別在庫で、受注番号 + 明細番号に紐づきます。数量は <code>MSKA</code>、集計は <code>VBBS</code>、所要は <code>VBBE</code> で確認できます（Q = プロジェクト在庫、K = 預託在庫）。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">戦略グループ</span></div>
+  <h4>3. 戦略グループ 20（受注生産）について正しいのは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 受注を起点に計画し、計画独立所要量（PIR）は使わない</div>
+    <div class="opt" data-key="B">B. PIR を登録しないと計画手配が生まれない</div>
+    <div class="opt" data-key="C">C. 受注保存と同時に製造指図が自動作成される</div>
+    <div class="opt" data-key="D">D. 自由在庫で運用するので個別在庫は不要</div>
+  </div>
+  <div class="explain">战略 20 = 受注を起点，不使用 PIR（这就是 MTO 与 MTS 的计划起点差异）。「受注保存と同時に指図」是战略 82（組立処理）的特征。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">E 特在の成立条件</span></div>
+  <h4>4. 受注在庫（E）を成立させるために必要なのは、次のうちどれ？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 品目マスタの MRP タイプを ND（計画なし）にする</div>
+    <div class="opt" data-key="B">B. 明細カテゴリの「納入日程行許可」を OFF にする</div>
+    <div class="opt" data-key="C">C. 納入日程行カテゴリの在庫確認を必ず ON にする</div>
+    <div class="opt" data-key="D">D. 品目マスタ MRP4 の「個別/包括所要量」を個別所要量にし、所要量クラスに個別在庫の設定があり、明細カテゴリで特別在庫 E を持つ</div>
+  </div>
+  <div class="explain">三方都要到齐：① MRP4 個別所要量（数量的区分）② 所要量クラス（個別在庫・評価・MRP 転送的规则）③ 明細カテゴリの特別在庫 E（VBAP-SOBKZ）。ND は計画手配を生まないので論外，納入日程行許可 OFF は需要が MRP に届かなくなります。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">決定の順序</span></div>
+  <h4>5. 所要量タイプ（requirement type）の決定順序として正しいのは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 必ず明細カテゴリ + MRP タイプで決まる（戦略グループは使われない）</div>
+    <div class="opt" data-key="B">B. まず品目マスタの戦略グループから決定し、戦略グループが無い場合に明細カテゴリ + MRPタイプ（OVZI）で決定する</div>
+    <div class="opt" data-key="C">C. 販売伝票タイプだけで決まる</div>
+    <div class="opt" data-key="D">D. 出荷タイプと請求タイプで決まる</div>
+  </div>
+  <div class="explain">SAP Help「Determination of the Requirements Type」：まず品目マスタの戦略グループから所要量タイプを決定。フォールバックとして <code>OVZI</code>（明細カテゴリ + MRPタイプ）があり、「起点（origin）」列の値でどちらを使うかを制御します。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">明細カテゴリの決定</span></div>
+  <h4>6. 明細カテゴリを決定する 4 つのキーとは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 販売組織 + 販売チャネル + 部門 + 得意先</div>
+    <div class="opt" data-key="B">B. 明細カテゴリ + MRP タイプ</div>
+    <div class="opt" data-key="C">C. 販売伝票タイプ + 品目カテゴリグループ + 用途 + 上位明細の明細カテゴリ</div>
+    <div class="opt" data-key="D">D. 品目タイプ + プラント + 保管場所 + 品目グループ</div>
+  </div>
+  <div class="explain">4 键来自 <code>VOV4</code> 的设置：販売伝票タイプ + 品目カテゴリグループ（品目マスタ 販売組織2）+ 用途 + 上位明細の明細カテゴリ。空字段也参与匹配。B 是納入日程行カテゴリ的决定键（<code>VOV5</code>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">納入日程行カテゴリ</span></div>
+  <h4>7. 受注の需要が MRP（MD04）に伝わるかどうかを決めるのは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 納入日程行カテゴリの「所要量転送」</div>
+    <div class="opt" data-key="B">B. 明細カテゴリの「価格設定」</div>
+    <div class="opt" data-key="C">C. 販売伝票タイプの番号範囲</div>
+    <div class="opt" data-key="D">D. 品目マスタの品目グループ</div>
+  </div>
+  <div class="explain">需求传递的开关落在納入日程行カテゴリ（<code>VOV6</code>）：所要量転送（<code>TVEP-BEDSD</code>）。在庫確認（ATPPR）与移動タイプ也在同一个对象上控制。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">所要量クラス</span></div>
+  <h4>8. 所要量クラス（requirements class）がコントロールしないものは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 個別在庫（特別在庫 E）を使うか</div>
+    <div class="opt" data-key="B">B. MRP への所要量転送</div>
+    <div class="opt" data-key="C">C. 在庫確認の要否・評価区分</div>
+    <div class="opt" data-key="D">D. 明細の単価（価格条件 PR00 の金額）</div>
+  </div>
+  <div class="explain">金额来自价格条件（<code>V/06</code>/<code>V/08</code>/<code>VK11</code>），与所要量クラス无关。所要量クラス控制的是需求种类、个别库存、MRP 连携、ATP、评价、原价计算等「需求的下游行为」。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">S/4HANA</span></div>
+  <h4>9. SAP S/4HANA Cloud Public Edition の MTO シナリオで前提とされる受注在庫の扱いは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 非評価の受注在庫（金額を持たない）</div>
+    <div class="opt" data-key="B">B. 評価付の販売伝票在庫（所要量クラス 046・評価区分 M など）</div>
+    <div class="opt" data-key="C">C. 受注在庫は使わず、自由在庫で代替する</div>
+    <div class="opt" data-key="D">D. プロジェクト在庫（Q）に置き換える</div>
+  </div>
+  <div class="explain">SAP Help（Cloud・Production Accounting）的 MTO 场景以「評価付販売伝票在庫」为前提：MRP4 を個別所要量にし、所要量クラスで評価区分 M・原価計算 B（例 <code>046</code>）を使い、製造指図で原価を集めて分析します。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">組立処理</span></div>
+  <h4>10. 戦略グループ 82（組立処理）の標準的な組み合わせは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 所要量タイプ KE / 所要量クラス 040 / 指図タイプ PP01</div>
+    <div class="opt" data-key="B">B. 所要量タイプ KEK / 所要量クラス 046 / 指図タイプ PP01</div>
+    <div class="opt" data-key="C">C. 所要量タイプ KMFA / 所要量クラス 201 / 指図タイプ PP04</div>
+    <div class="opt" data-key="D">D. 所要量タイプ LSF / 所要量クラス 010 / 指図タイプ PP01</div>
+  </div>
+  <div class="explain">SAP Help「Special Settings for Production Orders」明确列出：戦略グループ 82 → 所要量タイプ <code>KMFA</code>、所要量クラス <code>201</code>、指図タイプ <code>PP04</code>（静的手法＝指図と受注 1:1）。KEK/046 是 VC 的受注生産（战略 25）方向。</div>
+</div>
+
+<h2>二、配置（11〜20）</h2>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">配置</span><span class="tag">品目マスタ</span></div>
+  <h4>11. 品目カテゴリグループ（明細カテゴリ決定のキー）はどのビューにある？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 販売組織ビュー2</div>
+    <div class="opt" data-key="B">B. MRP1</div>
+    <div class="opt" data-key="C">C. 会計ビュー1</div>
+    <div class="opt" data-key="D">D. 基本データ1</div>
+  </div>
+  <div class="explain">在 販売組織ビュー2（它是按销售区域维护的，所以同一品目在不同销售组织可以表现不同）。<code>MM01/MM02/MM03</code> 的 販売組織2 画面可以查看。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">配置</span><span class="tag">品目マスタ</span></div>
+  <h4>12. 「個別/包括所要量」を設定するのはどのビュー？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 販売組織1</div>
+    <div class="opt" data-key="B">B. MRP1</div>
+    <div class="opt" data-key="C">C. MRP3</div>
+    <div class="opt" data-key="D">D. MRP4</div>
+  </div>
+  <div class="explain">MRP4 的「個別/包括所要量」＝ 個別所要量のみ にすると、その品目的需求与库存按受注区分（＝E 特在的前提）。MRP3 上是 戦略グループ、在庫確認。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">配置</span><span class="tag">T-code</span></div>
+  <h4>13. 明細カテゴリの<b>定義</b>を行うトランザクションは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. VOV4</div>
+    <div class="opt" data-key="B">B. VOV7</div>
+    <div class="opt" data-key="C">C. VOV5</div>
+    <div class="opt" data-key="D">D. VOV6</div>
+  </div>
+  <div class="explain"><code>VOV7</code> = 明細カテゴリの定義、<code>VOV4</code> = 明細カテゴリの割当（4 键）、<code>VOV6</code> = 納入日程行カテゴリの定義、<code>VOV5</code> = 納入日程行カテゴリの割当（2 键）。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">配置</span><span class="tag">T-code</span></div>
+  <h4>14. 明細カテゴリと MRP タイプから所要量タイプを決定する設定は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. OPPS</div>
+    <div class="opt" data-key="B">B. OVZG</div>
+    <div class="opt" data-key="C">C. OVZI</div>
+    <div class="opt" data-key="D">D. OPJH</div>
+  </div>
+  <div class="explain"><code>OVZI</code> 的 IMG 路径是 販売管理 &gt; 基本機能 &gt; 在庫確認と所要量転送 &gt; 所要量転送 &gt; 明細カテゴリと MRP タイプを使用した所要量タイプの決定。
+<code>OVZG</code> 是所要量タイプ/クラス的定義、<code>OPPS</code> 是計画方針の定義。若 <code>OVZI</code> 里要加新行却报错，注意 SAP KBA 2197844 的说明。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">配置</span><span class="tag">標準の状況</span></div>
+  <h4>15. 明細カテゴリ <code>TAK</code> について正しい記述は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. SAP 标准系统并没有定义 TAK（SAP Note 2708455），很多项目自己建同名对象</div>
+    <div class="opt" data-key="B">B. TAK 是受注生産の標準明細カテゴリで、必ず存在する</div>
+    <div class="opt" data-key="C">C. TAK は在庫管理不可能なサービス用の明細カテゴリ</div>
+    <div class="opt" data-key="D">D. TAK は販売伝票タイプの標準値で、明細カテゴリではない</div>
+  </div>
+  <div class="explain">SAP Note 2708455 的标题就是「Item category TAK (make-to-order) is not defined in the standard SAP system」。所以本教程用自建的 <code>ZTAK</code>（带 特別在庫 E）来做配置练习，不依赖不存在的标准对象。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">配置</span><span class="tag">明細カテゴリの項目</span></div>
+  <h4>16. 明細カテゴリの定義（VOV7）で、受注在庫に直結する項目は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 価格設定</div>
+    <div class="opt" data-key="B">B. 完了ルール</div>
+    <div class="opt" data-key="C">C. 請求関連</div>
+    <div class="opt" data-key="D">D. 特別在庫（SOBKZ）</div>
+  </div>
+  <div class="explain">明細カテゴリ表 <code>TVAP</code> 里有 <code>SOBKZ</code>（Special Stock Indicator）字段，设成 <code>E</code> 就表示这条明细走受注在庫（受注明細 <code>VBAP-SOBKZ</code>）。所要量転送/在庫確認则落在納入日程行カテゴリ（<code>TVEP-BEDSD/ATPPR</code>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">配置</span><span class="tag">品目カテゴリグループ</span></div>
+  <h4>17. 明細カテゴリグループについて正しいのは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 標準には「受注生産」という専用キーがあり、MTO では必ずそれを使う</div>
+    <div class="opt" data-key="B">B. 標準値（NORM、DIEN、LEIS、ERLA、LUMF など）には MTO 専用のものが無く、必要なら自建する。普通の MTO は 0001/NORM のままでも実現できる</div>
+    <div class="opt" data-key="C">C. 品目カテゴリグループは SAP が固定しており、追加できない</div>
+    <div class="opt" data-key="D">D. 品目カテゴリグループは伝票タイプの一種である</div>
+  </div>
+  <div class="explain">它是 VOV4 的一个决定键（来自品目マスタ 販売組織2），本身只有 キー + 説明 两个字段，可以自建。受注在庫の成否主要由 MRP4 個別所要量 与 所要量クラス 决定，所以 NORM ままでも MTO は成立します。其标准值的实际内容请在自己系统里用 IMG「定義: 明細カテゴリグループ」确认。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">配置</span><span class="tag">計画方針</span></div>
+  <h4>18. 計画方針／計画方針グループを定義・確認するトランザクションは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. OPPS（計画方針の定義）/ OPPJ（計画方針グループの定義）</div>
+    <div class="opt" data-key="B">B. OVZG / OVZI</div>
+    <div class="opt" data-key="C">C. VOV4 / VOV5</div>
+    <div class="opt" data-key="D">D. OBYC / OMS2</div>
+  </div>
+  <div class="explain">戦略グループ → 計画方針 → 所要量タイプ 的链条在 PP 侧用 <code>OPPS</code>（方針）与 <code>OPPJ</code>（方針グループ）维护；<code>OVZG</code>/<code>OVZI</code> 是 SD 侧的所要量タイプ／クラス一侧。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">配置</span><span class="tag">Public Cloud</span></div>
+  <h4>19. SAP S/4HANA Cloud Public Edition で<b>できない</b>ことは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 所要量タイプの決定（明細カテゴリ別）を SSCUI で調整する</div>
+    <div class="opt" data-key="B">B. スコープアイテム BJE / IYT を有効化して MTO プロセスを使う</div>
+    <div class="opt" data-key="C">C. 新しい明細カテゴリや販売伝票タイプを自由に作成する</div>
+    <div class="opt" data-key="D">D. MRP Live ベースのアプリで資材所要量計画を実行する</div>
+  </div>
+  <div class="explain">Public Cloud 的基本规则是「What you see is what you get」：新規の明細カテゴリ／販売伝票タイプは作成できず、SSCUI で調整できる范围内の操作になります（例：SSCUI 105120「明細カテゴリ別の所要量タイプ決定」）。MTO 场景通过 scope item（BJE/IYT/1BM/7DM）交付。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">配置</span><span class="tag">納入日程行カテゴリ</span></div>
+  <h4>20. 納入日程行カテゴリの標準的な設定項目に<b>含まれない</b>ものは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 所要量転送（BEDSD）</div>
+    <div class="opt" data-key="B">B. 在庫確認（ATPPR）</div>
+    <div class="opt" data-key="C">C. 移動タイプ（BWART）・購買発注タイプ</div>
+    <div class="opt" data-key="D">D. 品目カテゴリグループ</div>
+  </div>
+  <div class="explain">品目カテゴリグループは品目マスタ（販売組織2）侧的字段，用于明細カテゴリの決定，不在納入日程行カテゴリ上。納入日程行カテゴリ（表 <code>TVEP</code>）控制的是所要量転送・在庫確認・移動タイプ・購買関連・所要量タイプ等。</div>
+</div>
+
+<h2>三、流程（21〜26）</h2>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">流程</span><span class="tag">受注直後</span></div>
+  <h4>21. 受注を保存した直後に、最初に確認すべきことは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 製造指図ができているか</div>
+    <div class="opt" data-key="B">B. 明細カテゴリ／納入日程行カテゴリ／所要量タイプ、そして MD04 に得意先所要量が出ているか</div>
+    <div class="opt" data-key="C">C. 請求伝票ができているか</div>
+    <div class="opt" data-key="D">D. 受注在庫が入庫されているか</div>
+  </div>
+  <div class="explain">顺序上：受注保存 → 明细属性与所需量传递（MD04 得意先所要量）→ MRP → 指图 → 入库 → 出荷 → 请求。受注直後に指図や在庫を期待するのは、战略 82（組立処理）か、手動で作った場合だけです。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">流程</span><span class="tag">指図と受注の紐づけ</span></div>
+  <h4>22. 完成品が受注在庫（E）へ入庫されるために必須なのは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 出荷伝票を先に作っておくこと</div>
+    <div class="opt" data-key="B">B. MRP を 2 回以上実行すること</div>
+    <div class="opt" data-key="C">C. 製造指図が受注明細を参照していること（CO08 または計画手配からの変換）</div>
+    <div class="opt" data-key="D">D. 受注在庫を評価なしに設定すること</div>
+  </div>
+  <div class="explain">入庫先（受注在庫）は指図側が持つ情報です。<code>CO01</code> など受注参照のない指図は自由在庫に入庫されます（表层面是 <code>AFPO-KDAUF/KDPOS</code> 为空）。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">流程</span><span class="tag">MRP</span></div>
+  <h4>23. S/4HANA の MRP Live（MD01N）について正しいのは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. MRP リストは作成されないので、結果は MD04 などで確認する</div>
+    <div class="opt" data-key="B">B. 結果は MD05 の MRP リストで確認する</div>
+    <div class="opt" data-key="C">C. MRP Live では受注在庫が使えない</div>
+    <div class="opt" data-key="D">D. MRP Live は単品目 MRP であり、プラント全体は処理できない</div>
+  </div>
+  <div class="explain">MRP Live 不生成 MRP 列表（<code>MD05/MD06</code> 系），要看 <code>MD04</code>（或 Fiori 的库存/需求清单应用）。它也能处理计划范围/工厂级别的计划，并非只能单品目（<code>MD02</code> 才是单品目 MRP 的入口）。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">流程</span><span class="tag">移動タイプ</span></div>
+  <h4>24. MTO の主要な移動タイプの組み合わせとして正しいのは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 261＝完成品入庫 / 101＝部品出庫 / 601＝在庫転送</div>
+    <div class="opt" data-key="B">B. 261＝指図への部品出庫 / 101＝指図への完成品入庫 / 601＝出荷の出庫確認</div>
+    <div class="opt" data-key="C">C. 101＝部品出庫 / 601＝完成品入庫 / 261＝返品</div>
+    <div class="opt" data-key="D">D. 301＝部品出庫 / 101＝入庫 / 601＝請求</div>
+  </div>
+  <div class="explain">261 = 指図（製造）への出庫、101 = 指図/購買発注への入庫、601 = 出荷（PGI）の出庫。受注在庫（E）は 101 で増え、601 で減ります。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">流程</span><span class="tag">出荷引当</span></div>
+  <h4>25. 出荷伝票で「引当数量 0」になる典型的な原因は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 請求伝票がまだ作られていない</div>
+    <div class="opt" data-key="B">B. 受注明細の数量が大きすぎる</div>
+    <div class="opt" data-key="C">C. 出荷タイプが LF である</div>
+    <div class="opt" data-key="D">D. 受注在庫（E）に在庫が無い（入庫漏れ・保管場所違い・既に他で消費）</div>
+  </div>
+  <div class="explain">出荷引当的候选是「该受注明細的受注在庫」。<code>MMBE</code> で受注在庫の数量と保管場所を确认 → 無ければ指図の入庫（101）をやり直します。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">流程</span><span class="tag">取消</span></div>
+  <h4>26. 請求まで完了した伝票を巻き戻すときの正しい順序は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. PGI 取消 → 請求取消 → 入庫取消</div>
+    <div class="opt" data-key="B">B. 入庫取消 → 実績取消 → PGI 取消 → 請求取消</div>
+    <div class="opt" data-key="C">C. 請求取消（VF11）→ PGI 取消（VL09）→ 入庫取消（MIGO/MBST）→ 実績取消（CO13）</div>
+    <div class="opt" data-key="D">D. 指図を削除すれば後続伝票は自動で消える</div>
+  </div>
+  <div class="explain">取消必须「逆順」：先在请求侧取消（<code>VF11</code>），再取消 PGI（<code>VL09</code>），再取消入库（<code>MIGO</code>取消/<code>MBST</code>），再取消报工（<code>CO13</code>），最后处理指图。顺序反过来会因后続伝票存在而报错。</div>
+</div>
+
+<h2>四、故障（27〜28）</h2>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">故障</span><span class="tag">MD04</span></div>
+  <h4>27. MD04 に受注の需要が出ているが、計画手配が生成されない。次に疑うのは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 出荷タイプや請求タイプの設定</div>
+    <div class="opt" data-key="B">B. 品目マスタの MRP タイプ／手配タイプ／批量（＝MRP の対象になっているか）</div>
+    <div class="opt" data-key="C">C. 得意先マスタの与信管理</div>
+    <div class="opt" data-key="D">D. 価格条件レコードの有効期間</div>
+  </div>
+  <div class="explain">需求到了 MD04（＝SD 侧成立），但补货元素出不来，问题在 PP 侧的品目设置：MRPタイプ（<code>PD</code> 等）、手配タイプ（<code>E</code>）、ロットサイズ、MRP 対象プラント/エリア。用 <code>MD02</code> 单品目跑一次看结果日志最快。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">故障</span><span class="tag">受注在庫にならない</span></div>
+  <h4>28. 計画手配・製造指図はできたが、入庫が<b>自由在庫</b>に入ってしまう。第一嫌疑は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 品目マスタ MRP4 の「個別/包括所要量」が個別所要量になっていない（または所要量クラスに個別在庫の設定がない／明細の特別在庫が空）</div>
+    <div class="opt" data-key="B">B. 出荷ポイントが決定されていない</div>
+    <div class="opt" data-key="C">C. 請求タイプが F2 でない</div>
+    <div class="opt" data-key="D">D. 保管場所が 0001 でない</div>
+  </div>
+  <div class="explain">「自由在庫に入った」＝ 系統认为这个需求不是个别需求。检查顺序：<code>MM03</code> MRP4 → <code>OVZG</code> 所要量クラス（個別在庫）→ <code>VA03</code> 明細の特別在庫 E（<a href="config.html#c2">C2</a>/<a href="config.html#c10">C10</a>/<a href="config.html#c6">C6</a>）。修正后新建受注重跑流程最干净。</div>
+</div>
+
+<h2>实机验收清单（合格必须全勾）</h2>
+<div class="box ok"><b class="t">✓ 総合验收（把系统里的证据按顺序摘出来，交作业即可）</b>
+<ul class="check">
+  <li><b>配置</b>：<code>VOV7</code> の <code>ZTAK</code>（特別在庫 E）・<code>VOV4</code> の <code>OR + Z001 → ZTAK</code>・<code>VOV6</code> の <code>ZCP</code>（所要量転送 ON）・<code>VOV5</code> の <code>ZTAK + PD → ZCP</code> の 4 点の画面（または SE16N の表証跡）。</li>
+  <li><b>主数据</b>：<code>MM03</code> の 販売組織2 品目カテゴリグループ / MRP3 戦略グループ 20 と在庫確認 / MRP4 個別・包括所要量 の画面。</li>
+  <li><b>受注</b>：受注番号 + <code>VA03</code> の 明細カテゴリ/納入日程行カテゴリ/所要量タイプ + <code>MD04</code> の「得意先所要量 −N PC（受注番号付き）」。</li>
+  <li><b>MRP/指図</b>：<code>MD04</code> の計画手配（在庫区分＝受注在庫）または <code>CO03</code> の受注明細参照 + 構成品目（数量）。</li>
+  <li><b>製造</b>：261 出庫と 101 入庫の物料传票番号 + <code>MMBE</code> の受注在庫（E）数量。</li>
+  <li><b>販売</b>：出荷伝票（在庫区分 E）+ PGI 後の受注在庫 0 + 請求伝票の金額。</li>
+  <li><b>伝票フロー</b>：<code>VA03</code> → 環境 → 伝票フロー で 受注 → 指図 → 入庫 → 出荷 → 請求 が全部つながった画面。</li>
+  <li><b>故障</b>：この実習中に発生した問題を 1 つ以上、症状 / 根因 / 证据 T-code の 3 点で記述した。</li>
+</ul></div>
+<div class="box info"><b class="t">合格判定</b>
+選択問題 <b>≥75%（21/28）</b>＋ 上記実機验收清单 <b>全項目</b>が証跡つきで説明できること。
+両方満たしたら、この「SD 受注生産（MTO）」场景已经是可以讲给别人听的水平了——下一步建议把它扩到<b>受注設計生産（ETO/PS）</b>或<b>バリアント設定付き受注生産（VC）</b>，那两条路可以复用本站在这里打下的全部基础。</div>
+
+<div class="box info"><b class="t">回头复习</b>
+<a href="concept.html">概念与设计</a>（机制与决定链）／<a href="config.html">练习配置手顺</a>（C0〜C17）／<a href="handson-5.html#trouble">故障对照表</a>。</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SD 受注生産（MTO）实战训练站</h5><p>能力测试：28 题 + 实机验收清单。合格线 75% 且验收全项。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 受注と所要量</a><br><a href="handson-2.html">② MRP と製造指図</a><br><a href="handson-3.html">③ 出庫と入庫</a><br><a href="handson-4.html">④ 出荷と請求</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">练习配置手顺</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/quiz.js"></script>
+</body>
+</html>

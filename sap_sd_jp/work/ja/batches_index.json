@@ -1,0 +1,92 @@
+[
+ {
+  "batch": "src_00.json",
+  "kind": "src",
+  "n": 32,
+  "chars": 4925
+ },
+ {
+  "batch": "src_01.json",
+  "kind": "src",
+  "n": 74,
+  "chars": 4964
+ },
+ {
+  "batch": "src_02.json",
+  "kind": "src",
+  "n": 92,
+  "chars": 4966
+ },
+ {
+  "batch": "src_03.json",
+  "kind": "src",
+  "n": 122,
+  "chars": 4971
+ },
+ {
+  "batch": "src_04.json",
+  "kind": "src",
+  "n": 215,
+  "chars": 4990
+ },
+ {
+  "batch": "src_05.json",
+  "kind": "src",
+  "n": 188,
+  "chars": 1359
+ },
+ {
+  "batch": "model_00.json",
+  "kind": "model",
+  "n": 28,
+  "chars": 4999
+ },
+ {
+  "batch": "model_01.json",
+  "kind": "model",
+  "n": 46,
+  "chars": 4969
+ },
+ {
+  "batch": "model_02.json",
+  "kind": "model",
+  "n": 66,
+  "chars": 4944
+ },
+ {
+  "batch": "model_03.json",
+  "kind": "model",
+  "n": 88,
+  "chars": 4986
+ },
+ {
+  "batch": "model_04.json",
+  "kind": "model",
+  "n": 110,
+  "chars": 4990
+ },
+ {
+  "batch": "model_05.json",
+  "kind": "model",
+  "n": 136,
+  "chars": 4968
+ },
+ {
+  "batch": "model_06.json",
+  "kind": "model",
+  "n": 169,
+  "chars": 4977
+ },
+ {
+  "batch": "model_07.json",
+  "kind": "model",
+  "n": 264,
+  "chars": 4995
+ },
+ {
+  "batch": "model_08.json",
+  "kind": "model",
+  "n": 472,
+  "chars": 3704
+ }
+]

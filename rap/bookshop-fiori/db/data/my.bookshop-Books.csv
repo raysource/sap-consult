@@ -1,0 +1,6 @@
+ID;title;category;price;currency;stock;status;releaseDate
+550e8400-e29b-41d4-a716-446655440000;SAP CAP Regular Mode Guide;IT;88.50;USD;120;Active;2026-06-14
+6ba7b810-9dad-11d1-80b4-00c04fd430c8;Mastering SAP Fiori Elements;IT;99.00;USD;45;Active;2026-06-15
+7c9e6679-7425-40de-944b-e07fc1f90ae7;Cloud Foundry Architecture Deep Dive;Cloud;120.00;USD;15;Active;2026-03-22
+8f14e45f-ea0f-4b2e-9c3d-1a2b3c4d5e6f;ABAP RAP Cloud Development;IT;75.00;USD;200;Active;2025-11-05
+9f86d081-884c-4b8a-9c3e-2d7f6a5b4c3d;SAP BTP Security Best Practices;Security;110.25;USD;0;OutOfStock;2026-01-10

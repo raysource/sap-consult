@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理会計 CO（Controlling） · 手順と実機画面</title>
+<meta name="description" content="管理会計 CO（Controlling）：34 件のタスクの手順、IMG パス、T-code と 206 枚の実機画面スクリーンショット。内容は教材ドキュメント S4.docx をもとに整理しています。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/s4jp.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">S4</span><span class="txt">日本語実習サイト</span></a>
+    <nav class="main">
+      <a href="index.html">ホーム</a>
+      <a href="prep.html">準備</a>
+      <a href="fi.html">FI</a>
+      <a class="active" href="co.html">CO</a>
+      <a href="mm.html">MM</a>
+      <a href="pp.html">PP</a>
+      <a href="sd.html">SD</a>
+      <a href="tcode.html">T-code</a>
+      <a href="glossary.html">用語</a>
+      <a href="issues.html">トラブルシューティング</a>
+      <a href="tasks.html">索引</a>
+      <a href="instructor.html">講師</a>
+      <a href="worksheet.html">受講者</a>
+      <a href="quiz.html">自習テスト</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page"><article>
+<p class="breadcrumb"><a href="index.html">ホーム</a> / <span>管理会計 CO（Controlling）</span></p>
+<h1>管理会計 CO（Controlling）</h1>
+<p class="kicker">管理会計 · 原価センタ · 原価要素 · 作業タイプ · 配賦・按分 · 内部指図</p>
+<div class="toc"><a href="#guide">1. 本モジュールのガイド</a><a href="#toc">2. タスク一覧</a><a href="#steps">3. 手順（タスクごと）</a><a href="#sources">4. スクリーンショットと設定値について</a></div>
+<div class="grid cards"><div class="card"><b>34</b><span>タスク</span></div><div class="card"><b>206</b><span>実機画面</span></div><div class="card"><b>126</b><span>手順ステップ</span></div><div class="card"><b>3/1</b><span>IMG/業務のタスク</span></div></div>
+<h2 id="guide">1. 本モジュールのガイド</h2>
+<p>CO のメインラインは「管理会計領域 → 原価センタ → 原価要素／作業タイプ → 期末按分 → 内部指図」です：管理会計領域を登録して会社コードを割り当てる → 原価センタグループと原価センタ（<code>OKEON</code>）→ 一次／二次原価要素（<code>KA01</code> / <code>KA06</code>）と原価要素グループ → 作業タイプ（<code>KL01</code>）と作業出力価格（<code>KP26</code>）→ 管理会計伝票の番号範囲 → 原価センタレポート、再転記（<code>KB61</code>）→ 統計キー数値（<code>KK01</code>）と統計キー数値の数量（<code>KB31N</code>）→ 配賦サイクル（賃料）と按分サイクル（電気料金）→ 内部指図：指図タイプと番号範囲、決済パラメータと割当構造、指図の登録（<code>KO04</code>）、費用請求書、決済（<code>KO88</code>）と決済結果。</p>
+<p>教材シナリオでは「管理部の賃料を面積に応じて各原価センタへ配賦する」「電気料金を統計キー数値で按分する」「内部指図で費用を集計してから決済する」という 3 つを一連の流れとして解説しており、CO の期末決算を理解するうえで最も分かりやすい道筋です。</p>
+<div class="panel"><b>このモジュールのポイント</b><ul><li>管理会計領域と会社コードの割当（<code>OX19</code>。FI の会社コードとの整合に注意）</li><li>原価要素（一次 = FI 勘定に対応、二次 = 按分／決済など CO 内部だけで流れる）</li><li>配賦（<code>配賦サイクル</code>、統計キー数値／トレース要因を使用）と按分（<code>按分サイクル</code>）の違い</li><li>内部指図：タイプ → 決済プロファイル → 配賦構造 → 登録 → 費用 → 決済 <code>KO88</code></li></ul>
+<p style="margin-top:10px">ドキュメントに出てくる T-code：<a class="tag gray" href="tcode.html#OX19">OX19</a> <a class="tag gray" href="tcode.html#OKEON">OKEON</a> <a class="tag gray" href="tcode.html#KA01">KA01</a> <a class="tag gray" href="tcode.html#KA06">KA06</a> <a class="tag gray" href="tcode.html#KL01">KL01</a> <a class="tag gray" href="tcode.html#KP26">KP26</a> <a class="tag gray" href="tcode.html#FB60">FB60</a> <a class="tag gray" href="tcode.html#FB50">FB50</a> <a class="tag gray" href="tcode.html#KB61">KB61</a> <a class="tag gray" href="tcode.html#KK01">KK01</a> <a class="tag gray" href="tcode.html#KB31N">KB31N</a> <a class="tag gray" href="tcode.html#KO04">KO04</a> <a class="tag gray" href="tcode.html#KO88">KO88</a>（詳細は <a href="tcode.html">T-code / IMG パス早見表</a> を参照）</p>
+</div>
+<h2 id="toc">2. タスク目次（34 件）</h2>
+<p>そのうち 30 件のタスクで、原教材ドキュメントの IMG 設定メニューパスが示されています；<span class="fb">IMG 設定</span> のマークが付いているのはカスタマイジング（設定）タスク、<span class="fb img">業務処理</span> と付いているのは日常業務の操作タスクです。表示がないタスクは原文でも明示されておらず、タスク名からご自身で判断してください（一般に「～の定義／～パラメータのメンテナンス」＝ IMG 設定、「伝票・指図・請求書の登録／入力／照会」＝業務処理）。</p>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>No.</th><th>タスク</th><th>IMG/業務</th><th>ドキュメント内の T-code</th><th>画面</th><th>手順ステップ</th></tr></thead><tbody><tr><td><a href="#t01">タスク 01</a></td><td><a href="#t01">管理会計領域を登録する</a></td><td>—</td><td>—</td><td>4</td><td>4</td></tr><tr><td><a href="#t02">タスク 02</a></td><td><a href="#t02">会社コードを管理会計領域に割り当てる</a></td><td>IMG設定（カスタマイズ）</td><td><code>OX19</code></td><td>4</td><td>4</td></tr><tr><td><a href="#t03">タスク 03</a></td><td><a href="#t03">管理会計領域をメンテナンス</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>9</td><td>6</td></tr><tr><td><a href="#t04">タスク 04</a></td><td><a href="#t04">原価センタグループと原価センタをメンテナンス</a></td><td>業務処理（トランザクション）</td><td><code>OKEON</code></td><td>20</td><td>9</td></tr><tr><td><a href="#t05">タスク 05</a></td><td><a href="#t05">一次原価要素を新規作成</a></td><td>—</td><td><code>KA01</code></td><td>30</td><td>8</td></tr><tr><td><a href="#t06">タスク 06</a></td><td><a href="#t06">二次原価要素を作成</a></td><td>—</td><td><code>KA06</code></td><td>9</td><td>5</td></tr><tr><td><a href="#t07">タスク 07</a></td><td><a href="#t07">原価要素グループを新規作成</a></td><td>—</td><td>—</td><td>6</td><td>4</td></tr><tr><td><a href="#t08">タスク 08</a></td><td><a href="#t08">一次原価要素を変更</a></td><td>—</td><td>—</td><td>0</td><td>0</td></tr><tr><td><a href="#t09">タスク 09</a></td><td><a href="#t09"></a></td><td>—</td><td>—</td><td>4</td><td>1</td></tr><tr><td><a href="#t10">タスク 10</a></td><td><a href="#t10">作業タイプを新規作成</a></td><td>—</td><td><code>KL01</code></td><td>6</td><td>2</td></tr><tr><td><a href="#t11">タスク 11</a></td><td><a href="#t11">作業タイプグループを新規作成</a></td><td>—</td><td>—</td><td>3</td><td>2</td></tr><tr><td><a href="#t12">タスク 12</a></td><td><a href="#t12">作業出力価格を設定する</a></td><td>—</td><td><code>KP26</code></td><td>7</td><td>7</td></tr><tr><td><a href="#t13">タスク 13</a></td><td><a href="#t13">管理会計伝票の番号範囲をメンテナンス</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>6</td><td>5</td></tr><tr><td><a href="#t14">タスク 14</a></td><td><a href="#t14">費用の仕入先請求書を入力</a></td><td>—</td><td><code>FB60</code></td><td>3</td><td>2</td></tr><tr><td><a href="#t15">タスク 15</a></td><td><a href="#t15">一般費用の請求書を入力</a></td><td>—</td><td><code>FB50</code></td><td>4</td><td>4</td></tr><tr><td><a href="#t16">タスク 16</a></td><td><a href="#t16">原価センタレポートを実行</a></td><td>—</td><td>—</td><td>3</td><td>2</td></tr><tr><td><a href="#t17">タスク 17</a></td><td><a href="#t17">原価センタデータの再転記</a></td><td>—</td><td><code>KB61</code></td><td>6</td><td>5</td></tr><tr><td><a href="#t18">タスク 18</a></td><td><a href="#t18">統計キー数値を新規作成</a></td><td>—</td><td><code>KK01</code></td><td>5</td><td>2</td></tr><tr><td><a href="#t19">タスク 19</a></td><td><a href="#t19">統計キー数値の数量を入力</a></td><td>—</td><td><code>KB31N</code></td><td>3</td><td>3</td></tr><tr><td><a href="#t20">タスク 20</a></td><td><a href="#t20">配賦サイクルを定義</a></td><td>—</td><td>—</td><td>6</td><td>5</td></tr><tr><td><a href="#t21">タスク 21</a></td><td><a href="#t21">配賦</a></td><td>—</td><td>—</td><td>3</td><td>2</td></tr><tr><td><a href="#t22">タスク 22</a></td><td><a href="#t22">原価センタに配賦された賃料を照会</a></td><td>—</td><td>—</td><td>4</td><td>3</td></tr><tr><td><a href="#t23">タスク 23</a></td><td><a href="#t23">按分サイクルを定義</a></td><td>—</td><td>—</td><td>8</td><td>5</td></tr><tr><td><a href="#t24">タスク 24</a></td><td><a href="#t24">按分</a></td><td>—</td><td>—</td><td>4</td><td>1</td></tr><tr><td><a href="#t25">タスク 25</a></td><td><a href="#t25">「実行」をクリック</a></td><td>—</td><td>—</td><td>1</td><td>1</td></tr><tr><td><a href="#t26">タスク 26</a></td><td><a href="#t26">原価センタに按分された電気料金を照会</a></td><td>—</td><td>—</td><td>4</td><td>2</td></tr><tr><td><a href="#t27">タスク 27</a></td><td><a href="#t27">内部指図タイプを登録し、番号範囲をメンテナンスします</a></td><td>—</td><td>—</td><td>10</td><td>4</td></tr><tr><td><a href="#t28">タスク 28</a></td><td><a href="#t28">内部指図の決済プロファイルをメンテナンス</a></td><td>—</td><td>—</td><td>4</td><td>4</td></tr><tr><td><a href="#t29">タスク 29</a></td><td><a href="#t29">内部指図決済の配賦構造をメンテナンス</a></td><td>—</td><td>—</td><td>6</td><td>6</td></tr><tr><td><a href="#t30">タスク 30</a></td><td><a href="#t30">決済伝票の番号範囲をメンテナンス</a></td><td>—</td><td>—</td><td>3</td><td>2</td></tr><tr><td><a href="#t31">タスク 31</a></td><td><a href="#t31">内部指図を登録</a></td><td>—</td><td><code>KO04</code></td><td>10</td><td>7</td></tr><tr><td><a href="#t32">タスク 32</a></td><td><a href="#t32">内部指図の費用請求書を入力</a></td><td>—</td><td><code>FB50</code></td><td>4</td><td>4</td></tr><tr><td><a href="#t33">タスク 33</a></td><td><a href="#t33">内部指図の決済</a></td><td>—</td><td><code>KO88</code></td><td>3</td><td>2</td></tr><tr><td><a href="#t34">タスク 34</a></td><td><a href="#t34">内部指図の決済結果を照会する</a></td><td>—</td><td>—</td><td>4</td><td>3</td></tr></tbody></table></div>
+<h2 id="steps">3. 手順（タスクごと）</h2>
+<div class="box info"><b class="t">このページの使い方</b>各タスクは原教材ドキュメントの順序どおりに掲載しています。まず「説明」を読み、次に「IMG パス」に従って設定ポイントへ進み、その後は番号付きのステップに沿って（各ステップに原教材ドキュメントの実機画面が付いています）、画面ごとに操作していきます。画面の赤い四角や矢印は、原教材ドキュメントの著者が「入力・選択すべき箇所」として付けたものです。画面をクリックすると拡大できます（1×/2×/3×、ESC で閉じる）。</div>
+<div class="steph" id="t01"><span class="no">タスク 01</span><h3>管理会計領域を登録する</h3><span class="tc2">4 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】创建成本控制范围<br></div></details>
+<div class="pathline" data-copy="エンタープライズ構造 → 定義 → 管理会計 → 管理会計領域のメンテナンス"><b>IMG パス（IMG 設定メニュー）</b>エンタープライズ構造 → 定義 → 管理会計 → 管理会計領域のメンテナンス</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>企业结构 → 定义 → 控制 → 维护成本控制范围</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">エンタープライズ構造－定義－管理会計－管理会計領域のメンテナンス</p>
+<details class="orig"><summary>原文</summary><div class="zh">企业结构－定义－控制－维护成本控制范围</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t01/01_1_image314.png"><img src="assets/img/co/t01/01_1_image314.png" alt="管理会計領域を登録する · ステップ 1：エンタープライズ構造－定義－管理会計－管理会計領域のメンテナンス" loading="lazy" width="398" height="370"></a><figcaption><span class="n">画面 310</span><span class="src">image314.png · 398×370</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">選択ダイアログが表示されるので、「管理会計領域のメンテナンス」を選択します</p>
+<details class="orig"><summary>原文</summary><div class="zh">弹出选择框 选择维护成本控制范围</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t01/02_1_image315.png"><img src="assets/img/co/t01/02_1_image315.png" alt="管理会計領域を登録する · ステップ 2：選択ダイアログが表示されるので、「管理会計領域のメンテナンス」を選択します" loading="lazy" width="628" height="209"></a><figcaption><span class="n">画面 311</span><span class="src">image315.png · 628×209</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「新規エントリ」をクリックし、会社コード C999 を入力します</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击新条目,录入公司代码C999</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t01/03_1_image316.png"><img src="assets/img/co/t01/03_1_image316.png" alt="管理会計領域を登録する · ステップ 3：「新規エントリ」をクリックし、会社コード C999 を入力します" loading="lazy" width="442" height="366"></a><figcaption><span class="n">画面 312</span><span class="src">image316.png · 442×366</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 313）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t01/04_1_image317.png"><img src="assets/img/co/t01/04_1_image317.png" alt="管理会計領域を登録する · ステップ 4：image317.png" loading="lazy" width="774" height="694"></a><figcaption><span class="n">画面 313</span><span class="src">image317.png · 774×694</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t02"><span class="no">タスク 02</span><h3>会社コードを管理会計領域に割り当てる</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc">OX19</span><span class="tc2">4 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】将公司代码分配给成本控制范围<br></div></details>
+<div class="pathline" data-copy="エンタープライズ構造 → 割当 → 管理会計 → 会社コードの管理会計領域への配賦"><b>IMG パス（IMG 設定メニュー）</b>エンタープライズ構造 → 割当 → 管理会計 → 会社コードの管理会計領域への配賦</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>企业结构 → 分配 → 控制 → 把公司代码分配给成本控制范围</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 314）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t02/01_1_image318.png"><img src="assets/img/co/t02/01_1_image318.png" alt="会社コードを管理会計領域に割り当てる · ステップ 1：image318.png" loading="lazy" width="351" height="342"></a><figcaption><span class="n">画面 314</span><span class="src">image318.png · 351×342</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">TCODE コード：OX19</p>
+<details class="orig"><summary>原文</summary><div class="zh">TCODE代码：OX19</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t02/02_1_image319.png"><img src="assets/img/co/t02/02_1_image319.png" alt="会社コードを管理会計領域に割り当てる · ステップ 2：TCODE コード：OX19" loading="lazy" width="434" height="242"></a><figcaption><span class="n">画面 315</span><span class="src">image319.png · 434×242</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">C999 を選択し、「会社コード設定」をダブルクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">选中 C999，双击公司代码设置</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t02/03_1_image320.png"><img src="assets/img/co/t02/03_1_image320.png" alt="会社コードを管理会計領域に割り当てる · ステップ 3：C999 を選択し、「会社コード設定」をダブルクリックします" loading="lazy" width="452" height="335"></a><figcaption><span class="n">画面 316</span><span class="src">image320.png · 452×335</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「新規エントリ」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t02/04_1_image321.png"><img src="assets/img/co/t02/04_1_image321.png" alt="会社コードを管理会計領域に割り当てる · ステップ 4：「新規エントリ」をクリック" loading="lazy" width="454" height="398"></a><figcaption><span class="n">画面 317</span><span class="src">image321.png · 454×398</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>C999 を管理会計領域に追加します</div>
+</li>
+</ol>
+<div class="steph" id="t03"><span class="no">タスク 03</span><h3>管理会計領域をメンテナンス</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">9 画面 / 6 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】维护成本控制范围<br></div></details>
+<div class="pathline" data-copy="管理会計 → 一般管理会計 → 組織構造 → 管理会計領域のメンテナンス"><b>IMG パス（IMG 設定メニュー）</b>管理会計 → 一般管理会計 → 組織構造 → 管理会計領域のメンテナンス</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>控制 → 一般控制 → 组织结构 → 维护成本控制范围</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">管理会計－一般管理会計－組織構造－管理会計領域のメンテナンス</p>
+<details class="orig"><summary>原文</summary><div class="zh">控制－一般控制－组织结构－维护成本控制范围</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t03/01_1_image322.png"><img src="assets/img/co/t03/01_1_image322.png" alt="管理会計領域をメンテナンス · ステップ 1：管理会計－一般管理会計－組織構造－管理会計領域のメンテナンス" loading="lazy" width="372" height="498"></a><figcaption><span class="n">画面 318</span><span class="src">image322.png · 372×498</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「アクティビティ選択」が表示されるので、「管理会計領域のメンテナンス」をクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">弹出选择活动，点击维护成本控制范围</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t03/02_1_image323.png"><img src="assets/img/co/t03/02_1_image323.png" alt="管理会計領域をメンテナンス · ステップ 2：「アクティビティ選択」が表示されるので、「管理会計領域のメンテナンス」をクリックします" loading="lazy" width="362" height="201"></a><figcaption><span class="n">画面 319</span><span class="src">image323.png · 362×201</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">C999 をダブルクリックし、基本データをメンテナンスします</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击 C999，维护基本数据</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t03/03_1_image324.png"><img src="assets/img/co/t03/03_1_image324.png" alt="管理会計領域をメンテナンス · ステップ 3：C999 をダブルクリックし、基本データをメンテナンスします" loading="lazy" width="436" height="243"></a><figcaption><span class="n">画面 320</span><span class="src">image324.png · 436×243</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 321）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t03/04_1_image325.png"><img src="assets/img/co/t03/04_1_image325.png" alt="管理会計領域をメンテナンス · ステップ 4：image325.png" loading="lazy" width="816" height="602"></a><figcaption><span class="n">画面 321</span><span class="src">image325.png · 816×602</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>保存後、「戻る」をクリックし、C999 を選択して「有効化コンポーネント/制御識別子」をダブルクリックします</div>
+</li>
+<li>
+<p class="opcap">システムが C999 原価センタ標準階層は存在しないとメッセージを表示するので、「はい」をクリックします。</p>
+<details class="orig"><summary>原文</summary><div class="zh">系统会提示 C999 成本中心标准层次不存在，点击是。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t03/05_1_image326.png"><img src="assets/img/co/t03/05_1_image326.png" alt="管理会計領域をメンテナンス · ステップ 5：システムが C999 原価センタ標準階層は存在しないとメッセージを表示するので、「はい」をクリックします。" loading="lazy" width="665" height="330"></a><figcaption><span class="n">画面 322</span><span class="src">image326.png · 665×330</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「新規エントリ」をクリックし、開始会計年度（例：2021 年）を入力します。</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击新条目，输入起始财年，比如2021年。</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t03/06_1_image327.png"><img src="assets/img/co/t03/06_1_image327.png" alt="管理会計領域をメンテナンス · ステップ 6：「新規エントリ」をクリックし、開始会計年度（例：2021 年）を入力します。" loading="lazy" width="849" height="816"></a><figcaption><span class="n">画面 323</span><span class="src">image329.png · 849×816</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t03/06_2_image328.png"><img src="assets/img/co/t03/06_2_image328.png" alt="管理会計領域をメンテナンス · ステップ 6：「新規エントリ」をクリックし、開始会計年度（例：2021 年）を入力します。" loading="lazy" width="466" height="221"></a><figcaption><span class="n">画面 324</span><span class="src">image330.png · 466×221</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t03/06_1_image327.png"><img src="assets/img/co/t03/06_1_image327.png" alt="管理会計領域をメンテナンス · ステップ 6：「新規エントリ」をクリックし、開始会計年度（例：2021 年）を入力します。" loading="lazy" width="849" height="816"></a><figcaption><span class="n">画面 323</span><span class="src">image329.png · 849×816</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t03/06_2_image328.png"><img src="assets/img/co/t03/06_2_image328.png" alt="管理会計領域をメンテナンス · ステップ 6：「新規エントリ」をクリックし、開始会計年度（例：2021 年）を入力します。" loading="lazy" width="466" height="221"></a><figcaption><span class="n">画面 324</span><span class="src">image330.png · 466×221</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材ノート</b>会計年度は「…年から」という概念であり、今後設定が変わらなければ毎年メンテナンスする必要はありません</div>
+</li>
+</ol>
+<div class="steph" id="t04"><span class="no">タスク 04</span><h3>原価センタグループと原価センタをメンテナンス</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">OKEON</span><span class="tc2">20 画面 / 9 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】维护成本中心组和成本中心<br></div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 原価センタ会計 → マスタデータ → 標準階層 → OKEON-変更"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 原価センタ会計 → マスタデータ → 標準階層 → OKEON-変更</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计核算 → 控制 → 成本中心会计 → 主数据 → 标准层次 → OKEON-更改</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">会計－管理会計－原価センタ会計－マスタデータ－標準階層－OKEON-変更</p>
+<details class="orig"><summary>原文</summary><div class="zh">会计核算－控制－成本中心会计－主数据－标准层次－OKEON-更改</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t04/01_1_image331.png"><img src="assets/img/co/t04/01_1_image331.png" alt="原価センタグループと原価センタをメンテナンス · ステップ 1：会計－管理会計－原価センタ会計－マスタデータ－標準階層－OKEON-変更" loading="lazy" width="284" height="480"></a><figcaption><span class="n">画面 327</span><span class="src">image331.png · 284×480</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t04/01_2_image332.png"><img src="assets/img/co/t04/01_2_image332.png" alt="原価センタグループと原価センタをメンテナンス · ステップ 1：会計－管理会計－原価センタ会計－マスタデータ－標準階層－OKEON-変更" loading="lazy" width="361" height="194"></a><figcaption><span class="n">画面 328</span><span class="src">image332.png · 361×194</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">「保存」をクリックすれば、毎回ここで管理会計領域を入力する必要がなくなります</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击保存就不用每次进来输入成本控制范围了</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t04/02_1_image333.png"><img src="assets/img/co/t04/02_1_image333.png" alt="原価センタグループと原価センタをメンテナンス · ステップ 2：「保存」をクリックすれば、毎回ここで管理会計領域を入力する必要がなくなります" loading="lazy" width="946" height="672"></a><figcaption><span class="n">画面 329</span><span class="src">image335.png · 946×672</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t04/02_2_image334.png"><img src="assets/img/co/t04/02_2_image334.png" alt="原価センタグループと原価センタをメンテナンス · ステップ 2：「保存」をクリックすれば、毎回ここで管理会計領域を入力する必要がなくなります" loading="lazy" width="1174" height="678"></a><figcaption><span class="n">画面 330</span><span class="src">image336.png · 1174×678</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t04/02_1_image333.png"><img src="assets/img/co/t04/02_1_image333.png" alt="原価センタグループと原価センタをメンテナンス · ステップ 2：「保存」をクリックすれば、毎回ここで管理会計領域を入力する必要がなくなります" loading="lazy" width="946" height="672"></a><figcaption><span class="n">画面 329</span><span class="src">image335.png · 946×672</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t04/02_2_image334.png"><img src="assets/img/co/t04/02_2_image334.png" alt="原価センタグループと原価センタをメンテナンス · ステップ 2：「保存」をクリックすれば、毎回ここで管理会計領域を入力する必要がなくなります" loading="lazy" width="1174" height="678"></a><figcaption><span class="n">画面 330</span><span class="src">image336.png · 1174×678</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">「保存」をクリックし、C999 を選択して、次の図のように操作します</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击保存，选中C999,然后如下图操作</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t04/03_1_image337.png"><img src="assets/img/co/t04/03_1_image337.png" alt="原価センタグループと原価センタをメンテナンス · ステップ 3：「保存」をクリックし、C999 を選択して、次の図のように操作します" loading="lazy" width="827" height="454"></a><figcaption><span class="n">画面 333</span><span class="src">image337.png · 827×454</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">下位グループを選択し、次の画面へ進む</p>
+<details class="orig"><summary>原文</summary><div class="zh">选择较低组，进入如下页面</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t04/04_1_image338.png"><img src="assets/img/co/t04/04_1_image338.png" alt="原価センタグループと原価センタをメンテナンス · ステップ 4：下位グループを選択し、次の画面へ進む" loading="lazy" width="975" height="592"></a><figcaption><span class="n">画面 334</span><span class="src">image338.png · 975×592</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">さらに本社を 1 つ登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">再创建一个总部</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t04/05_1_image339.png"><img src="assets/img/co/t04/05_1_image339.png" alt="原価センタグループと原価センタをメンテナンス · ステップ 5：さらに本社を 1 つ登録" loading="lazy" width="953" height="566"></a><figcaption><span class="n">画面 335</span><span class="src">image339.png · 953×566</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">MFG を選択し、新規原価センタを選択して次の項目を入力し、保存します。黄色の警告は無視してかまいません。</p>
+<details class="orig"><summary>原文</summary><div class="zh">选择 MFG，选择新建成本中心，输入如下字段，并保存，黄色警告，可以略过。</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t04/06_1_image340.jpeg"><img src="assets/img/co/t04/06_1_image340.jpeg" alt="原価センタグループと原価センタをメンテナンス · ステップ 6：MFG を選択し、新規原価センタを選択して次の項目を入力し、保存します。黄色の警告は無視してかまいません。" loading="lazy" width="1271" height="838"></a><figcaption><span class="n">画面 336</span><span class="src">image342.jpeg · 1271×838</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t04/06_2_image341.png"><img src="assets/img/co/t04/06_2_image341.png" alt="原価センタグループと原価センタをメンテナンス · ステップ 6：MFG を選択し、新規原価センタを選択して次の項目を入力し、保存します。黄色の警告は無視してかまいません。" loading="lazy" width="910" height="265"></a><figcaption><span class="n">画面 337</span><span class="src">image343.png · 910×265</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t04/06_1_image340.jpeg"><img src="assets/img/co/t04/06_1_image340.jpeg" alt="原価センタグループと原価センタをメンテナンス · ステップ 6：MFG を選択し、新規原価センタを選択して次の項目を入力し、保存します。黄色の警告は無視してかまいません。" loading="lazy" width="1271" height="838"></a><figcaption><span class="n">画面 336</span><span class="src">image342.jpeg · 1271×838</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t04/06_2_image341.png"><img src="assets/img/co/t04/06_2_image341.png" alt="原価センタグループと原価センタをメンテナンス · ステップ 6：MFG を選択し、新規原価センタを選択して次の項目を入力し、保存します。黄色の警告は無視してかまいません。" loading="lazy" width="910" height="265"></a><figcaption><span class="n">画面 337</span><span class="src">image343.png · 910×265</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材ノート</b>その他の原価センタを登録</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 340）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t04/07_1_image344.jpeg"><img src="assets/img/co/t04/07_1_image344.jpeg" alt="原価センタグループと原価センタをメンテナンス · ステップ 7：image344.jpeg" loading="lazy" width="1238" height="854"></a><figcaption><span class="n">画面 340</span><span class="src">image344.jpeg · 1238×854</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t04/08_1_image345.png"><img src="assets/img/co/t04/08_1_image345.png" alt="原価センタグループと原価センタをメンテナンス · ステップ 7：image345.png" loading="lazy" width="938" height="839"></a><figcaption><span class="n">画面 341</span><span class="src">image345.png · 938×839</span></figcaption></figure>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t04/09_1_image346.png"><img src="assets/img/co/t04/09_1_image346.png" alt="原価センタグループと原価センタをメンテナンス · ステップ 8：image346.png" loading="lazy" width="1015" height="840"></a><figcaption><span class="n">画面 342</span><span class="src">image346.png · 1015×840</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t04/09_2_image347.png"><img src="assets/img/co/t04/09_2_image347.png" alt="原価センタグループと原価センタをメンテナンス · ステップ 8：image347.png" loading="lazy" width="967" height="848"></a><figcaption><span class="n">画面 343</span><span class="src">image347.png · 967×848</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t04/09_3_image348.png"><img src="assets/img/co/t04/09_3_image348.png" alt="原価センタグループと原価センタをメンテナンス · ステップ 8：image348.png" loading="lazy" width="1155" height="851"></a><figcaption><span class="n">画面 344</span><span class="src">image348.png · 1155×851</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/co/t04/10_1_image349.png"><img src="assets/img/co/t04/10_1_image349.png" alt="原価センタグループと原価センタをメンテナンス · ステップ 9：image349.png" loading="lazy" width="981" height="858"></a><figcaption><span class="n">画面 345</span><span class="src">image349.png · 981×858</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t04/10_2_image350.png"><img src="assets/img/co/t04/10_2_image350.png" alt="原価センタグループと原価センタをメンテナンス · ステップ 9：image350.png" loading="lazy" width="1247" height="857"></a><figcaption><span class="n">画面 346</span><span class="src">image350.png · 1247×857</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t05"><span class="no">タスク 05</span><h3>一次原価要素を新規作成</h3><span class="tc">KA01</span><span class="tc2">30 画面 / 8 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建初级成本要素<br></div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 原価センタ会計 → マスタデータ → 原価要素 → 個別処理 → KA01-一次原価要素の登録"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 原価センタ会計 → マスタデータ → 原価要素 → 個別処理 → KA01-一次原価要素の登録</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 控制 → 成本中心会计 → 主数据 → 成本要素 → 单个处理 → KA01-创建初级成本</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">CO は「原価要素」で原価フローを管理します。原価要素は財務会計の勘定に似ています<br>会計－管理会計－原価センタ会計－マスタデータ－原価要素－個別処理－KA01-一次原価要素の登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">CO 用“成本要素”来管理成本流，成本要素和财务会计里的科目类似<br>会计－控制－成本中心会计－主数据－成本要素－单个处理－KA01-创建初级成本</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t05/01_1_image352.png"><img src="assets/img/co/t05/01_1_image352.png" alt="一次原価要素を新規作成 · ステップ 1：CO は「原価要素」で原価フローを管理します。原価要素は財務会計の勘定に似ています 会計－管理会計－原価センタ会計－マスタデータ－原価要素－個別処理－KA01-一次原価要素の登録" loading="lazy" width="313" height="521"></a><figcaption><span class="n">画面 347</span><span class="src">image352.png · 313×521</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">lu41010101</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t05/02_1_image353.png"><img src="assets/img/co/t05/02_1_image353.png" alt="一次原価要素を新規作成 · ステップ 2：lu41010101" loading="lazy" width="439" height="307"></a><figcaption><span class="n">画面 348</span><span class="src">image355.png · 439×307</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/02_2_image354.png"><img src="assets/img/co/t05/02_2_image354.png" alt="一次原価要素を新規作成 · ステップ 2：lu41010101" loading="lazy" width="557" height="523"></a><figcaption><span class="n">画面 349</span><span class="src">image356.png · 557×523</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/02_1_image353.png"><img src="assets/img/co/t05/02_1_image353.png" alt="一次原価要素を新規作成 · ステップ 2：lu41010101" loading="lazy" width="439" height="307"></a><figcaption><span class="n">画面 348</span><span class="src">image355.png · 439×307</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/02_2_image354.png"><img src="assets/img/co/t05/02_2_image354.png" alt="一次原価要素を新規作成 · ステップ 2：lu41010101" loading="lazy" width="557" height="523"></a><figcaption><span class="n">画面 349</span><span class="src">image356.png · 557×523</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材ノート</b>上記のステップを繰り返します。すべての損益勘定は一次原価要素です。41010901 製造原価－製造指図差異の原価要素カテゴリが「22 外部決済」である以外は、他のすべての一次原価要素のカテゴリは「1 一次原価／原価低減による利益」です。</div>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 「41010901 製造原価－製造指図差異」は製造指図の決済によって発生します。管理会計で計算した結果に対して、特殊な原価要素カテゴリ「22 外部決済」を使用します。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释“41010901 生产成本－生产订单差异”是生产订单结算产生的，是管理会计计算初结果后，使用一种特殊的成本要素类别“22 外部结算”。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t05/03_1_image357.png"><img src="assets/img/co/t05/03_1_image357.png" alt="一次原価要素を新規作成 · ステップ 3：解説：「41010901 製造原価－製造指図差異」は製造指図の決済によって発生します。管理会計で計算した結果に対して、特殊な原価要素カテゴリ「22 外部決済」を使用します。" loading="lazy" width="578" height="461"></a><figcaption><span class="n">画面 352</span><span class="src">image357.png · 578×461</span></figcaption></figure>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t05/04_1_image358.png"><img src="assets/img/co/t05/04_1_image358.png" alt="一次原価要素を新規作成 · ステップ 4：image360.png" loading="lazy" width="605" height="448"></a><figcaption><span class="n">画面 353</span><span class="src">image360.png · 605×448</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/04_2_image359.png"><img src="assets/img/co/t05/04_2_image359.png" alt="一次原価要素を新規作成 · ステップ 4：image361.png" loading="lazy" width="588" height="571"></a><figcaption><span class="n">画面 354</span><span class="src">image361.png · 588×571</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/04_3_image362.png"><img src="assets/img/co/t05/04_3_image362.png" alt="一次原価要素を新規作成 · ステップ 4：image362.png" loading="lazy" width="587" height="451"></a><figcaption><span class="n">画面 355</span><span class="src">image362.png · 587×451</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/04_4_image363.png"><img src="assets/img/co/t05/04_4_image363.png" alt="一次原価要素を新規作成 · ステップ 4：image363.png" loading="lazy" width="581" height="477"></a><figcaption><span class="n">画面 356</span><span class="src">image363.png · 581×477</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/04_1_image358.png"><img src="assets/img/co/t05/04_1_image358.png" alt="一次原価要素を新規作成 · ステップ 4：image360.png" loading="lazy" width="605" height="448"></a><figcaption><span class="n">画面 353</span><span class="src">image360.png · 605×448</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/04_2_image359.png"><img src="assets/img/co/t05/04_2_image359.png" alt="一次原価要素を新規作成 · ステップ 4：image361.png" loading="lazy" width="588" height="571"></a><figcaption><span class="n">画面 354</span><span class="src">image361.png · 588×571</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t05/05_1_image364.png"><img src="assets/img/co/t05/05_1_image364.png" alt="一次原価要素を新規作成 · ステップ 5：image364.png" loading="lazy" width="581" height="454"></a><figcaption><span class="n">画面 359</span><span class="src">image364.png · 581×454</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/05_2_image365.png"><img src="assets/img/co/t05/05_2_image365.png" alt="一次原価要素を新規作成 · ステップ 5：image365.png" loading="lazy" width="589" height="444"></a><figcaption><span class="n">画面 360</span><span class="src">image365.png · 589×444</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/05_3_image366.png"><img src="assets/img/co/t05/05_3_image366.png" alt="一次原価要素を新規作成 · ステップ 5：image366.png" loading="lazy" width="591" height="467"></a><figcaption><span class="n">画面 361</span><span class="src">image366.png · 591×467</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/05_4_image367.png"><img src="assets/img/co/t05/05_4_image367.png" alt="一次原価要素を新規作成 · ステップ 5：image367.png" loading="lazy" width="596" height="455"></a><figcaption><span class="n">画面 362</span><span class="src">image367.png · 596×455</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t05/06_1_image368.png"><img src="assets/img/co/t05/06_1_image368.png" alt="一次原価要素を新規作成 · ステップ 6：image370.png" loading="lazy" width="592" height="448"></a><figcaption><span class="n">画面 363</span><span class="src">image370.png · 592×448</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/06_2_image369.png"><img src="assets/img/co/t05/06_2_image369.png" alt="一次原価要素を新規作成 · ステップ 6：image371.png" loading="lazy" width="587" height="460"></a><figcaption><span class="n">画面 364</span><span class="src">image371.png · 587×460</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/06_3_image372.png"><img src="assets/img/co/t05/06_3_image372.png" alt="一次原価要素を新規作成 · ステップ 6：image372.png" loading="lazy" width="584" height="457"></a><figcaption><span class="n">画面 365</span><span class="src">image372.png · 584×457</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/06_4_image373.png"><img src="assets/img/co/t05/06_4_image373.png" alt="一次原価要素を新規作成 · ステップ 6：image373.png" loading="lazy" width="588" height="447"></a><figcaption><span class="n">画面 366</span><span class="src">image373.png · 588×447</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/06_1_image368.png"><img src="assets/img/co/t05/06_1_image368.png" alt="一次原価要素を新規作成 · ステップ 6：image370.png" loading="lazy" width="592" height="448"></a><figcaption><span class="n">画面 363</span><span class="src">image370.png · 592×448</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/06_2_image369.png"><img src="assets/img/co/t05/06_2_image369.png" alt="一次原価要素を新規作成 · ステップ 6：image371.png" loading="lazy" width="587" height="460"></a><figcaption><span class="n">画面 364</span><span class="src">image371.png · 587×460</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t05/07_1_image374.png"><img src="assets/img/co/t05/07_1_image374.png" alt="一次原価要素を新規作成 · ステップ 7：image376.png" loading="lazy" width="586" height="471"></a><figcaption><span class="n">画面 369</span><span class="src">image376.png · 586×471</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/07_2_image375.png"><img src="assets/img/co/t05/07_2_image375.png" alt="一次原価要素を新規作成 · ステップ 7：image377.png" loading="lazy" width="593" height="463"></a><figcaption><span class="n">画面 370</span><span class="src">image377.png · 593×463</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/07_3_image378.png"><img src="assets/img/co/t05/07_3_image378.png" alt="一次原価要素を新規作成 · ステップ 7：image378.png" loading="lazy" width="589" height="453"></a><figcaption><span class="n">画面 371</span><span class="src">image378.png · 589×453</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/07_4_image379.png"><img src="assets/img/co/t05/07_4_image379.png" alt="一次原価要素を新規作成 · ステップ 7：image379.png" loading="lazy" width="588" height="463"></a><figcaption><span class="n">画面 372</span><span class="src">image379.png · 588×463</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/07_1_image374.png"><img src="assets/img/co/t05/07_1_image374.png" alt="一次原価要素を新規作成 · ステップ 7：image376.png" loading="lazy" width="586" height="471"></a><figcaption><span class="n">画面 369</span><span class="src">image376.png · 586×471</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/07_2_image375.png"><img src="assets/img/co/t05/07_2_image375.png" alt="一次原価要素を新規作成 · ステップ 7：image377.png" loading="lazy" width="593" height="463"></a><figcaption><span class="n">画面 370</span><span class="src">image377.png · 593×463</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 375）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t05/08_1_image380.png"><img src="assets/img/co/t05/08_1_image380.png" alt="一次原価要素を新規作成 · ステップ 8：image380.png" loading="lazy" width="584" height="450"></a><figcaption><span class="n">画面 375</span><span class="src">image380.png · 584×450</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/09_1_image381.png"><img src="assets/img/co/t05/09_1_image381.png" alt="一次原価要素を新規作成 · ステップ 8：image381.png" loading="lazy" width="591" height="462"></a><figcaption><span class="n">画面 376</span><span class="src">image381.png · 591×462</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t06"><span class="no">タスク 06</span><h3>二次原価要素を作成</h3><span class="tc">KA06</span><span class="tc2">9 画面 / 5 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】建立次级成本要素<br></div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 原価センタ会計 → マスタデータ → 原価要素 → 個別処理 → KA06-二次原価要素の登録"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 原価センタ会計 → マスタデータ → 原価要素 → 個別処理 → KA06-二次原価要素の登録</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 控制 → 成本中心会计 → 主数据 → 成本要素 → 单个处理 → KA06-创建次级成本</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">会計－管理会計－原価センタ会計－マスタデータ－原価要素－個別処理－KA06-二次原価要素の登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">会计－控制－成本中心会计－主数据－成本要素－单个处理－KA06-创建次级成本</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t06/01_1_image382.png"><img src="assets/img/co/t06/01_1_image382.png" alt="二次原価要素を作成 · ステップ 1：会計－管理会計－原価センタ会計－マスタデータ－原価要素－個別処理－KA06-二次原価要素の登録" loading="lazy" width="310" height="522"></a><figcaption><span class="n">画面 377</span><span class="src">image382.png · 310×522</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 378）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t06/02_1_image383.png"><img src="assets/img/co/t06/02_1_image383.png" alt="二次原価要素を作成 · ステップ 2：image383.png" loading="lazy" width="426" height="323"></a><figcaption><span class="n">画面 378</span><span class="src">image383.png · 426×323</span></figcaption></figure>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t06/03_1_image384.png"><img src="assets/img/co/t06/03_1_image384.png" alt="二次原価要素を作成 · ステップ 3：image384.png" loading="lazy" width="592" height="457"></a><figcaption><span class="n">画面 379</span><span class="src">image384.png · 592×457</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t06/03_2_image385.png"><img src="assets/img/co/t06/03_2_image385.png" alt="二次原価要素を作成 · ステップ 3：image385.png" loading="lazy" width="593" height="449"></a><figcaption><span class="n">画面 380</span><span class="src">image385.png · 593×449</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t06/03_3_image386.png"><img src="assets/img/co/t06/03_3_image386.png" alt="二次原価要素を作成 · ステップ 3：image386.png" loading="lazy" width="591" height="453"></a><figcaption><span class="n">画面 381</span><span class="src">image386.png · 591×453</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">43 は内部作業に関連する原価要素です</p>
+<details class="orig"><summary>原文</summary><div class="zh">43 是和内部作业相关的成本要素</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t06/04_1_image387.png"><img src="assets/img/co/t06/04_1_image387.png" alt="二次原価要素を作成 · ステップ 4：43 は内部作業に関連する原価要素です" loading="lazy" width="593" height="451"></a><figcaption><span class="n">画面 382</span><span class="src">image387.png · 593×451</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 383）</span></p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t06/05_1_image388.png"><img src="assets/img/co/t06/05_1_image388.png" alt="二次原価要素を作成 · ステップ 5：image388.png" loading="lazy" width="588" height="444"></a><figcaption><span class="n">画面 383</span><span class="src">image388.png · 588×444</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t06/06_1_image389.png"><img src="assets/img/co/t06/06_1_image389.png" alt="二次原価要素を作成 · ステップ 5：image389.png" loading="lazy" width="593" height="459"></a><figcaption><span class="n">画面 384</span><span class="src">image389.png · 593×459</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t06/06_2_image390.png"><img src="assets/img/co/t06/06_2_image390.png" alt="二次原価要素を作成 · ステップ 5：image390.png" loading="lazy" width="585" height="456"></a><figcaption><span class="n">画面 385</span><span class="src">image390.png · 585×456</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t07"><span class="no">タスク 07</span><h3>原価要素グループを新規作成</h3><span class="tc2">6 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建成本要素组<br></div></details>
+<div class="pathline" data-copy="会社の原価要素は階層構造で管理できます。この原価要素グループは、必要に応じていくつでも定義できます。会計 → 管理会計 → 原価要素会計 → マスタデータ → 原価要素グループ → KAH1 登録"><b>IMG パス（IMG 設定メニュー）</b>会社の原価要素は階層構造で管理できます。この原価要素グループは、必要に応じていくつでも定義できます。会計 → 管理会計 → 原価要素会計 → マスタデータ → 原価要素グループ → KAH1 登録</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>我们可以将公司的成本要素按层次结构来管理，这种成本要素组可用根据需要定义任意多个会计 → 控制 → 成本要素会计 → 主数据 → 成本要素组 → KAH1 创建</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">会社の原価要素は階層構造で管理できます。この原価要素グループは、必要に応じていくつでも定義できます。会計－管理会計－原価要素会計－マスタデータ－原価要素グループ－KAH1 登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">我们可以将公司的成本要素按层次结构来管理，这种成本要素组可用根据需要定义任意多个会计－控制－成本要素会计－主数据－成本要素组－KAH1 创建</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t07/01_1_image391.png"><img src="assets/img/co/t07/01_1_image391.png" alt="原価要素グループを新規作成 · ステップ 1：会社の原価要素は階層構造で管理できます。この原価要素グループは、必要に応じていくつでも定義できます。会計－管理会計－原価要素会計－マスタデータ－原価要素グループ－KAH1 登録" loading="lazy" width="234" height="437"></a><figcaption><span class="n">画面 386</span><span class="src">image391.png · 234×437</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 387）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t07/02_1_image392.png"><img src="assets/img/co/t07/02_1_image392.png" alt="原価要素グループを新規作成 · ステップ 2：image392.png" loading="lazy" width="366" height="249"></a><figcaption><span class="n">画面 387</span><span class="src">image392.png · 366×249</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="assets/img/co/t07/03_1_image393.png"><img src="assets/img/co/t07/03_1_image393.png" alt="原価要素グループを新規作成 · ステップ 2：image393.png" loading="lazy" width="654" height="76"></a><figcaption><span class="n">画面 388</span><span class="src">image393.png · 654×76</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「下位レベル」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击较低层次</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t07/04_1_image394.png"><img src="assets/img/co/t07/04_1_image394.png" alt="原価要素グループを新規作成 · ステップ 3：「下位レベル」をクリック" loading="lazy" width="752" height="151"></a><figcaption><span class="n">画面 389</span><span class="src">image394.png · 752×151</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">PRI を選択し、原価要素ボタンをクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">选中 PRI 点击成本要素键</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t07/05_1_image395.png"><img src="assets/img/co/t07/05_1_image395.png" alt="原価要素グループを新規作成 · ステップ 4：PRI を選択し、原価要素ボタンをクリックします" loading="lazy" width="561" height="646"></a><figcaption><span class="n">画面 390</span><span class="src">image395.png · 561×646</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t07/05_2_image396.png"><img src="assets/img/co/t07/05_2_image396.png" alt="原価要素グループを新規作成 · ステップ 4：PRI を選択し、原価要素ボタンをクリックします" loading="lazy" width="645" height="675"></a><figcaption><span class="n">画面 391</span><span class="src">image396.png · 645×675</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t08"><span class="no">タスク 08</span><h3>一次原価要素を変更</h3><span class="tc2">0 画面 / 0 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】更改初级成本要素<br></div></details>
+<div class="steph" id="t09"><span class="no">タスク 09</span><h3></h3><span class="tc2">4 画面 / 1 ステップ</span></div>
+<ol class="oplist">
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t09/01_1_image398.png"><img src="assets/img/co/t09/01_1_image398.png" alt=" · ステップ 1：image398.png" loading="lazy" width="398" height="306"></a><figcaption><span class="n">画面 392</span><span class="src">image398.png · 398×306</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t09/01_2_image399.png"><img src="assets/img/co/t09/01_2_image399.png" alt=" · ステップ 1：image399.png" loading="lazy" width="418" height="303"></a><figcaption><span class="n">画面 393</span><span class="src">image399.png · 418×303</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t09/01_3_image400.png"><img src="assets/img/co/t09/01_3_image400.png" alt=" · ステップ 1：image400.png" loading="lazy" width="404" height="309"></a><figcaption><span class="n">画面 394</span><span class="src">image400.png · 404×309</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t09/01_4_image401.png"><img src="assets/img/co/t09/01_4_image401.png" alt=" · ステップ 1：image401.png" loading="lazy" width="536" height="523"></a><figcaption><span class="n">画面 395</span><span class="src">image401.png · 536×523</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t10"><span class="no">タスク 10</span><h3>作業タイプを新規作成</h3><span class="tc">KL01</span><span class="tc2">6 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建作业类型<br></div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 原価センタ会計 → マスタデータ → 作業タイプ → 個別処理 → KL01-登録"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 原価センタ会計 → マスタデータ → 作業タイプ → 個別処理 → KL01-登録</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 控制 → 成本中心会计 → 主数据 → 作业类型 → 单个处理 → KL01-创建</code></div>
+<ol class="oplist">
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t10/01_1_image403.png"><img src="assets/img/co/t10/01_1_image403.png" alt="作業タイプを新規作成 · ステップ 1：image405.png" loading="lazy" width="304" height="642"></a><figcaption><span class="n">画面 396</span><span class="src">image405.png · 304×642</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t10/01_2_image404.png"><img src="assets/img/co/t10/01_2_image404.png" alt="作業タイプを新規作成 · ステップ 1：image406.png" loading="lazy" width="873" height="703"></a><figcaption><span class="n">画面 397</span><span class="src">image406.png · 873×703</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t10/01_3_image407.png"><img src="assets/img/co/t10/01_3_image407.png" alt="作業タイプを新規作成 · ステップ 1：image407.png" loading="lazy" width="652" height="688"></a><figcaption><span class="n">画面 398</span><span class="src">image407.png · 652×688</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t10/01_1_image403.png"><img src="assets/img/co/t10/01_1_image403.png" alt="作業タイプを新規作成 · ステップ 1：image405.png" loading="lazy" width="304" height="642"></a><figcaption><span class="n">画面 396</span><span class="src">image405.png · 304×642</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t10/01_2_image404.png"><img src="assets/img/co/t10/01_2_image404.png" alt="作業タイプを新規作成 · ステップ 1：image406.png" loading="lazy" width="873" height="703"></a><figcaption><span class="n">画面 397</span><span class="src">image406.png · 873×703</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">会計－管理会計－原価センタ会計－マスタデータ－作業タイプ－個別処理－KL01-登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">会计－控制－成本中心会计－主数据－作业类型－单个处理－KL01-创建</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t10/02_1_image408.png"><img src="assets/img/co/t10/02_1_image408.png" alt="作業タイプを新規作成 · ステップ 2：会計－管理会計－原価センタ会計－マスタデータ－作業タイプ－個別処理－KL01-登録" loading="lazy" width="638" height="688"></a><figcaption><span class="n">画面 401</span><span class="src">image408.png · 638×688</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t11"><span class="no">タスク 11</span><h3>作業タイプグループを新規作成</h3><span class="tc2">3 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建作业类型组<br></div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 原価センタ会計 → マスタデータ → 作業タイプグループ → KLH1-登録"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 原価センタ会計 → マスタデータ → 作業タイプグループ → KLH1-登録</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 控制 → 成本中心会计 → 主数据 → 作业类型组 → KLH1-创建</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 402）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t11/01_1_image409.png"><img src="assets/img/co/t11/01_1_image409.png" alt="作業タイプグループを新規作成 · ステップ 1：image409.png" loading="lazy" width="293" height="595"></a><figcaption><span class="n">画面 402</span><span class="src">image409.png · 293×595</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t11/01_2_image410.png"><img src="assets/img/co/t11/01_2_image410.png" alt="作業タイプグループを新規作成 · ステップ 1：image410.png" loading="lazy" width="364" height="244"></a><figcaption><span class="n">画面 403</span><span class="src">image410.png · 364×244</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「作業タイプ」ボタンをクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击作业类型按钮</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t11/02_1_image411.png"><img src="assets/img/co/t11/02_1_image411.png" alt="作業タイプグループを新規作成 · ステップ 2：「作業タイプ」ボタンをクリック" loading="lazy" width="738" height="193"></a><figcaption><span class="n">画面 404</span><span class="src">image411.png · 738×193</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t12"><span class="no">タスク 12</span><h3>作業出力価格を設定する</h3><span class="tc">KP26</span><span class="tc2">7 画面 / 7 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】设置作业输出价格<br></div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 原価センタ会計 → 計画 → 作業出力/価格 → KP26 → 変更"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 原価センタ会計 → 計画 → 作業出力/価格 → KP26 → 変更</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计核算 → 控制 → 成本中心会计 → 计划 → 作业输出/价格 → KP26 → 更改</code></div>
+<ol class="oplist">
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/co/t12/01_1_image412.png"><img src="assets/img/co/t12/01_1_image412.png" alt="作業出力価格を設定する · ステップ 1：image412.png" loading="lazy" width="324" height="465"></a><figcaption><span class="n">画面 405</span><span class="src">image412.png · 324×465</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">会計－管理会計－原価センタ会計－計画－作業出力/価格－KP26－変更</p>
+<details class="orig"><summary>原文</summary><div class="zh">会计核算－控制－成本中心会计－计划－作业输出/价格－KP26－更改</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t12/02_1_image413.png"><img src="assets/img/co/t12/02_1_image413.png" alt="作業出力価格を設定する · ステップ 2：会計－管理会計－原価センタ会計－計画－作業出力/価格－KP26－変更" loading="lazy" width="613" height="818"></a><figcaption><span class="n">画面 406</span><span class="src">image413.png · 613×818</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">ツールバーの「概要画面(F5)」をクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击工具栏上的概览屏幕(F5)</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t12/03_1_image414.png"><img src="assets/img/co/t12/03_1_image414.png" alt="作業出力価格を設定する · ステップ 3：ツールバーの「概要画面(F5)」をクリックします" loading="lazy" width="933" height="257"></a><figcaption><span class="n">画面 407</span><span class="src">image414.png · 933×257</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/co/t12/04_1_image415.png"><img src="assets/img/co/t12/04_1_image415.png" alt="作業出力価格を設定する · ステップ 4：image415.png" loading="lazy" width="580" height="407"></a><figcaption><span class="n">画面 408</span><span class="src">image415.png · 580×407</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「保存」をクリックし、次の画面に戻って引き続き機械工数をメンテナンスします</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击保存，回到如下页面，继续维护机器工时</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t12/05_1_image416.png"><img src="assets/img/co/t12/05_1_image416.png" alt="作業出力価格を設定する · ステップ 5：「保存」をクリックし、次の画面に戻って引き続き機械工数をメンテナンスします" loading="lazy" width="959" height="269"></a><figcaption><span class="n">画面 409</span><span class="src">image416.png · 959×269</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">保存し、戻って SET のメンテナンスを続行</p>
+<details class="orig"><summary>原文</summary><div class="zh">保存，返回继续维护 SET</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t12/06_1_image417.png"><img src="assets/img/co/t12/06_1_image417.png" alt="作業出力価格を設定する · ステップ 6：保存し、戻って SET のメンテナンスを続行" loading="lazy" width="590" height="420"></a><figcaption><span class="n">画面 410</span><span class="src">image417.png · 590×420</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 411）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t12/07_1_image418.png"><img src="assets/img/co/t12/07_1_image418.png" alt="作業出力価格を設定する · ステップ 7：image418.png" loading="lazy" width="928" height="257"></a><figcaption><span class="n">画面 411</span><span class="src">image418.png · 928×257</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t13"><span class="no">タスク 13</span><h3>管理会計伝票の番号範囲をメンテナンス</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">6 画面 / 5 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】维护成本控制凭证的编号范围<br></div></details>
+<div class="pathline" data-copy="管理会計 → 一般管理会計 → 組織構造 → 管理会計伝票の番号範囲のメンテナンス"><b>IMG パス（IMG 設定メニュー）</b>管理会計 → 一般管理会計 → 組織構造 → 管理会計伝票の番号範囲のメンテナンス</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>控制 → 一般控制 → 组织结构 → 维护成本控制凭证的编号范围</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">管理会計－一般管理会計－組織構造－管理会計伝票の番号範囲のメンテナンス</p>
+<details class="orig"><summary>原文</summary><div class="zh">控制－一般控制－组织结构－维护成本控制凭证的编号范围</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t13/01_1_image419.png"><img src="assets/img/co/t13/01_1_image419.png" alt="管理会計伝票の番号範囲をメンテナンス · ステップ 1：管理会計－一般管理会計－組織構造－管理会計伝票の番号範囲のメンテナンス" loading="lazy" width="371" height="417"></a><figcaption><span class="n">画面 412</span><span class="src">image419.png · 371×417</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t13/01_2_image420.png"><img src="assets/img/co/t13/01_2_image420.png" alt="管理会計伝票の番号範囲をメンテナンス · ステップ 1：管理会計－一般管理会計－組織構造－管理会計伝票の番号範囲のメンテナンス" loading="lazy" width="547" height="176"></a><figcaption><span class="n">画面 413</span><span class="src">image420.png · 547×176</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「コピー」キーをクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击复制键</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t13/02_1_image421.png"><img src="assets/img/co/t13/02_1_image421.png" alt="管理会計伝票の番号範囲をメンテナンス · ステップ 2：「コピー」キーをクリック" loading="lazy" width="151" height="194"></a><figcaption><span class="n">画面 414</span><span class="src">image421.png · 151×194</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 415）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t13/03_1_image422.png"><img src="assets/img/co/t13/03_1_image422.png" alt="管理会計伝票の番号範囲をメンテナンス · ステップ 3：image422.png" loading="lazy" width="599" height="562"></a><figcaption><span class="n">画面 415</span><span class="src">image422.png · 599×562</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">直接コピーすると、プログラムがコピーできないと表示されるので、グループメニューをクリックし、グループのメンテナンスをクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">直接复制，程序显示不能复制，点击组菜单，点击维护组</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t13/04_1_image423.png"><img src="assets/img/co/t13/04_1_image423.png" alt="管理会計伝票の番号範囲をメンテナンス · ステップ 4：直接コピーすると、プログラムがコピーできないと表示されるので、グループメニューをクリックし、グループのメンテナンスをクリックします" loading="lazy" width="545" height="184"></a><figcaption><span class="n">画面 416</span><span class="src">image423.png · 545×184</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 417）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t13/05_1_image424.png"><img src="assets/img/co/t13/05_1_image424.png" alt="管理会計伝票の番号範囲をメンテナンス · ステップ 5：image424.png" loading="lazy" width="588" height="224"></a><figcaption><span class="n">画面 417</span><span class="src">image424.png · 588×224</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t14"><span class="no">タスク 14</span><h3>費用の仕入先請求書を入力</h3><span class="tc">FB60</span><span class="tc2">3 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】输入费用供应商发票<br></div></details>
+<table class="tbl vals"><thead><tr><th>項目（日本語）</th><th>画面の中国語</th><th>教材の設定値</th></tr></thead><tbody><tr><td>仕入先</td><td><code>供应商</code></td><td>30000001</td></tr><tr><td>総勘定元帳勘定</td><td><code>总帐科目</code></td><td>55020141</td></tr><tr><td>伝票通貨で表示した金額</td><td><code>凭证货币计的金额</code></td><td>90000</td></tr><tr><td>原価センタ</td><td><code>成本中心</code></td><td>2001</td></tr></tbody></table>
+<div class="note tip"><b class="t">教材ノート</b>FB60</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 頤寧公司は佳音不動産公司から賃料の請求書を 1 通受け取りました。金額は 90000 で、ここではこの費用を 2001 財務部原価センタに計上する必要があります</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：颐宁公司收到佳音地产公司房租发票一张，金额为 90000，这里我们需把这笔费用计入 2001 财务部成本中心</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t14/01_1_image425.png"><img src="assets/img/co/t14/01_1_image425.png" alt="費用の仕入先請求書を入力 · ステップ 1：解説：頤寧公司は佳音不動産公司から賃料の請求書を 1 通受け取りました。金額は 90000 で、ここではこの費用を 2001 財務部原価センタに計上する必要があります" loading="lazy" width="359" height="413"></a><figcaption><span class="n">画面 418</span><span class="src">image425.png · 359×413</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t14/01_2_image426.png"><img src="assets/img/co/t14/01_2_image426.png" alt="費用の仕入先請求書を入力 · ステップ 1：解説：頤寧公司は佳音不動産公司から賃料の請求書を 1 通受け取りました。金額は 90000 で、ここではこの費用を 2001 財務部原価センタに計上する必要があります" loading="lazy" width="756" height="761"></a><figcaption><span class="n">画面 419</span><span class="src">image426.png · 756×761</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">請求書日付 2021 年 3 月 17 日、転記日付 2021 年 3 月 17 日、金額 90000</p>
+<details class="orig"><summary>原文</summary><div class="zh">发票日期 2021年3月17日过帐日期 2021年3月17日金额 90000</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t14/02_1_image427.png"><img src="assets/img/co/t14/02_1_image427.png" alt="費用の仕入先請求書を入力 · ステップ 2：請求書日付 2021 年 3 月 17 日、転記日付 2021 年 3 月 17 日、金額 90000" loading="lazy" width="730" height="308"></a><figcaption><span class="n">画面 420</span><span class="src">image427.png · 730×308</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>「保存」ボタンをクリックすると、伝票が保存された旨のメッセージが表示されます。</div>
+</li>
+</ol>
+<div class="steph" id="t15"><span class="no">タスク 15</span><h3>一般費用の請求書を入力</h3><span class="tc">FB50</span><span class="tc2">4 画面 / 4 ステップ</span></div>
+<p>伝票日付 今日 転記日付 今日</p>
+<p>総勘定元帳勘定 41050121 D/C 借方</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】输入普通费用发票<br>凭证日期 今天记帐日期 今天<br>总帐科目 41050121 D/C 借方</div></details>
+<div class="pathline" data-copy="会計 → 財務会計 → 総勘定元帳 → 転記 → FB50 総勘定元帳勘定伝票の入力"><b>IMG パス（IMG 設定メニュー）</b>会計 → 財務会計 → 総勘定元帳 → 転記 → FB50 総勘定元帳勘定伝票の入力</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 财务会计 → 总分类帐 → 过帐 → FB50 输入总帐科目凭证</code></div>
+<table class="tbl vals"><thead><tr><th>項目（日本語）</th><th>画面の中国語</th><th>教材の設定値</th></tr></thead><tbody><tr><td>伝票通貨で表示した金額</td><td><code>凭证货币计的金额</code></td><td>25500</td></tr><tr><td>原価センタ</td><td><code>成本中心</code></td><td>2006</td></tr><tr><td>伝票通貨で表示した金額</td><td><code>凭证货币计的金额</code></td><td>25500</td></tr></tbody></table>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 頤寧公司はさらに 25,500 元の電気料金を支払い、この電気料金は 2006 管理部の原価センタに記録されました。ここでは一般的な総勘定元帳伝票の方法でこの伝票を入力します。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：颐宁公司又支付了一笔 25500 元的电费，这笔电费被记录到了 2006 行政部成本中心。这里我们用一般的总账凭证的方式输入这张凭证</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t15/01_1_image428.png"><img src="assets/img/co/t15/01_1_image428.png" alt="一般費用の請求書を入力 · ステップ 1：解説：頤寧公司はさらに 25,500 元の電気料金を支払い、この電気料金は 2006 管理部の原価センタに記録されました。ここでは一般的な総勘定元帳伝票の方法でこの伝票を入力します。" loading="lazy" width="345" height="313"></a><figcaption><span class="n">画面 421</span><span class="src">image428.png · 345×313</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>伝票ヘッダテキスト 11 月電気料金</div>
+</li>
+<li>
+<p class="opcap">総勘定元帳勘定 10020111 D/C 貸方<br>原教材のスクリーンショットに誤りがあり、貸方には原価センタを入力できません</p>
+<details class="orig"><summary>原文</summary><div class="zh">总帐科目 10020111 D/C 贷方<br>原书截图有误，贷方不能录入成本中心</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t15/02_1_image429.png"><img src="assets/img/co/t15/02_1_image429.png" alt="一般費用の請求書を入力 · ステップ 2：総勘定元帳勘定 10020111 D/C 貸方 原教材のスクリーンショットに誤りがあり、貸方には原価センタを入力できません" loading="lazy" width="863" height="478"></a><figcaption><span class="n">画面 422</span><span class="src">image429.png · 863×478</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「シミュレーション」をクリックし、「保存」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击模拟 点击保存</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t15/03_1_image430.png"><img src="assets/img/co/t15/03_1_image430.png" alt="一般費用の請求書を入力 · ステップ 3：「シミュレーション」をクリックし、「保存」をクリック" loading="lazy" width="700" height="319"></a><figcaption><span class="n">画面 423</span><span class="src">image430.png · 700×319</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">保存</p>
+<figure class="shot narrow"><a class="zoom" href="assets/img/co/t15/04_1_image431.png"><img src="assets/img/co/t15/04_1_image431.png" alt="一般費用の請求書を入力 · ステップ 4：保存" loading="lazy" width="323" height="28"></a><figcaption><span class="n">画面 424</span><span class="src">image431.png · 323×28</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t16"><span class="no">タスク 16</span><h3>原価センタレポートを実行</h3><span class="tc2">3 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】运行成本中心报表<br></div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 原価センタ会計 → 情報システム → 原価センタ会計のレポート → 計画／実績比較 → 原価センタ：実績／計画／差異"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 原価センタ会計 → 情報システム → 原価センタ会計のレポート → 計画／実績比較 → 原価センタ：実績／計画／差異</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 控制 → 成本中心会计 → 信息系统 → 成本中心会计的报表 → 计划/实际比较 → 成本中心：实际/计划/差异</code></div>
+<table class="tbl vals"><thead><tr><th>項目（日本語）</th><th>画面の中国語</th><th>教材の設定値</th></tr></thead><tbody><tr><td>管理会計領域</td><td><code>成本控制范围</code></td><td>C999</td></tr><tr><td>会計年度</td><td><code>会计年度</code></td><td>2006</td></tr><tr><td>開始期間</td><td><code>开始期间</code></td><td>1</td></tr><tr><td>終了期間</td><td><code>终止期间</code></td><td>12</td></tr><tr><td>計画バージョン</td><td><code>计划版本</code></td><td>0</td></tr><tr><td>原価センタ値</td><td><code>成本中心价值</code></td><td>2001</td></tr><tr><td>「目覚まし時計」をクリックして実行するか、押します</td><td><code>点击闹钟运行或者按</code></td><td>F8</td></tr></tbody></table>
+<ol class="oplist">
+<li>
+<p class="opcap">会計－管理会計－原価センタ会計－情報システム－原価センタ会計のレポート－計画／実績比較－原価センタ：実績／計画／差異</p>
+<details class="orig"><summary>原文</summary><div class="zh">会计－控制－成本中心会计－信息系统－成本中心会计的报表－计划/实际比较－成本中心：实际/计划/差异</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t16/01_1_image432.png"><img src="assets/img/co/t16/01_1_image432.png" alt="原価センタレポートを実行 · ステップ 1：会計－管理会計－原価センタ会計－情報システム－原価センタ会計のレポート－計画／実績比較－原価センタ：実績／計画／差異" loading="lazy" width="693" height="738"></a><figcaption><span class="n">画面 425</span><span class="src">image432.png · 693×738</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 426）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t16/02_1_image433.png"><img src="assets/img/co/t16/02_1_image433.png" alt="原価センタレポートを実行 · ステップ 2：image433.png" loading="lazy" width="616" height="410"></a><figcaption><span class="n">画面 426</span><span class="src">image433.png · 616×410</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t16/03_1_image434.png"><img src="assets/img/co/t16/03_1_image434.png" alt="原価センタレポートを実行 · ステップ 2：image434.png" loading="lazy" width="726" height="358"></a><figcaption><span class="n">画面 427</span><span class="src">image434.png · 726×358</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t17"><span class="no">タスク 17</span><h3>原価センタデータの再転記</h3><span class="tc">KB61</span><span class="tc2">6 画面 / 5 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】成本中心数据重过帐<br></div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 原価センタ会計 → 実績記帳 → 明細項目の再転記 → KB61 入力"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 原価センタ会計 → 実績記帳 → 明細項目の再転記 → KB61 入力</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 控制 → 成本中心会计 → 实际记账 → 重过账行项目 → KB61 输入</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 90,000 元の賃料が誤って 2001 財務部の原価センタに記録されました。会計伝票を逆仕訳する必要はありません。管理会計で「再転記」を行い、2006 管理部の原価センタに指定し直すだけです。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：90000 元的房租被错误的记录到了 2001 财务部成本中心，我们不必冲销财务凭证。只需要在管理会计中做“重过账”重新将其指定到 2006 行政部成本中心</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t17/01_1_image435.png"><img src="assets/img/co/t17/01_1_image435.png" alt="原価センタデータの再転記 · ステップ 1：解説：90,000 元の賃料が誤って 2001 財務部の原価センタに記録されました。会計伝票を逆仕訳する必要はありません。管理会計で「再転記」を行い、2006 管理部の原価センタに指定し直すだけです。" loading="lazy" width="276" height="661"></a><figcaption><span class="n">画面 428</span><span class="src">image435.png · 276×661</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t17/01_2_image436.png"><img src="assets/img/co/t17/01_2_image436.png" alt="原価センタデータの再転記 · ステップ 1：解説：90,000 元の賃料が誤って 2001 財務部の原価センタに記録されました。会計伝票を逆仕訳する必要はありません。管理会計で「再転記」を行い、2006 管理部の原価センタに指定し直すだけです。" loading="lazy" width="651" height="387"></a><figcaption><span class="n">画面 429</span><span class="src">image436.png · 651×387</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">実行</p>
+<details class="orig"><summary>原文</summary><div class="zh">运行</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t17/02_1_image437.png"><img src="assets/img/co/t17/02_1_image437.png" alt="原価センタデータの再転記 · ステップ 2：実行" loading="lazy" width="851" height="116"></a><figcaption><span class="n">画面 430</span><span class="src">image437.png · 851×116</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">この画面で、この費用を 2006 管理部の原価センタに付け替えます。その後、「保存」をクリックします（CTRL+S）</p>
+<details class="orig"><summary>原文</summary><div class="zh">在这个屏幕里，我们将这笔费用重新指定到 2006 行政部成本中心，然后 点击保存CTRL+S</div></details>
+<figure class="shot narrow"><a class="zoom" href="assets/img/co/t17/03_1_image438.png"><img src="assets/img/co/t17/03_1_image438.png" alt="原価センタデータの再転記 · ステップ 3：この画面で、この費用を 2006 管理部の原価センタに付け替えます。その後、「保存」をクリックします（CTRL+S）" loading="lazy" width="215" height="46"></a><figcaption><span class="n">画面 431</span><span class="src">image438.png · 215×46</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">レポートを再照会</p>
+<details class="orig"><summary>原文</summary><div class="zh">重新查询报表</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t17/04_1_image439.png"><img src="assets/img/co/t17/04_1_image439.png" alt="原価センタデータの再転記 · ステップ 4：レポートを再照会" loading="lazy" width="1155" height="334"></a><figcaption><span class="n">画面 432</span><span class="src">image439.png · 1155×334</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 433）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t17/05_1_image440.png"><img src="assets/img/co/t17/05_1_image440.png" alt="原価センタデータの再転記 · ステップ 5：image440.png" loading="lazy" width="1142" height="349"></a><figcaption><span class="n">画面 433</span><span class="src">image440.png · 1142×349</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>原価センタ 2001 の賃料が 2006 に転送されたことがわかります</div>
+</li>
+</ol>
+<div class="steph" id="t18"><span class="no">タスク 18</span><h3>統計キー数値を新規作成</h3><span class="tc">KK01</span><span class="tc2">5 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建统计指标<br></div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 原価センタ会計 → マスタデータ → 統計キー数値 → 個別処理 → KK01-登録"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 原価センタ会計 → マスタデータ → 統計キー数値 → 個別処理 → KK01-登録</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 控制 → 成本中心会计 → 主数据 → 统计指标 → 单个处理 → KK01-创建</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 頤寧公司は、各原価センタの占有面積を使って賃料費用を配賦することにしました。SAP の管理会計では、占有面積のような非財務指標を「統計キー数値」で記録できます。ここでは賃料面積の統計キー数値を 1 つ登録します。<br>会計－管理会計－原価センタ会計－マスタデータ－統計キー数値－個別処理－KK01-登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：颐宁公司决定使用各成本中心占地面积来分配房租费用。在 SAP 管理会计中，类似占地面积等非财务指标,可以用“ 统计指标” 来记录。这里我们建立一个物业租金面积的统计指标。<br>会计－控制－成本中心会计－主数据－统计指标－单个处理－KK01-创建</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t18/01_1_image441.png"><img src="assets/img/co/t18/01_1_image441.png" alt="統計キー数値を新規作成 · ステップ 1：解説：頤寧公司は、各原価センタの占有面積を使って賃料費用を配賦することにしました。SAP の管理会計では、占有面積のような非財務指標を「統計キー数値」で記録できます。ここでは賃料面積の統計キー数値を 1 つ登録します。 会計－管理会計－原価センタ会計－マスタデータ－統計キー数値－個別処理－KK01-登録" loading="lazy" width="301" height="284"></a><figcaption><span class="n">画面 434</span><span class="src">image443.png · 301×284</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t18/01_2_image442.png"><img src="assets/img/co/t18/01_2_image442.png" alt="統計キー数値を新規作成 · ステップ 1：解説：頤寧公司は、各原価センタの占有面積を使って賃料費用を配賦することにしました。SAP の管理会計では、占有面積のような非財務指標を「統計キー数値」で記録できます。ここでは賃料面積の統計キー数値を 1 つ登録します。 会計－管理会計－原価センタ会計－マスタデータ－統計キー数値－個別処理－KK01-登録" loading="lazy" width="275" height="725"></a><figcaption><span class="n">画面 435</span><span class="src">image444.png · 275×725</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t18/01_1_image441.png"><img src="assets/img/co/t18/01_1_image441.png" alt="統計キー数値を新規作成 · ステップ 1：解説：頤寧公司は、各原価センタの占有面積を使って賃料費用を配賦することにしました。SAP の管理会計では、占有面積のような非財務指標を「統計キー数値」で記録できます。ここでは賃料面積の統計キー数値を 1 つ登録します。 会計－管理会計－原価センタ会計－マスタデータ－統計キー数値－個別処理－KK01-登録" loading="lazy" width="301" height="284"></a><figcaption><span class="n">画面 434</span><span class="src">image443.png · 301×284</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t18/01_2_image442.png"><img src="assets/img/co/t18/01_2_image442.png" alt="統計キー数値を新規作成 · ステップ 1：解説：頤寧公司は、各原価センタの占有面積を使って賃料費用を配賦することにしました。SAP の管理会計では、占有面積のような非財務指標を「統計キー数値」で記録できます。ここでは賃料面積の統計キー数値を 1 つ登録します。 会計－管理会計－原価センタ会計－マスタデータ－統計キー数値－個別処理－KK01-登録" loading="lazy" width="275" height="725"></a><figcaption><span class="n">画面 435</span><span class="src">image444.png · 275×725</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材ノート</b>次のデータを入力して保存</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 438）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t18/02_1_image445.png"><img src="assets/img/co/t18/02_1_image445.png" alt="統計キー数値を新規作成 · ステップ 2：image445.png" loading="lazy" width="455" height="344"></a><figcaption><span class="n">画面 438</span><span class="src">image445.png · 455×344</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t19"><span class="no">タスク 19</span><h3>統計キー数値の数量を入力</h3><span class="tc">KB31N</span><span class="tc2">3 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】输入统计指标数量<br></div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 原価センタ会計 → 実績記帳 → 統計キー数値 → KB31N-入力"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 原価センタ会計 → 実績記帳 → 統計キー数値 → KB31N-入力</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 控制 → 成本中心会计 → 实际记账 → 统计指标 → KB31N-输入</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">会計－管理会計－原価センタ会計－実績記帳－統計キー数値－KB31N-入力</p>
+<details class="orig"><summary>原文</summary><div class="zh">会计－控制－成本中心会计－实际记账－统计指标－KB31N-输入</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t19/01_1_image446.png"><img src="assets/img/co/t19/01_1_image446.png" alt="統計キー数値の数量を入力 · ステップ 1：会計－管理会計－原価センタ会計－実績記帳－統計キー数値－KB31N-入力" loading="lazy" width="303" height="817"></a><figcaption><span class="n">画面 439</span><span class="src">image446.png · 303×817</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 440）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t19/02_1_image447.png"><img src="assets/img/co/t19/02_1_image447.png" alt="統計キー数値の数量を入力 · ステップ 2：image447.png" loading="lazy" width="913" height="550"></a><figcaption><span class="n">画面 440</span><span class="src">image447.png · 913×550</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">保存</p>
+<figure class="shot narrow"><a class="zoom" href="assets/img/co/t19/03_1_image448.png"><img src="assets/img/co/t19/03_1_image448.png" alt="統計キー数値の数量を入力 · ステップ 3：保存" loading="lazy" width="204" height="31"></a><figcaption><span class="n">画面 441</span><span class="src">image448.png · 204×31</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t20"><span class="no">タスク 20</span><h3>配賦サイクルを定義</h3><span class="tc2">6 画面 / 5 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义分配循环<br></div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 原価センタ会計 → 期末決算 → 現行設定 → 配賦の定義"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 原価センタ会計 → 期末決算 → 現行設定 → 配賦の定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 控制 → 成本中心会计 → 期末结账 → 当前设置 → 定义分配</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 頤寧公司が定めた賃料費用の配賦ルールは、2006 管理部原価センタに記録されたすべての賃料費用を、本社の各原価センタの占有面積に応じて各原価センタに配賦するというものです。製造部の勤務地はこのオフィス物件の中にないため、賃料費用を負担する必要はありません。ここで、この配賦ルールを SAP 管理会計で定義します。SAP では「配賦サイクル」と呼びます。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：颐宁公司确定的分配房租费用的规则是将记录到 2006 行政部成本中心的所有房租费用按照总部各成本中心的占地面积分配给各成本中心。制造部的工作地点不在这个办公物业中，所以不需要承担房租费用。现在我们把这个分配规则定义在 SAP 管理会计中，SAP 称为“分配循环”</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t20/01_1_image449.png"><img src="assets/img/co/t20/01_1_image449.png" alt="配賦サイクルを定義 · ステップ 1：解説：頤寧公司が定めた賃料費用の配賦ルールは、2006 管理部原価センタに記録されたすべての賃料費用を、本社の各原価センタの占有面積に応じて各原価センタに配賦するというものです。製造部の勤務地はこのオフィス物件の中にないため、賃料費用を負担する必要はありません。ここで、この配賦ルールを SAP 管理会計で定義します。S" loading="lazy" width="410" height="718"></a><figcaption><span class="n">画面 442</span><span class="src">image449.png · 410×718</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t20/01_2_image450.png"><img src="assets/img/co/t20/01_2_image450.png" alt="配賦サイクルを定義 · ステップ 1：解説：頤寧公司が定めた賃料費用の配賦ルールは、2006 管理部原価センタに記録されたすべての賃料費用を、本社の各原価センタの占有面積に応じて各原価センタに配賦するというものです。製造部の勤務地はこのオフィス物件の中にないため、賃料費用を負担する必要はありません。ここで、この配賦ルールを SAP 管理会計で定義します。S" loading="lazy" width="288" height="337"></a><figcaption><span class="n">画面 443</span><span class="src">image450.png · 288×337</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 444）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t20/02_1_image451.png"><img src="assets/img/co/t20/02_1_image451.png" alt="配賦サイクルを定義 · ステップ 2：image451.png" loading="lazy" width="589" height="281"></a><figcaption><span class="n">画面 444</span><span class="src">image451.png · 589×281</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">1 つのサイクルには多数の配賦基準をメンテナンスできます。各配賦基準は「セグメント」と呼ばれます。「セグメント追加」をクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">在一个循环里，可以维护很多个分配标准，每个分配标准称为一个“段”，我们点击增加段</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t20/03_1_image452.png"><img src="assets/img/co/t20/03_1_image452.png" alt="配賦サイクルを定義 · ステップ 3：1 つのサイクルには多数の配賦基準をメンテナンスできます。各配賦基準は「セグメント」と呼ばれます。「セグメント追加」をクリックします" loading="lazy" width="748" height="464"></a><figcaption><span class="n">画面 445</span><span class="src">image452.png · 748×464</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">セグメントヘッダでは、いくつかの概要パラメータを定義します。送信側が原価を送信し、受信側が原価を受け取ります。「送信側/受信側」をクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">在段表头，我们定义一些概览参数。发送方将成本发送出去，接收方接收成本。点击发送方/接收方</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t20/04_1_image453.png"><img src="assets/img/co/t20/04_1_image453.png" alt="配賦サイクルを定義 · ステップ 4：セグメントヘッダでは、いくつかの概要パラメータを定義します。送信側が原価を送信し、受信側が原価を受け取ります。「送信側/受信側」をクリックします" loading="lazy" width="773" height="678"></a><figcaption><span class="n">画面 446</span><span class="src">image453.png · 773×678</span></figcaption></figure>
+<div class="note info"><b class="t">原理の説明</b>解説：送信元が原価を送り出し、送信先が原価を受け取ります。したがって、この配賦ルールの送信元は 2006 管理部、原価センタ 55020141 の管理費－賃料の原価要素で、送信先は HQ 本社原価センタグループの各原価センタです。</div>
+</li>
+<li>
+<p class="opcap">「受入側追跡要因」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击接收方追踪因素</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t20/05_1_image454.png"><img src="assets/img/co/t20/05_1_image454.png" alt="配賦サイクルを定義 · ステップ 5：「受入側追跡要因」をクリック" loading="lazy" width="640" height="466"></a><figcaption><span class="n">画面 447</span><span class="src">image454.png · 640×466</span></figcaption></figure>
+<div class="note info"><b class="t">原理の説明</b>解説：受信側追跡ファクタとは、複数の受信側の間でどのような基準によって原価を配賦するかを指します。したがって、当社のルールは次のとおりです</div>
+<div class="note tip"><b class="t">教材ノート</b>RENT 物件賃料面積の統計キー数値の実績統計値で原価を配賦します。</div>
+</li>
+</ol>
+<div class="steph" id="t21"><span class="no">タスク 21</span><h3>配賦</h3><span class="tc2">3 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】分配<br></div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 原価センタ会計 → 期末決算 → 単一機能 → 割当 → KSV5 配賦"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 原価センタ会計 → 期末決算 → 単一機能 → 割当 → KSV5 配賦</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 控制 → 成本中心会计 → 期末结账 → 单一功能 → 分配 → KSV5 分配</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 前述の準備作業が完了したので、次に今月の月次締めで、賃料原価を各原価センタに配賦します<br>会計－管理会計－原価センタ会計－期末決算－単一機能－割当－KSV5 配賦</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：完成了前面的准备工作，接下来要在这个月的月结时，将房租成本分配给了各成本中心<br>会计－控制－成本中心会计－期末结账－单一功能－分配－KSV5 分配</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t21/01_1_image455.png"><img src="assets/img/co/t21/01_1_image455.png" alt="配賦 · ステップ 1：解説：前述の準備作業が完了したので、次に今月の月次締めで、賃料原価を各原価センタに配賦します 会計－管理会計－原価センタ会計－期末決算－単一機能－割当－KSV5 配賦" loading="lazy" width="386" height="848"></a><figcaption><span class="n">画面 448</span><span class="src">image455.png · 386×848</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t21/01_2_image456.png"><img src="assets/img/co/t21/01_2_image456.png" alt="配賦 · ステップ 1：解説：前述の準備作業が完了したので、次に今月の月次締めで、賃料原価を各原価センタに配賦します 会計－管理会計－原価センタ会計－期末決算－単一機能－割当－KSV5 配賦" loading="lazy" width="456" height="788"></a><figcaption><span class="n">画面 449</span><span class="src">image456.png · 456×788</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>期間には当月を入力します（配賦を実行する期間を指します）</div>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> この画面では、配賦を実行する会計期間を入力します。一度に複数の配賦サイクルを実行できるので、それらを下の一覧に入力するだけです。<br>「実行」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：在这个屏幕中，我们填写执行分配的会计期间，我们可以一次运行几个分配循环，只需要将他们填写在下方的清单里即可。<br>点击运行</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t21/02_1_image457.png"><img src="assets/img/co/t21/02_1_image457.png" alt="配賦 · ステップ 2：解説：この画面では、配賦を実行する会計期間を入力します。一度に複数の配賦サイクルを実行できるので、それらを下の一覧に入力するだけです。 「実行」をクリック" loading="lazy" width="643" height="333"></a><figcaption><span class="n">画面 450</span><span class="src">image457.png · 643×333</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t22"><span class="no">タスク 22</span><h3>原価センタに配賦された賃料を照会</h3><span class="tc2">4 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】显示成本中心分配到的租金<br></div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 原価センタ会計 → 情報システム → 原価センタ会計のレポート → 計画／実績比較 → 原価センタ：実績／計画／差異"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 原価センタ会計 → 情報システム → 原価センタ会計のレポート → 計画／実績比較 → 原価センタ：実績／計画／差異</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 控制 → 成本中心会计 → 信息系统 → 成本中心会计的报表 → 计划/实际比较 → 成本中心：实际/计划/差异</code></div>
+<ol class="oplist">
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/co/t22/01_1_image458.png"><img src="assets/img/co/t22/01_1_image458.png" alt="原価センタに配賦された賃料を照会 · ステップ 1：image458.png" loading="lazy" width="517" height="583"></a><figcaption><span class="n">画面 451</span><span class="src">image458.png · 517×583</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">会計－管理会計－原価センタ会計－情報システム－原価センタ会計のレポート－計画／実績比較－原価センタ：実績／計画／差異</p>
+<details class="orig"><summary>原文</summary><div class="zh">会计－控制－成本中心会计－信息系统－成本中心会计的报表－计划/实际比较－成本中心：实际/计划/差异</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t22/02_1_image459.png"><img src="assets/img/co/t22/02_1_image459.png" alt="原価センタに配賦された賃料を照会 · ステップ 2：会計－管理会計－原価センタ会計－情報システム－原価センタ会計のレポート－計画／実績比較－原価センタ：実績／計画／差異" loading="lazy" width="591" height="393"></a><figcaption><span class="n">画面 452</span><span class="src">image459.png · 591×393</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t22/02_2_image460.png"><img src="assets/img/co/t22/02_2_image460.png" alt="原価センタに配賦された賃料を照会 · ステップ 2：会計－管理会計－原価センタ会計－情報システム－原価センタ会計のレポート－計画／実績比較－原価センタ：実績／計画／差異" loading="lazy" width="1264" height="638"></a><figcaption><span class="n">画面 453</span><span class="src">image460.png · 1264×638</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">左側の各原価センタをクリックすると、各原価センタに配賦された賃料費用を確認できます</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击左边各成本中心，可查看到各成本中心分配到的房租费用</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t22/03_1_image461.png"><img src="assets/img/co/t22/03_1_image461.png" alt="原価センタに配賦された賃料を照会 · ステップ 3：左側の各原価センタをクリックすると、各原価センタに配賦された賃料費用を確認できます" loading="lazy" width="1259" height="593"></a><figcaption><span class="n">画面 454</span><span class="src">image461.png · 1259×593</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t23"><span class="no">タスク 23</span><h3>按分サイクルを定義</h3><span class="tc2">8 画面 / 5 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义分摊循环<br></div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 原価センタ会計 → 期末決算 → 現行設定 → 評価の定義"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 原価センタ会計 → 期末決算 → 現行設定 → 評価の定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 控制 → 成本中心会计 → 期末结账 → 当前设置 → 定义评估</code></div>
+<div class="note info"><b class="t">原理の説明</b>解説：前述の賃料費用の配賦では、配賦の前後でコストフローの形態、つまり賃料費用は変化していないため、配賦は一次原価要素に対する配賦です。しかし、場合によっては按分の前後でコストフローの形態が変化します。たとえば管理部が各種の費用を発生させますが、「行政管理費」という形で他の原価センタへ按分します。また、工場食堂の原価センタが各種の費用を発生させますが、食堂費という形で他の原価センタへ按分します。このとき受入側、たとえば財務部の原価センタが見るのは、食堂で発生した電気料金・水道料金・材料費・人件費などではなく、自分に按分された食堂費がいくらかです。この食堂費や行政管理費が前述の二次原価要素であり、SAP では按分と呼びます。前述の配賦とは意味が異なります。</div>
+<ol class="oplist">
+<li>
+<p class="opcap">この例では、802010 電気料金を二次原価要素として使用し、41050121 電気料金の一次原価要素を按分します。これは、按分によって原価の流れがどのように変化するかを説明するためのものです。この例は実際のシナリオではありません。<br>会計－管理会計－原価センタ会計－期末決算－現行設定－評価の定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">在本例里我们使用802010 电费作为次级成本要素来分摊41050121 电费初级成本要素为了说明在分摊中成本流的形态发生了怎样的变化。本例不是实际的场景<br>会计－控制－成本中心会计－期末结账－当前设置－定义评估</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t23/01_1_image462.png"><img src="assets/img/co/t23/01_1_image462.png" alt="按分サイクルを定義 · ステップ 1：この例では、802010 電気料金を二次原価要素として使用し、41050121 電気料金の一次原価要素を按分します。これは、按分によって原価の流れがどのように変化するかを説明するためのものです。この例は実際のシナリオではありません。 会計－管理会計－原価センタ会計－期末決算－現行設定－評価の定義" loading="lazy" width="388" height="572"></a><figcaption><span class="n">画面 455</span><span class="src">image464.png · 388×572</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t23/01_2_image463.png"><img src="assets/img/co/t23/01_2_image463.png" alt="按分サイクルを定義 · ステップ 1：この例では、802010 電気料金を二次原価要素として使用し、41050121 電気料金の一次原価要素を按分します。これは、按分によって原価の流れがどのように変化するかを説明するためのものです。この例は実際のシナリオではありません。 会計－管理会計－原価センタ会計－期末決算－現行設定－評価の定義" loading="lazy" width="331" height="362"></a><figcaption><span class="n">画面 456</span><span class="src">image465.png · 331×362</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t23/01_1_image462.png"><img src="assets/img/co/t23/01_1_image462.png" alt="按分サイクルを定義 · ステップ 1：この例では、802010 電気料金を二次原価要素として使用し、41050121 電気料金の一次原価要素を按分します。これは、按分によって原価の流れがどのように変化するかを説明するためのものです。この例は実際のシナリオではありません。 会計－管理会計－原価センタ会計－期末決算－現行設定－評価の定義" loading="lazy" width="388" height="572"></a><figcaption><span class="n">画面 455</span><span class="src">image464.png · 388×572</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t23/01_2_image463.png"><img src="assets/img/co/t23/01_2_image463.png" alt="按分サイクルを定義 · ステップ 1：この例では、802010 電気料金を二次原価要素として使用し、41050121 電気料金の一次原価要素を按分します。これは、按分によって原価の流れがどのように変化するかを説明するためのものです。この例は実際のシナリオではありません。 会計－管理会計－原価センタ会計－期末決算－現行設定－評価の定義" loading="lazy" width="331" height="362"></a><figcaption><span class="n">画面 456</span><span class="src">image465.png · 331×362</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 配賦と同様に、まず按分のルールを「按分サイクル」に定義する必要があります。この画面では、按分サイクルにコードを付け、その有効開始日時を指定します。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：和分配类似，我们首先需要把分摊的规则定义在“分摊循环”里，在这个屏幕里，我们给分摊循环起一个编码，并说明他的有效开始时间</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t23/02_1_image466.png"><img src="assets/img/co/t23/02_1_image466.png" alt="按分サイクルを定義 · ステップ 2：解説：配賦と同様に、まず按分のルールを「按分サイクル」に定義する必要があります。この画面では、按分サイクルにコードを付け、その有効開始日時を指定します。" loading="lazy" width="657" height="308"></a><figcaption><span class="n">画面 459</span><span class="src">image466.png · 657×308</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">1 つのサイクルには多数の按分基準をメンテナンスできます。各按分基準は 1 つのセグメントと呼ばれます。「セグメント追加」をクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">在一个循环里可以维护很多分摊标准，每个分摊标准称为一个段。点击增加段</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t23/03_1_image467.png"><img src="assets/img/co/t23/03_1_image467.png" alt="按分サイクルを定義 · ステップ 3：1 つのサイクルには多数の按分基準をメンテナンスできます。各按分基準は 1 つのセグメントと呼ばれます。「セグメント追加」をクリックします" loading="lazy" width="708" height="519"></a><figcaption><span class="n">画面 460</span><span class="src">image467.png · 708×519</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap"><span class="lead">解説：</span> 配賦とは異なり、按分ではコストフローに二次原価要素を使用するため、この画面では関連する二次原価要素を指定する必要があります。ここで示すように固定の按分原価要素を指定する方法と、元の一次原価要素から按分原価要素への対応関係を登録する方法があります。SAP ではこれを配賦構造と呼びます（画面の按分原価要素の下）。また、本例では「固定パーセント」のルールで受入側に原価を按分します。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：和分配不同，分摊中成本流转使用的是次级成本要素，所以在这个屏幕里需要指定相关的次级成本要素。我们既可以像现在这样指定一个固定的分摊成本要素，也可以建立一种从原始的初级成本要素到分摊成本要素的对应关系，SAP 称之为分配结构（屏幕中分摊成本要素的下方）此外，本例中我们使用“固定百分比”的规则在接收方中分摊成本。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t23/04_1_image468.png"><img src="assets/img/co/t23/04_1_image468.png" alt="按分サイクルを定義 · ステップ 4：解説：配賦とは異なり、按分ではコストフローに二次原価要素を使用するため、この画面では関連する二次原価要素を指定する必要があります。ここで示すように固定の按分原価要素を指定する方法と、元の一次原価要素から按分原価要素への対応関係を登録する方法があります。SAP ではこれを配賦構造と呼びます（画面の按分原価要素の下）。また" loading="lazy" width="605" height="460"></a><figcaption><span class="n">画面 461</span><span class="src">image468.png · 605×460</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">送付側は 2006 管理部原価センタの原価要素 41050121、受取側は MFG 製造部原価センタの各原価センタです</p>
+<details class="orig"><summary>原文</summary><div class="zh">发送方是 2006 行政部成本中心的 41050121 成本要素，接收方是 MFG 制造部成本中心的各成本中心</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t23/05_1_image469.png"><img src="assets/img/co/t23/05_1_image469.png" alt="按分サイクルを定義 · ステップ 5：送付側は 2006 管理部原価センタの原価要素 41050121、受取側は MFG 製造部原価センタの各原価センタです" loading="lazy" width="608" height="368"></a><figcaption><span class="n">画面 462</span><span class="src">image469.png · 608×368</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>ここでは、1001 と 1002 がそれぞれ占める比率を示しています</div>
+<div class="note tip"><b class="t">教材ノート</b>入力が完了したら「保存」をクリック</div>
+</li>
+</ol>
+<div class="steph" id="t24"><span class="no">タスク 24</span><h3>按分</h3><span class="tc2">4 画面 / 1 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】分摊<br></div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 原価センタ会計 → 期末決算 → 単一機能 → 割当 → KSU5-配賦"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 原価センタ会計 → 期末決算 → 単一機能 → 割当 → KSU5-配賦</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 控制 → 成本中心会计 → 期末结账 → 单一功能 → 分配 → KSU5-分配</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">準備作業が完了したので、この按分サイクルを実行します</p>
+<details class="orig"><summary>原文</summary><div class="zh">完成了准备工作，我们来执行这个分摊循环</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t24/01_1_image470.png"><img src="assets/img/co/t24/01_1_image470.png" alt="按分 · ステップ 1：準備作業が完了したので、この按分サイクルを実行します" loading="lazy" width="354" height="811"></a><figcaption><span class="n">画面 463</span><span class="src">image472.png · 354×811</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t24/01_2_image471.png"><img src="assets/img/co/t24/01_2_image471.png" alt="按分 · ステップ 1：準備作業が完了したので、この按分サイクルを実行します" loading="lazy" width="517" height="787"></a><figcaption><span class="n">画面 464</span><span class="src">image473.png · 517×787</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t24/01_1_image470.png"><img src="assets/img/co/t24/01_1_image470.png" alt="按分 · ステップ 1：準備作業が完了したので、この按分サイクルを実行します" loading="lazy" width="354" height="811"></a><figcaption><span class="n">画面 463</span><span class="src">image472.png · 354×811</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t24/01_2_image471.png"><img src="assets/img/co/t24/01_2_image471.png" alt="按分 · ステップ 1：準備作業が完了したので、この按分サイクルを実行します" loading="lazy" width="517" height="787"></a><figcaption><span class="n">画面 464</span><span class="src">image473.png · 517×787</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t25"><span class="no">タスク 25</span><h3>「実行」をクリック</h3><span class="tc2">1 画面 / 1 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】点击执行<br></div></details>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 467）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t25/01_1_image474.png"><img src="assets/img/co/t25/01_1_image474.png" alt="「実行」をクリック：image474.png" loading="lazy" width="704" height="307"></a><figcaption><span class="n">画面 467</span><span class="src">image474.png · 704×307</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t26"><span class="no">タスク 26</span><h3>原価センタに按分された電気料金を照会</h3><span class="tc2">4 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】显示成本中心分摊到的电费<br></div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 原価センタ会計 → 情報システム → 原価センタ会計のレポート → 計画／実績比較 → 原価センタ：実績／計画／差異"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 原価センタ会計 → 情報システム → 原価センタ会計のレポート → 計画／実績比較 → 原価センタ：実績／計画／差異</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 控制 → 成本中心会计 → 信息系统 → 成本中心会计的报表 → 计划/实际比较 → 成本中心：实际/计划/差异</code></div>
+<ol class="oplist">
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/co/t26/01_1_image475.png"><img src="assets/img/co/t26/01_1_image475.png" alt="原価センタに按分された電気料金を照会 · ステップ 1：image475.png" loading="lazy" width="617" height="386"></a><figcaption><span class="n">画面 468</span><span class="src">image475.png · 617×386</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t26/01_2_image476.png"><img src="assets/img/co/t26/01_2_image476.png" alt="原価センタに按分された電気料金を照会 · ステップ 1：image476.png" loading="lazy" width="478" height="589"></a><figcaption><span class="n">画面 469</span><span class="src">image476.png · 478×589</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">会計－管理会計－原価センタ会計－情報システム－原価センタ会計のレポート－計画／実績比較－原価センタ：実績／計画／差異</p>
+<details class="orig"><summary>原文</summary><div class="zh">会计－控制－成本中心会计－信息系统－成本中心会计的报表－计划/实际比较－成本中心：实际/计划/差异</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t26/02_1_image477.png"><img src="assets/img/co/t26/02_1_image477.png" alt="原価センタに按分された電気料金を照会 · ステップ 2：会計－管理会計－原価センタ会計－情報システム－原価センタ会計のレポート－計画／実績比較－原価センタ：実績／計画／差異" loading="lazy" width="881" height="327"></a><figcaption><span class="n">画面 470</span><span class="src">image477.png · 881×327</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t26/02_2_image478.png"><img src="assets/img/co/t26/02_2_image478.png" alt="原価センタに按分された電気料金を照会 · ステップ 2：会計－管理会計－原価センタ会計－情報システム－原価センタ会計のレポート－計画／実績比較－原価センタ：実績／計画／差異" loading="lazy" width="1002" height="657"></a><figcaption><span class="n">画面 471</span><span class="src">image478.png · 1002×657</span></figcaption></figure>
+<div class="note info"><b class="t">原理の説明</b>注意：ここに表示している 802010 電気料金按分は二次原価要素で、社内の原価の流れに使用されるものであり、財務会計には存在しない勘定です</div>
+</li>
+</ol>
+<div class="steph" id="t27"><span class="no">タスク 27</span><h3>内部指図タイプを登録し、番号範囲をメンテナンスします</h3><span class="tc2">10 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】创建内部订单类型并维护编号范围<br></div></details>
+<div class="pathline" data-copy="「新規エントリ」をクリック 「新規エントリ」をクリック IMG 設定 → 管理会計 → 内部指図 → 指図マスタ → 指図タイプの定義"><b>IMG パス（IMG 設定メニュー）</b>「新規エントリ」をクリック 「新規エントリ」をクリック IMG 設定 → 管理会計 → 内部指図 → 指図マスタ → 指図タイプの定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>点击新条目点击新条目后台 → 控制 → 内部订单 → 订单主数据 → 定义订单类型</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 頤寧公司は「国内ユーザ大会」を開催します。この販売促進活動のために、会社では多くの費用が発生します。今回の活動の費用は、原価センタの各種費用の中ではなく個別に計算できるようにしたいと考えています。会社には同様の「プロジェクト」が多数あり、SAP の管理会計では「内部指図」でこれらのプロジェクトを管理できます。プロジェクトには、マーケティング系、研究開発系、労働組合活動系などさまざまなタイプがあります。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：颐宁公司将要举行 “ 国内用户大会” 为了这次市场推广活动，公司会发生很多费用，我们希望能对这次活动单独核算费用，而不是在成本中心各种费用中。公司中类似的“ 项目”还有很多，在 SAP 管理会计中我们可以用“内部订单”来管理这些项目。项目有各种类型，如市场类的，研发类的，工会活动类的等等。</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t27/01_1_image479.png"><img src="assets/img/co/t27/01_1_image479.png" alt="内部指図タイプを登録し、番号範囲をメンテナンスします · ステップ 1：解説：頤寧公司は「国内ユーザ大会」を開催します。この販売促進活動のために、会社では多くの費用が発生します。今回の活動の費用は、原価センタの各種費用の中ではなく個別に計算できるようにしたいと考えています。会社には同様の「プロジェクト」が多数あり、SAP の管理会計では「内部指図」でこれらのプロジェクトを管理できます。プロ" loading="lazy" width="512" height="710"></a><figcaption><span class="n">画面 472</span><span class="src">image482.png · 512×710</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t27/01_2_image480.png"><img src="assets/img/co/t27/01_2_image480.png" alt="内部指図タイプを登録し、番号範囲をメンテナンスします · ステップ 1：解説：頤寧公司は「国内ユーザ大会」を開催します。この販売促進活動のために、会社では多くの費用が発生します。今回の活動の費用は、原価センタの各種費用の中ではなく個別に計算できるようにしたいと考えています。会社には同様の「プロジェクト」が多数あり、SAP の管理会計では「内部指図」でこれらのプロジェクトを管理できます。プロ" loading="lazy" width="405" height="555"></a><figcaption><span class="n">画面 473</span><span class="src">image483.png · 405×555</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t27/01_3_image481.png"><img src="assets/img/co/t27/01_3_image481.png" alt="内部指図タイプを登録し、番号範囲をメンテナンスします · ステップ 1：解説：頤寧公司は「国内ユーザ大会」を開催します。この販売促進活動のために、会社では多くの費用が発生します。今回の活動の費用は、原価センタの各種費用の中ではなく個別に計算できるようにしたいと考えています。会社には同様の「プロジェクト」が多数あり、SAP の管理会計では「内部指図」でこれらのプロジェクトを管理できます。プロ" loading="lazy" width="625" height="544"></a><figcaption><span class="n">画面 474</span><span class="src">image484.png · 625×544</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t27/01_1_image479.png"><img src="assets/img/co/t27/01_1_image479.png" alt="内部指図タイプを登録し、番号範囲をメンテナンスします · ステップ 1：解説：頤寧公司は「国内ユーザ大会」を開催します。この販売促進活動のために、会社では多くの費用が発生します。今回の活動の費用は、原価センタの各種費用の中ではなく個別に計算できるようにしたいと考えています。会社には同様の「プロジェクト」が多数あり、SAP の管理会計では「内部指図」でこれらのプロジェクトを管理できます。プロ" loading="lazy" width="512" height="710"></a><figcaption><span class="n">画面 472</span><span class="src">image482.png · 512×710</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t27/01_2_image480.png"><img src="assets/img/co/t27/01_2_image480.png" alt="内部指図タイプを登録し、番号範囲をメンテナンスします · ステップ 1：解説：頤寧公司は「国内ユーザ大会」を開催します。この販売促進活動のために、会社では多くの費用が発生します。今回の活動の費用は、原価センタの各種費用の中ではなく個別に計算できるようにしたいと考えています。会社には同様の「プロジェクト」が多数あり、SAP の管理会計では「内部指図」でこれらのプロジェクトを管理できます。プロ" loading="lazy" width="405" height="555"></a><figcaption><span class="n">画面 473</span><span class="src">image483.png · 405×555</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t27/01_3_image481.png"><img src="assets/img/co/t27/01_3_image481.png" alt="内部指図タイプを登録し、番号範囲をメンテナンスします · ステップ 1：解説：頤寧公司は「国内ユーザ大会」を開催します。この販売促進活動のために、会社では多くの費用が発生します。今回の活動の費用は、原価センタの各種費用の中ではなく個別に計算できるようにしたいと考えています。会社には同様の「プロジェクト」が多数あり、SAP の管理会計では「内部指図」でこれらのプロジェクトを管理できます。プロ" loading="lazy" width="625" height="544"></a><figcaption><span class="n">画面 474</span><span class="src">image484.png · 625×544</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 478）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t27/02_1_image485.png"><img src="assets/img/co/t27/02_1_image485.png" alt="内部指図タイプを登録し、番号範囲をメンテナンスします · ステップ 2：image485.png" loading="lazy" width="588" height="722"></a><figcaption><span class="n">画面 478</span><span class="src">image485.png · 588×722</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t27/02_2_image486.png"><img src="assets/img/co/t27/02_2_image486.png" alt="内部指図タイプを登録し、番号範囲をメンテナンスします · ステップ 2：image486.png" loading="lazy" width="565" height="730"></a><figcaption><span class="n">画面 479</span><span class="src">image486.png · 565×730</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">保存後、番号範囲インターバルをクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">保存后，点击编号范围区间</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t27/03_1_image487.png"><img src="assets/img/co/t27/03_1_image487.png" alt="内部指図タイプを登録し、番号範囲をメンテナンスします · ステップ 3：保存後、番号範囲インターバルをクリック" loading="lazy" width="820" height="209"></a><figcaption><span class="n">画面 480</span><span class="src">image487.png · 820×209</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">カーソルで「未配賦」内の PMKT 市場活動を選択してクリックし、次に「市場および広告需要」指図の前のチェックボックスにチェックを入れ、さらにクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">将光标选中“未分配的”里的 PMKT 市场活动，点击然后 勾上市场和广告需求。订单前面的方框，再点击</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t27/04_1_image488.png"><img src="assets/img/co/t27/04_1_image488.png" alt="内部指図タイプを登録し、番号範囲をメンテナンスします · ステップ 4：カーソルで「未配賦」内の PMKT 市場活動を選択してクリックし、次に「市場および広告需要」指図の前のチェックボックスにチェックを入れ、さらにクリックします" loading="lazy" width="813" height="881"></a><figcaption><span class="n">画面 481</span><span class="src">image488.png · 813×881</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>「保存」をクリック</div>
+</li>
+</ol>
+<div class="steph" id="t28"><span class="no">タスク 28</span><h3>内部指図の決済プロファイルをメンテナンス</h3><span class="tc2">4 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】维护内部订单的结算参数文件<br></div></details>
+<div class="pathline" data-copy="IMG 設定 → 管理会計 → 内部指図 → 実績転記 → 決済 → 決済プロファイルのメンテナンス"><b>IMG パス（IMG 設定メニュー）</b>IMG 設定 → 管理会計 → 内部指図 → 実績転記 → 決済 → 決済プロファイルのメンテナンス</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后台 → 控制 → 内部订单 → 实际过账 → 结算 → 维护结算参数文件</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 「国内ユーザ会議」を開催するために、会社は「キャンペーン」指図タイプを登録しました。その決済プロファイルには、システムに既にある 100 を選択しています。本ステップでは、決済プロファイル 100 の設定を確認します。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：为了举行“国内用户大会”公司创建了“市场活动”订单类型，其中结算参数文件选择的是系统中已经有的 100，本步骤中，我们来检查结算参数文件 100 的设置</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t28/01_1_image490.png"><img src="assets/img/co/t28/01_1_image490.png" alt="内部指図の決済プロファイルをメンテナンス · ステップ 1：解説：「国内ユーザ会議」を開催するために、会社は「キャンペーン」指図タイプを登録しました。その決済プロファイルには、システムに既にある 100 を選択しています。本ステップでは、決済プロファイル 100 の設定を確認します。" loading="lazy" width="419" height="901"></a><figcaption><span class="n">画面 482</span><span class="src">image490.png · 419×901</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">「決済プロファイルのメンテナンス」をダブルクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击“维护结算参数文件”</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t28/02_1_image491.png"><img src="assets/img/co/t28/02_1_image491.png" alt="内部指図の決済プロファイルをメンテナンス · ステップ 2：「決済プロファイルのメンテナンス」をダブルクリック" loading="lazy" width="641" height="680"></a><figcaption><span class="n">画面 483</span><span class="src">image491.png · 641×680</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 484）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t28/03_1_image492.png"><img src="assets/img/co/t28/03_1_image492.png" alt="内部指図の決済プロファイルをメンテナンス · ステップ 3：image492.png" loading="lazy" width="476" height="317"></a><figcaption><span class="n">画面 484</span><span class="src">image492.png · 476×317</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「決済プロファイル 100」をダブルクリックします<br>ない場合は「新規エントリ」をクリックし、その後で前のステップの決済プロファイルに戻って変更します。そのとき選択したのは 20 です</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击“结算参数文件100”，<br>如果没有，则点击新条目，然后回头修改上一步的参结算参数文件，当时我们选择的为20</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t28/04_1_image493.png"><img src="assets/img/co/t28/04_1_image493.png" alt="内部指図の決済プロファイルをメンテナンス · ステップ 4：「決済プロファイル 100」をダブルクリックします ない場合は「新規エントリ」をクリックし、その後で前のステップの決済プロファイルに戻って変更します。そのとき選択したのは 20 です" loading="lazy" width="694" height="646"></a><figcaption><span class="n">画面 485</span><span class="src">image493.png · 694×646</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t29"><span class="no">タスク 29</span><h3>内部指図決済の配賦構造をメンテナンス</h3><span class="tc2">6 画面 / 6 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】维护内部订单结算的分配结构<br></div></details>
+<div class="pathline" data-copy="IMG 設定 → 管理会計 → 内部指図 → 実績転記 → 決済 → 配賦構造のメンテナンス"><b>IMG パス（IMG 設定メニュー）</b>IMG 設定 → 管理会計 → 内部指図 → 実績転記 → 決済 → 配賦構造のメンテナンス</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后台 → 控制 → 内部订单 → 实际过账 → 结算 → 维护分配结构</code></div>
+<div class="note info"><b class="t">原理の説明</b>解説：会社は「キャンペーン」指図タイプを登録しており、その決済プロファイルは 100 です。決済プロファイル 100 で選択されている配賦構造は AI -&gt; CO 配賦構造です。本ステップでは、A1 配賦構造をメンテナンスします。</div>
+<ol class="oplist">
+<li>
+<p class="opcap">IMG 設定－管理会計－内部指図－実績転記－決済－配賦構造のメンテナンス</p>
+<details class="orig"><summary>原文</summary><div class="zh">后台－控制－内部订单－实际过账－结算－维护分配结构</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t29/01_1_image494.png"><img src="assets/img/co/t29/01_1_image494.png" alt="内部指図決済の配賦構造をメンテナンス · ステップ 1：IMG 設定－管理会計－内部指図－実績転記－決済－配賦構造のメンテナンス" loading="lazy" width="354" height="906"></a><figcaption><span class="n">画面 486</span><span class="src">image494.png · 354×906</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 487）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t29/02_1_image495.png"><img src="assets/img/co/t29/02_1_image495.png" alt="内部指図決済の配賦構造をメンテナンス · ステップ 2：image495.png" loading="lazy" width="581" height="236"></a><figcaption><span class="n">画面 487</span><span class="src">image495.png · 581×236</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「配賦」をダブルクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击分配</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t29/03_1_image496.png"><img src="assets/img/co/t29/03_1_image496.png" alt="内部指図決済の配賦構造をメンテナンス · ステップ 3：「配賦」をダブルクリック" loading="lazy" width="609" height="302"></a><figcaption><span class="n">画面 488</span><span class="src">image496.png · 609×302</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">001 の行を選択し、次に左側のソースファイルをクリックします。001 がない場合は「新規エントリ」をクリックし、左側の「ソース」をダブルクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">选中 001 行，然后点击左边的源文件，如果没有001，则点击新的条目，双击左边的“源”</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t29/04_1_image497.png"><img src="assets/img/co/t29/04_1_image497.png" alt="内部指図決済の配賦構造をメンテナンス · ステップ 4：001 の行を選択し、次に左側のソースファイルをクリックします。001 がない場合は「新規エントリ」をクリックし、左側の「ソース」をダブルクリックします" loading="lazy" width="642" height="229"></a><figcaption><span class="n">画面 489</span><span class="src">image497.png · 642×229</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>左側の「決済原価要素」をクリックします</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 490）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t29/05_1_image498.png"><img src="assets/img/co/t29/05_1_image498.png" alt="内部指図決済の配賦構造をメンテナンス · ステップ 5：image498.png" loading="lazy" width="786" height="223"></a><figcaption><span class="n">画面 490</span><span class="src">image498.png · 786×223</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「新規エントリ」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t29/06_1_image499.png"><img src="assets/img/co/t29/06_1_image499.png" alt="内部指図決済の配賦構造をメンテナンス · ステップ 6：「新規エントリ」をクリック" loading="lazy" width="763" height="245"></a><figcaption><span class="n">画面 491</span><span class="src">image499.png · 763×245</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t30"><span class="no">タスク 30</span><h3>決済伝票の番号範囲をメンテナンス</h3><span class="tc2">3 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】维护结算凭证编号范围<br></div></details>
+<div class="pathline" data-copy="IMG 設定 → 管理会計 → 内部指図 → 実績転記 → 決済 → 決済伝票の番号範囲のメンテナンス"><b>IMG パス（IMG 設定メニュー）</b>IMG 設定 → 管理会計 → 内部指図 → 実績転記 → 決済 → 決済伝票の番号範囲のメンテナンス</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后台 → 控制 → 内部订单 → 实际过账 → 结算 → 维护结算凭证编号范围</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">IMG 設定－管理会計－内部指図－実績転記－決済－決済伝票の番号範囲のメンテナンス</p>
+<details class="orig"><summary>原文</summary><div class="zh">后台－控制－内部订单－实际过账－结算－维护结算凭证编号范围</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t30/01_1_image500.png"><img src="assets/img/co/t30/01_1_image500.png" alt="決済伝票の番号範囲をメンテナンス · ステップ 1：IMG 設定－管理会計－内部指図－実績転記－決済－決済伝票の番号範囲のメンテナンス" loading="lazy" width="523" height="933"></a><figcaption><span class="n">画面 492</span><span class="src">image500.png · 523×933</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t30/01_2_image501.png"><img src="assets/img/co/t30/01_2_image501.png" alt="決済伝票の番号範囲をメンテナンス · ステップ 1：IMG 設定－管理会計－内部指図－実績転記－決済－決済伝票の番号範囲のメンテナンス" loading="lazy" width="800" height="411"></a><figcaption><span class="n">画面 493</span><span class="src">image501.png · 800×411</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 頤寧公司の国内ユーザカンファレンスで発生した費用は、マーケティング活動タイプの内部指図を登録して集計し、その後、各原価センタに決済します。決済が完了すると、対応する決済伝票が生成されます。本ステップでは決済伝票の番号範囲をメンテナンスします。<br>画面の上方は、すでに番号範囲が割り当てられた原価管理対象です。原価管理対象 C999 はまだ割り当てられていません。未割当欄で C999 を選択し、 をクリックし、標準会計伝票のチェックボックスにチェックを入れ、次に「要素／グループ」ボタン をクリックします。見つからない場合は下図の 01 で代替します。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：对于 颐宁公司国内用户大会发生的费用，我们将通过创建市场活动类型内部订单来举行归集，然后结算到各个成本中心中去，结算完成时会产生相应的结算凭证。本步骤中我们将对结算凭证维护编号范围。<br>屏幕上方的是已经分配了号码范围的成本控制对象。成本控制对象 C999 还未分配。在未分配栏中选中 C999，点击 ，在标准会计凭证框内打勾，然后点击元素/组按钮 ，未找到用下图的01代替</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t30/02_1_image502.png"><img src="assets/img/co/t30/02_1_image502.png" alt="決済伝票の番号範囲をメンテナンス · ステップ 2：解説：頤寧公司の国内ユーザカンファレンスで発生した費用は、マーケティング活動タイプの内部指図を登録して集計し、その後、各原価センタに決済します。決済が完了すると、対応する決済伝票が生成されます。本ステップでは決済伝票の番号範囲をメンテナンスします。 画面の上方は、すでに番号範囲が割り当てられた原価管理対象です。原価管理" loading="lazy" width="834" height="123"></a><figcaption><span class="n">画面 494</span><span class="src">image502.png · 834×123</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>配賦されていることを確認し、「保存」をクリック</div>
+</li>
+</ol>
+<div class="steph" id="t31"><span class="no">タスク 31</span><h3>内部指図を登録</h3><span class="tc">KO04</span><span class="tc2">10 画面 / 7 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】创建内部订单<br></div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 内部指図 → マスタデータ → KO04-指図管理担当者"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 内部指図 → マスタデータ → KO04-指図管理担当者</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 控制 → 内部订单 → 主数据 → KO04-订单管理员</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">会計－管理会計－内部指図－マスタデータ－KO04-指図管理担当者</p>
+<details class="orig"><summary>原文</summary><div class="zh">会计－控制－内部订单－主数据－KO04-订单管理员</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t31/01_1_image503.png"><img src="assets/img/co/t31/01_1_image503.png" alt="内部指図を登録 · ステップ 1：会計－管理会計－内部指図－マスタデータ－KO04-指図管理担当者" loading="lazy" width="329" height="449"></a><figcaption><span class="n">画面 495</span><span class="src">image503.png · 329×449</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 市場活動の指図タイプを登録しました。このタイプで内部指図を登録し、国内ユーザ大会で発生した費用を集計します。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：我们已经创建了市场活动订单类型，我们将在此类型下创建内部订单来归集国内用户大会发生的费用。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t31/02_1_image504.png"><img src="assets/img/co/t31/02_1_image504.png" alt="内部指図を登録 · ステップ 2：解説：市場活動の指図タイプを登録しました。このタイプで内部指図を登録し、国内ユーザ大会で発生した費用を集計します。" loading="lazy" width="446" height="337"></a><figcaption><span class="n">画面 496</span><span class="src">image504.png · 446×337</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「新規作成」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击新建</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t31/03_1_image505.png"><img src="assets/img/co/t31/03_1_image505.png" alt="内部指図を登録 · ステップ 3：「新規作成」をクリック" loading="lazy" width="529" height="167"></a><figcaption><span class="n">画面 497</span><span class="src">image505.png · 529×167</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">その後「保存」をクリックし、さらに「保存」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">然后点击保存然后点击保存</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t31/04_1_image506.png"><img src="assets/img/co/t31/04_1_image506.png" alt="内部指図を登録 · ステップ 4：その後「保存」をクリックし、さらに「保存」をクリック" loading="lazy" width="868" height="716"></a><figcaption><span class="n">画面 498</span><span class="src">image506.png · 868×716</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">「決済ルール」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击结算规则</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t31/05_1_image507.png"><img src="assets/img/co/t31/05_1_image507.png" alt="内部指図を登録 · ステップ 5：「決済ルール」をクリック" loading="lazy" width="843" height="154"></a><figcaption><span class="n">画面 499</span><span class="src">image507.png · 843×154</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t31/05_2_image508.png"><img src="assets/img/co/t31/05_2_image508.png" alt="内部指図を登録 · ステップ 5：「決済ルール」をクリック" loading="lazy" width="789" height="439"></a><figcaption><span class="n">画面 500</span><span class="src">image508.png · 789×439</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">上記の情報を入力して Enter を押すと、次の結果が得られます：</p>
+<details class="orig"><summary>原文</summary><div class="zh">录入上述信息并回车，得到如下结果：</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t31/06_1_image509.png"><img src="assets/img/co/t31/06_1_image509.png" alt="内部指図を登録 · ステップ 6：上記の情報を入力して Enter を押すと、次の結果が得られます：" loading="lazy" width="738" height="414"></a><figcaption><span class="n">画面 501</span><span class="src">image509.png · 738×414</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t31/06_2_image510.png"><img src="assets/img/co/t31/06_2_image510.png" alt="内部指図を登録 · ステップ 6：上記の情報を入力して Enter を押すと、次の結果が得られます：" loading="lazy" width="968" height="238"></a><figcaption><span class="n">画面 502</span><span class="src">image510.png · 968×238</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「変更」ボタンをクリックし、画面右側の制御データをクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击修改按钮，然后点击屏幕右方的控制数据</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t31/07_1_image511.png"><img src="assets/img/co/t31/07_1_image511.png" alt="内部指図を登録 · ステップ 7：「変更」ボタンをクリックし、画面右側の制御データをクリックします" loading="lazy" width="865" height="338"></a><figcaption><span class="n">画面 503</span><span class="src">image511.png · 865×338</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t31/07_2_image512.png"><img src="assets/img/co/t31/07_2_image512.png" alt="内部指図を登録 · ステップ 7：「変更」ボタンをクリックし、画面右側の制御データをクリックします" loading="lazy" width="912" height="532"></a><figcaption><span class="n">画面 504</span><span class="src">image512.png · 912×532</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t32"><span class="no">タスク 32</span><h3>内部指図の費用請求書を入力</h3><span class="tc">FB50</span><span class="tc2">4 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】输入内部订单费用发票<br></div></details>
+<div class="pathline" data-copy="会計 → 財務会計 → 総勘定元帳 → 伝票入力 → FB50-総勘定元帳勘定伝票の入力"><b>IMG パス（IMG 設定メニュー）</b>会計 → 財務会計 → 総勘定元帳 → 伝票入力 → FB50-総勘定元帳勘定伝票の入力</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计核算 → 财务会计 → 总帐 → 凭证录入 → FB50-输入总账科目凭证</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 会計－財務会計－総勘定元帳－伝票入力－FB50-総勘定元帳勘定伝票の入力</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：<br>会计核算－财务会计－总帐－凭证录入－FB50-输入总账科目凭证</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t32/01_1_image513.png"><img src="assets/img/co/t32/01_1_image513.png" alt="内部指図の費用請求書を入力 · ステップ 1：解説： 会計－財務会計－総勘定元帳－伝票入力－FB50-総勘定元帳勘定伝票の入力" loading="lazy" width="568" height="310"></a><figcaption><span class="n">画面 505</span><span class="src">image513.png · 568×310</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 506）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t32/02_1_image514.png"><img src="assets/img/co/t32/02_1_image514.png" alt="内部指図の費用請求書を入力 · ステップ 2：image514.png" loading="lazy" width="892" height="533"></a><figcaption><span class="n">画面 506</span><span class="src">image514.png · 892×533</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「シミュレーション」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击模拟</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t32/03_1_image515.png"><img src="assets/img/co/t32/03_1_image515.png" alt="内部指図の費用請求書を入力 · ステップ 3：「シミュレーション」をクリック" loading="lazy" width="724" height="339"></a><figcaption><span class="n">画面 507</span><span class="src">image515.png · 724×339</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">「保存」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击保存</div></details>
+<figure class="shot narrow"><a class="zoom" href="assets/img/co/t32/04_1_image516.png"><img src="assets/img/co/t32/04_1_image516.png" alt="内部指図の費用請求書を入力 · ステップ 4：「保存」をクリック" loading="lazy" width="329" height="27"></a><figcaption><span class="n">画面 508</span><span class="src">image516.png · 329×27</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t33"><span class="no">タスク 33</span><h3>内部指図の決済</h3><span class="tc">KO88</span><span class="tc2">3 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】内部订单的结算<br></div></details>
+<div class="pathline" data-copy="管理会計 → 内部指図 → 単一機能 → 決済 → KO88-個別処理"><b>IMG パス（IMG 設定メニュー）</b>管理会計 → 内部指図 → 単一機能 → 決済 → KO88-個別処理</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>控制 → 内部订单 → 单一功能 → 结算 → KO88-单个处理</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 頤寧公司は国内ユーザ会議を開催し、そのために発生した費用を集計する内部指図を登録しました。本ステップでは、指図に集計した費用を各原価センタに決済します。<br>管理会計－内部指図－単一機能－決済－KO88-個別処理</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：颐宁公司举办了国内用户大会，并为此创建了内部订单来归集发生的费用。本步骤中我们将把订单中归集的费用结算到各个成本中心中去。<br>控制－内部订单－单一功能－结算－KO88-单个处理</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t33/01_1_image517.png"><img src="assets/img/co/t33/01_1_image517.png" alt="内部指図の決済 · ステップ 1：解説：頤寧公司は国内ユーザ会議を開催し、そのために発生した費用を集計する内部指図を登録しました。本ステップでは、指図に集計した費用を各原価センタに決済します。 管理会計－内部指図－単一機能－決済－KO88-個別処理" loading="lazy" width="382" height="735"></a><figcaption><span class="n">画面 509</span><span class="src">image517.png · 382×735</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 510）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t33/02_1_image518.png"><img src="assets/img/co/t33/02_1_image518.png" alt="内部指図の決済 · ステップ 2：image518.png" loading="lazy" width="610" height="430"></a><figcaption><span class="n">画面 510</span><span class="src">image518.png · 610×430</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t33/03_1_image519.png"><img src="assets/img/co/t33/03_1_image519.png" alt="内部指図の決済 · ステップ 2：image519.png" loading="lazy" width="835" height="804"></a><figcaption><span class="n">画面 511</span><span class="src">image519.png · 835×804</span></figcaption></figure>
+<div class="note warn"><b class="t">つまずき注意</b>エラーなし、実行が完了しました</div>
+</li>
+</ol>
+<div class="steph" id="t34"><span class="no">タスク 34</span><h3>内部指図の決済結果を照会する</h3><span class="tc2">4 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】显示内部订单的结算结果<br></div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 原価センタ会計 → 情報システム → 原価センタ会計のレポート → 計画／実績比較 → 原価センタ：実績／計画／差異"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 原価センタ会計 → 情報システム → 原価センタ会計のレポート → 計画／実績比較 → 原価センタ：実績／計画／差異</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 控制 → 成本中心会计 → 信息系统 → 成本中心会计的报表 → 计划/实际比较 → 成本中心：实际/计划/差异</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">会計－管理会計－原価センタ会計－情報システム－原価センタ会計のレポート－計画／実績比較－原価センタ：実績／計画／差異</p>
+<details class="orig"><summary>原文</summary><div class="zh">会计－控制－成本中心会计－信息系统－成本中心会计的报表－计划/实际比较－成本中心：实际/计划/差异</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t34/01_1_image520.png"><img src="assets/img/co/t34/01_1_image520.png" alt="内部指図の決済結果を照会する · ステップ 1：会計－管理会計－原価センタ会計－情報システム－原価センタ会計のレポート－計画／実績比較－原価センタ：実績／計画／差異" loading="lazy" width="497" height="589"></a><figcaption><span class="n">画面 512</span><span class="src">image520.png · 497×589</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/co/t34/02_1_image521.png"><img src="assets/img/co/t34/02_1_image521.png" alt="内部指図の決済結果を照会する · ステップ 2：image521.png" loading="lazy" width="1152" height="785"></a><figcaption><span class="n">画面 513</span><span class="src">image521.png · 1152×785</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t34/02_2_image522.png"><img src="assets/img/co/t34/02_2_image522.png" alt="内部指図の決済結果を照会する · ステップ 2：image522.png" loading="lazy" width="595" height="389"></a><figcaption><span class="n">画面 514</span><span class="src">image522.png · 595×389</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">各原価センタをクリックしてレポートを表示</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击各成本中心查看报表</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/co/t34/03_1_image523.png"><img src="assets/img/co/t34/03_1_image523.png" alt="内部指図の決済結果を照会する · ステップ 3：各原価センタをクリックしてレポートを表示" loading="lazy" width="1063" height="597"></a><figcaption><span class="n">画面 515</span><span class="src">image523.png · 1063×597</span></figcaption></figure>
+</li>
+</ol>
+<h2 id="sources">4. スクリーンショットと設定値について</h2>
+<div class="box warn"><b class="t">画面は原教材ドキュメントのものです</b>本モジュールのスクリーンショットはすべて <code>S4.docx</code> の著者が実システムでキャプチャした中国語インターフェースの画面です（元のファイル名 <code>imageNNN.png</code> は各図の図注に残しているので、Word の原文と 1 枚ずつ照合できます）。当サイトはこれらの画面を一切描き直したり、シミュレーションで再現したりしていません。</div>
+<div class="box info"><b class="t">設定値はご自身のシステムの値を基準にしてください</b>ドキュメント内の組織構造とマスタデータの番号（会社コード <code>C999</code>、会社名「頤寧機械有限公司」、プラント <code>F999</code>、品目 <code>R999-100</code>/<code>T999-100</code>/<code>F999-100</code>、得意先 <code>K001</code>/<code>K002</code> など）はすべて原作者の教材環境のものです。手順どおりに作業するときは、<b>操作の順序と設定ポイントはそのまま流用できますが、具体的な番号や名称はご自身のシステムの値に置き換えてください</b>；ドキュメントと異なるメッセージが出た場合は、まず「<a href="issues.html">トラブルシューティングと注意点</a>」ページで原教材ドキュメントに記録された同種の問題を確認してください。</div>
+<div class="panel" style="margin-top:22px"><a href="fi.html">← 前のモジュール：FI 財務会計 FI（Financial Accounting）</a><br><a href="mm.html">次のモジュール：MM 品目管理 MM（Materials Management） →</a><br><a href="tasks.html">全 222 タスクの索引 →</a></div>
+</article></main>
+</div>
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA 日本語実習サイト — 全モジュールの設定と操作手順 · 実機画面</h5>
+  <p>内容は同ディレクトリの教材ドキュメント <code>S4.docx</code>（425 ページ · 6 大モジュール · 222 タスク · 1385 枚の実機スクリーンショット）に基づいて整理しています。すべてのページはオフラインで開くことができ、外部依存はありません。</p>
+  <div><h5>画面について</h5><p>サイト内のすべてのスクリーンショットは<b>原教材ドキュメントの実機画面</b>（中国語インターフェースの SAP GUI）であり、イメージ図やシミュレーションによる生成画像ではありません。ファイル名は原教材ドキュメントの番号をそのまま保持しており、Word の原文と対照できます。ドキュメント内のサンプル値（会社コード <code>C999</code>、プラント <code>F999</code>、品目 <code>R999-100</code> など）は原作者の教材環境のものですので、ご自身のシステムの組織構造と番号範囲に合わせて読み替えてください。</p></div></div>
+  <div class="cols">
+    <div><h5>モジュール</h5>
+      <a href="prep.html">準備 — 準備作業 — システムへのログオンと IMG 設定への移動</a><br>
+      <a href="fi.html">FI — 財務会計 FI</a><br>
+      <a href="co.html">CO — 管理会計 CO</a><br>
+      <a href="mm.html">MM — 品目管理 MM</a><br>
+      <a href="pp.html">PP — 生産計画 PP</a><br>
+      <a href="sd.html">SD — 販売管理 SD</a><br>    </div>
+    <div><h5>サイト全体</h5>
+      <a href="prep.html">準備</a><br>
+      <a href="fi.html">FI</a><br>
+      <a href="co.html">CO</a><br>
+      <a href="mm.html">MM</a><br>
+      <a href="pp.html">PP</a><br>
+      <a href="sd.html">SD</a><br>
+      <a href="tcode.html">T-code</a><br>
+      <a href="glossary.html">用語</a><br>
+      <a href="issues.html">トラブルシューティング</a><br>
+      <a href="tasks.html">索引</a><br>
+      <a href="instructor.html">講師</a><br>
+      <a href="worksheet.html">受講者</a><br>
+      <a href="quiz.html">自習テスト</a><br>    </div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/s4jp.js"></script>
+</body>
+</html>

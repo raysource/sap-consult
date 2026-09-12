@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CAP Java 训练示例 (产品目录)
+  ⚠ 本工程未在本机编译验证(作者环境无 JDK/Maven)。结构与官方
+     SAP-samples/cloud-cap-samples-java 及 cap.cloud.sap 文档保持一致;
+     版本号请以 Maven Central 最新为准:
+       com.sap.cds:cds-services-bom  (查最新版本并替换下方 property)
+  首次构建: mvn clean spring-boot:run   (会自动下载 Node 并执行 npm install)
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.3.5</version>
+    <relativePath/>
+  </parent>
+
+  <groupId>com.training</groupId>
+  <artifactId>sap-training-catalog</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+  <name>sap-training-catalog</name>
+  <description>SAP CAP (Java) 训练示例 - 产品目录服务</description>
+
+  <properties>
+    <java.version>21</java.version>
+    <!-- TODO: 发布前在 Maven Central 查询 com.sap.cds 的最新 cds-services-bom 版本 -->
+    <cds.services.version>2.19.0</cds.services.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- CAP Java 官方 BOM: 统一管控所有 com.sap.cds 构件版本 -->
+      <dependency>
+        <groupId>com.sap.cds</groupId>
+        <artifactId>cds-services-bom</artifactId>
+        <version>${cds.services.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <!-- 应用框架: Spring Boot -->
+    <dependency>
+      <groupId>com.sap.cds</groupId>
+      <artifactId>cds-framework-spring-boot</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <!-- 协议适配器: 自动把 Application Service 暴露为 OData V4 -->
+    <dependency>
+      <groupId>com.sap.cds</groupId>
+      <artifactId>cds-adapter-odata-v4</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <!-- CAP Java SDK 核心: API + 实现 -->
+    <dependency>
+      <groupId>com.sap.cds</groupId>
+      <artifactId>cds-services-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.cds</groupId>
+      <artifactId>cds-services-impl</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <!-- 安全(本地 mock 用户认证需要) -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    <!-- 本地开发数据库: SQLite -->
+    <dependency>
+      <groupId>org.xerial</groupId>
+      <artifactId>sqlite-jdbc</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <!-- CDS 构建插件: 编译 .cds -> Java 类型 (cds.gen) 并纳入 target -->
+      <plugin>
+        <groupId>com.sap.cds</groupId>
+        <artifactId>cds-maven-plugin</artifactId>
+        <version>${cds.services.version}</version>
+        <executions>
+          <execution>
+            <id>cds.clean</id>
+            <goals><goal>clean</goal></goals>
+          </execution>
+          <execution>
+            <id>cds.npm-install</id>
+            <goals><goal>npm</goal></goals>
+            <configuration>
+              <arguments>install</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>cds.resolve</id>
+            <goals><goal>resolve</goal></goals>
+          </execution>
+          <execution>
+            <id>cds.build</id>
+            <goals><goal>cds</goal></goals>
+            <configuration>
+              <commands>
+                <command>build --for java</command>
+              </commands>
+            </configuration>
+          </execution>
+          <execution>
+            <id>cds.generate</id>
+            <goals><goal>generate</goal></goals>
+            <configuration>
+              <basePackage>cds.gen</basePackage>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

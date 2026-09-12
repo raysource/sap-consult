@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>讲师版 · SAP S/4HANA 見込生産（MTS）实战训练站</title>
+<meta name="description" content="MTS 实训の讲师版：時間割（2日/1日/半日）、事前準備、板書用の決定链、配置 C0〜C16 の解答と採点ポイント、練習①〜⑤ の期待値、必出 Q&amp;A 12 件、故障の教え方、評価基準。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/mts.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MTS</span><span class="txt">見込生産 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①预测</a>
+      <a href="handson-2.html">②MRP</a>
+      <a href="handson-3.html">③制造入库</a>
+      <a href="handson-4.html">④出货</a>
+      <a href="handson-5.html">⑤月末</a>
+      <a class="active" href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 讲师版（解答・採点ポイント・進め方）</div>
+<main class="page"><article>
+
+<h1>讲师版：解答・採点ポイント・進め方</h1>
+<div class="box warn"><b class="t">このページの扱い</b>
+受講者には配布しない（或は「解答編」として最後に配布）。<b>学员版（<a href="worksheet.html">worksheet.html</a>）</b>は記入用、こちらは答えと進行の説明です。
+研修の成否は「受講者に自分で T-code を打たせたか」でほぼ決まります——講師が画面を写して説明するだけの研修は、差分（版本・業界ソリューション）で必ず破綻します。</div>
+
+<h2>1. 時間割（2 日 / 1 日 / 半日）</h2>
+<table class="tbl wide">
+<tr><th>ブロック</th><th>2 日コース</th><th>1 日コース</th><th>半日コース</th><th>内容</th></tr>
+<tr><td>概念</td><td>Day1 午前（150 分）</td><td>午前（90 分）</td><td>45 分</td><td><a href="concept.html">概念与设计</a>：3 方式の対照・PIR と消費・自由在庫と ATP・差異の考え方</td></tr>
+<tr><td>配置</td><td>Day1 午後（150 分）</td><td>午後前半（120 分）</td><td>省く（講師デモ）</td><td><a href="config.html">配置手顺 C0〜C16</a>：受講者自身のシステムで確認中心に</td></tr>
+<tr><td>練習①②</td><td>Day2 午前（120 分）</td><td>午後後半（90 分）</td><td>60 分</td><td>PIR → MRP → 計画手配（<a href="handson-1.html">①</a>・<a href="handson-2.html">②</a>）</td></tr>
+<tr><td>練習③</td><td>Day2 午後前半（90 分）</td><td>（② と統合し 60 分）</td><td>45 分</td><td>指図 → 261 → CO11N → 101 → <b>自由在庫</b>（<a href="handson-3.html">③</a>）</td></tr>
+<tr><td>練習④</td><td>Day2 午後（90 分）</td><td>（必須：60 分）</td><td>45 分</td><td>受注 → ATP → PIR 消費 → 出荷 → 請求（<a href="handson-4.html">④</a>）</td></tr>
+<tr><td>練習⑤ + テスト</td><td>Day2 最後（60 分）</td><td>最後（45 分）</td><td>省く（解説のみ）</td><td><a href="handson-5.html">⑤</a> 差異・決済・故障対照表 + <a href="quiz.html">能力测试</a></td></tr>
+</table>
+<div class="box info"><b class="t">コース設計の優先順位</b>
+半日に縮める場合、<b>削ってよい順</b>：配置詳細 → 練習⑤ → 練習①。<b>削ってはいけない</b>：練習③（自由在庫の入庫）と練習④（PIR 消費）。この 2 つが「見込生産が分かった」と言える分水嶺です。<br>
+1 日コースでは配置を「講師デモ + 受講者は確認だけ（<code>MM03</code>/<code>VOV6</code>/<code>OPPT</code>）」に落とすのが現実的。</div>
+
+<h2>2. 事前準備チェック（講師・前日までに）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>準備項目</th><th>確認方法</th></tr>
+<tr><td>1</td><td>受講者用のユーザと権限（<code>SPRO</code> 表示・<code>MM01/02</code>・<code>MD61</code>・<code>MD01N</code>・<code>CO01/02/11N/40/41</code>・<code>MIGO</code>・<code>VA01</code>・<code>VL01N/02N</code>・<code>VF01</code>・<code>CK11N/KKS1/KO88</code>）</td><td>各ユーザで 1 回ずつログインして実行</td></tr>
+<tr><td>2</td><td>練習用の品目（<code>ZMTS-FG01</code>/<code>RM01</code>/<code>RM02</code>）が作成済みで、MRP ビュー・標準価格（8,000 JPY）がリリース済み</td><td><code>MM03</code> 会計1・MRP1〜4 で確認</td></tr>
+<tr><td>3</td><td>戦略グループ <code>40</code> と消費モード <code>2</code> が品目に入っている</td><td><code>MM03</code> MRP3（<code>MARC-STRGR</code>）</td></tr>
+<tr><td>4</td><td>BOM・作業区・工程が有効（有効日が当日を含む）</td><td><code>CS03</code>・<code>CA03</code></td></tr>
+<tr><td>5</td><td>部品の初期在庫（RM01 1,000 / RM02 2,000 PC）</td><td><code>MMBE</code></td></tr>
+<tr><td>6</td><td>得意先 1000 の販売エリア + 出荷先、条件レコード <code>PR00</code></td><td><code>BP/XD03</code>・<code>VK13</code></td></tr>
+<tr><td>7</td><td>会計期間が開いている（差異計算と決済ができないと練習⑤ が止まる）</td><td><code>OB52</code>・<code>KKS2</code> のテスト実行</td></tr>
+<tr><td>8</td><td>カスタマイジング依頼（受講者が <code>VOV4/VOV5</code> に自建行を入れる場合）</td><td>練習用システムの登録権限</td></tr>
+<tr><td>9</td><td><b>当日の「基準値」を書いた紙</b>：標準価格・安全在庫・PIR 数量・消費モード</td><td>受講者全員に配布（自システムの値で上書きさせる）</td></tr>
+</table>
+
+<h2>3. 板書用の決定链（これ 1 枚で全体が説明できる）</h2>
+<pre class="vals">【MTS の決定链 — 板書はこれを左から右へ】
+
+需要
+  需要予測 → MD61（版 00）→ 計画独立所要量 PIR ── PBED
+                                      │
+                                      │  受注が来たら「消費」（MD04 上。PBED は変わらない）
+                                      ▼
+計画  戦略グループ 40（MARC-STRGR）──► 消費モード 2 / 逆30 順20（MARC-VRMOD/VINT1/VINT2）
+        │
+        ▼
+      MRP（MD01N）  純所要量 = 総所要量 − 入庫予定 + 安全在庫
+        │
+        ▼
+      計画手配（PLAF）── CO40/CO41 ──► 製造指図（AUFK/AFPO、タイプ PP01）
+        │                                   │  受注参照なし（KDAUF/KDPOS 空）= MTS の証拠
+        ▼                                   ▼
+       261 部品出庫 ── CO11N 実績 ── 101 完成品入庫
+                                        │
+                                        ▼
+                            自由在庫（MARD / MCHB）★ 特在区分 空
+                                        │
+受注  VA01（OR / TAN / CP）──► ATP（CO09、チェックルール＋スコープ） ──► 引当
+                                        │
+                                        ▼
+                            出荷（VL01N/VL02N）→ PGI 601 → 請求（VF01）→ FI
+                                        │
+月末                                     ▼
+                            差異計算（KKS1/KKS2）→ 決済（KO88/CO88）→ FI
+
+【対照（MTO）】计划起点が受注（KE / 所要量クラス 040）、入庫先が受注在庫（MSKA / 特在 E）。
+  操作系は同じ。違うのは ① 需求源 ② 库存归属 ③ 月末の焦点（差異を売上に流す vs 受注ごとの収益）。</pre>
+
+<h2 id="config-answers">4. 配置の解答と採点ポイント（C0〜C16）</h2>
+<p>採点の原則：<b>「自システムで確認できたか」を評価する。「教科书の值を暗記したか」は評価しない。</b>値が違う場合は「なぜ違うか」を説明できれば満点。</p>
+<table class="tbl wide">
+<tr><th>STEP</th><th>解答の要点（期待値）</th><th>採点ポイント</th></tr>
+<tr><td>C0</td><td>販売エリア 1000/10/00・プラント 1000・得意先 1000（出荷先あり）・番号範囲に空き</td><td>前提の確認漏れを「練習中の事故」として記録できているか</td></tr>
+<tr><td>C1</td><td>部品 RM01（ROH）/RM02（HAWA）、MRPタイプ <code>PD</code>・手配タイプ <code>F</code>、初期在庫 1,000 / 2,000 PC</td><td><b>部品に戦略グループを付けない理由</b>を言えるか</td></tr>
+<tr><td>C2</td><td>MRP1 <code>PD</code>/<code>EX</code>/手配タイプ <code>E</code>、MRP2 安全在庫 <code>100</code>、MRP3 戦略 <code>40</code>/消費モード <code>2</code>、MRP4 個別・包括所要量 <b>空</b>、販売組織2 品目カテゴリグループ <code>0001</code></td><td><b>MRP4 が空である理由</b>（自由在庫の維持＝MTS の成立条件）を説明できるか。ここが本研修の最重要採点項目</td></tr>
+<tr><td>C3</td><td>BOM RM01×2 / RM02×4、作業区 <code>ZMTS_WC01</code>、工程 0010・1 H/PC、有効日</td><td>BOM と工程が<b>標準原価の入力</b>でもあることを結びつけられるか</td></tr>
+<tr><td>C4</td><td><code>CK11N</code> → <code>CK24</code> で標準価格 8,000 JPY、価格管理 <code>S</code>、レート（<code>KP26</code>）設定済み</td><td>マークとリリースの違い、レート未設定時に何が起きるかを言えるか</td></tr>
+<tr><td>C5</td><td>条件レコード <code>PR00</code> = 8,000 JPY、品目カテゴリグループ <code>0001</code>（NORM）</td><td>「見込生産専用の標準グループは無い」ことを理解しているか</td></tr>
+<tr><td>C6</td><td><code>TAN</code> の<b>特別在庫欄が空</b>、納入日程行許可 ON</td><td>MTO の <code>ZTAK</code>（特在 <code>E</code>）との対比で説明できるか</td></tr>
+<tr><td>C7</td><td><code>VOV4</code>：<code>OR</code> + <code>0001</code> + 空 + 空 → <code>TAN</code>（4 键）</td><td><b>「空値もキー」</b>だと理解しているか（不要な値を入れない）</td></tr>
+<tr><td>C8</td><td><code>CP</code>：所要量転送 ON・在庫確認 ON・移動タイプ <code>601</code></td><td>OFF にしたときに何が壊れるか（MD04 に出ない / 引当不能）を言えるか</td></tr>
+<tr><td>C9</td><td><code>VOV5</code>：<code>TAN</code> + <code>PD</code> → <code>CP</code>（2 键）</td><td>品目に MRP ビューが無い場合との差を説明できるか</td></tr>
+<tr><td>C10</td><td><code>OVZG</code>：<code>100</code>/<code>030</code>/<code>050</code> に<b>個別在庫なし</b>、<code>040</code>（MTO）にあり</td><td>「個別在庫フラグが形态を分ける」ことを理解しているか</td></tr>
+<tr><td>C11</td><td>戦略 40：独立 <code>VSF</code> / 得意先 <code>KSV</code>（→ クラス <code>050</code>）。決定順は戦略グループ優先</td><td><b>環境差を許容できるか</b>（自分の値で読み替えられるか）</td></tr>
+<tr><td>C12</td><td><code>OPPT</code>：40 = 最終組立ありの計画、10 = 見込生産（消費なし）、11 = 総所要量計画、70 = 組立レベル</td><td>ネットの誤情報（40 と 30 の取り違え）に引っかからず、自システムの記述を根拠にできるか</td></tr>
+<tr><td>C13</td><td>品目 MRP3 の在庫確認、<code>OVZ9</code> のスコープ（在庫＋入庫予定＋出庫予定）、<code>CO09</code> で検証</td><td>「見込生産は入庫予定も可用量に入れる」ことを説明できるか</td></tr>
+<tr><td>C14</td><td><code>MD01N</code> で計画手配、<code>OMDU</code> のパラメータ、<code>OPJH</code>/<code>OPL8</code> で <code>PP01</code>、<code>CO40/CO41</code> 変換</td><td>MRP リストが無い理由（MRP Live）を言えるか</td></tr>
+<tr><td>C15</td><td><code>LF</code>/<code>F2</code>、PGI <code>601</code>、<code>OBYC</code> の <code>BSX</code>/<code>GBB</code>、棚卸 <code>MI01/04/07</code></td><td>在庫金額が<b>標準価格ベース</b>で計上されることを説明できるか</td></tr>
+<tr><td>C16</td><td>Cloud：明細カテゴリ・販売伝票タイプの新規作成不可、スコープアイテム <code>BJ5</code>、SSCUI <code>105120</code></td><td><b>断言できないものは「要確認」と書けるか</b>（＝根拠意識があるか）</td></tr>
+</table>
+<div class="box info"><b class="t">採点の配分（100 点満点の例）</b>
+C2（品目主数据）20 点 / C6〜C9（SD 側 3 決定）20 点 / C10〜C12（所要量クラス・タイプ・戦略）20 点 / C13〜C15（ATP・MRP・出荷請求）20 点 / C0・C1・C3・C4・C16（前提・原価・Cloud）20 点。<br>
+<b>減点ポイント</b>：値の丸暗記（根拠が言えない）・確認手顺を飛ばした・エラーを「なんとなく直した」。</div>
+
+<h2 id="practice">5. 練習の解答（期待値の要点）</h2>
+<table class="tbl wide">
+<tr><th>練習</th><th>期待値（システムの状態）</th><th>よくある誤答・指導ポイント</th></tr>
+<tr><td>① 需要予測と PIR</td><td>版 <code>00</code> に 3 か月分 × 500 PC。<code>MD04</code> に「計画独立所要量（受注番号なし）」が並ぶ。利用可能数量はマイナス</td><td>「PIR は受注が出たら減る」と思い込む → 消費と消減を分けて説明（<code>PBED</code> は変わらない）</td></tr>
+<tr><td>② MRP と計画手配</td><td><code>MD01N</code> 後、計画手配（例 600 PC = 500 + 安全在庫 100）。部品に従属所要量 1,000 / 2,000 PC。<code>CO40/CO41</code> で <code>PP01</code> の指図に変換</td><td>純所要量の検算をしない → <b>必ず手計算させる</b>。「MRP リストが無い」で詰まる → <code>MD04</code> に誘導</td></tr>
+<tr><td>③ 製造と入庫</td><td><code>CO02</code> 解放 → 261（RM01 1,000 / RM02 2,000）→ <code>CO11N</code> 歩留 500 → 101 で<b>自由在庫 +500・特在空</b>、状態 <code>DLV</code>、会計伝票は標準価格ベース</td><td>入庫が受注在庫に入る（MTO 化）→ MRP4 と <code>AFPO-KDAUF</code> を見せる。<b>「特在区分が空」が MTS の証拠</b>と強調</td></tr>
+<tr><td>④ 受注・引当・出荷・請求</td><td>受注 200 PC（<code>TAN</code>/<code>CP</code>）、<code>CO09</code> で 500 → 300、<code>MD04</code> で PIR 消費済 200（<code>PBED</code> は 500 のまま）、PGI 601 で自由在庫 300、請求 1,600,000 JPY、伝票フロー闭合</td><td>「PIR が減っていない＝消費されていない」誤解 → <code>MD04</code> の消費済数量を見せる。在庫の取り合い（引当順）を事例で説明</td></tr>
+<tr><td>⑤ 月末と発展</td><td><code>KKS2</code>/<code>KKS1</code> で差異（カテゴリ別）、<code>KO88</code>/<code>CO88</code> で決済 → <code>FB03</code>。棚卸 1 回。故障対照表の 3 項以上を説明</td><td>差異を「異常」と捉える → 差異は正常、<b>額と原因が問題</b>と伝える。差異カテゴリの番号を暗記させない</td></tr>
+</table>
+
+<h2 id="qa">6. 必出質問 Q&amp;A（模範回答つき）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>質問</th><th>模範回答（要点）</th></tr>
+<tr><td>1</td><td>MTS と MTO の違いを一言で</td><td><b>需給の起点が予測か受注か、在庫が誰のものか</b>。MTS＝予測（PIR）起点で自由在庫、MTO＝受注起点で受注在庫（特在 E）。（<a href="concept.html#compare">概念 1</a>）</td></tr>
+<tr><td>2</td><td>なぜ MTS の MRP4「個別/包括所要量」は空なのか</td><td>空＝受注に紐づけない＝入库が自由在庫に入る。ここを「個別所要量のみ」にすると受注在庫 E に変わり、形態が MTO になる。</td></tr>
+<tr><td>3</td><td>戦略 40 と 10 はどちらが「受注で予測が減る」か</td><td><b>40 が減る（消費）</b>。10 は消費しない（受注は情報表示のみ、入库時に古い PIR から消減）。11 も消費しない上に在庫を見ない（総所要量計画）。</td></tr>
+<tr><td>4</td><td>戦略 30 と 40 の違いは？</td><td>標準の説明では <b>30 = ロット生産（Production by lot size）</b>、<b>40 = 最終組立ありの計画（Planning with final assembly）</b>。40 は独立 <code>VSF</code>／得意先 <code>KSV</code>、30 は独立 <code>LSF</code>／得意先 <code>KL</code>。<b>必ず <code>OPPT</code> の自分の記述で確認</b>。</td></tr>
+<tr><td>5</td><td>消費と消減の違いは？</td><td>消費＝MD04 上で PIR が食べられる（<code>PBED</code> は不変）。消減＝<code>PBED</code> の数量自体が減る（入库・発注の完結時など）。確認は <code>MD04</code> と <code>PBED</code> の比較。</td></tr>
+<tr><td>6</td><td>PIR を入れたのに MRP が動かない</td><td>確認 3 点：① 版が <code>00</code> か（<code>T459U</code>）② MRP タイプが <code>ND</code> でないか ③ 手配タイプが入っているか。→ <a href="handson-5.html#trouble">故障対照表 #2</a></td></tr>
+<tr><td>7</td><td>受注したのに MD04 に需要が出ない</td><td>納入日程行カテゴリの<b>所要量転送（<code>VBEP-BEDSD</code>）</b>と、品目 MRP ビューの有無。<code>VOV5</code>/<code>VOV6</code> と <code>VA03</code> で確認。</td></tr>
+<tr><td>8</td><td>在庫があるのに出荷できない</td><td>① 在庫タイプ（品質検査/ブロック）② 保管場所違い ③ 先行受注が引当済み ④ ピッキング未入力。確認は <code>MMBE</code> → <code>CO09</code> → <code>VL03N</code> の順。</td></tr>
+<tr><td>9</td><td>差異は誰の責任か</td><td>差異は<b>原因が複数</b>（部品価格・用量・工時・スクラップ・設定）。差異カテゴリを見て初めて「購買/生産/原価設定」に割り振れる。差異計算→決済は CO だが、原因は SD/PP/MM/購買に散っている。</td></tr>
+<tr><td>10</td><td>MRP リスト（MD05/MD06）はどこ？</td><td>MRP Live（<code>MD01N</code>）は MRP リストを作らない。<code>MD04</code> を見る（SAP KBA 2640393）。古典 MRP との差異の代表例。</td></tr>
+<tr><td>11</td><td>Public Cloud でも同じ手顺が使える？</td><td>使えない部分がある。<b>明細カテゴリ・販売伝票タイプの新規作成は不可</b>、設定は SSCUI、操作は Fiori。スコープアイテム（<code>BJ5</code> など）の提供範囲を先に確認する（<a href="config.html#c16">C16</a>）。</td></tr>
+<tr><td>12</td><td>安全在庫を守るために出荷を止めるべき？</td><td>いいえ。安全在庫は<b>MRP の補貨トリガ</b>であり、出荷可否を決めるルールではない。出荷可否は受注の引当と納期で判断する（欠品は「見せる」が原則）。</td></tr>
+<tr><td>13</td><td>標準価格が無いと何が起きる？</td><td>入库が評価できず（金額 0/エラー）、差異計算もできない（目標原価が無い）。<code>CK11N</code>→<code>CK24</code> が前提（<a href="config.html#c4">C4</a>）。</td></tr>
+<tr><td>14</td><td>見込生産で一番お金がかかる失敗は？</td><td><b>予測過多による滞留在庫</b>（維持費＋評価減）と、<b>予測不足による欠品</b>（売上逸失＋緊急対応コスト）。どちらも「予測＋計画パラメータ（安全在庫・ロットサイズ）」の設計問題。</td></tr>
+</table>
+
+<h2>7. 故障の教え方（切り分けの物語）</h2>
+<div class="box ok"><b class="t">3 層モデル（これを板書してから故障表を配る）</b>
+<b>第 1 層：品目マスタ</b>（MRP1〜4。特に戦略グループ・個別/包括所要量）<br>
+<b>第 2 層：SD 側の 3 つの決定</b>（<code>VOV4</code> 明細カテゴリ → <code>VOV5</code> 納入日程行カテゴリ → <code>VOV6</code> 所要量転送/在庫確認）<br>
+<b>第 3 層：実行結果</b>（<code>MD04</code> に何が出るか / <code>CO09</code> の可用量 / <code>MMBE</code> の在庫区分）<br>
+<b>教え方</b>：症状を読み上げ → 受講者に「第 1 層か第 2 層か第 3 層か」を当てさせる → 当たった層の中で T-code を挙げさせる。<br>
+<b>やってはいけない</b>：講師が先に答えの T-code を言う（受講者は手顺を覚えるだけで、切り分けを覚えない）。</div>
+<table class="tbl wide">
+<tr><th>練習問題（受講者用）</th><th>正解の層</th><th>根拠</th></tr>
+<tr><td>MD04 に受注が出ない</td><td>第 2 層</td><td>所要量転送（<code>VBEP-BEDSD</code> / <code>VOV6</code>）。品目は正しいことが前提</td></tr>
+<tr><td>101 の入庫が得意先別に入った</td><td>第 1 層</td><td>MRP4 の個別/包括所要量（+ 指図の受注参照）</td></tr>
+<tr><td>PIR は出ているのに計画手配が無い</td><td>第 1 層</td><td>MRP タイプ / 手配タイプ / ロットサイズ、或は純所要量 0</td></tr>
+<tr><td>受注できるが確認済数量 0</td><td>第 2 層 + 第 3 層</td><td>在庫確認 OFF 或はスコープ（<code>OVZ9</code>）と <code>CO09</code> の可用量</td></tr>
+<tr><td>差異が大きい</td><td>第 3 層（データ）</td><td><code>KKS2</code> のカテゴリ → 実績（<code>AFRU</code>）・単価（<code>MATDOC</code>）へ遡る</td></tr>
+</table>
+
+<h2>8. 評価基準（3 観点）</h2>
+<table class="tbl wide">
+<tr><th>観点</th><th>重み</th><th>合格の目安</th><th>見る場所</th></tr>
+<tr><td>① 機制の理解（概念）</td><td>40%</td><td>MTS/MTO の分水嶺・PIR の消費/消減・戦略 10/11/40 の違いを<b>自分の言葉で</b>言える</td><td><a href="quiz.html">能力测试</a> 概念パート + 口頭試問</td></tr>
+<tr><td>② 実機の操作（手を動かす）</td><td>35%</td><td>練習①〜⑤ の验收清单を全て自分で満たせる（証拠を提示できる）</td><td>各練習の<ul class="check"><li>验收</li></ul>項目と <a href="worksheet.html">ワークシート</a>の記入</td></tr>
+<tr><td>③ 故障対応（切り分け）</td><td>25%</td><td>症状から 3 層モデルで層を特定し、確認 T-code を挙げられる（故障対照表の 3 項以上）</td><td><a href="handson-5.html#trouble">故障対照表</a>の問題演習</td></tr>
+</table>
+<div class="box info"><b class="t">判定の組合せ</b>
+<a href="quiz.html">能力测试</a> 75% 以上（21/28）+ 練習①〜⑤ の验收全項目 + ワークシート全欄記入 = 「見込生産（MTS）の基本を自走できる」。<br>
+どれか 1 つが欠けたら、その観点のページに戻して補習（90% 以上なら「講師補助なしで他者に説明できる」レベル）。</div>
+
+<h2>9. 発展の導線（研修後）</h2>
+<ul>
+  <li><b>形態の対比</b>：姉妹站 <a href="index.html">sapmto（MTO）</a>・sapeto（ETO）と並べ、「同じ受注でも 3 形態でどう変わるか」を比べる。</li>
+  <li><b>PP/DS と aATP</b>：より高度な見込生産（能力制約・複数プラント・優先度付き ATP）へ進む。</li>
+  <li><b>需要計画（IBP / S&amp;OP）</b>：PIR の上流（予測の作り方）を学ぶ。<a href="handson-1.html#p5">练习① 1-5</a> が入口。</li>
+  <li><b>原価・差異の深掘り</b>：Material Ledger（Actual Costing）と差異の配賦・期末評価。</li>
+  <li><b>Cloud 実装</b>：スコープアイテム（<code>BJ5</code>）と SSCUI の実習（<a href="config.html#c16">C16</a>）。</li>
+</ul>
+
+<div class="box ok"><b class="t">講師の心得（最後に 1 つだけ）</b>
+受講者が「自分のシステムでは値が違う」と言ったら、それは<b>最高の瞬間</b>です。標準値の暗記より、<b>自分の環境で確認する方法</b>を持ち帰らせるのが研修の目的です。</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP 見込生産（MTS）实战训练站</h5><p>讲师版：時間割・採点ポイント・必出 Q&amp;A・故障の教え方・評価基準。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 需要予測とPIR</a><br><a href="handson-2.html">② MRP と計画手配</a><br><a href="handson-3.html">③ 製造と入庫</a><br><a href="handson-4.html">④ 受注・出荷・請求</a><br><a href="handson-5.html">⑤ 月末と発展</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="worksheet.html">学员版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

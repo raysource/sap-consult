@@ -1,0 +1,44 @@
+{
+ "media_files_in_docx": 1385,
+ "refs_kept": 1369,
+ "unique_files": 1209,
+ "dropped_icons": 7,
+ "asset_bytes": 20669497,
+ "dropped": [
+  {
+   "task": "登陆系统",
+   "file": "image1.png",
+   "why": "icon 78x82"
+  },
+  {
+   "task": "创建公司代码",
+   "file": "image8.png",
+   "why": "icon 15x15"
+  },
+  {
+   "task": "马老师学习笔记创建内部订单类型并维护编号范围",
+   "file": "image489.png",
+   "why": "icon 89x27"
+  },
+  {
+   "task": "运行资产负债表",
+   "file": "image1328.jpeg",
+   "why": "icon 296x13"
+  },
+  {
+   "task": "运行资产负债表",
+   "file": "image1335.jpeg",
+   "why": "icon 34x187"
+  },
+  {
+   "task": "运行资产负债表",
+   "file": "image1343.jpeg",
+   "why": "icon 296x13"
+  },
+  {
+   "task": "运行资产负债表",
+   "file": "image1350.jpeg",
+   "why": "icon 34x187"
+  }
+ ]
+}

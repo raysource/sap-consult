@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>练习⑤ 月末処理と発展 · SAP S/4HANA 見込生産（MTS）实战训练站</title>
+<meta name="description" content="MTS 练习⑤ 月末処理と発展：差異計算 KKS1/KKS2、指図決済 KO88/CO88、棚卸（MI01/MI04/MI07）、安全在庫切れ・欠品時の対応、見込在庫と受注の取り合い、12 項の故障対照表（症状→根因→確認手順）、MD04 の読み方表、発展課題。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/mts.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MTS</span><span class="txt">見込生産 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①预测</a>
+      <a href="handson-2.html">②MRP</a>
+      <a href="handson-3.html">③制造入库</a>
+      <a href="handson-4.html">④出货</a>
+      <a class="active" href="handson-5.html">⑤月末</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 练习⑤ 月末処理と発展</div>
+<main class="page"><article>
+
+<h1>练习⑤ 月末処理と発展（差异・棚卸・缺品・故障）</h1>
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。若是想换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 即可一键替换。</div>
+
+<p class="lead">前四个练习让流程「跑起来」，本练习让它「结算得了、救得回来」：<b>差异算出来 → 决済到 FI；缺品算得准 → 知道该补哪里；故障查得到 → 有对照表</b>。做完这个练习，你就能独立维护一条见込生产的线。</p>
+
+<div class="toc">
+  <a href="#e1">5-1 差異計算（KKS1 / KKS2）</a>
+  <a href="#e2">5-2 指図の決済（KO88 / CO88）</a>
+  <a href="#e3">5-3 棚卸（MI01 / MI04 / MI07）</a>
+  <a href="#e4">5-4 安全在庫切れ・欠品時の対応</a>
+  <a href="#e5">5-5 見込在庫と受注の取り合い</a>
+  <a href="#trouble">5-6 故障対照表（12 項）</a>
+  <a href="#md04">5-7 MD04 の読み方表</a>
+  <a href="#develop">5-8 発展課題</a>
+  <a href="#accept">验收（完成基准）</a>
+</div>
+
+<h2 id="e1">5-1 差異計算（KKS1 一括 / KKS2 単品目）</h2>
+<p>差异计算的输入是<b>目标原価（標準 × 出来高）</b>与<b>実際原価（実績）</b>。差异被拆成若干<b>差異カテゴリ</b>——这是「为什么会差」的解释器。</p>
+<table class="tbl wide">
+<tr><th>T-code</th><th>用途</th><th>要点</th></tr>
+<tr><td><code>KKS2</code></td><td>単品目の差異計算</td><td>指図 1 件（或は複数指定）。练习先从这里开始，结果好读</td></tr>
+<tr><td><code>KKS1</code></td><td>一括の差異計算</td><td>プラント/期間/指図タイプ単位。本番はこちら</td></tr>
+<tr><td><code>KKA1</code> / <code>KKAO</code></td><td>WIP（仕掛）計算（単品 / 一括）</td><td>未完了の指図に対する仕掛。差異と一緒に決済される</td></tr>
+</table>
+<p><b>見るべき差異カテゴリ（通常は〜。番号は環境で確認）</b></p>
+<table class="tbl wide">
+<tr><th>差異カテゴリ</th><th>意味</th><th>MTS での典型原因</th></tr>
+<tr><td>入力価格差異（input price variance）</td><td>部品・活動の<b>単価</b>が標準と違う</td><td>部品の実際単価上昇、レート改定（<code>KP26</code>）</td></tr>
+<tr><td>入力数量差異（input quantity variance）</td><td>投入した<b>数量</b>が標準と違う</td><td>部品の過消費、BOM と実態のずれ</td></tr>
+<tr><td>資源使用差異（resource usage variance）</td><td>作業時間・能力の使用が標準と違う</td><td>実績時間の入力ミス・歩留低下による時間増</td></tr>
+<tr><td>混合価格差異（mixed-price variance）</td><td>原価計算ロット/混合による評価のずれ</td><td>ロットサイズ設定・評価バリアント</td></tr>
+<tr><td>出力価格差異（output price variance）</td><td>出来高の評価単価が標準と違う</td><td>標準価格のリリース時点/期中変更</td></tr>
+<tr><td>スクラップ差異（scrap variance）</td><td>計画スクラップと実スクラップの差</td><td>不良 10 PC のような実スクラップ（<a href="handson-3.html">练习③</a>）</td></tr>
+<tr><td>残差（remaining variance）</td><td>上のどれにも分類されない残り</td><td>設定漏れの見張り番。<b>大きい残差は設定を見直すサイン</b></td></tr>
+</table>
+<ol class="steps">
+  <li><code>CO03</code> で指図の状態（<code>CNF</code>/<code>DLV</code>）と実際原価を確認（決済対象の条件）。</li>
+  <li><code>KKS2</code> → 指図番号 → 期間（会計期間）→ 実行 → 差異の一覧（カテゴリ別）を確認。</li>
+  <li>「目標原価・実際原価・差異」の 3 列と、カテゴリ別の内訳を記録する。</li>
+  <li>（一括）<code>KKS1</code> → プラント / 指図タイプ <code>PP01</code> / 期間 → 実行 → ログで処理件数と差異を確認。</li>
+</ol>
+
+
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+<code>KKS2</code>/<code>KKS1</code> の結果リスト（差異カテゴリと金額）。再表示は同じ T-code で「照会」或は <code>CO03</code> → 明細 → 差異。<br>
+設定側：差異キー（<code>OKV1</code>）・プラントへの割当（<code>OKVW</code>）・差異計算バリアント（<code>OKVG</code>）・目標原価バージョン（SPRO）——<b>T-code と画面名は版本で異なるので SPRO の検索で「差異」を探す</b>。<br>
+差異カテゴリの定義は SAP Help <i>Variance Categories</i>。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 「目標原価がありません」 → 標準価格未リリース（<a href="config.html#c4">C4</a>）或は過去の指図に標準価格が無い。<br>
+② 差異が 0 → 実績未入力（<code>CO11N</code> 未実施）或は PGI/入庫が期末前に完結していない。<br>
+③ 残差が大きい → 差異カテゴリの割当（差異キー/バリアント）を見直す。<b>残差を無理に消さない</b>（原因を追う）。</div>
+<div class="task"><b class="t">練習課題</b>练习③ で作った<b>正常ケース（歩留 500）</b>と<b>不良ケース（歩留 490）</b>の差異を比べる：<b>どのカテゴリが増えたか</b>、金額はいくらか。<br>
+さらに：同じ指図で作業時間を 10 倍に入れると、どのカテゴリが膨らむかを予想してから実行する（予想と結果を書く——これが「差異を読む力」の訓練）。</div>
+<figure class="gui"><img src="assets/gui/handson-5_s01_1.svg" alt="KKS2 で指図 1000123 の差異をカテゴリ別に計算し、入力価格差異などの内訳と合計 150,000 JPY を確認する。" loading="lazy"><figcaption><b class="t">KKS2：差異カテゴリ別の内訳</b><span class="tx">KKS2</span><span class="scr">差異計算：差異カテゴリ別の内訳（単品目）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 「目標原価がありません」と言われたら標準価格が未リリース（C4 / CK24）</li><li><b>2</b> 残差が大きいときは差異キー / バリアントの割当を見直す。無理に消さず原因を追う</li></ol><p class="gui-tip">自システムでの確認：設定側は OKV1（差異キー）/ OKVW / OKVG（差異計算バリアント）。T-code と画面名は版本で異なるため SPRO の検索で「差異」を探してください。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-5_s01_2.svg" alt="KKS1 でプラント 1000・指図タイプ PP01・期間を指定して一括の差異計算を実行する。" loading="lazy"><figcaption><b class="t">KKS1：一括の差異計算</b><span class="tx">KKS1</span><span class="scr">差異計算：一括（プラント / 指図タイプ / 期間）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 练习は KKS2（単品目）から。結果が読みやすく、原因の切り分けが速い</li><li><b>2</b> ログの処理件数と差異合計を記録して 5-2 の決済に進む</li></ol><p class="gui-tip">自システムでの確認：再表示は同じ T-code の「照会」または CO03 → 明細 → 差異。差異カテゴリの定義は SAP Help Variance Categories。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="e2">5-2 指図の決済（KO88 / CO88）</h2>
+<p>差异算出来只是「知道」，<b>决済（決済）才是把钱送到 FI</b>。<code>KO88</code>/<code>CO88</code> 会把差异（与 WIP）按決済ルール转记到成本要素。</p>
+<table class="tbl wide">
+<tr><th>T-code</th><th>用途</th><th>前提</th></tr>
+<tr><td><code>KO88</code></td><td>単品目/選択した指図の決済</td><td>指図が <code>DLV</code> 或は <code>TECO</code>、差異計算済み（<code>KKS1</code>/<code>KKS2</code>）</td></tr>
+<tr><td><code>CO88</code></td><td>一括決済（プラント・期間・指図タイプ）</td><td>同上。本番はこちらを定期実行</td></tr>
+<tr><td>決済の設定</td><td>決済プロファイル / 決済ルール（差異 → 差異勘定、WIP → 仕掛勘定）</td><td>SPRO（管理会計 &gt; 製品原価管理 &gt; 指図 &gt; 決済）。<b>T-code と名称は環境で確認</b></td></tr>
+</table>
+<ol class="steps">
+  <li><code>CO03</code> で指図の状態を確認（<code>DLV</code> になっているか。<code>CNF</code> のままでも決済可能な場合があるが、決済ルール次第）。</li>
+  <li><code>KO88</code> → 指図番号 → 期間 → 実行（テスト実行 → 本番実行）。ログに「決済されました」+ 会計伝票番号が出る。</li>
+  <li><code>FB03</code> で決済の会計伝票を確認（差異勘定・仕掛勘定・在庫勘定の動き）。</li>
+  <li>一括を試す場合は <code>CO88</code> → プラント <code>1000</code> / 指図タイプ <code>PP01</code> / 期間 → 実行 → ログ確認。</li>
+  <li>（発展）差異の行き先を確認：在庫に残った分（未売却分）と、売上原価に流れた分（売却分）があることを <code>CO03</code> と <code>FB03</code> で追う。</li>
+</ol>
+
+
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+<code>KO88</code>/<code>CO88</code> の実行ログ（決済済み・会計伝票番号）→ <code>FB03</code> で伝票 → 差異勘定の金額が <code>KKS2</code> の差異と一致するか。<br>
+表：<code>SE16N: COBRB</code>（決済ルール）・<code>AUFK-STAT</code>（決済状態）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 「決済すべきものがありません」 → 差異計算未実施（<code>KKS1</code> 先）或は決済ルール未設定。<br>
+② 会計期間が閉じている → 前月の差異が決済できない（<code>OB52</code> で期間を確認、权限が必要）。<br>
+③ 決済を二重に実行 → 既に決済済みの指図は対象外になる（ステータスが「決済済」）。<br>
+④ 差異の金額が <code>KKS2</code> と一致しない → 決済対象期間・目標原価バージョン・WIP の扱いの違い。<b>ログを 1 件ずつ突き合わせる</b>。</div>
+<div class="task"><b class="t">練習課題</b>決済の前後で差異が「どこに消えたか」を書く：① 在庫に残る分 ② 売上原価に流れる分 ③ 差異勘定の残高。<code>FB03</code> の会計伝票と <code>CO03</code> の差異を突き合わせて 3 行で説明する。</div>
+<figure class="gui"><img src="assets/gui/handson-5_s02_1.svg" alt="KO88 で指図 1000123 を期間指定で決済し、会計伝票番号を確認する。" loading="lazy"><figcaption><b class="t">KO88：指図の決済</b><span class="tx">KO88</span><span class="scr">指図の決済：単品目（テスト実行 → 本番実行）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 「決済すべきものがありません」→ 差異計算未実施（KKS1 が先）or 決済ルール未設定</li><li><b>2</b> 会計期間が閉じていると前月の差異が決済できない（OB52 を確認、权限が必要）</li></ol><p class="gui-tip">自システムでの確認：実行ログ（決済済み・会計伝票番号）→ FB03 で伝票。表は SE16N: COBRB（決済ルール）/ AUFK-STAT。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-5_s02_2.svg" alt="FB03 で決済の会計伝票を開き、差異がどの勘定に転記されたかを確認する。" loading="lazy"><figcaption><b class="t">FB03：決済の会計伝票</b><span class="tx">FB03</span><span class="scr">会計伝票 照会：差異の転記先</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 差異の金額が KKS2 の結果と一致するか確認する（一致しないときは期間・目標原価バージョン・WIP の扱いを疑う）</li><li><b>2</b> 決済で違いが消えた「どこに消えたか」を 3 行で説明できることがゴール</li></ol><p class="gui-tip">自システムでの確認：差異・WIP の勘定は決済プロファイル / 決済ルール（SPRO：管理会計 &gt; 製品原価管理 &gt; 指図 &gt; 決済）で確認してください。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="e3">5-3 棚卸（MI01 / MI04 / MI07）</h2>
+<p>見込生産的库存是「公司自己的」，所以要<b>実地棚卸（盘点）</b>——这是与 MTO 的受注在庫在运用面最大的差别之一（受注在庫基本不在盘点口径内，或按受注分别确认）。</p>
+<table class="tbl wide">
+<tr><th>T-code</th><th>手顺</th><th>要点</th></tr>
+<tr><td><code>MI01</code></td><td>棚卸伝票の作成（品目/プラント/保管場所、棚卸基準日、凍結/記帳ブロックの設定）</td><td>棚卸中に库存が動くと差異の原因になる</td></tr>
+<tr><td><code>MI04</code></td><td>数えた実地数量の入力</td><td>差異（帳簿在庫 vs 実地）が出る</td></tr>
+<tr><td><code>MI07</code></td><td>差異の転記（評価・在庫の修正）</td><td>転記先は <code>OBYC</code> の設定（<code>BSX</code> 在庫勘定 / <code>GBB</code> 差異勘定）</td></tr>
+<tr><td><code>MI31</code> / <code>MI10</code></td><td>一括の棚卸伝票作成 / 一括入力</td><td>本番はプラント単位でまとめて</td></tr>
+</table>
+<ol class="steps">
+  <li><code>MMBE</code> で帳簿在庫（例 300 PC）を確認。</li>
+  <li><code>MI01</code> → 品目 <code>ZMTS-FG01</code> / プラント <code>1000</code> / 保管場所 <code>0001</code> / 棚卸基準日 → 「棚卸中（在庫凍結）」等のフラグを立てて保存。</li>
+  <li><code>MI04</code> → 伝票番号 → 実地数量（例 298 PC）を入力。</li>
+  <li><code>MI07</code> → 転記 → 差異の会計伝票を確認。</li>
+  <li><code>MMBE</code> で在庫が実地数量に更新されたことを確認。</li>
+</ol>
+
+
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+<code>MI03</code>（棚卸伝票の照会）・<code>MMBE</code>（在庫更新）・<code>FB03</code>（差異の会計伝票）。<br>
+差異の転記先の勘定は <code>OBYC</code>：<code>BSX</code>（在庫勘定）と <code>GBB</code>（棚卸差異 <code>INV</code> 系キー）。<b>キーの名称は環境で確認</b>。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 棚卸中に PGI/入庫が走る → 差異が原因不明になる。<b>凍結フラグ or 記帳ブロック</b>を正しく使う。<br>
+② <code>MI07</code> で転記できない → 評価クラス・<code>OBYC</code> の設定不足、或は会計期間閉鎖。<br>
+③ 棚卸差異は見込生産では<b>必ず起きる</b>（ロットはかり間違い・スクラップ未記録）。まず記録の整備を疑う。</div>
+<div class="task"><b class="t">練習課題</b>棚卸差異 2 PC（300 → 298）の金額を計算する（標準価格 8,000 × 2 = 16,000 JPY）。実際の転記先の勘定と金額を <code>FB03</code> で確認する。</div>
+<figure class="gui"><img src="assets/gui/handson-5_s03_1.svg" alt="MI04 で棚卸伝票 1000000001 に実地数量 298 PC を入力し、帳簿在庫 300 PC との差異 2 PC を出す。" loading="lazy"><figcaption><b class="t">MI04：実地数量 298 PC（帳簿 300 PC）</b><span class="tx">MI04</span><span class="scr">棚卸の実地数量入力</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 差異 2 PC × 標準価格 8,000 = 16,000 JPY が MI07 で転記される</li><li><b>2</b> 棚卸差異は見込生産では必ず起きる。まず記録（スクラップ未記録・数え間違い）の整備を疑う</li></ol><p class="gui-tip">自システムでの確認：MI03（棚卸伝票の照会）・MMBE（在庫更新）・FB03（差異の会計伝票）。転記科目は OBYC の BSX / GBB。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-5_s03_2.svg" alt="MI07 で棚卸差異を転記し、MMBE で在庫が実地数量に更新されたことを確認する。" loading="lazy"><figcaption><b class="t">MI07：差異 2 PC（16,000 JPY）を転記</b><span class="tx">MI07</span><span class="scr">棚卸差異の転記と在庫更新</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> MI07 で転記できないときは評価クラス・OBYC の設定不足 or 会計期間閉鎖を疑う</li><li><b>2</b> MB52 / MMBE で在庫が実地数量 298 PC になっていることを確認する</li></ol><p class="gui-tip">自システムでの確認：MMBE / MB52 の在庫、FB03 の会計伝票。一括は MI31（伝票作成）/ MI10（入力）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="e4">5-4 安全在庫切れ・欠品時の対応（見込生産の「救急セット」）</h2>
+<p>見込生産の欠品は「予測が外れた」か「生产没跟上」的どちらか。切り分けの順序を固定しておくと、慌てずに済む。</p>
+<pre class="vals">【切り分けの順序】
+1. 本当に在庫が足りないか？       MMBE / MB52（自由在庫・特在・保留を分けて見る）
+2. 需要側が増えたのか？           MD04（受注が期待以上）/ MD73（PIR が残っているか）
+3. 供給側が遅れたのか？           CO03（指図の状態・納期）/ MD04 の計画手配
+4. 引当・締めの問題か？           CO09 の出庫予定 / VL03N の引当 / 別受注が先取り
+5. 物流側か？                     保管場所違い・在庫タイプ（品質検査/ブロック）違い
+
+【打ち手（重い順ではなく、効く順）】
+a) 引当の付け替え（V_V2 で納期再設定・納入日程行の再確認）
+b) 追加入庫の前倒し（指図を CO02 で納期前倒し + 実績・101）
+c) 別プラント/別保管場所からの補充（在庫転送 301/303 系）
+d) 一部出荷 + 残は次回納入（納入日程行の分割）
+e) 需要調整（PIR の消減/消減、受注の納期変更）
+f) 現実的な最終手段：欠品を認める（見込生産では「隠す」より「見せる」が原則）</pre>
+<table class="tbl wide">
+<tr><th>状態</th><th>見え方</th><th>まず見るもの</th></tr>
+<tr><td>在庫が安全在庫を割った</td><td><code>MD04</code> の利用可能数量が安全在庫を下回る、MRP が追加の計画手配を出す</td><td><code>MM03</code> MRP2 の安全在庫・<code>MD04</code></td></tr>
+<tr><td>欠品（受注が引当不能）</td><td><code>VA03</code> の確認済 0 / <code>CO09</code> の利用可能数量マイナス</td><td><code>CO09</code>・<code>V_V2</code>・<code>VL03N</code></td></tr>
+<tr><td>別の受注に取られた</td><td>在庫はあるのに自分の受注が引当不能</td><td><code>CO09</code> の出庫予定順（伝票登録順）</td></tr>
+<tr><td>在生产中で入库未了</td><td>指図が <code>REL</code>/<code>CNF</code> のまま、入庫予定が未来</td><td><code>CO03</code>・<code>MD04</code> の入庫予定</td></tr>
+</table>
+
+
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+<code>MMBE</code>（在庫タイプ別：非制限/品質検査/ブロック/受注在庫）→ <code>MB52</code>（保管場所別）→ <code>CO09</code>（可用量と要素）→ <code>MD04</code>（時系列の需要と供給）。<b>この 4 つをこの順で見る</b>のが定石。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 「在庫があるのに欠品」 → 在庫が別の在庫タイプ/別の保管場所/別の受注在庫に寝ている。<code>MMBE</code> の区分を全部見る。<br>
+② 安全在庫を守ろうとして出荷を止める → 安全在庫は<b>守るべき絶対量ではなく、MRP の補貨トリガ</b>。出荷可否は受注の引当と納期で決める。<br>
+③ 欠品を隠して後で辻褄を合わせる → 見込生産で最も危険な運用法。差異・棚卸・差異カテゴリが全部崩れる。</div>
+<div class="task"><b class="t">練習課題</b>「在庫 300 PC・安全在庫 100 PC のときに 250 PC の急ぎ受注が来た」——<b>受注するか断るか、するなら在庫と MRP がどう動くか</b>を <code>MD04</code> の予測で書く（実行は任意）。<br>
+ヒント：受注 250 を入れると PIR を消費するが、在庫は <code>MMBE</code> 上まだ 300。ATP と実際の在庫は別物であることを押さえる。</div>
+<figure class="gui"><img src="assets/gui/handson-5_s04_1.svg" alt="MMBE で在庫をタイプ別に見る。非制限利用 300 PC、品質検査・ブロック・受注在庫はいずれも 0。" loading="lazy"><figcaption><b class="t">MMBE：在庫タイプ別に見る（切り分けの 1 手目）</b><span class="tx">MMBE</span><span class="scr">在庫一覧：在庫タイプ別（欠品の切り分け 1 手目）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 在庫があるのに欠品 → 別の在庫タイプ / 別の保管場所 / 別受注の先取りを疑う</li><li><b>2</b> 安全在庫は守るべき絶対量ではなく MRP の補貨トリガ。出荷可否は引当と納期で決める</li></ol><p class="gui-tip">自システムでの確認：MB52（保管場所別）→ CO09（可用量と要素）→ MD04（時系列）の順で見るのが定石です。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-5_s04_2.svg" alt="CO09 で急ぎ受注 250 PC を入れたときの利用可能数量がマイナスになる状態を確認する。" loading="lazy"><figcaption><b class="t">CO09：引当不能（利用可能数量 -100）</b><span class="tx">CO09</span><span class="scr">利用可能在庫確認：引当不能（欠品）の状態</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 打ち手：V_V2 で納期再設定 / 指図の前倒し / 在庫転送 / 納入日程行の分割</li><li><b>2</b> 欠品を隠して後で辻褄を合わせるのが最も危険。差異・棚卸・差異カテゴリが全部崩れる</li></ol><p class="gui-tip">自システムでの確認：VL03N の在庫/引当、CO09 の出庫予定順（伝票登録順）で「誰が先に取ったか」を確認します。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="e5">5-5 見込在庫と受注の取り合い（MTS の経営的な意味）</h2>
+<p>MTS 的库存是<b>「誰のものでもない」</b>——だからこそ速く売れるが、余れば自分の責任になる。この「取り合い」の構造を理解すると、見込生産の計画パラメータ（安全在庫・ロットサイズ・リードタイム）が何のためにあるかが見えてくる。</p>
+<table class="tbl wide">
+<tr><th>構造</th><th>MTS</th><th>MTO</th></tr>
+<tr><td>库存の所有者</td><td>全社（自由在庫）</td><td>その受注だけ（E 特在）</td></tr>
+<tr><td>誰が先に取れるか</td><td><b>登録順・納期順（ATP）</b></td><td>取り合いにならない（在庫が別）</td></tr>
+<tr><td>余ったときのコスト</td><td>在庫維持費・評価減（見込在庫のリスク）</td><td>受注取消なら残るが、その受注専用</td></tr>
+<tr><td>欠品したときの打ち手</td><td>引当付け替え・納期調整・追加入庫（<a href="#e4">5-4</a>）</td><td>生産を前倒し・納期を延ばす</td></tr>
+<tr><td>計画パラメータの意味</td><td>安全在庫＝欠品率の調整つまみ、ロットサイズ＝段取りと在庫のトレードオフ</td><td>リードタイム＝納期約束の限界</td></tr>
+</table>
+
+
+<div class="task"><b class="t">練習課題（ビジネス視点）</b>「安全在庫を 100 → 300 に上げると、① 欠品率 ② 在庫金額 ③ 差異の出方 はどう動くか」を 3 行で書く（正解は状況次第。<b>理由が言えることが価値</b>）。</div>
+<figure class="gui"><img src="assets/gui/handson-5_s05_1.svg" alt="MTS と MTO を在庫の所有者・引当順・コスト・打ち手で対比する表。" loading="lazy"><figcaption><b class="t">MTS と MTO の取り合いの構造</b><span class="tx">MMBE</span><span class="scr">在庫の帰属：自由在庫（MARD）と受注在庫 E（MSKA）の対比</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 分水岭は「入库先が自由在庫か受注在庫か」の 1 点。需要源は PIR か受注か</li><li><b>2</b> 安全在庫を上げると欠品率は下がるが在庫金額は増える。正解は状況次第、理由が言えることが価値</li></ol><p class="gui-tip">自システムでの確認：MMBE の「非制限利用」と「得意先別（特別在庫）」、表は MARD（自由在庫）と MSKA（受注在庫）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="trouble">5-6 故障対照表（12 項：症状から引く。覚えなくてよい）</h2>
+<p>見込生産（MTS）场景最常出现在练习与现场的 12 个症状。每条都给出<b>症状 → 根因 → 确认手顺</b>——注意「确认手顺」才是本表的重点。</p>
+<table class="tbl wide">
+<tr><th>#</th><th>症状</th><th>根因の候補</th><th>確認手順（T-code / 表）</th></tr>
+<tr><td>1</td><td>MRP を跑っても計画手配が生成されない</td><td>MRP タイプ <code>ND</code>（計画なし）/ 手配タイプ空 / 純所要量が 0（在庫で足りている）</td><td><code>MM03</code> MRP1〜2 → <code>MD04</code> の利用可能数量 → <code>MD01N</code> 実行ログ</td></tr>
+<tr><td>2</td><td>PIR を登録したのに <code>MD04</code> に出ない</td><td>版が <code>00</code> でない / 納入日が表示期間外 / プラント在庫ビュー無し</td><td><code>SE16N: PBED-VERID/PDATU</code>・<code>SE16N: T459U</code>・<code>MM03</code></td></tr>
+<tr><td>3</td><td>受注が <code>MD04</code> に出ない（需求が立たない）</td><td>納入日程行カテゴリの<b>所要量転送 OFF</b>（<code>VBEP-BEDSD</code>）/ 品目に MRP ビュー無し</td><td><code>VA03</code> 納入日程行・<code>VOV6</code>・<code>VOV5</code>・<code>SE16N: TVEP</code></td></tr>
+<tr><td>4</td><td>受注の確認済数量が 0 / 欠品扱い</td><td>在庫確認 OFF（<code>VBEP-ATPPR</code>）/ 品目 MRP3 の在庫確認が空 / スコープに在庫・入庫予定が入っていない</td><td><code>CO09</code>・<code>OVZ9</code>・<code>MM03</code> MRP3・<code>OVZ2</code></td></tr>
+<tr><td>5</td><td>受注しても PIR が消費されない</td><td>戦略グループが <code>10</code>/<code>11</code> 系（消費しない）/ 消費モード・逆順消費期間の外 / 戦略グループが空</td><td><code>MM03</code> MRP3（<code>MARC-STRGR/VRMOD/VINT1/VINT2</code>）・<code>MD04</code> の消費明細・<code>OPPT</code></td></tr>
+<tr><td>6</td><td>完成品の入庫が「得意先別（受注在庫）」になる</td><td>品目 MRP4 が「個別所要量のみ」/ 指図が受注に紐づいている（MTO 化）</td><td><code>MM03</code> MRP4・<code>CO03</code>・<code>SE16N: AFPO-KDAUF/KDPOS</code>・<code>MMBE</code></td></tr>
+<tr><td>7</td><td><code>VOV4</code>/<code>VOV5</code> の自建行が効かない</td><td>品目マスタの<b>戦略グループが優先</b>される / 決定の順序（<code>OVZI</code>）の理解不足</td><td><code>MM03</code> MRP3・<code>OVZI</code>・<code>VA03</code> の明細/納入日程行</td></tr>
+<tr><td>8</td><td><code>MD05</code>/<code>MD06</code> に MRP リストが出ない</td><td>MRP Live（<code>MD01N</code>）は MRP リストを作らない</td><td><code>MD04</code> で確認する（SAP KBA 2640393）</td></tr>
+<tr><td>9</td><td>差異計算で「目標原価がありません」</td><td>標準価格が未リリース（<code>CK24</code> 未完）/ 原価計算バリアント未設定 / レート（<code>KP26</code>）無し</td><td><code>MM03</code> 会計1（<code>MBEW-STPRS</code>）・<code>CK13N</code>・<code>KP26</code>・<code>OKKN</code></td></tr>
+<tr><td>10</td><td>差異が大きいのに原因が分からない</td><td>実績時間の入力ミス / 部品の実際単価 / スクラップ未記録 / 残差（設定漏れ）</td><td><code>KKS2</code> のカテゴリ別内訳・<code>AFRU</code>・<code>MATDOC</code>・<code>OKV1</code>/<code>OKVG</code></td></tr>
+<tr><td>11</td><td>決済しても FI に何も出ない</td><td>差異計算未実施 / 決済ルール未設定（<code>COBRB</code>）/ 会計期間閉鎖</td><td><code>KKS1</code> → <code>KO88</code> のログ・<code>FB03</code>・決済プロファイル・<code>OB52</code></td></tr>
+<tr><td>12</td><td>在庫があるのに出荷（PGI）できない</td><td>引当未実施（ピッキング数量 0）/ 在庫タイプ違い（品質検査・ブロック）/ 別受注が先取り / 保管場所違い</td><td><code>VL03N</code> の在庫/引当・<code>MMBE</code> の区分別在庫・<code>CO09</code>・<code>MB52</code></td></tr>
+</table>
+<div class="box warn"><b class="t">使い方（教え方）</b>
+この表は<b>覚えるためではなく引くため</b>。研修では「症状だけを見せて、根因を 3 つ挙げさせる」→「その確認手順を T-code で言わせる」の順で使う（<a href="instructor.html">讲师版</a> の故障の教え方を参照）。<br>
+<b>共通の型</b>：① 品目マスタ（MRP1〜4）② SD 側の 3 つの決定（VOV4/VOV5/VOV6）③ 実行結果（MD04/CO09/MMBE）——<b>この 3 層を行き来できるかが腕の見せどころ</b>。</div>
+
+<h2 id="md04">5-7 MD04 の読み方表（MTS 场景里最常出现的行）</h2>
+<table class="tbl wide">
+<tr><th>行の種類</th><th>見た目 / 参照</th><th>意味（MTS）</th><th>どこから来たか</th></tr>
+<tr><td>自由在庫（利用可能）</td><td>参照なし・在庫行</td><td>今すぐ使える自社在庫</td><td><code>MARD</code>（101 入庫・601 出庫で動く）</td></tr>
+<tr><td>計画独立所要量（PIR）</td><td><b>受注番号なし</b>、版 <code>00</code></td><td>見込の需要（見込生産の出発点）</td><td><code>PBED</code>（<code>MD61</code> で登録）</td></tr>
+<tr><td>得意先所要量</td><td><b>受注番号/得意先あり</b></td><td>受注が立った需要（PIR を消費した分は差し引き済み）</td><td><code>VBEP</code>（所要量転送 ON の納入日程行）</td></tr>
+<tr><td>計画手配</td><td>品目 + プラント、受注参照なし</td><td>MRP が作った補貨（まだ指図ではない）</td><td><code>PLAF</code>（<code>MD01N</code> の結果）</td></tr>
+<tr><td>製造指図</td><td>指図番号あり（<code>CO03</code> で開ける）</td><td>確定した補充（入庫予定）</td><td><code>AUFK</code>/<code>AFPO</code>（<code>CO40</code>/<code>CO41</code> 変換）</td></tr>
+<tr><td>購買依頼 / 発注</td><td>購買伝票番号</td><td>部品（外部調達）の補充</td><td><code>EBAN</code>/<code>EKKO</code></td></tr>
+<tr><td>予約 / 引当</td><td>指図番号・受注番号</td><td>他の需要のための取り置き</td><td><code>RESB</code>・<code>VBBS</code></td></tr>
+<tr><td>利用可能数量</td><td>累計列</td><td>その時点の過不足。マイナス＝MRP の仕事</td><td>システム計算</td></tr>
+</table>
+
+
+<div class="box info"><b class="t">読む順序（3 ステップ）</b>
+<b>① 需要行</b>（PIR と得意先所要量の両方・数量と日付）→ <b>② 供給行</b>（在庫・計画手配・指図）→ <b>③ 利用可能数量の推移</b>（いつマイナスになるか）。<br>
+「いつ、いくつ足りないか」が言えたら、そのまま <a href="config.html#c14">C14</a>／<a href="handson-2.html">练习②</a> の MRP の話に戻れる。</div>
+<figure class="gui"><img src="assets/gui/handson-5_s06_1.svg" alt="MD04 に現れる行の種類を、見た目・意味・出どころの 3 列でまとめた表。" loading="lazy"><figcaption><b class="t">MD04 の読み方：8 種類の行</b><span class="tx">MD04</span><span class="scr">在庫/所要量リスト：MTS で最頻出の 8 種類の行</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 「需要か供給か」で分類する。在庫と計画手配・指図は供給側（入庫予定）</li><li><b>2</b> 「いつ、いくつ足りないか」が言えたら、そのまま MRP（C14 / 练习②）の話に戻れる</li></ol><p class="gui-tip">自システムでの確認：要素名はシステム言語で変わるため、参照（受注番号・指図番号）の有無で判断するのが確実です。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="develop">5-8 発展課題</h2>
+<ol class="steps">
+  <li><b>戦略 10 との比較</b>：品目 <code>ZMTS-FG10</code>（戦略 <code>10</code>）を作り、同じ PIR と受注で <code>MD04</code> がどう違うか（消費しない・消減される）を実測する。</li>
+  <li><b>戦略 11（総所要量計画）</b>：MRP3 の混合MRP区分を <code>2</code> にして、在庫があっても計画手配が出ることを確認する（<b>やりすぎ禁物</b>、終わったら戻す）。</li>
+  <li><b>戦略 70（組立レベル）</b>：半製品（アセンブリ）を 1 層追加し、PIR を組立品目に置く構成を組む。<code>MD04</code> がどう変わるかを見る。</li>
+  <li><b>部品を購買に切り替える</b>：部品の手配タイプを <code>F</code>（外部調達）にし、MRP から購買依頼 → <code>ME21N</code> で発注 → 入庫 101 → 在庫に反映、まで通す。</li>
+  <li><b>ロットサイズの比較</b>：<code>EX</code> / 週ロット / 固定ロットで計画手配数量と在庫水準がどう変わるかを 3 パターン実測する。</li>
+  <li><b>バックフラッシュ</b>：品目 MRP1 のバックフラッシュを ON にし、<code>CO11N</code> の実績で部品が自動出庫されることを確認する（手動 261 との二重出庫に注意）。</li>
+  <li><b>取消の順序</b>：誤った 1 件を「請求 <code>VF11</code> → PGI <code>VL09</code> → 入庫取消（<code>MIGO</code>/<code>MBST</code>）→ 実績 <code>CO13</code> → 指図 <code>TECO</code>/削除」の順で戻す。<b>順序を間違えると在庫と FI が壊れる</b>。</li>
+  <li><b>Cloud 对照</b>：<a href="config.html#c16">C16</a> のとおり、Cloud では作れないオブジェクトを 3 つ挙げ、代替手段を書く。</li>
+</ol>
+<figure class="gui"><img src="assets/gui/handson-5_s07_1.svg" alt="ZMTS-FG10（戦略グループ 10）の MD04。同じ受注 0000001234 を入れても計画独立所要量は 500 PC のまま残り、利用可能数量は -200 になる。" loading="lazy"><figcaption><b class="t">ZMTS-FG10（戦略 10）：PIR は消費されない</b><span class="tx">MD04</span><span class="scr">在庫/所要量リスト：戦略 10 では受注が PIR を消費しない</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 戦略 10 は受注が PIR を消費しない。PIR の行は 500 PC のまま残り、受注 200 PC と合わせて需要が二重に立つ</li><li><b>2</b> 同じ受注でも 40 と 10 で MD04 の計画手配が変わる。4-3（戦略 40）の画面と並べて読むのが発展課題①</li></ol><p class="gui-tip">自システムでの確認：ZMTS-FG10 は MM01（同一 BOM / 工程・戦略グループ 10）で追加し、受注後も SE16N: PBED の PLNMG が変わらないことを確認します。戦略グループは MARC-STRGR（MM03 MRP 3）。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-5_s07_2.svg" alt="部品 ZMTS-RM01 の MD04。手配タイプ F（外部調達）のため、MRP の結果は計画手配ではなく購買依頼 00000123 として生成される。" loading="lazy"><figcaption><b class="t">ZMTS-RM01（手配タイプ F）：購買依頼で補充</b><span class="tx">MD04</span><span class="scr">在庫/所要量リスト：部品の補充が「購買依頼」になる（手配タイプ F）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 手配タイプ F = 外部調達。部品の MRP 結果は計画手配ではなく購買依頼になる（完成品の E・内製との違い）</li><li><b>2</b> ME21N で発注 → MIGO（参照伝票 購買発注・移動タイプ 101）で入庫すると、この行が購買発注 → 自由在庫（MMBE 1,000 PC）に置き換わる</li></ol><p class="gui-tip">自システムでの確認：購買依頼は SE16N: EBAN（BANFN / MENGE）、発注は EKKO / EKPO、入庫は MATDOC。手配タイプは MM03 → MRP 1。</p></figure>
+
+
+
+
+
+
+
+
+<h2 id="accept">验收（完成基准）</h2>
+<div class="box ok"><b class="t">全部勾上才算练习⑤ 完成（= 全站修了）</b>
+<ul class="check">
+  <li><code>KKS2</code>（或は <code>KKS1</code>）で差異を計算し、差異カテゴリ別の内訳を読んだ。</li>
+  <li><code>KO88</code>（或は <code>CO88</code>）で決済し、<code>FB03</code> で会計伝票を確認した。</li>
+  <li>差异的 3 个去向（在库 / 卖上原价 / 差异勘定）を自分の言葉で説明できる。</li>
+  <li>棚卸（<code>MI01</code>→<code>MI04</code>→<code>MI07</code>）を 1 回通り抜け、差異の転記を確認した。</li>
+  <li>安全在庫切れ・欠品の切り分け 5 手顺を、実際の T-code を挙げて言える。</li>
+  <li>MD04 の 8 種類の行を、<b>「需要か供給か」「どこから来たか」</b>で分類できる。</li>
+  <li>故障対照表の 12 項のうち<b>3 項以上</b>を、症状 → 根因 → 确认手顺で説明できる（資料を見ずに）。</li>
+  <li>発展課題のうち<b>2 つ以上</b>を実際に実行した（戦略 10 との比較・部品の購買化・ロットサイズ比較 など）。</li>
+</ul></div>
+
+<div class="box info"><b class="t">出典</b>
+差異計算・WIP・決済の T-code（<code>KKS1</code>/<code>KKS2</code>/<code>KKAO</code>/<code>KO88</code>/<code>CO88</code>）と期末処理の順序：SAP Community <i>CO Product Costing – Period End Closing</i> / <i>Variance calculation before Settlement Run</i>。<br>
+差異カテゴリ（入力価格・入力数量・資源使用・混合価格・出力価格・スクラップ・残差）と目標原価（Target version 0 = 標準原価ベース）：SAP Help <i>Variance Categories</i>、SAP Learning <i>Performing Variance Calculation</i>。<br>
+差異キー/差異計算バリアントの設定（<code>OKV1</code>/<code>OKVW</code>/<code>OKVG</code>）：SAP Community <i>Variance calculation_PP</i>。<br>
+棚卸（<code>MI01</code>/<code>MI04</code>/<code>MI07</code>）と差異転記（<code>OBYC</code> の <code>BSX</code>/<code>GBB</code>）：SAP Help（在庫管理・棚卸）。<br>
+戦略 10/11/70 の挙動：SAP PRESS blog <i>4 Strategies for Make-to-Stock Production with SAP S/4HANA</i>、SAP Tribal Knowledge <i>SAP Planning Strategies</i>、SAP Learning <i>Exploring Planning Strategies</i>。<br>
+MRP Live の差異（MRP リスト無し）：SAP KBA <b>2640393</b> / SAP Note <b>1914010</b>。<br>
+Cloud の対応フロー：スコープアイテム <b><code>BJ5</code></b>（Make-to-Stock Production – Discrete Manufacturing）。</div>
+
+<div class="box ok"><b class="t">修了判定</b>
+练习①〜⑤ 全部の验收清单 + <a href="worksheet.html">学员版ワークシート</a>の全欄記入 + <a href="quiz.html">能力测试</a> 75% 以上（21/28）で「見込生産（MTS）の基本を自走できる」と判定します。</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP 見込生産（MTS）实战训练站</h5><p>练习⑤：差異計算・決済・棚卸・欠品対応・故障対照表・MD04 読解・発展課題。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 需要予測とPIR</a><br><a href="handson-2.html">② MRP と計画手配</a><br><a href="handson-3.html">③ 製造と入庫</a><br><a href="handson-4.html">④ 受注・出荷・請求</a><br><a href="handson-5.html">⑤ 月末と発展</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

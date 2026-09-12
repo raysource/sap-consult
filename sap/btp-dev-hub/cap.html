@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAP 开发 · SAP BTP 开发者训练站</title>
+<meta name="description" content="SAP CAP 开发：CDS 模型/服务/事件处理器，Node.js 与 Java 双运行时与可运行工程">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">SAP</span><span class="txt">SAP BTP 开发者训练站</span></a>
+    <nav class="main"><a href="index.html">首页</a><a href="isuite.html">Integration Suite</a><a href="iflow.html">iFlow 实战</a><a href="rap.html">RAP</a><a class="active" href="cap.html">CAP</a><a href="fiori.html">Fiori / UI5</a><a href="dev-course.html">全流程课件</a><a href="samples.html">示例工程</a></nav>
+  </div>
+</header>
+<div class="hero"><div class="hero-inner"><div class="kicker">Cloud Application Programming Model</div><h1>CAP：模型即一切</h1><p class="lead">一份 CDS 模型同时产出数据库、OData 服务与 UI 注解。看懂四段代码，就能把两个配套工程跑起来。</p></div></div><main class="page"><div class="wrap"><article><div class="toc"><a href="#what">CAP 是什么</a><a href="#runtime">Node 还是 Java</a><a href="#model">第一个模型</a><a href="#service">服务与事件</a><a href="#run">跑起来(样例工程)</a><a href="#prod">上生产</a><a href="#next">下一步</a></div><h2 id="what">CAP 是什么</h2><p><b>Cloud Application Programming Model</b>：SAP 开源(CDS)的应用开发框架，一套声明式 <b>CDS 模型</b>同时驱动数据库结构、OData V4 服务、输入校验与 Fiori 注解；Node.js 与 Java 双运行时。对开发者：写模型 → 声明服务 → 补业务事件，通用 CRUD 一行代码不用写。</p><div class="flow"><span class="node0">CDS 模型</span><span class="arrow">→</span><span class="node0">服务投影</span><span class="arrow">→</span><span class="node0">OData V4 / REST</span><span class="arrow">→</span><span class="node0">Fiori elements</span></div><p>与 RAP 的关系：RAP 是 ABAP 云侧的同思路实现；CAP 跑在 BTP 应用运行时(CF/Kyma)，模型语言同源(CDS)。</p><h2 id="runtime">Node.js 还是 Java？</h2><table class="tbl"><tr><th>维度</th><th>Node.js (@sap/cds)</th><th>Java (CAP Java / Spring)</th></tr>
+<tr><td>上手速度</td><td>快：npm 装好即跑</td><td>稍重：Maven/编译/类型生成</td></tr>
+<tr><td>类型安全</td><td>JS 弱类型(可配 TS)</td><td>强类型：cds 编译生成 Java 类型(cds.gen)</td></tr>
+<tr><td>生态亲和</td><td>前端团队友好</td><td>企业 Java/Spring 团队友好</td></tr>
+<tr><td>性能/规模</td><td>足够绝大多数场景</td><td>高并发/重计算更稳</td></tr>
+<tr><td>本站示例</td><td>node-cap(已本机实测)</td><td>java-cap(同模型脚手架)</td></tr>
+</table><h2 id="model">第一个模型：实体 / 关联 / 通用方面</h2><pre class="hl"><div class="code-head"><span class="lang">CDS</span><button class="copy-btn" type="button">复制</button></div><code class="lang-cds">namespace sap.training.catalog;
+using { cuid, managed, Currency, sap.common.CodeList } from &#x27;@sap/cds/common&#x27;;
+
+// 基础数据: CodeList 提供 name/descr 多语言字段
+entity Categories : CodeList {
+  key ID      : String(10);
+  description : String(200);
+}
+
+// 根实体: cuid = UUID 主键; managed = 自动维护 createdAt/createdBy/... 
+entity Products : cuid, managed {
+  name         : String(120) @title: &#x27;产品名称&#x27;;
+  price        : Decimal(9, 2) @title: &#x27;单价&#x27;;
+  currency     : Currency default &#x27;CNY&#x27;;
+  stock        : Integer @title: &#x27;库存&#x27;;
+  reorderLevel : Integer default 10;
+  isActive     : Boolean default true;
+  category     : Association to Categories @title: &#x27;分类&#x27;;   // 关联
+}</code></pre><div class="box info"><b class="t">提示 · 读模型的三条铁律</b><ul><li><b>类型即契约</b>：<code>String(120)</code> 同时约束 DB 列、OData 长度与 UI 输入</li><li><b>关联不落库</b>：Association 是逻辑关系，展开/过滤交给框架生成 JOIN</li><li><b>方面(aspect)复用</b>：<code>cuid / managed / CodeList</code> 是官方预制方面</li></ul></div><h2 id="service">服务：投影 + 草稿 + 自定义 Action</h2><pre class="hl"><div class="code-head"><span class="lang">CDS</span><button class="copy-btn" type="button">复制</button></div><code class="lang-cds">using sap.training.catalog as db from &#x27;../db/schema&#x27;;
+
+service CatalogService @(path: &#x27;/odata/catalog&#x27;) {
+
+  // 自定义 Action(服务级 unbound; 带入参/出参 + 授权注解)
+  @requires: &#x27;authenticated-user&#x27;
+  action adjustPrice(productIDs: array of String, deltaPercent: Decimal(5,2))
+    returns { updated: Integer };
+
+  @readonly entity Categories as projection on db.Categories;
+
+  entity Products as projection on db.Products;
+  // 想要 Fiori 草稿编辑? 给 Products 投影加 @odata.draft.enabled 即可(本示例未开)
+}</code></pre><p>服务层的<b>投影(projection)</b> = 只把模型的某个“切面”暴露给该消费方——字段裁剪、行为控制都在这一层做。</p><pre class="hl"><div class="code-head"><span class="lang">JavaScript</span><button class="copy-btn" type="button">复制</button></div><code class="lang-js">// 事件处理器: 通用 CRUD 之外才写代码
+const cds = require(&#x27;@sap/cds&#x27;);
+module.exports = cds.service.impl(async function () {
+
+  const { Products } = this.entities;
+
+  // before: 校验(创建/更新前, 返回 400 + 中文错误)
+  this.before([&#x27;CREATE&#x27;, &#x27;UPDATE&#x27;], Products, async (req) =&gt; {
+    const rows = Array.isArray(req.data) ? req.data : [req.data];
+    for (const row of rows) {
+      if (row.price != null &amp;&amp; row.price &lt; 0)
+        req.reject(400, `价格不能为负数: ${row.name || row.ID}`);
+    }
+  });
+
+  // after: 读增强(给结果附加字段)
+  this.after(&#x27;READ&#x27;, Products, (each) =&gt; {
+    if (each.price != null &amp;&amp; each.stock != null)
+      each.stockValue = Number((each.price * each.stock).toFixed(2));
+  });
+
+  // on: 自定义 Action(事务内批量更新)
+  this.on(&#x27;adjustPrice&#x27;, async (req) =&gt; {
+    const tx = cds.tx(req);
+    const { productIDs, deltaPercent } = req.data;
+    const factor = 1 + deltaPercent / 100;
+    const list = await tx.run(SELECT.from(Products).where({ ID: { in: productIDs } }));
+    for (const p of list) {
+      await tx.run(UPDATE(Products, p.ID).with({ price: Number((p.price * factor).toFixed(2)) }));
+    }
+    return { updated: list.length };
+  });
+});</code></pre><h2 id="run">跑起来（配套工程，10 秒出结果）</h2><pre class="hl"><div class="code-head"><span class="lang">Shell</span><button class="copy-btn" type="button">复制</button></div><code class="lang-bash"># 工程位置: projects/node-cap  (Node 版) / projects/java-cap (Java 版)
+cd projects/node-cap
+npm install
+npm run deploy       # 建 SQLite 库并灌入 CSV 测试数据
+npm start            # http://localhost:4004/odata/catalog/Products
+
+# 立刻验证
+curl -s &quot;http://localhost:4004/odata/catalog/Products?\$top=3&amp;\$orderby=price%20desc&quot;
+curl -s -u alice:alice -X POST &quot;http://localhost:4004/odata/catalog/adjustPrice&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &#x27;{&quot;productIDs&quot;:[&quot;P-1003&quot;,&quot;P-1008&quot;],&quot;deltaPercent&quot;:10}&#x27;   # -&gt; {&quot;updated&quot;:2}</code></pre><div class="box ok"><b class="t">验证通过 · 验证状态</b>Node.js 版在本机完整跑通：<code>npm install → deploy → start</code> 后 OData 查询 / 创建校验 / 自定义 Action 均返回预期结果（本页所用代码即取自该工程）。</div><h2 id="prod">上生产的换装清单</h2><table class="tbl"><tr><th>开发期</th><th>生产(BTP Cloud Foundry)</th></tr>
+<tr><td>@cap-js/sqlite(本地)</td><td>@cap-js/hana + SAP HANA Cloud 实例(模型零改动)</td></tr>
+<tr><td>mock 用户 / 无认证</td><td>XSUAA + xs-security.json 的角色(对应 @requires)</td></tr>
+<tr><td>localhost 直连</td><td>Destination / connectivity 访问后端 S/4</td></tr>
+<tr><td>本地 npm start</td><td>cf push / MTA 打包 (cds build --production)</td></tr>
+</table><p>官方脚手架：<code>npx cds init demo --add sample,multitenancy</code> 等模板；文档见 cap.cloud.sap。</p><h2 id="next">下一步</h2><div class="grid cards"><div class="card"><h3><a href="samples.html">示例工程总入口</a></h3><p>node-cap / java-cap 全部文件、命令与验收清单。</p><div class="tags"><span class="tag ">工程</span></div></div><div class="card"><h3><a href="fiori.html">Fiori 消费 CAP 服务</a></h3><p>把 UI5/Fiori elements 接到你刚跑起来的 /odata/catalog。</p><div class="tags"><span class="tag ">UI5</span></div></div><div class="card"><h3><a href="isuite.html">Integration Suite 集成 CAP</a></h3><p>用 CPI/Event Mesh 把 CAP 应用接进企业集成。</p><div class="tags"><span class="tag ">集成</span></div></div></div></article></div></main>
+<footer class="site">
+  <div class="inner">
+    <div>
+      <h5>SAP BTP 开发者训练站</h5>
+      <p>面向培训/自学的中文资料站 · 代码与数据见 “示例工程” 页<br>
+      内容基于公开官方文档整理，非 SAP 官方交付物，请以 help.sap.com / cap.cloud.sap 为准。</p>
+      <p>© <span data-year>2026</span> 学习用途</p>
+    </div>
+    <div class="cols">
+      <div><h5>官方文档</h5><ul style="margin:0;padding-left:18px"><li><a href="https://help.sap.com/docs/btp" target="_blank" rel="noopener">SAP BTP 帮助中心 ↗</a></li><li><a href="https://help.sap.com/docs/integration-suite" target="_blank" rel="noopener">Integration Suite ↗</a></li><li><a href="https://help.sap.com/docs/cloud-integration" target="_blank" rel="noopener">Cloud Integration ↗</a></li><li><a href="https://cap.cloud.sap/docs/" target="_blank" rel="noopener">CAP (capire) ↗</a></li><li><a href="https://sapui5.hana.ondemand.com/" target="_blank" rel="noopener">SAPUI5 ↗</a></li><li><a href="https://help.sap.com/docs/btp/sap-abap-development-user-guide" target="_blank" rel="noopener">ABAP 开发用户指南 ↗</a></li></ul></div>
+    </div>
+  </div>
+</footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

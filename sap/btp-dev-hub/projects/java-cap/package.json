@@ -1,0 +1,9 @@
+{
+  "name": "sap-training-catalog-java",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CAP Java 项目的 cds-dk 本地工具依赖 (供 maven 插件 npm install 使用)",
+  "devDependencies": {
+    "@sap/cds-dk": "^9"
+  }
+}

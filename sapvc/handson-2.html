@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>练习② 設定可能品目と設定プロファイル · SAP S/4HANA バリアント設定付き受注生産（VC / AVC）实战训练站</title>
+<meta name="description" content="VC 练习②：用 MM01 建立設定可能品目 ZVC-PUMP01（KMAT／品目カテゴリグループ 0002／設定可能インジケータ／MRP3 戦略 25／MRP4 個別所要量）、割当クラス，用 CU41（或 PMEVC）建立設定プロファイル ZVC_PROFILE01 并割当到品目，最后用 CU50 完成首次设定。含输入值、手顺、期待结果、つまずき、验收清单。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/vc.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">VC</span><span class="txt">バリアント設定 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①主数据</a>
+      <a class="active" href="handson-2.html">②受注与设定</a>
+      <a href="handson-3.html">③依存与BOM</a>
+      <a href="handson-4.html">④制造与出荷</a>
+      <a href="handson-5.html">⑤发展与故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 练习② 設定可能品目と設定プロファイル</div>
+<main class="page"><article>
+
+<h1>练习② 設定可能品目（<code>KMAT</code>）と設定プロファイル</h1>
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。若是想换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 即可一键替换。</div>
+
+<div class="box info"><b class="t">本练习完成什么</b>
+「設定できる状態」まで持っていきます：① <code>MM01</code> で品目 <code>ZVC-PUMP01</code> を<b>品目タイプ <code>KMAT</code></b> で作成し、
+<b>「受注できる 5 条件」</b>（<code>KMAT</code>／設定可能インジケータ ON／品目カテゴリグループ <code>0002</code>／MRP3 戦略 <code>25</code>／MRP4 個別所要量）を入れ、
+② 练习①で作ったクラス <code>ZVC_PUMP_CL</code> を分類ビューで割当、③ <code>CU41</code>（AVC は <code>PMEVC</code>）で設定プロファイル <code>ZVC_PROFILE01</code> を作って品目に割当、
+④ <code>CU50</code> で<b>初めて設定（構成）を 1 件作ってみる</b>、までです。预计 45 分钟。<br>
+<b>本练习之后系统里的状态是</b>：<code>CU50</code> で値を選べる（依存関係はまだ無いので、値は全部手で選ぶ）。</div>
+
+<div class="flow">
+  <div class="node">1 MM01<br><small>KMAT 作成</small></div><div class="arrow">→</div>
+  <div class="node">2 5 条件<br><small>0002 / 25 / MRP4</small></div><div class="arrow">→</div>
+  <div class="node">3 分類ビュー<br><small>クラス割当</small></div><div class="arrow">→</div>
+  <div class="node">4 CU41/PMEVC<br><small>プロファイル</small></div><div class="arrow">→</div>
+  <div class="node">5 CU50<br><small>初回の構成</small></div><div class="arrow">→</div>
+  <div class="node">✓ 验收</div>
+</div>
+
+<h2>2-1 設定可能品目 <code>ZVC-PUMP01</code> の登録（<code>MM01</code>）</h2>
+<p><b>入力值</b></p>
+<table class="tbl wide">
+<tr><th>视图</th><th>项目</th><th>值</th><th>说明（なぜ必要か）</th></tr>
+<tr><td>初期画面</td><td>品目タイプ</td><td><code>KMAT</code></td><td><b>VC の前提</b>。F4 に出ない場合は C0 に戻って番号範囲を確認</td></tr>
+<tr><td>初期画面</td><td>産業コード</td><td>（例）<code>M</code>（機械）</td><td>—</td></tr>
+<tr><td>初期画面</td><td>ビュー</td><td>基本1・2 / 購買 / MRP1〜4 / 会計1 / 原価計算1 / プラント在庫 / 販売組織1・2 / <b>分類</b></td><td>分類ビューを必ず含める（クラス割当に必要）</td></tr>
+<tr><td>基本データ1</td><td>品目グループ / 単位</td><td>001 / <code>PC</code></td><td>台数で管理</td></tr>
+<tr><td>基本データ1</td><td><b>設定可能（Configurable）</b></td><td>ON</td><td><b>最頻出の設定漏れ</b>。OFF だと構成画面が出ない</td></tr>
+<tr><td>販売組織1</td><td>販売組織 / チャネル / 部門</td><td>1000 / 10 / 00</td><td>受注できる販売エリア</td></tr>
+<tr><td><b>販売組織2</b></td><td><b>品目カテゴリグループ</b></td><td><code>0002</code></td><td>VC の標準（SET 処理は <code>0004</code> という記載）。<code>VOV4</code> の決定キー</td></tr>
+<tr><td>MRP1</td><td>MRPタイプ / ロットサイズ / 手配タイプ</td><td><code>PD</code> / <code>EX</code> / <code>E</code></td><td>手配タイプ <code>E</code>（内製）。空だと計画手配ができません</td></tr>
+<tr><td>MRP2</td><td>指図タイプ（伝票タイプ）</td><td><code>PP01</code></td><td>製造指図のタイプ（练习⑤の戦略 <code>82</code> では <code>PP04</code> 系）</td></tr>
+<tr><td><b>MRP3</b></td><td><b>戦略グループ / 在庫確認</b></td><td><code>25</code> / <code>02</code></td><td>戦略 <code>25</code> → 所要量タイプ <code>KEK</code> → 所要量クラス <code>046</code> 系（varconf）。在庫確認 <code>02</code> = 個別所要量ベース</td></tr>
+<tr><td><b>MRP4</b></td><td><b>個別/包括所要量</b></td><td><code>1</code></td><td><b>受注在庫（E）を成立させる必須項目</b></td></tr>
+<tr><td>会計1 / 原価計算1</td><td>評価クラス / 価格管理 / 原価計算ロットサイズ</td><td>（例）7920 / <code>S</code> / <code>EX</code></td><td>在庫評価と指図差異の基準（環境の値を確認）</td></tr>
+<tr><td><b>分類</b></td><td><b>クラス型 / クラス</b></td><td><code>300</code> / <code>ZVC_PUMP_CL</code></td><td>练习①で作ったクラスを割当てる</td></tr>
+</table>
+<ol class="steps">
+  <li><code>MM01</code> → 品目 <code>ZVC-PUMP01</code>（内部採番なら空でも可）→ 産業コード → 品目タイプ <code>KMAT</code> → ビュー選択（上表）→ プラント <code>1000</code>。</li>
+  <li>基本データ1：名称「産業用ポンプ（設定可能）」、<b>設定可能インジケータ ON</b>、単位 <code>PC</code>。</li>
+  <li>販売組織1・2：販売エリアと<b>品目カテゴリグループ <code>0002</code></b>、税区分・品目統計グループを入力。</li>
+  <li>MRP1〜4：<code>PD</code>／<code>EX</code>／手配タイプ <code>E</code>／戦略 <code>25</code>／在庫確認 <code>02</code>／<b>個別所要量 <code>1</code></b>／指図タイプ <code>PP01</code>。</li>
+  <li>会計1・原価計算1：評価クラスと価格管理（環境の標準値を確認。分からなければ講師に聞く）。</li>
+  <li><b>分類ビュー</b>：クラス型 <code>300</code> → クラス <code>ZVC_PUMP_CL</code> を入力 → <b>特徴 4 つの値割当画面に切り替わる</b>（値はまだ空でよい）。ここで<b>値は入れずに保存</b>（受注時に選ぶ設計）。</li>
+  <li>保存 → <code>MM03</code> で 5 条件＋クラス割当を再確認。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待结果）</b>
+① <code>MM03</code> → 基本データ1：<b>設定可能インジケータ ON</b>。② 販売組織2：品目カテゴリグループ <code>0002</code>。
+③ MRP3：戦略 <code>25</code>・在庫確認 <code>02</code>。④ MRP4：個別所要量 <code>1</code>。⑤ 分類ビュー：<code>ZVC_PUMP_CL</code>（型 <code>300</code>）。
+<b>この 5 点が VC の「受注できる条件」</b>——後の故障切り分けでは必ずここに戻ります。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>品目タイプを <code>FERT</code> にしてしまう</b>（<code>KMAT</code> を選び忘れ）→ 構成画面が出ない。varconf は「<code>KMAT</code>、または設定可能インジケータ付きの <code>FERT</code>」という記載もあるため<b>動けば正しい</b>が、学習では <code>KMAT</code> を使う。
+② <b>設定可能インジケータ ON を忘れる</b>（同じく構成画面が出ない）。<b>「構成が出ない」＝ まずこの 2 点</b>。
+③ 分類ビューを選ばずに保存した場合、後から <code>MM02</code> で分類ビューを追加できる（品目タイプを変えるのと違ってこれは簡単）。
+④ MRP4 に <code>1</code> を入れずに保存 → 受注時に「受注在庫に割当できません」系のエラー（练习⑤ 故障表 #3）。
+⑤ <b><code>KMAT</code> は在庫管理されない</b>ため、<code>MMBE</code> に自由在庫が出ない＝故障ではありません（仕様）。</div>
+<div class="task"><b class="t">練習課題</b>「受注できる 5 条件」を<b>見ずに</b>書けるようにしてください（<code>KMAT</code>／設定可能 ON／<code>0002</code>／戦略 <code>25</code>／MRP4 個別所要量）。書けなければ <a href="config.html#c3">C3</a> に戻る。</div>
+<figure class="gui"><img src="assets/gui/handson-2_s01_1.svg" alt="MM01 の入力画面。品目タイプ KMAT、産業コード、ビュー選択、プラント 1000、設定可能 ON、品目カテゴリグループ 0002、戦略グループ 25、MRP4 個別所要量 1。" loading="lazy"><figcaption><b class="t">2-1 KMAT で作成し、5 条件（KMAT / 設定可能 ON / 0002 / 戦略 25 / MRP4 個別所要量）を入れる</b><span class="tx">MM01</span><span class="scr">設定可能品目 ZVC-PUMP01 の登録（受注できる 5 条件）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 設定可能 ON を忘れると構成画面が出ない（「構成が出ない」＝まずこの項目）</li><li><b>2</b> MRP4 の個別所要量が無いと受注時に「受注在庫に割当できません」系のエラーになる</li></ol><p class="gui-tip">自システムでの確認：MM03 の基本データ1（設定可能 ON）／販売組織2（0002）／MRP3（25・02）／MRP4（1）／分類ビュー（ZVC_PUMP_CL）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>2-2 設定プロファイル <code>ZVC_PROFILE01</code> の作成と割当（<code>CU41</code> / <code>PMEVC</code>）</h2>
+<p><b>入力值</b></p>
+<pre class="vals">設定プロファイル名  ZVC_PROFILE01
+名称                ポンプ受注 BOM プロファイル
+割当先品目          ZVC-PUMP01
+クラス              300 / ZVC_PUMP_CL
+処理形式            ★受注 BOM（Order BOM）  ← 3 形式のうちどれかを選ぶ（設計判断）
+必須チェック        ON（未入力で設定を終われない）
+AVC の場合          PMEVC で作成し、特徴グループを割当（Fiori の設定画面に反映）</pre>
+<ol class="steps">
+  <li><code>CU41</code> → プロファイル名 <code>ZVC_PROFILE01</code> → 「登録」。</li>
+  <li>「<b>割当</b>」欄に品目 <code>ZVC-PUMP01</code> を入力（<b>品目マスタ側ではなくプロファイル側で指定する</b>のがポイント）。</li>
+  <li>クラス <code>300</code> / <code>ZVC_PUMP_CL</code> を入力 → 特徴が読み込まれることを確認。</li>
+  <li><b>処理形式</b>を設定：<code>&quot;BOM&quot;</code> を含む項目を F4 で一覧し、「受注 BOM」を選ぶ（ラベルはリリースで異なる）。</li>
+  <li>必須チェック／完全性チェックを ON。保存（依頼を指定）。</li>
+  <li>AVC 環境の場合は <code>PMEVC</code> で同様に作成し、<b>特徴グループ</b>（特徴を画面に並べる単位）を割り当てる。CU50 相当の画面は Fiori 系アプリになる。</li>
+  <li><code>CU43</code> でプロファイル <code>ZVC_PROFILE01</code> を照会し、割当品目・クラス・処理形式・チェックの状態を確認。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待结果）</b>
+① <code>CU43</code>：割当品目＝<code>ZVC-PUMP01</code>、クラス＝<code>ZVC_PUMP_CL</code>（型 <code>300</code>）、処理形式が意図どおり、必須チェック ON。
+② 設定プロファイルのマスタは画面経由で保守するのが原則（SAP Help に「機能グループ <code>CUCO</code>＝設定プロファイルマスタの維持、<code>CUCP</code>＝使用箇所一覧」という記載）。
+③ 「この品目にどのプロファイルが付いているか」を確認するときは <code>CU43</code> の一覧と品目側の設定を<b>両方</b>見る（割当はプロファイル側なので品目マスタからは見えないことがある）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>品目に割り当て忘れる</b>→ <code>CU50</code> は開くのに <code>VA01</code> で構成画面が出ない（受注は品目マスタ経由でプロファイルを探すため）。
+② <b>処理形式の選択を後から変える</b>→ 受注 BOM を作った後の変更は既存受注を壊す。<b>受注を流す前に固める</b>。
+③ <code>CU41</code>（LO-VC）と <code>PMEVC</code>（AVC）で<b>二重にプロファイルを割り当てる</b>→ どちらが効くか分からなくなる。<b>環境を 1 つに統一</b>。
+④ 必須チェック ON 直後は「値が入っていない」エラーが出続ける → <b>正常</b>です（依存関係を入れる前は全部手入力する必要がある。练习③で自動化する）。</div>
+<div class="task"><b class="t">練習課題</b><code>CU41</code> と（AVC 環境なら）<code>PMEVC</code> の両方で「設定プロファイルが持つ情報」を一覧にし、<b>どちらで作ると後工程（変更・移行）が楽か</b>を理由つきで書け。</div>
+<figure class="gui"><img src="assets/gui/handson-2_s02_1.svg" alt="CU41 の設定プロファイル。プロファイル名 ZVC_PROFILE01、割当品目 ZVC-PUMP01、クラス ZVC_PUMP_CL、処理形式 受注 BOM、必須チェック ON。" loading="lazy"><figcaption><b class="t">2-2 処理形式＝受注 BOM／必須チェック ON。割当はプロファイル側で行う</b><span class="tx">CU41</span><span class="scr">設定プロファイル ZVC_PROFILE01 の作成と品目への割当</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 品目への割当はプロファイル側で指定する（品目マスタからは見えないことがある）</li><li><b>2</b> 必須チェック ON で「値が足りない」エラーが出るのは正常（练习③で自動化する）</li></ol><p class="gui-tip">自システムでの確認：CU43 の照会（割当品目・クラス・処理形式・必須チェック）。AVC 環境は PMEVC で作成し特徴グループを割り当てる。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-2_s02_2.svg" alt="CU43 の設定プロファイル照会。ZVC_PROFILE01 の割当品目・クラス・処理形式・必須チェックが表示されている。" loading="lazy"><figcaption><b class="t">2-2 CU43 で割当・処理形式・必須チェックの状態を確認して証跡にする</b><span class="tx">CU43</span><span class="scr">設定プロファイルの照会（証跡）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 証跡は「割当品目・クラス・処理形式・必須チェック」の 4 点を写す</li></ol><p class="gui-tip">自システムでの確認：CU43 の一覧と品目側の設定を両方見る（割当はプロファイル側なので品目マスタからは見えないことがある）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>2-3 初めての設定（<code>CU50</code> シミュレーション）</h2>
+<p><b>入力值</b>：品目 <code>ZVC-PUMP01</code> / 構成 <code>80</code>・<code>SUS316</code>・<code>EPOXY</code>・<code>PG_FG</code> / 数量 10。</p>
+<ol class="steps">
+  <li><code>CU50</code> → 品目 <code>ZVC-PUMP01</code> を入力（プラント <code>1000</code>）。</li>
+  <li>設定画面（特徴 4 つ）が表示されることを確認。<b>値はまだ全部手で選ぶ</b>（依存関係ゼロの状態を先に体感する）。</li>
+  <li>容量 <code>80</code> / 材質 <code>SUS316</code> / 塗装 <code>EPOXY</code> / 付属品 <code>PG_FG</code> を選択。</li>
+  <li>「結果（構成）」を確認。<b>BOM 展開はまだ空（スーパー BOM 未作成）</b>＝正常。</li>
+  <li>設定を保存（<code>CU50</code> の保存は<b>シミュレーションの記録</b>として残る。受注とは別物）。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待结果）</b>
+① <code>CU50</code> の設定画面に 4 特徴が出て、値を選べる。② 必須にした 3 特徴を空のまま確定しようとすると<b>エラーになる</b>（必須チェックが効いている）。
+③ 値の選択はできるが、<b>BOM も工程も何も出てこない</b>——<b>これが「何も設定していない状態の正しい姿」</b>です（练习③で動きを作る）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 品目を入れて「設定プロファイルが見つかりません」→ プロファイル未割当（2-2 に戻る）。
+② 特徴が 4 つではなく 1 つしか出ない → クラスの特徴割当が不完全（<code>CL03</code> で確認）。
+③ <code>CU50</code> の画面が<b>クラシック画面ではなく Fiori 系</b>（AVC）→ 操作は似ているので、画面ラベルを読み替える。</div>
+<div class="task"><b class="t">練習課題</b>「<code>CU50</code> で保存した構成」と「受注（<code>VA01</code>）で保存した構成」はどう違うか？ 予想を書いてから <a href="handson-4.html">练习④</a> で答え合わせをしてください（ヒント：受注 BOM・所要量・在庫への影響の有無）。</div>
+<figure class="gui"><img src="assets/gui/handson-2_s03_1.svg" alt="CU50 の設定画面。品目 ZVC-PUMP01、容量 80、材質 SUS316、塗装 EPOXY、付属品 PG_FG、数量 10 を選択する。" loading="lazy"><figcaption><b class="t">2-3 値はまだ全部手で選ぶ（BOM・工程が空でも正常）</b><span class="tx">CU50</span><span class="scr">設定シミュレーション：初回の構成（依存関係ゼロ）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 必須チェックが効いている（未入力のまま確定できない）＝正常動作</li><li><b>2</b> BOM も工程も何も出ないのが「何も設定していない状態の正しい姿」</li></ol><p class="gui-tip">自システムでの確認：CU50 で 4 特徴が出て値が選べるか、必須 3 特徴を空のまま確定するとエラーになるか。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>2-4 本练习的期待结果汇总</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>成果物</th><th>期待值</th><th>証跡</th></tr>
+<tr><td>1</td><td>設定可能品目</td><td><code>ZVC-PUMP01</code>（<code>KMAT</code>／設定可能 ON／<code>0002</code>／戦略 <code>25</code>／在庫確認 <code>02</code>／MRP4 <code>1</code>／<code>PD</code>/<code>EX</code>/手配 <code>E</code>）</td><td><code>MM03</code> の各ビュー</td></tr>
+<tr><td>2</td><td>クラス割当</td><td>分類ビューに <code>ZVC_PUMP_CL</code>（型 <code>300</code>）</td><td><code>MM03</code> 分類ビュー</td></tr>
+<tr><td>3</td><td>設定プロファイル</td><td><code>ZVC_PROFILE01</code>＝割当品目 <code>ZVC-PUMP01</code>／処理形式＝受注 BOM／必須チェック ON</td><td><code>CU43</code></td></tr>
+<tr><td>4</td><td>初回の構成</td><td><code>CU50</code> で値を選べる（BOM は空で正常）</td><td><code>CU50</code></td></tr>
+</table>
+
+<h2>2-5 つまずきと対処（まとめ）</h2>
+<table class="tbl wide">
+<tr><th>症状</th><th>原因の第一嫌疑</th><th>确认手顺</th></tr>
+<tr><td>受注で構成画面が出ない</td><td><b>設定可能インジケータ OFF</b>／品目タイプが <code>KMAT</code> でない／<b>プロファイル未割当</b></td><td><code>MM03</code> 基本データ1 → <code>CU43</code> の割当 → <code>VOV4</code>（练习④）の順</td></tr>
+<tr><td><code>CU50</code> で品目が選べない／エラー</td><td>設定プロファイルが無い／品目が設定可能でない</td><td><code>CU43</code> → <code>MM03</code></td></tr>
+<tr><td>特徴が一部しか出ない</td><td>クラスの特徴割当漏れ</td><td><code>CL03</code> の特徴タブ</td></tr>
+<tr><td>必須エラーで先へ進めない</td><td>必須チェック ON＋値未入力</td><td>正常動作。値を全部選ぶ（依存関係は练习③）</td></tr>
+<tr><td><code>MMBE</code> に在庫が出ない</td><td><code>KMAT</code> は在庫管理されない（仕様）</td><td>故障ではない。在庫設計（受注在庫 E／材料バリアント）を検討</td></tr>
+</table>
+
+<h2>2-6 验收（完成基准）</h2>
+<ul class="check">
+  <li>品目 <code>ZVC-PUMP01</code> が品目タイプ <code>KMAT</code> で作成されている</li>
+  <li>設定可能（Configurable）インジケータが ON になっている</li>
+  <li>販売組織2 の品目カテゴリグループが <code>0002</code> になっている</li>
+  <li>MRP1 が <code>PD</code>/<code>EX</code>/手配タイプ <code>E</code>、MRP3 が戦略 <code>25</code>・在庫確認 <code>02</code>、MRP4 が個別所要量 <code>1</code> になっている</li>
+  <li>分類ビューにクラス <code>ZVC_PUMP_CL</code>（型 <code>300</code>）が割当たっている</li>
+  <li>設定プロファイル <code>ZVC_PROFILE01</code> が品目 <code>ZVC-PUMP01</code> に割当たり、処理形式と必須チェックの状態を説明できる</li>
+  <li><code>CU50</code> で 4 特徴が表示され、値を選び、必須エラーの挙動を確認した</li>
+  <li>「受注できる 5 条件」を自分の言葉で言える（<code>KMAT</code>／設定可能 ON／<code>0002</code>／戦略 <code>25</code>／MRP4 個別所要量）</li>
+</ul>
+
+<div class="box info"><b class="t">下一步</b> → <a href="handson-3.html">练习③ 依存関係とスーパー BOM</a>（ここから VC の「動き」が生まれます）</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA バリアント設定付き受注生産（VC / AVC）实战训练站</h5><p>练习②：<code>MM01</code> で <code>KMAT</code>（5 条件）→ クラス割当 → <code>CU41</code>/<code>PMEVC</code> の設定プロファイル → <code>CU50</code> の初回構成。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 特徴とクラス</a><br><a href="handson-2.html">② 設定可能品目とプロファイル</a><br><a href="handson-3.html">③ 依存関係とスーパー BOM</a><br><a href="handson-4.html">④ 受注で構成・製造・出荷</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

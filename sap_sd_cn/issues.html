@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>排错与踩坑 · S/4HANA 中文实训站</title>
+<meta name="description" content="教材文档记录的报错现象与处理：税码 J1/FS217、评估类与 BSX 自动记账、OBYC、MMSC、VL01N 日期、CK11N/CK24 等。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/s4cn.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">S4</span><span class="txt">中文实训站</span></a>
+    <nav class="main">
+      <a href="index.html">首页</a>
+      <a href="prep.html">准备</a>
+      <a href="fi.html">FI</a>
+      <a href="co.html">CO</a>
+      <a href="mm.html">MM</a>
+      <a href="pp.html">PP</a>
+      <a href="sd.html">SD</a>
+      <a href="tcode.html">T-code</a>
+      <a class="active" href="issues.html">排错</a>
+      <a href="tasks.html">索引</a>
+      <a href="instructor.html">讲师</a>
+      <a href="worksheet.html">学员</a>
+      <a href="quiz.html">自测</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page"><article>
+<p class="breadcrumb"><a href="index.html">首页</a> / <span>排错与踩坑</span></p>
+<h1>排错与踩坑（原文档记录的问题与处理）</h1>
+<p>本页把原文档 <code>S4.docx</code> 中记录的报错现象与处理办法集中起来。
+「现象」与「处理」两列尽量引用原文档原文（引用部分用引号标出）；原文档只留下画面、没有写出文字的情形也如实标注，
+不做推断性补写。</p>
+<h2 id="table">1. 现象 → 处理一览</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>#</th><th>现象 / 报错</th><th>原因</th><th>原文档给出的处理</th><th>相关手顺</th></tr></thead><tbody><tr><td>1</td><td>税码 <code>J1</code> 无效（消息号 <code>FS217</code>）；不允许对公司代码 <code>C999</code> 科目 <code>12010101</code> 进行销项/进项税相关操作</td><td>总账科目的「税务类型」没有放开对应的销项/进项税操作</td><td>执行 <code>FS00</code> → 输入总账科目 <code>12010101</code> → 在「控制数据」里设置税务类型：「<code>-</code>」= 只允许进项税、「<code>+</code>」= 只允许销项税、「<code>*</code>」= 允许所有税类型 → 之后即可正常录入客户发票/付款；<b>注意需要退出 <code>MIRO</code> 后重新进入</b>（原文档原文如此）</td><td><a href="fi.html#t12">FI 任务 12 新建材料采购科目</a>、<a href="fi.html#t13">FI 任务 13 新建损益科目</a>、<a href="mm.html#t39">MM 任务 39 输入采购发票</a></td></tr><tr><td>2</td><td>物料 <code>R999-100</code>「的强制帐户设置（输入帐户设置类别）」/ 不可能为条目 <code>A999 BSX CN01</code> 确立帐户</td><td>物料的会计视图里「评估类」与自动记账（<code>OBYC</code> / 事务码 BSX）的科目确定对不上</td><td>把已经创建的采购订单全部删掉 → 修改物料会计视图 1 里的「评估类」（原文档示例：原材料用 <code>3000</code>）→ <b>同时要维护本期、上期和上一年度的评估类</b>；原文档建议在创建物料（<code>MM01</code>）时就把评估类一次做对</td><td><a href="mm.html#t21">MM 任务 21 定义评估类</a>、<a href="mm.html#t22">MM 任务 22 新建原材料主数据</a>、<a href="mm.html#t28">MM 任务 28 维护物料管理的自动记帐</a></td></tr><tr><td>3</td><td>自动记账相关的报错（收货/发票时的科目确定失败）</td><td>自动记账规则（<code>OBYC</code>）中对应事务码/评估类的科目未维护</td><td>原文档原文：「通过 T-CODE <code>OBYC</code>，按照如下方式维护，可以解决此问题」（并附有画面）</td><td><a href="mm.html#t28">MM 任务 28 维护物料管理的自动记帐</a>、<a href="mm.html#t29">MM 任务 29 将存货科目设置为只能自动记帐</a></td></tr><tr><td>4</td><td>物料 <code>F999-100</code> 不存在于存储地点 <code>P999</code> 003</td><td>物料的「库存地点」视图没有该库存地点（或该库存地点主数据缺失）</td><td>用 <code>MMSC</code> 维护（原文档原文：「<code>MMSC</code> 维护」），并确认 <code>MM01</code>/<code>MM02</code> 中已为该物料展开对应库存地点视图</td><td><a href="mm.html#t02">MM 任务 02 创建库存地点</a>、<a href="mm.html#t24">MM 任务 24 新建产成品主数据</a></td></tr><tr><td>5</td><td><code>VL01N</code> 报「对于直到所选日期的交货没有到期的计划行」</td><td>交货创建时使用的选择日期与销售订单的计划行（需求日期）不在同一区间</td><td>原文档原文：「解决方案将选择日期与订单保持一致」——把 <code>VL01N</code> 的选择日期改成与订单里的一致</td><td><a href="sd.html#t42">SD 任务 42 创建外向交货</a></td></tr><tr><td>6</td><td>无法创建 <code>VL01N</code> 外向交货单</td><td>没有库存可发（教材场景里库存为 0）</td><td>原文档原文：「<code>MB1C</code> 501 录入期初库存，可以解决无法创建 <code>VL01N</code> 外向交货单的问题」</td><td><a href="sd.html#t42">SD 任务 42 创建外向交货</a>、<a href="mm.html#t38">MM 任务 38 创建采购收货</a></td></tr><tr><td>7</td><td>没有内部作业 <code>LAB 1001</code> 的价格可被确定（成本估算取不到作业价格）</td><td>该作业类型在当期没有维护作业输出价格</td><td>原文档原文：「通过 <code>CK11N</code> 要，按照如下方式维护价格，即可」→ 维护价格后<b>退出 <code>CK11N</code>，然后重新执行 <code>CK24</code></b></td><td><a href="pp.html#t12">PP 任务 12 设置作业输出价格</a>、<a href="pp.html#t22">PP 任务 22 新建产品成本估算</a>、<a href="pp.html#t23">PP 任务 23 标记价格</a></td></tr><tr><td>8</td><td>「不要分配到成本中心，会计年度没有激活」</td><td>公司代码的会计年度/记账期间未激活（成本中心不能过账）</td><td>原文档以该标题记录此问题并附画面（未写出处理文字）。按 FI 侧的做法：检查记账期间变式与期间开关（见相关任务），确认公司代码的会计年度已激活后再做过账</td><td><a href="fi.html#t18">FI 任务 18 设置记帐期间(前台)</a>、<a href="co.html#t01">CO 任务 01 创建成本控制范围</a>、<a href="co.html#t02">CO 任务 02 将公司代码分配给成本控制范围</a></td></tr><tr><td>9</td><td>「客户化错误：非当前业务交易组」</td><td>原文档在 SD 模块末尾以该标题记录了客户化报错（附画面）</td><td>原文档未写出处理文字，只保留了画面。遇到时请对照本页第 3 节的前提检查清单逐项确认，并在 SPRO 中用「非当前业务交易组」作为关键字定位</td><td><a href="sd.html#t48">SD 任务 48 运行资产负债表（原文档末尾章）</a></td></tr><tr><td>10</td><td>生产订单/内部订单结算时「无错误，运行已经完成」但看不到结果</td><td>这不是报错：结算运行本身成功，结果要到结算结果/报表里看</td><td>按原文档顺序：先运行结算（<code>KO88</code>），再到「显示内部订单的结算结果」/「生产订单成本报表显示」里查看</td><td><a href="co.html#t33">CO 任务 33 内部订单的结算</a>、<a href="co.html#t34">CO 任务 34 显示内部订单的结算结果</a>、<a href="pp.html#t48">PP 任务 48 生产订单差异结算</a></td></tr></tbody></table></div>
+<h2 id="precheck">2. 出问题前先查这 6 件事（按原文档的报错归纳）</h2>
+<ul class="check"><li>会计期间是否已开启、会计年度是否已激活（<code>OB52</code> 类期间开关的配置见 FI 任务 16〜18）。</li><li>组织结构是否已经分配到位：公司代码 ↔ 成本控制范围、工厂 ↔ 公司代码、采购组织 ↔ 公司代码/工厂、销售组织 ↔ 公司代码。</li><li>物料主数据的会计视图是否维护了正确的<b>评估类</b>（本期/上期/上一年度），以及自动记账 <code>OBYC</code> 的科目确定是否完整。</li><li>产成品的标准价格是否已经估算并<b>标记/发布</b>（<code>CK11N</code> → <code>CK24</code>），否则生产订单收货取不到价格。</li><li>库存是否存在（原文档在多个环节用 <code>MB1C</code> 501 录入期初库存、或先做采购收货来补库存）。</li><li>主数据是否齐全：客户（销售视图 + 合作伙伴）、物料（销售视图 + 销售价格/条件记录）、供应商（采购数据/信息记录）。</li></ul>
+<h2 id="notes">3. 全站「踩坑提醒」索引</h2>
+<p>下面是从 222 个任务里筛出的、正文含报错/限制/解决字样的笔记（原文照录），按模块顺序排列，点任务名可回到手顺上下文。</p>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>模块</th><th>任务</th><th>原文笔记</th></tr></thead><tbody><tr><td>FI</td><td><a href="fi.html#t09">任务 09 定义存留收益科目</a></td><td>解释：SAP 总账在年结时可以自动结转本年利润或未分配利润，也就是说系统自动将利润表科目余额转入资产负债表科目中的本年利润或未分配利润。这里是定义转入的科目。SAP称之为留存收益科目。在项目实施中有两种处理方式：一是设置为&quot;本年利润科目&quot;，这样所有的损益表科目的余额都会自动转入本年利润科目，而利润分配表中的科目视同资产负债表科目，结转未分配利润用于手工凭证处理；另一种是设置为&quot;未分配利润科目&quot;，这样所有的损益表科目和所有利润分配表科目的余额都要自动传入未分配利润科目而利润分配表中的科目视同损益表科目，不需要定义本年利润科目，也不存在本年利润结转，本年利润的金额通过损益表报表反映。</td></tr><tr><td>FI</td><td><a href="fi.html#t16">任务 16 定义记帐期间变式</a></td><td>解释：这是用来对凭证的开关。已经关掉的会计期间就不允许对凭证进行更改。多个公司代码可以被统一控制开账和关帐。先给各个公司代码赋予记账期间变式参数。</td></tr><tr><td>CO</td><td><a href="co.html#t33">任务 33 内部订单的结算</a></td><td>无错误，运行已经完成</td></tr><tr><td>MM</td><td><a href="mm.html#t22">任务 22 新建原材料主数据</a></td><td>批量：采购批量大小的确定原则是一个非常复杂的问题，SAP 提供了非常灵活的工具，必然按期间的，动态的，固定的 GROFF 法，补货至最大库存的等等，这里我们选择 EX（直接按批订货量），逐批确定的方法，即按照具体需求量大小，结合最大最小批量等因素确定本次批量大小的方法。</td></tr><tr><td>SD</td><td><a href="sd.html#t48">任务 48 运行资产负债表</a></td><td>不要分配到成本中心，会计年度没有激活的解决办法</td></tr><tr><td>SD</td><td><a href="sd.html#t48">任务 48 运行资产负债表</a></td><td>因为不允许对公司代码 C999 科目 12010101 进行销项/进项税相关操作，所以税码 J1 无效</td></tr><tr><td>SD</td><td><a href="sd.html#t48">任务 48 运行资产负债表</a></td><td>物料 F999-100 不存在于存储地点 P999 003</td></tr><tr><td>SD</td><td><a href="sd.html#t48">任务 48 运行资产负债表</a></td><td>通过T-CODE OBYC ，按照如下方式维护，可以解决此问题</td></tr></tbody></table></div>
+<div class="box info"><b class="t">找不到对应报错？</b>① 先用 <a href="tasks.html">任务索引</a> 找到相关任务，看它的「教材笔记 / 原理说明」；② 再用 <a href="tcode.html">T-code 速查</a> 确认自己进的是同一个定制视图；③ 最后用系统自身的 F1（字段帮助）/ F4（可能值）确认字段含义 —— 本站不臆造原文档没有的字段与表名。</div>
+</article></main>
+</div>
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA 中文实训站 — 全模块配置与操作手顺 · 实机画面</h5>
+  <p>内容依据同目录教材文档 <code>S4.docx</code>（425 页 · 6 大模块 · 222 个任务 · 1385 张实机截图）整理。全部页面可离线打开，无外部依赖。</p>
+  <div><h5>关于画面</h5><p>站内所有截图都是<b>原教材文档中的实机画面</b>（中文界面 SAP GUI），不是示意图、也不是模拟生成图；文件名保留原文档编号以便与 Word 原文对照。文档中的示例值（公司代码 <code>C999</code>、工厂 <code>F999</code>、物料 <code>R999-100</code> 等）属于原作者的教材环境，请以自己系统的组织结构与编号范围为准。</p></div></div>
+  <div class="cols">
+    <div><h5>模块</h5>
+      <a href="prep.html">准备 — 准备工作 — 登录系统与进入后台</a><br>
+      <a href="fi.html">FI — 财务会计 FI</a><br>
+      <a href="co.html">CO — 管理会计 CO</a><br>
+      <a href="mm.html">MM — 物料管理 MM</a><br>
+      <a href="pp.html">PP — 生产计划 PP</a><br>
+      <a href="sd.html">SD — 销售与分销 SD</a><br>    </div>
+    <div><h5>全站</h5>
+      <a href="prep.html">准备</a><br>
+      <a href="fi.html">FI</a><br>
+      <a href="co.html">CO</a><br>
+      <a href="mm.html">MM</a><br>
+      <a href="pp.html">PP</a><br>
+      <a href="sd.html">SD</a><br>
+      <a href="tcode.html">T-code</a><br>
+      <a href="issues.html">排错</a><br>
+      <a href="tasks.html">索引</a><br>
+      <a href="instructor.html">讲师</a><br>
+      <a href="worksheet.html">学员</a><br>
+      <a href="quiz.html">自测</a><br>    </div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/s4cn.js"></script>
+</body>
+</html>

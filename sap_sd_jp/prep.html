@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>準備作業 — システムへのログオンと IMG 設定への移動 · 手順と実機画面</title>
+<meta name="description" content="準備作業 — システムへのログオンと IMG 設定への移動：2 件のタスクの手順、IMG パス、T-code と 5 枚の実機画面スクリーンショット。内容は教材ドキュメント S4.docx をもとに整理しています。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/s4jp.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">S4</span><span class="txt">日本語実習サイト</span></a>
+    <nav class="main">
+      <a href="index.html">ホーム</a>
+      <a class="active" href="prep.html">準備</a>
+      <a href="fi.html">FI</a>
+      <a href="co.html">CO</a>
+      <a href="mm.html">MM</a>
+      <a href="pp.html">PP</a>
+      <a href="sd.html">SD</a>
+      <a href="tcode.html">T-code</a>
+      <a href="glossary.html">用語</a>
+      <a href="issues.html">トラブルシューティング</a>
+      <a href="tasks.html">索引</a>
+      <a href="instructor.html">講師</a>
+      <a href="worksheet.html">受講者</a>
+      <a href="quiz.html">自習テスト</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page"><article>
+<p class="breadcrumb"><a href="index.html">ホーム</a> / <span>準備作業 — システムへのログオンと IMG 設定への移動</span></p>
+<h1>準備作業 — システムへのログオンと IMG 設定への移動</h1>
+<p class="kicker">準備作業 · クライアントログオン · SPRO の IMG 設定入口</p>
+<div class="toc"><a href="#guide">1. 本モジュールのガイド</a><a href="#toc">2. タスク一覧</a><a href="#steps">3. 手順（タスクごと）</a><a href="#sources">4. スクリーンショットと設定値について</a></div>
+<div class="grid cards"><div class="card"><b>2</b><span>タスク</span></div><div class="card"><b>5</b><span>実機画面</span></div><div class="card"><b>5</b><span>手順ステップ</span></div><div class="card"><b>0/0</b><span>IMG/業務のタスク</span></div></div>
+<h2 id="guide">1. 本モジュールのガイド</h2>
+<p>サイト全体の最初のステップは、SAP GUI をシステムに接続し、設定用の IMG 設定（SPRO）を開くことです。以降の FI / CO / MM / PP / SD の 5 モジュールの設定はすべて、この IMG 設定の中で「IMG パス」をたどって階層ごとに行います。</p>
+<p>教材環境は中国語インターフェースの S/4HANA 一式です（会社コード <code>C999</code>、会社名 <code>頤寧機械有限公司</code>、プラント <code>F999</code>、品目は <code>T999-100</code> / <code>R999-100</code> / <code>F999-100</code> など）。これらは原教材ドキュメントの著者のシステムでの設定値であり、ご自身のシステムの番号範囲や組織構造と同じとは限りません —— 手順の「操作順序」はそのまま実行できますが、具体的な値はご自身のシステムに合わせて入力してください。</p>
+<div class="panel"><b>このモジュールのポイント</b><ul><li>クライアントのアイコンとログオン画面（システム／クライアント／ユーザ／パスワード／言語）</li><li>SPRO（IMG 設定）の入口：トランザクションコード <code>SPRO</code> → SAP リファレンス IMG → 各モジュールのメニューツリー</li><li>当サイトでは「IMG 設定」と「業務処理」を分けて表記しています：<span class="fb">IMG 設定</span> ＝ IMG カスタマイジング、<span class="fb img">業務処理</span> ＝ 日常の業務トランザクション</li></ul>
+</div>
+<h2 id="toc">2. タスク目次（2 件）</h2>
+<p>そのうち 0 件のタスクで、原教材ドキュメントの IMG 設定メニューパスが示されています；<span class="fb">IMG 設定</span> のマークが付いているのはカスタマイジング（設定）タスク、<span class="fb img">業務処理</span> と付いているのは日常業務の操作タスクです。表示がないタスクは原文でも明示されておらず、タスク名からご自身で判断してください（一般に「～の定義／～パラメータのメンテナンス」＝ IMG 設定、「伝票・指図・請求書の登録／入力／照会」＝業務処理）。</p>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>No.</th><th>タスク</th><th>IMG/業務</th><th>ドキュメント内の T-code</th><th>画面</th><th>手順ステップ</th></tr></thead><tbody><tr><td><a href="#t01">タスク 01</a></td><td><a href="#t01">システムにログオン</a></td><td>—</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t02">タスク 02</a></td><td><a href="#t02">IMG 設定へ進む</a></td><td>—</td><td>—</td><td>2</td><td>2</td></tr></tbody></table></div>
+<h2 id="steps">3. 手順（タスクごと）</h2>
+<div class="box info"><b class="t">このページの使い方</b>各タスクは原教材ドキュメントの順序どおりに掲載しています。まず「説明」を読み、次に「IMG パス」に従って設定ポイントへ進み、その後は番号付きのステップに沿って（各ステップに原教材ドキュメントの実機画面が付いています）、画面ごとに操作していきます。画面の赤い四角や矢印は、原教材ドキュメントの著者が「入力・選択すべき箇所」として付けたものです。画面をクリックすると拡大できます（1×/2×/3×、ESC で閉じる）。</div>
+<div class="steph" id="t01"><span class="no">タスク 01</span><h3>システムにログオン</h3><span class="tc2">3 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】登陆系统<br></div></details>
+<ol class="oplist">
+<li>
+<p class="opcap">SAP Client 側のアイコンは次のとおりです<br>SAP Gui をダブルクリックすると、次の画面が表示されます：</p>
+<details class="orig"><summary>原文</summary><div class="zh">SAP Client 端的图标如下<br>双击 SAP Gui，弹出如下页面：</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/prep/t01/02_1_image2.png"><img src="assets/img/prep/t01/02_1_image2.png" alt="システムにログオン · ステップ 1：SAP Client 側のアイコンは次のとおりです SAP Gui をダブルクリックすると、次の画面が表示されます：" loading="lazy" width="590" height="580"></a><figcaption><span class="n">画面 1</span><span class="src">image2.png · 590×580</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「ログオン」をクリックすると、次の画面が表示されます：</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击登陆，弹出如下页面：</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/prep/t01/03_1_image3.png"><img src="assets/img/prep/t01/03_1_image3.png" alt="システムにログオン · ステップ 2：「ログオン」をクリックすると、次の画面が表示されます：" loading="lazy" width="431" height="309"></a><figcaption><span class="n">画面 2</span><span class="src">image3.png · 431×309</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>GUI の設定は次のとおり</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 3）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/prep/t01/04_1_image4.png"><img src="assets/img/prep/t01/04_1_image4.png" alt="システムにログオン · ステップ 3：image4.png" loading="lazy" width="727" height="751"></a><figcaption><span class="n">画面 3</span><span class="src">image4.png · 727×751</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t02"><span class="no">タスク 02</span><h3>IMG 設定へ進む</h3><span class="tc2">2 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】进入后台<br></div></details>
+<ol class="oplist">
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/prep/t02/01_1_image5.png"><img src="assets/img/prep/t02/01_1_image5.png" alt="IMG 設定へ進む · ステップ 1：image5.png" loading="lazy" width="587" height="134"></a><figcaption><span class="n">画面 4</span><span class="src">image5.png · 587×134</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">システムにログオンすると、次の画面のとおり<br>トランザクションコードに spro を入力し、IMG 設定の画面に進みます</p>
+<details class="orig"><summary>原文</summary><div class="zh">进入系统后，如下页面所示<br>在事务代码处输入 spro，进入后台配置页面</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/prep/t02/02_1_image6.png"><img src="assets/img/prep/t02/02_1_image6.png" alt="IMG 設定へ進む · ステップ 2：システムにログオンすると、次の画面のとおり トランザクションコードに spro を入力し、IMG 設定の画面に進みます" loading="lazy" width="539" height="850"></a><figcaption><span class="n">画面 5</span><span class="src">image6.png · 539×850</span></figcaption></figure>
+</li>
+</ol>
+<h2 id="sources">4. スクリーンショットと設定値について</h2>
+<div class="box warn"><b class="t">画面は原教材ドキュメントのものです</b>本モジュールのスクリーンショットはすべて <code>S4.docx</code> の著者が実システムでキャプチャした中国語インターフェースの画面です（元のファイル名 <code>imageNNN.png</code> は各図の図注に残しているので、Word の原文と 1 枚ずつ照合できます）。当サイトはこれらの画面を一切描き直したり、シミュレーションで再現したりしていません。</div>
+<div class="box info"><b class="t">設定値はご自身のシステムの値を基準にしてください</b>ドキュメント内の組織構造とマスタデータの番号（会社コード <code>C999</code>、会社名「頤寧機械有限公司」、プラント <code>F999</code>、品目 <code>R999-100</code>/<code>T999-100</code>/<code>F999-100</code>、得意先 <code>K001</code>/<code>K002</code> など）はすべて原作者の教材環境のものです。手順どおりに作業するときは、<b>操作の順序と設定ポイントはそのまま流用できますが、具体的な番号や名称はご自身のシステムの値に置き換えてください</b>；ドキュメントと異なるメッセージが出た場合は、まず「<a href="issues.html">トラブルシューティングと注意点</a>」ページで原教材ドキュメントに記録された同種の問題を確認してください。</div>
+<div class="panel" style="margin-top:22px"><a href="fi.html">次のモジュール：FI 財務会計 FI（Financial Accounting） →</a><br><a href="tasks.html">全 222 タスクの索引 →</a></div>
+</article></main>
+</div>
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA 日本語実習サイト — 全モジュールの設定と操作手順 · 実機画面</h5>
+  <p>内容は同ディレクトリの教材ドキュメント <code>S4.docx</code>（425 ページ · 6 大モジュール · 222 タスク · 1385 枚の実機スクリーンショット）に基づいて整理しています。すべてのページはオフラインで開くことができ、外部依存はありません。</p>
+  <div><h5>画面について</h5><p>サイト内のすべてのスクリーンショットは<b>原教材ドキュメントの実機画面</b>（中国語インターフェースの SAP GUI）であり、イメージ図やシミュレーションによる生成画像ではありません。ファイル名は原教材ドキュメントの番号をそのまま保持しており、Word の原文と対照できます。ドキュメント内のサンプル値（会社コード <code>C999</code>、プラント <code>F999</code>、品目 <code>R999-100</code> など）は原作者の教材環境のものですので、ご自身のシステムの組織構造と番号範囲に合わせて読み替えてください。</p></div></div>
+  <div class="cols">
+    <div><h5>モジュール</h5>
+      <a href="prep.html">準備 — 準備作業 — システムへのログオンと IMG 設定への移動</a><br>
+      <a href="fi.html">FI — 財務会計 FI</a><br>
+      <a href="co.html">CO — 管理会計 CO</a><br>
+      <a href="mm.html">MM — 品目管理 MM</a><br>
+      <a href="pp.html">PP — 生産計画 PP</a><br>
+      <a href="sd.html">SD — 販売管理 SD</a><br>    </div>
+    <div><h5>サイト全体</h5>
+      <a href="prep.html">準備</a><br>
+      <a href="fi.html">FI</a><br>
+      <a href="co.html">CO</a><br>
+      <a href="mm.html">MM</a><br>
+      <a href="pp.html">PP</a><br>
+      <a href="sd.html">SD</a><br>
+      <a href="tcode.html">T-code</a><br>
+      <a href="glossary.html">用語</a><br>
+      <a href="issues.html">トラブルシューティング</a><br>
+      <a href="tasks.html">索引</a><br>
+      <a href="instructor.html">講師</a><br>
+      <a href="worksheet.html">受講者</a><br>
+      <a href="quiz.html">自習テスト</a><br>    </div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/s4jp.js"></script>
+</body>
+</html>

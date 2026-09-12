@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念与设计 · SAP S/4HANA バリアント設定付き受注生産（VC / AVC）实战训练站</title>
+<meta name="description" content="SAP VC/AVC 的概念与设计：構成要素 6 つ（特徴 CT04・クラス CL02・KMAT・依存関係 CU01-CU03・設定プロファイル CU41/PMEVC・CU50）、依存関係 4 種と適用先、クラス型 300、スーパー BOM と受注 BOM（プロファイル処理形式の設計判断）、設定値の流れ、VC×生産形態（25/KEK/046・82/KMFA/201/PP04・ETO Q）、変種価格 VA00、LO-VC と AVC、関連テーブル、S/4HANA 変更点、10 の誤解。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/vc.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">VC</span><span class="txt">バリアント設定 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a class="active" href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①主数据</a>
+      <a href="handson-2.html">②受注与设定</a>
+      <a href="handson-3.html">③依存与BOM</a>
+      <a href="handson-4.html">④制造与出荷</a>
+      <a href="handson-5.html">⑤发展与故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 概念与设计</div>
+<main class="page"><article>
+
+<h1>概念与设计 — VC 是「构成引擎」，不是生产形态</h1>
+<div class="box info"><b class="t">读完这一页应能回答的 4 个问题</b>
+① 一台泵的「容量 80 / SUS316 / 涂装 EPOXY / 压力计＋流量计」是怎么变成 BOM 的 6 个零件和 3 道工序的？（→ 依存関係）
+② 为什么不能把 VC 当成第 4 种生产形态？（→ VC × 生産形態 = 组合）
+③ 加价是从哪里冒出来的？（→ 変種価格 <code>VA00</code> と特徴の追加データ）
+④ 换到 S/4HANA（AVC）之后，哪一部分的工作方式变了？（→ <code>PMEVC</code>・特徴グループ・<code>MMCOM-VKOND</code>）</div>
+<div class="toc">
+  <a href="#chain">1. 決定链（1 张图看懂）</a>
+  <a href="#parts">2. 構成要素 6 つ</a>
+  <a href="#deps">3. 依存関係 4 種と適用先</a>
+  <a href="#class">4. クラスと分類（クラス型 300）</a>
+  <a href="#bom">5. スーパー BOM と受注 BOM</a>
+  <a href="#flow">6. 設定値の流れ</a>
+  <a href="#forms">7. VC × 生産形態</a>
+  <a href="#price">8. 変種価格の仕組み</a>
+  <a href="#avc">9. LO-VC と AVC</a>
+  <a href="#tables">10. 関連テーブル</a>
+  <a href="#s4">11. S/4HANA 変更点</a>
+  <a href="#myths">12. 10 の誤解</a>
+  <a href="#sources">13. 出典</a>
+</div>
+
+<h2 id="chain">1. 決定链（1 张图看懂）</h2>
+<p>VC 的一切都挂在下面这条链上。<b>左边是「设计时」（誰が何を選べるか），右边是「受注時」（这次选了什麼）</b>。
+受注画面里看到的所有结果——零件、工序、加价——都是这条链走完一次的产物。</p>
+<pre class="vals">【设计时 / Modeling】                              【受注时 / Order】
+
+CT04 特徴 ──┐                                       VA01 明細（ZVC-PUMP01）
+ 値・必須・複数選択 │                                        │
+ 追加データ（価格用）│                                        ▼
+CL02 クラス（型 300）├─► MM01 品目 KMAT の分類ビュー ──► 設定プロファイル ZVC_PROFILE01
+ 特徴の割当        │      品目カテゴリグループ 0002             │  （処理形式＝BOM をどう扱うか）
+                    │      設定可能インジケータ ON                ▼
+                    │                                     構成画面（特徴値の入力）
+CU01〜CU03          │                                        │  例：80 / SUS316 / EPOXY / PG+FG
+ 依存関係 ──────────┘                                        │
+   ├─ 前提条件 → 特徴値の成立条件                              ├─► 受注 BOM（スーパー BOM から選択条件で絞る）
+   ├─ 選択条件 → BOM 明細 / 作業手順の工程が「採用されるか」    │        ケーシング 1 / 羽根車 1 / 軸 1 / モータ 1
+   ├─ 手続き   → 数量・標準値・価格キーを書き換える            │        ＋圧力計 1 / 流量計 1
+   └─ アクション→ 他のオブジェクトを操作（発展）              ├─► 作業手順（工程の取捨・標準値）
+CS01 スーパー BOM（全バリエーションの部品を全部入れておく）    ├─► 変種価格（VA00 の条件行が加算）
+CA01 作業手順（全工程を入れておく）                            └─► 所要量（KEK・在庫区分 E）→ MRP → 指図（構成を継承）
+                                                                     → 入庫 → 出荷 601 → 請求</pre>
+<div class="box ok"><b class="t">一句话</b>
+<b>スーパー BOM と作業手順に「全部」入れて、依存関係（選択条件）で「今回の分だけ」を残す。</b>
+これが VC のすべてです。だから「部品が変わらない」「工程が消えない」ときは、ほぼ<b>選択条件の書き方か適用先</b>が原因です（→ <a href="#deps">第 3 節</a>）。</div>
+
+<h2 id="parts">2. 構成要素 6 つ</h2>
+<table class="tbl wide">
+<tr><th>要素</th><th>何をするもの</th><th>T-code</th><th>本站的练习对象</th><th>覚え方</th></tr>
+<tr><td>特徴（Characteristics）</td><td>「選べる仕様」を定義。値の型、必須、複数値、追加データ（価格のキー等）を持つ</td><td><code>CT04</code></td><td><code>ZVC_CAPACITY</code> / <code>ZVC_MATERIAL</code> / <code>ZVC_COATING</code> / <code>ZVC_ACCESSORY</code></td><td>質問と選択肢</td></tr>
+<tr><td>クラス（Class）</td><td>特徴をまとめる器。クラス型 <code>300</code>（品目変種）で品目に割り当てる</td><td><code>CL02</code>（<code>CL01</code>/<code>CL03</code>）</td><td><code>ZVC_PUMP_CL</code></td><td>質問票</td></tr>
+<tr><td>設定可能品目（<code>KMAT</code>）</td><td>設定される「親」品目。<b>1 品目で無限のバリエーション</b>を表現する</td><td><code>MM01</code></td><td><code>ZVC-PUMP01</code>（<code>KMAT</code>／カテゴリグループ <code>0002</code>）</td><td>1 品目で無限</td></tr>
+<tr><td><b>依存関係（Object dependencies）</b></td><td>設定のロジック。<b>選べる値・BOM の構成品目・作業手順の工程・数量・価格</b>を制御する</td><td><code>CU01</code>〜<code>CU03</code></td><td>前提条件 1 本 / 選択条件 4 本 / 手続き 1 本</td><td><b>VC の心臓</b></td></tr>
+<tr><td>設定プロファイル</td><td>どのクラス/特徴を、どの画面構成・どの必須チェックで使うか。品目に割り当てる</td><td><code>CU41</code>（S/4HANA は <code>PMEVC</code>）</td><td><code>ZVC_PROFILE01</code></td><td>設定の入り口</td></tr>
+<tr><td>シミュレーション</td><td>設定を試す（依存関係が発火するか、BOM がどう絞られるか、価格がどうなるか）</td><td><code>CU50</code></td><td>各练习で必ず実行（設計の単体テスト）</td><td>設計の単体テスト</td></tr>
+</table>
+<div class="dep"><b class="t">設計判断 ①：特徴の粒度をどう決めるか（トレードオフ）</b>
+① <b>細かく割る</b>（材質・塗装・口径・駆動方式…）＝ 依存関係が書きやすく変更に強い反面、設定画面の質問が増える（営業が嫌がる）。
+② <b>粗くまとめる</b>（「仕様セット A/B/C」1 つ）＝ 画面は短いが、例外（A のときだけ塗装を変えたい）が出た瞬間に依存関係が爆発する。<br>
+本站采用「<b>得意先が意思決定する単位で割る</b>」方針：容量・材質・塗装・付属品 の 4 つは営業/客先が会話で決める単位だから。<b>社内の製造都合（タップ加工の有無など）は特徴にせず、派生依存関係で内部処理する</b>のが経験則です。</div>
+
+<h2 id="deps">3. 依存関係 4 種と適用先</h2>
+<p>依存関係は「<b>式（構文）＋ 適用先（どこに貼るか）</b>」の 2 点セットで覚えます。同じ式でも貼る場所で意味が変わります。</p>
+<table class="tbl wide">
+<tr><th>種類</th><th>何を決めるか</th><th>適用先（貼る場所）</th><th>本站的例子</th></tr>
+<tr><td><b>前提条件</b><br><span class="mini">Precondition</span></td><td>値が「使えるか／選べるか」を判定。満たさなければエラー、または値が不採用になる</td><td>特徴 または 特徴値（<code>CT04</code> から <code>CU01</code> で作成して貼る）</td><td>塗装 <code>EPOXY</code> は材質 <code>SUS316</code> を要求（<code>FC200</code> では選べない）</td></tr>
+<tr><td><b>選択条件</b><br><span class="mini">Selection condition</span></td><td>BOM 明細・作業手順の工程などを「今回の構成に採用するか」を判定</td><td>BOM 明細（<code>CS02</code> の構成品目 → 選択条件）／工程（<code>CA02</code>）</td><td>圧力計は付属品 <code>PG</code> または <code>PG_FG</code> のときだけ採用</td></tr>
+<tr><td><b>手続き</b><br><span class="mini">Procedure</span></td><td>値を計算・上書きする（他特徴を自動セット、数量や標準値を書き換える）</td><td>特徴値／BOM 明細／工程（標準値の書き換え）</td><td>容量 <code>120</code> のときモータ数量を 2 に、組立標準時間を 1.4 倍に</td></tr>
+<tr><td><b>アクション</b><br><span class="mini">Action</span></td><td>設定の結果を使って<b>他のオブジェクトを操作する</b>（出力・伝票項目への転記・外部連携など）</td><td>特徴値（稀に集中依存関係／引用経由）</td><td>発展課題（本站不做実装，只做説明）</td></tr>
+</table>
+<pre class="vals">【前提条件の例】材質 SUS316 を要求する塗装値に貼る
+   $SELF.ZVC_MATERIAL = 'SUS316'
+
+【選択条件の例】流量計の BOM 明細に貼る
+   $ROOT.ZVC_ACCESSORY = 'FG' OR $ROOT.ZVC_ACCESSORY = 'PG_FG'
+   ※ BOM は「上位を参照する」ため $ROOT（最上位の設定可能品目）を使うのが基本。
+     varconf の解説では階層の親を指す $PARENT.&lt;特徴&gt; = &lt;値&gt; の形で説明されている
+     （どちらを使うかは BOM の階層とリリースで変わる → CS03 の選択条件画面で確認）
+
+【手続きの例】容量 120 を選んだら付属品を自動セットする手続き（特徴値側）
+   $SELF.ZVC_ACCESSORY = 'PG'
+   ※ 「他特徴への値セット」は手続きの代表的な用途。数量・標準値の書き換えは
+     BOM 明細 / 工程の「手続き」欄に貼る（項目名は自システムの画面で確認）</pre>
+<div class="dep sel"><b class="t">設計判断 ②：「選べなくする（前提条件）」か「選んだら他の値を直す（手続き）」か</b>
+① <b>前提条件で禁止</b>＝ 客先に矛盾を見せない（エラーで止める）。教育コストは低いが、選択肢が消えると「なぜ選べないのか」を説明しにくい。<br>
+② <b>手続きで矯正</b>＝ 片方を選べば他方が自動で正しくなる（<code>EPOXY</code> を選んだら材質を <code>SUS316</code> に自動セット）。UX は良いが、
+「勝手に変わった」と現場が混乱しやすい。<br>
+実務の勘所：<b>物理的に不可能な組合せ＝前提条件、業務上の推奨＝手続き</b>。この切り分けを最初に合意せずに作り始めると、後で必ず作り直しになります。</div>
+<div class="box warn"><b class="t">つまずき：依存関係が発火しない 3 大原因</b>
+① <b>適用先が違う</b>（選択条件を特徴に貼った／前提条件を BOM に貼った）→ 実際の貼り付け先を <code>CU03</code>（照会）と <code>CS03</code>/<code>CA03</code> で確認。
+② <b>特徴名（技術名称）の綴り／大文字小文字</b>が違う → <code>CU50</code> で値を選んでも無反応ならここ。<code>CT04</code> の技術名称をコピーして貼る。
+③ <b>設定プロファイルに「依存関係のチェック」が無い／再構成していない</b> → <code>CU50</code> のメニューで再構成、または受注を <code>VA02</code> で開いて再構成（<b>設定値の変更統制</b>の論点。→ <a href="handson-5.html">练习⑤</a>）。</div>
+
+<h2 id="class">4. クラスと分類（クラス型 300）</h2>
+<p>VC の「クラス」は SAP の分類システム（Classification）の一部です。<b>クラス型（Class Type）で用途が決まり、VC では <code>300</code>（品目変種 / Variant class）を使います</b>。
+他の型（例：<code>023</code> は品目バッチ、<code>001</code> は品目一般）と混ぜると、品目の分類ビューでクラスが出てこないなどの症状になります。</p>
+<table class="tbl wide">
+<tr><th>要素</th><th>役割</th><th>確認のしかた（自システム）</th></tr>
+<tr><td>クラス型 <code>300</code></td><td>品目変種用のクラス型。<code>CL02</code> の初期画面で選ぶ</td><td><code>CL02</code> → クラス型の F4。クラス型の定義は <code>SE11</code> の <code>TCLA</code> 系＋IMG（分類システム）で確認</td></tr>
+<tr><td>クラス <code>ZVC_PUMP_CL</code></td><td>特徴の入れ物。複数特徴を割り当て、必要数（必須）を制御する</td><td><code>CL03</code> → クラス <code>ZVC_PUMP_CL</code>：特徴タブに 4 特徴</td></tr>
+<tr><td>品目への割当</td><td>品目マスタの<b>分類ビュー</b>でクラスを割り当てる（VC の必須条件）</td><td><code>MM03</code> → 分類ビュー → クラス <code>ZVC_PUMP_CL</code></td></tr>
+<tr><td>特徴の「必須」フラグ</td><td>未入力で設定を終われなくする（＝完全性チェック）</td><td><code>CL02</code> の特徴行（必須列）／<code>CT04</code> の基本データ、そして <code>CU50</code> での挙動</td></tr>
+</table>
+<div class="box info"><b class="t">なぜ「クラス」が要るのか（設計の意味）</b>
+特徴を品目に直接貼るのではなく、<b>クラスを経由させる</b>ことで「同じ質問票（クラス）を複数の品目で使い回せる」「クラスを差し替えるだけで質問構成を変えられる」という柔軟性が得られます。
+実務では「ポンプ共通クラス ＋ 機種別クラス」のようにクラスを分け、<b>必須特徴だけを共通クラスに置く</b>設計が定番です。</div>
+
+<h2 id="bom">5. スーパー BOM と受注 BOM — 設定プロファイルの処理形式は「設計判断」</h2>
+<p>ここが VC で最も設計判断が効く場所です。<b>スーパー BOM（<code>CS01</code>）には全バリエーション分の構成品目を入れておき、
+受注の設定値で選別する</b>——その「選別結果をどこに置くか」を決めるのが<b>設定プロファイルの処理形式</b>です。</p>
+<table class="tbl wide">
+<tr><th>処理形式（通常の呼称）</th><th>受注明細での振る舞い</th><th>向いている場面</th><th>トレードオフ</th></tr>
+<tr><td><b>明細 / 生産指図（BOM 展開なし）</b></td><td>受注には構成品目が出ない（親品目だけ）。BOM は MRP・指図側で展開</td><td>構成は製造都合、営業は完成品だけ売る</td><td>受注画面が軽い代わりに、<b>営業が構成結果（部品）を確認できない</b></td></tr>
+<tr><td><b>伝票明細（SET 処理）</b></td><td>構成品目が<b>個別の明細（子明細）</b>として並び、価格・所要量も明細単位で転送</td><td>客先が部品構成（例：モニタ・CPU・キーボード）を選ぶ商売</td><td>価格と所要量が子明細に分散。<b>品目カテゴリグループ <code>0004</code> が前提</b>（varconf）</td></tr>
+<tr><td><b>受注 BOM（Order BOM）</b></td><td>受注ごとに BOM のコピーを作り、<b>手で追加/削除/差し替え</b>できる。結果指向型と知識指向型がある</td><td>受注ごとに設計変更・追加工がある（まさに本场景のポンプ）</td><td>「受注ごとの BOM」を持つため<b>管理すべきオブジェクトが増える</b>（変更統制が重要）</td></tr>
+</table>
+<p class="mini">出典：varconf.com <i>Make-to-Order with SAP Variant Configuration</i>（処理形式の 3 分類と受注 BOM の 2 副型、BOM 展開レベル）。本站练习②〜④ は <b>受注 BOM</b> を選びます（受注 BOM を見せる練習になるため）。</p>
+<div class="dep"><b class="t">設計判断 ③：受注 BOM / SET / 展開なし のどれを選ぶか</b>
+判断の順序：① <b>客先に見せる必要があるか</b>（YES なら SET か受注 BOM）→ ② <b>受注ごとに構成を手で直すか</b>（YES なら受注 BOM）→ ③ <b>子明細に価格と所要量を持たせるか</b>（YES なら SET、<code>0004</code> が必要）。<br>
+<b>やってはいけない</b>のは、後から処理形式を変えること（受注 BOM を作ってから SET に変えると、既存受注の構造と価格転送が壊れる）。<b>最初に決めて、受注を流す前に固める</b>のが鉄則です。</div>
+
+<h2 id="flow">6. 設定値の流れ（受注 → 出荷 → 請求）</h2>
+<p>設定値（構成）は受注で確定し、<b>MRP→指図へと「継承」されていきます</b>。継承が切れると「受注では SUS316 なのに指図では FC200」という最悪の状態になります。</p>
+<div class="flowv">
+  <div class="step"><span class="ico">1</span><div class="body"><b>VA01 明細の構成画面で値を選択</b><small>依存関係が発火 → 前提条件で矛盾を排除・手続きで数量や価格キーを確定</small></div></div>
+  <div class="vline"></div>
+  <div class="step"><span class="ico">2</span><div class="body"><b>受注 BOM（構成品目）が確定</b><small>スーパー BOM の明細から、選択条件を満たす行だけが残る（<code>VA03</code> → 明細 → 構成品目）</small></div></div>
+  <div class="vline"></div>
+  <div class="step"><span class="ico">3</span><div class="body"><b>所要量 → MRP → 計画手配</b><small>戦略 <code>25</code> なら所要量タイプ <code>KEK</code>・受注在庫（特別在庫 E）。計画手配は<b>設定を引き継いで</b>生成される</small></div></div>
+  <div class="vline"></div>
+  <div class="step"><span class="ico">4</span><div class="body"><b>製造指図に構成が伝搬</b><small><code>CO03</code> の「構成」で設定値・構成品目・工程を確認。選択条件は指図の BOM/工程にも効く</small></div></div>
+  <div class="vline"></div>
+  <div class="step"><span class="ico">5</span><div class="body"><b>入庫 → 出荷（601）→ 請求</b><small>受注在庫（E）から出庫確認し、請求には変種価格の加算が乗る</small></div></div>
+</div>
+<div class="box ok"><b class="t">确认的 4 个证据（実機での勘所）</b>
+① <code>VA03</code> の明細：<b>構成（設定値）</b>と<b>構成品目（受注 BOM）</b>。
+② <code>MD04</code>：受注明細の所要量（得意先所要量）と計画手配の在庫区分。
+③ <code>CO03</code>：指図の構成（設定値）と BOM/工程が設定どおりか。
+④ <code>VA03</code> の条件画面：<code>VA00</code> の加算行があるか（無ければ → <a href="#price">第 8 節</a>）。</div>
+
+<h2 id="forms">7. VC × 生産形態（VC は単独では存在しない）</h2>
+<table class="tbl wide">
+<tr><th>組合せ</th><th>戦略グループ / 所要量タイプ</th><th>所要量クラス / 指図タイプ</th><th>库存区分</th><th>場面</th></tr>
+<tr><td><b>VC × MTO（本站主场景）</b></td><td><code>25</code> / <code>KEK</code></td><td><code>046</code> 系</td><td><b>E（受注在庫）</b></td><td>得意先が仕様を選ぶ受注生産（産業機械・ポンプ・エレベータ）</td></tr>
+<tr><td>VC × ATO（組立処理）</td><td><code>82</code> / <code>KMFA</code></td><td><code>201</code> / <code>PP04</code></td><td>E または 自由在庫＋指図</td><td>受注と同時に指図を立て、短納期で組む（BOM 必須・1:1）</td></tr>
+<tr><td>VC × ETO</td><td>ETO 用の戦略（Cloud は <code>E2</code>）＋ WBS 割当</td><td>—</td><td><b>Q（プロジェクト在庫）</b></td><td>案件ごとに設計し、仕様選択もある</td></tr>
+<tr><td>VC × 見込生産</td><td>戦略 <code>10</code>/<code>20</code>/<code>40</code>＋ PIR</td><td>独立所要量系</td><td>自由在庫</td><td>バリエーションを予測で作る（設計は要検討）</td></tr>
+</table>
+<pre class="vals">覚えるべきは 2 本の線だけ（残りは表を見る）
+  戦略 25 ──► 所要量タイプ KEK ──► 所要量クラス 046 系 ──► 受注在庫 E       ← VC × 受注生産
+  戦略 82 ──► 所要量タイプ KMFA ──► 所要量クラス 201 ──► 指図タイプ PP04    ← VC × 受注組立（1:1・BOM 必須）
+確認：OPPS（戦略グループ）／OPPJ（計画方針）／OVZG（所要量クラス・所要量タイプ）で自システムの値を照会</pre>
+<div class="box warn"><b class="t">よくある勘違い</b>
+「VC だから受注生産」は<b>誤り</b>です。VC は構成エンジンで、戦略グループは別に決めます。<code>25</code> と <code>82</code> の差は<b>受注と指図の関係</b>（1:1 で受注時に指図を作るか、MRP 経由で後から作るか）で、ここを取り違えると
+「受注した瞬間に指図ができてしまう／できない」という症状になります。→ <a href="handson-5.html">练习⑤</a> で両方を体験します。</div>
+
+<h2 id="price">8. 変種価格の仕組み（加算はどこから来るか）</h2>
+<p>VC の加算は、<b>「設定値 → 価格のキー（<code>VKOND</code>）→ 条件レコード」</b>の 3 段で決まります。基本価格（<code>PR00</code>）は通常の価格で、<b>オプション選択による加算は <code>VA00</code>（変種条件）</b>が担当します。</p>
+<table class="tbl wide">
+<tr><th>段</th><th>何をするか</th><th>T-code</th><th>確認のしかた</th></tr>
+<tr><td>1. 価格用特徴の準備</td><td>特徴の<b>追加データ</b>に「テーブル／項目」を指定し、その特徴の値が条件キーとして使われるようにする（LO-VC は <code>SDCOM-VKOND</code>、AVC は <code>MMCOM-VKOND</code> という記載）</td><td><code>CT04</code>（追加データタブ）</td><td><code>CT04</code> で該当特徴を開き、追加データのテーブル/項目を確認。<code>SE11</code> で構造の実在を確認</td></tr>
+<tr><td>2. 条件タイプと計算手続</td><td><code>VA00</code> が「変種条件」として使われ、計算手続の中で参照される（加算型にするか小計型にするかは設計判断）</td><td><code>V/06</code>（条件タイプ）・<code>V/08</code>（計算手続）</td><td><code>V/06</code> で <code>VA00</code> の属性、<code>V/08</code> で手続内の順序・ステップ番号を確認</td></tr>
+<tr><td>3. 条件レコード</td><td>特徴値ごとに金額を持つ（例：<code>SUS316</code> = +120,000）。キーは上記の項目（<code>VKOND</code>）</td><td><code>VK11</code>（<code>VK13</code> 照会）</td><td><code>VK13</code> で <code>VA00</code> の条件レコードを一覧。受注の <code>VA03</code> の条件画面で実際に決定されているかを見る</td></tr>
+</table>
+<pre class="vals">価格決定のイメージ（本站练习値）
+  PR00   850,000 JPY × 10 台 = 8,500,000   ← 基本価格（条件レコード）
+  VA00   材質 SUS316   +120,000 × 10 台    ← 変種条件（特徴値がキー）
+  VA00   塗装 EPOXY     +35,000 × 10 台
+  VA00   付属品 FG      +48,000 × 10 台
+  ------------------------------------------------
+  合計（税抜）          1,053,000 / 台  → 10 台 10,530,000 JPY
+  ※ 金額・加算の有無はあくまで例。実システムでは VK13 の条件レコードが正</pre>
+<div class="box warn"><b class="t">つまずき：加算が出ないときの順序</b>
+① 受注の条件画面に <code>VA00</code> の行が<b>無い</b> → 計算手続（<code>V/08</code>）か条件タイプの有効性。
+② 行はあるが<b>金額 0</b> → 条件レコード（<code>VK11</code>）のキーが設定値と一致していない（＝<code>VKOND</code> に値が入っていない）。
+③「値は入っているのにキーが空」→ 特徴の<b>追加データ</b>（テーブル/項目）が未設定、または参照特徴（Reference characteristic）の設計ミス。
+SAP KBA 1934081 も、標準では<b><code>VKOND</code> を参照する特徴の値が変種条件行 <code>VA00</code> を決める</b>と説明しています。</div>
+
+<h2 id="avc">9. LO-VC と AVC（S/4HANA での違い）</h2>
+<table class="tbl wide">
+<tr><th>観点</th><th>LO-VC（従来）</th><th>AVC（S/4HANA の現行）</th></tr>
+<tr><td>位置づけ</td><td>SAP ERP 以来的标准 VC</td><td>S/4HANA の「現行」バリアント設定プラットフォーム（性能・統合・UI を強化）</td></tr>
+<tr><td>モデリング環境</td><td><code>CU41</code>・<code>CT04</code>・<code>CL02</code>・<code>CU01</code> などの個別画面中心</td><td><b><code>PMEVC</code></b>（統合モデリング環境）。従来画面も併存し、習得済みナレッジは活かせる</td></tr>
+<tr><td>設定画面（UI）</td><td><code>CU50</code> などのクラシック画面</td><td><b>特徴グループ（Characteristic Groups）＋ Fiori アプリ</b>に置き換わるという記載（varconf）</td></tr>
+<tr><td>価格のキー項目</td><td><code>SDCOM-VKOND</code></td><td><code>MMCOM-VKOND</code> という記載（<b>自システムで <code>CT04</code> の追加データと <code>SE11</code> を確認</b>）</td></tr>
+<tr><td>制約（Constraints）</td><td>手続き中心のロジック</td><td>制約ネット（<code>CU21</code>/<code>CU22</code>/<code>CU23</code> 系）を使った宣言的な整合性チェックが現実的になる（varconf の AVC 解説）</td></tr>
+<tr><td>材料バリアント</td><td>—</td><td>S/4HANA のスイッチ <code>VCHMOVMVAR</code> で材料バリアントの扱いを切替（varconf）</td></tr>
+<tr><td>本站的扱い</td><td colspan="2">概念は LO-VC の用語で説明し、AVC との差はその都度注記します。<b>実装前に「どちらの環境で作るか」を先に決める</b>のが原則（移行時は Simplification List の確認が必須）</td></tr>
+</table>
+<div class="dep sel"><b class="t">設計判断 ④：LO-VC で作るか AVC で作るか</b>
+① <b>既存資産とスキルが LO-VC</b> なら、無理に移さない（移行そのものがプロジェクトになる）。② <b>新規で複雑な製品（多品種・制約が多い）</b>なら AVC の特徴グループ＋制約が効く。
+③ <b>Public Cloud は AVC が前提</b>。この 3 点で判断し、<b>判断結果を設計書の冒頭に明記</b>してください（後続の全手顺に影響します）。</div>
+
+<h2 id="tables">10. 関連テーブル（確証のあるものだけ列挙）</h2>
+<p>デバッグ・レポート・移行で効くテーブルです。<b>テーブル実在は確認済みですが、項目構成はリリースで変わります</b>——必ず <code>SE11</code>/<code>SE16N</code> で自システムを確認してください。</p>
+<table class="tbl wide">
+<tr><th>領域</th><th>テーブル</th><th>中身（通常は〜）</th><th>确认</th></tr>
+<tr><td>特徴</td><td><code>CABN</code> / <code>CABNT</code></td><td>特徴のマスタ（技術名称は <code>ATNAM</code>、内部番号 <code>ATINN</code> 系という記載が一般的）</td><td><code>SE16N</code> → <code>CABN</code> → <code>ATNAM = ZVC_MATERIAL</code></td></tr>
+<tr><td>特徴値</td><td><code>CAWN</code> / <code>CAWNT</code></td><td>特徴の許可値（値のテキストは <code>CAWNT</code>）。<b>値は必ずしも固定テーブルに入るとは限らない</b>（チェックテーブル方式あり）</td><td><code>SE16N</code> → <code>CAWN</code> → <code>ATINN</code> で絞る。ただし値の持ち方は特徴の設定による</td></tr>
+<tr><td>クラス</td><td><code>KLAH</code> / <code>KLAT</code></td><td>クラスのマスタ（<code>KLAH</code>）とテキスト（<code>KLAT</code>）</td><td><code>SE16N</code> → <code>KLAH</code> → <code>CLASS = ZVC_PUMP_CL</code>、<code>KLART = 300</code></td></tr>
+<tr><td>クラス×特徴</td><td><code>KSML</code></td><td>クラスに割り当てた特徴の一覧（必須/オプションの区分も）</td><td><code>SE16N</code> → <code>KSML</code> → <code>CLINT</code>（<code>KLAH</code> の内部番号）で絞る</td></tr>
+<tr><td>クラス×品目</td><td><code>KSSK</code></td><td>オブジェクト（品目）とクラスの割当。<b>「どの品目にどのクラスが付いているか」</b>の一次情報</td><td><code>SE16N</code> → <code>KSSK</code> → <code>OBJEK = 0000000000ZVC-PUMP01</code> 系（キー形式は画面で確認）</td></tr>
+<tr><td>設定値（実データ）</td><td><code>AUSP</code></td><td>オブジェクトに実際に割り当てられた特徴値。<b>「この構成の値は？」を引くときの最終到達点</b>（設定値は受注明細の内部番号＝<code>CUOBJ</code> 経由）</td><td><code>SE16N</code> → <code>AUSP</code> → <code>ATINN</code>＋<code>OBJEK</code>。受注明細の <code>CUOBJ</code> は <code>VA03</code> 明細の構成から確認</td></tr>
+<tr><td>依存関係</td><td><code>CUOB</code> / <code>CUKB</code> 系</td><td>オブジェクトに割り当てられた依存関係（<code>CUOB</code>）、依存関係ネットの管理（<code>CUKB</code>/<code>CUKN</code>）。<b>内部テーブルなので参照専用</b></td><td><code>CU03</code> の使用箇所一覧で用が足りるのが通常。<code>SE11</code> で項目定義を確認</td></tr>
+<tr><td>設定プロファイル</td><td><code>CUCO</code> 系</td><td>SAP Help に「機能グループ <code>CUCO</code>＝設定プロファイルマスタの維持、<code>CUCP</code>＝使用箇所一覧」と記載。<b>画面経由の保守が原則</b></td><td><code>CU41</code>/<code>CU42</code>/<code>CU43</code> と IMG の設定プロファイル一覧で確認</td></tr>
+<tr><td>価格キー</td><td><code>SDCOM</code> / <code>MMCOM</code></td><td>条件転送用の付加構造（項目 <code>VKOND</code>）。LO-VC は <code>SDCOM</code>、AVC は <code>MMCOM</code> という記載。<b>本站的 sapstack 照会では存在を確認できなかったため「自システムで <code>SE11</code> 確認」扱い</b></td><td><code>SE11</code> → 構造 <code>SDCOM</code>/<code>MMCOM</code>、項目 <code>VKOND</code>；<code>CT04</code> の追加データ画面</td></tr>
+</table>
+<div class="box warn"><b class="t">方針：テーブル名は「暗記」しない</b>
+VC のテーブルは内部キー（<code>ATINN</code>・<code>CLINT</code>・<code>CUOBJ</code>）経由の参照が多く、<b>直接 SELECT する設計は推奨されません</b>。
+本站がテーブルを挙げる目的は「<b>画面からたどる筋道を知る</b>」ことです：<code>VA03</code> 明細 → 構成 → <code>CU50</code>／<code>CL03</code>／<code>CT04</code> → 必要なら <code>SE16N</code>。</div>
+
+<h2 id="s4">11. S/4HANA 変更点（VC 関連で押さえる 3 つ）</h2>
+<table class="tbl wide">
+<tr><th>観点</th><th>変更・注意</th><th>影響する練習</th></tr>
+<tr><td>モデリング環境</td><td>AVC（<code>PMEVC</code>）が現行。従来の <code>CU41</code> 系も併存するが、<b>どちらで作るかを先に決める</b>。移行時は Simplification List の確認が必須</td><td>全部（C0 で確認）</td></tr>
+<tr><td>設定 UI</td><td>AVC では特徴グループ＋Fiori アプリに置換という記載。著作権上画面名は自システムで確認（<code>PMEVC</code> → 特徴グループ）</td><td>练习②・③（<code>CU50</code> の代わり）</td></tr>
+<tr><td>価格・材料バリアント</td><td>AVC の価格キーは <code>MMCOM-VKOND</code> という記載、材料バリアントはスイッチ <code>VCHMOVMVAR</code>。受注時に構成が材料バリアントと一致すると<b>品目が差し替わり明細カテゴリも変わる</b>（varconf：<code>TAN</code>＝構成済みバリアント）</td><td>练习④・⑤</td></tr>
+</table>
+
+<h2 id="myths">12. 10 の誤解（面接・現場で必ず出る）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>誤解</th><th>正しい理解</th></tr>
+<tr><td>1</td><td>VC は生産形態のひとつ</td><td>VC は<b>構成エンジン</b>。生産形態は戦略グループ／库存区分で別に決める（25 / 82 / ETO）</td></tr>
+<tr><td>2</td><td><code>KMAT</code> は在庫になる</td><td>原則として <b><code>KMAT</code> は在庫管理されない</b>。在庫は構成品目／製造された実体（受注在庫 E など）で持つ</td></tr>
+<tr><td>3</td><td>特徴を品目に直接貼る</td><td>必ず<b>クラス（型 <code>300</code>）経由</b>。品目には分類ビューでクラスを割り当てる</td></tr>
+<tr><td>4</td><td>設定プロファイルは「設定画面の見た目」だけ</td><td>処理形式（BOM の扱い）と必須チェックを決める<b>設計の中枢</b>。ここを間違えると受注 BOM が出ない</td></tr>
+<tr><td>5</td><td>依存関係は 1 種類しかない</td><td><b>前提条件・選択条件・手続き・アクションの 4 種</b>で、貼る場所（適用先）が違う</td></tr>
+<tr><td>6</td><td>BOM は受注時に自動で作り直される</td><td><b>スーパー BOM を事前に作り、選択条件で絞る</b>方式。受注 BOM はそのコピー（＋手修正）</td></tr>
+<tr><td>7</td><td>加算価格は品目マスタに入れる</td><td>加算は <b>条件タイプ <code>VA00</code> ＋ 条件レコード</b>。特徴の追加データがキー（<code>VKOND</code>）になる</td></tr>
+<tr><td>8</td><td>設定を変えても製造は自動で追従する</td><td>変更には<b>再構成・再展開</b>が必要で、業務ルール（ロック・再計画）を決めなければ現場が壊れる（练习⑤）</td></tr>
+<tr><td>9</td><td>VC を入れれば品目マスタが減る</td><td>減るのは「<b>完成品の品目</b>」だけ。<b>特徴・クラス・依存関係・スーパー BOM という新しい設計資産が増える</b>（維持コストを認める）</td></tr>
+<tr><td>10</td><td>AVC にすれば全部よくなる</td><td>AVC は道具。良し悪しを決めるのは<b>特徴の粒度と依存関係の設計</b>。道具を変えても設計は自動で良くならない</td></tr>
+</table>
+
+<h2 id="sources">13. 出典（本页で使った事実の出どころ）</h2>
+<ul>
+  <li>SAP Help（S/4HANA On-Premise）<i>Advanced Variant Configuration</i>／<i>Variant Configuration (LO-VC)</i>（<i>Configurable Materials in Sales Documents</i>、BOM 展開レベル）。</li>
+  <li>SAP Help Portal（Support Content, varconf）<i>Configuration Profile</i>：機能グループ <code>CUCO</code>／<code>CUCP</code>。</li>
+  <li>SAP Help <i>Creating a Variant Condition for Pricing</i>；SAP KBA <b>1934081</b>（<code>VKOND</code> を参照する特徴値が <code>VA00</code> の変種条件行を決める）。</li>
+  <li>SAP Help <i>Special Settings for Production Orders</i>：戦略 <code>82</code> → <code>KMFA</code>／<code>201</code>／<code>PP04</code>（受注と指図 1:1、BOM 必須）。</li>
+  <li>varconf.com <i>Make-to-Order with SAP Variant Configuration: End-to-End Process</i>：必須設定の表、戦略 <code>25</code> → <code>KEK</code> → <code>046</code>、処理形式 3 種と受注 BOM の 2 副型、<code>$parent.&lt;CHAR&gt; = &lt;VALUE&gt;</code> による選択条件の評価、<code>MD50</code>・<code>KO88</code>、材料バリアントで明細カテゴリが <code>TAN</code>。</li>
+  <li>varconf.com（AVC 連載）：<i>Multi-Value to Pricing</i>（AVC の価格キー <code>MMCOM-VKOND</code>）／<i>AVC Characteristic Groups and Interface Design: The Fiori Way</i>（CU50 → 特徴グループ＋Fiori）／<i>SAP VC Material Variants</i>（<code>VCHMOVMVAR</code>）／<i>Solving SEND+MORE=MONEY with SAP AVC Constraints</i>（制約ネット <code>CU21</code>）。</li>
+  <li>SAP Community：<i>Variant Configuration tables</i>／<i>List of Tables for VC</i>（<code>CABN</code>・<code>CAWN</code>・<code>CAWNT</code>・<code>KLAH</code>・<code>KLAT</code>・<code>KSML</code>・<code>KSSK</code>・<code>AUSP</code>）、<i>When to use item categories TAC, TAM and TAQ</i>、<i>Planning Strategy 25 — Make-to-Order Production with Configuration</i>。</li>
+  <li>thesdvault.com <i>SAP SD Item Category Determination in S/4HANA — VOV4 &amp; VOV7</i>（<code>TAC</code> = Configurable material item）。</li>
+  <li>テーブル実在の確認：sapstack.com table details（<code>CABN</code>/<code>CAWN</code>/<code>CAWNT</code>/<code>KLAH</code>/<code>KLAT</code>/<code>KSML</code>/<code>KSSK</code>/<code>AUSP</code>/<code>CUOB</code>/<code>CUKB</code>/<code>CUKN</code>/<code>CUCO</code>/<code>TCLA</code>）。<b>項目構成はリリース依存</b>。</li>
+</ul>
+
+<div class="box info"><b class="t">下一步</b> → <a href="config.html">配置手顺 C0〜C16</a> ／ → <a href="handson-1.html">练习① 特徴とクラスの設計</a></div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA バリアント設定付き受注生産（VC / AVC）实战训练站</h5><p>概念与设计：構成要素 6 つ・依存関係 4 種と適用先・スーパー BOM と受注 BOM・設定値の流れ・変種価格・LO-VC と AVC・10 の誤解。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 特徴とクラス</a><br><a href="handson-2.html">② 設定可能品目とプロファイル</a><br><a href="handson-3.html">③ 依存関係とスーパー BOM</a><br><a href="handson-4.html">④ 受注で構成・製造・出荷</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="config.html">配置手顺</a><br><a href="worksheet.html">学员版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

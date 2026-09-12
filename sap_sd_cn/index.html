@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>总览 · SAP S/4HANA 中文实训站（全模块手顺 + 实机画面）</title>
+<meta name="description" content="SAP S/4HANA 中文实训站：依据 425 页教材文档 S4.docx 整理的 6 大模块 222 个任务手顺，含 IMG 路径、T-code、逐步操作与 1385 张实机画面截图；附讲师版、学员版、自测与排错页。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/s4cn.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">S4</span><span class="txt">中文实训站</span></a>
+    <nav class="main">
+      <a class="active" href="index.html">首页</a>
+      <a href="prep.html">准备</a>
+      <a href="fi.html">FI</a>
+      <a href="co.html">CO</a>
+      <a href="mm.html">MM</a>
+      <a href="pp.html">PP</a>
+      <a href="sd.html">SD</a>
+      <a href="tcode.html">T-code</a>
+      <a href="issues.html">排错</a>
+      <a href="tasks.html">索引</a>
+      <a href="instructor.html">讲师</a>
+      <a href="worksheet.html">学员</a>
+      <a href="quiz.html">自测</a>
+    </nav>
+  </div>
+</header>
+<div class="hero"><div class="hero-inner">
+  <div class="kicker">SAP S/4HANA · 全模块配置与操作 · 中文版 · 依据教材文档 <code>S4.docx</code>（1385 张内嵌图片 / 425 页）</div>
+  <h1>SAP S/4HANA 中文实训站</h1>
+  <p class="lead">本站把一份 425 页的中文 S/4HANA 教材文档（<code>S4.docx</code>）整理成可离线浏览的训练网站：
+  <b>6 大模块 · 222 个任务 · 879 个手顺步骤 · 1369 张实机操作画面</b>。
+  每个任务都给出<b>原文档的 IMG 后台菜单路径</b>、<b>文档中出现的 T-code</b>、<b>逐步手顺</b>，
+  以及<b>原文档作者在真实系统里截取的中文界面画面</b>（红色方框是原作者标注的要填/要选的位置）。</p>
+  <p class="lead">覆盖范围：<b>准备工作（登录 / SPRO 后台）→ 财务会计 FI → 管理会计 CO → 物料管理 MM →
+  生产计划 PP → 销售与分销 SD</b>，并按原文档顺序保留从组织结构、主数据、配置参数一路做到业务操作与报表的完整链条。</p>
+  <div class="toc">
+    <a href="#what">1. 这个站是什么</a>
+    <a href="#scale">2. 规模与构成</a>
+    <a href="#route">3. 学习路线</a>
+    <a href="#cards">4. 六个模块</a>
+    <a href="#howto">5. 页面使用说明</a>
+    <a href="#tools">6. 配套页面（讲师/学员/自测）</a>
+    <a href="#truth">7. 关于画面与取值的说明</a>
+    <a href="#sisters">8. 同目录的姊妹站</a>
+  </div></div></div>
+<div class="wrap">
+<main class="page"><article>
+<h2 id="what">1. 这个站是什么</h2>
+<p>这不是一份「概念讲义」，而是一份<b>照着能做出来的操作手册</b>。原文档 <code>S4.docx</code> 的形态是
+「一段文字说明 + 一串实机截图」，作者（原文档署名「马老师学习笔记」）把每个配置点和每笔业务都用画面记了下来。
+本站保留了这个形态，并补上三样原文不方便检索的东西：</p>
+<ul>
+<li><b>IMG 后台路径单独抽出来</b>（原文档中 203 个任务给出了菜单路径），可以点击复制，直接照着在 SPRO 里点；</li>
+<li><b>T-code 单独抽出来</b>（87 个任务的正文里出现了事务代码），汇总成 <a href="tcode.html">T-code / IMG 路径速查</a>；</li>
+<li><b>任务索引 + 过滤</b>（<a href="tasks.html">222 个任务</a>），可以按模块或关键词（任务名、T-code）筛选。</li>
+</ul>
+<div class="box info"><b class="t">原始素材的形态</b>
+原文档是「配置手册式」的：说明偏短，重点在画面上。所以本站的每个手顺步骤 = <b>原文的说明 + 该步骤对应的画面</b>；
+原文没写文字、只放了画面的步骤，本站标注为「按上一屏继续操作（画面 N）」，不做臆测补充。</div>
+<h2 id="scale">2. 规模与构成</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>模块</th><th>任务</th><th>手顺步骤</th><th>实机画面</th><th>后台 / 前台（原文档标注）</th></tr></thead><tbody><tr><td><a href="prep.html">准备工作 — 登录系统与进入后台</a></td><td>2</td><td>5</td><td>5</td><td>0 / 0</td></tr><tr><td><a href="fi.html">财务会计 FI（Financial Accounting）</a></td><td>45</td><td>181</td><td>304</td><td>7 / 0</td></tr><tr><td><a href="co.html">管理会计 CO（Controlling）</a></td><td>34</td><td>126</td><td>206</td><td>3 / 1</td></tr><tr><td><a href="mm.html">物料管理 MM（Materials Management）</a></td><td>42</td><td>168</td><td>254</td><td>24 / 8</td></tr><tr><td><a href="pp.html">生产计划 PP（Production Planning）</a></td><td>51</td><td>220</td><td>297</td><td>8 / 17</td></tr><tr><td><a href="sd.html">销售与分销 SD（Sales and Distribution）</a></td><td>48</td><td>179</td><td>303</td><td>29 / 7</td></tr></tbody><tfoot><tr><th>合计</th><th>222</th><th>879</th><th>1369</th><th>—</th></tr></tfoot></table></div>
+<div class="grid cards">
+  <div class="card"><b>1385</b><span>原文档内嵌图片总数</span></div>
+  <div class="card"><b>1369</b><span>本站收录的画面引用</span></div>
+  <div class="card"><b>1209</b><span>去重后的图片文件</span></div>
+  <div class="card"><b>20.7 MB</b><span>图片体积（离线可用）</span></div>
+</div>
+<p>原文档内嵌 1385 张图片中，有 7 张是图标/装饰（尺寸 90×14 以下），不构成操作画面，本站已排除；其余 1369 处引用全部保留（同一张图在多个步骤复用时只存一份文件）。每张图下方都标注了<b>原文档文件名</b>（如 <code>image1301.png</code>）与像素尺寸，方便与 Word 原文逐张核对。</p>
+<h2 id="route">3. 学习路线</h2>
+<p>原文档的顺序本身就是一条可执行的路线 —— 从「建公司」开始，依次把财务、成本、物料、生产、销售的
+组织结构与主数据配好，再跑业务。建议按下面的顺序走，不要跳：</p>
+<div class="grid cards"><div class="card"><b>1　准备</b><span>先把客户端连上、学会进 SPRO 后台</span><span class="dim">后面所有配置都在 SPRO 里点，先熟悉这个入口。</span><a href="prep.html">进入 准备 →</a></div><div class="card"><b>2　FI</b><span>财务会计 FI（组织结构 → 科目 → 凭证 → 应收应付 → 报表）</span><span class="dim">FI 的组织结构（公司代码/科目表/会计年度）是 CO、MM、SD 的公共前提。</span><a href="fi.html">进入 FI →</a></div><div class="card"><b>3　CO</b><span>管理会计 CO（成本控制范围 → 成本中心 → 成本要素/作业类型 → 分配分摊 → 内部订单）</span><span class="dim">CO 依赖 FI 的科目与公司代码，放在 FI 之后最顺。</span><a href="co.html">进入 CO →</a></div><div class="card"><b>4　MM</b><span>物料管理 MM（工厂/采购组织 → 物料主数据 → 自动记账 → MRP → 采购流程）</span><span class="dim">MM 是 PP 和 SD 的数据来源：物料主数据、工厂、库存地点。</span><a href="mm.html">进入 MM →</a></div><div class="card"><b>5　PP</b><span>生产计划 PP（BOM/工作中心/工艺路线 → 成本估算 → MRP → 生产订单 → 结算）</span><span class="dim">PP 要用到 MM 的物料与采购，也用到 CO 的成本要素与作业类型。</span><a href="pp.html">进入 PP →</a></div><div class="card"><b>6　SD</b><span>销售与分销 SD（销售范围 → 定价/税 → 主数据 → 报价→订单→交货→发票）</span><span class="dim">SD 处在最后：它消费前面配好的物料、客户、会计科目与更新组。</span><a href="sd.html">进入 SD →</a></div></div>
+<h2 id="cards">4. 六个模块</h2>
+<div class="grid cards"><div class="card"><b>准备 · 准备工作 — 登录系统与进入后台</b><span>准备工作 · 客户端登录 · SPRO 后台入口</span><span class="dim">2 个任务 · 5 步 · 5 张画面</span><span class="tags"></span><a href="prep.html">打开模块手顺 →</a></div><div class="card"><b>FI · 财务会计 FI</b><span>财务会计 · 组织结构 · 科目主数据 · 应收应付 · 财务报表</span><span class="dim">45 个任务 · 181 步 · 304 张画面</span><span class="tags"><span class="tag gray">FS00</span> <span class="tag gray">FB50</span> <span class="tag gray">FB03</span> <span class="tag gray">FS10N</span> <span class="tag gray">FD01</span> <span class="tag gray">FK01</span> <span class="tag gray">FB70</span> <span class="tag gray">FD10N</span></span><a href="fi.html">打开模块手顺 →</a></div><div class="card"><b>CO · 管理会计 CO</b><span>管理会计 · 成本中心 · 成本要素 · 作业类型 · 分配分摊 · 内部订单</span><span class="dim">34 个任务 · 126 步 · 206 张画面</span><span class="tags"><span class="tag gray">OX19</span> <span class="tag gray">OKEON</span> <span class="tag gray">KA01</span> <span class="tag gray">KA06</span> <span class="tag gray">KL01</span> <span class="tag gray">KP26</span> <span class="tag gray">FB60</span> <span class="tag gray">FB50</span></span><a href="co.html">打开模块手顺 →</a></div><div class="card"><b>MM · 物料管理 MM</b><span>物料管理 · 组织结构 · 物料主数据 · 自动记账 · MRP · 采购流程</span><span class="dim">42 个任务 · 168 步 · 254 张画面</span><span class="tags"><span class="tag gray">MM60</span> <span class="tag gray">MK01</span> <span class="tag gray">ME11</span> <span class="tag gray">MM02</span> <span class="tag gray">FS00</span> <span class="tag gray">MD03</span> <span class="tag gray">MD04</span> <span class="tag gray">ME51N</span></span><a href="mm.html">打开模块手顺 →</a></div><div class="card"><b>PP · 生产计划 PP</b><span>生产计划 · BOM · 工作中心 · 工艺路线 · 成本估算 · 生产订单</span><span class="dim">51 个任务 · 220 步 · 297 张画面</span><span class="tags"><span class="tag gray">CS01</span> <span class="tag gray">CS15</span> <span class="tag gray">CR11</span> <span class="tag gray">CR01</span> <span class="tag gray">KP26</span> <span class="tag gray">CA01</span> <span class="tag gray">CA02</span> <span class="tag gray">PC01</span></span><a href="pp.html">打开模块手顺 →</a></div><div class="card"><b>SD · 销售与分销 SD</b><span>销售与分销 · 销售范围 · 定价 · 合作伙伴 · 销售流程 · 开票</span><span class="dim">48 个任务 · 179 步 · 303 张画面</span><span class="tags"><span class="tag gray">RVAA01</span> <span class="tag gray">MM01</span> <span class="tag gray">VK11</span> <span class="tag gray">VD01</span> <span class="tag gray">VD02</span> <span class="tag gray">VA21</span> <span class="tag gray">VL01N</span> <span class="tag gray">VF01</span></span><a href="sd.html">打开模块手顺 →</a></div></div>
+<h2 id="howto">5. 页面使用说明</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>页面上看到的</th><th>含义</th></tr></thead><tbody>
+<tr><td><span class="fb">后台</span> / <span class="fb img">前台</span></td><td>原文档标注的配置/操作性质：后台 = IMG 定制（SPRO），前台 = 日常业务事务。没有标注的任务原文未说明，请按任务名判断。</td></tr>
+<tr><td><b>IMG 路径（后台菜单）</b></td><td>原文档给出的菜单层级，已用 <code>→</code> 归一化分隔；点击可复制。</td></tr>
+<tr><td><span class="tc">T-code</span></td><td>该任务正文里出现的事务代码（原文档中作者直接给出的）。</td></tr>
+<tr><td><b>手顺步骤（编号圆点）</b></td><td>原文的顺序片段：一步 = 一段说明 + 该步骤的画面。含义不明的「按上一屏继续操作」= 原文只有画面没有文字。</td></tr>
+<tr><td><b>画面 N</b></td><td>该截图在原文档中的出现序号（1 起），可用它与 Word 原文对照。</td></tr>
+<tr><td><b>教材笔记 / 原理说明 / 踩坑提醒</b></td><td>原文档中「马老师学习笔记」以及「解释：…」类文字，本站按性质分色呈现；含报错的另见 <a href="issues.html">排错与踩坑</a>。</td></tr>
+<tr><td>点击画面</td><td>打开灯箱放大：1× / 2× / 3×，ESC 关闭。另存图片可直接用于讲义。</td></tr>
+</tbody></table></div>
+<h2 id="tools">6. 配套页面（讲师 / 学员 / 自测）</h2>
+<div class="grid cards">
+<div class="card"><b>任务索引（222 个任务）</b><span><a href="tasks.html">tasks.html</a> — 按模块或关键词（任务名 / T-code）过滤，点进任意任务的手顺。</span></div>
+<div class="card"><b>T-code 与 IMG 路径速查</b><span><a href="tcode.html">tcode.html</a> — 文档中出现的全部事务代码 + 203 条后台菜单路径。</span></div>
+<div class="card"><b>排错与踩坑</b><span><a href="issues.html">issues.html</a> — 原文档记录的报错现象与处理办法（税码 J1/FS217、评估类与 BSX、OBYC、VL01N 日期、CK11N/CK24 等）。</span></div>
+<div class="card"><b>讲师版</b><span><a href="instructor.html">instructor.html</a> — 授课路线、时间安排、讲解顺序、必出问答与评分建议。</span></div>
+<div class="card"><b>学员版（记入表）</b><span><a href="worksheet.html">worksheet.html</a> — 222 个任务的打勾进度表 + 自己系统里的取值记录栏，可直接打印。</span></div>
+<div class="card"><b>自测（30 题）</b><span><a href="quiz.html">quiz.html</a> — 覆盖 T-code、后台路径、前后台判断与排错的自动评分测验，75% 为合格线。</span></div>
+</div>
+<h2 id="truth">7. 关于画面与取值的说明</h2>
+<div class="box ok"><b class="t">画面是实机截图，不是示意图</b>
+本站所有操作画面都是原教材文档 <code>S4.docx</code> 中作者在真实 S/4HANA 系统里截取的中文界面画面，
+本站只做抽取与排版，没有重绘、没有生成、也没有模拟。原始文件名（<code>imageNNN.png</code>）在图注中保留，
+可与 Word 原文逐张对照。</div>
+<div class="box warn"><b class="t">示例值属于原作者的教材环境</b>
+公司代码 <code>C999</code>、公司名「颐宁机械有限公司」、工厂 <code>F999</code>、库存地点 <code>P999</code>、
+物料 <code>R999-100</code> / <code>T999-100</code> / <code>F999-100</code>、客户 <code>K001</code> / <code>K002</code>、
+成本中心「行政部 / 制造部」、财务报表版本 <code>F999</code> 等，都是原文档作者在自己系统里建的示例数据。
+<b>操作顺序与配置点可以照搬，编号与名称请换成你自己系统里的值</b>；报错消息也可能因版本/语言/客户化而不同。</div>
+<div class="box info"><b class="t">本站不做的一件事</b>
+本站不臆造原文档没有的内容：标准值、表名、字段名、SAP Note 编号若原文档未给出，这里也不会补。
+需要精确的字段清单时，请在系统里用 F1（字段帮助）/ F4（可能值）与 SPRO 的「文档」按钮确认。</div>
+<h2 id="sisters">8. 同目录的姊妹站</h2>
+<p>本机 <code>~/Desktop/work/training/</code> 下还有一套<b>日文语境的专题实训站</b>（MTO / ETO / MTS / VC / 受注形態比較 / SD 受注処理），
+它们各自聚焦一个业务形态、带完整配置手顺与练习；本站是<b>中文版的全模块手册站</b>，覆盖面更广、画面全部来自真实系统。</p>
+<ul>
+<li><a href="../index.html">训练站总览（hub，日文语境）</a> — 各专题站的入口与学习路线。</li>
+<li>若只想练「一笔受注怎么从报价走到开票」，专题站更聚焦；若要先具备「有哪些配置点、在哪里配」的全貌，从本站开始。</li>
+</ul>
+</article></main>
+</div>
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA 中文实训站 — 全模块配置与操作手顺 · 实机画面</h5>
+  <p>内容依据同目录教材文档 <code>S4.docx</code>（425 页 · 6 大模块 · 222 个任务 · 1385 张实机截图）整理。全部页面可离线打开，无外部依赖。</p>
+  <div><h5>关于画面</h5><p>站内所有截图都是<b>原教材文档中的实机画面</b>（中文界面 SAP GUI），不是示意图、也不是模拟生成图；文件名保留原文档编号以便与 Word 原文对照。文档中的示例值（公司代码 <code>C999</code>、工厂 <code>F999</code>、物料 <code>R999-100</code> 等）属于原作者的教材环境，请以自己系统的组织结构与编号范围为准。</p></div></div>
+  <div class="cols">
+    <div><h5>模块</h5>
+      <a href="prep.html">准备 — 准备工作 — 登录系统与进入后台</a><br>
+      <a href="fi.html">FI — 财务会计 FI</a><br>
+      <a href="co.html">CO — 管理会计 CO</a><br>
+      <a href="mm.html">MM — 物料管理 MM</a><br>
+      <a href="pp.html">PP — 生产计划 PP</a><br>
+      <a href="sd.html">SD — 销售与分销 SD</a><br>    </div>
+    <div><h5>全站</h5>
+      <a href="prep.html">准备</a><br>
+      <a href="fi.html">FI</a><br>
+      <a href="co.html">CO</a><br>
+      <a href="mm.html">MM</a><br>
+      <a href="pp.html">PP</a><br>
+      <a href="sd.html">SD</a><br>
+      <a href="tcode.html">T-code</a><br>
+      <a href="issues.html">排错</a><br>
+      <a href="tasks.html">索引</a><br>
+      <a href="instructor.html">讲师</a><br>
+      <a href="worksheet.html">学员</a><br>
+      <a href="quiz.html">自测</a><br>    </div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/s4cn.js"></script>
+</body>
+</html>

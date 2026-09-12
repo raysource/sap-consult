@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>讲师版 解答与進め方 · SAP S/4HANA 受注設計生産（ETO）实战训练站</title>
+<meta name="description" content="ETO 实训的讲师版：時間割、事前準備、板書用の 4 点セットと決定链、配置 C0〜C16 の解答と採点ポイント、練習①〜⑤ の期待値、必出 Q&A、故障の教え方、評価基準。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/eto.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">ETO</span><span class="txt">受注設計生産 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①项目</a>
+      <a href="handson-2.html">②计划·MRP</a>
+      <a href="handson-3.html">③执行·入库</a>
+      <a href="handson-4.html">④出荷·请求</a>
+      <a href="handson-5.html">⑤发展·故障</a>
+      <a class="active" href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 讲师版 解答与進め方</div>
+<main class="page"><article>
+
+<h1>讲师版：解答・採点ポイント・進め方</h1>
+<div class="box warn"><b class="t">配布の注意</b>本ページは<b>講師用（解答つき）</b>です。受講者には <a href="worksheet.html">学员版ワークシート</a> を配布してください。
+Excel <span class="mono">SD受注設計生産ETO_要件定義・手順書.xlsx</span> の <span class="mono">10_講師用ガイド</span> にも同内容を収録。</div>
+
+<div class="toc">
+  <a href="#plan">1. 時間割</a>
+  <a href="#prep">2. 事前準備</a>
+  <a href="#board">3. 板書用（4 点セットと決定链）</a>
+  <a href="#ans-cfg">4. 配置の解答と採点ポイント</a>
+  <a href="#ans-flow">5. 練習の解答（期待値）</a>
+  <a href="#qa">6. 必出質問 Q&A</a>
+  <a href="#teach">7. 故障の教え方</a>
+  <a href="#grade">8. 評価基準</a>
+  <a href="#next">9. 発展の導線</a>
+</div>
+
+<h2 id="plan">1. 時間割</h2>
+<table class="tbl wide">
+<tr><th>形態</th><th>時間割</th><th>要点</th></tr>
+<tr><td><b>3 日版（標準）</b></td><td>Day1：概念 75 分 → 配置 C0〜C16 180 分／Day2：練習①〜② 165 分／Day3：練習③〜④ 135 分 → 練習⑤ 120 分 → テスト 30 分</td><td>PS は「プロファイル」に慣れるまでが山。C5〜C9 に時間を配分する</td></tr>
+<tr><td>2 日版（短縮）</td><td>概念 60 分（4 点セットと E/Q の違いのみ）→ 配置は C2・C5・C9・C10・C11 に絞り 120 分 → 練習①〜④ を講師デモ併用 300 分 → テスト 30 分</td><td>練習⑤ と予算・結果分析は宿題／発展に回す</td></tr>
+<tr><td>1 日デモ版</td><td>講師デモで 受注（WBS 割当）→ 計画手配（WBS/Q）→ 入庫 → 出荷 → 請求 → CJI3 だけを見せる（150 分）</td><td>見せる画面は CJ20N / MD04 / MMBE / VL03N / VF03 / CJI3 の 6 つに絞る</td></tr>
+</table>
+
+<h2 id="prep">2. 事前準備チェック（講師・前日までに）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>準備</th><th>完了条件</th></tr>
+<tr><td>1</td><td>受注〜入庫〜出荷〜請求が通るプロジェクトを 1 本用意（または受講者が作る前提で環境だけ整える）</td><td>講師アカウントで CJ20N→MD51→CO40→MIGO→VL01N→VF01 が通しで完了</td></tr>
+<tr><td>2</td><td>品目 <code>ZETO-FG01</code> の MRP4 個別所要量・MRP3 戦略グループ（Q 系）を整備</td><td><code>MM03</code> で確認済み、または「受講者に実測させる」運営方針を決めておく</td></tr>
+<tr><td>3</td><td>WBS を割り当てられる明細カテゴリを事前調査（On-Premise は環境差が大きい）</td><td><code>VA01</code> の明細に WBS 項目が出る明細カテゴリを 1 つ以上特定（無ければ ZETO 明細カテゴリを用意）</td></tr>
+<tr><td>4</td><td>プロジェクトプロファイル（予算プロファイル・決済パラメータ含む）を用意</td><td><code>CJ20N</code> で選択でき、<code>CJ30</code> で予算投入できる</td></tr>
+<tr><td>5</td><td>練習環境のリセット手順（受注取消・指図削除・在庫戻し・依頼の差戻し）</td><td>受講者が失敗しても 15 分でやり直せる</td></tr>
+<tr><td>6</td><td>ワークシート印刷＋Excel 配布</td><td>人数分</td></tr>
+</table>
+
+<h2 id="board">3. 板書用：4 点セットと決定链（これ 1 枚で全体が説明できる）</h2>
+<pre class="vals">【プロジェクト在庫 Q 成立の 4 点セット】
+ ① プロジェクト定義：評価付プロジェクト在庫 = ON      （CJ20N）
+ ② 品目マスタ MRP4 ：個別所要量のみ（個別所要量品目）  （MM02）
+ ③ 品目マスタ MRP3 ：戦略グループ → 所要量クラス（評価区分 M）  （MM02 / OPPJ / OVZG）
+ ④ 受注明細        ：WBS 要素（請求要素）を割当       （VA01/VA02）
+        ↓ どれか欠けると「Q にならない／金額が付かない／収益が WBS に出ない」
+
+【決定链】
+ プロジェクト(WBS) → 受注明細の WBS → 需要（得意先所要量） → MRP（MD50/MD51/MD01N）
+   → 計画手配（勘定設定 = WBS・在庫区分 = Q） → 製造指図（CO40/CO08）
+   → 261 部品出庫 / CO11N 実績 → 101 入庫 → プロジェクト在庫 Q（MSPR）
+   → 出荷（在庫区分 Q）→ 601 出庫確認 → 請求（請求計画/出来高）
+   → WBS へ 収益（請求要素 .1）・原価（勘定設定要素 .2）
+   → 進捗（CNE1）→ 結果分析（KKA2）→ WIP（KKAX）→ 決済（CJ88 / 指図 KO88 / 受注 VA88）→ FI</pre>
+<div class="box ok"><b class="t">受講者に必ず口頭で言う 3 点</b>
+① ETO は「<b>Q（プロジェクト在庫）</b>」、MTO は「<b>E（受注在庫）</b>」——在庫の帰属先が違う（表も <code>MSPR</code> と <code>MSKA</code>）。<br>
+② 収益は<b>請求要素</b>、原価は<b>勘定設定要素</b>。<code>CJI3</code> に出ないときはこの 2 つを確認。<br>
+③ 標準値は環境依存 → <b>戦略グループ（Q 系か）・WBS を割り当てられる明細カテゴリ</b>は必ず実機で確認（Cloud は <code>6GD</code> の <code>E2</code>/<code>E21</code>）。</div>
+
+<h2 id="ans-cfg">4. 配置の解答と採点ポイント（C0〜C16）</h2>
+<table class="tbl wide">
+<tr><th>STEP</th><th>本練習の解答（設定値）</th><th>採点ポイント／よくある間違い</th></tr>
+<tr><td>C0</td><td><code>CJ20N</code> でプロジェクト作成・WBS 採番可、販売エリア 1000/10/00、得意先 1000</td><td>PS の権限不足（<code>CJ20N</code>/<code>CJ30</code>/<code>CJ88</code>）で初日に詰まる。<b>事前に開かせる</b></td></tr>
+<tr><td>C1</td><td>部品 RM01 100 / RM02 500（MRP4 は空のまま）</td><td>部品まで個別所要量にする誤り。<b>部品は自由在庫</b>と明確に区別させる</td></tr>
+<tr><td>C2</td><td><code>ZETO-FG01</code>：PD / EX / E、<b>MRP4 個別所要量のみ</b>、<b>MRP3 戦略グループ（Q 系）</b>、販売組織2 0001</td><td>「戦略グループが見つからない」＝環境差の典型。ここで<b>探し方（OPPJ→OPPS→OVZG）</b>を教える。値の暗記は採点しない</td></tr>
+<tr><td>C3</td><td>BOM RM01×2・RM02×8 / ZETO_WC01 / 工程 0010</td><td>BOM 無しで進めると 261 と構成品目で詰まる</td></tr>
+<tr><td>C4</td><td>PR00 = 5,000,000 JPY（得意先 1000 × ZETO-FG01）</td><td>ETO は案件単価なので「条件＋手動変更」の運用議論を挟むと理解が深い</td></tr>
+<tr><td>C5</td><td>プロジェクトプロファイル（例 <code>ZETO01</code>）＋ 番号範囲・コーディングマスク・プロジェクトタイプ（<code>SM30: V_TCJ1</code>）</td><td>「プロファイルが PS の制御盤」と最初に叩き込む。トラブル時は必ずここへ戻る</td></tr>
+<tr><td>C6</td><td>ステータスプロファイル（標準）と「解放」の意味</td><td>解放しないと実績が計上できない等の因果を実機で見せる</td></tr>
+<tr><td>C7</td><td>ネットワークタイプ/プロファイル/番号範囲、<code>CN21</code> で作成可</td><td>「ネットワークは必須ではない」ことを明言（無しでも ETO は成立）</td></tr>
+<tr><td>C8</td><td>予算プロファイル + <code>CJ30</code>（元予算）→ <code>CJ32</code>（解放）→ <code>CJBV</code>（可用性管理）</td><td>予算と計画の違いを混同する。「予算＝統制、計画＝予実の基準」</td></tr>
+<tr><td>C9</td><td>プロジェクト定義の<b>評価付プロジェクト在庫 = ON</b>、WBS <code>.1</code> 請求要素 / <code>.2</code> 勘定設定要素</td><td><b>最重要</b>。受講者自身にフラグと WBS 種別を言わせる。後から変えるのは避ける</td></tr>
+<tr><td>C10</td><td>受注明細に WBS を割当。使用した明細カテゴリを記録（Cloud は <code>CBAO</code> 系のみ）</td><td>「実測して決める」ことを体験させる。<code>VOV7</code> の該当項目を読ませる</td></tr>
+<tr><td>C11</td><td>請求計画 30%（1,500,000）+ 70%（3,500,000）、請求タイプ F2、<code>VTFL</code></td><td>請求計画の日付と請求日の整合（KBA 2763512）</td></tr>
+<tr><td>C12</td><td>決済：WBS <code>CJ88</code>/<code>CJ8G</code>、指図 <code>KO88</code>、受注 <code>VA88</code>、決済ルール <code>CJB1/CJB2</code></td><td>3 つの決済対象を混同しがち。<b>対象ごとに T-code が違う</b>ことを板書</td></tr>
+<tr><td>C13</td><td>結果分析キー/収益認識キー、<code>KKA2</code>/<code>KKAJ</code>、<code>KKAX</code>、カットオフ <code>KKA0P</code></td><td>「進捗を入れるだけでは収益は立たない」を実機で見せる</td></tr>
+<tr><td>C14</td><td><code>MD51</code>（プロジェクト）/<code>MD50</code>（受注）/<code>MD01N</code>、結果は <code>MD04</code></td><td>計画手配の<b>勘定設定 = WBS・在庫区分 = Q</b> を必ず確認させる</td></tr>
+<tr><td>C15</td><td>261 / 101 / 601、<code>MMBE</code> のプロジェクト在庫、<code>SE16N: MSPR</code></td><td><code>MSPR</code>（Q）と <code>MSKA</code>（E）の違いを表で見せると記憶に残る</td></tr>
+<tr><td>C16</td><td>Public Cloud：<code>6GD</code>・戦略グループ <code>E2</code>・所要量タイプ <code>E21</code>・明細カテゴリは交付済みのみ</td><td>差異表の各行を「Cloud 顾问として答えられるか」で確認</td></tr>
+</table>
+
+<h2 id="ans-flow">5. 練習の解答（期待値の要点）</h2>
+<table class="tbl wide">
+<tr><th>練習</th><th>期待値（解答の要点）</th><th>採点のポイント</th></tr>
+<tr><td>① 項目与受注</td><td><code>ZETO-1000</code> + WBS <code>.1/.2/.3</code>、評価付在庫 ON、<code>.1</code> が請求要素、計画（CJ40/CJ42）、予算（CJ30/CJ32）、受注明細に WBS、請求計画 30/70</td><td><b>「評価付フラグ」「請求要素」「明細の WBS」の 3 点を口頭で言わせる</b>。所要量タイプが Q 系であることを実測したか</td></tr>
+<tr><td>② 计划・MRP</td><td>計画手配 1 PC・勘定設定 = WBS <code>.2</code>・在庫区分 = Q → 製造指図（WBS 参照・部品予約 2/8・入庫先 Q）</td><td>「自由在庫の手配」「勘定設定が空」を見つけられるか。切分话术（SD/PP/個別所要量）を言えるか</td></tr>
+<tr><td>③ 执行・入库</td><td>261 で部品 98/492、CNF、101 で <b>プロジェクト在庫 Q = 1 式・自由在庫 0</b>、<code>MSPR</code> に SOBKZ=Q、<code>CJI3</code> に実績</td><td><b>「自由在庫 0」を必ず確認させる</b>。表（MSPR）まで見たかを評価</td></tr>
+<tr><td>④ 出荷・请求</td><td>出荷明細の在庫区分 Q → PGI 601 で Q 在庫 0 → 請求（請求計画）→ <b>CJI3 で収益は <code>.1</code>、原価は <code>.2</code></b> → 伝票フロー全リンク</td><td>CJI3 の 2 行（収益/原価）を自分で見つけられたら満点。<code>FB03</code> の借貸方向も</td></tr>
+<tr><td>⑤ 发展与故障</td><td>進捗→結果分析→WIP→決済（<code>KO88</code>/<code>CJ88</code>）、予算可用性管理の警告/エラー、出来高請求 or ネットワーク運用、故障 18 項から 1 件以上の言語化</td><td>「決済前後で <code>CJI3</code> がどう変わったか」を説明できれば合格。<b>操作だけでは評価しない</b></td></tr>
+</table>
+
+<h2 id="qa">6. 必出質問 Q&A（模範回答つき）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>質問</th><th>模範回答</th></tr>
+<tr><td>1</td><td>ETO でも受注在庫（E）ではだめですか？</td><td>だめです。E は受注明細、Q は WBS に帰属します。ETO は「案件（プロジェクト）単位で在庫・原価・収益を管理する」ことが目的なので Q を使います（表も <code>MSKA</code> と <code>MSPR</code>）</td></tr>
+<tr><td>2</td><td>受注したらプロジェクトが自動作成されませんか？</td><td>SAP 標準にはありません。<code>CJ20N</code> で作成し、受注明細に WBS を割り当てます。自動化するなら BAdI や外部連携の実装が必要です</td></tr>
+<tr><td>3</td><td>プロジェクト在庫の金額が入りません</td><td>4 点セットの ① と ③ を疑ってください。プロジェクト定義の<b>評価付プロジェクト在庫</b>、そして戦略グループが指す所要量クラスの<b>評価区分（M）</b>。会計ビューの評価クラスも確認します</td></tr>
+<tr><td>4</td><td>受注明細に WBS 欄が出ません</td><td>明細カテゴリが WBS 割当を許していないためです。Cloud は <code>CBAO</code>（マイルストーン請求計画）などの交付済み明細カテゴリから選びます。On-Premise は <code>VOV7</code> を確認し、必要ならコピーして作成します</td></tr>
+<tr><td>5</td><td>戦略グループの E2 が見つかりません</td><td>Cloud ではスコープアイテム <b>6GD</b> の活性後に利用可能になります（KBA 3623492）。On-Premise は環境により値が異なるので、<code>OPPJ</code>/<code>OPPS</code>/<code>OVZG</code> で自システムの ETO 用戦略を特定してください</td></tr>
+<tr><td>6</td><td>ネットワークは必須ですか？</td><td>必須ではありません。製造は製造指図（<code>CO40/CO08</code>）で回せます。ネットワークは設計・据付・外注を含めた工程管理と工数集計（<code>CN25</code>）、進捗の材料として使います</td></tr>
+<tr><td>7</td><td>予算を入れないと実績は出ませんか？</td><td>出ます。予算は可用性管理（超過の抑止）と予実比較のためのものです。ただし予算が「解放」されていないと発注・指図が止まることがあります</td></tr>
+<tr><td>8</td><td>請求したのに CJI3 に収益が出ません</td><td>受注明細が指す WBS が<b>請求要素</b>になっていない可能性が高いです。<code>CJ20N</code> の WBS フラグと <code>VA03</code> の明細（WBS）を確認してください</td></tr>
+<tr><td>9</td><td>CJI3 に原価が出ません</td><td>指図・発注の<b>勘定設定</b>が WBS になっていない可能性。計画手配の時点で勘定設定 = WBS だったかを <code>MD04</code> で遡って確認します（<code>COEP</code> でも確認可）</td></tr>
+<tr><td>10</td><td>決済はどれを実行すればよいですか？</td><td>対象ごとに違います：製造指図 <code>KO88</code>、得意先受注 <code>VA88</code>、WBS <code>CJ88</code>（一括 <code>CJ8G</code>）。まず決済ルール（<code>CJB2</code>）があるかを確認します</td></tr>
+<tr><td>11</td><td>POC（工事進行基準）で収益を立てたい</td><td>進捗（<code>CNE1</code>）→ 結果分析（<code>KKA2</code>）で計算されます。収益認識キー・結果分析キー、カットオフ期間の設定が前提です。Cloud はイベントベース収益認識になる場合があります</td></tr>
+<tr><td>12</td><td>Public Cloud で同じ練習はできますか？</td><td>できません。Cloud は 6GD の Test Script に従います（明細カテゴリの新規作成不可、ネットワークの利用範囲も限定的）。本教材は機制理解と差異把握に使ってください</td></tr>
+</table>
+
+<h2 id="teach">7. 故障の教え方（4 分层の切り分け）</h2>
+<table class="tbl wide">
+<tr><th>層</th><th>問いかけ</th><th>見る画面 / T-code</th><th>ここで終わらせる結論</th></tr>
+<tr><td>① SD/WBS 層</td><td>受注明細に WBS が入り、需要が MD04 に出たか？</td><td><code>VA03</code> 明細（WBS・所要量タイプ）→ <code>MD04</code></td><td>出ない＝明細カテゴリ／戦略グループ／所要量転送</td></tr>
+<tr><td>② PS 層</td><td>手配の勘定設定が WBS、在庫区分が Q か？</td><td><code>MD04</code> 計画手配明細 → <code>MM03</code> MRP4/MRP3 → <code>CJ20N</code></td><td>違う＝個別所要量・評価付フラグ・戦略グループ（4 点セット）</td></tr>
+<tr><td>③ MM 層</td><td>Q 在庫ができて動いたか？</td><td><code>MMBE</code>／<code>MB52</code>／<code>SE16N: MSPR</code>／<code>MATDOC</code></td><td>できない＝指図/発注の勘定設定と入庫先（Q）</td></tr>
+<tr><td>④ CO 層</td><td>原価・収益が WBS に集まり、損益になったか？</td><td><code>CJI3</code>/<code>CJ31</code>/<code>CJI5</code> → <code>KKA2</code>/<code>KKAX</code> → <code>CJ88</code>/<code>CJIC</code></td><td>ならない＝請求要素・決済ルール・結果分析キー</td></tr>
+</table>
+<div class="box info"><b class="t">証跡として控えさせる T-code</b>
+<code>CJ20N</code>・<code>CJ03</code>・<code>VA03</code>・<code>MD04</code>・<code>CO03</code>・<code>MMBE</code>・<code>SE16N</code>（<code>PRPS</code>/<code>PLAF</code>/<code>AUFK</code>/<code>MSPR</code>/<code>COEP</code>/<code>MATDOC</code>）・<code>VL03N</code>・<code>VF03</code>・<code>CJI3</code>・<code>CJ31</code>・<code>FB03</code>。
+「症状／根因／証跡（T-code＋画面・表の行）」の 3 点で書かせます。</div>
+
+<h2 id="grade">8. 評価基準（3 観点）</h2>
+<table class="tbl wide">
+<tr><th>観点</th><th>配点</th><th>合格ライン</th><th>見方</th></tr>
+<tr><td>知識（選択問題）</td><td>40</td><td>28 題で 75% 以上（21 問）</td><td><a href="quiz.html">能力测试</a>。誤答分野（概念/配置/流程/故障）で戻るページを指示</td></tr>
+<tr><td>実技（証跡）</td><td>40</td><td><a href="worksheet.html">学员版チェックリスト</a>の全項目が証跡つき</td><td>プロジェクト ID・WBS・伝票番号・<code>MSPR</code> の行・<code>CJI3</code> の 2 行（収益/原価）</td></tr>
+<tr><td>言語化（説明力）</td><td>20</td><td>「Q の 4 点セット」と「収益＝請求要素／原価＝勘定設定要素」を資料なしで説明できる</td><td>用語の正確さ（プロジェクト在庫・個別所要量品目・請求要素・結果分析・決済）</td></tr>
+</table>
+<div class="box ok"><b class="t">フィードバック文例</b>
+「受注〜請求〜CJI3 まで通っています（証跡 OK）。次は<b>説明力</b>です。『このプロジェクトの需要は WBS からどう流れて、なぜプロジェクト在庫に入るのか』を、画面を開かずに 3 分で話してみてください。
+そのうえで『決済前後で CJI3 がどう変わったか』を説明できれば、ETO は卒業です。」</div>
+
+<h2 id="next">9. 発展の導線</h2>
+<table class="tbl wide">
+<tr><th>方向</th><th>追加で必要な知識</th><th>本教材から流用できる部分</th></tr>
+<tr><td>MTO（受注生産）との比較</td><td>E 特在（<code>MSKA</code>）・受注明細単位の管理・戦略グループ 20</td><td>決定链と 4 点セットの考え方（Q↔E を置き換えるだけ）→ 姉妹サイト <span class="mono">../sapmto/</span></td></tr>
+<tr><td>バリアント設定（VC）付き ETO</td><td>特徴/クラス・依存関係・設定プロファイル（<code>CU41</code>）・<code>CU50</code>・戦略 25/KEK</td><td>WBS 割当とプロジェクト在庫の扱いは同じ（品目カテゴリグループが変わるだけ）</td></tr>
+<tr><td>収益認識の深化</td><td>IFRS15・複数履行義務・契約資産/負債・イベントベース（Cloud 6GD）</td><td>進捗→結果分析→WIP→決済の流れ（练习⑤）</td></tr>
+<tr><td>EPPM / ポートフォリオ</td><td>ポートフォリオ管理・プロジェクトの財務/日程統合・Fiori アプリ</td><td><code>CJI3</code>/<code>CJ31</code>/<code>CJ20N</code> の読み方</td></tr>
+</table>
+
+<div class="box info"><b class="t">関連ページ</b><a href="config.html">配置手顺（C0〜C16）</a>／<a href="handson-5.html#trouble">故障対照表 18 項</a>／<a href="worksheet.html">学员版ワークシート</a>／<a href="quiz.html">能力测试</a></div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>受注設計生産（ETO）实战训练站</h5><p>讲师版：時間割・事前準備・4 点セット・解答と採点ポイント・必出 Q&A・故障の教え方・評価基準。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 項目と受注</a><br><a href="handson-2.html">② 計画・MRP</a><br><a href="handson-3.html">③ 実行・入庫</a><br><a href="handson-4.html">④ 出荷・請求</a><br><a href="handson-5.html">⑤ 発展・故障</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="worksheet.html">学员版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念与设计 · SAP SD 受注処理（Sales Order Processing）实战训练站</title>
+<meta name="description" content="受注処理の概念：伝票データの 4 つの源泉（主データ/既存伝票/Customizing/ABAP）、販売エリアの導出、主データからの提案、パートナー 4 役割、出荷プラントの自動提案（優先順位）、明細カテゴリ・納入日程行カテゴリの決定链、ヘッダと明細の関係、変更時の再決定（Redetermined/Unchanged）、ブロックの階層、不完全性・与信チェック、Sales Summary。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/sd.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">SD</span><span class="txt">受注処理 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a class="active" href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①受注登録</a>
+      <a href="handson-2.html">②伝票変更</a>
+      <a href="handson-3.html">③情報照会</a>
+      <a href="handson-4.html">④出荷と請求</a>
+      <a href="handson-5.html">⑤ツールと故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 概念与设计</div>
+<main class="page"><article>
+
+<h1>概念与设计 —— 受注伝票のデータはどこから来るのか</h1>
+<div class="box info"><b class="t">この頁の使い方</b>動画（<code>00:00</code>〜<code>21:35</code> と <code>32:52</code>〜<code>56:07</code>）のスライド内容を、全部 1 枚にまとめたものです。<b>13 節の見出しだけを先に読み、細部は練習中に戻って確認</b>してください。本站で最も重要な 2 つの暗記事項は <b>6 節の決定链</b>と <b>5 節の出荷プラントの優先順位</b>です。</div>
+<div class="toc">
+  <a href="#sources">1. 伝票データの 4 つの源泉</a>
+  <a href="#area">2. 販売エリアの導出</a>
+  <a href="#propose">3. 主データから何が提案されるか</a>
+  <a href="#partner">4. パートナー 4 役割と提案元</a>
+  <a href="#plant">5. 出荷プラントの自動提案</a>
+  <a href="#chain">6. 受注処理の決定链（明細カテゴリまで）</a>
+  <a href="#header">7. ヘッダ vs 明細（Business Data）</a>
+  <a href="#change">8. 変更と再決定</a>
+  <a href="#block">9. ブロックの階層</a>
+  <a href="#check">10. 保存時のチェック（不完全性・与信）</a>
+  <a href="#sis">11. 販売情報システム（Sales Summary）</a>
+  <a href="#tables">12. 主要テーブルと T-code</a>
+  <a href="#myths">13. よくある誤解</a>
+</div>
+<p style="font-size:14px;color:var(--muted)">全体像は以下の 1 本の図に集約されます。まずこれを眺めてから各節へ進んでください。</p>
+<pre class="vals">【受注伝票の決定链】—— VA01 で値を入れた瞬間に、裏でこの順に決まる
+
+ ① 組織・エリア
+   得意先 (1000) ────────────→ 販売エリア 1000 / 10 / 00
+   └ 得意先マスタの販売エリアビュー（複数あれば選択ダイアログ）
+
+ ② パートナー
+   得意先マスタ(販売エリア) ──→ パートナー機能 SP / BP / PY / SH
+   └ 出荷先（Ship-to）は受注ヘッダで変更可。与力先は与力データの基準
+
+ ③ 明細カテゴリ（ここが受注処理の心臓）
+   伝票タイプ (OR) ─────┐
+   品目カテゴリグループ ─┼─→ 明細カテゴリ (TAN)
+   品目使用目的 ────────┤
+   高レベル明細カテゴリ ─┘
+   └ 決定テーブル: VOV4（伝票タイプ×明細カテゴリの許可）→ 決定（VOV4/VOV7）
+
+ ④ 納入日程行カテゴリ → 所要量タイプ → 在庫確認（ATP）
+   明細カテゴリ ×（品目マスタの）所要量タイプ ─→ 納入日程行カテゴリ
+   └ 決定テーブル VOV5。所要量タイプが空＝所要量を作らない（在庫を持たない明細）
+
+ ⑤ 出荷プラント（優先順位あり）
+   客先品目情報 (VD51) → 得意先マスタ 出荷先の出荷プラント → 品目マスタ 販売組織1
+   └ 決定された出荷プラント → 出荷ポイント → 出荷タイプ（VL01N）
+
+ ⑥ 与力価格・税
+   価格決定手順（伝票タイプ×得意先/伝票の価格手順）→ 条件タイプ（PR00 / MWST / K007…）
+   └ 条件テーブル + アクセス順序 → 条件レコード（VK11/VK13）
+
+ ⑦ 保存時のチェック
+   不完全性チェック（Incompletion: 伝票タイプの手順 → グループ → 項目）
+   与信チェック（与信管理が有効な場合。与信区分・与信限度額と比較）
+</pre>
+<h2 id="sources">1. 伝票データの 4 つの源泉（Overview: Sources for Document Data）</h2>
+<p>動画の最初のスライドは「受注伝票のデータは 4 種類の源泉から来る」と宣言します。これが Unit 14 全体の地図です。</p>
+<table class="tbl wide">
+<tr><th>源泉</th><th>動画の例</th><th>本站での具体例（デモ値）</th><th>どこで確認するか</th></tr>
+<tr><td><b>① 主データ（Master data）</b></td><td>Customer master: plant, shipping condition<br>Material master: plant, loading group</td><td>得意先 <code>1000</code> の支払条件 <code>ZB01</code>・インコタームズ <code>FOB</code>（<b>実機デモでは <code>CIF Berlin</code></b>。<b>同じ項目が動画内で 2 通りに出る＝主データ依存の代表例</b>）<br>品目 <code>T-ATA30</code> の品目カテゴリグループと<b>出荷プラント <code>1200</code></b></td><td><code>XD03</code>（得意先）／<code>MM03</code>（品目）／<code>VK13</code>（条件）</td></tr>
+<tr><td><b>② 既存伝票データ（Existing document data）</b></td><td>The delivering plant at item level as the basis for determining the shipping point</td><td>受注明細の<b>出荷プラント</b>が、後続の<b>出荷ポイント</b>と<b>出荷タイプ</b>を決める（<code>VL01N</code> の入口）</td><td><code>VA03</code> の明細 → 出荷タブ／伝票フロー</td></tr>
+<tr><td><b>③ Customizing（IMG）</b></td><td>Sales document type: delivery block, shipping condition<br>Determination of shipping point</td><td>伝票タイプ <code>OR</code> の与信/納入/請求ブロック、明細カテゴリ決定、価格決定手順の割当</td><td><code>VOV8</code>／<code>VOV4</code>／<code>OVKK</code>／<code>SPRO</code></td></tr>
+<tr><td><b>④ ハードコード制御（Hard-coded controls / ABAP）</b></td><td>（例：出荷プラント決定時の優先度の重み付け）</td><td>USEREXIT 等で標準の決定順序を上書きできる（SAP Note <b>2787562</b> が言及）</td><td>原則として<b>見えない</b>。動きが標準と違うときは ABAP を疑う（講師に確認）</td></tr>
+</table>
+<div class="box warn"><b class="t">「値が入らない」ときの切り分けは、この 4 分類で行う</b>
+受注の項目が空／想定と違うときは、<b>①主データを見る → ②既存伝票を見る → ③Customizing を見る → ④それでも合わなければ ABAP を疑う</b>の順で追います。逆順（いきなり Customizing を触る）は<b>一番やってはいけない順番</b>です。練習⑤の故障対照表はこの順序で書いてあります。</div>
+<h2 id="area">2. 販売エリアの導出（Sales Order Entry – Deriving the Sales Area）</h2>
+<p>受注の最初の関門は <b>販売エリア（Sales Area ＝ 販売組織 / 販売チャネル / 部門）</b> を決めることです。
+動画のスライドは「受注の項目 ← 得意先マスタ」という 1 本の矢印で説明しています。</p>
+<table class="tbl wide">
+<tr><th>順序</th><th>何が起きるか</th><th>動画の画面</th><th>自システムでの確認</th></tr>
+<tr><td>1</td><td><code>VA01</code> の初期画面で<b>受注タイプ</b>（<code>OR</code>）と<b>販売エリア</b>を入れる。<b>販売組織だけ入れて Enter してもよい</b></td><td>Create Sales Order: Initial Screen</td><td>初期画面の F4 に自分の販売組織が出るか（出ない＝組織構造の割当未了）</td></tr>
+<tr><td>2</td><td>得意先（Sold-to party）を入れて Enter → 得意先が<b>複数の販売エリア</b>を持っていれば「Sales area for customer」ダイアログが出る</td><td>「Sales area for customer」ポップアップ（<code>SOrg</code>/<code>DC</code>/<code>Dv</code> の一覧）</td><td><code>XD03</code> → 販売エリアビューで、その得意先が持つ販売エリアを確認</td></tr>
+<tr><td>3</td><td>選んだ販売エリアが受注ヘッダに入り、以降<b>すべての項目がこの販売エリアで解釈される</b>（与力条件・出荷条件・パートナー・出力）</td><td>Create Standard Order: Overview（<code>Sales area 1000 // Germany Frankfurt</code>）</td><td>受注ヘッダの「販売エリア」欄。<b>後から変えると再決定が走ります</b>（8 節）</td></tr>
+</table>
+<div class="box info"><b class="t">「販売エリアが選べない」＝ 3 つのどれか</b>
+① 得意先マスタにその販売エリアビューが無い（<code>XD03</code>）／② 品目マスタにその販売組織のビューが無い（<code>MM03</code>）／③ 組織構造の割当（販売組織↔プラント、販売組織↔会社コード）が未了。<b>動画のデモでは得意先 <code>1000</code> が複数の販売エリアを持ち、選択ダイアログが出る場面がそのまま教材になっています</b>（<code>09:02</code> 付近）。</div>
+<h2 id="propose">3. 主データから何が提案されるか（Proposing Order Data from Master Data）</h2>
+<p>動画のスライドは、受注伝票のどの部分が得意先マスタ・客先品目情報・品目マスタから提案されるかを列挙します。
+<b>「受注を登録する」とは、実は「提案された値を確認して、必要な所だけ直す」作業</b>だというのがこの節の要点です。</p>
+<table class="tbl wide">
+<tr><th>受注の構成要素</th><th>提案元（動画のスライド）</th><th>動画のデモでの実際の値</th><th>確認コマンド</th></tr>
+<tr><td>ビジネスパートナー（Business Partners）</td><td>得意先マスタ（Customer master）</td><td><code>SP</code>=<code>1000</code>（Becker Berlin）、<code>BP</code>=<code>1000</code>、出荷先 <code>SH</code></td><td><code>VA03</code> ヘッダ → パートナー、<code>XD03</code> → パートナー機能</td></tr>
+<tr><td>与力価格（Pricing）</td><td>得意先マスタ＋条件レコード</td><td><code>PR00</code> 等で Net value <code>22,990.00 EUR</code>（明細 10 PC 投入後）</td><td><code>VA03</code> → 条件画面、<code>VK13</code></td></tr>
+<tr><td>税決定（Tax determination）</td><td>得意先マスタ（税分類）＋品目マスタ（税分類）</td><td>税条件タイプ <code>MWST</code></td><td><code>VA03</code> 条件画面／<code>OVK1</code>（税決定）</td></tr>
+<tr><td>納入日程（Delivery scheduling）</td><td>得意先マスタ（出荷条件）＋品目マスタ（リードタイム）</td><td>納入希望日 <code>09.06.2007</code> → 納入日程行</td><td><code>VA03</code> 明細 → 納入日程行、<code>VOV6</code></td></tr>
+<tr><td>支払（Payment）</td><td>得意先マスタ（支払条件）</td><td><code>ZB01</code>（14 Days 3%, 30/2%）</td><td><code>VA03</code> ヘッダ → 支払条件、<code>XD03</code> → 販売エリアデータ</td></tr>
+<tr><td>出力（Output）</td><td>得意先マスタ＋出力決定手順</td><td>伝票タイプ <code>OR</code> の出力決定（<code>VOV8</code>／<code>OVT0</code> の出力決定手順）</td><td><code>VA03</code> → 出力、<code>VV11</code>〜</td></tr>
+<tr><td>客先品目情報（Customer-material info）</td><td>客先品目情報レコード（<code>VD51</code>）</td><td>得意先の品目コード・品目説明の置き換え、<b>出荷プラントの第 1 優先</b></td><td><code>VD53</code></td></tr>
+<tr><td>明細（Item）</td><td>品目マスタ（品目カテゴリグループ等）</td><td>品目 <code>T-ATA30</code> → 明細カテゴリ <code>TAN</code>、出荷プラント <code>1200</code></td><td><code>VA03</code> 明細詳細、<code>MM03</code></td></tr>
+</table>
+<div class="box ok"><b class="t">この節の合格ライン</b>
+「受注を登録するとき、値は自分で全部入れるのではなく、<b>得意先マスタ・品目マスタ・条件レコードから提案され、自分は例外だけを直す</b>」と、口頭で言えること。逆に言えば、<b>提案がおかしいときは受注ではなく主データを直す</b>のが原則です。</div>
+<h2 id="partner">4. パートナー 4 役割と、役割ごとの提案元</h2>
+<p><b>Business Partners from the Customer Master</b>（受注の 4 役割は全部「得意先マスタ」から来る）と、
+<b>Proposing Order Data from the Customer Master</b>（役割ごとに見る場所が違う）という 2 枚のスライドが対になっています。</p>
+<table class="tbl wide">
+<tr><th>役割</th><th>略号</th><th>動画の例</th><th>この役割が決めるもの（＝どこを見るか）</th></tr>
+<tr><td>Sold-to party（与力先／受注先）</td><td><code>SP</code>／<code>AG</code></td><td><code>C1</code> / <code>1000</code> Becker Berlin</td><td>受注の基準。ここから<b>販売エリア・与力価格・インコタームズ・出荷条件</b>が提案される</td></tr>
+<tr><td>Ship-to party（出荷先）</td><td><code>SH</code>／<code>WE</code></td><td><code>S1</code> / <code>1000</code></td><td><b>納入先住所・出荷プラント（得意先マスタ側の第 2 優先）</b>・Goods Receiving Hours・税の一部</td></tr>
+<tr><td>Bill-to party（請求先）</td><td><code>BP</code>／<code>RE</code></td><td><code>1000</code></td><td>請求書の宛先。<b>請求書が別の法人に渡る</b>取引では与力先と分ける</td></tr>
+<tr><td>Payer（支払先）</td><td><code>PY</code>／<code>RG</code></td><td><code>R1</code></td><td><b>支払条件・与信限度額チェック</b>。Finance（FI）への債権の相手</td></tr>
+</table>
+<div class="box info"><b class="t">覚え方： 4 役割は「モノ / カネ」で分ける</b>
+<b>モノの流れ</b>：Sold-to（誰が注文したか）→ Ship-to（誰に届けるか）。<b>カネの流れ</b>：Bill-to（誰に請求するか）→ Payer（誰が払うか）。<br>だから <b>支払条件と与信は Payer</b> から、<b>納入先住所と出荷プラントは Ship-to</b> から来る、と整理できます。動画の「Proposing Order Data from the Customer Master」スライドは、まさにこの対応表です（<code>C1</code>=与力条件、<code>R1</code>=支払条件と与信、<code>S1</code>=納入先住所）。</div>
+<h2 id="plant">5. 出荷プラントの自動提案（Proposing Plants Automatically）</h2>
+<p>動画（<code>19:51</code> 付近）が独立したスライドを割いている、<b>本站で最も出題したい論点</b>です。
+受注明細の「出荷プラント（Deliver.Plant）」は、<b>3 つの主データから優先順位つきで提案</b>されます。</p>
+<table class="tbl wide">
+<tr><th>優先度</th><th>提案元</th><th>動画スライドでの値</th><th>保守する T-code</th><th>自システムでの確認</th></tr>
+<tr><td><b>1（最優先）</b></td><td>客先品目情報レコード（Customer-Material Info Record）の出荷プラント</td><td>C1 / M1 / 客先品目コード <code>PC-100</code> → 出荷プラント <code>1400</code></td><td><code>VD51</code>（登録）／<code>VD52</code>／<code>VD53</code></td><td><code>VD53</code> で得意先×品目を入力し、Shipping エリアのプラントを見る</td></tr>
+<tr><td><b>2</b></td><td>得意先マスタ（<b>出荷先の販売エリアデータ</b>）の出荷プラント</td><td>得意先マスタ S1 → 出荷プラント <code>1100</code></td><td><code>XD02</code>（販売エリアデータ → 出荷タブ）</td><td><code>XD03</code> → 販売エリアデータ → 出荷タブ →「出荷プラント」</td></tr>
+<tr><td><b>3（最後）</b></td><td>品目マスタ（<b>販売組織 1</b> ビュー）の出荷プラント</td><td>品目マスタ M1 → <code>1000</code> / M2 → <code>1200</code></td><td><code>MM02</code>（販売組織 1 ビュー）</td><td><code>MM03</code> → 販売組織 1 ビュー →「出荷プラント」</td></tr>
+</table>
+<p>動画のスライドは、同じ得意先 <code>S1</code> でも受注先（K1 / K2 / C3）と品目（M1 / M2）の組み合わせによって
+<b>プラントが <code>1400</code> / <code>1100</code> / <code>1000</code> / <code>1200</code> と変わる</b>ことを示しています。
+つまり <b>「受注を見れば、どの主データが効いたか分かる」</b>——これが練習②の故障切り分けの土台になります。</p>
+<div class="box warn"><b class="t">つまずき（動画でも触れられている罠）</b>
+① <b>3 か所のうち 2 か所に違うプラントが入っている</b>（例：客先品目情報に <code>1400</code>、品目マスタに <code>1200</code>）→ <b>優先度が高い方が勝つ</b>ので「品目マスタを直したのに変わらない」が起きます。<b>3 か所すべてを見る</b>のが鉄則。<br>② スライドに <b>“Weighting the different sources of information during plant determination”</b>（重み付け）とあるように、標準の優先順位は ABAP（USEREXIT 等）で上書きされていることがあります（SAP Note <b>2787562</b>）。自システムの挙動がスライドと違うときは、主データの誤りではなく<b>拡張</b>を疑ってください。</div>
+<h2 id="chain">6. 受注処理の決定链（明細カテゴリ・納入日程行カテゴリ）</h2>
+<p>受注処理で最も質問が多いのが <b>「なぜこの明細カテゴリ（例 <code>TAN</code>）になるのか」</b>です。
+答えは 4 つのキーの組み合わせで決まる<b>決定テーブル</b>です。本站の暗記事項その 1。</p>
+<pre class="vals">明細カテゴリの決定（Sales Document Item Category Determination）
+
+  キー 1  販売伝票タイプ         例: OR      （伝票タイプ側。VOV8）
+  キー 2  品目カテゴリグループ   例: 0001    （品目マスタ 販売組織2 / または品目タイプ）
+  キー 3  品目使用目的 (Usage)   例: 空      （標準の受注は空。返品・無償などで使う）
+  キー 4  高レベル明細カテゴリ   例: 空      （BOM の親明細など。通常の単品受注は空）
+        └──────────┬──────────┘
+                   ↓  決定テーブル（T-code: VOV4 の「明細カテゴリ決定」）
+            明細カテゴリ（Item Category） 例: TAN（Standard Item）
+                   ↓
+        ┌──────────┴───────────┐
+        ↓                      ↓
+  価格決定（与力）        納入日程行カテゴリ（VOV5）
+  ├ 明細カテゴリが「与力関連」か   ├ 所要量タイプがあるか
+  ├ 価格決定手順（伝票タイプ×得意先）  ├ 在庫確認（ATP）をするか
+  └ 条件タイプ PR00 / MWST…       └ 納入日付タイプ（日付の決まり方）
+
+  補足: TAN（標準明細）は「在庫を持たない明細」です。所要量タイプが空なので、
+        MRP はここから所要量を作りません（＝受注在庫 E にはならない）。
+        在庫を持つ／所要量を作るのは、受注生産（戦略グループ 20/25 等）や
+        受注組立（82）のように「所要量クラス」が付くケースです。→ ../sapmto/ で実習</pre>
+<table class="tbl wide">
+<tr><th>決まるもの</th><th>キー（決定テーブル）</th><th>T-code</th><th>自システムでの確認</th></tr>
+<tr><td>明細カテゴリ</td><td>伝票タイプ × 品目カテゴリグループ × 品目使用目的 × 高レベル明細カテゴリ</td><td><code>VOV4</code>（割当・決定）／<code>VOV7</code>（カテゴリ定義）</td><td><code>VA03</code> 明細詳細の「明細カテゴリ」＋<code>VOV4</code> の決定テーブルを突き合わせる</td></tr>
+<tr><td>納入日程行カテゴリ</td><td>明細カテゴリ × 所要量タイプ（品目マスタ MRP3 戦略グループ由来）</td><td><code>VOV5</code>／<code>VOV6</code></td><td><code>VA03</code> 明細 → 納入日程行のカテゴリ、<code>MD04</code>（所要量が出るかどうか）</td></tr>
+<tr><td>与力価格決定</td><td>伝票タイプ（＋得意先／伝票の価格手順）→ 価格決定手順 → 条件タイプ → アクセス順序</td><td><code>OVKK</code>／<code>V/06</code>／<code>V/07</code>／<code>V/08</code>／<code>VK11</code></td><td><code>VA03</code> の条件画面（与力分析）、<code>VK13</code> で条件レコードの有効性</td></tr>
+<tr><td>パートナー決定</td><td>得意先の勘定グループ／伝票タイプのパートナー決定手順 × 得意先マスタのパートナー機能</td><td><code>OVT0</code>（勘定グループ）／<code>VOPA</code> 系／<code>XD02</code></td><td><code>XD03</code> のパートナー機能タブと、<code>VA03</code> のパートナーを比べる</td></tr>
+</table>
+<div class="box warn"><b class="t">「明細カテゴリが <code>TAN</code> にならない」とき</b>
+① <b>品目カテゴリグループ</b>が想定と違う（品目マスタ 販売組織2、または品目タイプから提案）→ <code>MM03</code>／<code>VOV4</code>。<br>② その<b>組み合わせが決定テーブルに無い</b>→ <code>VOV4</code> の決定テーブルを見る（無ければシステムがエラーを出します）。<br>③ <b>伝票タイプ（<code>OR</code>）にその明細カテゴリが許可されていない</b>→ 割当テーブル（<code>VOV4</code>）を確認。<br>④ 品目使用目的や高レベル明細カテゴリが意図せず入っている（参照コピーした受注で起こりやすい）→ <code>VA03</code> の明細詳細。</div>
+<h2 id="header">7. ヘッダ vs 明細（Business Data とコピーの挙動）</h2>
+<p>動画の <b>Business Data</b> スライドは、<b>支払条件とインコタームズがヘッダと明細の両方にある</b>ことを図で示しています。</p>
+<table class="tbl wide">
+<tr><th>レベル</th><th>動画の値</th><th>意味と挙動</th></tr>
+<tr><td>ヘッダ（HEADER）</td><td>支払条件 <code>ZB01</code> ／ インコタームズ <code>FOB</code></td><td>伝票全体の既定値。<b>明細に入れると、その明細だけ上書きされる</b>（ヘッダより明細が優先）</td></tr>
+<tr><td>明細 10 / 20</td><td>支払条件 <code>ZB01</code> ／ インコタームズ <code>FOB</code></td><td>得意先マスタから提案された値。動画では<b>明細レベルにも同じ値が入っている</b>状態が示されます</td></tr>
+<tr><td>（別の受注へコピーした場合）</td><td>明細 20 で <code>ZB01→ZB02</code>、<code>FOB→EXW</code>（スライドでは赤で上書き表示）</td><td><b>参照コピーでは、コピー管理（<code>VTAA</code>）の「データ転送」設定に従って転送されるか再決定されるかが決まる</b></td></tr>
+</table>
+<div class="box info"><b class="t">なぜ「ヘッダと明細の両方」なのか</b>
+請求・与信・支払条件は<b>ヘッダでも明細でも持ち得る</b>設計です（明細ごとに支払条件を変えられるようにするため）。結果として <b>「ヘッダの支払条件を変えたのに、明細に値が入っているので請求書が変わらない」</b>という現象が起きます。切り分けは <code>VA03</code> で<b>ヘッダの支払条件と明細の支払条件を両方見る</b>こと（本站 能力测试でも出題します）。</div>
+<h2 id="change">8. 変更と再決定（Changes to the Sold-to Party in the Sales Document）</h2>
+<p>動画の後半（<code>48:01</code>〜）で最も丁寧に扱われるスライドです。
+<b>受注の得意先（Sold-to party）を変更すると、システムは何を決め直し、何をそのままにするのか</b>——これを知らないと、
+「得意先を変えたのに価格が古いまま」という事故が起きます。</p>
+<div class="two-col">
+<div class="panel"><h4>再決定されるデータ（Redetermined Data）</h4><ul><li>得意先マスタ（Customer master）</li><li>客先品目情報レコード（Customer-material info record）</li><li>テキスト（Texts）</li><li>無償品（Free goods）</li><li>与力価格（Prices）</li><li>出力（Output）</li><li>出荷プラントと出荷ポイント（Plant and shipping point）</li></ul></div>
+<div class="panel"><h4>変わらないデータ（Unchanged Data）</h4><ul><li>販売エリア（Sales area）</li><li>販売事務所と販売グループ（Sales office and sales group）</li><li>可用性と製品割当（Availability and product allocation）</li><li>バッチ（Batches）</li></ul></div>
+</div>
+<div class="box warn"><b class="t">「何も変わらない」条件（スライドの注記）</b>
+<b>No changes if there are: status-relevant preceding documents / subsequent documents</b> —— つまり<b>ステータスに関係する先行伝票・後続伝票が既にある場合、システムは何も変更しません</b>。出荷伝票や請求書が既にできている受注で得意先を変えても反映されないのは、この仕様です。（動画の実演では、この再決定を確認するために <code>VA02</code> から得意先マスタへ飛ぶ流れが示されます）</div>
+<h3>変更の 3 つの方式（Overview: Changing of sales documents）</h3>
+<table class="tbl wide">
+<tr><th>方式</th><th>動画のスライド</th><th>T-code</th><th>使いどころ</th></tr>
+<tr><td><b>明細の一括変更（Fast changes in document）</b></td><td>Item 10 / 20 の Plant を <code>1200</code> → <code>2000</code> に同時変更</td><td><code>VA02</code> の明細概況で複数明細を選択 → 一括変更</td><td>同じ受注の中で、複数明細のプラント・納入日・数量をまとめて直す</td></tr>
+<tr><td><b>複数伝票の一括変更</b></td><td>複数の受注の Plant 列をまとめて <code>2000</code> に</td><td><code>VA02</code> の一括変更（<code>MASS</code>／<code>VA05</code> からの変更）</td><td>一定期間の受注をまとめて直す（障害時の一括対応）</td></tr>
+<tr><td><b>文書一覧からの変更（Changes using document list）</b></td><td>受注リスト → 変更</td><td><code>VA05</code>（受注一覧）／<code>V.02</code>（不完全な受注一覧）</td><td>条件で絞って変更対象を確定する（出荷ブロックの解除など）</td></tr>
+</table>
+<div class="box danger"><b class="t">実習での注意</b>
+<b>既に後続伝票がある受注は変更しない</b>でください（業務でも同じです）。練習②では<b>保存済みで後続伝票の無い受注</b>を作り、そこに変更を加えて再決定を観察します。</div>
+<h2 id="block">9. ブロックの階層（Blocks）</h2>
+<p>動画（<code>37:35</code> 付近）の <b>Blocks</b> スライドは、ブロックが<b>3 つの階層</b>に設定できることを示します。
+「なぜこの受注が出荷できないのか」を追うときは、この 3 階層を上から見ます。</p>
+<table class="tbl wide">
+<tr><th>階層</th><th>設定できるブロック</th><th>動画の記載</th><th>解除の T-code</th></tr>
+<tr><td><b>ヘッダ（受注ヘッダ）</b></td><td>納入ブロック（Delivery block）／請求ブロック（Billing block）</td><td>Header → Delivery block / Billing block</td><td><code>VA02</code> ヘッダ → 各ブロック項目を空に／<code>V.23</code>・<code>V.24</code>（一覧）</td></tr>
+<tr><td><b>明細（受注明細）</b></td><td>請求ブロック（Billing block）</td><td>Item 10 / 20 → Billing block</td><td><code>VA02</code> 明細 → 請求ブロック</td></tr>
+<tr><td><b>納入日程行（Schedule line）</b></td><td>納入ブロック（Delivery block）</td><td>Schedule line 1 / 2 → Delivery block</td><td><code>VA02</code> 明細 → 納入日程行 → 納入ブロック</td></tr>
+</table>
+<div class="box info"><b class="t">スライドの読み方： “User sets and removes blocks / Defining”</b>
+ブロックは <b>①ユーザが設定・解除できるもの</b>と、<b>②Customizing で標準的に付くもの</b>があります（例：伝票タイプ <code>OR</code> の与信/納入/請求ブロック、得意先マスタの与信区分）。つまり<b>「ブロックが付いている理由」は ①手で付けた ②マスタ／設定で付いた ③チェックで付いた（与信など）</b>の 3 通り。本站では練習②でこの 3 通りを作り分けます。</div>
+<h2 id="check">10. 保存時のチェック（不完全性・与信）</h2>
+<p>受注を保存する瞬間に走るチェックです。動画では <code>VA01</code> のデモ中に
+<b>「Enter PO number」の必須エラー</b>（<code>09:28</code> 付近）が出る場面があり、これもこの仕組みの一部です。</p>
+<table class="tbl wide">
+<tr><th>チェック</th><th>何を見るか</th><th>設定（T-code）</th><th>失敗したときの挙動</th></tr>
+<tr><td><b>不完全性チェック</b>（Incompletion）</td><td>伝票タイプに割り当てた<b>不完全性手順</b> → グループ → 項目（例：PO 番号、出荷先、納入日）</td><td><code>OVA2</code>（手順）／<code>VUA2</code>（警告かエラーか）／<code>VUP2</code>（明細カテゴリ）／<code>VUE2</code>（納入日程行カテゴリ）</td><td>エラー＝保存できない／警告＝保存はできるが不完全伝票として記録される。後から <code>V.02</code>（不完全な受注一覧）で拾える</td></tr>
+<tr><td><b>与信チェック</b>（Credit check）</td><td>与信区分・与信限度額と、与信使用額（売掛＋受注残＋出荷残）</td><td><code>OVA8</code>（伝票タイプの与信チェック）／<code>OB45</code>（与信管理エリア）／<code>FD32</code>（得意先の与信）</td><td>与信ブロックが付く → 出荷できない → 与信解除（<code>VKM1</code>／<code>VKM3</code> 等）</td></tr>
+<tr><td><b>必須項目チェック</b>（動画の「Enter PO number」）</td><td>伝票タイプの項目ステータス／不完全性手順の必須設定</td><td><code>VOV8</code>（伝票タイプの項目ステータス）／<code>OVA2</code></td><td>赤いエラーが項目に出て保存できない。<b>動画では PO 番号が必須になっている例がそのまま映っています</b></td></tr>
+</table>
+<div class="box ok"><b class="t">本站での扱い</b>
+不完全性チェックは<b>「不完全な受注を放置しない仕組み」</b>です。動画のデモ環境では PO 番号が必須項目になっているため、<b>受注の PO Number 欄に何か入れてから保存</b>します（動画では <code>dddd</code> や <code>test</code> のようなダミー値が入っています）。自システムの必須項目は <code>V.02</code> にわざと不完全な受注を作って確認するのが最短です。</div>
+<h2 id="sis">11. 販売情報システム（SIS）と Sales Summary</h2>
+<p>動画の前半（<code>22:45</code>〜<code>32:29</code>）は <b>Sales Summary（<code>VC/2</code>）</b>の実演と、その Customizing に費やされます。
+これは「受注処理の道具とヘルプ」の後半を担う内容です。<b>Sales Summary は得意先マスタの情報と受注残・与信・既存伝票を 1 画面に集めた照会</b>です。</p>
+<table class="tbl wide">
+<tr><th>要素</th><th>動画で確認できるもの</th><th>どこで決まるか</th></tr>
+<tr><td>情報ビュー（Info view）</td><td><code>001</code> Complete information／<code>002</code> Address/partner info／<code>003</code> Statistical info／<code>005</code> Telesales／<code>100</code> Credit Information／<code>101</code> Last SD Documents／<code>102</code> Backorders／<code>103</code> Quick Info／<code>900</code> New Internet cust.</td><td>SPRO の「Maintain Report Views」（本站 <a href="config.html#c5">C5</a>）</td></tr>
+<tr><td>情報ブロック（Info block）</td><td>Address（Firma / Calvinstrasse 36 / D-13467 Berlin-Hermsdorf）、Classification（Nielsen ID / Customer classif. / Industry sector）、Key figures、Contact person、Last SD documents、Document key figures、Pricing</td><td>SPRO の「Maintain Views for an Evaluation」（ビューへブロックを順番つきで割当）</td></tr>
+<tr><td>ユーザ別の既定ビュー</td><td><code>BAPMS</code> → <code>ZPD</code>、<code>WF-SD-2</code> → <code>900</code> などの割当</td><td>SPRO の「Maintain the Report Views for a User」</td></tr>
+<tr><td>既存伝票の統計更新</td><td>文書カテゴリ（<code>A</code> Inquiry／<code>B</code> Quotation／<code>C</code> Order／<code>D</code> Item proposal／<code>3</code> Invoice list 等）ごとの「Statistics update desired」</td><td>SPRO の「Last Documents for a Customer」</td></tr>
+<tr><td>与信情報</td><td>Credit Limit <code>511,291.88 EUR</code>／Usage Level <code>1,472,653.29 EUR</code>／Delta <code>-961,361.41</code>／Consumption in % <code>288</code>／Receivables／Open Delivery Value／Open Sales Order Val／Open Bill. Doc. Val</td><td>FI/SD の与信管理（<code>OB45</code>・<code>OVA8</code>・<code>FD32</code>）＋ 得意先マスタの与信区分</td></tr>
+<tr><td>Last SD documents</td><td>受注（<code>11076</code> 等・Open）と請求書（<code>90035240</code> 等・Completed / Being processed）の一覧</td><td>上記の統計更新設定と、その得意先の既存伝票</td></tr>
+<tr><td>統計情報</td><td>Net value of incoming orders／Net sales／Open net value of orders 等の 2007 vs 2006 比較</td><td>SIS の統計ファイル更新（受注・請求の更新時に自動）</td></tr>
+</table>
+<div class="box info"><b class="t">「Sales Summary が出ない／情報が空」の切り分け</b>
+① 得意先が違う（<code>5264</code> は動画の概念スライド用の例。実際のデモは <code>1000</code>）→ 番号を確認。<br>② <b>情報ビューが割り当てられていない</b>→ <code>VC/2</code> の「View」ボタンで出る一覧と、SPRO のビュー割当を比べる（<a href="config.html#c5">C5</a>）。<br>③ <b>そのユーザに既定ビューが無い</b>→「Maintain the Report Views for a User」を確認。<br>④ <b>統計更新が OFF</b> の文書カテゴリ → 「Last Documents for a Customer」のチェック状況を確認。<br>⑤ そもそも統計ファイルが未構築（SIS のフレキシブル分析は初期構築が必要）→ 講師に確認。</div>
+<p>もう 1 つ、動画では <b>Sales Summary から出荷伝票 <code>80007832</code>（<code>VL03N</code>）へ飛ぶ</b>流れが示されます。
+<b>「受注 → 出荷」が伝票フローで繋がっている</b>ことを、情報照会の側から確認する操作です。</p>
+<h2 id="tables">12. 主要テーブルと T-code</h2>
+<table class="tbl wide">
+<tr><th>目的</th><th>テーブル</th><th>主な T-code</th><th>見方</th></tr>
+<tr><td>受注ヘッダ</td><td><code>VBAK</code></td><td><code>VA01</code>／<code>VA02</code>／<code>VA03</code></td><td>得意先 <code>VBAK-KUNNR</code>、販売エリア、正味価額 <code>VBAK-NETWR</code>、伝票タイプ <code>VBAK-AUART</code></td></tr>
+<tr><td>受注明細</td><td><code>VBAP</code></td><td>同上</td><td>品目 <code>VBAP-MATNR</code>、明細カテゴリ <code>VBAP-PSTYV</code>、<b>出荷プラント <code>VBAP-WERKS</code></b></td></tr>
+<tr><td>納入日程行</td><td><code>VBEP</code></td><td>同上</td><td>納入日 <code>VBEP-EDATU</code>、納入日程行カテゴリ <code>VBEP-ETTYP</code></td></tr>
+<tr><td>パートナー</td><td><code>VBPA</code></td><td>同上</td><td>役割 <code>VBPA-PARVW</code>（<code>SP</code>/<code>SH</code>/<code>BP</code>/<code>PY</code>）と相手先</td></tr>
+<tr><td>得意先マスタ（販売）</td><td><code>KNA1</code>／<code>KNVV</code></td><td><code>XD01</code>／<code>XD02</code>／<code>XD03</code></td><td>販売エリア別の支払条件・出荷条件・<b>出荷プラント</b>（<code>KNVV</code>）</td></tr>
+<tr><td>品目マスタ（販売）</td><td><code>MARA</code>／<code>MVKE</code></td><td><code>MM01</code>／<code>MM02</code>／<code>MM03</code></td><td>品目カテゴリグループ <code>MVKE-MTPOS</code>、<b>出荷プラント <code>MVKE-DWERK</code></b></td></tr>
+<tr><td>客先品目情報</td><td><code>KNMT</code></td><td><code>VD51</code>／<code>VD52</code>／<code>VD53</code></td><td>得意先品目コードと<b>出荷プラント</b>（第 1 優先）</td></tr>
+<tr><td>条件レコード</td><td><code>KONP</code>／<code>KONH</code>／<code>A*</code></td><td><code>VK11</code>／<code>VK12</code>／<code>VK13</code></td><td>条件タイプ <code>PR00</code>・税 <code>MWST</code> の金額と有効期間</td></tr>
+<tr><td>不完全性ログ（受注）</td><td><code>VBUV</code>（明細）／<code>VBUK</code>（ヘッダ）／<code>VBUP</code></td><td><code>V.02</code>／<code>V.00</code></td><td>不完全な項目の一覧。手順定義は <code>TVUV</code>／<code>TVUVF</code>（<code>OVA2</code>）</td></tr>
+<tr><td>伝票フロー</td><td><code>VBFA</code></td><td><code>VA03</code> → 伝票フロー</td><td>受注 → 出荷 → 請求 の連鎖と数量・金額</td></tr>
+</table>
+<div class="box ok"><b class="t">テーブルを見るコツ（本站の推奨）</b>
+画面で「なぜこの値か」が分からないときは、<b>受注のテーブル（<code>VBAK</code>/<code>VBAP</code>）と主データのテーブル（<code>KNVV</code>/<code>MVKE</code>/<code>KNMT</code>）を並べて見る</b>と、<b>どの源泉が効いたか</b>が一目で分かります（<code>SE16N</code>／<code>SE16</code>）。本站の練習①〜②は、この「並べて見る」作業を課題に入れています。</div>
+<h2 id="myths">13. よくある誤解（10 項目）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>よくある誤解</th><th>正しい理解</th></tr>
+<tr><td>1</td><td>受注の値は自分で全部入力するもの</td><td><b>主データから提案され、例外だけ直す</b>。提案がおかしいときは受注ではなく主データを直す</td></tr>
+<tr><td>2</td><td>出荷プラントは品目マスタだけで決まる</td><td><b>客先品目情報 > 得意先マスタ（出荷先）> 品目マスタ（販売組織1）</b>の優先順位。3 か所すべてを見る</td></tr>
+<tr><td>3</td><td>明細カテゴリは品目だけで決まる</td><td>伝票タイプ × 品目カテゴリグループ × 品目使用目的 × 高レベル明細カテゴリの<b>決定テーブル</b>（<code>VOV4</code>）</td></tr>
+<tr><td>4</td><td><code>TAN</code> は受注在庫（E）になる</td><td><code>TAN</code> は<b>在庫を持たない標準明細</b>（所要量タイプが空）。受注在庫は戦略グループと所要量クラスの設計（→ <code>../sapmto/</code>）</td></tr>
+<tr><td>5</td><td>支払条件はヘッダにだけある</td><td><b>ヘッダと明細の両方</b>にあり得る。明細に入ると明細が優先。請求額が変わらないときはここを疑う</td></tr>
+<tr><td>6</td><td>得意先を変えれば価格も全部変わる</td><td>再決定されるのは価格・プラント・出力など。<b>販売エリアや販売事務所は変わらない</b></td></tr>
+<tr><td>7</td><td>後続伝票があっても得意先は変えられる</td><td>ステータスに関係する先行・後続伝票があると<b>何も変更されない</b>（動画スライドの注記）</td></tr>
+<tr><td>8</td><td>ブロックは手で付けるものだけ</td><td>手で付ける／Customizing で付く／チェックで付く（与信）の <b>3 通り</b>。階層はヘッダ・明細・納入日程行</td></tr>
+<tr><td>9</td><td>PO 番号が必須なのは標準仕様</td><td>環境の設定（項目ステータス／不完全性手順）。動画の環境では必須になっているだけ。<code>V.02</code> で確認</td></tr>
+<tr><td>10</td><td>Sales Summary は受注と無関係な帳票</td><td>受注の「環境」メニューからも <code>VC/2</code> を開ける。<b>受注・与信・既存伝票を 1 画面で見る照会</b>であり、SIS の Customizing と対で理解する</td></tr>
+</table>
+<div class="box info"><b class="t">次の一歩</b>
+概念を読んだら、<a href="config.html">配置手顺（C0〜C16）</a>を眺めて「どこで何が決まるか」を確認し、<a href="handson-1.html">练习① 受注登録</a> で実際に動かしてください。用語の確認は <a href="worksheet.html">学员版</a>、理解度は <a href="quiz.html">能力测试（28 題）</a> で。</div>
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP SD 受注処理（Sales Order Processing）实战训练站</h5><p>受注伝票のデータは主データ・既存伝票・Customizing・ハードコードの 4 つから来る。決まり方を知れば、受注は「読める」ようになる。</p><div><h5>下一步</h5><p><a href="config.html">配置手顺（C0〜C16）</a> で、この決まり方を自分の環境で作り・確かめます。</p></div></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 受注登録（VA01）</a><br><a href="handson-2.html">② 与力価格と ATP</a><br><a href="handson-3.html">③ 特殊取引</a><br><a href="handson-4.html">④ 出荷と請求</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="worksheet.html">学员版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/quiz.js"></script>
+</body>
+</html>

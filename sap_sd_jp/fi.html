@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>財務会計 FI（Financial Accounting） · 手順と実機画面</title>
+<meta name="description" content="財務会計 FI（Financial Accounting）：45 件のタスクの手順、IMG パス、T-code と 304 枚の実機画面スクリーンショット。内容は教材ドキュメント S4.docx をもとに整理しています。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/s4jp.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">S4</span><span class="txt">日本語実習サイト</span></a>
+    <nav class="main">
+      <a href="index.html">ホーム</a>
+      <a href="prep.html">準備</a>
+      <a class="active" href="fi.html">FI</a>
+      <a href="co.html">CO</a>
+      <a href="mm.html">MM</a>
+      <a href="pp.html">PP</a>
+      <a href="sd.html">SD</a>
+      <a href="tcode.html">T-code</a>
+      <a href="glossary.html">用語</a>
+      <a href="issues.html">トラブルシューティング</a>
+      <a href="tasks.html">索引</a>
+      <a href="instructor.html">講師</a>
+      <a href="worksheet.html">受講者</a>
+      <a href="quiz.html">自習テスト</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page"><article>
+<p class="breadcrumb"><a href="index.html">ホーム</a> / <span>財務会計 FI（Financial Accounting）</span></p>
+<h1>財務会計 FI（Financial Accounting）</h1>
+<p class="kicker">財務会計 · 組織構造 · 勘定マスタ · 売掛金・買掛金 · 財務諸表</p>
+<div class="toc"><a href="#guide">1. 本モジュールのガイド</a><a href="#toc">2. タスク一覧</a><a href="#steps">3. 手順（タスクごと）</a><a href="#sources">4. スクリーンショットと設定値について</a></div>
+<div class="grid cards"><div class="card"><b>45</b><span>タスク</span></div><div class="card"><b>304</b><span>実機画面</span></div><div class="card"><b>181</b><span>手順ステップ</span></div><div class="card"><b>7/0</b><span>IMG/業務のタスク</span></div></div>
+<h2 id="guide">1. 本モジュールのガイド</h2>
+<p>FI のメインラインは「まず組織構造を構築し、次に勘定を登録し、最後に伝票とレポートを実行する」です：組織構造（会社コード / 勘定科目表 / 会計年度バリアント / 与信管理領域）→ グローバルパラメータ → 勘定グループと項目ステータスバリアント → 勘定マスタ（貸借対照表勘定、調整勘定の売掛金・買掛金、材料購買 GR/IR、損益）→ 伝票番号範囲と転記期間 → 転記の許容範囲グループ → 総勘定元帳伝票と残高 → 得意先／仕入先の勘定グループ、番号範囲とマスタデータ → 売掛金・買掛金（得意先請求書 / 入金 / 仕入先請求書 / 支払 / 残高）→ 財務諸表の構造（貸借対照表と損益計算書）とレポート実行。</p>
+<p>本サイトでは原教材ドキュメントの順序どおり 45 のタスクを保持し、各タスクに IMG パス、T-code（ドキュメントに登場するもの）と原教材ドキュメントの実機画面を掲載しています。教材のシナリオは「頤寧機械有限公司」がゼロから会社コード <code>C999</code> を構築し、貸借対照表と損益計算書を出力できるところまで進めるというものです。</p>
+<div class="panel"><b>このモジュールのポイント</b><ul><li>組織構造の 4 点セット：会社コード / 勘定科目表 / 会計年度バリアント / 与信管理領域</li><li>勘定マスタ：<code>FS00</code> で一般貸借対照表勘定、調整勘定（売掛／買掛）、材料購買勘定（GR/IR）、損益勘定を登録</li><li>転記期間と伝票番号範囲：期間のオープン／クローズの仕組み（クローズした期間では伝票を変更できない）</li><li>売掛金・買掛金のクローズドループ：得意先請求書 <code>FB70</code>、入金、仕入先請求書 <code>FB60</code>、支払、残高照会（<code>FD10N</code> / <code>FK10N</code>）</li></ul>
+<p style="margin-top:10px">ドキュメントに出てくる T-code：<a class="tag gray" href="tcode.html#FS00">FS00</a> <a class="tag gray" href="tcode.html#FB50">FB50</a> <a class="tag gray" href="tcode.html#FB03">FB03</a> <a class="tag gray" href="tcode.html#FS10N">FS10N</a> <a class="tag gray" href="tcode.html#FD01">FD01</a> <a class="tag gray" href="tcode.html#FK01">FK01</a> <a class="tag gray" href="tcode.html#FB70">FB70</a> <a class="tag gray" href="tcode.html#FD10N">FD10N</a> <a class="tag gray" href="tcode.html#FB60">FB60</a> <a class="tag gray" href="tcode.html#FK10N">FK10N</a>（詳細は <a href="tcode.html">T-code / IMG パス早見表</a> を参照）</p>
+</div>
+<h2 id="toc">2. タスク目次（45 件）</h2>
+<p>そのうち 34 件のタスクで、原教材ドキュメントの IMG 設定メニューパスが示されています；<span class="fb">IMG 設定</span> のマークが付いているのはカスタマイジング（設定）タスク、<span class="fb img">業務処理</span> と付いているのは日常業務の操作タスクです。表示がないタスクは原文でも明示されておらず、タスク名からご自身で判断してください（一般に「～の定義／～パラメータのメンテナンス」＝ IMG 設定、「伝票・指図・請求書の登録／入力／照会」＝業務処理）。</p>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>No.</th><th>タスク</th><th>IMG/業務</th><th>ドキュメント内の T-code</th><th>画面</th><th>手順ステップ</th></tr></thead><tbody><tr><td><a href="#t01">タスク 01</a></td><td><a href="#t01">会社コードを登録する</a></td><td>—</td><td>—</td><td>2</td><td>2</td></tr><tr><td><a href="#t02">タスク 02</a></td><td><a href="#t02">勘定科目表を登録する</a></td><td>—</td><td>—</td><td>2</td><td>2</td></tr><tr><td><a href="#t03">タスク 03</a></td><td><a href="#t03">会計年度バリアントを定義</a></td><td>—</td><td>—</td><td>2</td><td>2</td></tr><tr><td><a href="#t04">タスク 04</a></td><td><a href="#t04">与信管理領域を登録</a></td><td>—</td><td>—</td><td>2</td><td>2</td></tr><tr><td><a href="#t05">タスク 05</a></td><td><a href="#t05">会社コードのグローバルパラメータをメンテナンスする</a></td><td>—</td><td>—</td><td>2</td><td>2</td></tr><tr><td><a href="#t06">タスク 06</a></td><td><a href="#t06">勘定グループと入力制御を定義</a></td><td>—</td><td>—</td><td>9</td><td>9</td></tr><tr><td><a href="#t07">タスク 07</a></td><td><a href="#t07">項目ステータスバリアントを定義</a></td><td>—</td><td>—</td><td>19</td><td>10</td></tr><tr><td><a href="#t08">タスク 08</a></td><td><a href="#t08">項目ステータスバリアントに会社コードを配賦</a></td><td>—</td><td>—</td><td>2</td><td>2</td></tr><tr><td><a href="#t09">タスク 09</a></td><td><a href="#t09">留保利益勘定を定義</a></td><td>—</td><td>—</td><td>7</td><td>2</td></tr><tr><td><a href="#t10">タスク 10</a></td><td><a href="#t10">一般的な貸借対照表勘定を新規作成</a></td><td>—</td><td><code>FS00</code></td><td>2</td><td>2</td></tr><tr><td><a href="#t11">タスク 11</a></td><td><a href="#t11">調整勘定－売掛金／買掛金を新規作成</a></td><td>—</td><td><code>FS00</code></td><td>10</td><td>3</td></tr><tr><td><a href="#t12">タスク 12</a></td><td><a href="#t12">材料購買勘定を新規登録する</a></td><td>—</td><td><code>FS00</code></td><td>3</td><td>1</td></tr><tr><td><a href="#t13">タスク 13</a></td><td><a href="#t13">損益勘定を新規登録する</a></td><td>—</td><td><code>FS00</code></td><td>72</td><td>36</td></tr><tr><td><a href="#t14">タスク 14</a></td><td><a href="#t14">勘定集計を照会</a></td><td>—</td><td>—</td><td>1</td><td>1</td></tr><tr><td><a href="#t15">タスク 15</a></td><td><a href="#t15">伝票番号範囲を会社コードにコピー</a></td><td>—</td><td>—</td><td>5</td><td>4</td></tr><tr><td><a href="#t16">タスク 16</a></td><td><a href="#t16">転記期間バリアントを定義</a></td><td>—</td><td>—</td><td>2</td><td>1</td></tr><tr><td><a href="#t17">タスク 17</a></td><td><a href="#t17">転記期間バリアントを会社コードに配賦します</a></td><td>—</td><td>—</td><td>2</td><td>1</td></tr><tr><td><a href="#t18">タスク 18</a></td><td><a href="#t18">転記期間を設定（業務処理）</a></td><td>—</td><td>—</td><td>4</td><td>2</td></tr><tr><td><a href="#t19">タスク 19</a></td><td><a href="#t19">転記の許容範囲グループを定義</a></td><td>—</td><td>—</td><td>3</td><td>2</td></tr><tr><td><a href="#t20">タスク 20</a></td><td><a href="#t20">総勘定元帳勘定の伝票を入力</a></td><td>—</td><td><code>FB50</code> <code>FB03</code></td><td>4</td><td>4</td></tr><tr><td><a href="#t21">タスク 21</a></td><td><a href="#t21">総勘定元帳勘定残高を照会</a></td><td>—</td><td><code>FS10N</code></td><td>11</td><td>7</td></tr><tr><td><a href="#t22">タスク 22</a></td><td><a href="#t22">売掛金・買掛金の許容範囲グループを定義</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>3</td><td>2</td></tr><tr><td><a href="#t23">タスク 23</a></td><td><a href="#t23">仕入先勘定グループを定義</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>11</td><td>8</td></tr><tr><td><a href="#t24">タスク 24</a></td><td><a href="#t24">仕入先勘定の番号範囲を定義</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>6</td><td>5</td></tr><tr><td><a href="#t25">タスク 25</a></td><td><a href="#t25">仕入先の番号範囲を配賦</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>2</td><td>1</td></tr><tr><td><a href="#t26">タスク 26</a></td><td><a href="#t26">得意先勘定グループを定義</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>10</td><td>8</td></tr><tr><td><a href="#t27">タスク 27</a></td><td><a href="#t27">得意先勘定の番号を定義</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>5</td><td>4</td></tr><tr><td><a href="#t28">タスク 28</a></td><td><a href="#t28">得意先の番号範囲を配賦</a></td><td>—</td><td>—</td><td>2</td><td>1</td></tr><tr><td><a href="#t29">タスク 29</a></td><td><a href="#t29">受注先マスタを新規作成</a></td><td>—</td><td><code>FD01</code></td><td>9</td><td>4</td></tr><tr><td><a href="#t30">タスク 30</a></td><td><a href="#t30">入庫先マスタを新規作成</a></td><td>—</td><td><code>FD01</code></td><td>0</td><td>0</td></tr><tr><td><a href="#t31">タスク 31</a></td><td><a href="#t31">仕入先マスタを新規作成</a></td><td>—</td><td><code>FK01</code></td><td>6</td><td>1</td></tr><tr><td><a href="#t32">タスク 32</a></td><td><a href="#t32">得意先請求書を入力</a></td><td>—</td><td><code>FB70</code></td><td>3</td><td>2</td></tr><tr><td><a href="#t33">タスク 33</a></td><td><a href="#t33">得意先から全額の入金を受領</a></td><td>—</td><td>—</td><td>5</td><td>4</td></tr><tr><td><a href="#t34">タスク 34</a></td><td><a href="#t34">得意先から一部の入金を受領</a></td><td>—</td><td><code>FB70</code></td><td>7</td><td>4</td></tr><tr><td><a href="#t35">タスク 35</a></td><td><a href="#t35">売掛金残高を照会</a></td><td>—</td><td>—</td><td>4</td><td>1</td></tr><tr><td><a href="#t36">タスク 36</a></td><td><a href="#t36">得意先残高を照会</a></td><td>—</td><td><code>FD10N</code></td><td>2</td><td>2</td></tr><tr><td><a href="#t37">タスク 37</a></td><td><a href="#t37">仕入先請求書を受領</a></td><td>—</td><td><code>FB60</code></td><td>5</td><td>1</td></tr><tr><td><a href="#t38">タスク 38</a></td><td><a href="#t38">シミュレーション</a></td><td>—</td><td>—</td><td>1</td><td>1</td></tr><tr><td><a href="#t39">タスク 39</a></td><td><a href="#t39">仕入先へ支払</a></td><td>—</td><td>—</td><td>3</td><td>2</td></tr><tr><td><a href="#t40">タスク 40</a></td><td><a href="#t40">買掛金残高を照会</a></td><td>—</td><td>—</td><td>3</td><td>1</td></tr><tr><td><a href="#t41">タスク 41</a></td><td><a href="#t41">仕入先残高を照会</a></td><td>—</td><td><code>FK10N</code></td><td>7</td><td>2</td></tr><tr><td><a href="#t42">タスク 42</a></td><td><a href="#t42">総勘定元帳勘定残高の集計表</a></td><td>—</td><td>—</td><td>5</td><td>2</td></tr><tr><td><a href="#t43">タスク 43</a></td><td><a href="#t43">売上勘定を自動記帳のみに設定します</a></td><td>—</td><td><code>FS00</code></td><td>7</td><td>2</td></tr><tr><td><a href="#t44">タスク 44</a></td><td><a href="#t44">貸借対照表と損益計算書の構造を定義します</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>29</td><td>23</td></tr><tr><td><a href="#t45">タスク 45</a></td><td><a href="#t45">貸借対照表を実行</a></td><td>—</td><td>—</td><td>3</td><td>3</td></tr></tbody></table></div>
+<h2 id="steps">3. 手順（タスクごと）</h2>
+<div class="box info"><b class="t">このページの使い方</b>各タスクは原教材ドキュメントの順序どおりに掲載しています。まず「説明」を読み、次に「IMG パス」に従って設定ポイントへ進み、その後は番号付きのステップに沿って（各ステップに原教材ドキュメントの実機画面が付いています）、画面ごとに操作していきます。画面の赤い四角や矢印は、原教材ドキュメントの著者が「入力・選択すべき箇所」として付けたものです。画面をクリックすると拡大できます（1×/2×/3×、ESC で閉じる）。</div>
+<div class="steph" id="t01"><span class="no">タスク 01</span><h3>会社コードを登録する</h3><span class="tc2">2 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】创建公司代码<br></div></details>
+<div class="pathline" data-copy="エンタープライズ構造 → 定義 → 財務会計 → 会社コードの編集／コピー／削除／チェック、会社コードデータの編集 「会社コードデータの編集」を選択"><b>IMG パス（IMG 設定メニュー）</b>エンタープライズ構造 → 定義 → 財務会計 → 会社コードの編集／コピー／削除／チェック、会社コードデータの編集 「会社コードデータの編集」を選択</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>企业结构 → 定义 → 财务会计 → 编辑/复制/删除/检查公司代码、编辑公司代码数据选择编辑公司代码数据</code></div>
+<table class="tbl vals"><thead><tr><th>項目（日本語）</th><th>画面の中国語</th><th>教材の設定値</th></tr></thead><tbody><tr><td>会社コード</td><td><code>公司代码</code></td><td>C999</td></tr><tr><td>通貨</td><td><code>货币</code></td><td>RMB</td></tr><tr><td>言語</td><td><code>语言</code></td><td>ZH</td></tr></tbody></table>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> ここで 1 社の会社を登録し、登録したこの会社の業務を展開していきます。登録する会社は頤寧機械有限公司です。<br>会社コードは 1 つの完全な会計実体を表します。貸借対照表などがあります</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：我们现在创建一家公司，并展开创建的此家公司的业务，我们创建的此家公司为颐宁机械有限公司。<br>公司代码描述的是一个完整的会计实体.有资产负债表等</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t01/01_1_image7.png"><img src="assets/img/fi/t01/01_1_image7.png" alt="会社コードを登録する · ステップ 1：解説：ここで 1 社の会社を登録し、登録したこの会社の業務を展開していきます。登録する会社は頤寧機械有限公司です。 会社コードは 1 つの完全な会計実体を表します。貸借対照表などがあります" loading="lazy" width="394" height="363"></a><figcaption><span class="n">画面 6</span><span class="src">image7.png · 394×363</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>国 CN</div>
+</li>
+<li>
+<p class="opcap">会社名 頤寧機械有限公司 都市 上海<br>上記の会社情報を下図のとおりに入力し、入力が完了したら「保存」ボタンをクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">公司名称 颐宁机械有限公司城市 上海<br>输入上述公司信息，如下图所示，输入完毕点击保存按钮</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t01/03_1_image9.png"><img src="assets/img/fi/t01/03_1_image9.png" alt="会社コードを登録する · ステップ 2：会社名 頤寧機械有限公司 都市 上海 上記の会社情報を下図のとおりに入力し、入力が完了したら「保存」ボタンをクリックします" loading="lazy" width="348" height="299"></a><figcaption><span class="n">画面 7</span><span class="src">image9.png · 348×299</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t02"><span class="no">タスク 02</span><h3>勘定科目表を登録する</h3><span class="tc2">2 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】创建会计科目表<br></div></details>
+<div class="pathline" data-copy="財務会計（新） → 総勘定元帳会計（新） → 総勘定元帳勘定 → マスタデータ → 総勘定元帳勘定-準備 → 勘定科目表一覧の編集。下図のとおりに登録し、登録が完了したら「保存」ボタンをクリックします。"><b>IMG パス（IMG 設定メニュー）</b>財務会計（新） → 総勘定元帳会計（新） → 総勘定元帳勘定 → マスタデータ → 総勘定元帳勘定-準備 → 勘定科目表一覧の編集。下図のとおりに登録し、登録が完了したら「保存」ボタンをクリックします。</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>财务会计新 → 总帐会计新 → 总帐科目 → 主数据 → 总账科目-准备 → 编辑科目表清单按下图进行创建，创建完毕后点击保存按钮</code></div>
+<table class="tbl vals"><thead><tr><th>項目（日本語）</th><th>画面の中国語</th><th>教材の設定値</th></tr></thead><tbody><tr><td>総勘定元帳勘定番号の長さ</td><td><code>总帐科目号长度</code></td><td>8</td></tr></tbody></table>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 勘定科目表の登録は、会計関連の設定で最も基礎となる作業です。異なる会社コードを異なる勘定科目表に割り当てることができ、関係は多対一です。パスは下図のとおりで、最初から設定を行います。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：创建会计科目表是进行会计部分设置最基础的工作，不同的公司代码可以分配给不同的会计科目表,关系是多对一，路径如下图，我们从头开始设置。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t02/01_1_image10.png"><img src="assets/img/fi/t02/01_1_image10.png" alt="勘定科目表を登録する · ステップ 1：解説：勘定科目表の登録は、会計関連の設定で最も基礎となる作業です。異なる会社コードを異なる勘定科目表に割り当てることができ、関係は多対一です。パスは下図のとおりで、最初から設定を行います。" loading="lazy" width="351" height="412"></a><figcaption><span class="n">画面 8</span><span class="src">image10.png · 351×412</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">財務会計（新）－総勘定元帳会計（新）－総勘定元帳勘定－マスタデータ－総勘定元帳勘定-準備－勘定科目表一覧の編集 下図のとおり登録し、登録後に「保存」ボタンをクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">财务会计新－总帐会计新－总帐科目－主数据－总账科目-准备－编辑科目表清单按下图进行创建，创建完毕后点击保存按钮</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t02/02_1_image11.png"><img src="assets/img/fi/t02/02_1_image11.png" alt="勘定科目表を登録する · ステップ 2：財務会計（新）－総勘定元帳会計（新）－総勘定元帳勘定－マスタデータ－総勘定元帳勘定-準備－勘定科目表一覧の編集 下図のとおり登録し、登録後に「保存」ボタンをクリックします" loading="lazy" width="600" height="443"></a><figcaption><span class="n">画面 9</span><span class="src">image11.png · 600×443</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>勘定科目表 A999</div>
+<div class="note info"><b class="t">原理の説明</b>説明 頤寧機械有限公司 勘定科目表 メンテナンス言語</div>
+<div class="note tip"><b class="t">教材ノート</b>管理会計統合 原価要素の自動登録</div>
+</li>
+</ol>
+<div class="steph" id="t03"><span class="no">タスク 03</span><h3>会計年度バリアントを定義</h3><span class="tc2">2 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义会计年度变式<br></div></details>
+<div class="pathline" data-copy="財務会計 → 財務会計のグローバル設定 → 会計年度 → 元帳 → 会計年度と転記期間 → 会計年度バリアントのメンテナンス（短縮会計年度のメンテナンス）「新規」ボタンをクリックして新規エントリ"><b>IMG パス（IMG 設定メニュー）</b>財務会計 → 財務会計のグローバル設定 → 会計年度 → 元帳 → 会計年度と転記期間 → 会計年度バリアントのメンテナンス（短縮会計年度のメンテナンス）「新規」ボタンをクリックして新規エントリ</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>财务会计 → 财务会计的全局设置 → 会计年度 → 分类账 → 会计年度和过账期间 → 维护会计年度变式（维护缩短的会计年度）点击新建按钮新条目</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 会計年度バリアントは以降の財務処理で使用されます。会計年度バリアントは転記期間と特別期間の数を示し、つまりどの期間で転記するかを表します。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：会计年度变式将用于后续的财务操作，会计年度变式表明过账期间和特殊期间的数目，即在哪些期间进行过账</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t03/01_1_image12.png"><img src="assets/img/fi/t03/01_1_image12.png" alt="会計年度バリアントを定義 · ステップ 1：解説：会計年度バリアントは以降の財務処理で使用されます。会計年度バリアントは転記期間と特別期間の数を示し、つまりどの期間で転記するかを表します。" loading="lazy" width="452" height="396"></a><figcaption><span class="n">画面 10</span><span class="src">image12.png · 452×396</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">財務会計－財務会計のグローバル設定－会計年度－元帳－会計年度と転記期間－会計年度バリアントのメンテナンス（短縮会計年度のメンテナンス）「新規エントリ」ボタンをクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">财务会计－财务会计的全局设置－会计年度－分类账－会计年度和过账期间－维护会计年度变式（维护缩短的会计年度）点击新建按钮新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t03/02_1_image13.png"><img src="assets/img/fi/t03/02_1_image13.png" alt="会計年度バリアントを定義 · ステップ 2：財務会計－財務会計のグローバル設定－会計年度－元帳－会計年度と転記期間－会計年度バリアントのメンテナンス（短縮会計年度のメンテナンス）「新規エントリ」ボタンをクリック" loading="lazy" width="798" height="489"></a><figcaption><span class="n">画面 11</span><span class="src">image13.png · 798×489</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t04"><span class="no">タスク 04</span><h3>与信管理領域を登録</h3><span class="tc2">2 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】创建信贷控制范围<br></div></details>
+<div class="pathline" data-copy="エンタープライズ構造 → 定義 → 財務会計 → 与信管理領域の定義。次の情報を登録します："><b>IMG パス（IMG 設定メニュー）</b>エンタープライズ構造 → 定義 → 財務会計 → 与信管理領域の定義。次の情報を登録します：</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>企业结构 → 定义 → 财务会计 → 定义信贷控制范围创建如下信息：</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap"><span class="lead">解説：</span> 与信管理領域は、信用管理を行う際に信用がどの範囲で有効になるかを管理するために使用します。これは SAP の販売管理と売掛金モジュールで信用リスクを管理するための組織構造です。会社コードと与信管理領域は多対一の関係です。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：信贷范围用于管理在进行信用控制时，信用在哪个范围内起作用。它是 SAP 销售和应收帐款模块中用于控制信用风险的组织结构.公司代码和信贷控制范围是多对一关系。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t04/01_1_image14.png"><img src="assets/img/fi/t04/01_1_image14.png" alt="与信管理領域を登録 · ステップ 1：解説：与信管理領域は、信用管理を行う際に信用がどの範囲で有効になるかを管理するために使用します。これは SAP の販売管理と売掛金モジュールで信用リスクを管理するための組織構造です。会社コードと与信管理領域は多対一の関係です。" loading="lazy" width="398" height="439"></a><figcaption><span class="n">画面 12</span><span class="src">image14.png · 398×439</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 13）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t04/02_1_image15.png"><img src="assets/img/fi/t04/02_1_image15.png" alt="与信管理領域を登録 · ステップ 2：image15.png" loading="lazy" width="450" height="334"></a><figcaption><span class="n">画面 13</span><span class="src">image15.png · 450×334</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>C999 頤寧与信管理領域</div>
+<div class="note tip"><b class="t">教材ノート</b>RMB</div>
+</li>
+</ol>
+<div class="steph" id="t05"><span class="no">タスク 05</span><h3>会社コードのグローバルパラメータをメンテナンスする</h3><span class="tc2">2 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】维护公司代码的全局参数<br></div></details>
+<div class="pathline" data-copy="財務会計 → 財務会計のグローバル設定 → 会社コード → グローバルパラメータの入力"><b>IMG パス（IMG 設定メニュー）</b>財務会計 → 財務会計のグローバル設定 → 会社コード → グローバルパラメータの入力</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>财务会计 → 财务会计的全局设置 → 公司代码 → 输入全局参数</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 会社コードのグローバルパラメータは、会社の勘定科目表、与信管理領域、会計年度バリアントなどを設定するために使用します。主に会社コードのグローバルパラメータを入力し、上記の 3 つの組織構造を会社コードに割り当てます。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：公司代码全局参数用于设置创建公司的帐目表，信贷控制范围，会计年度变式等。主要输入公司代码的全局参数,把上面的三个组织结构分配给公司代码。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t05/01_1_image16.png"><img src="assets/img/fi/t05/01_1_image16.png" alt="会社コードのグローバルパラメータをメンテナンスする · ステップ 1：解説：会社コードのグローバルパラメータは、会社の勘定科目表、与信管理領域、会計年度バリアントなどを設定するために使用します。主に会社コードのグローバルパラメータを入力し、上記の 3 つの組織構造を会社コードに割り当てます。" loading="lazy" width="352" height="360"></a><figcaption><span class="n">画面 14</span><span class="src">image16.png · 352×360</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">財務会計－財務会計のグローバル設定－会社コード－グローバルパラメータの入力</p>
+<details class="orig"><summary>原文</summary><div class="zh">财务会计－财务会计的全局设置－公司代码－输入全局参数</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t05/02_1_image17.png"><img src="assets/img/fi/t05/02_1_image17.png" alt="会社コードのグローバルパラメータをメンテナンスする · ステップ 2：財務会計－財務会計のグローバル設定－会社コード－グローバルパラメータの入力" loading="lazy" width="608" height="656"></a><figcaption><span class="n">画面 15</span><span class="src">image17.png · 608×656</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>勘定科目表 A999 会社</div>
+<div class="note tip"><b class="t">教材ノート</b>国テーブル／勘定財務管理範囲</div>
+<div class="note tip"><b class="t">教材ノート</b>与信管理領域 C999 会計年度バリアント ZF</div>
+</li>
+</ol>
+<div class="steph" id="t06"><span class="no">タスク 06</span><h3>勘定グループと入力制御を定義</h3><span class="tc2">9 画面 / 9 ステップ</span></div>
+<p>ダブルクリックして勘定科目表 A999 グループ BSA に進みます</p>
+<p>貸借対照表勘定</p>
+<p>A999 BSA 貸借対照表勘定 10000000 39999999</p>
+<p>A999 PLA 損益勘定 40000000 59999999</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义科目组及输入控制<br>双击进入会计科目表 A999 组 BSA<br>资产负债类科目<br>A999 BSA 资产负债类科目 10000000 39999999<br>A999 PLA 损益类科目 40000000 59999999</div></details>
+<div class="pathline" data-copy="財務会計 → 総勘定元帳会計 → 総勘定元帳勘定 → マスタデータ → 準備 → 勘定グループの定義"><b>IMG パス（IMG 設定メニュー）</b>財務会計 → 総勘定元帳会計 → 総勘定元帳勘定 → マスタデータ → 準備 → 勘定グループの定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>财务会计 → 总帐会计 → 总帐科目 → 主数据 → 准备 → 定义科目组</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 勘定グループの登録と入力制御、すなわち勘定を入力する際にどの項目が入力可能で、どの項目が非表示になるかなどに使用します。勘定グループは性質の似た勘定を分類するもので、主に業務処理で勘定マスタをメンテナンスします。（調整勘定--項目ステータスグループ--伝票入力）。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：用于创建科目组，并进行输入控制，即在输入科目时，哪些字段允许输入，哪些字段隐藏等。科目组是将性质类似的科目分类，主要维护前台会计科目主数据。(统驭科目--字 段状态组--凭证输入)。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t06/01_1_image18.png"><img src="assets/img/fi/t06/01_1_image18.png" alt="勘定グループと入力制御を定義 · ステップ 1：解説：勘定グループの登録と入力制御、すなわち勘定を入力する際にどの項目が入力可能で、どの項目が非表示になるかなどに使用します。勘定グループは性質の似た勘定を分類するもので、主に業務処理で勘定マスタをメンテナンスします。（調整勘定--項目ステータスグループ--伝票入力）。" loading="lazy" width="429" height="494"></a><figcaption><span class="n">画面 16</span><span class="src">image18.png · 429×494</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">財務会計－総勘定元帳会計－総勘定元帳勘定－マスタデータ－準備－勘定グループの定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">财务会计－总帐会计－总帐科目－主数据－准备－定义科目组</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t06/02_1_image19.png"><img src="assets/img/fi/t06/02_1_image19.png" alt="勘定グループと入力制御を定義 · ステップ 2：財務会計－総勘定元帳会計－総勘定元帳勘定－マスタデータ－準備－勘定グループの定義" loading="lazy" width="589" height="381"></a><figcaption><span class="n">画面 17</span><span class="src">image19.png · 589×381</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">A999 RAA 調整勘定 11300000 21699999<br>BSA をダブルクリックして進む</p>
+<details class="orig"><summary>原文</summary><div class="zh">A999 RAA 统驭科目 11300000 21699999<br>双击 BSA 进入</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t06/03_1_image20.png"><img src="assets/img/fi/t06/03_1_image20.png" alt="勘定グループと入力制御を定義 · ステップ 3：A999 RAA 調整勘定 11300000 21699999 BSA をダブルクリックして進む" loading="lazy" width="398" height="377"></a><figcaption><span class="n">画面 18</span><span class="src">image20.png · 398×377</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">「勘定制御」をダブルクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击科目控制</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t06/04_1_image21.png"><img src="assets/img/fi/t06/04_1_image21.png" alt="勘定グループと入力制御を定義 · ステップ 4：「勘定制御」をダブルクリック" loading="lazy" width="558" height="459"></a><figcaption><span class="n">画面 19</span><span class="src">image21.png · 558×459</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「伝票入力」をダブルクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击凭证输入</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t06/05_1_image22.png"><img src="assets/img/fi/t06/05_1_image22.png" alt="勘定グループと入力制御を定義 · ステップ 5：「伝票入力」をダブルクリック" loading="lazy" width="546" height="329"></a><figcaption><span class="n">画面 20</span><span class="src">image22.png · 546×329</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">ダブルクリックして PLA へ進む</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击进入 PLA</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t06/06_1_image23.png"><img src="assets/img/fi/t06/06_1_image23.png" alt="勘定グループと入力制御を定義 · ステップ 6：ダブルクリックして PLA へ進む" loading="lazy" width="267" height="385"></a><figcaption><span class="n">画面 21</span><span class="src">image23.png · 267×385</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">勘定管理へ進む</p>
+<details class="orig"><summary>原文</summary><div class="zh">进入账户管理</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t06/07_1_image24.png"><img src="assets/img/fi/t06/07_1_image24.png" alt="勘定グループと入力制御を定義 · ステップ 7：勘定管理へ進む" loading="lazy" width="559" height="364"></a><figcaption><span class="n">画面 22</span><span class="src">image24.png · 559×364</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 23）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t06/08_1_image25.png"><img src="assets/img/fi/t06/08_1_image25.png" alt="勘定グループと入力制御を定義 · ステップ 8：image25.png" loading="lazy" width="603" height="345"></a><figcaption><span class="n">画面 23</span><span class="src">image25.png · 603×345</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">調整勘定へ進む</p>
+<details class="orig"><summary>原文</summary><div class="zh">进入统驭科目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t06/09_1_image26.png"><img src="assets/img/fi/t06/09_1_image26.png" alt="勘定グループと入力制御を定義 · ステップ 9：調整勘定へ進む" loading="lazy" width="587" height="344"></a><figcaption><span class="n">画面 24</span><span class="src">image26.png · 587×344</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t07"><span class="no">タスク 07</span><h3>項目ステータスバリアントを定義</h3><span class="tc2">19 画面 / 10 ステップ</span></div>
+<p>次のグループを新規作成</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义字段状态变式<br>新建如下组</div></details>
+<div class="pathline" data-copy="財務会計（新） → 財務会計のグローバル設定（新） → 項目 → 項目ステータスバリアントの定義"><b>IMG パス（IMG 設定メニュー）</b>財務会計（新） → 財務会計のグローバル設定（新） → 項目 → 項目ステータスバリアントの定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>财务会计(新) → 财务会计全局设置(新) → 字段 → 定义字段状态变式</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap"><span class="lead">解説：</span> 項目ステータスバリアントは会社コードに割り当てる重要なパラメータで、項目ステータスバリアントには多くの項目ステータスグループが列挙されています。項目ステータスグループは勘定科目の重要なパラメータであり、会計記帳伝票を入力する際に、その勘定のどの補助的な勘定割当項目が入力必須で、どれが入力不可で、どれが選択可能かを制御します。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：字段状态变式是分配给公司代码的一项重要参数,在字段状态变式中罗列了很多字段状态组,而字段状态组是会计科目中的一个重要参数.它控制在输入一张会计记帐凭证时,该科目的那些辅助核算项目是必须输入的,哪些是不允许输入的,哪些是可以选择的</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t07/01_1_image27.png"><img src="assets/img/fi/t07/01_1_image27.png" alt="項目ステータスバリアントを定義 · ステップ 1：解説：項目ステータスバリアントは会社コードに割り当てる重要なパラメータで、項目ステータスバリアントには多くの項目ステータスグループが列挙されています。項目ステータスグループは勘定科目の重要なパラメータであり、会計記帳伝票を入力する際に、その勘定のどの補助的な勘定割当項目が入力必須で、どれが入力不可で、どれが選択可能かを" loading="lazy" width="597" height="479"></a><figcaption><span class="n">画面 25</span><span class="src">image27.png · 597×479</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">重要：勘定グループは勘定を制御するパラメータ、項目ステータスグループは伝票を制御する補助的な勘定項目です</p>
+<details class="orig"><summary>原文</summary><div class="zh">重点:科目组是控制科目中的参数,字段状态组是控制凭证中的辅助核算项</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t07/02_1_image28.png"><img src="assets/img/fi/t07/02_1_image28.png" alt="項目ステータスバリアントを定義 · ステップ 2：重要：勘定グループは勘定を制御するパラメータ、項目ステータスグループは伝票を制御する補助的な勘定項目です" loading="lazy" width="363" height="452"></a><figcaption><span class="n">画面 26</span><span class="src">image28.png · 363×452</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">財務会計（新）－財務会計のグローバル設定（新） — 項目－項目ステータスバリアントの定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">财务会计(新)－财务会计全局设置(新) — 字段－定义字段状态变式</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t07/03_1_image29.png"><img src="assets/img/fi/t07/03_1_image29.png" alt="項目ステータスバリアントを定義 · ステップ 3：財務会計（新）－財務会計のグローバル設定（新） — 項目－項目ステータスバリアントの定義" loading="lazy" width="447" height="123"></a><figcaption><span class="n">画面 27</span><span class="src">image29.png · 447×123</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">Z001 会社コード C999 項目ステータスグループ</p>
+<details class="orig"><summary>原文</summary><div class="zh">Z001 公司代码 C999 字段状态组</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t07/04_1_image30.png"><img src="assets/img/fi/t07/04_1_image30.png" alt="項目ステータスバリアントを定義 · ステップ 4：Z001 会社コード C999 項目ステータスグループ" loading="lazy" width="445" height="125"></a><figcaption><span class="n">画面 28</span><span class="src">image30.png · 445×125</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t07/04_2_image31.png"><img src="assets/img/fi/t07/04_2_image31.png" alt="項目ステータスバリアントを定義 · ステップ 4：Z001 会社コード C999 項目ステータスグループ" loading="lazy" width="565" height="147"></a><figcaption><span class="n">画面 29</span><span class="src">image31.png · 565×147</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">項目ステータスグループをダブルクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击字段状态组</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t07/05_1_image32.png"><img src="assets/img/fi/t07/05_1_image32.png" alt="項目ステータスバリアントを定義 · ステップ 5：項目ステータスグループをダブルクリック" loading="lazy" width="577" height="265"></a><figcaption><span class="n">画面 30</span><span class="src">image32.png · 577×265</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">ZEXP 費用勘定<br>ZGBS 一般貸借対照表勘定 ZMMA 材料購買勘定（GR/IR） ZRAA 調整勘定-売掛／買掛 ZREV 収益勘定</p>
+<details class="orig"><summary>原文</summary><div class="zh">ZEXP 费用科目<br>ZGBS 一般资产负债科目 ZMMA 材料采购科目（GR/IR） ZRAA 统驭科目-应收/应付 ZREV 收入科目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t07/06_1_image33.png"><img src="assets/img/fi/t07/06_1_image33.png" alt="項目ステータスバリアントを定義 · ステップ 6：ZEXP 費用勘定 ZGBS 一般貸借対照表勘定 ZMMA 材料購買勘定（GR/IR） ZRAA 調整勘定-売掛／買掛 ZREV 収益勘定" loading="lazy" width="274" height="408"></a><figcaption><span class="n">画面 31</span><span class="src">image33.png · 274×408</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t07/06_2_image34.png"><img src="assets/img/fi/t07/06_2_image34.png" alt="項目ステータスバリアントを定義 · ステップ 6：ZEXP 費用勘定 ZGBS 一般貸借対照表勘定 ZMMA 材料購買勘定（GR/IR） ZRAA 調整勘定-売掛／買掛 ZREV 収益勘定" loading="lazy" width="481" height="542"></a><figcaption><span class="n">画面 32</span><span class="src">image34.png · 481×542</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>ZGBS をダブルクリック</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 33）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t07/07_1_image35.png"><img src="assets/img/fi/t07/07_1_image35.png" alt="項目ステータスバリアントを定義 · ステップ 7：image35.png" loading="lazy" width="261" height="466"></a><figcaption><span class="n">画面 33</span><span class="src">image35.png · 261×466</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t07/07_2_image36.png"><img src="assets/img/fi/t07/07_2_image36.png" alt="項目ステータスバリアントを定義 · ステップ 7：image36.png" loading="lazy" width="512" height="866"></a><figcaption><span class="n">画面 34</span><span class="src">image36.png · 512×866</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">ZMMA をダブルクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击ZMMA</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t07/08_1_image37.png"><img src="assets/img/fi/t07/08_1_image37.png" alt="項目ステータスバリアントを定義 · ステップ 8：ZMMA をダブルクリック" loading="lazy" width="253" height="472"></a><figcaption><span class="n">画面 35</span><span class="src">image37.png · 253×472</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t07/08_2_image38.png"><img src="assets/img/fi/t07/08_2_image38.png" alt="項目ステータスバリアントを定義 · ステップ 8：ZMMA をダブルクリック" loading="lazy" width="510" height="405"></a><figcaption><span class="n">画面 36</span><span class="src">image38.png · 510×405</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t07/08_3_image39.png"><img src="assets/img/fi/t07/08_3_image39.png" alt="項目ステータスバリアントを定義 · ステップ 8：ZMMA をダブルクリック" loading="lazy" width="522" height="862"></a><figcaption><span class="n">画面 37</span><span class="src">image41.png · 522×862</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t07/08_4_image40.png"><img src="assets/img/fi/t07/08_4_image40.png" alt="項目ステータスバリアントを定義 · ステップ 8：ZMMA をダブルクリック" loading="lazy" width="521" height="427"></a><figcaption><span class="n">画面 38</span><span class="src">image42.png · 521×427</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t07/08_3_image39.png"><img src="assets/img/fi/t07/08_3_image39.png" alt="項目ステータスバリアントを定義 · ステップ 8：ZMMA をダブルクリック" loading="lazy" width="522" height="862"></a><figcaption><span class="n">画面 37</span><span class="src">image41.png · 522×862</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t07/08_4_image40.png"><img src="assets/img/fi/t07/08_4_image40.png" alt="項目ステータスバリアントを定義 · ステップ 8：ZMMA をダブルクリック" loading="lazy" width="521" height="427"></a><figcaption><span class="n">画面 38</span><span class="src">image42.png · 521×427</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">システムが「項目ステータスが一致しません。ヘルプテキストを参照してください」とメッセージを表示します。Enter を押すと戻ります</p>
+<details class="orig"><summary>原文</summary><div class="zh">系统会提示“不一致的字段状态，参加帮助文本”回车即可返回</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t07/09_1_image43.png"><img src="assets/img/fi/t07/09_1_image43.png" alt="項目ステータスバリアントを定義 · ステップ 9：システムが「項目ステータスが一致しません。ヘルプテキストを参照してください」とメッセージを表示します。Enter を押すと戻ります" loading="lazy" width="508" height="554"></a><figcaption><span class="n">画面 41</span><span class="src">image43.png · 508×554</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">ZREV をダブルクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击 ZREV</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t07/10_1_image44.png"><img src="assets/img/fi/t07/10_1_image44.png" alt="項目ステータスバリアントを定義 · ステップ 10：ZREV をダブルクリック" loading="lazy" width="362" height="466"></a><figcaption><span class="n">画面 42</span><span class="src">image44.png · 362×466</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t07/10_2_image45.png"><img src="assets/img/fi/t07/10_2_image45.png" alt="項目ステータスバリアントを定義 · ステップ 10：ZREV をダブルクリック" loading="lazy" width="513" height="272"></a><figcaption><span class="n">画面 43</span><span class="src">image45.png · 513×272</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t08"><span class="no">タスク 08</span><h3>項目ステータスバリアントに会社コードを配賦</h3><span class="tc2">2 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】向字段状态变式分配公司代码<br></div></details>
+<div class="pathline" data-copy="財務会計 → 財務会計のグローバル設定 → 伝票 → 明細 → 管理会計 → 会社コードへの項目ステータスバリアントの割り当て"><b>IMG パス（IMG 設定メニュー）</b>財務会計 → 財務会計のグローバル設定 → 伝票 → 明細 → 管理会計 → 会社コードへの項目ステータスバリアントの割り当て</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>财务会计 → 财务会计全局设置 → 凭证 → 行项目 → 控制 → 向字段状态变式分配公司代码</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> まず会社コードに配賦し、後で項目情報を勘定科目に配賦できます</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释:先分配给公司代码,以后可以把字段信息分配给会计科目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t08/01_1_image46.png"><img src="assets/img/fi/t08/01_1_image46.png" alt="項目ステータスバリアントに会社コードを配賦 · ステップ 1：解説：まず会社コードに配賦し、後で項目情報を勘定科目に配賦できます" loading="lazy" width="394" height="443"></a><figcaption><span class="n">画面 44</span><span class="src">image46.png · 394×443</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 45）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t08/02_1_image47.png"><img src="assets/img/fi/t08/02_1_image47.png" alt="項目ステータスバリアントに会社コードを配賦 · ステップ 2：image47.png" loading="lazy" width="545" height="378"></a><figcaption><span class="n">画面 45</span><span class="src">image47.png · 545×378</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t09"><span class="no">タスク 09</span><h3>留保利益勘定を定義</h3><span class="tc2">7 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义存留收益科目<br></div></details>
+<div class="pathline" data-copy="財務会計（新） → 総勘定元帳会計（新） → マスタデータ → 総勘定元帳勘定 → 準備 → 留保利益勘定の定義"><b>IMG パス（IMG 設定メニュー）</b>財務会計（新） → 総勘定元帳会計（新） → マスタデータ → 総勘定元帳勘定 → 準備 → 留保利益勘定の定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>财务会计(新) → 总帐会计(新) → 主数据 → 总帐科目 → 准备 → 定义留存收益科目</code></div>
+<div class="note warn"><b class="t">つまずき注意</b>解説：SAP の総勘定元帳では、年度末決算のときに当期利益または未処分利益を自動的に繰り越すことができます。つまり、システムが損益計算書の勘定残高を貸借対照表の勘定のうち当期利益または未処分利益へ自動的に振り替えます。ここでは振替先の勘定を定義します。SAP ではこれを留保利益勘定と呼びます。プロジェクトの実施では 2 つの処理方法があります。1 つは「当期利益勘定」に設定する方法で、この場合すべての損益計算書勘定の残高が自動的に当期利益勘定へ繰り越され、利益処分計算書の勘定は貸借対照表の勘定とみなされ、未処分利益の繰越は手入力伝票で処理します。もう 1 つは「未処分利益勘定」に設定する方法で、この場合すべての損益計算書勘定とすべての利益処分計算書勘定の残高が自動的に未処分利益勘定へ転記され、利益処分計算書の勘定は損益計算書の勘定とみなされ、当期利益勘定を定義する必要もなく、当期利益の繰越も存在せず、当期利益の金額は損益計算書のレポートで表示されます。</div>
+<ol class="oplist">
+<li>
+<p class="opcap">財務会計（新）－総勘定元帳会計（新）－マスタデータ－総勘定元帳勘定－準備－留保利益勘定の定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">财务会计(新)－总帐会计(新)－主数据－总帐科目－准备－定义留存收益科目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t09/01_1_image48.png"><img src="assets/img/fi/t09/01_1_image48.png" alt="留保利益勘定を定義 · ステップ 1：財務会計（新）－総勘定元帳会計（新）－マスタデータ－総勘定元帳勘定－準備－留保利益勘定の定義" loading="lazy" width="389" height="514"></a><figcaption><span class="n">画面 46</span><span class="src">image48.png · 389×514</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">X 410901X 410901</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t09/02_1_image49.png"><img src="assets/img/fi/t09/02_1_image49.png" alt="留保利益勘定を定義 · ステップ 2：X 410901X 410901" loading="lazy" width="333" height="221"></a><figcaption><span class="n">画面 47</span><span class="src">image52.png · 333×221</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t09/02_2_image50.png"><img src="assets/img/fi/t09/02_2_image50.png" alt="留保利益勘定を定義 · ステップ 2：X 410901X 410901" loading="lazy" width="394" height="257"></a><figcaption><span class="n">画面 48</span><span class="src">image53.png · 394×257</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="assets/img/fi/t09/02_3_image51.png"><img src="assets/img/fi/t09/02_3_image51.png" alt="留保利益勘定を定義 · ステップ 2：X 410901X 410901" loading="lazy" width="324" height="40"></a><figcaption><span class="n">画面 49</span><span class="src">image54.png · 324×40</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t09/02_1_image49.png"><img src="assets/img/fi/t09/02_1_image49.png" alt="留保利益勘定を定義 · ステップ 2：X 410901X 410901" loading="lazy" width="333" height="221"></a><figcaption><span class="n">画面 47</span><span class="src">image52.png · 333×221</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t09/02_2_image50.png"><img src="assets/img/fi/t09/02_2_image50.png" alt="留保利益勘定を定義 · ステップ 2：X 410901X 410901" loading="lazy" width="394" height="257"></a><figcaption><span class="n">画面 48</span><span class="src">image53.png · 394×257</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="assets/img/fi/t09/02_3_image51.png"><img src="assets/img/fi/t09/02_3_image51.png" alt="留保利益勘定を定義 · ステップ 2：X 410901X 410901" loading="lazy" width="324" height="40"></a><figcaption><span class="n">画面 49</span><span class="src">image54.png · 324×40</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材ノート</b>システムが「… 未登録」とメッセージを表示しますが、そのまま Enter で通過できます</div>
+</li>
+</ol>
+<div class="steph" id="t10"><span class="no">タスク 10</span><h3>一般的な貸借対照表勘定を新規作成</h3><span class="tc">FS00</span><span class="tc2">2 画面 / 2 ステップ</span></div>
+<p>「新規勘定」ボタン（テンプレート付きボタンの隣のボタン）をクリック 勘定科目表: A999 = 頤寧機械有限公司会計科目表 総勘定元帳勘定番号 勘定名称</p>
+<p>10010101 現金</p>
+<p>10020101 銀行預金－工商銀行上海支店南京西路支店</p>
+<p>10020111 銀行預金－中国銀行上海支店淮海中路支店 3101968</p>
+<p>12110101 棚卸資産－原材料（ROH）</p>
+<p>12310101 棚卸資産－商品（HAWA）</p>
+<p>12430101 棚卸資産－完成品（FERT）</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建一般资产负债科目<br>点击新建科目按钮（带模板按钮边上那个按钮）帐目表: A999 = 颐宁机械有限公司会计科目表总帐帐号 科目名称<br>10010101 现金<br>10020101 银行存款－工商银行上海分行南京西路支行<br>10020111 银行存款－中国银行上海分行淮海中路支行 3101968<br>12110101 存货－原材料<br>12310101 存货－贸易商品<br>12430101 存货－产成品</div></details>
+<div class="pathline" data-copy="21710102 未払税金 → 付加価値税 → 売上税額"><b>IMG パス（IMG 設定メニュー）</b>21710102 未払税金 → 付加価値税 → 売上税額</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>21710102 未交税金 → 增值税 → 销项税额</code></div>
+<div class="note info"><b class="t">原理の説明</b>解説：業務処理で貸借対照表勘定を登録します。貸借対照表勘定を定義します。SAP では、勘定の定義は 2 つの層に分かれます。勘定科目表レベルと会社コードレベルです。たとえば、グループ企業が 1 つの勘定科目表を定義できますが、その下の各会社コードはそこからどの勘定を選択するかを決め、これらの勘定の各種パラメータも自分で決めることができ、集中と柔軟性を両立できます。総勘定元帳勘定の定義：勘定科目表レベルと会社コードレベル。勘定グループは勘定科目表に関連し、会社コードとは無関係です。項目ステータスグループは会社コードに関連します。ここでは、C999 会社コード配下の 10 件の総勘定元帳勘定を新たに登録しました。</div>
+<ol class="oplist">
+<li>
+<p class="opcap">トランザクションコード：FS00</p>
+<details class="orig"><summary>原文</summary><div class="zh">事务代码：FS00</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t10/01_1_image55.png"><img src="assets/img/fi/t10/01_1_image55.png" alt="一般的な貸借対照表勘定を新規作成 · ステップ 1：トランザクションコード：FS00" loading="lazy" width="331" height="458"></a><figcaption><span class="n">画面 53</span><span class="src">image55.png · 331×458</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 54）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t10/02_1_image56.png"><img src="assets/img/fi/t10/02_1_image56.png" alt="一般的な貸借対照表勘定を新規作成 · ステップ 2：image56.png" loading="lazy" width="648" height="303"></a><figcaption><span class="n">画面 54</span><span class="src">image56.png · 648×303</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>31410101 利益処分－未処分利益</div>
+<div class="note tip"><b class="t">教材ノート</b>31010101 払込資本</div>
+</li>
+</ol>
+<div class="steph" id="t11"><span class="no">タスク 11</span><h3>調整勘定－売掛金／買掛金を新規作成</h3><span class="tc">FS00</span><span class="tc2">10 画面 / 3 ステップ</span></div>
+<p>解説：これもいくつかの総勘定元帳勘定を登録するものです。異なるのは、これらの勘定、たとえば売掛金・買掛金には対応する明細元帳モジュールがあることです。たとえば得意先勘定、仕入先勘定です。業務の記帳はこれらの明細元帳にのみ行うことができ、統合によって総勘定元帳が自動的に更新され、総勘定元帳に直接記帳することはできません。これにより、明細元帳と総勘定元帳が一致しない事態の発生を防ぎます。これらの総勘定元帳勘定が調整勘定となります。</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建统驭科目－应收/应付<br>解释：这也是创建一些总账会计科目。不同的是这些科目，如应收帐和应付账款会有相应的明细分类账模块。如客户账户，供应商账户。业务入账只能记入这些明细分类账中，通过集成自动更新总账，而不能直接记入总账。这样杜绝了明细分类账和总账不付的情况发生。这些总账科目就为统驭科目。</div></details>
+<table class="tbl vals"><thead><tr><th>項目（日本語）</th><th>画面の中国語</th><th>教材の設定値</th></tr></thead><tbody><tr><td>トランザクションコード</td><td><code>事务代码</code></td><td>FS00</td></tr></tbody></table>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">その他の総勘定元帳勘定の登録は、現金の総勘定元帳勘定の登録と同様です</p>
+<details class="orig"><summary>原文</summary><div class="zh">其他总账科目创建如现金总账的创建</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t11/01_1_image57.png"><img src="assets/img/fi/t11/01_1_image57.png" alt="調整勘定－売掛金／買掛金を新規作成 · ステップ 1：その他の総勘定元帳勘定の登録は、現金の総勘定元帳勘定の登録と同様です" loading="lazy" width="639" height="515"></a><figcaption><span class="n">画面 55</span><span class="src">image57.png · 639×515</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t11/01_2_image58.png"><img src="assets/img/fi/t11/01_2_image58.png" alt="調整勘定－売掛金／買掛金を新規作成 · ステップ 1：その他の総勘定元帳勘定の登録は、現金の総勘定元帳勘定の登録と同様です" loading="lazy" width="643" height="663"></a><figcaption><span class="n">画面 56</span><span class="src">image58.png · 643×663</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">売掛金 FS00 11310101 を登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">创建应收账款 FS00 11310101</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t11/02_1_image59.png"><img src="assets/img/fi/t11/02_1_image59.png" alt="調整勘定－売掛金／買掛金を新規作成 · ステップ 2：売掛金 FS00 11310101 を登録" loading="lazy" width="623" height="786"></a><figcaption><span class="n">画面 57</span><span class="src">image59.png · 623×786</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t11/02_2_image60.png"><img src="assets/img/fi/t11/02_2_image60.png" alt="調整勘定－売掛金／買掛金を新規作成 · ステップ 2：売掛金 FS00 11310101 を登録" loading="lazy" width="652" height="672"></a><figcaption><span class="n">画面 58</span><span class="src">image60.png · 652×672</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t11/02_3_image61.png"><img src="assets/img/fi/t11/02_3_image61.png" alt="調整勘定－売掛金／買掛金を新規作成 · ステップ 2：売掛金 FS00 11310101 を登録" loading="lazy" width="635" height="516"></a><figcaption><span class="n">画面 59</span><span class="src">image61.png · 635×516</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">買掛金勘定を登録<br>21210101 買掛金</p>
+<details class="orig"><summary>原文</summary><div class="zh">创建应付科目<br>21210101 应付帐款</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t11/03_1_image62.png"><img src="assets/img/fi/t11/03_1_image62.png" alt="調整勘定－売掛金／買掛金を新規作成 · ステップ 3：買掛金勘定を登録 21210101 買掛金" loading="lazy" width="626" height="520"></a><figcaption><span class="n">画面 60</span><span class="src">image64.png · 626×520</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t11/03_2_image63.png"><img src="assets/img/fi/t11/03_2_image63.png" alt="調整勘定－売掛金／買掛金を新規作成 · ステップ 3：買掛金勘定を登録 21210101 買掛金" loading="lazy" width="656" height="678"></a><figcaption><span class="n">画面 61</span><span class="src">image65.png · 656×678</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t11/03_3_image66.png"><img src="assets/img/fi/t11/03_3_image66.png" alt="調整勘定－売掛金／買掛金を新規作成 · ステップ 3：買掛金勘定を登録 21210101 買掛金" loading="lazy" width="664" height="779"></a><figcaption><span class="n">画面 62</span><span class="src">image66.png · 664×779</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t11/03_1_image62.png"><img src="assets/img/fi/t11/03_1_image62.png" alt="調整勘定－売掛金／買掛金を新規作成 · ステップ 3：買掛金勘定を登録 21210101 買掛金" loading="lazy" width="626" height="520"></a><figcaption><span class="n">画面 60</span><span class="src">image64.png · 626×520</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t11/03_2_image63.png"><img src="assets/img/fi/t11/03_2_image63.png" alt="調整勘定－売掛金／買掛金を新規作成 · ステップ 3：買掛金勘定を登録 21210101 買掛金" loading="lazy" width="656" height="678"></a><figcaption><span class="n">画面 61</span><span class="src">image65.png · 656×678</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t12"><span class="no">タスク 12</span><h3>材料購買勘定を新規登録する</h3><span class="tc">FS00</span><span class="tc2">3 画面 / 1 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建材料采购科目<br></div></details>
+<table class="tbl vals"><thead><tr><th>項目（日本語）</th><th>画面の中国語</th><th>教材の設定値</th></tr></thead><tbody><tr><td>トランザクションコード</td><td><code>事务代码</code></td><td>FS00</td></tr></tbody></table>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説:</span> 材料購買勘定も総勘定元帳の勘定を 1 つ登録します。この勘定は「一件ごとに消し込む」中間的なつなぎ勘定、すなわち材料購買勘定である必要があります。GR/IR（入庫／請求書）とも呼ばれます。入庫時にはシステムが会計伝票を自動生成します。借方：在庫、貸方：材料購買。請求書受領時にもシステムが会計伝票を自動生成します。借方：材料購買、貸方：買掛金。両側の「材料購買」伝票行が相互に一致する処理を「消込」と呼び、一致したものを「消込済項目」、一致しないものを「未消込項目」と呼びます。未消込項目は、品物または請求書のいずれか一方が未着であることを示します。これはリスクポイントです。「消込」で管理する必要がある他の勘定の多くは、銀行未達勘定のような中間的なつなぎ勘定です。あるいは債権債務を表す（ただし買掛金・売掛金モジュールでは管理しない）勘定で、たとえば長期借入金です。得意先と仕入先の明細勘定は、この消込によって管理されています。<br>材料購買－GR/IR 勘定を登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释:材料采购科目也是创建一个总账会计科目。这个科目需要&quot;逐笔逐清&quot;的中间过渡科目--材料采购科目。也叫 GR/IR(收货/收发票)。在收货时系统自动生成会计凭证。借:库存 贷:材料采购.而收发票时，系统也自动生成会计凭证。 借:材料采购，贷:应付账款.两边的&quot;材料采购&quot; 凭证行相互匹配的过程叫&quot;清账&quot;，对上的叫&quot;已清项&quot;，对不上的叫&quot;未清项&quot;，未清项反映了货或者发票有一方未到。这是个风险点，其他需要用&quot;清账&quot;来管理的科目大多是一些中间过渡科目，如银行未达科目。或者是反映债权债务(但又不用应付应收模块管理)科目，如长期借款。客户和供应商明细账就是采用清账来管理的。<br>创建材料采购－GR/IR 科目</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t12/01_1_image67.png"><img src="assets/img/fi/t12/01_1_image67.png" alt="材料購買勘定を新規登録する · ステップ 1：解説:材料購買勘定も総勘定元帳の勘定を 1 つ登録します。この勘定は「一件ごとに消し込む」中間的なつなぎ勘定、すなわち材料購買勘定である必要があります。GR/IR（入庫／請求書）とも呼ばれます。入庫時にはシステムが会計伝票を自動生成します。借方：在庫、貸方：材料購買。請求書受領時にもシステムが会計伝票を自動生成します。" loading="lazy" width="630" height="485"></a><figcaption><span class="n">画面 65</span><span class="src">image67.png · 630×485</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t12/01_2_image68.png"><img src="assets/img/fi/t12/01_2_image68.png" alt="材料購買勘定を新規登録する · ステップ 1：解説:材料購買勘定も総勘定元帳の勘定を 1 つ登録します。この勘定は「一件ごとに消し込む」中間的なつなぎ勘定、すなわち材料購買勘定である必要があります。GR/IR（入庫／請求書）とも呼ばれます。入庫時にはシステムが会計伝票を自動生成します。借方：在庫、貸方：材料購買。請求書受領時にもシステムが会計伝票を自動生成します。" loading="lazy" width="630" height="640"></a><figcaption><span class="n">画面 66</span><span class="src">image68.png · 630×640</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t12/01_3_image69.png"><img src="assets/img/fi/t12/01_3_image69.png" alt="材料購買勘定を新規登録する · ステップ 1：解説:材料購買勘定も総勘定元帳の勘定を 1 つ登録します。この勘定は「一件ごとに消し込む」中間的なつなぎ勘定、すなわち材料購買勘定である必要があります。GR/IR（入庫／請求書）とも呼ばれます。入庫時にはシステムが会計伝票を自動生成します。借方：在庫、貸方：材料購買。請求書受領時にもシステムが会計伝票を自動生成します。" loading="lazy" width="644" height="808"></a><figcaption><span class="n">画面 67</span><span class="src">image69.png · 644×808</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t13"><span class="no">タスク 13</span><h3>損益勘定を新規登録する</h3><span class="tc">FS00</span><span class="tc2">72 画面 / 36 ステップ</span></div>
+<p>解説：損益勘定の特徴は、年次決算の際に損益勘定の年末残高が「未分配利益」に繰り越されることです</p>
+<p>&quot;（または本年利益）勘定の年初残高。一方、それら自身の年初残高は 0 にクリアされます。</p>
+<p>損益勘定を登録</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建损益科目<br>解释：损益类科目的特点是在做年结的时候，损益类科目的年末余额会结转到&quot;未分配利润<br>&quot;(或者本年利润)科目的年初余额。而他们自己的年初余额清为 0。<br>创建损益科目</div></details>
+<table class="tbl vals"><thead><tr><th>項目（日本語）</th><th>画面の中国語</th><th>教材の設定値</th></tr></thead><tbody><tr><td>トランザクションコード</td><td><code>事务代码</code></td><td>FS00</td></tr></tbody></table>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">51010101 売上高-自製製品</p>
+<details class="orig"><summary>原文</summary><div class="zh">51010101 主营业务收入-自制产品</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t13/01_1_image70.png"><img src="assets/img/fi/t13/01_1_image70.png" alt="損益勘定を新規登録する · ステップ 1：51010101 売上高-自製製品" loading="lazy" width="620" height="507"></a><figcaption><span class="n">画面 68</span><span class="src">image73.png · 620×507</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/01_2_image71.png"><img src="assets/img/fi/t13/01_2_image71.png" alt="損益勘定を新規登録する · ステップ 1：51010101 売上高-自製製品" loading="lazy" width="624" height="744"></a><figcaption><span class="n">画面 69</span><span class="src">image74.png · 624×744</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/01_3_image72.png"><img src="assets/img/fi/t13/01_3_image72.png" alt="損益勘定を新規登録する · ステップ 1：51010101 売上高-自製製品" loading="lazy" width="625" height="673"></a><figcaption><span class="n">画面 70</span><span class="src">image75.png · 625×673</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/01_1_image70.png"><img src="assets/img/fi/t13/01_1_image70.png" alt="損益勘定を新規登録する · ステップ 1：51010101 売上高-自製製品" loading="lazy" width="620" height="507"></a><figcaption><span class="n">画面 68</span><span class="src">image73.png · 620×507</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/01_2_image71.png"><img src="assets/img/fi/t13/01_2_image71.png" alt="損益勘定を新規登録する · ステップ 1：51010101 売上高-自製製品" loading="lazy" width="624" height="744"></a><figcaption><span class="n">画面 69</span><span class="src">image74.png · 624×744</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/01_3_image72.png"><img src="assets/img/fi/t13/01_3_image72.png" alt="損益勘定を新規登録する · ステップ 1：51010101 売上高-自製製品" loading="lazy" width="625" height="673"></a><figcaption><span class="n">画面 70</span><span class="src">image75.png · 625×673</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t13/02_1_image76.png"><img src="assets/img/fi/t13/02_1_image76.png" alt="損益勘定を新規登録する · ステップ 2：image78.png" loading="lazy" width="618" height="495"></a><figcaption><span class="n">画面 74</span><span class="src">image78.png · 618×495</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/02_2_image77.png"><img src="assets/img/fi/t13/02_2_image77.png" alt="損益勘定を新規登録する · ステップ 2：image79.png" loading="lazy" width="477" height="753"></a><figcaption><span class="n">画面 75</span><span class="src">image79.png · 477×753</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/02_1_image76.png"><img src="assets/img/fi/t13/02_1_image76.png" alt="損益勘定を新規登録する · ステップ 2：image78.png" loading="lazy" width="618" height="495"></a><figcaption><span class="n">画面 74</span><span class="src">image78.png · 618×495</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/02_2_image77.png"><img src="assets/img/fi/t13/02_2_image77.png" alt="損益勘定を新規登録する · ステップ 2：image79.png" loading="lazy" width="477" height="753"></a><figcaption><span class="n">画面 75</span><span class="src">image79.png · 477×753</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">製造原価－原材料消費を登録<br>41010101</p>
+<details class="orig"><summary>原文</summary><div class="zh">创建生产成本－原材料消耗<br>41010101</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/03_1_image80.png"><img src="assets/img/fi/t13/03_1_image80.png" alt="損益勘定を新規登録する · ステップ 3：製造原価－原材料消費を登録 41010101" loading="lazy" width="630" height="623"></a><figcaption><span class="n">画面 78</span><span class="src">image80.png · 630×623</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">製造原価－製造指図差異 41010901 を登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">创建生产成本－订单差异 41010901</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t13/04_1_image81.png"><img src="assets/img/fi/t13/04_1_image81.png" alt="損益勘定を新規登録する · ステップ 4：製造原価－製造指図差異 41010901 を登録" loading="lazy" width="609" height="677"></a><figcaption><span class="n">画面 79</span><span class="src">image84.png · 609×677</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/04_2_image82.png"><img src="assets/img/fi/t13/04_2_image82.png" alt="損益勘定を新規登録する · ステップ 4：製造原価－製造指図差異 41010901 を登録" loading="lazy" width="637" height="780"></a><figcaption><span class="n">画面 80</span><span class="src">image85.png · 637×780</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/04_3_image83.png"><img src="assets/img/fi/t13/04_3_image83.png" alt="損益勘定を新規登録する · ステップ 4：製造原価－製造指図差異 41010901 を登録" loading="lazy" width="614" height="508"></a><figcaption><span class="n">画面 81</span><span class="src">image86.png · 614×508</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/04_1_image81.png"><img src="assets/img/fi/t13/04_1_image81.png" alt="損益勘定を新規登録する · ステップ 4：製造原価－製造指図差異 41010901 を登録" loading="lazy" width="609" height="677"></a><figcaption><span class="n">画面 79</span><span class="src">image84.png · 609×677</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/04_2_image82.png"><img src="assets/img/fi/t13/04_2_image82.png" alt="損益勘定を新規登録する · ステップ 4：製造原価－製造指図差異 41010901 を登録" loading="lazy" width="637" height="780"></a><figcaption><span class="n">画面 80</span><span class="src">image85.png · 637×780</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/04_3_image83.png"><img src="assets/img/fi/t13/04_3_image83.png" alt="損益勘定を新規登録する · ステップ 4：製造原価－製造指図差異 41010901 を登録" loading="lazy" width="614" height="508"></a><figcaption><span class="n">画面 81</span><span class="src">image86.png · 614×508</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t13/05_1_image87.png"><img src="assets/img/fi/t13/05_1_image87.png" alt="損益勘定を新規登録する · ステップ 5：image90.png" loading="lazy" width="637" height="670"></a><figcaption><span class="n">画面 85</span><span class="src">image90.png · 637×670</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/05_2_image88.png"><img src="assets/img/fi/t13/05_2_image88.png" alt="損益勘定を新規登録する · ステップ 5：image91.png" loading="lazy" width="630" height="769"></a><figcaption><span class="n">画面 86</span><span class="src">image91.png · 630×769</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/05_3_image89.png"><img src="assets/img/fi/t13/05_3_image89.png" alt="損益勘定を新規登録する · ステップ 5：image92.png" loading="lazy" width="612" height="497"></a><figcaption><span class="n">画面 87</span><span class="src">image92.png · 612×497</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/05_1_image87.png"><img src="assets/img/fi/t13/05_1_image87.png" alt="損益勘定を新規登録する · ステップ 5：image90.png" loading="lazy" width="637" height="670"></a><figcaption><span class="n">画面 85</span><span class="src">image90.png · 637×670</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/05_2_image88.png"><img src="assets/img/fi/t13/05_2_image88.png" alt="損益勘定を新規登録する · ステップ 5：image91.png" loading="lazy" width="630" height="769"></a><figcaption><span class="n">画面 86</span><span class="src">image91.png · 630×769</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/05_3_image89.png"><img src="assets/img/fi/t13/05_3_image89.png" alt="損益勘定を新規登録する · ステップ 5：image92.png" loading="lazy" width="612" height="497"></a><figcaption><span class="n">画面 87</span><span class="src">image92.png · 612×497</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/06_1_image93.png"><img src="assets/img/fi/t13/06_1_image93.png" alt="損益勘定を新規登録する · ステップ 6：image93.png" loading="lazy" width="627" height="680"></a><figcaption><span class="n">画面 91</span><span class="src">image93.png · 627×680</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/06_2_image94.png"><img src="assets/img/fi/t13/06_2_image94.png" alt="損益勘定を新規登録する · ステップ 6：image94.png" loading="lazy" width="632" height="438"></a><figcaption><span class="n">画面 92</span><span class="src">image94.png · 632×438</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">製造間接費－賃金 41050101 を登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">创建制造费用－工资 41050101</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/07_1_image95.png"><img src="assets/img/fi/t13/07_1_image95.png" alt="損益勘定を新規登録する · ステップ 7：製造間接費－賃金 41050101 を登録" loading="lazy" width="620" height="508"></a><figcaption><span class="n">画面 93</span><span class="src">image95.png · 620×508</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/08_1_image96.png"><img src="assets/img/fi/t13/08_1_image96.png" alt="損益勘定を新規登録する · ステップ 8：image96.png" loading="lazy" width="635" height="408"></a><figcaption><span class="n">画面 94</span><span class="src">image96.png · 635×408</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">製造間接費－電気料金 41050121 を登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">创建制造费用－电费 41050121</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t13/09_1_image97.png"><img src="assets/img/fi/t13/09_1_image97.png" alt="損益勘定を新規登録する · ステップ 9：製造間接費－電気料金 41050121 を登録" loading="lazy" width="633" height="352"></a><figcaption><span class="n">画面 95</span><span class="src">image99.png · 633×352</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/09_2_image98.png"><img src="assets/img/fi/t13/09_2_image98.png" alt="損益勘定を新規登録する · ステップ 9：製造間接費－電気料金 41050121 を登録" loading="lazy" width="640" height="685"></a><figcaption><span class="n">画面 96</span><span class="src">image100.png · 640×685</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/09_1_image97.png"><img src="assets/img/fi/t13/09_1_image97.png" alt="損益勘定を新規登録する · ステップ 9：製造間接費－電気料金 41050121 を登録" loading="lazy" width="633" height="352"></a><figcaption><span class="n">画面 95</span><span class="src">image99.png · 633×352</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/09_2_image98.png"><img src="assets/img/fi/t13/09_2_image98.png" alt="損益勘定を新規登録する · ステップ 9：製造間接費－電気料金 41050121 を登録" loading="lazy" width="640" height="685"></a><figcaption><span class="n">画面 96</span><span class="src">image100.png · 640×685</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/10_1_image101.png"><img src="assets/img/fi/t13/10_1_image101.png" alt="損益勘定を新規登録する · ステップ 10：image101.png" loading="lazy" width="645" height="697"></a><figcaption><span class="n">画面 99</span><span class="src">image101.png · 645×697</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/10_2_image102.png"><img src="assets/img/fi/t13/10_2_image102.png" alt="損益勘定を新規登録する · ステップ 10：image102.png" loading="lazy" width="631" height="413"></a><figcaption><span class="n">画面 100</span><span class="src">image102.png · 631×413</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">売上高－商品（HAWA） 51010201 を登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">创建主营业务收入－贸易商品 51010201</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/11_1_image103.png"><img src="assets/img/fi/t13/11_1_image103.png" alt="損益勘定を新規登録する · ステップ 11：売上高－商品（HAWA） 51010201 を登録" loading="lazy" width="624" height="331"></a><figcaption><span class="n">画面 101</span><span class="src">image103.png · 624×331</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/12_1_image104.png"><img src="assets/img/fi/t13/12_1_image104.png" alt="損益勘定を新規登録する · ステップ 12：image104.png" loading="lazy" width="624" height="700"></a><figcaption><span class="n">画面 102</span><span class="src">image104.png · 624×700</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/12_2_image105.png"><img src="assets/img/fi/t13/12_2_image105.png" alt="損益勘定を新規登録する · ステップ 12：image105.png" loading="lazy" width="647" height="424"></a><figcaption><span class="n">画面 103</span><span class="src">image105.png · 647×424</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">売上高－自製製品 54010101 を登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">创建主营业务收入－自制产品 54010101</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/13_1_image106.png"><img src="assets/img/fi/t13/13_1_image106.png" alt="損益勘定を新規登録する · ステップ 13：売上高－自製製品 54010101 を登録" loading="lazy" width="632" height="347"></a><figcaption><span class="n">画面 104</span><span class="src">image106.png · 632×347</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/14_1_image107.png"><img src="assets/img/fi/t13/14_1_image107.png" alt="損益勘定を新規登録する · ステップ 14：image107.png" loading="lazy" width="606" height="692"></a><figcaption><span class="n">画面 105</span><span class="src">image107.png · 606×692</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/14_2_image108.png"><img src="assets/img/fi/t13/14_2_image108.png" alt="損益勘定を新規登録する · ステップ 14：image108.png" loading="lazy" width="620" height="407"></a><figcaption><span class="n">画面 106</span><span class="src">image108.png · 620×407</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">売上原価－商品（HAWA） 54010201 を登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">创建主营业务成本－贸易商品 54010201</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/15_1_image109.png"><img src="assets/img/fi/t13/15_1_image109.png" alt="損益勘定を新規登録する · ステップ 15：売上原価－商品（HAWA） 54010201 を登録" loading="lazy" width="636" height="364"></a><figcaption><span class="n">画面 107</span><span class="src">image109.png · 636×364</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/16_1_image110.png"><img src="assets/img/fi/t13/16_1_image110.png" alt="損益勘定を新規登録する · ステップ 16：image110.png" loading="lazy" width="609" height="680"></a><figcaption><span class="n">画面 108</span><span class="src">image110.png · 609×680</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/16_2_image111.png"><img src="assets/img/fi/t13/16_2_image111.png" alt="損益勘定を新規登録する · ステップ 16：image111.png" loading="lazy" width="635" height="413"></a><figcaption><span class="n">画面 109</span><span class="src">image111.png · 635×413</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">売上原価－購買価格差異 54010301 を登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">创建主营成本－采购价差 54010301</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/17_1_image112.png"><img src="assets/img/fi/t13/17_1_image112.png" alt="損益勘定を新規登録する · ステップ 17：売上原価－購買価格差異 54010301 を登録" loading="lazy" width="636" height="338"></a><figcaption><span class="n">画面 110</span><span class="src">image112.png · 636×338</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/18_1_image113.png"><img src="assets/img/fi/t13/18_1_image113.png" alt="損益勘定を新規登録する · ステップ 18：image113.png" loading="lazy" width="649" height="627"></a><figcaption><span class="n">画面 111</span><span class="src">image113.png · 649×627</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/18_2_image114.png"><img src="assets/img/fi/t13/18_2_image114.png" alt="損益勘定を新規登録する · ステップ 18：image114.png" loading="lazy" width="624" height="408"></a><figcaption><span class="n">画面 112</span><span class="src">image114.png · 624×408</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">売上原価－製造指図差異 54010401 を登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">创建主营业务成本－生产订单差异 54010401</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/19_1_image115.png"><img src="assets/img/fi/t13/19_1_image115.png" alt="損益勘定を新規登録する · ステップ 19：売上原価－製造指図差異 54010401 を登録" loading="lazy" width="635" height="349"></a><figcaption><span class="n">画面 113</span><span class="src">image115.png · 635×349</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/20_1_image116.png"><img src="assets/img/fi/t13/20_1_image116.png" alt="損益勘定を新規登録する · ステップ 20：image116.png" loading="lazy" width="595" height="637"></a><figcaption><span class="n">画面 114</span><span class="src">image116.png · 595×637</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/20_2_image117.png"><img src="assets/img/fi/t13/20_2_image117.png" alt="損益勘定を新規登録する · ステップ 20：image117.png" loading="lazy" width="642" height="417"></a><figcaption><span class="n">画面 115</span><span class="src">image117.png · 642×417</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">販売費－運賃 55010101 を登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">创建销售费用－运费 55010101</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/21_1_image118.png"><img src="assets/img/fi/t13/21_1_image118.png" alt="損益勘定を新規登録する · ステップ 21：販売費－運賃 55010101 を登録" loading="lazy" width="619" height="343"></a><figcaption><span class="n">画面 116</span><span class="src">image118.png · 619×343</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/22_1_image119.png"><img src="assets/img/fi/t13/22_1_image119.png" alt="損益勘定を新規登録する · ステップ 22：image119.png" loading="lazy" width="619" height="686"></a><figcaption><span class="n">画面 117</span><span class="src">image119.png · 619×686</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/22_2_image120.png"><img src="assets/img/fi/t13/22_2_image120.png" alt="損益勘定を新規登録する · ステップ 22：image120.png" loading="lazy" width="652" height="421"></a><figcaption><span class="n">画面 118</span><span class="src">image120.png · 652×421</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">販売費－市場費用 55010111 を登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">创建销售费用－市场费用 55010111</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/23_1_image121.png"><img src="assets/img/fi/t13/23_1_image121.png" alt="損益勘定を新規登録する · ステップ 23：販売費－市場費用 55010111 を登録" loading="lazy" width="634" height="332"></a><figcaption><span class="n">画面 119</span><span class="src">image121.png · 634×332</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/24_1_image122.png"><img src="assets/img/fi/t13/24_1_image122.png" alt="損益勘定を新規登録する · ステップ 24：image122.png" loading="lazy" width="648" height="775"></a><figcaption><span class="n">画面 120</span><span class="src">image122.png · 648×775</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/24_2_image123.png"><img src="assets/img/fi/t13/24_2_image123.png" alt="損益勘定を新規登録する · ステップ 24：image123.png" loading="lazy" width="631" height="422"></a><figcaption><span class="n">画面 121</span><span class="src">image123.png · 631×422</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">管理費－給与 55020101 を登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">创建管理费用－工资 55020101</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/25_1_image124.png"><img src="assets/img/fi/t13/25_1_image124.png" alt="損益勘定を新規登録する · ステップ 25：管理費－給与 55020101 を登録" loading="lazy" width="650" height="358"></a><figcaption><span class="n">画面 122</span><span class="src">image124.png · 650×358</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/26_1_image125.png"><img src="assets/img/fi/t13/26_1_image125.png" alt="損益勘定を新規登録する · ステップ 26：image125.png" loading="lazy" width="558" height="692"></a><figcaption><span class="n">画面 123</span><span class="src">image125.png · 558×692</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/26_2_image126.png"><img src="assets/img/fi/t13/26_2_image126.png" alt="損益勘定を新規登録する · ステップ 26：image126.png" loading="lazy" width="621" height="407"></a><figcaption><span class="n">画面 124</span><span class="src">image126.png · 621×407</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">管理費－減価償却費 55020111 を登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">创建管理费用－折旧 55020111</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/27_1_image127.png"><img src="assets/img/fi/t13/27_1_image127.png" alt="損益勘定を新規登録する · ステップ 27：管理費－減価償却費 55020111 を登録" loading="lazy" width="627" height="341"></a><figcaption><span class="n">画面 125</span><span class="src">image127.png · 627×341</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/28_1_image128.png"><img src="assets/img/fi/t13/28_1_image128.png" alt="損益勘定を新規登録する · ステップ 28：image128.png" loading="lazy" width="650" height="631"></a><figcaption><span class="n">画面 126</span><span class="src">image128.png · 650×631</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/28_2_image129.png"><img src="assets/img/fi/t13/28_2_image129.png" alt="損益勘定を新規登録する · ステップ 28：image129.png" loading="lazy" width="629" height="420"></a><figcaption><span class="n">画面 127</span><span class="src">image129.png · 629×420</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">管理費－電話料金 55020121 を登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">创建管理费用－电话费 55020121</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/29_1_image130.png"><img src="assets/img/fi/t13/29_1_image130.png" alt="損益勘定を新規登録する · ステップ 29：管理費－電話料金 55020121 を登録" loading="lazy" width="641" height="336"></a><figcaption><span class="n">画面 128</span><span class="src">image130.png · 641×336</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/30_1_image131.png"><img src="assets/img/fi/t13/30_1_image131.png" alt="損益勘定を新規登録する · ステップ 30：image131.png" loading="lazy" width="631" height="628"></a><figcaption><span class="n">画面 129</span><span class="src">image131.png · 631×628</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/30_2_image132.png"><img src="assets/img/fi/t13/30_2_image132.png" alt="損益勘定を新規登録する · ステップ 30：image132.png" loading="lazy" width="609" height="404"></a><figcaption><span class="n">画面 130</span><span class="src">image132.png · 609×404</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">管理費－事務用品 55020131 を登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">创建管理费用－办公用品 55020131</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/31_1_image133.png"><img src="assets/img/fi/t13/31_1_image133.png" alt="損益勘定を新規登録する · ステップ 31：管理費－事務用品 55020131 を登録" loading="lazy" width="648" height="356"></a><figcaption><span class="n">画面 131</span><span class="src">image133.png · 648×356</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/32_1_image134.png"><img src="assets/img/fi/t13/32_1_image134.png" alt="損益勘定を新規登録する · ステップ 32：image134.png" loading="lazy" width="625" height="692"></a><figcaption><span class="n">画面 132</span><span class="src">image134.png · 625×692</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/32_2_image135.png"><img src="assets/img/fi/t13/32_2_image135.png" alt="損益勘定を新規登録する · ステップ 32：image135.png" loading="lazy" width="631" height="424"></a><figcaption><span class="n">画面 133</span><span class="src">image135.png · 631×424</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">管理費－賃料 55020141 を登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">创建管理费用－租金 55020141</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/33_1_image136.png"><img src="assets/img/fi/t13/33_1_image136.png" alt="損益勘定を新規登録する · ステップ 33：管理費－賃料 55020141 を登録" loading="lazy" width="601" height="330"></a><figcaption><span class="n">画面 134</span><span class="src">image136.png · 601×330</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/34_1_image137.png"><img src="assets/img/fi/t13/34_1_image137.png" alt="損益勘定を新規登録する · ステップ 34：image137.png" loading="lazy" width="609" height="625"></a><figcaption><span class="n">画面 135</span><span class="src">image137.png · 609×625</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/34_2_image138.png"><img src="assets/img/fi/t13/34_2_image138.png" alt="損益勘定を新規登録する · ステップ 34：image138.png" loading="lazy" width="635" height="423"></a><figcaption><span class="n">画面 136</span><span class="src">image138.png · 635×423</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">管理費－その他 55029101 を登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">创建管理费用－其他 55029101</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/35_1_image139.png"><img src="assets/img/fi/t13/35_1_image139.png" alt="損益勘定を新規登録する · ステップ 35：管理費－その他 55029101 を登録" loading="lazy" width="614" height="343"></a><figcaption><span class="n">画面 137</span><span class="src">image139.png · 614×343</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/36_1_image140.png"><img src="assets/img/fi/t13/36_1_image140.png" alt="損益勘定を新規登録する · ステップ 36：image140.png" loading="lazy" width="643" height="642"></a><figcaption><span class="n">画面 138</span><span class="src">image140.png · 643×642</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/36_2_image141.png"><img src="assets/img/fi/t13/36_2_image141.png" alt="損益勘定を新規登録する · ステップ 36：image141.png" loading="lazy" width="635" height="420"></a><figcaption><span class="n">画面 139</span><span class="src">image141.png · 635×420</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t14"><span class="no">タスク 14</span><h3>勘定集計を照会</h3><span class="tc2">1 画面 / 1 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】显示科目汇总<br></div></details>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 前述のステップで登録する勘定科目を作成します</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：创建上述步骤中创建的会计科目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t14/01_1_image143.png"><img src="assets/img/fi/t14/01_1_image143.png" alt="勘定集計を照会：解説：前述のステップで登録する勘定科目を作成します" loading="lazy" width="752" height="661"></a><figcaption><span class="n">画面 140</span><span class="src">image143.png · 752×661</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>S_alr_87012326</div>
+</li>
+</ol>
+<div class="steph" id="t15"><span class="no">タスク 15</span><h3>伝票番号範囲を会社コードにコピー</h3><span class="tc2">5 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】复制凭证号码范围到公司代码<br></div></details>
+<div class="pathline" data-copy="財務会計（新） → 財務会計のグローバル設定（新） → 伝票 → 伝票番号範囲 → 会社コードへのコピー"><b>IMG パス（IMG 設定メニュー）</b>財務会計（新） → 財務会計のグローバル設定（新） → 伝票 → 伝票番号範囲 → 会社コードへのコピー</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>财务会计(新) → 财务会计全局设置(新) → 凭证 → 凭证号范围 → 复制到公司代码</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">財務会計（新）－財務会計のグローバル設定（新）－伝票－伝票番号範囲－会社コードへのコピー</p>
+<details class="orig"><summary>原文</summary><div class="zh">财务会计(新)－财务会计全局设置(新)－凭证－凭证号范围－复制到公司代码</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t15/01_1_image144.png"><img src="assets/img/fi/t15/01_1_image144.png" alt="伝票番号範囲を会社コードにコピー · ステップ 1：財務会計（新）－財務会計のグローバル設定（新）－伝票－伝票番号範囲－会社コードへのコピー" loading="lazy" width="392" height="481"></a><figcaption><span class="n">画面 141</span><span class="src">image144.png · 392×481</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t15/01_2_image145.png"><img src="assets/img/fi/t15/01_2_image145.png" alt="伝票番号範囲を会社コードにコピー · ステップ 1：財務会計（新）－財務会計のグローバル設定（新）－伝票－伝票番号範囲－会社コードへのコピー" loading="lazy" width="599" height="562"></a><figcaption><span class="n">画面 142</span><span class="src">image145.png · 599×562</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> SAP では、伝票など番号を必要とする文書はすべて番号範囲で管理する必要があります。通常、番号範囲を設定した後、それぞれの使用範囲に割り当てることができます。<br>ソース会社(0001)とターゲット会社(C999)を入力</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：SAP 中对于凭证等需号码的单据，均需要用号码范围来进行管理。通常号码范围设置好之后即可分配到各自使用的范围内。<br>输入源公司(0001)及目标公司(C999)</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t15/02_1_image146.png"><img src="assets/img/fi/t15/02_1_image146.png" alt="伝票番号範囲を会社コードにコピー · ステップ 2：解説：SAP では、伝票など番号を必要とする文書はすべて番号範囲で管理する必要があります。通常、番号範囲を設定した後、それぞれの使用範囲に割り当てることができます。 ソース会社(0001)とターゲット会社(C999)を入力" loading="lazy" width="613" height="329"></a><figcaption><span class="n">画面 143</span><span class="src">image146.png · 613×329</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「はい」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击是</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t15/03_1_image147.png"><img src="assets/img/fi/t15/03_1_image147.png" alt="伝票番号範囲を会社コードにコピー · ステップ 3：「はい」をクリック" loading="lazy" width="368" height="208"></a><figcaption><span class="n">画面 144</span><span class="src">image147.png · 368×208</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 145）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t15/04_1_image148.png"><img src="assets/img/fi/t15/04_1_image148.png" alt="伝票番号範囲を会社コードにコピー · ステップ 4：image148.png" loading="lazy" width="919" height="564"></a><figcaption><span class="n">画面 145</span><span class="src">image148.png · 919×564</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t16"><span class="no">タスク 16</span><h3>転記期間バリアントを定義</h3><span class="tc2">2 画面 / 1 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义记帐期间变式<br></div></details>
+<div class="pathline" data-copy="財務会計（新） → 財務会計のグローバル設定（新） → 元帳 → 会計年度と転記期間 → 転記期間-未消込転記期間バリアントの定義"><b>IMG パス（IMG 設定メニュー）</b>財務会計（新） → 財務会計のグローバル設定（新） → 元帳 → 会計年度と転記期間 → 転記期間-未消込転記期間バリアントの定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>财务会计(新) → 财务会计全局设置(新) → 分类账 → 会计年度和过账期间 → 过账期间-定义未清过账期间变式</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">財務会計（新）－財務会計のグローバル設定（新）－元帳－会計年度と転記期間－転記期間-未消込転記期間バリアントの定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">财务会计(新)－财务会计全局设置(新)－分类账－会计年度和过账期间－过账期间-定义未清过账期间变式</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t16/01_1_image149.png"><img src="assets/img/fi/t16/01_1_image149.png" alt="転記期間バリアントを定義 · ステップ 1：財務会計（新）－財務会計のグローバル設定（新）－元帳－会計年度と転記期間－転記期間-未消込転記期間バリアントの定義" loading="lazy" width="519" height="576"></a><figcaption><span class="n">画面 146</span><span class="src">image149.png · 519×576</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t16/01_2_image150.png"><img src="assets/img/fi/t16/01_2_image150.png" alt="転記期間バリアントを定義 · ステップ 1：財務会計（新）－財務会計のグローバル設定（新）－元帳－会計年度と転記期間－転記期間-未消込転記期間バリアントの定義" loading="lazy" width="398" height="118"></a><figcaption><span class="n">画面 147</span><span class="src">image150.png · 398×118</span></figcaption></figure>
+<div class="note warn"><b class="t">つまずき注意</b>解説：これは伝票のオープン／クローズを制御するものです。クローズ済みの会計期間では伝票を変更できません。複数の会社コードの転記期間のオープンとクローズを一括で制御できます。まず、各会社コードに転記期間バリアントパラメータを割り当てます。</div>
+<div class="note tip"><b class="t">教材ノート</b>P999 頤寧転記期間バリアント</div>
+</li>
+</ol>
+<div class="steph" id="t17"><span class="no">タスク 17</span><h3>転記期間バリアントを会社コードに配賦します</h3><span class="tc2">2 画面 / 1 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】将记帐期间变式分配给公司代码<br></div></details>
+<div class="pathline" data-copy="財務会計（新） → 財務会計のグローバル設定（新） → 元帳 → 会計年度と転記期間 → 転記期間-会社コードへのバリアント割当"><b>IMG パス（IMG 設定メニュー）</b>財務会計（新） → 財務会計のグローバル設定（新） → 元帳 → 会計年度と転記期間 → 転記期間-会社コードへのバリアント割当</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>财务会计(新) → 财务会计全局设置(新) → 分类账 → 会计年度和过账期间 → 过账期间-将变式分配给公司代码</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 148）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t17/01_1_image151.png"><img src="assets/img/fi/t17/01_1_image151.png" alt="転記期間バリアントを会社コードに配賦します · ステップ 1：image151.png" loading="lazy" width="513" height="485"></a><figcaption><span class="n">画面 148</span><span class="src">image151.png · 513×485</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t17/01_2_image152.png"><img src="assets/img/fi/t17/01_2_image152.png" alt="転記期間バリアントを会社コードに配賦します · ステップ 1：image152.png" loading="lazy" width="511" height="446"></a><figcaption><span class="n">画面 149</span><span class="src">image152.png · 511×446</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>P999</div>
+</li>
+</ol>
+<h4>財務会計（新）－財務会計のグローバル設定（新）－元帳－会計年度と転記期間－転記期間-会社コードへのバリアント割当</h4>
+<div class="steph" id="t18"><span class="no">タスク 18</span><h3>転記期間を設定（業務処理）</h3><span class="tc2">4 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】设置记帐期间(前台)<br></div></details>
+<div class="pathline" data-copy="会計 → 財務会計 → 総勘定元帳 → 環境 → 現行設定 → 未消込転記期間と締め済み転記期間"><b>IMG パス（IMG 設定メニュー）</b>会計 → 財務会計 → 総勘定元帳 → 環境 → 現行設定 → 未消込転記期間と締め済み転記期間</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计核算 → 财务会计 → 总帐 → 环境 → 当前设置 → 未清过帐期间和已结过帐期间</code></div>
+<div class="note tip"><b class="t">教材ノート</b>S_ALR_87003642</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 期間のオープンとクローズを完了します。通常は月次決算の一環として行います。<br>会計－財務会計－総勘定元帳－環境－現行設定－未消込転記期間と締め済み転記期間</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释:完成开帐和关帐，通常作为月结的一个环节。<br>会计核算－财务会计－总帐－环境－当前设置－未清过帐期间和已结过帐期间</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t18/01_1_image153.png"><img src="assets/img/fi/t18/01_1_image153.png" alt="転記期間を設定（業務処理） · ステップ 1：解説：期間のオープンとクローズを完了します。通常は月次決算の一環として行います。 会計－財務会計－総勘定元帳－環境－現行設定－未消込転記期間と締め済み転記期間" loading="lazy" width="492" height="725"></a><figcaption><span class="n">画面 150</span><span class="src">image153.png · 492×725</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t18/01_2_image154.png"><img src="assets/img/fi/t18/01_2_image154.png" alt="転記期間を設定（業務処理） · ステップ 1：解説：期間のオープンとクローズを完了します。通常は月次決算の一環として行います。 会計－財務会計－総勘定元帳－環境－現行設定－未消込転記期間と締め済み転記期間" loading="lazy" width="361" height="194"></a><figcaption><span class="n">画面 151</span><span class="src">image154.png · 361×194</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">P999 +/A/D/K/S 1-12 期間 2006 年 13－16 期間、+/A/D/K/S はそれぞれ次の意味を表します</p>
+<details class="orig"><summary>原文</summary><div class="zh">P999 +/A/D/K/S 1-12 期间 2006 年 13－16 期间，+/A/D/K/S 分别代表如下含义</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t18/02_1_image155.png"><img src="assets/img/fi/t18/02_1_image155.png" alt="転記期間を設定（業務処理） · ステップ 2：P999 +/A/D/K/S 1-12 期間 2006 年 13－16 期間、+/A/D/K/S はそれぞれ次の意味を表します" loading="lazy" width="171" height="266"></a><figcaption><span class="n">画面 152</span><span class="src">image155.png · 171×266</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t18/02_2_image156.png"><img src="assets/img/fi/t18/02_2_image156.png" alt="転記期間を設定（業務処理） · ステップ 2：P999 +/A/D/K/S 1-12 期間 2006 年 13－16 期間、+/A/D/K/S はそれぞれ次の意味を表します" loading="lazy" width="673" height="304"></a><figcaption><span class="n">画面 153</span><span class="src">image156.png · 673×304</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t19"><span class="no">タスク 19</span><h3>転記の許容範囲グループを定義</h3><span class="tc2">3 画面 / 2 ステップ</span></div>
+<p>解説：会計担当者が伝票を起票する際の制限を設定します。たとえば、1 件の伝票の金額がいくらを超えてはならないか、などです。</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义过帐容差组<br>解释：设置对会计人员出凭证的一些限定,比如：单笔凭证的金额不能超过多少，</div></details>
+<div class="pathline" data-copy="財務会計（新） → 財務会計のグローバル設定（新） → 伝票 → 許容範囲グループ → 従業員の許容範囲グループの定義"><b>IMG パス（IMG 設定メニュー）</b>財務会計（新） → 財務会計のグローバル設定（新） → 伝票 → 許容範囲グループ → 従業員の許容範囲グループの定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>财务会计(新) → 财务会计的全局设置(新) → 凭证 → 容差组 → 定义雇员的容差组</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">財務会計（新）－財務会計のグローバル設定（新）－伝票－許容範囲グループ－従業員の許容範囲グループの定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">财务会计(新)－财务会计的全局设置(新)－凭证－容差组－定义雇员的容差组</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t19/01_1_image157.png"><img src="assets/img/fi/t19/01_1_image157.png" alt="転記の許容範囲グループを定義 · ステップ 1：財務会計（新）－財務会計のグローバル設定（新）－伝票－許容範囲グループ－従業員の許容範囲グループの定義" loading="lazy" width="344" height="577"></a><figcaption><span class="n">画面 154</span><span class="src">image157.png · 344×577</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t19/01_2_image158.png"><img src="assets/img/fi/t19/01_2_image158.png" alt="転記の許容範囲グループを定義 · ステップ 1：財務会計（新）－財務会計のグローバル設定（新）－伝票－許容範囲グループ－従業員の許容範囲グループの定義" loading="lazy" width="567" height="352"></a><figcaption><span class="n">画面 155</span><span class="src">image158.png · 567×352</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">未消込項目（請求書など）1 件あたりの金額がいくらまでなら許容されるかを定義します。これらの条件は許容範囲グループに設定し、次に会計担当者に許容範囲グループを割り当てます<br>1 件コピー</p>
+<details class="orig"><summary>原文</summary><div class="zh">单笔未清项(如发票)的金额不能超过多少。我们把这些条件设置在容差组里,再给会计人员分配容差组<br>复制一条</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t19/02_1_image159.png"><img src="assets/img/fi/t19/02_1_image159.png" alt="転記の許容範囲グループを定義 · ステップ 2：未消込項目（請求書など）1 件あたりの金額がいくらまでなら許容されるかを定義します。これらの条件は許容範囲グループに設定し、次に会計担当者に許容範囲グループを割り当てます 1 件コピー" loading="lazy" width="601" height="426"></a><figcaption><span class="n">画面 156</span><span class="src">image159.png · 601×426</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t20"><span class="no">タスク 20</span><h3>総勘定元帳勘定の伝票を入力</h3><span class="tc">FB50</span><span class="tc">FB03</span><span class="tc2">4 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】输入总帐科目凭证<br></div></details>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 総勘定元帳で会計伝票を入力し、払込資本 2 800 000 を受け取り、工商銀行の口座に入金したことを記録します。トランザクションコード FB50</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释:：在总帐中输入会计凭证，记录我们收到 2 800 000 的实收资本，存入工商银行账户。事务代码 FB50</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t20/01_1_image160.png"><img src="assets/img/fi/t20/01_1_image160.png" alt="総勘定元帳勘定の伝票を入力 · ステップ 1：解説：総勘定元帳で会計伝票を入力し、払込資本 2 800 000 を受け取り、工商銀行の口座に入金したことを記録します。トランザクションコード FB50" loading="lazy" width="409" height="344"></a><figcaption><span class="n">画面 157</span><span class="src">image160.png · 409×344</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">10020101 31010101<br>別の会社の伝票を入力する場合は、会社コードボタンをクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">10020101 31010101<br>输入不同公司的凭证可点击公司代码按钮</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t20/02_1_image161.png"><img src="assets/img/fi/t20/02_1_image161.png" alt="総勘定元帳勘定の伝票を入力 · ステップ 2：10020101 31010101 別の会社の伝票を入力する場合は、会社コードボタンをクリックします" loading="lazy" width="228" height="194"></a><figcaption><span class="n">画面 158</span><span class="src">image161.png · 228×194</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 159）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t20/03_1_image162.png"><img src="assets/img/fi/t20/03_1_image162.png" alt="総勘定元帳勘定の伝票を入力 · ステップ 3：image162.png" loading="lazy" width="867" height="487"></a><figcaption><span class="n">画面 159</span><span class="src">image162.png · 867×487</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">パークも可能ですし、直接保存して転記することもできます（下図は FB03 で照会した結果です）</p>
+<details class="orig"><summary>原文</summary><div class="zh">可预制，也可以直接保存后过账（下图为FB03查询得到的结果）</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t20/04_1_image163.png"><img src="assets/img/fi/t20/04_1_image163.png" alt="総勘定元帳勘定の伝票を入力 · ステップ 4：パークも可能ですし、直接保存して転記することもできます（下図は FB03 で照会した結果です）" loading="lazy" width="721" height="344"></a><figcaption><span class="n">画面 160</span><span class="src">image163.png · 721×344</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t21"><span class="no">タスク 21</span><h3>総勘定元帳勘定残高を照会</h3><span class="tc">FS10N</span><span class="tc2">11 画面 / 7 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】显示总帐科目余额<br></div></details>
+<div class="pathline" data-copy="IMG 設定 財務会計(新) → 財務会計のグローバル設定（新） → 販売税／仕入税 → 転記 → 税務勘定の定義"><b>IMG パス（IMG 設定メニュー）</b>IMG 設定 財務会計(新) → 財務会計のグローバル設定（新） → 販売税／仕入税 → 転記 → 税務勘定の定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后台 财务会计(新) → 财务会计的全局设置(新) → 销售/购置税 → 过帐 → 定义税务科目</code></div>
+<table class="tbl vals"><thead><tr><th>項目（日本語）</th><th>画面の中国語</th><th>教材の設定値</th></tr></thead><tbody><tr><td>仕入税を定義</td><td><code>定义进项税</code></td><td>21710101</td></tr></tbody></table>
+<ol class="oplist">
+<li>
+<p class="opcap">トランザクションコード FS10N</p>
+<details class="orig"><summary>原文</summary><div class="zh">事务代码 FS10N</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t21/01_1_image164.png"><img src="assets/img/fi/t21/01_1_image164.png" alt="総勘定元帳勘定残高を照会 · ステップ 1：トランザクションコード FS10N" loading="lazy" width="388" height="455"></a><figcaption><span class="n">画面 161</span><span class="src">image164.png · 388×455</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t21/01_2_image165.png"><img src="assets/img/fi/t21/01_2_image165.png" alt="総勘定元帳勘定残高を照会 · ステップ 1：トランザクションコード FS10N" loading="lazy" width="614" height="180"></a><figcaption><span class="n">画面 162</span><span class="src">image165.png · 614×180</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 163）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t21/02_1_image166.png"><img src="assets/img/fi/t21/02_1_image166.png" alt="総勘定元帳勘定残高を照会 · ステップ 2：image166.png" loading="lazy" width="630" height="773"></a><figcaption><span class="n">画面 163</span><span class="src">image166.png · 630×773</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">1、自動税転記をメンテナンス</p>
+<details class="orig"><summary>原文</summary><div class="zh">1、 维护自动税收过帐</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t21/03_1_image167.png"><img src="assets/img/fi/t21/03_1_image167.png" alt="総勘定元帳勘定残高を照会 · ステップ 3：1、自動税転記をメンテナンス" loading="lazy" width="461" height="437"></a><figcaption><span class="n">画面 164</span><span class="src">image167.png · 461×437</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">売上税を定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">定义销项税</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t21/04_1_image168.png"><img src="assets/img/fi/t21/04_1_image168.png" alt="総勘定元帳勘定残高を照会 · ステップ 4：売上税を定義" loading="lazy" width="567" height="565"></a><figcaption><span class="n">画面 165</span><span class="src">image168.png · 567×565</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">売上税をダブルクリックし、売上税を定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击销项税，定义销项税</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t21/05_1_image169.png"><img src="assets/img/fi/t21/05_1_image169.png" alt="総勘定元帳勘定残高を照会 · ステップ 5：売上税をダブルクリックし、売上税を定義" loading="lazy" width="333" height="221"></a><figcaption><span class="n">画面 166</span><span class="src">image169.png · 333×221</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t21/05_2_image170.png"><img src="assets/img/fi/t21/05_2_image170.png" alt="総勘定元帳勘定残高を照会 · ステップ 5：売上税をダブルクリックし、売上税を定義" loading="lazy" width="503" height="222"></a><figcaption><span class="n">画面 167</span><span class="src">image170.png · 503×222</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「保存」ボタンをクリックし、21710102 を入力します</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击保存按钮，输入 21710102</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t21/06_1_image171.png"><img src="assets/img/fi/t21/06_1_image171.png" alt="総勘定元帳勘定残高を照会 · ステップ 6：「保存」ボタンをクリックし、21710102 を入力します" loading="lazy" width="514" height="243"></a><figcaption><span class="n">画面 168</span><span class="src">image171.png · 514×243</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 169）</span></p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t21/07_1_image172.png"><img src="assets/img/fi/t21/07_1_image172.png" alt="総勘定元帳勘定残高を照会 · ステップ 7：image172.png" loading="lazy" width="596" height="417"></a><figcaption><span class="n">画面 169</span><span class="src">image172.png · 596×417</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t21/07_2_image173.png"><img src="assets/img/fi/t21/07_2_image173.png" alt="総勘定元帳勘定残高を照会 · ステップ 7：image173.png" loading="lazy" width="520" height="234"></a><figcaption><span class="n">画面 170</span><span class="src">image173.png · 520×234</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t21/07_3_image174.png"><img src="assets/img/fi/t21/07_3_image174.png" alt="総勘定元帳勘定残高を照会 · ステップ 7：image174.png" loading="lazy" width="552" height="224"></a><figcaption><span class="n">画面 171</span><span class="src">image174.png · 552×224</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t22"><span class="no">タスク 22</span><h3>売掛金・買掛金の許容範囲グループを定義</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">3 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义应收应付容差组<br></div></details>
+<div class="pathline" data-copy="財務会計（新） → 売掛金・買掛金 → 業務取引 → 対外支払 → 支払 → 手動対外支払 → 許容範囲グループの定義"><b>IMG パス（IMG 設定メニュー）</b>財務会計（新） → 売掛金・買掛金 → 業務取引 → 対外支払 → 支払 → 手動対外支払 → 許容範囲グループの定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>财务会计(新) → 应收账目和应付账目 → 业务交易 → 对外支付 → 付款 → 手工对外支付 → 定义容差组</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 得意先や仕入先との入出金業務に対しては、いくつかの管理条件を定義できます。たとえば、ある得意先区分の入金差異は 100 元を超えてはならない、請求書の 0.1% までなどです。許容範囲グループは、各得意先および仕入先に割り当てるマスタデータです。<br>財務会計（新）－売掛金・買掛金－業務取引－対外支払－支払－手動対外支払－許容範囲グループの定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：对于和客户或供应商的收付业务，我们可以定义一些控制条件。比如对某类客户的收款差异不能超过 100 元，或发票的 0.1%等。容差组是分配给每个客户和供应商的主数据。<br>财务会计(新)－应收账目和应付账目－业务交易－对外支付－付款－手工对外支付－定义容差组</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t22/01_1_image175.png"><img src="assets/img/fi/t22/01_1_image175.png" alt="売掛金・買掛金の許容範囲グループを定義 · ステップ 1：解説：得意先や仕入先との入出金業務に対しては、いくつかの管理条件を定義できます。たとえば、ある得意先区分の入金差異は 100 元を超えてはならない、請求書の 0.1% までなどです。許容範囲グループは、各得意先および仕入先に割り当てるマスタデータです。 財務会計（新）－売掛金・買掛金－業務取引－対外支払－支払－手動対外" loading="lazy" width="357" height="537"></a><figcaption><span class="n">画面 172</span><span class="src">image175.png · 357×537</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">0001 のものをコピー</p>
+<details class="orig"><summary>原文</summary><div class="zh">复制 0001 的</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t22/02_1_image176.png"><img src="assets/img/fi/t22/02_1_image176.png" alt="売掛金・買掛金の許容範囲グループを定義 · ステップ 2：0001 のものをコピー" loading="lazy" width="511" height="164"></a><figcaption><span class="n">画面 173</span><span class="src">image176.png · 511×164</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t22/02_2_image177.png"><img src="assets/img/fi/t22/02_2_image177.png" alt="売掛金・買掛金の許容範囲グループを定義 · ステップ 2：0001 のものをコピー" loading="lazy" width="529" height="775"></a><figcaption><span class="n">画面 174</span><span class="src">image177.png · 529×775</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t23"><span class="no">タスク 23</span><h3>仕入先勘定グループを定義</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">11 画面 / 8 ステップ</span></div>
+<p>解説：仕入先は勘定グループ別に管理します。たとえば原材料の仕入先、商品の仕入先などです。仕入先マスタの情報は、一般データ、会社コードデータ、購買データの 3 つの階層に分かれます。</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义供应商账号组<br>解释：供应商是按照账户组来管理的，如原料供应商，贸易产品供应商等。供应商主数据信息分三个层次：一般数据，公司代码数据和采购数据。</div></details>
+<div class="pathline" data-copy="財務会計 → 売掛金・買掛金 → 仕入先勘定 → マスタデータ → 仕入先マスタ登録準備 → 画面フォーマット付きの勘定グループの定義（仕入先）"><b>IMG パス（IMG 設定メニュー）</b>財務会計 → 売掛金・買掛金 → 仕入先勘定 → マスタデータ → 仕入先マスタ登録準備 → 画面フォーマット付きの勘定グループの定義（仕入先）</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>财务会计 → 应收账目和应付账目 → 供应商账号 → 主数据 → 供应商主数据创建准备 → 定义带有屏幕格式的账户组（供应商）</code></div>
+<ol class="oplist">
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t23/01_1_image178.png"><img src="assets/img/fi/t23/01_1_image178.png" alt="仕入先勘定グループを定義 · ステップ 1：image180.png" loading="lazy" width="437" height="475"></a><figcaption><span class="n">画面 175</span><span class="src">image180.png · 437×475</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t23/01_2_image179.png"><img src="assets/img/fi/t23/01_2_image179.png" alt="仕入先勘定グループを定義 · ステップ 1：image181.png" loading="lazy" width="425" height="551"></a><figcaption><span class="n">画面 176</span><span class="src">image181.png · 425×551</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t23/01_1_image178.png"><img src="assets/img/fi/t23/01_1_image178.png" alt="仕入先勘定グループを定義 · ステップ 1：image180.png" loading="lazy" width="437" height="475"></a><figcaption><span class="n">画面 175</span><span class="src">image180.png · 437×475</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t23/01_2_image179.png"><img src="assets/img/fi/t23/01_2_image179.png" alt="仕入先勘定グループを定義 · ステップ 1：image181.png" loading="lazy" width="425" height="551"></a><figcaption><span class="n">画面 176</span><span class="src">image181.png · 425×551</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">G001 グループ 原材料に対して、G002 グループ 商品（HAWA）仕入先、G003 グループ 費用仕入先を設定します<br>財務会計－売掛金・買掛金－仕入先勘定－マスタデータ－仕入先マスタ登録準備－画面フォーマット付きの勘定グループの定義（仕入先）</p>
+<details class="orig"><summary>原文</summary><div class="zh">G001组 原材料，对其设置 G002组 贸易商品供应商 G003组 费用供应商<br>财务会计－应收账目和应付账目－供应商账号－主数据－供应商主数据创建准备－定义带有屏幕格式的账户组（供应商）</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t23/02_1_image182.png"><img src="assets/img/fi/t23/02_1_image182.png" alt="仕入先勘定グループを定義 · ステップ 2：G001 グループ 原材料に対して、G002 グループ 商品（HAWA）仕入先、G003 グループ 費用仕入先を設定します 財務会計－売掛金・買掛金－仕入先勘定－マスタデータ－仕入先マスタ登録準備－画面フォーマット付きの勘定グループの定義（仕入先）" loading="lazy" width="476" height="348"></a><figcaption><span class="n">画面 179</span><span class="src">image182.png · 476×348</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「基本データ」をダブルクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击基础数据</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t23/03_1_image183.png"><img src="assets/img/fi/t23/03_1_image183.png" alt="仕入先勘定グループを定義 · ステップ 3：「基本データ」をダブルクリック" loading="lazy" width="417" height="358"></a><figcaption><span class="n">画面 180</span><span class="src">image183.png · 417×358</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「住所」をダブルクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击地址</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t23/04_1_image184.png"><img src="assets/img/fi/t23/04_1_image184.png" alt="仕入先勘定グループを定義 · ステップ 4：「住所」をダブルクリック" loading="lazy" width="563" height="890"></a><figcaption><span class="n">画面 181</span><span class="src">image184.png · 563×890</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">会社コードデータをダブルクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击公司代码数据</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t23/05_1_image185.png"><img src="assets/img/fi/t23/05_1_image185.png" alt="仕入先勘定グループを定義 · ステップ 5：会社コードデータをダブルクリック" loading="lazy" width="255" height="334"></a><figcaption><span class="n">画面 182</span><span class="src">image185.png · 255×334</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「勘定管理」をダブルクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击账户管理</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t23/06_1_image186.png"><img src="assets/img/fi/t23/06_1_image186.png" alt="仕入先勘定グループを定義 · ステップ 6：「勘定管理」をダブルクリック" loading="lazy" width="570" height="716"></a><figcaption><span class="n">画面 183</span><span class="src">image186.png · 570×716</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「支払取引」をダブルクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击支付交易</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t23/07_1_image187.png"><img src="assets/img/fi/t23/07_1_image187.png" alt="仕入先勘定グループを定義 · ステップ 7：「支払取引」をダブルクリック" loading="lazy" width="595" height="720"></a><figcaption><span class="n">画面 184</span><span class="src">image187.png · 595×720</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>同様に、他のグループも登録します（コピーで登録）</div>
+</li>
+<li>
+<p class="opcap">G002 G003 をコピー</p>
+<details class="orig"><summary>原文</summary><div class="zh">拷贝 G002 G003</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t23/08_1_image188.png"><img src="assets/img/fi/t23/08_1_image188.png" alt="仕入先勘定グループを定義 · ステップ 8：G002 G003 をコピー" loading="lazy" width="295" height="194"></a><figcaption><span class="n">画面 185</span><span class="src">image188.png · 295×194</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t24"><span class="no">タスク 24</span><h3>仕入先勘定の番号範囲を定義</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">6 画面 / 5 ステップ</span></div>
+<p>「インターバル」をクリックし、「インターバル＋」をクリックして 3 回クリックし、1 つずつメンテナンスします</p>
+<p>Z1 10000000 19999999</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义供应商账户编号范围<br>点击间隔 点击间隔＋,点击三次，一次维护<br>Z1 10000000 19999999</div></details>
+<div class="pathline" data-copy="財務会計 → 売掛金・買掛金 → 仕入先勘定 → マスタデータ → 仕入先マスタ登録準備 → 仕入先勘定の番号範囲の登録"><b>IMG パス（IMG 設定メニュー）</b>財務会計 → 売掛金・買掛金 → 仕入先勘定 → マスタデータ → 仕入先マスタ登録準備 → 仕入先勘定の番号範囲の登録</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>财务会计 → 应收账目和应付账目 → 供应商账户 → 主数据 → 供应商主记录创建准备 → 创建供应商账户编号范围</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">財務会計－売掛金・買掛金－仕入先勘定－マスタデータ－仕入先マスタ登録準備－仕入先勘定の番号範囲の登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">财务会计－应收账目和应付账目－供应商账户－主数据－供应商主记录创建准备－创建供应商账户编号范围</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t24/01_1_image189.png"><img src="assets/img/fi/t24/01_1_image189.png" alt="仕入先勘定の番号範囲を定義 · ステップ 1：財務会計－売掛金・買掛金－仕入先勘定－マスタデータ－仕入先マスタ登録準備－仕入先勘定の番号範囲の登録" loading="lazy" width="406" height="680"></a><figcaption><span class="n">画面 186</span><span class="src">image189.png · 406×680</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 187）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t24/02_1_image190.png"><img src="assets/img/fi/t24/02_1_image190.png" alt="仕入先勘定の番号範囲を定義 · ステップ 2：image190.png" loading="lazy" width="470" height="159"></a><figcaption><span class="n">画面 187</span><span class="src">image190.png · 470×159</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t24/02_2_image191.png"><img src="assets/img/fi/t24/02_2_image191.png" alt="仕入先勘定の番号範囲を定義 · ステップ 2：image191.png" loading="lazy" width="568" height="219"></a><figcaption><span class="n">画面 188</span><span class="src">image191.png · 568×219</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t24/03_1_image192.png"><img src="assets/img/fi/t24/03_1_image192.png" alt="仕入先勘定の番号範囲を定義 · ステップ 3：image192.png" loading="lazy" width="570" height="288"></a><figcaption><span class="n">画面 189</span><span class="src">image192.png · 570×288</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">Z2 20000000 29999999<br>Z3 30000000 39999999</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t24/04_1_image193.png"><img src="assets/img/fi/t24/04_1_image193.png" alt="仕入先勘定の番号範囲を定義 · ステップ 4：Z2 20000000 29999999 Z3 30000000 39999999" loading="lazy" width="566" height="393"></a><figcaption><span class="n">画面 190</span><span class="src">image193.png · 566×393</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 191）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t24/05_1_image194.png"><img src="assets/img/fi/t24/05_1_image194.png" alt="仕入先勘定の番号範囲を定義 · ステップ 5：image194.png" loading="lazy" width="599" height="562"></a><figcaption><span class="n">画面 191</span><span class="src">image194.png · 599×562</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t25"><span class="no">タスク 25</span><h3>仕入先の番号範囲を配賦</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">2 画面 / 1 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】分配供应商编号范围<br></div></details>
+<div class="pathline" data-copy="財務会計 → 売掛金・買掛金 → 仕入先勘定 → マスタデータ → 仕入先マスタ登録準備 → 仕入先勘定グループへの番号範囲割当"><b>IMG パス（IMG 設定メニュー）</b>財務会計 → 売掛金・買掛金 → 仕入先勘定 → マスタデータ → 仕入先マスタ登録準備 → 仕入先勘定グループへの番号範囲割当</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>财务会计 → 应收账目和应付账目 → 供应商账户 → 主数据 → 供应商主记录创建准备 → 供应商账户组分配编号范围</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">財務会計－売掛金・買掛金－仕入先勘定－マスタデータ－仕入先マスタ登録準備－仕入先勘定グループへの番号範囲割当</p>
+<details class="orig"><summary>原文</summary><div class="zh">财务会计－应收账目和应付账目－供应商账户－主数据－供应商主记录创建准备－供应商账户组分配编号范围</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t25/01_1_image195.png"><img src="assets/img/fi/t25/01_1_image195.png" alt="仕入先の番号範囲を配賦 · ステップ 1：財務会計－売掛金・買掛金－仕入先勘定－マスタデータ－仕入先マスタ登録準備－仕入先勘定グループへの番号範囲割当" loading="lazy" width="434" height="605"></a><figcaption><span class="n">画面 192</span><span class="src">image195.png · 434×605</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t25/01_2_image196.png"><img src="assets/img/fi/t25/01_2_image196.png" alt="仕入先の番号範囲を配賦 · ステップ 1：財務会計－売掛金・買掛金－仕入先勘定－マスタデータ－仕入先マスタ登録準備－仕入先勘定グループへの番号範囲割当" loading="lazy" width="408" height="382"></a><figcaption><span class="n">画面 193</span><span class="src">image196.png · 408×382</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t26"><span class="no">タスク 26</span><h3>得意先勘定グループを定義</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">10 画面 / 8 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义客户账户组<br></div></details>
+<div class="pathline" data-copy="財務会計（新） → 売掛金・買掛金 → 得意先勘定 → マスタデータ → 得意先マスタ登録準備 → フォーマット付きの勘定グループの定義（得意先）"><b>IMG パス（IMG 設定メニュー）</b>財務会計（新） → 売掛金・買掛金 → 得意先勘定 → マスタデータ → 得意先マスタ登録準備 → フォーマット付きの勘定グループの定義（得意先）</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>财务会计(新) → 应收账款和应付账款 → 客户账户 → 主数据 → 创建客户主记录准备 → 定义带有格式的账户组（客户）</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">財務会計（新）－売掛金・買掛金－得意先勘定－マスタデータ－得意先マスタ登録準備－フォーマット付きの勘定グループの定義（得意先）</p>
+<details class="orig"><summary>原文</summary><div class="zh">财务会计(新)－应收账款和应付账款－客户账户－主数据－创建客户主记录准备－定义带有格式的账户组（客户）</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t26/01_1_image197.png"><img src="assets/img/fi/t26/01_1_image197.png" alt="得意先勘定グループを定義 · ステップ 1：財務会計（新）－売掛金・買掛金－得意先勘定－マスタデータ－得意先マスタ登録準備－フォーマット付きの勘定グループの定義（得意先）" loading="lazy" width="465" height="394"></a><figcaption><span class="n">画面 194</span><span class="src">image197.png · 465×394</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">新規エントリを作成</p>
+<details class="orig"><summary>原文</summary><div class="zh">创建新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t26/02_1_image198.png"><img src="assets/img/fi/t26/02_1_image198.png" alt="得意先勘定グループを定義 · ステップ 2：新規エントリを作成" loading="lazy" width="430" height="347"></a><figcaption><span class="n">画面 195</span><span class="src">image198.png · 430×347</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">K001 受注先-頤寧</p>
+<details class="orig"><summary>原文</summary><div class="zh">K001 订货方-颐宁</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t26/03_1_image199.png"><img src="assets/img/fi/t26/03_1_image199.png" alt="得意先勘定グループを定義 · ステップ 3：K001 受注先-頤寧" loading="lazy" width="464" height="382"></a><figcaption><span class="n">画面 196</span><span class="src">image199.png · 464×382</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「基本情報」をダブルクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击基本信息</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t26/04_1_image200.png"><img src="assets/img/fi/t26/04_1_image200.png" alt="得意先勘定グループを定義 · ステップ 4：「基本情報」をダブルクリック" loading="lazy" width="409" height="442"></a><figcaption><span class="n">画面 197</span><span class="src">image200.png · 409×442</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>「住所」をダブルクリック</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 198）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t26/05_1_image201.png"><img src="assets/img/fi/t26/05_1_image201.png" alt="得意先勘定グループを定義 · ステップ 5：image201.png" loading="lazy" width="255" height="370"></a><figcaption><span class="n">画面 198</span><span class="src">image201.png · 255×370</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">K001 をコピー</p>
+<details class="orig"><summary>原文</summary><div class="zh">拷贝 K001</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t26/06_1_image202.png"><img src="assets/img/fi/t26/06_1_image202.png" alt="得意先勘定グループを定義 · ステップ 6：K001 をコピー" loading="lazy" width="465" height="869"></a><figcaption><span class="n">画面 199</span><span class="src">image202.png · 465×869</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t26/06_2_image203.png"><img src="assets/img/fi/t26/06_2_image203.png" alt="得意先勘定グループを定義 · ステップ 6：K001 をコピー" loading="lazy" width="592" height="645"></a><figcaption><span class="n">画面 200</span><span class="src">image203.png · 592×645</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t26/06_3_image204.png"><img src="assets/img/fi/t26/06_3_image204.png" alt="得意先勘定グループを定義 · ステップ 6：K001 をコピー" loading="lazy" width="544" height="182"></a><figcaption><span class="n">画面 201</span><span class="src">image204.png · 544×182</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">K002 入庫先-頤寧<br>戻った後、会社コードデータをダブルクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">K002 收货方-颐宁<br>退回后，双击公司代码数据</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t26/07_1_image205.png"><img src="assets/img/fi/t26/07_1_image205.png" alt="得意先勘定グループを定義 · ステップ 7：K002 入庫先-頤寧 戻った後、会社コードデータをダブルクリック" loading="lazy" width="242" height="367"></a><figcaption><span class="n">画面 202</span><span class="src">image205.png · 242×367</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「勘定管理」をダブルクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击账户管理</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t26/08_1_image206.png"><img src="assets/img/fi/t26/08_1_image206.png" alt="得意先勘定グループを定義 · ステップ 8：「勘定管理」をダブルクリック" loading="lazy" width="455" height="371"></a><figcaption><span class="n">画面 203</span><span class="src">image206.png · 455×371</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t27"><span class="no">タスク 27</span><h3>得意先勘定の番号を定義</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">5 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义客户账户编号<br></div></details>
+<div class="pathline" data-copy="財務会計（新） → 売掛金・買掛金 → 得意先勘定 → マスタデータ → 得意先マスタ登録準備 → 得意先勘定の番号範囲の登録"><b>IMG パス（IMG 設定メニュー）</b>財務会計（新） → 売掛金・買掛金 → 得意先勘定 → マスタデータ → 得意先マスタ登録準備 → 得意先勘定の番号範囲の登録</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>财务会计(新) → 应收账款和应付账款 → 客户账户 → 主数据 → 创建客户主记录准备 → 创建客户账户编号范围</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">財務会計（新）－売掛金・買掛金－得意先勘定－マスタデータ－得意先マスタ登録準備－得意先勘定の番号範囲の登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">财务会计(新)－应收账款和应付账款－客户账户－主数据－创建客户主记录准备－创建客户账户编号范围</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t27/01_1_image207.png"><img src="assets/img/fi/t27/01_1_image207.png" alt="得意先勘定の番号を定義 · ステップ 1：財務会計（新）－売掛金・買掛金－得意先勘定－マスタデータ－得意先マスタ登録準備－得意先勘定の番号範囲の登録" loading="lazy" width="475" height="710"></a><figcaption><span class="n">画面 204</span><span class="src">image207.png · 475×710</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t27/01_2_image208.png"><img src="assets/img/fi/t27/01_2_image208.png" alt="得意先勘定の番号を定義 · ステップ 1：財務会計（新）－売掛金・買掛金－得意先勘定－マスタデータ－得意先マスタ登録準備－得意先勘定の番号範囲の登録" loading="lazy" width="448" height="147"></a><figcaption><span class="n">画面 205</span><span class="src">image208.png · 448×147</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">Z1 10000000 19999999</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t27/02_1_image209.png"><img src="assets/img/fi/t27/02_1_image209.png" alt="得意先勘定の番号を定義 · ステップ 2：Z1 10000000 19999999" loading="lazy" width="430" height="237"></a><figcaption><span class="n">画面 206</span><span class="src">image209.png · 430×237</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">Z2 20000000 29999999</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t27/03_1_image210.png"><img src="assets/img/fi/t27/03_1_image210.png" alt="得意先勘定の番号を定義 · ステップ 3：Z2 20000000 29999999" loading="lazy" width="526" height="288"></a><figcaption><span class="n">画面 207</span><span class="src">image210.png · 526×288</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 208）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t27/04_1_image211.png"><img src="assets/img/fi/t27/04_1_image211.png" alt="得意先勘定の番号を定義 · ステップ 4：image211.png" loading="lazy" width="599" height="562"></a><figcaption><span class="n">画面 208</span><span class="src">image211.png · 599×562</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t28"><span class="no">タスク 28</span><h3>得意先の番号範囲を配賦</h3><span class="tc2">2 画面 / 1 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】分配客户编号范围<br></div></details>
+<div class="pathline" data-copy="財務会計（新） → 売掛金・買掛金 → 得意先勘定 → マスタデータ → 得意先マスタ登録準備 → 得意先勘定への番号範囲割当"><b>IMG パス（IMG 設定メニュー）</b>財務会計（新） → 売掛金・買掛金 → 得意先勘定 → マスタデータ → 得意先マスタ登録準備 → 得意先勘定への番号範囲割当</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>财务会计(新) → 应收账款和应付账款 → 客户账户 → 主数据 → 创建客户主记录准备 → 分配客户账户编号范围</code></div>
+<div class="note tip"><b class="t">教材ノート</b>IMG 設定</div>
+<ol class="oplist">
+<li>
+<p class="opcap">財務会計（新）－売掛金・買掛金－得意先勘定－マスタデータ－得意先マスタ登録準備－得意先勘定への番号範囲割当</p>
+<details class="orig"><summary>原文</summary><div class="zh">财务会计(新)－应收账款和应付账款－客户账户－主数据－创建客户主记录准备－分配客户账户编号范围</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t28/01_1_image212.png"><img src="assets/img/fi/t28/01_1_image212.png" alt="得意先の番号範囲を配賦 · ステップ 1：財務会計（新）－売掛金・買掛金－得意先勘定－マスタデータ－得意先マスタ登録準備－得意先勘定への番号範囲割当" loading="lazy" width="434" height="585"></a><figcaption><span class="n">画面 209</span><span class="src">image212.png · 434×585</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t28/01_2_image213.png"><img src="assets/img/fi/t28/01_2_image213.png" alt="得意先の番号範囲を配賦 · ステップ 1：財務会計（新）－売掛金・買掛金－得意先勘定－マスタデータ－得意先マスタ登録準備－得意先勘定への番号範囲割当" loading="lazy" width="410" height="241"></a><figcaption><span class="n">画面 210</span><span class="src">image213.png · 410×241</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t29"><span class="no">タスク 29</span><h3>受注先マスタを新規作成</h3><span class="tc">FD01</span><span class="tc2">9 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建订货方主数据<br></div></details>
+<table class="tbl vals"><thead><tr><th>項目（日本語）</th><th>画面の中国語</th><th>教材の設定値</th></tr></thead><tbody><tr><td>さらに威力国貿会社を 1 つ登録</td><td><code>再创建一个威力国贸公司</code></td><td>100000002</td></tr></tbody></table>
+<ol class="oplist">
+<li>
+<p class="opcap">3 つの得意先を登録します：遠東造船所、新益汽輪機工場、威力工貿公司。トランザクションコード FD01</p>
+<details class="orig"><summary>原文</summary><div class="zh">建立三个客户:远东造船长, 新益汽轮机场.威力工贸公司 事务代码 FD01</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t29/01_1_image214.png"><img src="assets/img/fi/t29/01_1_image214.png" alt="受注先マスタを新規作成 · ステップ 1：3 つの得意先を登録します：遠東造船所、新益汽輪機工場、威力工貿公司。トランザクションコード FD01" loading="lazy" width="387" height="517"></a><figcaption><span class="n">画面 211</span><span class="src">image214.png · 387×517</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t29/01_2_image215.png"><img src="assets/img/fi/t29/01_2_image215.png" alt="受注先マスタを新規作成 · ステップ 1：3 つの得意先を登録します：遠東造船所、新益汽輪機工場、威力工貿公司。トランザクションコード FD01" loading="lazy" width="522" height="383"></a><figcaption><span class="n">画面 212</span><span class="src">image217.png · 522×383</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t29/01_3_image216.png"><img src="assets/img/fi/t29/01_3_image216.png" alt="受注先マスタを新規作成 · ステップ 1：3 つの得意先を登録します：遠東造船所、新益汽輪機工場、威力工貿公司。トランザクションコード FD01" loading="lazy" width="524" height="443"></a><figcaption><span class="n">画面 213</span><span class="src">image218.png · 524×443</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t29/01_2_image215.png"><img src="assets/img/fi/t29/01_2_image215.png" alt="受注先マスタを新規作成 · ステップ 1：3 つの得意先を登録します：遠東造船所、新益汽輪機工場、威力工貿公司。トランザクションコード FD01" loading="lazy" width="522" height="383"></a><figcaption><span class="n">画面 212</span><span class="src">image217.png · 522×383</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t29/01_3_image216.png"><img src="assets/img/fi/t29/01_3_image216.png" alt="受注先マスタを新規作成 · ステップ 1：3 つの得意先を登録します：遠東造船所、新益汽輪機工場、威力工貿公司。トランザクションコード FD01" loading="lazy" width="524" height="443"></a><figcaption><span class="n">画面 213</span><span class="src">image218.png · 524×443</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<p class="opcap">調整勘定 11310101 ソートキー 001</p>
+<details class="orig"><summary>原文</summary><div class="zh">统驭科目 11310101 排序码 001</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t29/02_1_image219.png"><img src="assets/img/fi/t29/02_1_image219.png" alt="受注先マスタを新規作成 · ステップ 2：調整勘定 11310101 ソートキー 001" loading="lazy" width="608" height="526"></a><figcaption><span class="n">画面 216</span><span class="src">image219.png · 608×526</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t29/02_2_image220.png"><img src="assets/img/fi/t29/02_2_image220.png" alt="受注先マスタを新規作成 · ステップ 2：調整勘定 11310101 ソートキー 001" loading="lazy" width="492" height="576"></a><figcaption><span class="n">画面 217</span><span class="src">image220.png · 492×576</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">遠東造船所</p>
+<details class="orig"><summary>原文</summary><div class="zh">远东造船厂</div></details>
+<figure class="shot narrow"><a class="zoom" href="assets/img/fi/t29/03_1_image221.png"><img src="assets/img/fi/t29/03_1_image221.png" alt="受注先マスタを新規作成 · ステップ 3：遠東造船所" loading="lazy" width="347" height="37"></a><figcaption><span class="n">画面 218</span><span class="src">image221.png · 347×37</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 219）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t29/04_1_image222.png"><img src="assets/img/fi/t29/04_1_image222.png" alt="受注先マスタを新規作成 · ステップ 4：image222.png" loading="lazy" width="379" height="115"></a><figcaption><span class="n">画面 219</span><span class="src">image222.png · 379×115</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t30"><span class="no">タスク 30</span><h3>入庫先マスタを新規作成</h3><span class="tc">FD01</span><span class="tc2">0 画面 / 0 ステップ</span></div>
+<p>FD01</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建收货方主数据<br>FD01</div></details>
+<div class="note tip"><b class="t">教材ノート</b>遠東造船所第三支社</div>
+<div class="note tip"><b class="t">教材ノート</b>遠東造船所第三支社を入庫先としてメンテナンスします システム番号：20000000</div>
+<div class="steph" id="t31"><span class="no">タスク 31</span><h3>仕入先マスタを新規作成</h3><span class="tc">FK01</span><span class="tc2">6 画面 / 1 ステップ</span></div>
+<p>原材料仕入先--紅星軸受工場、長平鉄工場、</p>
+<p>会社コードは次のとおりです（支払条件は 001）：</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建供应商主数据<br>原料供应商--红星轴承厂，长平铁工厂，<br>公司代码依次如下(付款条件为001)：</div></details>
+<div class="pathline" data-copy="会計 → 財務会計 → 仕入先 → マスタレコード"><b>IMG パス（IMG 設定メニュー）</b>会計 → 財務会計 → 仕入先 → マスタレコード</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计核算 → 财务会计 → 供应商 → 主记录</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">商品（HAWA）の仕入先--思普機械設備進出口有限公司 費用の仕入先---上海市電力公司、佳音不動産有限公司、京通運輸公司<br>FK01</p>
+<details class="orig"><summary>原文</summary><div class="zh">贸易商品供应商--思普机械设备进出口有限公司 费用供应商---上海市电力公司，佳音房地产有限公司，京通运输公司<br>FK01</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t31/01_1_image223.png"><img src="assets/img/fi/t31/01_1_image223.png" alt="仕入先マスタを新規作成 · ステップ 1：商品（HAWA）の仕入先--思普機械設備進出口有限公司 費用の仕入先---上海市電力公司、佳音不動産有限公司、京通運輸公司 FK01" loading="lazy" width="1031" height="358"></a><figcaption><span class="n">画面 220</span><span class="src">image226.png · 1031×358</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t31/01_2_image224.png"><img src="assets/img/fi/t31/01_2_image224.png" alt="仕入先マスタを新規作成 · ステップ 1：商品（HAWA）の仕入先--思普機械設備進出口有限公司 費用の仕入先---上海市電力公司、佳音不動産有限公司、京通運輸公司 FK01" loading="lazy" width="264" height="533"></a><figcaption><span class="n">画面 221</span><span class="src">image227.png · 264×533</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t31/01_3_image225.png"><img src="assets/img/fi/t31/01_3_image225.png" alt="仕入先マスタを新規作成 · ステップ 1：商品（HAWA）の仕入先--思普機械設備進出口有限公司 費用の仕入先---上海市電力公司、佳音不動産有限公司、京通運輸公司 FK01" loading="lazy" width="356" height="308"></a><figcaption><span class="n">画面 222</span><span class="src">image228.png · 356×308</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t31/01_1_image223.png"><img src="assets/img/fi/t31/01_1_image223.png" alt="仕入先マスタを新規作成 · ステップ 1：商品（HAWA）の仕入先--思普機械設備進出口有限公司 費用の仕入先---上海市電力公司、佳音不動産有限公司、京通運輸公司 FK01" loading="lazy" width="1031" height="358"></a><figcaption><span class="n">画面 220</span><span class="src">image226.png · 1031×358</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t31/01_2_image224.png"><img src="assets/img/fi/t31/01_2_image224.png" alt="仕入先マスタを新規作成 · ステップ 1：商品（HAWA）の仕入先--思普機械設備進出口有限公司 費用の仕入先---上海市電力公司、佳音不動産有限公司、京通運輸公司 FK01" loading="lazy" width="264" height="533"></a><figcaption><span class="n">画面 221</span><span class="src">image227.png · 264×533</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t31/01_3_image225.png"><img src="assets/img/fi/t31/01_3_image225.png" alt="仕入先マスタを新規作成 · ステップ 1：商品（HAWA）の仕入先--思普機械設備進出口有限公司 費用の仕入先---上海市電力公司、佳音不動産有限公司、京通運輸公司 FK01" loading="lazy" width="356" height="308"></a><figcaption><span class="n">画面 222</span><span class="src">image228.png · 356×308</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材ノート</b>紅星：10000000 長平鉄工場：10000001 思普機械設備進出口有限公司：20000000</div>
+<div class="note tip"><b class="t">教材ノート</b>上海電力：30000000 佳音地産公司：30000001 京通運輸公司：30000002</div>
+</li>
+</ol>
+<div class="steph" id="t32"><span class="no">タスク 32</span><h3>得意先請求書を入力</h3><span class="tc">FB70</span><span class="tc2">3 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】输入客户发票<br></div></details>
+<ol class="oplist">
+<li>
+<p class="opcap">遠東造船所に商品を販売しました。税込売上高は 58000 なので、対応する会計伝票を入力する必要があります<br>FB70</p>
+<details class="orig"><summary>原文</summary><div class="zh">卖给远东造船厂一批货物，含税销售额 58000 需要录入相应的会计凭证<br>FB70</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t32/01_1_image229.png"><img src="assets/img/fi/t32/01_1_image229.png" alt="得意先請求書を入力 · ステップ 1：遠東造船所に商品を販売しました。税込売上高は 58000 なので、対応する会計伝票を入力する必要があります FB70" loading="lazy" width="328" height="439"></a><figcaption><span class="n">画面 226</span><span class="src">image229.png · 328×439</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t32/01_2_image230.png"><img src="assets/img/fi/t32/01_2_image230.png" alt="得意先請求書を入力 · ステップ 1：遠東造船所に商品を販売しました。税込売上高は 58000 なので、対応する会計伝票を入力する必要があります FB70" loading="lazy" width="751" height="600"></a><figcaption><span class="n">画面 227</span><span class="src">image230.png · 751×600</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>シミュレーション</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 228）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t32/02_1_image231.png"><img src="assets/img/fi/t32/02_1_image231.png" alt="得意先請求書を入力 · ステップ 2：image231.png" loading="lazy" width="724" height="294"></a><figcaption><span class="n">画面 228</span><span class="src">image231.png · 724×294</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t33"><span class="no">タスク 33</span><h3>得意先から全額の入金を受領</h3><span class="tc2">5 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】收到客户全额还款<br></div></details>
+<div class="pathline" data-copy="会計 → 財務会計 → 売掛金 → 伝票入力 → F-28 入金"><b>IMG パス（IMG 設定メニュー）</b>会計 → 財務会計 → 売掛金 → 伝票入力 → F-28 入金</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 财务会计 → 应收帐款 → 凭证输入 → F-28 收款</code></div>
+<ol class="oplist">
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t33/01_1_image232.png"><img src="assets/img/fi/t33/01_1_image232.png" alt="得意先から全額の入金を受領 · ステップ 1：image232.png" loading="lazy" width="484" height="437"></a><figcaption><span class="n">画面 229</span><span class="src">image232.png · 484×437</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 全額の場合は消込のみで済みますが、一部支払の場合は、まず元の請求書を消し込み、残額を別の伝票として生成する必要があります<br>会計－財務会計－売掛金－伝票入力－F-28 入金</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：全额则只需要清账,而部分还款则需要先清掉原来的帐单,再把剩余的金额生成另外一张单<br>会计－财务会计－应收帐款－凭证输入－F-28 收款</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t33/02_1_image233.png"><img src="assets/img/fi/t33/02_1_image233.png" alt="得意先から全額の入金を受領 · ステップ 2：解説：全額の場合は消込のみで済みますが、一部支払の場合は、まず元の請求書を消し込み、残額を別の伝票として生成する必要があります 会計－財務会計－売掛金－伝票入力－F-28 入金" loading="lazy" width="601" height="646"></a><figcaption><span class="n">画面 230</span><span class="src">image233.png · 601×646</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t33/02_2_image234.png"><img src="assets/img/fi/t33/02_2_image234.png" alt="得意先から全額の入金を受領 · ステップ 2：解説：全額の場合は消込のみで済みますが、一部支払の場合は、まず元の請求書を消し込み、残額を別の伝票として生成する必要があります 会計－財務会計－売掛金－伝票入力－F-28 入金" loading="lazy" width="718" height="821"></a><figcaption><span class="n">画面 231</span><span class="src">image234.png · 718×821</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">シミュレーション</p>
+<details class="orig"><summary>原文</summary><div class="zh">模拟</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t33/03_1_image235.png"><img src="assets/img/fi/t33/03_1_image235.png" alt="得意先から全額の入金を受領 · ステップ 3：シミュレーション" loading="lazy" width="560" height="301"></a><figcaption><span class="n">画面 232</span><span class="src">image235.png · 560×301</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 233）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t33/04_1_image236.png"><img src="assets/img/fi/t33/04_1_image236.png" alt="得意先から全額の入金を受領 · ステップ 4：image236.png" loading="lazy" width="593" height="325"></a><figcaption><span class="n">画面 233</span><span class="src">image236.png · 593×325</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t34"><span class="no">タスク 34</span><h3>得意先から一部の入金を受領</h3><span class="tc">FB70</span><span class="tc2">7 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】收到客户部分还款<br></div></details>
+<div class="note tip"><b class="t">教材ノート</b>F-28 この部分を行う前に、FB70 で得意先請求書を 1 件作成する必要があります。金額は 164800 です</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 234）</span></p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t34/01_1_image237.png"><img src="assets/img/fi/t34/01_1_image237.png" alt="得意先から一部の入金を受領 · ステップ 1：image237.png" loading="lazy" width="582" height="641"></a><figcaption><span class="n">画面 234</span><span class="src">image237.png · 582×641</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t34/02_1_image238.png"><img src="assets/img/fi/t34/02_1_image238.png" alt="得意先から一部の入金を受領 · ステップ 1：image238.png" loading="lazy" width="1017" height="619"></a><figcaption><span class="n">画面 235</span><span class="src">image238.png · 1017×619</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t34/03_1_image239.png"><img src="assets/img/fi/t34/03_1_image239.png" alt="得意先から一部の入金を受領 · ステップ 1：image239.png" loading="lazy" width="844" height="246"></a><figcaption><span class="n">画面 236</span><span class="src">image239.png · 844×246</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材ノート</b>「残高項目」をクリック</div>
+</li>
+<li>
+<p class="opcap">カーソルを残高項目に合わせてダブルクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">光标放到剩余项，双击</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t34/04_1_image240.png"><img src="assets/img/fi/t34/04_1_image240.png" alt="得意先から一部の入金を受領 · ステップ 2：カーソルを残高項目に合わせてダブルクリック" loading="lazy" width="1055" height="855"></a><figcaption><span class="n">画面 237</span><span class="src">image240.png · 1055×855</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">シミュレーション</p>
+<details class="orig"><summary>原文</summary><div class="zh">模拟</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t34/05_1_image241.png"><img src="assets/img/fi/t34/05_1_image241.png" alt="得意先から一部の入金を受領 · ステップ 3：シミュレーション" loading="lazy" width="791" height="854"></a><figcaption><span class="n">画面 238</span><span class="src">image241.png · 791×854</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">伝票 002 の行をダブルクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击凭证 002 行</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t34/06_1_image242.png"><img src="assets/img/fi/t34/06_1_image242.png" alt="得意先から一部の入金を受領 · ステップ 4：伝票 002 の行をダブルクリック" loading="lazy" width="601" height="360"></a><figcaption><span class="n">画面 239</span><span class="src">image242.png · 601×360</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t34/06_2_image243.png"><img src="assets/img/fi/t34/06_2_image243.png" alt="得意先から一部の入金を受領 · ステップ 4：伝票 002 の行をダブルクリック" loading="lazy" width="640" height="520"></a><figcaption><span class="n">画面 240</span><span class="src">image243.png · 640×520</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>戻った後、保存</div>
+</li>
+</ol>
+<div class="steph" id="t35"><span class="no">タスク 35</span><h3>売掛金残高を照会</h3><span class="tc2">4 画面 / 1 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】显示应收帐款余额<br></div></details>
+<div class="pathline" data-copy="会計 → 財務会計 → 売掛金 → 情報システム → 売掛金会計レポート → 得意先残高 → s_alr_87012172"><b>IMG パス（IMG 設定メニュー）</b>会計 → 財務会計 → 売掛金 → 情報システム → 売掛金会計レポート → 得意先残高 → s_alr_87012172</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 财务会计 → 应收帐款 → 信息系统 → 应收帐款会计核算报表 → 客户余额 → s_alr_87012172</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">会計－財務会計－売掛金－情報システム－売掛金会計レポート－得意先残高—s_alr_87012172</p>
+<details class="orig"><summary>原文</summary><div class="zh">会计－财务会计－应收帐款－信息系统－应收帐款会计核算报表－客户余额—s_alr_87012172</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t35/01_1_image244.png"><img src="assets/img/fi/t35/01_1_image244.png" alt="売掛金残高を照会 · ステップ 1：会計－財務会計－売掛金－情報システム－売掛金会計レポート－得意先残高—s_alr_87012172" loading="lazy" width="811" height="876"></a><figcaption><span class="n">画面 241</span><span class="src">image246.png · 811×876</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t35/01_2_image245.png"><img src="assets/img/fi/t35/01_2_image245.png" alt="売掛金残高を照会 · ステップ 1：会計－財務会計－売掛金－情報システム－売掛金会計レポート－得意先残高—s_alr_87012172" loading="lazy" width="1093" height="538"></a><figcaption><span class="n">画面 242</span><span class="src">image247.png · 1093×538</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t35/01_1_image244.png"><img src="assets/img/fi/t35/01_1_image244.png" alt="売掛金残高を照会 · ステップ 1：会計－財務会計－売掛金－情報システム－売掛金会計レポート－得意先残高—s_alr_87012172" loading="lazy" width="811" height="876"></a><figcaption><span class="n">画面 241</span><span class="src">image246.png · 811×876</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t35/01_2_image245.png"><img src="assets/img/fi/t35/01_2_image245.png" alt="売掛金残高を照会 · ステップ 1：会計－財務会計－売掛金－情報システム－売掛金会計レポート－得意先残高—s_alr_87012172" loading="lazy" width="1093" height="538"></a><figcaption><span class="n">画面 242</span><span class="src">image247.png · 1093×538</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t36"><span class="no">タスク 36</span><h3>得意先残高を照会</h3><span class="tc">FD10N</span><span class="tc2">2 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】显示客户余额<br></div></details>
+<div class="pathline" data-copy="会計 → 財務会計 → 売掛金 → 勘定 → FD10N"><b>IMG パス（IMG 設定メニュー）</b>会計 → 財務会計 → 売掛金 → 勘定 → FD10N</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 财务会计 → 应收帐款 → 账户 → FD10N</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">会計－財務会計－売掛金－勘定－FD10N</p>
+<details class="orig"><summary>原文</summary><div class="zh">会计－财务会计－应收帐款－账户－FD10N</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t36/01_1_image249.png"><img src="assets/img/fi/t36/01_1_image249.png" alt="得意先残高を照会 · ステップ 1：会計－財務会計－売掛金－勘定－FD10N" loading="lazy" width="615" height="152"></a><figcaption><span class="n">画面 245</span><span class="src">image249.png · 615×152</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 246）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t36/02_1_image250.png"><img src="assets/img/fi/t36/02_1_image250.png" alt="得意先残高を照会 · ステップ 2：image250.png" loading="lazy" width="807" height="766"></a><figcaption><span class="n">画面 246</span><span class="src">image250.png · 807×766</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t37"><span class="no">タスク 37</span><h3>仕入先請求書を受領</h3><span class="tc">FB60</span><span class="tc2">5 画面 / 1 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】收到供应商发票<br></div></details>
+<div class="pathline" data-copy="会計 → 財務会計 → 買掛金 → 伝票入力 → FB60 請求書"><b>IMG パス（IMG 設定メニュー）</b>会計 → 財務会計 → 買掛金 → 伝票入力 → FB60 請求書</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 财务会计 → 应付帐款 → 凭证输入 → FB60 发票</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">会計－財務会計－買掛金－伝票入力－FB60 請求書</p>
+<details class="orig"><summary>原文</summary><div class="zh">会计－财务会计－应付帐款－凭证输入－FB60 发票</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t37/01_1_image251.png"><img src="assets/img/fi/t37/01_1_image251.png" alt="仕入先請求書を受領 · ステップ 1：会計－財務会計－買掛金－伝票入力－FB60 請求書" loading="lazy" width="353" height="413"></a><figcaption><span class="n">画面 247</span><span class="src">image253.png · 353×413</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t37/01_2_image252.png"><img src="assets/img/fi/t37/01_2_image252.png" alt="仕入先請求書を受領 · ステップ 1：会計－財務会計－買掛金－伝票入力－FB60 請求書" loading="lazy" width="228" height="194"></a><figcaption><span class="n">画面 248</span><span class="src">image254.png · 228×194</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t37/01_3_image255.png"><img src="assets/img/fi/t37/01_3_image255.png" alt="仕入先請求書を受領 · ステップ 1：会計－財務会計－買掛金－伝票入力－FB60 請求書" loading="lazy" width="732" height="533"></a><figcaption><span class="n">画面 249</span><span class="src">image255.png · 732×533</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t37/01_1_image251.png"><img src="assets/img/fi/t37/01_1_image251.png" alt="仕入先請求書を受領 · ステップ 1：会計－財務会計－買掛金－伝票入力－FB60 請求書" loading="lazy" width="353" height="413"></a><figcaption><span class="n">画面 247</span><span class="src">image253.png · 353×413</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t37/01_2_image252.png"><img src="assets/img/fi/t37/01_2_image252.png" alt="仕入先請求書を受領 · ステップ 1：会計－財務会計－買掛金－伝票入力－FB60 請求書" loading="lazy" width="228" height="194"></a><figcaption><span class="n">画面 248</span><span class="src">image254.png · 228×194</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t38"><span class="no">タスク 38</span><h3>シミュレーション</h3><span class="tc2">1 画面 / 1 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】模拟<br></div></details>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 252）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t38/01_1_image257.png"><img src="assets/img/fi/t38/01_1_image257.png" alt="シミュレーション：image257.png" loading="lazy" width="699" height="299"></a><figcaption><span class="n">画面 252</span><span class="src">image257.png · 699×299</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t39"><span class="no">タスク 39</span><h3>仕入先へ支払</h3><span class="tc2">3 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】向供应商付款<br></div></details>
+<div class="pathline" data-copy="会計 → 財務会計 → 買掛金 → 伝票入力 → 支払 → F-53 転記"><b>IMG パス（IMG 設定メニュー）</b>会計 → 財務会計 → 買掛金 → 伝票入力 → 支払 → F-53 転記</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 财务会计 → 应付帐款 → 凭证输入 → 付款 → F-53 过帐</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">会計－財務会計－買掛金－伝票入力－支払－F-53 転記</p>
+<details class="orig"><summary>原文</summary><div class="zh">会计－财务会计－应付帐款－凭证输入－付款－F-53 过帐</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t39/01_1_image258.png"><img src="assets/img/fi/t39/01_1_image258.png" alt="仕入先へ支払 · ステップ 1：会計－財務会計－買掛金－伝票入力－支払－F-53 転記" loading="lazy" width="373" height="594"></a><figcaption><span class="n">画面 253</span><span class="src">image258.png · 373×594</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 254）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t39/02_1_image259.png"><img src="assets/img/fi/t39/02_1_image259.png" alt="仕入先へ支払 · ステップ 2：image259.png" loading="lazy" width="716" height="826"></a><figcaption><span class="n">画面 254</span><span class="src">image259.png · 716×826</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t39/03_1_image260.png"><img src="assets/img/fi/t39/03_1_image260.png" alt="仕入先へ支払 · ステップ 2：image260.png" loading="lazy" width="724" height="338"></a><figcaption><span class="n">画面 255</span><span class="src">image260.png · 724×338</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>シミュレーション</div>
+</li>
+</ol>
+<div class="steph" id="t40"><span class="no">タスク 40</span><h3>買掛金残高を照会</h3><span class="tc2">3 画面 / 1 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】显示应付帐款余额<br></div></details>
+<div class="pathline" data-copy="会計 → 財務会計 → 買掛金 → 情報システム → 買掛金会計レポート → s_alr_87012082"><b>IMG パス（IMG 設定メニュー）</b>会計 → 財務会計 → 買掛金 → 情報システム → 買掛金会計レポート → s_alr_87012082</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 财务会计 → 应付帐款 → 信息系统 → 应付科目会计核算报表 → s_alr_87012082</code></div>
+<ol class="oplist">
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t40/01_1_image261.png"><img src="assets/img/fi/t40/01_1_image261.png" alt="買掛金残高を照会 · ステップ 1：image261.png" loading="lazy" width="616" height="861"></a><figcaption><span class="n">画面 256</span><span class="src">image261.png · 616×861</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t40/01_2_image262.png"><img src="assets/img/fi/t40/01_2_image262.png" alt="買掛金残高を照会 · ステップ 1：image262.png" loading="lazy" width="1087" height="506"></a><figcaption><span class="n">画面 257</span><span class="src">image262.png · 1087×506</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t40/01_3_image263.png"><img src="assets/img/fi/t40/01_3_image263.png" alt="買掛金残高を照会 · ステップ 1：image263.png" loading="lazy" width="434" height="677"></a><figcaption><span class="n">画面 258</span><span class="src">image263.png · 434×677</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t41"><span class="no">タスク 41</span><h3>仕入先残高を照会</h3><span class="tc">FK10N</span><span class="tc2">7 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】显示供应商余额<br></div></details>
+<div class="pathline" data-copy="会計 → 財務会計 → 買掛金 → 勘定 → FK10N → 残高照会"><b>IMG パス（IMG 設定メニュー）</b>会計 → 財務会計 → 買掛金 → 勘定 → FK10N → 残高照会</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 财务会计 → 应付帐款 → 账户 → FK10N → 显示余额</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">会計－財務会計－買掛金－勘定－FK10N－残高照会</p>
+<details class="orig"><summary>原文</summary><div class="zh">会计－财务会计－应付帐款－账户－FK10N－显示余额</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t41/01_1_image264.png"><img src="assets/img/fi/t41/01_1_image264.png" alt="仕入先残高を照会 · ステップ 1：会計－財務会計－買掛金－勘定－FK10N－残高照会" loading="lazy" width="344" height="480"></a><figcaption><span class="n">画面 259</span><span class="src">image264.png · 344×480</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 260）</span></p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t41/02_1_image265.png"><img src="assets/img/fi/t41/02_1_image265.png" alt="仕入先残高を照会 · ステップ 2：image267.png" loading="lazy" width="608" height="169"></a><figcaption><span class="n">画面 260</span><span class="src">image267.png · 608×169</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t41/02_2_image266.png"><img src="assets/img/fi/t41/02_2_image266.png" alt="仕入先残高を照会 · ステップ 2：image268.png" loading="lazy" width="797" height="777"></a><figcaption><span class="n">画面 261</span><span class="src">image268.png · 797×777</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t41/02_1_image265.png"><img src="assets/img/fi/t41/02_1_image265.png" alt="仕入先残高を照会 · ステップ 2：image267.png" loading="lazy" width="608" height="169"></a><figcaption><span class="n">画面 260</span><span class="src">image267.png · 608×169</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t41/02_2_image266.png"><img src="assets/img/fi/t41/02_2_image266.png" alt="仕入先残高を照会 · ステップ 2：image268.png" loading="lazy" width="797" height="777"></a><figcaption><span class="n">画面 261</span><span class="src">image268.png · 797×777</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t41/03_1_image269.png"><img src="assets/img/fi/t41/03_1_image269.png" alt="仕入先残高を照会 · ステップ 2：image269.png" loading="lazy" width="659" height="523"></a><figcaption><span class="n">画面 264</span><span class="src">image269.png · 659×523</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t41/04_1_image270.png"><img src="assets/img/fi/t41/04_1_image270.png" alt="仕入先残高を照会 · ステップ 2：image270.png" loading="lazy" width="603" height="504"></a><figcaption><span class="n">画面 265</span><span class="src">image270.png · 603×504</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材ノート</b>3 行目の明細行をダブルクリック</div>
+</li>
+</ol>
+<div class="steph" id="t42"><span class="no">タスク 42</span><h3>総勘定元帳勘定残高の集計表</h3><span class="tc2">5 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】总帐科目余额汇总表<br></div></details>
+<div class="pathline" data-copy="会計 → 財務会計 → 総勘定元帳 → 情報システム → 総勘定元帳レポート（新） → 勘定残高 → 一般 → 総勘定元帳勘定残高"><b>IMG パス（IMG 設定メニュー）</b>会計 → 財務会計 → 総勘定元帳 → 情報システム → 総勘定元帳レポート（新） → 勘定残高 → 一般 → 総勘定元帳勘定残高</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 财务会计 → 总帐 → 信息系统 → 总帐报表(新) → 科目余额 → 常规 → 总帐科目余额</code></div>
+<div class="note tip"><b class="t">教材ノート</b>s_alr_87012276</div>
+<ol class="oplist">
+<li>
+<p class="opcap">会計－財務会計－総勘定元帳－情報システム－総勘定元帳レポート（新）－勘定残高－一般－総勘定元帳勘定残高－</p>
+<details class="orig"><summary>原文</summary><div class="zh">会计－财务会计－总帐－信息系统－总帐报表(新)－科目余额－常规－总帐科目余额－</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t42/01_1_image271.png"><img src="assets/img/fi/t42/01_1_image271.png" alt="総勘定元帳勘定残高の集計表 · ステップ 1：会計－財務会計－総勘定元帳－情報システム－総勘定元帳レポート（新）－勘定残高－一般－総勘定元帳勘定残高－" loading="lazy" width="473" height="634"></a><figcaption><span class="n">画面 266</span><span class="src">image273.png · 473×634</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t42/01_2_image272.png"><img src="assets/img/fi/t42/01_2_image272.png" alt="総勘定元帳勘定残高の集計表 · ステップ 1：会計－財務会計－総勘定元帳－情報システム－総勘定元帳レポート（新）－勘定残高－一般－総勘定元帳勘定残高－" loading="lazy" width="628" height="547"></a><figcaption><span class="n">画面 267</span><span class="src">image274.png · 628×547</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t42/01_1_image271.png"><img src="assets/img/fi/t42/01_1_image271.png" alt="総勘定元帳勘定残高の集計表 · ステップ 1：会計－財務会計－総勘定元帳－情報システム－総勘定元帳レポート（新）－勘定残高－一般－総勘定元帳勘定残高－" loading="lazy" width="473" height="634"></a><figcaption><span class="n">画面 266</span><span class="src">image273.png · 473×634</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t42/01_2_image272.png"><img src="assets/img/fi/t42/01_2_image272.png" alt="総勘定元帳勘定残高の集計表 · ステップ 1：会計－財務会計－総勘定元帳－情報システム－総勘定元帳レポート（新）－勘定残高－一般－総勘定元帳勘定残高－" loading="lazy" width="628" height="547"></a><figcaption><span class="n">画面 267</span><span class="src">image274.png · 628×547</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 270）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t42/02_1_image275.png"><img src="assets/img/fi/t42/02_1_image275.png" alt="総勘定元帳勘定残高の集計表 · ステップ 2：image275.png" loading="lazy" width="1212" height="636"></a><figcaption><span class="n">画面 270</span><span class="src">image275.png · 1212×636</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t43"><span class="no">タスク 43</span><h3>売上勘定を自動記帳のみに設定します</h3><span class="tc">FS00</span><span class="tc2">7 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】将收入科目设置为只能自动记帐<br></div></details>
+<div class="note tip"><b class="t">教材ノート</b>FS00</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 271）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t43/01_1_image276.png"><img src="assets/img/fi/t43/01_1_image276.png" alt="売上勘定を自動記帳のみに設定します · ステップ 1：image276.png" loading="lazy" width="614" height="667"></a><figcaption><span class="n">画面 271</span><span class="src">image276.png · 614×667</span></figcaption></figure>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t43/02_1_image277.png"><img src="assets/img/fi/t43/02_1_image277.png" alt="売上勘定を自動記帳のみに設定します · ステップ 2：image280.png" loading="lazy" width="633" height="654"></a><figcaption><span class="n">画面 272</span><span class="src">image280.png · 633×654</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t43/02_2_image278.png"><img src="assets/img/fi/t43/02_2_image278.png" alt="売上勘定を自動記帳のみに設定します · ステップ 2：image281.png" loading="lazy" width="611" height="662"></a><figcaption><span class="n">画面 273</span><span class="src">image281.png · 611×662</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t43/02_3_image279.png"><img src="assets/img/fi/t43/02_3_image279.png" alt="売上勘定を自動記帳のみに設定します · ステップ 2：image282.png" loading="lazy" width="620" height="654"></a><figcaption><span class="n">画面 274</span><span class="src">image282.png · 620×654</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t43/02_1_image277.png"><img src="assets/img/fi/t43/02_1_image277.png" alt="売上勘定を自動記帳のみに設定します · ステップ 2：image280.png" loading="lazy" width="633" height="654"></a><figcaption><span class="n">画面 272</span><span class="src">image280.png · 633×654</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t43/02_2_image278.png"><img src="assets/img/fi/t43/02_2_image278.png" alt="売上勘定を自動記帳のみに設定します · ステップ 2：image281.png" loading="lazy" width="611" height="662"></a><figcaption><span class="n">画面 273</span><span class="src">image281.png · 611×662</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t43/02_3_image279.png"><img src="assets/img/fi/t43/02_3_image279.png" alt="売上勘定を自動記帳のみに設定します · ステップ 2：image282.png" loading="lazy" width="620" height="654"></a><figcaption><span class="n">画面 274</span><span class="src">image282.png · 620×654</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t44"><span class="no">タスク 44</span><h3>貸借対照表と損益計算書の構造を定義します</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">29 画面 / 23 ステップ</span></div>
+<p>11 流動資産</p>
+<p>1131 売掛金</p>
+<p>1201 棚卸資産</p>
+<p>120101 材料購買</p>
+<p>121101 棚卸資産-原材料（ROH）</p>
+<p>123101 棚卸資産-商品（HAWA）</p>
+<p>124301 棚卸資産-完成品（FERT）</p>
+<p>1001 貨幣資金</p>
+<p>21 負債</p>
+<p>212101 買掛金</p>
+<p>217101 未払税金</p>
+<p>31 株主資本</p>
+<p>3101 払込資本</p>
+<p>5 損益および利益処分計算書</p>
+<p>51 売上総利益</p>
+<p>5101 売上高</p>
+<p>510102 売上総利益-商品（HAWA）</p>
+<p>5401 売上原価</p>
+<p>5402 売上税金及び付加税</p>
+<p>55 費用</p>
+<p>5501 販売費</p>
+<p>5502 管理費</p>
+<p>5503 財務費用</p>
+<p>57 所得税</p>
+<p>58 利益処分</p>
+<p>59 当期純増未処分利益</p>
+<p>6 P+L P＋L 結果配賦勘定</p>
+<p>100101 現金を選択し、勘定の配賦をクリック</p>
+<p>11 流動資産</p>
+<p>1001 貨幣資金</p>
+<p>100101 現金</p>
+<p>0010010101 現金</p>
+<p>100201 銀行預金</p>
+<p>1131 売掛金</p>
+<p>1201 棚卸資産</p>
+<p>120101 材料購買</p>
+<p>121101 棚卸資産-原材料（ROH）</p>
+<p>123101 棚卸資産-商品（HAWA）</p>
+<p>21 負債</p>
+<p>2101 流動負債</p>
+<p>217101 未払税金</p>
+<p>21710101 未払付加価値税-仕入税額</p>
+<p>21710102 未払付加価値税-売上税額</p>
+<p>2222 固定負債</p>
+<p>31 株主資本</p>
+<p>3101 払込資本</p>
+<p>3141 期首未処分利益</p>
+<p>5 損益および利益処分計算書</p>
+<p>51 売上総利益</p>
+<p>5101 売上高</p>
+<p>510101 売上総利益-自製</p>
+<p>510102 売上総利益-商品（HAWA）</p>
+<p>5401 売上原価</p>
+<p>540101 売上原価-自製</p>
+<p>540102 売上原価-商品（HAWA）</p>
+<p>5402 売上税金及び付加税</p>
+<p>55 費用</p>
+<p>5501 販売費</p>
+<p>5502 管理費</p>
+<p>0055020101 管理費－給与</p>
+<p>0055020111 管理費－減価償却費</p>
+<p>0055020121 管理費－電話料金</p>
+<p>0055020131 管理費－事務用品</p>
+<p>0055020141 管理費－賃料</p>
+<p>0055029101 管理費－その他</p>
+<p>5503 財務費用</p>
+<p>57 所得税</p>
+<p>58 利益処分</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义资产负债表和损益表结构<br>11 流动资产<br>1131 应收账款<br>1201存货<br>120101 材料采购<br>121101 存货-原材料<br>123101 存货-贸易商品<br>124301 存货-产成品<br>1001 货币资金<br>21 负债<br>212101 应付账款<br>217101 未交税金<br>31 所有者权益<br>3101 实收资本<br>5 损益及利润分配表<br>51 主营业务利润<br>5101 主营业务收入<br>510102 主营业务利润-贸易商品<br>5401 主营业务成本<br>5402 主营业务税金及附加<br>55 费用<br>5501 销售费用<br>5502 管理费用<br>5503 财务费用<br>57 所得税<br>58 利润分配<br>59 本年净增未分配利润<br>6 P+L P＋L 结果分配账户<br>选择 100101 现金，点击分配会计科目<br>11 流动资产<br>1001 货币资金<br>100101 现金<br>0010010101 现金<br>100201 银行存款<br>1131 应收账款<br>1201 存货<br>120101 材料采购<br>121101 存货-原材料<br>123101 存货-贸易商品<br>21 负债<br>2101 流动负债<br>217101 未交税金<br>21710101 未交增值税-进项税额<br>21710102 未交增值税-销项税额<br>2222 长期负债<br>31 所有者权益<br>3101 实收资本<br>3141 期初未分配利润<br>5 损益及利润分配表<br>51 主营业务利润<br>5101 主营业务收入<br>510101 主营业务利润-自制<br>510102 主营业务利润-贸易商品<br>5401 主营业务成本<br>540101 主营业务成本-自制<br>540102 主营业务成本-贸易商品<br>5402 主营业务税金及附加<br>55 费用<br>5501 销售费用<br>5502 管理费用<br>0055020101 管理费用－工资<br>0055020111 管理费用－折旧<br>0055020121 管理费用－电话费<br>0055020131 管理费用－办公用品<br>0055020141 管理费用－租金<br>0055029101 管理费用－其他<br>5503 财务费用<br>57 所得税<br>58 利润分配</div></details>
+<div class="pathline" data-copy="財務会計 → 総勘定元帳会計 → 業務取引 → 決済 → 伝票の作成 → 財務諸表バージョンの定義"><b>IMG パス（IMG 設定メニュー）</b>財務会計 → 総勘定元帳会計 → 業務取引 → 決済 → 伝票の作成 → 財務諸表バージョンの定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>财务会计 → 总帐会计 → 业务往来 → 结算 → 编制凭证 → 定义会计报表版本</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">財務会計－総勘定元帳会計－業務取引－決済－伝票の作成－財務諸表バージョンの定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">财务会计－总帐会计－业务往来－结算－编制凭证－定义会计报表版本</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/01_1_image283.png"><img src="assets/img/fi/t44/01_1_image283.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 1：財務会計－総勘定元帳会計－業務取引－決済－伝票の作成－財務諸表バージョンの定義" loading="lazy" width="380" height="464"></a><figcaption><span class="n">画面 278</span><span class="src">image283.png · 380×464</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 279）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/02_1_image284.png"><img src="assets/img/fi/t44/02_1_image284.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 2：image284.png" loading="lazy" width="543" height="569"></a><figcaption><span class="n">画面 279</span><span class="src">image284.png · 543×569</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">新しい仕訳</p>
+<details class="orig"><summary>原文</summary><div class="zh">新的分录</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/03_1_image285.png"><img src="assets/img/fi/t44/03_1_image285.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 3：新しい仕訳" loading="lazy" width="361" height="324"></a><figcaption><span class="n">画面 280</span><span class="src">image285.png · 361×324</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「会計レポート項目」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击会计报表项目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/04_1_image286.png"><img src="assets/img/fi/t44/04_1_image286.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 4：「会計レポート項目」をクリック" loading="lazy" width="372" height="309"></a><figcaption><span class="n">画面 281</span><span class="src">image286.png · 372×309</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t44/04_2_image287.png"><img src="assets/img/fi/t44/04_2_image287.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 4：「会計レポート項目」をクリック" loading="lazy" width="510" height="247"></a><figcaption><span class="n">画面 282</span><span class="src">image287.png · 510×247</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>「資産」をダブルクリック</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 283）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/05_1_image288.png"><img src="assets/img/fi/t44/05_1_image288.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 5：image288.png" loading="lazy" width="396" height="788"></a><figcaption><span class="n">画面 283</span><span class="src">image288.png · 396×788</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">次のとおり入力：</p>
+<details class="orig"><summary>原文</summary><div class="zh">填写如下：</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/06_1_image289.png"><img src="assets/img/fi/t44/06_1_image289.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 6：次のとおり入力：" loading="lazy" width="663" height="851"></a><figcaption><span class="n">画面 284</span><span class="src">image289.png · 663×851</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">頤寧公司の財務諸表バージョンを選択し、項目 8「損益および利益剰余金計算書」の作成をクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">选择颐宁公司财务报表版本，点击创建项目 8 损益及利润分配表</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/07_1_image290.png"><img src="assets/img/fi/t44/07_1_image290.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 7：頤寧公司の財務諸表バージョンを選択し、項目 8「損益および利益剰余金計算書」の作成をクリックします" loading="lazy" width="522" height="369"></a><figcaption><span class="n">画面 285</span><span class="src">image290.png · 522×369</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">資産を選択し、「項目作成」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">选中资产，点击创建项目</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t44/08_1_image291.png"><img src="assets/img/fi/t44/08_1_image291.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 8：資産を選択し、「項目作成」をクリック" loading="lazy" width="537" height="278"></a><figcaption><span class="n">画面 286</span><span class="src">image293.png · 537×278</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t44/08_2_image292.png"><img src="assets/img/fi/t44/08_2_image292.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 8：資産を選択し、「項目作成」をクリック" loading="lazy" width="767" height="430"></a><figcaption><span class="n">画面 287</span><span class="src">image294.png · 767×430</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t44/08_1_image291.png"><img src="assets/img/fi/t44/08_1_image291.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 8：資産を選択し、「項目作成」をクリック" loading="lazy" width="537" height="278"></a><figcaption><span class="n">画面 286</span><span class="src">image293.png · 537×278</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t44/08_2_image292.png"><img src="assets/img/fi/t44/08_2_image292.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 8：資産を選択し、「項目作成」をクリック" loading="lazy" width="767" height="430"></a><figcaption><span class="n">画面 287</span><span class="src">image294.png · 767×430</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">15 固定資産<br>18 無形資産および繰延資産</p>
+<details class="orig"><summary>原文</summary><div class="zh">15 固定资产<br>18 无形及递延资产</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/09_1_image295.png"><img src="assets/img/fi/t44/09_1_image295.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 9：15 固定資産 18 無形資産および繰延資産" loading="lazy" width="382" height="286"></a><figcaption><span class="n">画面 290</span><span class="src">image295.png · 382×286</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>21 負債</div>
+</li>
+<li>
+<p class="opcap">負債および株主資本を選択し、「項目の登録」をクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">选中负债及所有者权益，点击创建项目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/10_1_image296.png"><img src="assets/img/fi/t44/10_1_image296.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 10：負債および株主資本を選択し、「項目の登録」をクリックします" loading="lazy" width="522" height="231"></a><figcaption><span class="n">画面 291</span><span class="src">image296.png · 522×231</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t44/10_2_image297.png"><img src="assets/img/fi/t44/10_2_image297.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 10：負債および株主資本を選択し、「項目の登録」をクリックします" loading="lazy" width="521" height="239"></a><figcaption><span class="n">画面 292</span><span class="src">image297.png · 521×239</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">100101 現金<br>100201 銀行預金</p>
+<details class="orig"><summary>原文</summary><div class="zh">100101 现金<br>100201 银行存款</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/11_1_image298.png"><img src="assets/img/fi/t44/11_1_image298.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 11：100101 現金 100201 銀行預金" loading="lazy" width="312" height="648"></a><figcaption><span class="n">画面 293</span><span class="src">image298.png · 312×648</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>2101 流動負債</div>
+</li>
+<li>
+<p class="opcap">21710101 未払付加価値税-仕入税額<br>21710102 未払付加価値税-売上税額</p>
+<details class="orig"><summary>原文</summary><div class="zh">21710101 未交增值税-进项税额<br>21710102 未交增值税-销项税额</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/12_1_image299.png"><img src="assets/img/fi/t44/12_1_image299.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 12：21710101 未払付加価値税-仕入税額 21710102 未払付加価値税-売上税額" loading="lazy" width="514" height="519"></a><figcaption><span class="n">画面 294</span><span class="src">image299.png · 514×519</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">3141 期首未処分利益<br>3142 当期純増未処分利益</p>
+<details class="orig"><summary>原文</summary><div class="zh">3141 期初未分配利润<br>3142 本年净增未分配利润</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/13_1_image300.png"><img src="assets/img/fi/t44/13_1_image300.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 13：3141 期首未処分利益 3142 当期純増未処分利益" loading="lazy" width="577" height="417"></a><figcaption><span class="n">画面 295</span><span class="src">image300.png · 577×417</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">「純額結果：損失」を選択し、3142 の下に調整します</p>
+<details class="orig"><summary>原文</summary><div class="zh">选中净值结果：亏损，调整到 3142 下</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/14_1_image301.png"><img src="assets/img/fi/t44/14_1_image301.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 14：「純額結果：損失」を選択し、3142 の下に調整します" loading="lazy" width="1005" height="826"></a><figcaption><span class="n">画面 296</span><span class="src">image301.png · 1005×826</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t44/14_2_image302.png"><img src="assets/img/fi/t44/14_2_image302.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 14：「純額結果：損失」を選択し、3142 の下に調整します" loading="lazy" width="764" height="654"></a><figcaption><span class="n">画面 297</span><span class="src">image302.png · 764×654</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 298）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/15_1_image303.png"><img src="assets/img/fi/t44/15_1_image303.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 15：image303.png" loading="lazy" width="433" height="442"></a><figcaption><span class="n">画面 298</span><span class="src">image303.png · 433×442</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">純額結果：「利益」と「損失」という 2 つのシステム事前定義のレポート項目が、貸借対照表の差額を自動計算します。実質的には本年の未処分利益の純増（または純減）額です</p>
+<details class="orig"><summary>原文</summary><div class="zh">净值结果：利润和亏损两个系统预定义的报表项目会自动计算资产负债表的轧差数，实质上就是本年净增（或净减）的未分配利润数</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/16_1_image304.png"><img src="assets/img/fi/t44/16_1_image304.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 16：純額結果：「利益」と「損失」という 2 つのシステム事前定義のレポート項目が、貸借対照表の差額を自動計算します。実質的には本年の未処分利益の純増（または純減）額です" loading="lazy" width="510" height="725"></a><figcaption><span class="n">画面 299</span><span class="src">image304.png · 510×725</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>P&amp;L 結果もシステム事前定義のレポート項目で、損益計算書と利益処分表の差額を自動計算します。実質的には「本年の未処分利益の純増」です。</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 299）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/16_1_image304.png"><img src="assets/img/fi/t44/16_1_image304.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 17：image304.png" loading="lazy" width="510" height="725"></a><figcaption><span class="n">画面 299</span><span class="src">image304.png · 510×725</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>510101 売上総利益-自製</div>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/18_1_image305.png"><img src="assets/img/fi/t44/18_1_image305.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 18：image305.png" loading="lazy" width="298" height="572"></a><figcaption><span class="n">画面 301</span><span class="src">image305.png · 298×572</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">10010101 10019999<br>D は、勘定残高が借方にある場合にこのレポート項目に分類されることを表します</p>
+<details class="orig"><summary>原文</summary><div class="zh">10010101 10019999<br>D 指如果科目余额在借方，就归入这个报表项目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/19_1_image306.png"><img src="assets/img/fi/t44/19_1_image306.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 19：10010101 10019999 D は、勘定残高が借方にある場合にこのレポート項目に分類されることを表します" loading="lazy" width="510" height="898"></a><figcaption><span class="n">画面 302</span><span class="src">image306.png · 510×898</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">1 資産 資産</p>
+<details class="orig"><summary>原文</summary><div class="zh">1 资产 资产</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/20_1_image307.png"><img src="assets/img/fi/t44/20_1_image307.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 20：1 資産 資産" loading="lazy" width="559" height="825"></a><figcaption><span class="n">画面 303</span><span class="src">image307.png · 559×825</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>A999 0010010101 - 0010019999 X X</div>
+</li>
+<li>
+<p class="opcap">124301 棚卸資産-完成品（FERT）<br>A9990012430101 - 0012439999 X X</p>
+<details class="orig"><summary>原文</summary><div class="zh">124301 存货-产成品<br>A9990012430101 - 0012439999 X X</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/21_1_image308.png"><img src="assets/img/fi/t44/21_1_image308.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 21：124301 棚卸資産-完成品（FERT） A9990012430101 - 0012439999 X X" loading="lazy" width="606" height="859"></a><figcaption><span class="n">画面 304</span><span class="src">image308.png · 606×859</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>212101 買掛金</div>
+</li>
+<li>
+<p class="opcap">3142 当期純増未処分利益<br>7 純額結果：損失 純額結果：損失</p>
+<details class="orig"><summary>原文</summary><div class="zh">3142 本年净增未分配利润<br>7 净值结果：亏损 净值结果：亏损</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/22_1_image309.png"><img src="assets/img/fi/t44/22_1_image309.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 22：3142 当期純増未処分利益 7 純額結果：損失 純額結果：損失" loading="lazy" width="543" height="857"></a><figcaption><span class="n">画面 305</span><span class="src">image309.png · 543×857</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>540103 売上原価-差異決済</div>
+</li>
+<li>
+<p class="opcap">59 当期純増未処分利益<br>6 P+L P＋L 結果</p>
+<details class="orig"><summary>原文</summary><div class="zh">59 本年净增未分配利润<br>6 P+L P＋L 结果</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/23_1_image310.png"><img src="assets/img/fi/t44/23_1_image310.png" alt="貸借対照表と損益計算書の構造を定義します · ステップ 23：59 当期純増未処分利益 6 P+L P＋L 結果" loading="lazy" width="393" height="675"></a><figcaption><span class="n">画面 306</span><span class="src">image310.png · 393×675</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t45"><span class="no">タスク 45</span><h3>貸借対照表を実行</h3><span class="tc2">3 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】运行资产负债表<br></div></details>
+<div class="pathline" data-copy="会計 → 財務会計 → 総勘定元帳 → 情報システム → 総勘定元帳レポート → 貸借対照表／損益計算書／キャッシュフロー → 一般 → 計画／実績比較 → 年度計画／実績比較"><b>IMG パス（IMG 設定メニュー）</b>会計 → 財務会計 → 総勘定元帳 → 情報システム → 総勘定元帳レポート → 貸借対照表／損益計算書／キャッシュフロー → 一般 → 計画／実績比較 → 年度計画／実績比較</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 财务会计 → 总分类帐 → 信息系统 → 总帐报表 → 资产负债表/损益表/现金流 → 常规 → 计划/实际比较 → 年度计划/实际比较</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 307）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t45/01_1_image311.png"><img src="assets/img/fi/t45/01_1_image311.png" alt="貸借対照表を実行 · ステップ 1：image311.png" loading="lazy" width="488" height="572"></a><figcaption><span class="n">画面 307</span><span class="src">image311.png · 488×572</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t45/02_1_image312.png"><img src="assets/img/fi/t45/02_1_image312.png" alt="貸借対照表を実行 · ステップ 2：image312.png" loading="lazy" width="675" height="563"></a><figcaption><span class="n">画面 308</span><span class="src">image312.png · 675×563</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">10 は現地通貨を表します</p>
+<details class="orig"><summary>原文</summary><div class="zh">10 代表本位币</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t45/03_1_image313.png"><img src="assets/img/fi/t45/03_1_image313.png" alt="貸借対照表を実行 · ステップ 3：10 は現地通貨を表します" loading="lazy" width="1147" height="687"></a><figcaption><span class="n">画面 309</span><span class="src">image313.png · 1147×687</span></figcaption></figure>
+</li>
+</ol>
+<h2 id="sources">4. スクリーンショットと設定値について</h2>
+<div class="box warn"><b class="t">画面は原教材ドキュメントのものです</b>本モジュールのスクリーンショットはすべて <code>S4.docx</code> の著者が実システムでキャプチャした中国語インターフェースの画面です（元のファイル名 <code>imageNNN.png</code> は各図の図注に残しているので、Word の原文と 1 枚ずつ照合できます）。当サイトはこれらの画面を一切描き直したり、シミュレーションで再現したりしていません。</div>
+<div class="box info"><b class="t">設定値はご自身のシステムの値を基準にしてください</b>ドキュメント内の組織構造とマスタデータの番号（会社コード <code>C999</code>、会社名「頤寧機械有限公司」、プラント <code>F999</code>、品目 <code>R999-100</code>/<code>T999-100</code>/<code>F999-100</code>、得意先 <code>K001</code>/<code>K002</code> など）はすべて原作者の教材環境のものです。手順どおりに作業するときは、<b>操作の順序と設定ポイントはそのまま流用できますが、具体的な番号や名称はご自身のシステムの値に置き換えてください</b>；ドキュメントと異なるメッセージが出た場合は、まず「<a href="issues.html">トラブルシューティングと注意点</a>」ページで原教材ドキュメントに記録された同種の問題を確認してください。</div>
+<div class="panel" style="margin-top:22px"><a href="prep.html">← 前のモジュール：準備 準備作業 — システムへのログオンと IMG 設定への移動</a><br><a href="co.html">次のモジュール：CO 管理会計 CO（Controlling） →</a><br><a href="tasks.html">全 222 タスクの索引 →</a></div>
+</article></main>
+</div>
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA 日本語実習サイト — 全モジュールの設定と操作手順 · 実機画面</h5>
+  <p>内容は同ディレクトリの教材ドキュメント <code>S4.docx</code>（425 ページ · 6 大モジュール · 222 タスク · 1385 枚の実機スクリーンショット）に基づいて整理しています。すべてのページはオフラインで開くことができ、外部依存はありません。</p>
+  <div><h5>画面について</h5><p>サイト内のすべてのスクリーンショットは<b>原教材ドキュメントの実機画面</b>（中国語インターフェースの SAP GUI）であり、イメージ図やシミュレーションによる生成画像ではありません。ファイル名は原教材ドキュメントの番号をそのまま保持しており、Word の原文と対照できます。ドキュメント内のサンプル値（会社コード <code>C999</code>、プラント <code>F999</code>、品目 <code>R999-100</code> など）は原作者の教材環境のものですので、ご自身のシステムの組織構造と番号範囲に合わせて読み替えてください。</p></div></div>
+  <div class="cols">
+    <div><h5>モジュール</h5>
+      <a href="prep.html">準備 — 準備作業 — システムへのログオンと IMG 設定への移動</a><br>
+      <a href="fi.html">FI — 財務会計 FI</a><br>
+      <a href="co.html">CO — 管理会計 CO</a><br>
+      <a href="mm.html">MM — 品目管理 MM</a><br>
+      <a href="pp.html">PP — 生産計画 PP</a><br>
+      <a href="sd.html">SD — 販売管理 SD</a><br>    </div>
+    <div><h5>サイト全体</h5>
+      <a href="prep.html">準備</a><br>
+      <a href="fi.html">FI</a><br>
+      <a href="co.html">CO</a><br>
+      <a href="mm.html">MM</a><br>
+      <a href="pp.html">PP</a><br>
+      <a href="sd.html">SD</a><br>
+      <a href="tcode.html">T-code</a><br>
+      <a href="glossary.html">用語</a><br>
+      <a href="issues.html">トラブルシューティング</a><br>
+      <a href="tasks.html">索引</a><br>
+      <a href="instructor.html">講師</a><br>
+      <a href="worksheet.html">受講者</a><br>
+      <a href="quiz.html">自習テスト</a><br>    </div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/s4jp.js"></script>
+</body>
+</html>

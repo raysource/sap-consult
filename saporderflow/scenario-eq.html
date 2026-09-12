@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E vs Q 对照実習 · SAP 受注形態の横断比較</title>
+<meta name="description" content="同じ 1 件の特注受注を MTO（受注在庫 E）と ETO（プロジェクト在庫 Q）で走らせたときの STEP 対照表：受注・MRP・指図・入出庫・出荷・請求・月末処理・レポートの一致点と相違点、期末の見え方、判別演習。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/cmp.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">CMP</span><span class="txt">受注形態 横断比較</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="compare.html">横断比较</a>
+      <a class="active" href="scenario-eq.html">E vs Q 对照</a>
+      <a href="vc.html">VC 概観</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / E vs Q 对照実習</div>
+<main class="page"><article>
+
+<h1>E vs Q 对照：同じ 1 件の受注を 2 通りで走らせる</h1>
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。若是想换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 即可一键替换。</div>
+
+<div class="box info"><b class="t">このページの狙い</b>
+「MTO と ETO の違い」を言葉で覚えても現場では使えません。<b>同じ商流（特注品 1 件を設計・製造・出荷・請求）</b>を
+① <b>MTO（受注在庫 E）</b>、② <b>ETO（プロジェクト在庫 Q）</b> の 2 通りで通し、<b>どこが同じで、どこが違うか</b>を STEP ごとに対比します。
+実機の詳細手顺は <span class="mono">../sapmto/</span> と <span class="mono">../sapeto/</span> を使ってください（本站は「対照表と講評」）。</div>
+
+<pre class="vals">共通のシナリオ（どちらも同じ商流）
+  得意先 1000 → 特注品 ZMTO-FG01 / ZETO-FG01 を 10 台（または 1 式）受注
+  難易度：受注 → 設計/製造 → 完成 → 出荷 → 請求（分割請求は ETO 側のみ）
+
+（A）MTO で組む場合      : 品目 = 個別所要量品目（MRP4 個別所要量）、戦略 20、明細カテゴリの特別在庫 E
+（B）ETO で組む場合      : 品目 = 個別所要量品目（同じ）、戦略（Cloud E2）、WBS を作り受注明細に割当、
+                           プロジェクト定義で評価付プロジェクト在庫 ON、請求計画で 30%＋70%</pre>
+
+<h2>STEP 対照表（一致点と相違点）</h2>
+<table class="tbl wide">
+<tr><th>STEP</th><th>MTO（E）のやること</th><th>ETO（Q）のやること</th><th>同じ / 違うの本質</th></tr>
+<tr><td>0 品目マスタ</td><td>FERT・MRP1 PD/EX/E・<b>MRP4 個別所要量</b>・戦略 20</td><td>同じ 3 点 ＋ <b>戦略グループ（Q 系）</b>・会計ビューの評価クラス</td><td><b>同じ土台</b>（個別所要量品目）。ETO は「Q を指す戦略」が加わる</td></tr>
+<tr><td>1 事前準備</td><td>（不要）</td><td><b><code>CJ20N</code> でプロジェクト＋WBS</b>（請求要素/勘定設定要素）＋ 評価付在庫 ON ＋ ネットワーク</td><td><b>完全に違う</b>：ETO だけが「案件の器」を先に作る</td></tr>
+<tr><td>2 受注</td><td><code>VA01</code>：得意先・品目・数量・納期のみ。明細カテゴリは <code>VOV4</code> が決める</td><td><code>VA01</code>：＋<b>明細に WBS 要素を入力</b>（＋請求計画）</td><td><b>違う</b>：ETO は需要の帰属先（WBS）を人が指定する</td></tr>
+<tr><td>3 需要の確認</td><td><code>MD04</code>：得意先所要量（<b>受注番号＋明細</b>付き）</td><td><code>MD04</code>：得意先所要量（<b>WBS</b> 付き）</td><td><b>同じ画面・違う帰属</b>。ここで「どちらに紐づいているか」を見る癖をつける</td></tr>
+<tr><td>4 MRP 実行</td><td><code>MD01N</code> / <code>MD02</code>（単品目）</td><td><code>MD51</code>（プロジェクト）/ <code>MD50</code>（受注）/ <code>MD01N</code></td><td><b>入口が違う</b>（ETO はプロジェクト単位で回せる）。結果は同じく MD04 で見る</td></tr>
+<tr><td>5 計画手配</td><td>在庫区分 = <b>受注在庫 E</b>、受注番号付き</td><td>勘定設定 = <b>WBS</b>、在庫区分 = <b>プロジェクト在庫 Q</b></td><td><b>ここが分岐点</b>。以降の入出庫・評価・成本が全部これに従う</td></tr>
+<tr><td>6 製造指図</td><td><code>CO08</code>（受注紐づき）/ 計画手配から変換。<b>受注明細参照</b></td><td><code>CO40</code>/<code>CO08</code>。<b>勘定設定 = WBS</b>（<code>AUFK-PS_PSP_PNR</code>）</td><td><b>指図は同じ道具</b>、指図が「誰のものか」が違う（受注明細 vs WBS）</td></tr>
+<tr><td>7 部品出庫・実績</td><td><code>MIGO</code> 261 ／ <code>CO11N</code></td><td>同じ（＋ネットワークなら <code>CN25</code> で活動確認）</td><td><b>ほぼ同じ</b>。ETO は「活動」という工数の受け皿が増えるだけ</td></tr>
+<tr><td>8 完成品入庫</td><td>101 → <b><code>MSKA</code></b>（受注在庫 E）</td><td>101 → <b><code>MSPR</code></b>（プロジェクト在庫 Q）</td><td><b>違う表に入る</b>。画面は <code>MMBE</code> でどちらも「特別在庫」欄に表示されるため、表で確認する</td></tr>
+<tr><td>9 出荷</td><td><code>VL01N</code>（在庫区分 E）→ PGI <code>601</code></td><td><code>VL01N</code>（在庫区分 Q ＋ WBS）→ PGI <code>601</code>（または <code>CNSO</code>＝Delivery from Project）</td><td><b>操作は同じ・引当先が違う</b></td></tr>
+<tr><td>10 請求</td><td><code>VF01</code>（出荷ベース <code>F2</code>）</td><td><code>VF01</code>（<b>請求計画/出来高</b>が主。着手金 30% ＋ 完成 70%）</td><td><b>收钱的方式不同</b>：出荷した分だけ vs 契約に沿って分割</td></tr>
+<tr><td>11 月末処理</td><td>指図の差異計算 <code>KKS1</code> → 指図の決済 <code>KO88</code>（受注明細へ）</td><td>進捗 <code>CNE1</code> → <b>結果分析 <code>KKA2</code>/<code>KKAJ</code></b> → WIP <code>KKAX</code> → 決済 <code>CJ88</code>（WBS）</td><td><b>一番差が出る</b>：MTO は指図の損益、ETO は案件の進捗損益（WIP と認識収益）</td></tr>
+<tr><td>12 レポート</td><td><code>MD04</code>・<code>MMBE</code>・<code>VBBS</code>・指図の原価分析</td><td><b><code>CJI3</code>（WBS の実績）・<code>CJ31</code>（予算）・<code>CJIB</code>・<code>CJIC</code>（決済明細）</b></td><td><b>見る帳票が違う</b>。ETO は「WBS 単位の予実」、MTO は「受注明細/指図単位」</td></tr>
+</table>
+<figure class="gui"><img src="assets/gui/scenario-eq_s01_1.svg" alt="VA03 の明細詳細（MTO）。WBS 要素は空で、在庫区分は E、所要量タイプ KE。" loading="lazy"><figcaption><b class="t">【E】VA03：明細に WBS なし（在庫区分 E）</b><span class="tx">VA01 / VA03</span><span class="scr">受注明細の詳細（MTO：明細に WBS なし）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> MTO は人が入力する欄がない＝設定がすべてを決める</li></ol><p class="gui-tip">自システムでの確認：明細の特別在庫区分は VA03 の明細詳細 → 出荷 / 在庫区分。または VBAP の SOBKZ を SE16N で。</p></figure>
+<figure class="gui"><img src="assets/gui/scenario-eq_s01_2.svg" alt="VA03 の明細詳細（ETO）。WBS 要素 ZETO-1000.1 を割当て、在庫区分は Q、請求計画あり。" loading="lazy"><figcaption><b class="t">【Q】VA03：明細に WBS を割当（在庫区分 Q）</b><span class="tx">VA01 / VA03</span><span class="scr">受注明細の詳細（ETO：明細に WBS を割当）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> WBS を割り当てる＝需要・原価・収益がこの案件に集まる</li><li><b>2</b> 収益を立てるには請求要素であること</li></ol><p class="gui-tip">自システムでの確認：WBS を割り当てられる明細カテゴリは限定されます（VOV7 と Cloud の交付済みカテゴリ）。Cloud の例は SAP Help（販売伝票の企業ポートフォリオ…）の CBAO。</p></figure>
+<figure class="gui"><img src="assets/gui/scenario-eq_s01_3.svg" alt="MD04 の在庫・所要量リスト（MTO）。得意先所要量と計画手配が受注番号付きで表示される。" loading="lazy"><figcaption><b class="t">【E】MD04：得意先所要量（在庫区分 E）</b><span class="tx">MD04</span><span class="scr">在庫/所要量リスト（MTO：受注在庫 E）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> MRP 要素の「得意先所要量」が受注由来の需要</li></ol><p class="gui-tip">自システムでの確認：MTO は MRP4 の「個別/包括所要量 = 個別所要量のみ」＋ 戦略グループが前提。MD04 の MRP 要素に受注番号が出ていれば個別需要として処理されています。</p></figure>
+<figure class="gui"><img src="assets/gui/scenario-eq_s01_4.svg" alt="MD04 の在庫・所要量リスト（ETO）。計画手配の勘定設定が WBS、在庫区分が Q。" loading="lazy"><figcaption><b class="t">【Q】MD04：勘定設定 WBS・在庫区分 Q</b><span class="tx">MD51 / MD04</span><span class="scr">在庫/所要量リスト（ETO：勘定設定 WBS・在庫区分 Q）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 勘定設定 = WBS（原価の集まる先）</li><li><b>2</b> 在庫区分 = Q（プロジェクト在庫）</li></ol><p class="gui-tip">自システムでの確認：プロジェクト/受注単位の MRP は MD51 / MD50。結果は MD04 で確認し、勘定設定が空なら「評価付プロジェクト在庫」と「受注明細の WBS」を疑います。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>まとめ：一致する部分 / 決定的に違う部分</h2>
+<div class="two-col">
+  <div class="panel">
+    <h4>一致する部分（ここを押さえると学習が速い）</h4>
+    <ul>
+      <li>決定链の骨格：<b>品目マスタ → 戦略グループ → 所要量タイプ → 所要量クラス</b>（個別在庫の有無）</li>
+      <li>品目マスタ <b>MRP4「個別/所要量」＝ 個別所要量のみ</b>（個別所要量品目の前提）</li>
+      <li>移動タイプ <b>261 / 101 / 601</b> と PGI の考え方</li>
+      <li>MD04 で需要と補貨を読むこと、MMBE で特別在庫を見ること</li>
+      <li>請求伝票（<code>VF01</code>）と伝票フローの読み方</li>
+      <li>「設定が足りないと自由在庫に落ちる」という故障の型</li>
+    </ul>
+  </div>
+  <div class="panel">
+    <h4>決定的に違う部分（＝試験でも現場でも問われる）</h4>
+    <ul>
+      <li><b>帰属先</b>：受注明細（E）vs WBS（Q）</li>
+      <li><b>在庫テーブル</b>：<code>MSKA</code> vs <code>MSPR</code></li>
+      <li><b>前提設定</b>：明細カテゴリの特別在庫 E vs 評価付プロジェクト在庫＋WBS 割当</li>
+      <li><b>成本の対象</b>：製造指図 vs WBS（＋指図）</li>
+      <li><b>收钱</b>：出荷ベース vs 請求計画/出来高</li>
+      <li><b>月末</b>：差異計算・指図決済 vs 進捗・結果分析・WIP・WBS 決済</li>
+      <li><b>帳票</b>：<code>MD04</code>/<code>MMBE</code> vs <code>CJI3</code>/<code>CJ31</code></li>
+    </ul>
+  </div>
+</div>
+
+<h2>期末（月末）の見え方の違い</h2>
+<table class="tbl wide">
+<tr><th>論点</th><th>MTO（E）</th><th>ETO（Q）</th></tr>
+<tr><td>まだ出荷していない完成品</td><td>受注在庫（E）として残高（評価付なら金額も）</td><td>プロジェクト在庫（Q）として残高（評価付なら金額も）</td></tr>
+<tr><td>進行中の仕掛</td><td>指図の WIP/差異（<code>KKAO</code>・<code>KKS1</code>・<code>KO88</code>）</td><td>WBS の WIP と認識収益（<code>KKA2</code>・<code>KKAX</code>・<code>CJ88</code>）</td></tr>
+<tr><td>売上の立ち方</td><td>出荷（PGI）した分が売上</td><td>請求計画/出来高＋結果分析（POC なら進捗に応じて収益認識）</td></tr>
+<tr><td>予算管理</td><td>通常は行わない（指図/受注は原価対象）</td><td><b>WBS 予算＋可用性管理（<code>CJ30</code>/<code>CJ32</code>/<code>CJBV</code>）</b></td></tr>
+<tr><td>意思決定に使う帳票</td><td>受注の粗利・指図の差異分析</td><td><b>WBS の予実（<code>CJI3</code>/<code>CJ31</code>）</b>＝案件の採算</td></tr>
+</table>
+<figure class="gui"><img src="assets/gui/scenario-eq_s02_1.svg" alt="KKS1 差異計算の実行画面（MTO）。指図の投入と出来高の差を計算する。" loading="lazy"><figcaption><b class="t">【E】KKS1：指図の差異計算</b><span class="tx">KKS1</span><span class="scr">製造指図の差異計算（MTO：指図の損益）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 標準原価と実際原価の差＝差異。決済（KO88）で受注明細へ</li></ol><p class="gui-tip">自システムでの確認：差異が出ない場合は指図に標準原価が入っているか（CO03 の原価項目）を確認してください。</p></figure>
+<figure class="gui"><img src="assets/gui/scenario-eq_s02_2.svg" alt="KKA2 結果分析の実行画面（ETO）。WBS の進捗に応じた認識収益と WIP を計算する。" loading="lazy"><figcaption><b class="t">【Q】KKA2：結果分析（進捗 → 認識収益 / WIP）</b><span class="tx">KKA2</span><span class="scr">結果分析（ETO：案件の進捗損益）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 進捗を入れてから実行する（無いと認識されない）</li></ol><p class="gui-tip">自システムでの確認：結果分析キーは OKG9 系のカスタマイジング。WIP は KKAX、決算は CJ88（WBS）/ KO88（指図）/ VA88（受注）。</p></figure>
+<figure class="gui"><img src="assets/gui/scenario-eq_s02_3.svg" alt="CJI3 の原価・収益一覧（ETO）。請求要素に収益、勘定設定要素に原価が集まる。" loading="lazy"><figcaption><b class="t">【Q】CJI3：収益は請求要素・原価は勘定設定要素</b><span class="tx">CJI3</span><span class="scr">WBS 要素別の原価・収益（ETO の見え方）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 収益が立たない時は「WBS が請求要素か」を最初に見る</li></ol><p class="gui-tip">自システムでの確認：収益が出ない場合は ① WBS が請求要素か ② 受注明細に WBS が入っているか ③ 請求書が WBS を持っているかを順に確認します。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>実機で両方を作る（最小手顺・各 30〜40 分）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>MTO（E）— 詳細は <span class="mono">../sapmto/</span></th><th>ETO（Q）— 詳細は <span class="mono">../sapeto/</span></th></tr>
+<tr><td>1</td><td>品目 <code>ZMTO-FG01</code>：MRP4 個別所要量・戦略 20・手配タイプ E</td><td>品目 <code>ZETO-FG01</code>：MRP4 個別所要量・戦略（Q 系）</td></tr>
+<tr><td>2</td><td>（不要）</td><td><code>CJ20N</code>：プロジェクト＋WBS 3 件・評価付在庫 ON・請求要素</td></tr>
+<tr><td>3</td><td><code>VA01</code>：受注（数量 10）＋ 明細カテゴリ確認</td><td><code>VA01</code>：受注（1 式）＋ 明細に WBS ＋ 請求計画 30/70</td></tr>
+<tr><td>4</td><td><code>MD01N</code>/<code>MD02</code> → <code>MD04</code>：計画手配（<b>在庫区分 E</b>）</td><td><code>MD51</code> → <code>MD04</code>：計画手配（<b>勘定設定 WBS・在庫区分 Q</b>）</td></tr>
+<tr><td>5</td><td><code>CO08</code> → 261 → <code>CO11N</code> → 101（<b>MSKA</b>）</td><td><code>CO40</code>/<code>CO08</code> → 261 → <code>CO11N</code> → 101（<b>MSPR</b>）</td></tr>
+<tr><td>6</td><td><code>VL01N</code>（E）→ PGI → <code>VF01</code>（出荷ベース）</td><td><code>VL01N</code>（Q）→ PGI → <code>VF01</code>（請求計画）</td></tr>
+<tr><td>7</td><td><code>KO88</code>（指図決済）＋ <code>MD04</code>/<code>MMBE</code> で確認</td><td><code>KKA2</code>→<code>KKAX</code>→<code>CJ88</code>＋ <code>CJI3</code> で確認</td></tr>
+<tr><td>8</td><td colspan="2"><b>並べて説明する</b>：① 需要の帰属 ② 在庫の表 ③ 成本の対象 ④ 請求の仕方 ⑤ 月末の処理 —— 5 点を、資料を見ずに 5 分で。<b>ここまでできれば E と Q は卒業</b>。</td></tr>
+</table>
+<figure class="gui"><img src="assets/gui/scenario-eq_s03_1.svg" alt="MIGO の入庫 101（MTO）。入庫後の在庫が受注在庫（特別在庫 E）になる。" loading="lazy"><figcaption><b class="t">【E】MIGO 101：受注在庫（特別在庫 E）へ</b><span class="tx">MIGO / MMBE</span><span class="scr">完成品入庫 101 の結果（MTO：受注在庫へ）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> MTO の山場：入庫が受注在庫に入っているか</li></ol><p class="gui-tip">自システムでの確認：転記後の在庫は MMBE の「特別在庫」欄、表なら MSKA で確認します。</p></figure>
+<figure class="gui"><img src="assets/gui/scenario-eq_s03_2.svg" alt="MIGO の入庫 101（ETO）。入庫後の在庫がプロジェクト在庫（特別在庫 Q）になる。" loading="lazy"><figcaption><b class="t">【Q】MIGO 101：プロジェクト在庫（特別在庫 Q）へ</b><span class="tx">MIGO / MMBE</span><span class="scr">完成品入庫 101 の結果（ETO：プロジェクト在庫へ）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 自由在庫に入ったら「評価付プロジェクト在庫」と WBS を確認</li></ol><p class="gui-tip">自システムでの確認：MSPR に数量行があるか。無ければプロジェクト定義の「評価付プロジェクト在庫」を確認します（SAP Help Valuated Project Stock の 3 前提）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>判別演習（8 問・解答は <a href="instructor.html">讲师版</a>）</h2>
+<ol class="steps">
+  <li>受注 10 台・納期 2 か月・分割請求なし・設計は既存品の流用 → どちら（E / Q）？</li>
+  <li>得意先の工場に据え付ける特注ライン・着手金 30%・検収後 70% → どちら？</li>
+  <li><code>MMBE</code> に「特別在庫 E、受注 0000001234/000010」と表示された。この受注はどの形態？</li>
+  <li>計画手配の勘定設定が空で、在庫区分も空だった。<b>最初に疑う設定は？</b></li>
+  <li>「<code>CJI3</code> に収益が出ない」——最有力の原因は？</li>
+  <li>請求計画を登録せずに出荷ベースだけで請求したい。ETO でも可能か？</li>
+  <li>同じ品目を MTO と ETO の両方で使いたい。品目マスタで工夫できるか？</li>
+  <li>得意先が受注時に色と容量を選ぶ。MTO のままで対応できるか？</li>
+</ol>
+
+<div class="box info"><b class="t">次の一歩</b>
+→ <a href="vc.html">VC 概観</a>（設定的な製品の扱い）／→ <a href="compare.html">横断比较</a>（他形態との比較）／→ <a href="quiz.html">能力测试</a>
+</div>
+
+
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>受注形態 横断比較</h5><p>E vs Q 対照：STEP 対照表・一致点/相違点・期末の見え方・最小手顺・判別演習。</p></div>
+  <div class="cols">
+    <div><h5>本サイト</h5><a href="index.html">总览</a><br><a href="compare.html">横断比较</a><br><a href="vc.html">VC 概観</a><br><a href="instructor.html">讲师版</a><br><a href="quiz.html">能力测试</a></div>
+    <div><h5>実機の手顺</h5><span class="mono">../sapmto/index.html</span>（MTO）<br><span class="mono">../sapeto/index.html</span>（ETO）</div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

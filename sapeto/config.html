@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>配置手顺 · SAP S/4HANA 受注設計生産（ETO）实战训练站</title>
+<meta name="description" content="ETO 的练习配置手顺 C0〜C16：品目マスタ（個別所要量・戦略グループ）、プロジェクトプロファイル（OPSA）、コーディングマスク、ユーザステータス、ネットワーク、評価付プロジェクト在庫、受注明細の WBS 割当、請求計画、予算と可用性管理、決済（CJ88）、結果分析（KKA2）、Public Cloud（6GD）差异对照。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/eto.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">ETO</span><span class="txt">受注設計生産 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a class="active" href="config.html">配置手顺</a>
+      <a href="handson-1.html">①项目</a>
+      <a href="handson-2.html">②计划·MRP</a>
+      <a href="handson-3.html">③执行·入库</a>
+      <a href="handson-4.html">④出荷·请求</a>
+      <a href="handson-5.html">⑤发展·故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 配置手顺</div>
+<main class="page"><article>
+
+<h1>练习配置手顺（C0〜C16）</h1>
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。若是想换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 即可一键替换。</div>
+
+<div class="box info"><b class="t">本页怎么用</b>
+每个 STEP 都是「<b>目的 → IMG 路径 / 事务码 → 输入值 → 操作手顺 → 自系统中的确认 → 注意 → 练习课题</b>」的固定结构。<br>
+① ETO 的标准值环境差最大（戦略グループ、WBS を割り当てられる明細カテゴリ、評価付プロジェクト在庫の扱い）→ <b>先确认、后自建</b>；
+② 练习用对象命名：<code>ZETO-FG01</code>/<code>ZETO-RM01/02</code>（品目）、<code>ZETO-1000</code>（プロジェクト）、<code>ZETO01</code>（プロジェクトプロファイル）、WBS <code>.1/.2/.3</code>、ネットワーク <code>3000001</code>；
+③ 所有改动记入你的<b>カスタマイジング依頼</b>；
+④ PS の設定は<b>プロファイルに集約</b>されるので、「どのプロファイルを使っているか」を常に意識する（迷ったら <code>CJ20N</code> のプロファイルから逆引き）。</div>
+
+<div class="toc">
+  <a href="#c0">C0 前提確認</a>
+  <a href="#c1">C1 部品品目</a>
+  <a href="#c2">C2 完成品品目（核心）</a>
+  <a href="#c3">C3 BOM・作業区・手順</a>
+  <a href="#c4">C4 価格条件</a>
+  <a href="#c5">C5 プロジェクトプロファイル</a>
+  <a href="#c6">C6 ユーザステータス</a>
+  <a href="#c7">C7 ネットワーク</a>
+  <a href="#c8">C8 予算と可用性管理</a>
+  <a href="#c9">C9 評価付プロジェクト在庫</a>
+  <a href="#c10">C10 受注明細と WBS</a>
+  <a href="#c11">C11 請求計画・出来高</a>
+  <a href="#c12">C12 決済の前提</a>
+  <a href="#c13">C13 結果分析・収益認識</a>
+  <a href="#c14">C14 MRP と勘定設定</a>
+  <a href="#c15">C15 在庫・移動タイプ・転記</a>
+  <a href="#cloud">C16 Public Cloud（6GD）差異</a>
+  <a href="#done">配置完了チェックリスト</a>
+</div>
+
+<h2>配置前的准备</h2>
+<p>PS の設定は SD/PP/MM より「プロファイル」に依存します。着手前に ① PS の権限（<code>CJ20N</code>・<code>CJ30</code>・<code>CJI3</code>・<code>CJ88</code>）② 制御エリア・会社コード・プラントの整合
+③ カスタマイジング依頼 を確認してください。また、<b>既存の標準プロファイル（<code>CJ20N</code> で選択できるもの）を 1 つ選び、それを「正解の見本」として読み解く</b>進め方が最短です。</p>
+<figure class="gui"><img src="assets/gui/config_prep_1.svg" alt="SPRO の IMG 初期画面。カスタマイジング依頼と PS（プロジェクト）の前提を確認する。" loading="lazy"><figcaption><b class="t">配置前的准备：SPRO（IMG）と前提 3 点</b><span class="tx">SPRO</span><span class="scr">カスタマイジング（IMG）の前提確認（PS 含む）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 依頼を指定しないと保存できない</li><li><b>2</b> ETO は PS の権限が無いと何も始まらない</li></ol><p class="gui-tip">プロジェクトプロファイルが選べない場合は番号範囲（OPSA）と権限を確認してください。</p></figure>
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c0"><span class="no">C0</span><h3>前提与环境确认</h3><span class="tc">CJ20N・VA01・MMNR・BP/XD03</span></div>
+<dl class="kv"><dt>目的</dt><dd>PS/SD の基礎が欠けたまま進むと、後半（予算・決済）で必ず詰まる。</dd></dl>
+<pre class="vals">会社コード 1000 / プラント 1000 / 出荷プラント 1000 / 制御エリア（会社コードに割当て済み）
+販売組織 1000 / 販売チャネル 10 / 部門 00 ／ 得意先 1000（販売エリアビュー＋出荷先）
+品目タイプ FERT / ROH・HAWA の品目番号範囲、受注・出荷・請求・製造指図の番号範囲
+PS：プロジェクト定義／WBS の採番（コーディングマスク）が使えること</pre>
+<ol class="steps">
+  <li><code>CJ20N</code> を起動 → 「作成」でプロジェクトを新規に開始し、<b>プロファイルが選択できる</b>こと、WBS の <b>ID 採番が通る</b>ことを確認 → 保存せずに戻る。</li>
+  <li><code>VA01</code> で 販売エリア <code>1000/10/00</code>、得意先 <code>1000</code> が選べることを確認（保存はしない）。</li>
+  <li>権限確認：<code>CJ20N</code>・<code>CJ30</code>・<code>CJI3</code>・<code>CJ88</code>・<code>MD51</code>・<code>CO08</code>・<code>VL01N</code>・<code>VF01</code>。</li>
+</ol>
+
+
+
+
+<div class="box info"><b class="t">确认（自系统）</b><code>CJ20N</code> でプロジェクトを新規作成でき（保存しなくても可）、WBS の ID がエラーなく採番されれば前提 OK。</div>
+<figure class="gui"><img src="assets/gui/config_s02_1.svg" alt="CJ20N のプロジェクト新規作成画面。プロジェクトプロファイル ZETO01、説明、開始日 12.09.2026、終了日 11.03.2027 を入力する。" loading="lazy"><figcaption><b class="t">CJ20N プロジェクトビルダ（新規作成）の初期画面</b><span class="tx">CJ20N</span><span class="scr">プロジェクトビルダ：プロジェクトの新規作成</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> プロファイルが選べる＝PS 設定の前提。ここが空だと番号範囲か権限が疑わしい</li><li><b>2</b> WBS の ID はコーディングマスク＋番号で決まる（例 ZETO-1000.1）</li></ol><p class="gui-tip">自システムでの確認：保存せずに戻ってよければ前提 OK。プロファイルが選べない場合は OPSA（プロファイル）の番号範囲と権限を確認します。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s02_2.svg" alt="VA01 の初期画面。受注タイプ OR、販売組織 1000、流通チャネル 10、部門 00、得意先 1000 が選択できることを確認する。" loading="lazy"><figcaption><b class="t">VA01 受注伝票登録の初期画面（前提確認）</b><span class="tx">VA01</span><span class="scr">受注伝票 登録：初期画面</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 得意先 1000 は販売エリアビューと出荷先が揃っていること。欠けると受注が保存できない</li></ol><p class="gui-tip">自システムでの確認：得意先 1000（BP / XD03）と品目タイプ FERT / ROH / HAWA の品目番号範囲（MMNR）も併せて確認します。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c1"><span class="no">C1</span><h3>部品品目（ZETO-RM01 / ZETO-RM02）</h3><span class="tc">MM01</span></div>
+<dl class="kv"><dt>目的</dt><dd>BOM 部品を用意する。本教程は初期在庫で賄い（購買は発展課題）、<b>部品は自由在庫のまま</b>にする。</dd></dl>
+<table class="tbl wide">
+<tr><th>项目</th><th>ZETO-RM01</th><th>ZETO-RM02</th><th>视图</th></tr>
+<tr><td>品目タイプ / 単位 / 品目グループ</td><td><code>ROH</code> / PC / 001</td><td><code>HAWA</code> / PC / 001</td><td>基本データ1</td></tr>
+<tr><td>購買グループ / 調達タイプ</td><td>001 / 外部調達</td><td>001 / 外部調達</td><td>購買</td></tr>
+<tr><td>MRPタイプ / ロットサイズ / 手配タイプ</td><td><code>PD</code> / <code>EX</code> / <code>F</code></td><td><code>PD</code> / <code>EX</code> / <code>F</code></td><td>MRP1</td></tr>
+<tr><td>評価クラス / 価格管理</td><td>（例）3000 / <code>S</code></td><td>（例）3000 / <code>S</code></td><td>会計1</td></tr>
+<tr><td>初期在庫</td><td><code>100</code> PC（561）</td><td><code>500</code> PC（561）</td><td><code>MIGO</code></td></tr>
+</table>
+<ol class="steps">
+  <li><code>MM01</code> で 2 品目を登録（ビュー：基本1・2 / 購買 / MRP1〜4 / 会計1 / 原価計算1 / プラント在庫 / 保管場所）。</li>
+  <li><b>MRP4「個別/包括所要量」は空のまま</b>（部品は自由在庫。ここを個別所要量にすると部品まで受注/プロジェクト在庫扱いになる）。</li>
+  <li><code>MIGO</code>（または <code>MB1C</code>）で移動タイプ <code>561</code> により初期在庫を投入。</li>
+</ol>
+
+
+
+
+<div class="box info"><b class="t">确认（自系统）</b><code>MMBE</code> で RM01 100 PC、RM02 500 PC（非制限使用）。</div>
+<figure class="gui"><img src="assets/gui/config_s03_1.svg" alt="MM01 の初期画面。部品 ZETO-RM01 を品目タイプ ROH、プラント 1000、保管場所 0001 で登録する。" loading="lazy"><figcaption><b class="t">品目マスタ（MM01）の初期画面：部品 ZETO-RM01</b><span class="tx">MM01</span><span class="scr">品目マスタ 登録：初期画面（組織レベル）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 部品は自由在庫。MRP4 の個別所要量は空のままにする（部品まで Q にすると在庫が追えない）</li><li><b>2</b> 初期在庫は後続の MIGO（移動タイプ 561）で投入する</li></ol><p class="gui-tip">自システムでの確認：品目タイプ ROH / HAWA の品目番号範囲に空きがあるかを MMNR で確認します。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s03_2.svg" alt="MIGO の画面。移動タイプ 561 で ZETO-RM01 を 100 PC、ZETO-RM02 を 500 PC 入庫する明細を示す。" loading="lazy"><figcaption><b class="t">MIGO：移動タイプ 561 で部品の初期在庫を投入</b><span class="tx">MIGO</span><span class="scr">品目移動：初期在庫の投入（移動タイプ 561）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 561 は初期在庫投入用。部品は自由在庫に入る（Q にはしない）</li><li><b>2</b> 本教材は部品を初期在庫で賄う（購買は発展課題）</li></ol><p class="gui-tip">自システムでの確認：MB1C（561）でも同じ結果になります。実績は MMBE で非制限使用在庫 100 / 500 PC として確認します。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c2"><span class="no">C2</span><h3>完成品品目 ZETO-FG01（ETO 的核心主数据）</h3><span class="tc">MM01 / MM02 / MM03</span></div>
+<dl class="kv"><dt>目的</dt><dd>让它成为 <b>個別所要量品目</b>：MRP4 個別所要量 ＋ MRP3 戦略グループ（評価区分 M を持つ所要量クラス）。この 2 つがプロジェクト在庫 Q の土台。</dd></dl>
+<table class="tbl wide">
+<tr><th>视图</th><th>项目</th><th>值</th><th>为什么</th></tr>
+<tr><td>基本データ1</td><td>品目タイプ / 単位</td><td><code>FERT</code> / PC（1 式）</td><td>—</td></tr>
+<tr><td>販売組織2</td><td>品目カテゴリグループ</td><td><code>0001</code>（NORM）</td><td>明細カテゴリ決定のキー（ETO 専用の標準キーは無い）</td></tr>
+<tr><td>販売組織2</td><td>税区分 / 品目統計グループ</td><td>（例）MWST / 1</td><td>請求に必要</td></tr>
+<tr><td>MRP1</td><td>MRPタイプ / ロットサイズ / 手配タイプ</td><td><code>PD</code> / <code>EX</code> / <code>E</code></td><td>内製（製造指図）。手配タイプ空だと手配が生まれない</td></tr>
+<tr><td><b>MRP3</b></td><td><b>戦略グループ</b></td><td><b>自系统的 ETO 用戦略グループ（例 <code>E2</code>）</b></td><td>所要量タイプが <b>Q（プロジェクト在庫）</b> を指すための入口</td></tr>
+<tr><td>MRP3</td><td>在庫確認 / 消費モード</td><td>個別所要量ベース（例 02）/ 空（MTO・ETO は PIR を使わない）</td><td>—</td></tr>
+<tr><td><b>MRP4</b></td><td><b>個別/包括所要量</b></td><td><b>個別所要量のみ</b></td><td><b>評価付プロジェクト在庫の前提</b>（SAP Help / SAP Learning）</td></tr>
+<tr><td>会計1</td><td>評価クラス / 価格管理 / 原価計算</td><td>（例）7920 / <code>S</code> / 標準原価見積</td><td>プロジェクト在庫が評価される場合の金額の出どころ</td></tr>
+<tr><td>原価計算1</td><td>原価計算ロットサイズ / バリアント</td><td>（例）<code>EX</code> / 標準 PP 用</td><td>指図の標準原価（差異の基準）</td></tr>
+</table>
+<ol class="steps">
+  <li><code>MM01</code> → <code>ZETO-FG01</code> / <code>FERT</code> → 上表のビューを選択して入力。</li>
+  <li><b>戦略グループが選べない/見つからない</b>場合：<code>OPPJ</code>（計画方針グループの定義）で ETO 用の戦略グループが存在するか確認する。存在しなければ <b>自システムの ETO 用戦略（受注設計生産・評価区分 M の所要量クラスを指すもの）を特定</b>し、その値を品目に設定する（勝手に標準値を捏造しない）。</li>
+  <li>保存後 <code>MM03</code> で <b>MRP3 戦略グループ・MRP4 個別/包括所要量</b> を再確認。</li>
+</ol>
+
+
+
+
+<div class="box info"><b class="t">确认（自系统）</b>
+① <code>MM03</code> MRP4 = 個別所要量のみ ② MRP3 の戦略グループを <code>OPPJ</code>/<code>OPPS</code> で展開し、指す<b>所要量クラス</b>を <code>OVZG</code> で開いて <b>評価区分（M など）</b> と <b>個別在庫</b> の設定を確認する。<br>
+② 参考：S/4HANA Cloud の ETO（6GD）は戦略グループ <code>E2</code>、所要量タイプ <code>E21</code>（特別在庫 Q）を使う（SAP KBA 3623492）。</div>
+<figure class="gui"><img src="assets/gui/config_s04_1.svg" alt="MM01 の販売組織 2 ビュー。完成品 ZETO-FG01 の品目カテゴリグループ 0001 を設定する。" loading="lazy"><figcaption><b class="t">販売組織 2 ビュー：品目カテゴリグループ 0001</b><span class="tx">MM01</span><span class="scr">品目マスタ 登録：販売組織 2 ビュー</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 品目カテゴリグループは明細カテゴリの決定キー（ETO 専用の標準キーは無いので NORM を使う）</li></ol><p class="gui-tip">自システムでの確認：決定キーは VOV4（明細カテゴリの決定）で確認します。WBS を割り当てられるのはどの明細カテゴリかは C10 で実測します。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s04_2.svg" alt="MM01 の MRP3 ビュー。戦略グループに ETO 用の戦略グループ（例 E2）を設定する。" loading="lazy"><figcaption><b class="t">MRP 3 ビュー：戦略グループ</b><span class="tx">MM01</span><span class="scr">品目マスタ 登録：MRP 3 ビュー（戦略グループ）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 戦略グループが Q（プロジェクト在庫）を指す所要量タイプを決める。ここが受注生産（E 系）のままだと E のまま</li><li><b>2</b> 消費モードは空のまま（ETO / MTO は PIR を使わない）</li></ol><p class="gui-tip">自システムでの確認：戦略グループの値は環境ごとに異なります。OPPJ（計画方針グループ）→ OPPS → OVZG（所要量クラス）の順に展開し、評価区分（M など）と個別在庫の設定を確認してください。S/4HANA Cloud の ETO（6GD）は E2 / 所要量タイプ E21（KBA 3623492）。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s04_3.svg" alt="MM01 の MRP4 ビュー。個別/包括所要量に「1 個別所要量のみ」を設定する。" loading="lazy"><figcaption><b class="t">MRP 4 ビュー：個別/包括所要量</b><span class="tx">MM01</span><span class="scr">品目マスタ 登録：MRP 4 ビュー（個別所要量）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 1 = 個別所要量のみ。ここが集合所要量だと需要が WBS に帰属せず、Q が成立しない</li></ol><p class="gui-tip">受注在庫（E）／プロジェクト在庫（Q）にしたい品目は、ここが「個別所要量のみ」であることが前提です（SAP Help）。保存後は MM03 で MRP3 の戦略グループと MRP4 を再確認します。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c3"><span class="no">C3</span><h3>BOM・作業区・作業手順</h3><span class="tc">CS01・CR01・CA01</span></div>
+<pre class="vals">BOM（CS01）      : 親 ZETO-FG01 / プラント 1000 / 用途 1 → 0010 ZETO-RM01 ×2、0020 ZETO-RM02 ×8
+作業区（CR01）   : ZETO_WC01「組立・調整」（プラント 1000 / 能力 8H/日）
+作業手順（CA01） : 工程 0010「組立」/ 作業区 ZETO_WC01 / 標準時間 4H / 単位 PC</pre>
+<ol class="steps">
+  <li>3 つを登録し、<code>CS03</code>/<code>CR03</code>/<code>CA03</code> で表示確認。</li>
+  <li>（発展）部品を外注で賄う場合は、BOM 明細の調達タイプを <code>F</code>＋購買情報レコード（<code>ME11</code>）まで用意すると、発注連携まで通せる。</li>
+</ol>
+
+
+
+
+<div class="box info"><b class="t">确认（自系统）</b>CS03 で BOM（RM01×2・RM02×8）、CA03 で工程 0010 が見える。</div>
+<figure class="gui"><img src="assets/gui/config_s05_1.svg" alt="CS01 の画面。完成品 ZETO-FG01 の BOM に部品 ZETO-RM01 を 2 PC、ZETO-RM02 を 8 PC 登録する。" loading="lazy"><figcaption><b class="t">CS01：BOM 明細（RM01 × 2・RM02 × 8）</b><span class="tx">CS01</span><span class="scr">品目構成（BOM）の登録：完成品 ZETO-FG01</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> ここが指図の部品所要量（予約）の出どころ。0 件だと CO03 の構成品目が空になる</li></ol><p class="gui-tip">自システムでの確認：有効日・プラント・用途が合っていないと CO40/CO08 で構成品目が展開されません（CS03 で確認）。外注にする場合は BOM 明細の調達タイプと購買情報レコード（ME11）まで用意します。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s05_2.svg" alt="CA01 の画面。工程 0010「組立」、作業区 ZETO_WC01、標準時間 4H を登録する。" loading="lazy"><figcaption><b class="t">CA01：作業手順（工程 0010・作業区 ZETO_WC01・4H）</b><span class="tx">CA01</span><span class="scr">作業手順の登録：工程 0010（組立）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 工程 0010 が CO11N の実績入力先（工程 0010）になる</li></ol><p class="gui-tip">自システムでの確認：制御キーの名称・値は環境ごとに異なります（標準の「内部処理」「外部処理」系を使用）。作業区 CR01 はプラント 1000・能力 8H/日で登録します。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c4"><span class="no">C4</span><h3>価格条件（受注金額）</h3><span class="tc">VK11 / VK13</span></div>
+<pre class="vals">条件タイプ PR00（標準を確認）/ 販売組織 1000 / チャネル 10 / 得意先 1000
+品目 ZETO-FG01 / 金額 5,000,000 JPY / 1 PC / 有効期間 今日〜+1年</pre>
+<ol class="steps">
+  <li><code>VK11</code> で登録 → <code>VK13</code> で確認。</li>
+  <li>ETO では金額が「案件ごと」に決まることが多いので、<b>条件レコード＋手動変更</b>のどちらで運用するかを受講者に考えさせる（練習は条件レコードで固定）。</li>
+</ol>
+
+
+
+
+<div class="box warn"><b class="t">注意</b>請求計画で分割請求する場合、金額の内訳（30%/70%）は請求計画の明細で持つ。条件が 0 のままだと請求金額も 0 になる。</div>
+<figure class="gui"><img src="assets/gui/config_s06_1.svg" alt="VK11 の画面。条件タイプ PR00 で得意先 1000 × 品目 ZETO-FG01 の金額 5,000,000 JPY を登録する。" loading="lazy"><figcaption><b class="t">VK11：条件レコード PR00 の登録</b><span class="tx">VK11</span><span class="scr">条件レコードの登録：PR00（受注金額）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 受注明細の単価はここから自動決定される。ここが 0 だと請求金額も 0 になる</li><li><b>2</b> ETO では案件ごとに価格が動く。条件＋手動変更のどちらで運用するかを決めておく</li></ol><p class="gui-tip">自システムでの確認：条件タイプ PR00 が有効か、アクセス順序（V/08）で得意先×品目が先に決まるかを確認します。分割請求の内訳（30%/70%）は請求計画側で持ちます。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s06_2.svg" alt="VK13 の条件照会画面。販売組織 1000・得意先 1000・品目 ZETO-FG01 の PR00 が 5,000,000 JPY で有効なことを示す。" loading="lazy"><figcaption><b class="t">VK13：条件レコードの照会（PR00）</b><span class="tx">VK13</span><span class="scr">条件（価格）の照会：PR00</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 受注を保存する前に、ここで金額が決定できることを確認しておく</li></ol><p class="gui-tip">自システムでの確認：条件レコードが有効期間外だと受注時に金額 0 になります。VK13 の有効開始/終了日を見てください。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c5"><span class="no">C5</span><h3>プロジェクトプロファイルとコーディングマスク</h3><span class="tc">OPSA（IMG）</span></div>
+<dl class="kv">
+  <dt>IMG 路径</dt><dd>Project System &gt; Structures &gt; Operative Structures &gt; Work Breakdown Structure &gt; <b>Create Project Profile</b>（事务码 <code>OPSA</code>）</dd>
+  <dt>目的</dt><dd>PS 的「控制面板」：番号範囲、WBS 画面、予算プロファイル、決済パラメータ、ステータスプロファイル、日付/計画の既定値などをひとまとめにする。</dd>
+</dl>
+<ol class="steps">
+  <li><code>OPSA</code> → 既存の標準プロファイル（<code>CJ20N</code> で選べるもの）を 1 つ決め、<b>表示（照会）</b>して主要項目を読み取る：<br>
+      ・番号範囲（プロジェクト定義/WBS）　・<b>予算プロファイル</b>　・<b>決済パラメータ/決済ルールの既定</b>　・ステータスプロファイル　・計画要素の既定</li>
+  <li>（任意）練習用に <code>ZETO01</code> として<b>コピー作成</b>し、説明を「ETO 練習用」に。以降の練習はこのプロファイルで行うと差分が追いやすい。</li>
+  <li>WBS の ID は「コーディングマスク＋番号」で決まる。コーディングマスク（例 <code>ZETO-</code>）を確認し、<b>WBS の採番がどう決まるか</b>を理解する（プロジェクトの特殊文字定義/編集マスク）。</li>
+  <li>プロジェクトタイプ（WBS 要素のタイプ）：IMG の <b>SM30 ビュー <code>V_TCJ1</code></b>（WBS 要素のプロジェクトタイプ）で確認する。</li>
+</ol>
+
+
+
+
+<div class="box info"><b class="t">确认（自系统）</b>
+<code>CJ20N</code> で新規作成 → プロファイルを選択 → WBS を 1 件作って ID を見る（<code>ZETO-1000.1</code> のような形で採番されるか）。採番や階層のルールがここで腹落ちすると、後の練習が速い。</div>
+<div class="box warn"><b class="t">よくある失敗</b>プロファイルを理解せずに WBS を作り、後で「予算が使えない」「決済できない」となる。PS のトラブルは<b>まずプロファイルに戻る</b>のが定石。</div>
+<figure class="gui"><img src="assets/gui/config_s07_1.svg" alt="OPSA の IMG 画面。プロジェクトプロファイル ZETO01 の番号範囲・予算プロファイル・決済・ステータスプロファイルを一覧で示す。" loading="lazy"><figcaption><b class="t">OPSA：プロジェクトプロファイル（予算・決済・ステータスを集約）</b><span class="tx">OPSA</span><span class="scr">IMG：プロジェクトプロファイルの更新</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> PS のトラブルはまずここに戻る。予算が使えない・決済できないはプロファイルが原因のことが多い</li></ol><p class="gui-tip">項目名は環境・バージョンで異なることがあります。迷ったら CJ20N のプロジェクトからプロファイルを逆引きし、どのプロファイルを使っているかを常に意識してください。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s07_2.svg" alt="OPSK の IMG 画面。コーディングマスク（特殊文字）ZETO- と説明の一覧を示す。" loading="lazy"><figcaption><b class="t">OPSK：コーディングマスクと WBS の採番ルール</b><span class="tx">OPSK</span><span class="scr">IMG：コーディングマスク（特殊文字）の編集</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 採番のルールが腹落ちすると以降の練習が速い（WBS の ID を自分で読めるようになる）</li></ol><p class="gui-tip">自システムでの確認：WBS の採番（編集マスク）はプロジェクトプロファイルと番号範囲の組み合わせで決まります。CJ20N で WBS を 1 件作り、実際の ID を見るのが最短です。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s07_3.svg" alt="SM30 のカスタマイジング画面。表/ビュー V_TCJ1（WBS 要素のプロジェクトタイプ）を開いて確認する。" loading="lazy"><figcaption><b class="t">SM30：V_TCJ1（WBS 要素のプロジェクトタイプ）</b><span class="tx">SM30</span><span class="scr">カスタマイジング：WBS 要素のプロジェクトタイプ（V_TCJ1）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> WBS 詳細に「請求要素」が出ないときは、このタイプの項目選択を疑う</li></ol><p class="gui-tip">自システムでの確認：プロジェクトタイプの値と説明は環境ごとに異なるため、行の値は省略しています。CJ20N の WBS 詳細で使われているタイプと突き合わせて確認してください。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c6"><span class="no">C6</span><h3>ユーザステータス（プロジェクト・WBS・ネットワーク）</h3><span class="tc">IMG / ステータスプロファイル</span></div>
+<dl class="kv"><dt>目的</dt><dd>「解放（REL）」「技術完了（TECO）」「ロック」など業務上の節目を制御する。予算/決済/請求の可否がステータスで変わることがある。</dd></dl>
+<ol class="steps">
+  <li>IMG：Project System &gt; Structures &gt; Operative Structures &gt; ユーザステータス（プロジェクト定義/WBS/ネットワーク）で<b>既存のステータスプロファイルを照会</b>する。</li>
+  <li>プロファイル（C5 で見たもの）から参照されているステータスプロファイルを特定し、<b>どのステータスが何を許可するか</b>（例：REL でないと実績を計上できない等）をメモする。</li>
+  <li>練習では標準のまま使う（変更は発展課題）。</li>
+</ol>
+
+
+
+
+<div class="box info"><b class="t">确认（自系统）</b><code>CJ20N</code> → プロジェクト → メニュー「編集」→「ステータス」→「解放」を実行し、WBS/ネットワークのステータスが変わることを確認（本番環境では行わない）。</div>
+<figure class="gui"><img src="assets/gui/config_s08_1.svg" alt="IMG のユーザステータス照会画面。ステータスプロファイルと標準ステータス（CRTD / REL / TECO / CLSD）の関係を示す。" loading="lazy"><figcaption><b class="t">ユーザステータス（ステータスプロファイル）の照会</b><span class="tx">SM30</span><span class="scr">IMG：ユーザステータス（ステータスプロファイル）の照会</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 予算・決済・請求の可否がステータスで変わる。プロファイルから参照先を特定して読む</li></ol><p class="gui-tip">本番環境ではステータス変更を行わないでください。練習では標準のまま使い、変更は発展課題とします。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s08_2.svg" alt="CJ20N のステータス変更画面。WBS 要素 ZETO-1000.1 を CRTD から REL（解放）に変更する。" loading="lazy"><figcaption><b class="t">CJ20N：ステータスの変更（解放 REL）</b><span class="tx">CJ20N</span><span class="scr">プロジェクトビルダ：ステータスの変更（解放）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 解放後に実績・確認が計上できるようになる。ここを忘れると CO11N や 261 が止まる</li></ol><p class="gui-tip">自システムでの確認：ステータスの名称・遷移はステータスプロファイル次第です。CJ20N の「ステータス」メニューに出る選択肢がこの環境の正解です。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c7"><span class="no">C7</span><h3>ネットワークタイプ・パラメータ・プロファイル</h3><span class="tc">IMG: Project System &gt; Networks</span></div>
+<ol class="steps">
+  <li>IMG：Project System &gt; Networks &gt; <b>ネットワークタイプの更新</b> → 既存タイプを確認（番号範囲・標準値・確認/原価の制御）。</li>
+  <li><b>ネットワークタイプのパラメータ指定</b>（標準値：作業区・制御キー・単位など）。</li>
+  <li><b>ネットワークプロファイルの更新</b> → 使用するプロファイルの既定値（プラント・制御キー等）を確認。</li>
+  <li><b>ネットワークの番号範囲</b>に空きがあることを確認（練習で採番するため）。</li>
+</ol>
+
+
+
+
+<div class="box info"><b class="t">确认（自系统）</b><code>CN21</code> でネットワークを 1 件作成（プロファイルを選択・活動 0010 を追加）→ 保存できること。作成後に <code>CN23</code> で表示。</div>
+<div class="box warn"><b class="t">Public Cloud では</b>ネットワークの利用範囲がスコープアイテム次第（6GD は WBS 単位の計画・実行が中心）。Cloud 学员请以 Test Script 为准。</div>
+<figure class="gui"><img src="assets/gui/config_s09_1.svg" alt="OPSC の IMG 画面。ネットワークタイプの番号範囲・標準値（パラメータ）・プロファイルを一覧で示す。" loading="lazy"><figcaption><b class="t">OPSC：ネットワークタイプの設定（番号範囲・標準値）</b><span class="tx">OPSC</span><span class="scr">IMG：ネットワークタイプの更新（番号範囲・パラメータ）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 番号範囲に空きが無いと CN21 の保存で採番エラーになる</li></ol><p class="gui-tip">Public Cloud ではネットワークの利用範囲がスコープアイテム次第です（6GD は WBS 単位の計画・実行が中心）。Cloud 受講者は Test Script を優先してください。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s09_2.svg" alt="CN21 のネットワーク登録画面。説明、WBS 要素 ZETO-1000.2、プラント 1000 を入力する。" loading="lazy"><figcaption><b class="t">CN21：ネットワークの登録（WBS ZETO-1000.2 に割当）</b><span class="tx">CN21</span><span class="scr">ネットワークの登録（プロファイルと WBS 割当）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 割当先は「製造」の勘定設定要素。ここを構造要素にすると指図・在庫の行き先にならない</li></ol><p class="gui-tip">自システムでの確認：保存後の採番結果（ネットワーク番号）を記録してください。CN23 で活動と作業区・日程を確認します。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c8"><span class="no">C8</span><h3>予算プロファイルと可用性管理</h3><span class="tc">CJ30 / CJ32 / CJBV / CJ31</span></div>
+<dl class="kv"><dt>目的</dt><dd>WBS 予算を入れて、発注や実績が予算を超えそうなときに警告/エラーを出す（可用性管理）。</dd></dl>
+<ol class="steps">
+  <li>C5 のプロジェクトプロファイルで<b>予算プロファイル</b>が割当たっているか確認（未割当なら予算機能が使えない）。</li>
+  <li>練習①でプロジェクトを作成後、<code>CJ30</code>（元予算の変更）で WBS に予算を投入（例：WBS <code>.1</code> に 5,000,000 JPY）。</li>
+  <li><code>CJ32</code>（予算の解放）で実行可能にする。予算が解放されないと購買・指図が止まることがある。</li>
+  <li><code>CJBV</code>（可用性管理の活性化）を実行し、予算超過時の挙動（警告/エラー）を体験する。<code>CJ31</code> で予算を照会。</li>
+  <li>（発展）<code>CJ34</code> 予算振替、<code>CJ37</code> 予算補足、<code>CJ35/CJ38</code> 予算返還。</li>
+</ol>
+
+
+
+
+<div class="box info"><b class="t">确认（自系统）</b><code>CJ31</code> で元予算・解放額・使用額（実績＋コミット）が見える。<code>CJI5</code> でコミットメント（発注残）を確認。</div>
+<figure class="gui"><img src="assets/gui/config_s10_1.svg" alt="CJ30 の画面。WBS 要素 ZETO-1000.1 に 5,000,000、ZETO-1000.2 に 3,200,000 JPY の元予算を投入する。" loading="lazy"><figcaption><b class="t">CJ30：元予算の変更（WBS ごとに投入）</b><span class="tx">CJ30</span><span class="scr">元予算の変更：WBS 要素に予算を投入</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 予算の合計は受注金額 5,000,000 と計画原価 3,200,000。計画と予算を一致させておくと予実が読める</li></ol><p class="gui-tip">自システムでの確認：予算プロファイルがプロファイルに割当たっていないと、そもそも予算を投入できません（C5）。「Budgeted」でロックされた場合はステータス系の機能で解除が必要なことがあります。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s10_2.svg" alt="CJ32 の画面。プロジェクト定義 ZETO-1000、会計年度 2026 の予算を解放する。" loading="lazy"><figcaption><b class="t">CJ32：予算の解放</b><span class="tx">CJ32</span><span class="scr">予算の解放：実行可能にする</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 解放されていないと購買・製造指図がブロックされることがある（可用性管理の対象になる）</li></ol><p class="gui-tip">自システムでの確認：CJ31 で「解放額」が 0 のままだと未解放です。解放後に CJBV で可用性管理を活性化すると、超過時の警告/エラーを体験できます。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s10_3.svg" alt="CJ31 の予算照会画面。WBS 要素ごとに元予算・解放額・使用額・利用可能を示す。" loading="lazy"><figcaption><b class="t">CJ31：元予算の照会（予算・解放額・使用額）</b><span class="tx">CJ31</span><span class="scr">元予算の照会：予算・解放額・使用額</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 使用額は「実績＋コミットメント」。発注しただけでも予算を食う点が ETO の予算管理の勘所</li><li><b>2</b> 実績・在庫が動くとここが増える（練習③・④の確認ポイント）</li></ol><p class="gui-tip">自システムでの確認：列見出しは画面の並びに合わせています。名称は環境により異なる場合があります。コミットメントは CJI5 で明細を確認できます。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s10_4.svg" alt="CJBV の画面。プロジェクト定義 ZETO-1000 で可用性管理をオンにし、許容範囲に 90%（警告）と 100%（エラー）を設定する。" loading="lazy"><figcaption><b class="t">CJBV：可用性管理の活性化と許容範囲</b><span class="tx">CJBV</span><span class="scr">可用性管理の活性化：予算超過時の挙動</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 許容範囲は業務要件。100% でエラーにするか警告で止めるかを業務と合意してから設定する</li></ol><p class="gui-tip">自システムでの確認：予算超過の挙動は予算プロファイルの許容範囲に依存します。練習⑤ の発展 3 で実際に超過させて、警告かエラーかとメッセージ番号を記録します。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c9"><span class="no">C9</span><h3>評価付プロジェクト在庫（最重要）</h3><span class="tc">CJ20N（プロジェクト定義）</span></div>
+<dl class="kv"><dt>目的</dt><dd>プロジェクト在庫 Q を<b>数量＋金額</b>で持たせる。これが MTO（E）との決定的な違い。</dd></dl>
+<ol class="steps">
+  <li><code>CJ20N</code> → 練習① で作るプロジェクト定義を開く → 「<b>プロジェクト在庫</b>」セクションの <b>評価付プロジェクト在庫（Valuated project stock）</b> を ON にする。</li>
+  <li>WBS のフラグを整理：<br>
+      ・<code>.1 設計・調達</code> → <b>請求要素</b>（請求の宛先）<br>
+      ・<code>.2 製造</code> → <b>勘定設定要素</b>（指図・発注・在庫の行き先）<br>
+      ・<code>.3 据付・試運転</code> → 勘定設定要素</li>
+  <li>品目側の前提（C2）と合わせて <b>4 点セット</b>が揃っていることを確認する。</li>
+</ol>
+
+
+
+
+<div class="box info"><b class="t">确认（自系统）</b>
+① <code>CJ20N</code>/<code>CJ03</code> で評価付フラグが見える ② <code>MM03</code> MRP4 個別所要量 ③ 戦略グループ→所要量クラスの評価区分 M ④ 受注明細の WBS。<br>
+<b>4 点が揃うまで進まない</b>のが、この教材で唯一の「絶対ルール」。</div>
+<div class="box warn"><b class="t">よくある失敗</b>評価付フラグを後から ON にすると、既存在庫の扱いで不整合が起きる。練習では<b>プロジェクトを作った直後に設定</b>する。</div>
+<figure class="gui"><img src="assets/gui/config_s11_1.svg" alt="CJ20N のプロジェクト定義詳細。プロジェクト在庫のセクションで「評価付プロジェクト在庫」をチェックする。" loading="lazy"><figcaption><b class="t">CJ20N：プロジェクト定義の評価付プロジェクト在庫</b><span class="tx">CJ20N</span><span class="scr">プロジェクトビルダ：プロジェクト定義（評価付プロジェクト在庫）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> ここが MTO（受注在庫 E）との決定的な違い。数量だけでなく金額も持たせるフラグ</li><li><b>2</b> プロジェクト作成直後に設定する。後から ON にすると既存在庫の扱いで不整合が起きる</li></ol><p class="gui-tip">自システムでの確認：① CJ20N / CJ03 で評価付フラグが見える ② MM03 の MRP4 個別所要量 ③ 戦略グループ → 所要量クラスの評価区分 M ④ 受注明細の WBS。この 4 点が揃うまで先へ進まないのが本教材の絶対ルールです。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s11_2.svg" alt="CJ20N のプロジェクト構造ツリー。プロジェクト定義 ZETO-1000 の下に WBS 要素 .1 .2 .3、ネットワーク 3000001 と活動が並び、右欄にフラグが表示される。" loading="lazy"><figcaption><b class="t">CJ20N：プロジェクト構造と WBS フラグ</b><span class="tx">CJ20N</span><span class="scr">プロジェクトビルダ：構造と WBS のフラグ</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 請求要素は 1 つの WBS にだけ立てる（受注明細がここを指す＝収益の宛先）</li><li><b>2</b> 製造に使う WBS は勘定設定要素。構造要素だけでは指図/発注/在庫をぶら下げられない</li></ol><p class="gui-tip">自システムでの確認：WBS のフラグ名称（請求要素 / 構造要素 / 勘定設定要素 / 計画要素 / 統計）は詳細画面のタブ構成により表示位置が異なります。ここが ETO の骨格です。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c10"><span class="no">C10</span><h3>受注明細の WBS 割当（SD × PS 接続点）</h3><span class="tc">VOV7 / VOV4 / VA02</span></div>
+<dl class="kv"><dt>目的</dt><dd>受注明細に WBS を割り当て、需要を<b>プロジェクト（WBS）に帰属</b>させる。ここが ETO の SD-PS 接続点。</dd></dl>
+<ol class="steps">
+  <li>まず<b>実測</b>：<code>VA01</code>（または <code>VA02</code>）で明細を作り、明細詳細に「<b>WBS 要素</b>」項目が出るか、入力できるかを確認する。<br>
+      ・項目が出ない/入力できない → その明細カテゴリは WBS 割当を許していない。</li>
+  <li>明細カテゴリを確認：<code>VOV7</code> で該当の明細カテゴリを開き、<b>勘定設定・請求関連（請求計画の許可を含む）</b>を読み取る。<code>VOV4</code> でどのキーで決まるかを確認。</li>
+  <li>標準で使える明細カテゴリが無い/要件に合わない場合：<b>コピーして <code>ZETO</code>（例）明細カテゴリを作成</b>し、WBS 割当・請求計画・請求関連を許可する。VOV4 に決定キー（伝票タイプ <code>OR</code> + 品目カテゴリグループ）を追加。</li>
+  <li>請求要素（<code>.1</code>）を明細の WBS に指定して保存する。</li>
+</ol>
+
+
+
+
+<div class="box info"><b class="t">确认（自系统）</b>
+<code>VA03</code> → 明細 → <b>WBS 要素</b>に入力値がある、所要量タイプが Q 系（Cloud は <code>E21</code>）になっている。<br>
+参考：SAP Help（Cloud）は「受注の場合、WBS 要素を <code>CBAO</code>（マイルストーン請求計画）などの明細カテゴリの明細に割り当てることができる」と説明している。</div>
+<div class="box warn"><b class="t">ここが ETO 最大の落とし穴</b>「明細に WBS が入らない」→ 明細カテゴリ（VOV7/VOV4）。「請求が WBS に出ない」→ WBS が請求要素でない。「在庫が Q にならない」→ C2/C9 の前提。3 つを切り分けて考える。</div>
+<figure class="gui"><img src="assets/gui/config_s12_1.svg" alt="VA02 の明細詳細画面。WBS 要素に ZETO-1000.1 を入力し、明細カテゴリと所要量タイプを確認する。" loading="lazy"><figcaption><b class="t">VA02：受注明細の WBS 要素（ここが ETO の肝）</b><span class="tx">VA02</span><span class="scr">受注伝票 変更：明細の WBS 要素</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> ここに WBS が入ると需要がプロジェクト（WBS）に帰属し、所要量タイプが Q 系になる</li><li><b>2</b> 項目が出ない/入力できない＝その明細カテゴリが WBS 割当を許していない（VOV7 を確認）</li></ol><p class="gui-tip">自システムでの確認：所要量タイプ（Q を示す値）と、WBS を割当てられる明細カテゴリは環境ごとに異なります。VA03 の明細と VOV7 / VOV4 で実測してください。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s12_2.svg" alt="VOV7 の明細カテゴリ設定画面。勘定設定・請求関連・請求計画の許可などを確認する。" loading="lazy"><figcaption><b class="t">VOV7：明細カテゴリ（WBS 割当・請求関連の許可）</b><span class="tx">VOV7</span><span class="scr">IMG：明細カテゴリの設定（WBS 割当と請求関連）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 「明細に WBS が入らない」ときは、まずここ（VOV7）と決定キー（VOV4）を疑う</li></ol><p class="gui-tip">Public Cloud では明細カテゴリを新規作成できません。交付済みの明細カテゴリ（例 CBAO＝マイルストーン請求計画）から選びます。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s12_3.svg" alt="VA03 の明細照会画面。明細カテゴリ、WBS 要素 ZETO-1000.1、所要量タイプ、プラントを示す。" loading="lazy"><figcaption><b class="t">VA03：明細の WBS 要素と所要量タイプ</b><span class="tx">VA03</span><span class="scr">受注伝票 照会：明細の WBS と所要量タイプ</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 所要量タイプが Q 系なら需要はプロジェクト在庫として流れる。KE（MTO 用）なら MRP3 の戦略グループを疑う</li></ol><p class="gui-tip">自システムでの確認：所要量タイプの値は環境ごとに異なります（S/4HANA Cloud 6GD は E21 特別在庫 Q）。判定は OVZG の所要量クラスと突き合わせて行います。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c11"><span class="no">C11</span><h3>請求計画／出来高請求の前提</h3><span class="tc">VA02（請求計画）/ VF01 / VTFL</span></div>
+<pre class="vals">請求タイプ           : F2（標準）
+出荷→請求コピー制御  : VTFL（有効であること）
+請求計画            : 受注明細（またはヘッダ）で「請求計画」→ 日付ベース 2 行：
+                      ・1 行目：契約締結時 30%（1,500,000 JPY）
+                      ・2 行目：完成・検収時 70%（3,500,000 JPY）
+出来高請求を使う場合 : 請求計画タイプ（出来高）＋マイルストーン（ネットワーク活動/マイルストーン）と請求の紐付け</pre>
+<ol class="steps">
+  <li><code>VA02</code> → 明細 → メニュー「明細」→「<b>請求計画</b>」→ 上記 2 行を登録（日付・金額 or パーセント）。</li>
+  <li>保存後、<code>VF01</code>（請求タイプ <code>F2</code>、納入日付/請求日付範囲）で請求できれば前提 OK。<b>請求計画に載っていない日付では請求できない</b>のがポイント。</li>
+  <li>（出来高の場合）ネットワーク活動のマイルストーンと請求計画の紐付けを確認（<code>CN21/CN22</code> のマイルストーン）。</li>
+</ol>
+
+
+
+
+<div class="box warn"><b class="t">よくあるエラー</b>
+「Item 000010 can not be invoiced according to the billing plan」＝請求計画と請求の条件が噛み合っていない（請求関連の設定/請求計画の日付・金額）。SAP KBA 2763512 が参考になる。</div>
+<figure class="gui"><img src="assets/gui/config_s13_1.svg" alt="VA02 の請求計画画面。請求日付 12.09.2026 に 1,500,000 JPY、11.03.2027 に 3,500,000 JPY の 2 行を登録する。" loading="lazy"><figcaption><b class="t">VA02：請求計画（30% / 70% の 2 行）</b><span class="tx">VA02</span><span class="scr">請求計画の登録（日付ベース 2 行：30% / 70%）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 請求計画は「いつ請求できるか」の一覧。ここに無い日付では請求できない（KBA 2763512）</li></ol><p class="gui-tip">自システムでの確認：請求計画を登録するには明細カテゴリの請求関連が有効である必要があります（VOV7）。請求計画タイプに「出来高」を使う場合はマイルストーンと紐付けます。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s13_2.svg" alt="VF01 の請求登録画面。請求タイプ F2、請求日付 12.09.2026 で請求計画の行 1（1,500,000 JPY）を請求する。" loading="lazy"><figcaption><b class="t">VF01：請求（請求計画の行 1 で 30% を請求）</b><span class="tx">VF01</span><span class="scr">請求伝票の登録（請求タイプ F2・請求計画の行）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 請求日付が請求計画の行と一致していることが条件。VF01 はまずここで止まる</li></ol><p class="gui-tip">自システムでの確認：出荷ベースで一括請求すると 5,000,000、請求計画ベースだと該当行の金額になります。どちらで運用するかを先に決めてください。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s13_3.svg" alt="VF01 の画面で、請求計画に無い日付を指定したために請求できないエラーが表示された状態。" loading="lazy"><figcaption><b class="t">VF01：請求計画外の日付で請求したときのエラー</b><span class="tx">VF01</span><span class="scr">請求伝票の登録：請求計画外の日付（エラー例）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 請求計画の日付・金額と、明細カテゴリの請求関連が噛み合っていないと出る（KBA 2763512）</li></ol><p class="gui-tip">対処：VA03 で請求計画の日付・金額を確認し、請求日付を合わせるか請求計画に行を追加します。明細カテゴリの請求関連（VOV7）も併せて確認します。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c12"><span class="no">C12</span><h3>決済の前提（WBS・指図・受注）</h3><span class="tc">CJB1 / CJB2 / CJ88 / CJ8G / KO88 / VA88</span></div>
+<pre class="vals">WBS の決済ルール    : CJB2（個別）/ CJB1（一括）— 決済受信者（例：会社コードの損益勘定）
+指図の決済          : KO88（個別）/ CO88（一括）。MTO/ETO では受注・WBS 側へ
+受注の決済          : VA88（得意先受注の決済）
+WBS の決済          : CJ88（個別）/ CJ8G（一括）
+決済プロファイル     : プロジェクトプロファイル経由で既定が決まる（C5 で確認）</pre>
+<ol class="steps">
+  <li><code>CJB2</code> で WBS の決済ルールが存在するか確認（無ければ作成）。</li>
+  <li>練習⑤ で <code>CJ88</code>（対象：WBS、期間、決済タイプ）を実行し、ログと <code>CJIC</code>（決済明細）を確認する。</li>
+  <li>指図は <code>KO88</code>、受注は <code>VA88</code> であることを整理して覚える（SAP Help「S/4HANA information for Cost Object Controlling」に決済トランザクションの一覧がある）。</li>
+</ol>
+
+
+
+
+<div class="box info"><b class="t">确认（自系统）</b>決済を実行すると、WBS に集まった原価・収益が決済受信者へ流れ、<code>CJI3</code> の残高が整理される。</div>
+<figure class="gui"><img src="assets/gui/config_s14_1.svg" alt="CJB2 の決済ルール設定画面。WBS 要素の決済受信者と決済タイプ（FUL）を示す。" loading="lazy"><figcaption><b class="t">CJB2：WBS の決済ルール（決済受信者）</b><span class="tx">CJB2</span><span class="scr">IMG：WBS の決済ルール（決済受信者）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 決済ルールが無い＝月末に原価が WBS へ確定できない。プロファイルの既定と突き合わせる</li></ol><p class="gui-tip">「指図は KO88、受注は VA88、WBS は CJ88（一括は CO88 / CJ8G）」と整理して覚えます。決済タイプの値は環境で異なる場合があります。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s14_2.svg" alt="CJ88 の決済実行画面。プロジェクト定義 ZETO-1000、会計年度 2026、期間 1-12、決済タイプ FUL を指定する。" loading="lazy"><figcaption><b class="t">CJ88：WBS の決済実行</b><span class="tx">CJ88</span><span class="scr">WBS の決済：決済を実行する</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 実行後は CJIC（決済明細）と CJI3 を見て、何がどこへ流れたかを確認する</li></ol><p class="gui-tip">自システムでの確認：テスト実行で先に結果を見る癖をつけてください。決済後に CJI3 の残高が整理され、決済列がマイナス表示になることがあります（正常）。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s14_3.svg" alt="CJIC の決済明細照会画面。決済受信者・決済タイプ・金額を示す。" loading="lazy"><figcaption><b class="t">CJIC：決済明細（決済の行き先）</b><span class="tx">CJIC</span><span class="scr">決済明細の照会（決済で何がどこへ流れたか）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 決済で WBS の原価・収益が外へ出る。CJI3 の「決済」列と突き合わせて動きを説明できるようにする</li></ol><p class="gui-tip">自システムでの確認：金額は決済対象（WBS に集まった原価・収益）と決済ルール次第で変わります。CJID（一括の決済明細）も同じ見方です。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c13"><span class="no">C13</span><h3>結果分析と収益認識の前提</h3><span class="tc">KKA2 / KKAJ / KKAX / KKA0P</span></div>
+<ol class="steps">
+  <li>プロジェクト/WBS に割当てられる<b>結果分析キー</b>と<b>収益認識キー</b>（工事進行基準/出来高/完了基準 など）を確認し、どれが使われているかを記録する。</li>
+  <li><code>KKA2</code>（個別）または <code>KKAJ</code>（一括）で結果分析を実行し、<b>WIP</b> と<b>収益</b>が計算されることを確認。<code>KKAX</code> で WIP を照会。</li>
+  <li>期間のカットオフ（結果分析の対象期間）を確認（<code>KKA0P</code> 系）。</li>
+  <li>（発展）計画バージョン、原価計算シート、`CJA2`（受注高/出来高）も確認すると、ETO の損益の全体像がつながる。</li>
+</ol>
+
+
+
+
+<div class="box info"><b class="t">确认（自系统）</b>結果分析後に <code>KKAX</code>（WIP 照会）と <code>CJI3</code> を見て、「原価・収益・WIP の 3 つがどこに出ているか」を自分の言葉で説明する。</div>
+<div class="box warn"><b class="t">深度声明</b>収益認識の会計ルール（IFRS15 / 工事進行基準の計算、複数履行義務）は独立した専門領域です。本站只要求「跑得动 + 说得清流向」。</div>
+<figure class="gui"><img src="assets/gui/config_s15_1.svg" alt="KKA2 の結果分析実行画面。WBS 要素 ZETO-1000.2、会計年度 2026、期間 1-12 を指定して実行する。" loading="lazy"><figcaption><b class="t">KKA2：結果分析の実行</b><span class="tx">KKA2</span><span class="scr">結果分析の実行（WIP と認識収益の計算）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 結果分析キー／収益認識キー（工事進行基準・出来高・完了基準など）が何を使うかを最初に記録する</li></ol><p class="gui-tip">収益認識の会計ルール（IFRS15 など）は独立領域です。本站は「進捗 → 結果分析 → WIP/収益がどう動くか」を確認するところまで。一括は KKAJ、対象期間の管理は KKA0P 系です。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s15_2.svg" alt="KKAX の WIP 照会画面。WBS 要素 ZETO-1000.2 の WIP 金額を示す。" loading="lazy"><figcaption><b class="t">KKAX：WIP の照会（進捗と実績の差）</b><span class="tx">KKAX</span><span class="scr">WIP の照会（仕掛品の金額）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 例：実績原価 3,000,000 / 計画原価 3,200,000 / 進捗 60% → 認識収益 3,000,000 で WIP 0。進捗 40% なら WIP 1,000,000</li></ol><p class="gui-tip">進捗の決定は CNE1（個別）/ CNE2（一括）、活動の実績は CN25 / CN27 が材料になります。ここで「原価・収益・WIP の 3 つがどこに出ているか」を自分の言葉で説明できるようにしてください。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c14"><span class="no">C14</span><h3>MRP 実行と勘定設定の伝搬</h3><span class="tc">MD50 / MD51 / MD01N / MD04</span></div>
+<pre class="vals">受注 MRP（受注単位）     : MD50
+プロジェクト MRP（案件単位）: MD51（プロジェクト定義/WBS/ネットワークを指定）
+全体 MRP                : MD01N（MRP Live。MRP リストは作られない → MD04 で確認）
+見るべき点              : 計画手配の「勘定設定 = WBS」と「在庫区分 = Q（プロジェクト在庫）」</pre>
+<ol class="steps">
+  <li>練習② で <code>MD51</code> を実行し、<code>MD04</code>（品目/WBS 視点）で計画手配を確認する。</li>
+  <li>計画手配の明細を開き、<b>勘定設定（WBS 要素）</b>と<b>在庫区分</b>を確認する。ここが空/自由在庫なら C9・C10・C2 を疑う。</li>
+  <li><code>CO40</code>（個別変換）/ <code>CO08</code>（受注紐づき登録）で製造指図を作成し、指図の勘定設定が WBS を引き継いでいることを確認する。</li>
+</ol>
+
+
+
+
+<div class="box info"><b class="t">确认（自系统）</b><code>MD04</code> の計画手配 →「明細」、<code>CO03</code> のヘッダ/勘定設定。表なら <code>PLAF</code>/<code>AUFK-PS_PSP_PNR</code> を <code>SE16N</code> で確認。</div>
+<figure class="gui"><img src="assets/gui/config_s16_1.svg" alt="MD51 の画面。プロジェクト定義 ZETO-1000、処理キー NETCH、計画モード 1 で MRP を実行する。" loading="lazy"><figcaption><b class="t">MD51：プロジェクト MRP の実行</b><span class="tx">MD51</span><span class="scr">プロジェクト MRP の実行（MD51）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 計画手配の「勘定設定＝WBS」と「在庫区分＝Q」がこの実行の成果物。MD04 で確認する</li></ol><p class="gui-tip">入口の違いを意識する：MD50＝受注単位、MD51＝プロジェクト単位、MD01N＝全体 MRP（MRP Live。MRP リストを作らないため MD04 で確認。KBA 2640393 / Note 1914010）。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s16_2.svg" alt="MD04 の在庫/所要量リスト。得意先所要量が WBS ZETO-1000.1 付きで −1 PC、計画手配が +1 PC で勘定設定 WBS ZETO-1000.2・在庫区分 Q であることを示す。" loading="lazy"><figcaption><b class="t">MD04：計画手配の勘定設定と在庫区分</b><span class="tx">MD04</span><span class="scr">在庫/所要量リスト：計画手配の勘定設定と在庫区分</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> ここが空／自由在庫なら C2（個別所要量）・C9（評価付在庫）・C10（受注明細の WBS）を疑う</li><li><b>2</b> 得意先所要量に WBS が付いている＝需要がプロジェクトに帰属している証拠</li></ol><p class="gui-tip">列見出しは画面の並びに合わせています（名称は環境により異なる場合があります）。表で確認するなら PLAF（計画手配）を SE16N で参照します。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s16_3.svg" alt="MD04 から開いた計画手配の明細画面。勘定設定が WBS ZETO-1000.2、在庫区分がプロジェクト在庫 Q であることを示す。" loading="lazy"><figcaption><b class="t">計画手配の明細：勘定設定と在庫区分</b><span class="tx">MD04</span><span class="scr">計画手配の明細：勘定設定と在庫区分</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 在庫区分が自由在庫／空なら Q が成立していない。4 点セット（C2・C9・C10）を点検してから指図に進む</li></ol><p class="gui-tip">計画手配 → 製造指図の変換（CO40）や、受注紐づけの指図登録（CO08）でも、この勘定設定と在庫区分が引き継がれることが前提です。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c15"><span class="no">C15</span><h3>在庫・移動タイプ・自動転記</h3><span class="tc">MIGO / VL02N / OBYC</span></div>
+<pre class="vals">261 : 指図/ネットワークへの部品出庫（勘定設定 = WBS → 原価は WBS へ）
+101 : 指図への入庫 → プロジェクト在庫 Q（評価付なら金額も計上）
+601 : 出荷の出庫確認（在庫区分 Q から）
+確認 : MMBE / MB52 の「プロジェクト在庫」欄、SE16N: MSPR（SOBKZ = Q、WBS 付き）、MATDOC（移動タイプ）
+会計 : 在庫・消費・差異の勘定は OBYC（BSX / GBB 系）。決済後に FI へ</pre>
+<ol class="steps">
+  <li>練習③ で 261 → 101 を実行し、<code>MMBE</code> の<b>プロジェクト在庫</b>が 1 式になることを確認する。</li>
+  <li><code>SE16N</code> で <code>MSPR</code> を開き、<code>SOBKZ = Q</code> と WBS が記録されていることを確認する（<b>「Q は表に書かれている」ことを自分の目で見る</b>）。</li>
+  <li>（参考）<code>MSKA</code> は受注在庫 E の表。<b>MTO は MSKA、ETO は MSPR</b> と覚える。</li>
+</ol>
+
+
+
+
+<div class="box info"><b class="t">确认（自系统）</b><code>MMBE</code> に「プロジェクト在庫」と「自由在庫 0」、<code>MSPR</code> に Q のレコード。</div>
+<figure class="gui"><img src="assets/gui/config_s17_1.svg" alt="ETO で使う移動タイプの一覧。261（部品出庫）・101（指図への入庫）・601（出荷の出庫確認）・561（初期在庫）の意味を示す。" loading="lazy"><figcaption><b class="t">移動タイプの整理（261 / 101 / 601 / 561）</b><span class="tx">MIGO</span><span class="scr">移動タイプの整理（261 / 101 / 601 / 561）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> Q（プロジェクト在庫）が成立していると、101 の入庫先が自動的に特別在庫 Q になる</li></ol><p class="gui-tip">会計側では在庫・消費・差異の勘定が OBYC（BSX / GBB 系）で決まります。実機では CL20 / OMWD 系の設定と突き合わせて確認してください。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s17_2.svg" alt="SE16N の MSPR 照会画面。SOBKZ が Q、WBS 要素が ZETO-1000.2 のレコードを示す。" loading="lazy"><figcaption><b class="t">SE16N：MSPR（プロジェクト在庫の数量・金額テーブル）</b><span class="tx">SE16N</span><span class="scr">表の確認：MSPR（プロジェクト在庫の数量・金額）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> MTO は MSKA（受注在庫 E）、ETO は MSPR（プロジェクト在庫 Q）。表で確認する癖をつける</li></ol><p class="gui-tip">自システムでの確認：数量・金額の項目名は表の項目（F1）で確認してください。移動の証跡は MATDOC（旧 MSEG）で移動タイプを追えます。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s17_3.svg" alt="MMBE の在庫概況画面。プロジェクト在庫（特別在庫 Q / WBS ZETO-1000.2）が 1 PC、自由在庫が 0 であることを示す。" loading="lazy"><figcaption><b class="t">MMBE：プロジェクト在庫と自由在庫</b><span class="tx">MMBE</span><span class="scr">在庫概況：プロジェクト在庫 Q と自由在庫</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 「Q に 1 式、自由在庫 0」が ETO の合格線。MTO の受注在庫 E と同じ意味を持つ</li></ol><p class="gui-tip">MB52 でも「プロジェクト在庫」欄に数量が出ます。評価付なら金額欄（または MB5B 在庫推移）で金額も確認してください。</p></figure>
+
+
+
+
+
+
+
+
+<h2 id="cloud">C16 Public Cloud（S/4HANA Cloud Public Edition）差异对照</h2>
+<table class="tbl wide">
+<tr><th>本站 STEP</th><th>On-Premise（主线）</th><th>Public Cloud 的做法 / 限制</th></tr>
+<tr><td>整体交付</td><td>PS + SD + PP + CO の設定を自分で作る</td><td><b>スコープアイテム <code>6GD</code></b>（Engineer Products and Systems – Project with Production）で交付。<b>Test Script が唯一の手顺書</b>になる</td></tr>
+<tr><td>C2 品目マスタ</td><td>戦略グループを自システムで特定して設定</td><td>6GD の Master Data 手順に「<b>Strategy Group: E2</b>」と明記。<b>E2 は 6GD 活性後に利用可能</b>（KBA 3623492）。所要量タイプは <b>E21</b>（特別在庫 Q）。プロジェクト在庫シナリオでは別途「Event-Based Production Cost Posting (3F0)」のマスタデータスクリプトが必要</td></tr>
+<tr><td>C5/C6/C7 PS 設定</td><td><code>OPSA</code>・ネットワークタイプ等を自由に設定</td><td>原則 SSCUI の範囲のみ。ネットワークの利用範囲はスコープアイテム次第（6GD は WBS 単位の計画・実行が中心）</td></tr>
+<tr><td>C10 明細カテゴリ</td><td><code>VOV7/VOV4</code> で自作可</td><td>新規作成は不可。<b>交付済みの明細カテゴリ</b>（例 <code>CBAO</code>＝マイルストーン請求計画）から選ぶ</td></tr>
+<tr><td>C11 請求</td><td>請求計画（日付/出来高）＋ <code>VF01</code></td><td>Fiori の請求計画アプリ＋請求アプリ。イベントベースの収益認識が前提のシナリオあり</td></tr>
+<tr><td>C12/C13 決済・結果分析</td><td><code>CJ88</code>・<code>KKA2</code> 系</td><td>Cloud は<b>イベントベース</b>の原価転記・収益認識（3F0）が中心。アプリ名が異なる</td></tr>
+<tr><td>C15 在庫</td><td><code>MIGO</code> で 261/101、<code>VL02N</code> で 601</td><td>Fiori アプリ（在庫移動の転記・出荷の変更）。<b>プロジェクト在庫 Q の出荷で PGI できない</b>既知問題あり → KBA 3623492（戦略グループ E2・6GD の活性状況を確認）</td></tr>
+<tr><td>補足</td><td>—</td><td>Cloud では「売上から BOM を展開したい」要件に対し <b>E2 を使わない</b>選択肢もある（受注設計×完成品受注の組み合わせはスコープ要件次第）。必ず Test Script と業務要件で判断する</td></tr>
+</table>
+<div class="box warn"><b class="t">Cloud 学员への案内</b>
+Cloud では自分で <code>ZETO</code> プロファイルや明細カテゴリを作れません。<b>本教材は「機制を理解する」ために使い、実機は 6GD の Test Script で練習</b>してください。差異表の各欄が、Cloud 顾问必须能答出来的对照点です。</div>
+
+<h2 id="done">配置完了チェックリスト</h2>
+<div class="box ok"><b class="t">配置验收（客观证据）</b>
+<ul class="check">
+  <li>C0 <code>CJ20N</code> でプロジェクト作成と WBS 採番ができる。</li>
+  <li>C1 部品 RM01 100 PC / RM02 500 PC が <code>MMBE</code> にある。</li>
+  <li>C2 <code>MM03</code>：販売組織2 品目カテゴリグループ／MRP1 PD・EX・E／<b>MRP3 戦略グループ</b>／<b>MRP4 個別所要量のみ</b>。</li>
+  <li>C2 <code>OVZG</code> で、その戦略グループが指す所要量クラスの<b>評価区分</b>を確認した（M 系か）。</li>
+  <li>C3 <code>CS03</code> BOM（RM01×2・RM02×8）／<code>CA03</code> 工程 0010。</li>
+  <li>C4 <code>VK13</code> PR00 = 5,000,000 JPY（得意先 1000 × ZETO-FG01）。</li>
+  <li>C5 使用するプロジェクトプロファイル（例 <code>ZETO01</code>）と、その番号範囲・予算プロファイル・決済パラメータを説明できる。</li>
+  <li>C6 ステータスプロファイルと「解放」の意味を説明できる。</li>
+  <li>C7 <code>CN21</code> でネットワークと活動を作成できる（番号範囲に空き）。</li>
+  <li>C8 <code>CJ30</code> 予算投入 → <code>CJ32</code> 解放 → <code>CJ31</code> で確認。可用性管理 <code>CJBV</code> の挙動を理解。</li>
+  <li>C9 プロジェクト定義の<b>評価付プロジェクト在庫</b>が ON、WBS <code>.1</code> が請求要素、<code>.2</code> が勘定設定要素。</li>
+  <li>C10 受注明細に WBS を入力でき、所要量タイプが Q 系であることを実測で確認（どちらの明細カテゴリを使うか記録）。</li>
+  <li>C11 請求計画（30%/70%）を登録し、<code>VF01</code> で請求できる。</li>
+  <li>C12 WBS の決済ルールを確認（<code>CJB2</code>）。<code>CJ88</code>/<code>KO88</code>/<code>VA88</code> の役割差を説明できる。</li>
+  <li>C13 結果分析キー/収益認識キーを確認し、<code>KKA2</code>→<code>KKAX</code> の流れを説明できる。</li>
+  <li>C14 <code>MD51</code> 実行後、計画手配の勘定設定 = WBS・在庫区分 = Q を確認した。</li>
+  <li>C15 <code>MMBE</code> のプロジェクト在庫と <code>SE16N: MSPR</code>（SOBKZ = Q）を確認した。</li>
+  <li>すべての変更がカスタマイジング依頼に入っており、ロールバック可能。</li>
+</ul></div>
+
+
+
+
+<div class="box info"><b class="t">下一步</b> → <a href="handson-1.html">练习① 项目（WBS）与受注</a></div>
+
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>受注設計生産（ETO）实战训练站</h5><p>配置手顺 C0〜C16：品目マスタ → PS プロファイル → 予算 → 評価付プロジェクト在庫 → SD 接続 → 決済/結果分析 → Cloud 对照。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 項目と受注</a><br><a href="handson-2.html">② 計画・MRP</a><br><a href="handson-3.html">③ 実行・入庫</a><br><a href="handson-4.html">④ 出荷・請求</a><br><a href="handson-5.html">⑤ 発展・故障</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="instructor.html">讲师版</a><br><a href="worksheet.html">学员版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

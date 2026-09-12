@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自测 30 题 · S/4HANA 中文实训站</title>
+<meta name="description" content="S/4HANA 中文实训站自测：30 题自动评分测验，覆盖 T-code、后台路径、组织结构、自动记账、生产与销售链条与排错。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/s4cn.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">S4</span><span class="txt">中文实训站</span></a>
+    <nav class="main">
+      <a href="index.html">首页</a>
+      <a href="prep.html">准备</a>
+      <a href="fi.html">FI</a>
+      <a href="co.html">CO</a>
+      <a href="mm.html">MM</a>
+      <a href="pp.html">PP</a>
+      <a href="sd.html">SD</a>
+      <a href="tcode.html">T-code</a>
+      <a href="issues.html">排错</a>
+      <a href="tasks.html">索引</a>
+      <a href="instructor.html">讲师</a>
+      <a href="worksheet.html">学员</a>
+      <a class="active" href="quiz.html">自测</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page"><article>
+<p class="breadcrumb"><a href="index.html">首页</a> / <span>自测</span></p>
+<h1>自测 30 题（自动评分，75% 为合格）</h1>
+<p>前 12 题来自教材文档 <code>S4.docx</code> 里「任务 ↔ T-code」的真实对应（点题号里的任务名可以看到该任务的手顺与画面），
+后 18 题覆盖组织结构、字段控制、自动记账、分配/分摊、生产与销售链条、以及原文档记录的排错处理。
+点选项立刻判分并显示解说；一题只能答一次，可以用「全部重做」重来。</p>
+<div class="box info"><b class="t">评分</b>
+30 题：75%（23 题）合格，90%（27 题）以上优秀。错题请回到对应模块的手顺页重做一遍，再到「排忧与踩坑」页核对报错处理。</div>
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">CO</span><span class="tag">T-code</span></div>
+  <h4>1. 教材文档《S4.docx》中，「<a href="co.html#t06">建立次级成本要素</a>」这一步出现的是哪个 T-code？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>MD61</code></div><div class="opt" data-key="B"><code>VA21</code></div><div class="opt" data-key="C"><code>KA06</code></div><div class="opt" data-key="D"><code>KA01</code></div></div>
+  <div class="explain">原文档在该任务的正文里出现 <code>KA06</code>（该任务所属模块：CO，共 9 张实机画面）。其余三项出现在别的模块的任务里，可到 <a href="tcode.html">T-code 速查</a> 反查。</div>
+</div>
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">PP</span><span class="tag">T-code</span></div>
+  <h4>2. 教材文档《S4.docx》中，「<a href="pp.html#t25">发布价格</a>」这一步出现的是哪个 T-code？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>CS15</code></div><div class="opt" data-key="B"><code>MRBR</code></div><div class="opt" data-key="C"><code>KO04</code></div><div class="opt" data-key="D"><code>CK24</code></div></div>
+  <div class="explain">原文档在该任务的正文里出现 <code>CK24</code>（该任务所属模块：PP，共 2 张实机画面）。其余三项出现在别的模块的任务里，可到 <a href="tcode.html">T-code 速查</a> 反查。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">CO</span><span class="tag">T-code</span></div>
+  <h4>3. 教材文档《S4.docx》中，「<a href="co.html#t05">新建初级成本要素</a>」这一步出现的是哪个 T-code？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>ME51N</code></div><div class="opt" data-key="B"><code>KA01</code></div><div class="opt" data-key="C"><code>OBYC</code></div><div class="opt" data-key="D"><code>CK24</code></div></div>
+  <div class="explain">原文档在该任务的正文里出现 <code>KA01</code>（该任务所属模块：CO，共 30 张实机画面）。其余三项出现在别的模块的任务里，可到 <a href="tcode.html">T-code 速查</a> 反查。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">PP</span><span class="tag">T-code</span></div>
+  <h4>4. 教材文档《S4.docx》中，「<a href="pp.html#t23">标记价格</a>」这一步出现的是哪个 T-code？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>CK24</code></div><div class="opt" data-key="B"><code>FS10N</code></div><div class="opt" data-key="C"><code>MCTA</code></div><div class="opt" data-key="D"><code>MD61</code></div></div>
+  <div class="explain">原文档在该任务的正文里出现 <code>CK24</code>（该任务所属模块：PP，共 12 张实机画面）。其余三项出现在别的模块的任务里，可到 <a href="tcode.html">T-code 速查</a> 反查。</div>
+</div>
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">CO</span><span class="tag">T-code</span></div>
+  <h4>5. 教材文档《S4.docx》中，「<a href="co.html#t19">输入统计指标数量</a>」这一步出现的是哪个 T-code？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>VA05</code></div><div class="opt" data-key="B"><code>VF02</code></div><div class="opt" data-key="C"><code>KB31N</code></div><div class="opt" data-key="D"><code>CR01</code></div></div>
+  <div class="explain">原文档在该任务的正文里出现 <code>KB31N</code>（该任务所属模块：CO，共 3 张实机画面）。其余三项出现在别的模块的任务里，可到 <a href="tcode.html">T-code 速查</a> 反查。</div>
+</div>
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">CO</span><span class="tag">T-code</span></div>
+  <h4>6. 教材文档《S4.docx》中，「<a href="co.html#t18">新建统计指标</a>」这一步出现的是哪个 T-code？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>ME21N</code></div><div class="opt" data-key="B"><code>VL01N</code></div><div class="opt" data-key="C"><code>KK01</code></div><div class="opt" data-key="D"><code>MD02</code></div></div>
+  <div class="explain">原文档在该任务的正文里出现 <code>KK01</code>（该任务所属模块：CO，共 5 张实机画面）。其余三项出现在别的模块的任务里，可到 <a href="tcode.html">T-code 速查</a> 反查。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">FI</span><span class="tag">T-code</span></div>
+  <h4>7. 教材文档《S4.docx》中，「<a href="fi.html#t20">输入总帐科目凭证</a>」这一步出现的是哪个 T-code？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>FD10N</code></div><div class="opt" data-key="B"><code>FB50</code></div><div class="opt" data-key="C"><code>KK01</code></div><div class="opt" data-key="D"><code>KA01</code></div></div>
+  <div class="explain">原文档在该任务的正文里出现 <code>FB50</code>（该任务所属模块：FI，共 4 张实机画面）。其余三项出现在别的模块的任务里，可到 <a href="tcode.html">T-code 速查</a> 反查。</div>
+</div>
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">MM</span><span class="tag">T-code</span></div>
+  <h4>8. 教材文档《S4.docx》中，「<a href="mm.html#t25">显示物料主记录清单</a>」这一步出现的是哪个 T-code？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>PP01</code></div><div class="opt" data-key="B"><code>CO03</code></div><div class="opt" data-key="C"><code>MD02</code></div><div class="opt" data-key="D"><code>MM60</code></div></div>
+  <div class="explain">原文档在该任务的正文里出现 <code>MM60</code>（该任务所属模块：MM，共 3 张实机画面）。其余三项出现在别的模块的任务里，可到 <a href="tcode.html">T-code 速查</a> 反查。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">PP</span><span class="tag">T-code</span></div>
+  <h4>9. 教材文档《S4.docx》中，「<a href="pp.html#t41">输入采购发票</a>」这一步出现的是哪个 T-code？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>FD01</code></div><div class="opt" data-key="B"><code>MIRO</code></div><div class="opt" data-key="C"><code>PP01</code></div><div class="opt" data-key="D"><code>KK01</code></div></div>
+  <div class="explain">原文档在该任务的正文里出现 <code>MIRO</code>（该任务所属模块：PP，共 5 张实机画面）。其余三项出现在别的模块的任务里，可到 <a href="tcode.html">T-code 速查</a> 反查。</div>
+</div>
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">MM</span><span class="tag">T-code</span></div>
+  <h4>10. 教材文档《S4.docx》中，「<a href="mm.html#t26">创建供应商采购数据</a>」这一步出现的是哪个 T-code？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>CR01</code></div><div class="opt" data-key="B"><code>MD02</code></div><div class="opt" data-key="C"><code>MK01</code></div><div class="opt" data-key="D"><code>FB03</code></div></div>
+  <div class="explain">原文档在该任务的正文里出现 <code>MK01</code>（该任务所属模块：MM，共 8 张实机画面）。其余三项出现在别的模块的任务里，可到 <a href="tcode.html">T-code 速查</a> 反查。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">PP</span><span class="tag">T-code</span></div>
+  <h4>11. 教材文档《S4.docx》中，「<a href="pp.html#t06">新建物料清单</a>」这一步出现的是哪个 T-code？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>MD03</code></div><div class="opt" data-key="B"><code>CS01</code></div><div class="opt" data-key="C"><code>FB50</code></div><div class="opt" data-key="D"><code>CO11N</code></div></div>
+  <div class="explain">原文档在该任务的正文里出现 <code>CS01</code>（该任务所属模块：PP，共 3 张实机画面）。其余三项出现在别的模块的任务里，可到 <a href="tcode.html">T-code 速查</a> 反查。</div>
+</div>
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">PP</span><span class="tag">T-code</span></div>
+  <h4>12. 教材文档《S4.docx》中，「<a href="pp.html#t46">显示生产订单的成本</a>」这一步出现的是哪个 T-code？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>MK01</code></div><div class="opt" data-key="B"><code>FD10N</code></div><div class="opt" data-key="C"><code>FB60</code></div><div class="opt" data-key="D"><code>CO03</code></div></div>
+  <div class="explain">原文档在该任务的正文里出现 <code>CO03</code>（该任务所属模块：PP，共 5 张实机画面）。其余三项出现在别的模块的任务里，可到 <a href="tcode.html">T-code 速查</a> 反查。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">准备</span><span class="tag">后台入口</span></div>
+  <h4>13. 教材里进「后台配置」用的入口是什么？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>SPRO</code>（SAP 参考 IMG）</div><div class="opt" data-key="B"><code>SE38</code></div><div class="opt" data-key="C"><code>SM30</code></div><div class="opt" data-key="D"><code>SU01</code></div></div>
+  <div class="explain">原文档：「在事务代码处输入 <code>spro</code>，进入后台配置页面」。SE38/SU01 是 ABAP 编辑器与用户维护，SM30 是表维护。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">FI</span><span class="tag">组织结构</span></div>
+  <h4>14. 教材里第一次「建公司」是在哪个任务里做的？</h4>
+  <div class="opts"><div class="opt" data-key="A">创建会计科目表</div><div class="opt" data-key="B">创建公司代码</div><div class="opt" data-key="C">维护公司代码的全局参数</div><div class="opt" data-key="D">定义公司代码的字段状态变式</div></div>
+  <div class="explain">FI 任务 01「创建公司代码」，IMG 路径为「企业结构 → 定义 → 财务会计 → 编辑/复制/删除/检查公司代码」，教材建的是公司代码 <code>C999</code>「颐宁机械有限公司」。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">FI</span><span class="tag">字段控制</span></div>
+  <h4>15. 凭证画面里某个字段能不能输入，由下面哪两个配置决定？</h4>
+  <div class="opts"><div class="opt" data-key="A">科目组 + 字段状态变式</div><div class="opt" data-key="B">记账期间 + 凭证类型</div><div class="opt" data-key="C">容差组 + 税码</div><div class="opt" data-key="D">评估类 + 更新组</div></div>
+  <div class="explain">FI 任务 06「定义科目组及输入控制」与任务 07「定义字段状态变式」是一组：科目组决定字段状态变式怎么选，变式里的每个字段可以设为必输/可选/隐藏。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">FI</span><span class="tag">科目主数据</span></div>
+  <h4>16. 《S4.docx》里「材料采购科目」为什么要「逐笔逐清」？</h4>
+  <div class="opts"><div class="opt" data-key="A">它是收货与收发票之间的过渡科目（GR/IR）</div><div class="opt" data-key="B">它是客户的统驭科目</div><div class="opt" data-key="C">它是损益类科目，年结必须清零</div><div class="opt" data-key="D">它是银行科目</div></div>
+  <div class="explain">原文档说明：收货时借库存、贷材料采购；收发票时借材料采购、贷应付账款，两边在这一科目上对冲，所以需要逐笔逐清，也就是常说的 GR/IR 过渡科目。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">FI</span><span class="tag">记账期间</span></div>
+  <h4>17. 「已经关掉的会计期间不允许对凭证进行更改」，这是哪个机制？</h4>
+  <div class="opts"><div class="opt" data-key="A">记账期间变式与期间开关（设置记账期间）</div><div class="opt" data-key="B">凭证归档</div><div class="opt" data-key="C">容差组</div><div class="opt" data-key="D">科目组的输入控制</div></div>
+  <div class="explain">原文档：「这是用来对凭证的开关。已经关掉的会计期间就不允许对凭证进行更改。多个公司代码可以被统一控制开账和关帐。」对应任务 16〜18（定义变式 → 分配给公司代码 → 设置记账期间，最后一步是前台操作）。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">MM</span><span class="tag">评估与自动记账</span></div>
+  <h4>18. 报「不可能为条目 <code>A999 BSX CN01</code> 确立帐户」，原文档给的补救办法是？</h4>
+  <div class="opts"><div class="opt" data-key="A">删掉已建的采购订单，修改物料会计视图 1 的评估类（本期/上期/上一年度都要改）</div><div class="opt" data-key="B">重新建公司代码</div><div class="opt" data-key="C">改客户账户组</div><div class="opt" data-key="D">把汇率改掉</div></div>
+  <div class="explain">原文档明确写了这个处理，并建议在创建物料时就把评估类一次做对；<code>BSX</code> 是自动记账里存货科目的事务码。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">MM</span><span class="tag">自动记账</span></div>
+  <h4>19. 自动记账（科目确定）用哪个 T-code 维护？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>OBYC</code></div><div class="opt" data-key="B"><code>FS00</code></div><div class="opt" data-key="C"><code>MMSC</code></div><div class="opt" data-key="D"><code>MPR1</code></div></div>
+  <div class="explain">原文档多处指向 <code>OBYC</code>（任务 28「维护物料管理的自动记帐」，原文亦写「通过 T-CODE OBYC，按照如下方式维护」）。<code>FS00</code> 是总账科目维护、<code>MMSC</code> 用于库存地点主数据。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">MM</span><span class="tag">采购链</span></div>
+  <h4>20. 采购到发票校验的主链条，顺序正确的是？</h4>
+  <div class="opts"><div class="opt" data-key="A">采购申请 <code>ME51N</code> → 采购订单 <code>ME21N</code> → 收货 <code>MIGO</code> → 发票校验 <code>MIRO</code> → 冻结发票下达 <code>MRBR</code></div><div class="opt" data-key="B">采购订单 → 采购申请 → 发票校验 → 收货</div><div class="opt" data-key="C">收货 → 采购申请 → 采购订单 → 发票校验</div><div class="opt" data-key="D">发票校验 → 收货 → 采购订单 → 采购申请</div></div>
+  <div class="explain">这是 MM 任务 36〜40 的顺序，也是本站「任务索引」里按序号排下来的顺序；冻结发票必须在下达之后才会计入应付。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">MM</span><span class="tag">MRP</span></div>
+  <h4>21. 教材里运行物料需求计划用的是什么？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>MD03</code> 单层计划（MM 模块）/ <code>MD02</code>（PP 模块）</div><div class="opt" data-key="B"><code>MB1C</code></div><div class="opt" data-key="C"><code>MMBE</code></div><div class="opt" data-key="D"><code>COOIS</code></div></div>
+  <div class="explain">原文档 MM 任务 34 说明：「由于 BOM 要等到生产计划模块维护，现在不能按 BOM 展开，所以是单层计划」→ <code>MD03</code>；PP 模块 BOM 建好后用 <code>MD02</code>。库存/需求清单是 <code>MD04</code>，库存总览是 <code>MMBE</code>。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">PP</span><span class="tag">标准成本</span></div>
+  <h4>22. 标准成本估算的「估算 → 标记 → 发布」分别用什么？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>CK11N</code> → <code>CK24</code> → <code>CK24</code></div><div class="opt" data-key="B"><code>CK24</code> → <code>CK11N</code> → <code>MM03</code></div><div class="opt" data-key="C"><code>KP26</code> → <code>CK11N</code> → <code>CK40N</code></div><div class="opt" data-key="D"><code>MM02</code> → <code>CK11N</code> → <code>CK24</code></div></div>
+  <div class="explain">PP 任务 22（新建产品成本估算 <code>CK11N</code>）→ 任务 23（标记价格 <code>CK24</code>）→ 任务 25（发布价格 <code>CK24</code>）；<code>MM03</code> 只是显示（任务 24/26 查看将来/已发布的计划价格）。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">PP</span><span class="tag">排错</span></div>
+  <h4>23. 成本估算报「没有内部作业 <code>LAB 1001</code> 的价格可被确定」，原文档怎么处理？</h4>
+  <div class="opts"><div class="opt" data-key="A">通过 <code>CK11N</code> 维护价格，并<b>退出 CK11N 后重新执行 <code>CK24</code></b></div><div class="opt" data-key="B">重建物料主数据</div><div class="opt" data-key="C">把工艺路线删掉重做</div><div class="opt" data-key="D">改公司代码</div></div>
+  <div class="explain">原文档原文：「通过 CK11N 要，按照如下方式维护价格，即可」「退出 CK11N，然后重新执行 CK24」；作业价格本身在 <code>KP26</code>（任务 12 设置作业输出价格）维护。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">PP</span><span class="tag">生产订单</span></div>
+  <h4>24. 生产订单下达后到结算，正确顺序是？</h4>
+  <div class="opts"><div class="opt" data-key="A">下达 <code>CO02</code> → 发货 → 确认 <code>CO11N</code> → 收货 <code>MIGO</code> → 差异结算 <code>KO88</code></div><div class="opt" data-key="B">确认 → 下达 → 结算 → 收货 → 发货</div><div class="opt" data-key="C">收货 → 发货 → 下达 → 确认 → 结算</div><div class="opt" data-key="D">结算 → 收货 → 确认 → 发货 → 下达</div></div>
+  <div class="explain">PP 任务 42〜48 的顺序：<code>CO02</code> 下达 → 对生产订单发货 → <code>CO11N</code> 工单确认 → <code>MIGO</code> 收货 → <code>CO03</code> 看成本 → <code>CO02</code> 技术性完成 → <code>KO88</code> 差异结算。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">CO</span><span class="tag">分配与分摊</span></div>
+  <h4>25. 教材里「行政部房租按各成本中心占地面积分配」用的是哪一种？</h4>
+  <div class="opts"><div class="opt" data-key="A">分配循环（按统计指标的实际值确定追踪因素）</div><div class="opt" data-key="B">分摊循环</div><div class="opt" data-key="C">成本中心重过账 <code>KB61</code></div><div class="opt" data-key="D">作业类型价格 <code>KP26</code></div></div>
+  <div class="explain">CO 任务 20「定义分配循环」（原文档：接收方追踪因素 = 物业租金面积统计指标的实际统计值）→ 任务 21「分配」；电费走的是任务 23「定义分摊循环」与任务 24「分摊」。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">CO</span><span class="tag">成本要素</span></div>
+  <h4>26. 初级成本要素与次级成本要素的区别是？</h4>
+  <div class="opts"><div class="opt" data-key="A">初级对应财务会计科目，次级只在 CO 内部（分摊、结算等）流动</div><div class="opt" data-key="B">初级只能用于成本中心，次级只能用于内部订单</div><div class="opt" data-key="C">初级是收入类，次级是费用类</div><div class="opt" data-key="D">两者没有区别，只是叫法不同</div></div>
+  <div class="explain">教材任务 05「新建初级成本要素」（<code>KA01</code>）与任务 06「建立次级成本要素」（<code>KA06</code>）：次级成本要素不产生 FI 凭证，用于 CO 内部的分摊/结算等再分配。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">CO</span><span class="tag">内部订单</span></div>
+  <h4>27. 内部订单的费用归集完之后，用什么做结算？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>KO88</code></div><div class="opt" data-key="B"><code>FB50</code></div><div class="opt" data-key="C"><code>KK01</code></div><div class="opt" data-key="D"><code>KB31N</code></div></div>
+  <div class="explain">CO 任务 33「内部订单的结算」＝<code>KO88</code>（PP 的差异结算也是它）；<code>KK01</code> 建统计指标、<code>KB31N</code> 录入统计指标数量、<code>FB50</code> 录总账凭证。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">SD</span><span class="tag">销售范围</span></div>
+  <h4>28. 「销售范围」由哪三个要素组成？</h4>
+  <div class="opts"><div class="opt" data-key="A">销售组织 + 分销渠道 + 产品组</div><div class="opt" data-key="B">销售组织 + 工厂 + 库存地点</div><div class="opt" data-key="C">客户 + 物料 + 定价过程</div><div class="opt" data-key="D">公司代码 + 采购组织 + 销售办公室</div></div>
+  <div class="explain">SD 任务 01〜07 的顺序就是先建这三个要素（销售组织/分销渠道/产品组），再「设置销售范围」；订单、定价、交货、税确定都靠销售范围定位。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">SD</span><span class="tag">合作伙伴</span></div>
+  <h4>29. 原文档表格里，<code>BP</code> 对应哪个合作伙伴功能？</h4>
+  <div class="opts"><div class="opt" data-key="A">收票方</div><div class="opt" data-key="B">售达方</div><div class="opt" data-key="C">付款方</div><div class="opt" data-key="D">送达方</div></div>
+  <div class="explain">原文档任务 33 的表格给出：<code>SP</code> 售达方、<code>BP</code> 收票方、<code>PY</code> 付款方、<code>SH</code> 送达方。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">SD</span><span class="tag">销售链</span></div>
+  <h4>30. 从报价走到发票过账，正确的 T-code 顺序是？</h4>
+  <div class="opts"><div class="opt" data-key="A">报价 <code>VA21</code> → 销售订单 → 交货 <code>VL01N</code> → 发票 <code>VF01</code> → 过账 <code>VF02</code></div><div class="opt" data-key="B">销售订单 → 报价 → 发票 → 交货</div><div class="opt" data-key="C">交货 → 报价 → 销售订单 → 发票</div><div class="opt" data-key="D">报价 → 交货 → 销售订单 → 发票</div></div>
+  <div class="explain">SD 任务 40〜44：<code>VA21</code> 创建报价 → 参照创建销售订单 → <code>VL01N</code> 创建外向交货 → <code>VF01</code> 创建发票 → <code>VF02</code> 过账到财务会计。</div>
+</div>
+<h2 id="checklist">实机验收清单（做完自测再逐项打勾）</h2>
+<ul class="check">
+<li>能在自己系统里用 <code>SPRO</code> 打开后台，并找到本教材讲的任意一个配置点。</li>
+<li>能用 <code>FS00</code> 建一个总账科目，并解释「税务类型」三个符号的含义。</li>
+<li>能说出采购链与销售链各 5 个 T-code，并说明每一步产生的凭证/单据。</li>
+<li>能说明物料「评估类」与自动记账 <code>OBYC</code> 的关系，以及评估类出错时的补救顺序。</li>
+<li>能用 <code>CK11N</code>/<code>CK24</code> 完成估算、标记、发布，并解释「标记」与「发布」的区别。</li>
+<li>遇到教材里的 10 个报错现象，能说出「现象 → 原因 → 处理 T-code」。</li>
+</ul>
+<div class="box ok"><b class="t">合格判定</b>自测正确率 ≥75% <b>且</b> 实机验收清单 6 项全部打勾 = 具备独立跟做本教材全套配置与操作的能力。</div>
+</article></main>
+</div>
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA 中文实训站 — 全模块配置与操作手顺 · 实机画面</h5>
+  <p>内容依据同目录教材文档 <code>S4.docx</code>（425 页 · 6 大模块 · 222 个任务 · 1385 张实机截图）整理。全部页面可离线打开，无外部依赖。</p>
+  <div><h5>关于画面</h5><p>站内所有截图都是<b>原教材文档中的实机画面</b>（中文界面 SAP GUI），不是示意图、也不是模拟生成图；文件名保留原文档编号以便与 Word 原文对照。文档中的示例值（公司代码 <code>C999</code>、工厂 <code>F999</code>、物料 <code>R999-100</code> 等）属于原作者的教材环境，请以自己系统的组织结构与编号范围为准。</p></div></div>
+  <div class="cols">
+    <div><h5>模块</h5>
+      <a href="prep.html">准备 — 准备工作 — 登录系统与进入后台</a><br>
+      <a href="fi.html">FI — 财务会计 FI</a><br>
+      <a href="co.html">CO — 管理会计 CO</a><br>
+      <a href="mm.html">MM — 物料管理 MM</a><br>
+      <a href="pp.html">PP — 生产计划 PP</a><br>
+      <a href="sd.html">SD — 销售与分销 SD</a><br>    </div>
+    <div><h5>全站</h5>
+      <a href="prep.html">准备</a><br>
+      <a href="fi.html">FI</a><br>
+      <a href="co.html">CO</a><br>
+      <a href="mm.html">MM</a><br>
+      <a href="pp.html">PP</a><br>
+      <a href="sd.html">SD</a><br>
+      <a href="tcode.html">T-code</a><br>
+      <a href="issues.html">排错</a><br>
+      <a href="tasks.html">索引</a><br>
+      <a href="instructor.html">讲师</a><br>
+      <a href="worksheet.html">学员</a><br>
+      <a href="quiz.html">自测</a><br>    </div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/s4cn.js"></script>
+</body>
+</html>

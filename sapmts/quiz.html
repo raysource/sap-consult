@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>能力测试（28 题） · SAP S/4HANA 見込生産（MTS）实战训练站</title>
+<meta name="description" content="見込生産（MTS）能力测试 28 題（概念 10 / 配置 9 / 流程 6 / 故障 3）：クリックで判分＋解説。戦略グループ、PIR の消費と消減、自由在庫と ATP、MRP の純所要量、明細カテゴリ・納入日程行カテゴリ、差異計算まで。合格 75%＋実機验收清单。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/mts.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MTS</span><span class="txt">見込生産 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①预测</a>
+      <a href="handson-2.html">②MRP</a>
+      <a href="handson-3.html">③制造入库</a>
+      <a href="handson-4.html">④出货</a>
+      <a href="handson-5.html">⑤月末</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a class="active" href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 能力测试（28 题 + 实机验收）</div>
+<main class="page"><article>
+
+<h1>能力测试（28 题 + 实机验收）</h1>
+<div class="box info"><b class="t">受け方</b>
+① 各問の選択肢をクリックすると<b>その場で採点</b>され、下に解説が出ます（上に成績パネルが固定表示されます）。<br>
+② 分野構成：<b>概念 1〜10 / 配置 11〜19 / 流程 20〜25 / 故障 26〜28</b>。<br>
+③ <b>合格 = 75% 以上（21/28）＋ 実機验收清单の全項目</b>。90% 以上なら「講師補助なしで他者に説明できる」レベルです。<br>
+④ 間違えたら、解説のリンクから該当ページに戻って手顺を確認してから「全部重做」で再挑戦してください。</div>
+
+<h2>一、概念（1〜10）</h2>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">概念</span> 見込生産の起点</div>
+  <h4>1. 見込生産（MTS）において、生産・調達のきっかけ（計画の起点）はどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">受注（受注明細）</div>
+    <div class="opt" data-key="B">需要予測（計画独立所要量 PIR）</div>
+    <div class="opt" data-key="C">在庫の棚卸差異</div>
+    <div class="opt" data-key="D">購買依頼</div>
+  </div>
+  <div class="explain">MTS は「予測で作り、在庫から納める」。受注は需要を<b>创造</b>せず、PIR を<b>消費</b>して在庫を掴みます（<a href="concept.html#compare">概念 1</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">概念</span> 在庫区分</div>
+  <h4>2. 見込生産の完成品が入る在庫はどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">受注在庫（特別在庫区分 E・MSKA）</div>
+    <div class="opt" data-key="B">プロジェクト在庫（特別在庫区分 Q・MSPR）</div>
+    <div class="opt" data-key="C">自由在庫（非制限利用在庫・MARD/MCHB）</div>
+    <div class="opt" data-key="D">預託在庫（MSKU）</div>
+  </div>
+  <div class="explain">MTS の入库は自由在庫（プラント + 保管場所、特在区分は空）。E は MTO、Q は ETO。確認は <code>MMBE</code> / <code>MB52</code>、表は <code>MARD</code>（<a href="handson-3.html#q4">练习③ 3-4</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">概念</span> 戦略グループ</div>
+  <h4>3. 戦略グループ <code>40</code> の標準的な説明はどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">最終組立ありの計画（Planning with final assembly）</div>
+    <div class="opt" data-key="B">組立レベルでの計画（Planning at assembly level）</div>
+    <div class="opt" data-key="C">総所要量計画（Gross requirements planning）</div>
+    <div class="opt" data-key="D">ロット生産（Production by lot size）</div>
+  </div>
+  <div class="explain"><code>40</code> = 最終組立ありの計画。<b>組立レベルでの計画は <code>70</code></b>、ロット生産は <code>30</code>、総所要量計画は <code>11</code>。自分のシステムの <code>OPPT</code> の説明文で必ず確認してください（<a href="config.html#c12">C12</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">概念</span> PIR の消費</div>
+  <h4>4. 戦略グループ <code>10</code>（見込生産）で受注を登録したとき、PIR はどうなるか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">受注が PIR を消費し、<code>PBED</code> の数量も減る</div>
+    <div class="opt" data-key="B">PIR は消費されない（受注は在庫/所要量リストに情報として表示されるだけ）</div>
+    <div class="opt" data-key="C">PIR が自動削除される</div>
+    <div class="opt" data-key="D">受注が PIR に転記され、所要量タイプが変わる</div>
+  </div>
+  <div class="explain">戦略 <code>10</code> は受注が net requirements の計算に入らず、PIR は消費されません（古い PIR から消減）。消費するのは戦略 <code>40</code> のような「最終組立ありの計画」です（<a href="concept.html#pir">概念 2</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">概念</span> 戦略 11</div>
+  <h4>5. 戦略グループ <code>11</code>（総所要量計画）の特徴として正しいものはどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">在庫が十分にあれば計画手配を作らない</div>
+    <div class="opt" data-key="B">受注が PIR を消費する</div>
+    <div class="opt" data-key="C">PIR を使わず受注だけで計画する</div>
+    <div class="opt" data-key="D">在庫を考慮せず、予測どおりに生産する（MRP3 の混合MRP区分 = 2 が前提）</div>
+  </div>
+  <div class="explain">戦略 <code>11</code> は在庫を見ずに PIR どおり生産する（連続生産向け）。MRP3 の「混合MRP区分」に <code>2</code>（総所要量的計画）を設定します（<a href="config.html#c12">C12</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">概念</span> 消費と消減</div>
+  <h4>6. 消費（consumption）と消減（reduction）の違いとして正しいものはどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">消費は PIR の数量そのものを減らし、消減は表示だけを変える</div>
+    <div class="opt" data-key="B">両方とも MD04 上の表示だけで、PIR の表は変わらない</div>
+    <div class="opt" data-key="C">消費は MD04 上で起きて PIR の数量（PBED）は変わらない。消減は PIR の数量そのものが減る</div>
+    <div class="opt" data-key="D">消費は購買発注、消減は受注で起きる</div>
+  </div>
+  <div class="explain">消費は受注が PIR を食べること（<code>PBED</code> は不変）、消減は入库・発注の完結などで数量が実際に減ること。確認は <code>MD04</code> と <code>SE16N: PBED</code> の比較（<a href="handson-4.html#s3">练习④ 4-3</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">概念</span> 版</div>
+  <h4>7. <code>MD61</code> で PIR を登録するときに使う標準的な「有効版」はどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">版 <code>00</code></div>
+    <div class="opt" data-key="B">版 <code>01</code></div>
+    <div class="opt" data-key="C">版 <code>99</code></div>
+    <div class="opt" data-key="D">版は自由に決めてよく、MRP はすべての版を見る</div>
+  </div>
+  <div class="explain">標準では版 <code>00</code> が有効版で、MRP はこれを見ます。有効版の設定は <code>T459U</code>（<a href="handson-1.html#p2">练习① 1-2</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">概念</span> 戦略 70</div>
+  <h4>8. 戦略グループ <code>70</code> の意味はどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">ロット生産</div>
+    <div class="opt" data-key="B">最終組立ありの計画</div>
+    <div class="opt" data-key="C">総所要量計画</div>
+    <div class="opt" data-key="D">組立レベルでの計画（PIR を組立レベルに置く）</div>
+  </div>
+  <div class="explain"><code>70</code> = 組立レベルでの計画（<code>VSFB</code>）。<code>74</code> は「組立レベルで最終組立なしの計画」。PIR を組立（アセンブリ）単位で持ちます（<a href="config.html#c12">C12</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">概念</span> MTO との対比</div>
+  <h4>9. 見込生産（MTS）と受注生産（MTO）を分ける最も本質的な違いはどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">出荷・請求の伝票タイプが違う</div>
+    <div class="opt" data-key="B">需要の起点（予測 か 受注 か）と、在庫の帰属（自由在庫 か 受注在庫 E か）</div>
+    <div class="opt" data-key="C">製造指図を使うか使わないか</div>
+    <div class="opt" data-key="D">出庫確認（PGI）の移動タイプが違う</div>
+  </div>
+  <div class="explain">操作系（VA01/MD04/VL01N/VF01/261・101・601）はほぼ同じで、違うのは<b>需要の起点・在庫の帰属・月末の焦点</b>。MTS の証拠は「入库先が自由在庫（特在区分 空）」です（<a href="concept.html#eval">概念 7</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">概念</span> 標準原価</div>
+  <h4>10. MTS の在庫評価が標準原価（標準価格）で行われる理由として正しいものはどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">税務上の義務だから</div>
+    <div class="opt" data-key="B">実際原価は計算できないから</div>
+    <div class="opt" data-key="C">先に造って後に売るため、卖出的时点では実際原価が確定しておらず、在庫は標準価格で評価し差異を月末に処理するから</div>
+    <div class="opt" data-key="D">受注在庫の評価ができないから</div>
+  </div>
+  <div class="explain">見込生産では库存が受注より先にできます。出荷時に在庫は標準価格で評価され、実際との差は差異計算（<code>KKS1</code>/<code>KKS2</code>）と決済（<code>KO88</code>/<code>CO88</code>）で処理されます（<a href="concept.html#cost">概念 6</a>）。</div>
+</div>
+
+<h2>二、配置（11〜19）</h2>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">配置</span> 品目マスタ</div>
+  <h4>11. MTS の完成品品目で、MRP4「個別/包括所要量」はどう設定すべきか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">空（受注に紐づけない）</div>
+    <div class="opt" data-key="B">1（個別所要量のみ）</div>
+    <div class="opt" data-key="C">2（包括所要量のみ）</div>
+    <div class="opt" data-key="D">どちらでも同じ結果になる</div>
+  </div>
+  <div class="explain">空にすることで受注に紐づかず、入库が自由在庫に入ります。「個別所要量のみ」にすると受注在庫 E に変わり、形態が MTO になります（<a href="config.html#c2">C2</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">配置</span> 明細カテゴリの決定</div>
+  <h4>12. 明細カテゴリを決定する <code>VOV4</code> の 4 つのキーとはどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">販売組織 / 販売チャネル / 部門 / プラント</div>
+    <div class="opt" data-key="B">受注タイプ / 得意先 / 品目タイプ / 数量</div>
+    <div class="opt" data-key="C">販売伝票タイプ / 品目カテゴリグループ / 用途 / 上位明細カテゴリ</div>
+    <div class="opt" data-key="D">プラント / MRPタイプ / 戦略グループ / 所要量タイプ</div>
+  </div>
+  <div class="explain"><code>VOV4</code> は 販売伝票タイプ + 品目カテゴリグループ + 用途 + 上位明細カテゴリ。<b>空値もキー</b>なので、不要な値を入れると決定がずれます（<a href="config.html#c7">C7</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">配置</span> 明細カテゴリ TAN</div>
+  <h4>13. 標準明細カテゴリ <code>TAN</code> の「特別在庫」の設定はどうあるべきか（見込生産）。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A"><code>E</code>（受注在庫）を入れる</div>
+    <div class="opt" data-key="B">空のままにする</div>
+    <div class="opt" data-key="C"><code>Q</code>（プロジェクト在庫）を入れる</div>
+    <div class="opt" data-key="D">どの値でも MRP の挙動は同じ</div>
+  </div>
+  <div class="explain">特別在庫欄が空 = 自由在庫で扱う = MTS。MTO の場合に <code>E</code> を入れます（表 <code>TVAP-SOBKZ</code>）。確認は <code>VOV7</code>（<a href="config.html#c6">C6</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">配置</span> 納入日程行カテゴリの決定</div>
+  <h4>14. 納入日程行カテゴリを決定する <code>VOV5</code> のキーはどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">明細カテゴリと MRPタイプ</div>
+    <div class="opt" data-key="B">販売伝票タイプと得意先</div>
+    <div class="opt" data-key="C">戦略グループと所要量クラス</div>
+    <div class="opt" data-key="D">受注タイプと出荷プラント</div>
+  </div>
+  <div class="explain"><code>VOV5</code> は <b>明細カテゴリ + MRPタイプ</b>。品目に MRP ビューが無い（MRPタイプ空）と別の納入日程行カテゴリになり、所要量転送や在庫確認の挙動が変わります（<a href="config.html#c9">C9</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">配置</span> 納入日程行カテゴリ CP</div>
+  <h4>15. 標準の納入日程行カテゴリ <code>CP</code> に関する記述として最も適切なものはどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">所要量転送も在庫確認も行わない（納入のみ）</div>
+    <div class="opt" data-key="B">在庫確認は行うが、所要量転送は行わない</div>
+    <div class="opt" data-key="C">所要量転送は行うが、在庫確認は行わない</div>
+    <div class="opt" data-key="D">所要量転送と在庫確認の両方を行い、出庫確認の移動タイプは 601</div>
+  </div>
+  <div class="explain"><code>CP</code> は標準の MRP 用納入日程行カテゴリで、所要量転送・在庫確認・PGI の 601 を含みます。<b>環境で値が違う場合がある</b>ので <code>VOV6</code> と <code>VBEP</code> で確認してください（<a href="config.html#c8">C8</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">配置</span> 所要量クラス</div>
+  <h4>16. 所要量クラス（<code>OVZG</code>）について、見込生産の理解として正しいものはどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">見込生産で使うクラスにも「個別在庫」を設定する</div>
+    <div class="opt" data-key="B">所要量クラスは所要量タイプを決めるためのもので、在庫の帰属には影響しない</div>
+    <div class="opt" data-key="C">見込生産系のクラスには「個別在庫」がなく、個別在庫を持つクラス（例 <code>040</code>）は MTO 系</div>
+    <div class="opt" data-key="D">所要量クラスは MRP にしか影響しない</div>
+  </div>
+  <div class="explain">所要量クラスの「個別在庫」フラグが E 特在の源流です。見込生産系（<code>100</code>/<code>030</code>/<code>050</code> など）は個別在庫なし、MTO 系（<code>040</code>）はあり（<a href="config.html#c10">C10</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">配置</span> 消費モード</div>
+  <h4>17. 消費モードと逆/順消費期間は、どこで設定するか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">計画方針グループ（<code>OPPT</code>）に持たせる</div>
+    <div class="opt" data-key="B">品目マスタの MRP3 ビュー（<code>MARC-VRMOD</code>/<code>VINT1</code>/<code>VINT2</code>）</div>
+    <div class="opt" data-key="C">所要量クラス（<code>OVZG</code>）</div>
+    <div class="opt" data-key="D">納入日程行カテゴリ（<code>VOV6</code>）</div>
+  </div>
+  <div class="explain">消費モードと逆・順消費期間は品目マスタ MRP3 が持ちます（<code>MARC-VRMOD</code> = 1 逆のみ / 2 逆＋順 / 3 順のみ / 4 順＋逆、<code>VINT1</code> 逆期間 / <code>VINT2</code> 順期間）。確認は <code>MM03</code> MRP3（<a href="config.html#c2">C2</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">配置</span> 標準原価</div>
+  <h4>18. 標準価格（例 8,000 JPY）を品目に反映させるための手顺として正しいものはどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A"><code>CK11N</code> で標準原価を計算 → <code>CK24</code> でマーク・リリースする</div>
+    <div class="opt" data-key="B"><code>MM02</code> の会計1 で価格を直接入力する</div>
+    <div class="opt" data-key="C"><code>KKS1</code> を実行すれば標準価格ができる</div>
+    <div class="opt" data-key="D"><code>MR21</code> で在庫評価を変更すればよい</div>
+  </div>
+  <div class="explain">標準原価は <code>CK11N</code>（単品目）/ <code>CK40N</code>（一括）で計算し、<code>CK24</code> でマーク（Mark）とリリース（Release）を行います。リリース後に <code>MM03</code> 会計1 で標準価格が見えます（<a href="config.html#c4">C4</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">配置</span> Public Cloud</div>
+  <h4>19. Public Cloud（S/4HANA Cloud Public Edition）で見込生産を実装するとき、正しい記述はどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">On-Premise と同じ SPRO で明細カテゴリを自由に新規作成できる</div>
+    <div class="opt" data-key="B">クラウドでは見込生産のスコープアイテムが存在しない</div>
+    <div class="opt" data-key="C">設定はすべて SSCUI で新規オブジェクトの作成も可能</div>
+    <div class="opt" data-key="D">明細カテゴリや販売伝票タイプの新規作成はできず、スコープアイテム（例 <code>BJ5</code>）と SSCUI で提供される範囲を使う</div>
+  </div>
+  <div class="explain">Cloud は「What you see is what you get」。<code>VOV7</code>/<code>VOV4</code> での新規作成は不可で、スコープアイテム（<code>BJ5</code> = Make-to-Stock Production – Discrete Manufacturing）と SSCUI（例 <code>105120</code>「明細カテゴリ別の所要量タイプ決定」）を使います。ID は版本で変わるため要確認（<a href="config.html#c16">C16</a>）。</div>
+</div>
+
+<h2>三、流程（20〜25）</h2>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">流程</span> MRP Live</div>
+  <h4>20. <code>MD01N</code>（MRP Live）について正しい記述はどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">実行後に <code>MD05</code>/<code>MD06</code> で MRP リストを確認するのが標準である</div>
+    <div class="opt" data-key="B">単品目の MRP は実行できず、必ずプラント全体で実行する</div>
+    <div class="opt" data-key="C">MRP リストを作成しないため、結果の確認は <code>MD04</code> などで行う</div>
+    <div class="opt" data-key="D">購買依頼を作成できない</div>
+  </div>
+  <div class="explain">MRP Live は MRP リストを作りません（古典 MRP の <code>MD01/MD02/MD03</code> との差異）。結果は <code>MD04</code> で確認します。SAP KBA <b>2640393</b>（<a href="handson-2.html#m1">练习② 2-1</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">流程</span> 純所要量</div>
+  <h4>21. 純所要量（正味所要量）の算式として正しいものはどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">総所要量 + 入庫予定 + 安全在庫</div>
+    <div class="opt" data-key="B">総所要量 − 入庫予定 + 安全在庫</div>
+    <div class="opt" data-key="C">総所要量 − 安全在庫 − ロットサイズ</div>
+    <div class="opt" data-key="D">受注数量 − 在庫数量</div>
+  </div>
+  <div class="explain">純所要量 = 総所要量（PIR + 受注 + 従属所要量） − 入庫予定（在庫 + 入庫予定） + 安全在庫。MD04 の各行から検算できます（<a href="handson-2.html#m2">练习② 2-2</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">流程</span> 指図変換</div>
+  <h4>22. 計画手配を製造指図に変換する標準的な手顺はどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A"><code>MD04</code> の計画手配行、または <code>CO40</code>（単品目）/ <code>CO41</code>（一括）で変換する</div>
+    <div class="opt" data-key="B"><code>MD01N</code> を再実行すると自動で指図になる</div>
+    <div class="opt" data-key="C"><code>VA01</code> で受注を再登録すると指図ができる</div>
+    <div class="opt" data-key="D"><code>CK24</code> でリリースすれば指図ができる</div>
+  </div>
+  <div class="explain">計画手配 → 指図は <code>CO40</code>/<code>CO41</code>（或は <code>MD04</code> から）。指図タイプは品目 MRP2 の伝票タイプ（例 <code>PP01</code>）。MTO では <code>CO08</code>（受注明細に直結）を使うのが違いです（<a href="handson-2.html#m4">练习② 2-4</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">流程</span> 261 / 101</div>
+  <h4>23. 移動タイプ <code>261</code> と <code>101</code> の説明として正しいものはどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A"><code>261</code> は完成品の入庫、<code>101</code> は部品の出庫</div>
+    <div class="opt" data-key="B"><code>261</code> は購買発注への入庫、<code>101</code> は出荷の出庫確認</div>
+    <div class="opt" data-key="C"><code>261</code> は棚卸差異の転記、<code>101</code> は在庫転送</div>
+    <div class="opt" data-key="D"><code>261</code> は指図への部品出庫、<code>101</code> は指図（または購買発注）への入庫</div>
+  </div>
+  <div class="explain"><code>261</code> = 指図への部品出庫、<code>101</code> = 指図/発注への入庫、<code>601</code> = 出荷の出庫確認（PGI）。見込生産では 101 で<b>自由在庫</b>が増えます（<a href="handson-3.html#q2">练习③ 3-2</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">流程</span> 受注と ATP</div>
+  <h4>24. 受注を登録したときの在庫確認（ATP）の説明として正しいものはどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">ATP は在庫数量だけを見て判断する</div>
+    <div class="opt" data-key="B">利用可能在庫数量（在庫 + 入庫予定 − 出庫予定）に対して確認し、結果は <code>CO09</code> や納入日程行で確認できる</div>
+    <div class="opt" data-key="C">ATP の結果は <code>MMBE</code> を見れば分かる</div>
+    <div class="opt" data-key="D">見込生産では ATP を使わない</div>
+  </div>
+  <div class="explain">ATP は利用可能在庫数量で判定します。<code>CO09</code>（単品目）/ <code>MDVP</code>（一括）/ <code>V_V2</code>（納期再設定）で確認。見込生産は「公共在庫を先着順で引当てる」のが特徴です（<a href="handson-4.html#s2">练习④ 4-2</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">流程</span> 消費の確認</div>
+  <h4>25. 受注が PIR を消費したことを確認する方法として最も適切なものはどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A"><code>PBED</code> の数量が減っていることを確認する</div>
+    <div class="opt" data-key="B"><code>MD61</code> を開き直して数量が変わったかを見る</div>
+    <div class="opt" data-key="C"><code>MD04</code> で PIR 行の「消費済数量」を確認する（<code>PBED</code> の数量は変わらない）</div>
+    <div class="opt" data-key="D"><code>MMBE</code> の在庫が増えたことを確認する</div>
+  </div>
+  <div class="explain">消費は MD04 上で起き、<code>PBED</code> の数量は変わりません。消費済数量は <code>MD04</code> の PIR 明細で確認します（<a href="handson-4.html#s3">练习④ 4-3</a>）。</div>
+</div>
+
+<h2>四、故障（26〜28）</h2>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">故障</span> 受注が MRP に出ない</div>
+  <h4>26. 受注を登録したのに <code>MD04</code> に得意先所要量が出ない。最初に疑うべきはどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">MRP タイプが <code>PD</code> になっていること</div>
+    <div class="opt" data-key="B">納入日程行カテゴリの「所要量転送」が OFF（<code>VBEP-BEDSD</code> が空）であること</div>
+    <div class="opt" data-key="C">標準価格がリリースされていないこと</div>
+    <div class="opt" data-key="D">出荷伝票がまだ作られていないこと</div>
+  </div>
+  <div class="explain">受注が MRP に需求として渡るかは納入日程行カテゴリの<b>所要量転送</b>で決まります。確認は <code>VA03</code> の納入日程行 → <code>VBEP-BEDSD</code> → <code>VOV6</code> / <code>VOV5</code>（<a href="handson-5.html#trouble">故障対照表 #3</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">故障</span> 入庫が受注在庫に入る</div>
+  <h4>27. 完成品の 101 入庫が、自由在庫ではなく「得意先別（受注在庫）」に入ってしまった。原因として最も可能性が高いのはどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">移動タイプ 101 が間違っている</div>
+    <div class="opt" data-key="B">保管場所の設定が間違っている</div>
+    <div class="opt" data-key="C">品目マスタ MRP4 の「個別/包括所要量」が「個別所要量のみ」になっている（または指図が受注に紐づいている）</div>
+    <div class="opt" data-key="D">在庫確認のスコープに個別所要量が入っている</div>
+  </div>
+  <div class="explain">入库が受注在庫（特在 <code>E</code>）に入るのは、需求が受注に紐づいているからです。確認は <code>MM03</code> MRP4 と <code>CO03</code>／<code>SE16N: AFPO-KDAUF/KDPOS</code>、在庫は <code>MMBE</code>／<code>MSKA</code>（<a href="handson-3.html#q4">练习③ 3-4</a>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">故障</span> 差異計算</div>
+  <h4>28. <code>KKS2</code> で差異計算したところ「目標原価がありません」となった。最初に確認すべきはどれか。</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">標準価格が計算・リリースされているか（<code>CK11N</code> → <code>CK24</code>、<code>MM03</code> 会計1）</div>
+    <div class="opt" data-key="B">受注が登録されているか</div>
+    <div class="opt" data-key="C">PGI が実行済みか</div>
+    <div class="opt" data-key="D">棚卸が実施済みか</div>
+  </div>
+  <div class="explain">目標原価は標準原価（標準価格）を基準に計算されます。標準価格が未リリースだと差異計算ができません。確認は <code>MM03</code> 会計1（<code>MBEW-STPRS</code>）と <code>CK13N</code>、レートは <code>KP26</code>（<a href="handson-5.html#e1">练习⑤ 5-1</a>）。</div>
+</div>
+
+<h2>実機验收清单（合格必须全勾）</h2>
+<div class="box ok"><b class="t">システムの証拠で確認する（申告ではなく証跡）</b>
+<ul class="check">
+  <li>PIR：版 <code>00</code> に登録され、<code>MD04</code> に「計画独立所要量」が<b>受注番号なし</b>で表示される。</li>
+  <li>MRP：<code>MD01N</code> 後に計画手配が生成され、その<b>在庫区分が空</b>である（<code>MD04</code>/<code>PLAF</code>）。</li>
+  <li>指図：<code>AFPO-KDAUF/KDPOS</code> が<b>空</b>である（見込生産の証拠）。</li>
+  <li>入庫：101 後に <code>MMBE</code> の<b>自由在庫（非制限利用）が増え</b>、<b>特別在庫（得意先別）が空</b>である。</li>
+  <li>受注：明細カテゴリ <code>TAN</code> / 納入日程行カテゴリ <code>CP</code>、<code>VBEP-BEDSD</code>（所要量転送）と <code>ATPPR</code>（在庫確認）が ON。</li>
+  <li>ATP：<code>CO09</code> で利用可能数量と要素（入庫予定・出庫予定）が見え、受注で確認済数量が付く。</li>
+  <li>消費：<code>MD04</code> で PIR の消費済数量が増え、<code>PBED</code> の数量が<b>変わっていない</b>。</li>
+  <li>出荷：PGI 601 で自由在庫が減り、<code>MATDOC</code> に 601 の伝票がある。</li>
+  <li>請求：<code>VF01</code> で請求が作成され、<code>FB03</code> に会計伝票がある。</li>
+  <li>差異：<code>KKS2</code>/<code>KKS1</code> で差異が計算され、<code>KO88</code>/<code>CO88</code> の決済で <code>FB03</code> に転記される。</li>
+  <li>伝票フロー：<code>VA03</code> で 受注 → 出荷 → 請求 → 会計伝票 が一本につながっている。</li>
+</ul></div>
+<div class="box info"><b class="t">合格ラインと判定</b>
+<b>28 題中 21 題以上（75%）＋ 上の実機验收清单の全項目</b>で合格です。90% 以上（26/28）なら、<b>同僚に 30 分で教えられる</b>レベルと判断してよいでしょう。<br>
+間違えた分野の戻り先：概念 → <a href="concept.html">概念与设计</a>／配置 → <a href="config.html">配置手顺</a>／流程 → <a href="handson-1.html">练习①</a>〜<a href="handson-4.html">④</a>／故障 → <a href="handson-5.html#trouble">故障対照表</a>。</div>
+
+<div class="box warn"><b class="t">テストの前提（重要）</b>
+本テストの正解は<b>標準 SAP の一般的な挙動</b>に基づきます。環境（版本・業界ソリューション・既存改造）で値や説明文が異なる場合は、<b>自分のシステムで確認した内容</b>を正としてください。<b>「自分の環境では違う、理由は〜」と説明できれば、それも正解です。</b></div>
+
+<div class="box ok"><b class="t">出典（本テストの根拠）</b>
+戦略 10/11/30/40/70 の説明と所要量タイプ対応：SAP Tribal Knowledge <i>SAP Planning Strategies</i>（<code>OPPT</code>/<code>OPPS</code>/<code>OVZH</code>/<code>OVZG</code>）、SAP PRESS blog <i>4 Strategies for Make-to-Stock Production with SAP S/4HANA</i>、SAP Learning <i>Exploring Planning Strategies</i>。<br>
+PIR の表と消費/消減：SAP Help（Support Content）<i>Tables and programs of planned independent requirements</i>。MRP Live の差異：SAP KBA <b>2640393</b>。<br>
+明細カテゴリ・納入日程行カテゴリの決定と <code>CP</code>：SAP Community（<i>Schedule line category CP</i>、<i>Link between MRP type and schedule line category</i>）。差異カテゴリ：SAP Help <i>Variance Categories</i> / SAP Learning <i>Performing Variance Calculation</i>。<br>
+Cloud：スコープアイテム <b><code>BJ5</code></b>（SAP Best Practices）、SSCUI <b><code>105120</code></b>。库存表：SAP Help <i>Stock Tables and Stock Types</i>（<code>MARD</code>/<code>MCHB</code>/<code>MSKA</code>）。</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP 見込生産（MTS）实战训练站</h5><p>能力测试：28 題（概念 10 / 配置 9 / 流程 6 / 故障 3）+ 実機验收清单。合格 75%。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 需要予測とPIR</a><br><a href="handson-2.html">② MRP と計画手配</a><br><a href="handson-3.html">③ 製造と入庫</a><br><a href="handson-4.html">④ 受注・出荷・請求</a><br><a href="handson-5.html">⑤ 月末と発展</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="worksheet.html">学员版</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/quiz.js"></script>
+</body>
+</html>

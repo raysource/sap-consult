@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>品目管理 MM（Materials Management） · 手順と実機画面</title>
+<meta name="description" content="品目管理 MM（Materials Management）：42 件のタスクの手順、IMG パス、T-code と 254 枚の実機画面スクリーンショット。内容は教材ドキュメント S4.docx をもとに整理しています。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/s4jp.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">S4</span><span class="txt">日本語実習サイト</span></a>
+    <nav class="main">
+      <a href="index.html">ホーム</a>
+      <a href="prep.html">準備</a>
+      <a href="fi.html">FI</a>
+      <a href="co.html">CO</a>
+      <a class="active" href="mm.html">MM</a>
+      <a href="pp.html">PP</a>
+      <a href="sd.html">SD</a>
+      <a href="tcode.html">T-code</a>
+      <a href="glossary.html">用語</a>
+      <a href="issues.html">トラブルシューティング</a>
+      <a href="tasks.html">索引</a>
+      <a href="instructor.html">講師</a>
+      <a href="worksheet.html">受講者</a>
+      <a href="quiz.html">自習テスト</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page"><article>
+<p class="breadcrumb"><a href="index.html">ホーム</a> / <span>品目管理 MM（Materials Management）</span></p>
+<h1>品目管理 MM（Materials Management）</h1>
+<p class="kicker">品目管理 · 組織構造 · 品目マスタ · 自動記帳 · MRP · 購買プロセス</p>
+<div class="toc"><a href="#guide">1. 本モジュールのガイド</a><a href="#toc">2. タスク一覧</a><a href="#steps">3. 手順（タスクごと）</a><a href="#sources">4. スクリーンショットと設定値について</a></div>
+<div class="grid cards"><div class="card"><b>42</b><span>タスク</span></div><div class="card"><b>254</b><span>実機画面</span></div><div class="card"><b>168</b><span>手順ステップ</span></div><div class="card"><b>24/8</b><span>IMG/業務のタスク</span></div></div>
+<h2 id="guide">1. 本モジュールのガイド</h2>
+<p>MM のメインラインは「組織構造とプラントパラメータ → 品目マスタ → 自動記帳 → MRP → 購買から請求書照合まで」です：プラント / 保管場所 / 購買組織 / 購買グループ / MRP 管理担当者 → 会社コードと購買組織への割当 → 品目グループ、計画マージンキー → プラントパラメータ（在庫引当、保管場所ビュー、税コードのデフォルト値、初期期間、MRP パラメータ）→ MRP の有効化、計画実行の番号範囲 → 品目タイプ属性、評価管理、評価クラス（勘定決定の前提）→ 品目マスタ（原材料（ROH）/ 商品（HAWA）/ 完成品（FERT）、<code>MM01</code>）→ 仕入先購買データ（<code>MK01</code>）と購買情報レコード（<code>ME11</code>）→ 自動記帳（<code>OBYC</code>）と在庫勘定は自動記帳のみ → 許容範囲（価格差異 / 入庫 / 請求書ブロック）→ MRP 実行（<code>MD03</code>）と在庫所要量一覧（<code>MD04</code>）→ 購買依頼（<code>ME51N</code>）→ 購買発注（<code>ME21N</code>）→ 入庫（<code>MIGO</code>）→ 請求書照合（<code>MIRO</code>）→ ブロック請求書の解除（<code>MRBR</code>）→ 請求書と会計伝票 → 在庫照会（<code>MMBE</code>）。</p>
+<p>このうち「評価クラス + 自動記帳（OBYC/BSX/WRX）」は MM と FI の接点であり、原教材ドキュメントで繰り返しトラブルシューティングが行われた箇所でもあります（「トラブルシューティングと注意点」ページを参照）。</p>
+<div class="panel"><b>このモジュールのポイント</b><ul><li>組織構造の 4 点セット：プラント / 保管場所 / 購買組織 / 購買グループ、およびその割当関係</li><li>品目マスタの 3 種類のビュー：基本データ、購買、MRP、会計（評価クラスが記帳勘定を決定）</li><li>自動記帳 <code>OBYC</code>：BSX（在庫）、WRX（GR/IR）、GBB（費用／差異）などのトランザクションキーの勘定決定</li><li>購買の全プロセス：<code>ME51N</code> → <code>ME21N</code> → <code>MIGO</code> → <code>MIRO</code> → <code>MRBR</code></li></ul>
+<p style="margin-top:10px">ドキュメントに出てくる T-code：<a class="tag gray" href="tcode.html#MM60">MM60</a> <a class="tag gray" href="tcode.html#MK01">MK01</a> <a class="tag gray" href="tcode.html#ME11">ME11</a> <a class="tag gray" href="tcode.html#MM02">MM02</a> <a class="tag gray" href="tcode.html#FS00">FS00</a> <a class="tag gray" href="tcode.html#MD03">MD03</a> <a class="tag gray" href="tcode.html#MD04">MD04</a> <a class="tag gray" href="tcode.html#ME51N">ME51N</a> <a class="tag gray" href="tcode.html#ME21N">ME21N</a> <a class="tag gray" href="tcode.html#MIGO">MIGO</a> <a class="tag gray" href="tcode.html#MIRO">MIRO</a> <a class="tag gray" href="tcode.html#MRBR">MRBR</a> <a class="tag gray" href="tcode.html#MMBE">MMBE</a>（詳細は <a href="tcode.html">T-code / IMG パス早見表</a> を参照）</p>
+</div>
+<h2 id="toc">2. タスク目次（42 件）</h2>
+<p>そのうち 42 件のタスクで、原教材ドキュメントの IMG 設定メニューパスが示されています；<span class="fb">IMG 設定</span> のマークが付いているのはカスタマイジング（設定）タスク、<span class="fb img">業務処理</span> と付いているのは日常業務の操作タスクです。表示がないタスクは原文でも明示されておらず、タスク名からご自身で判断してください（一般に「～の定義／～パラメータのメンテナンス」＝ IMG 設定、「伝票・指図・請求書の登録／入力／照会」＝業務処理）。</p>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>No.</th><th>タスク</th><th>IMG/業務</th><th>ドキュメント内の T-code</th><th>画面</th><th>手順ステップ</th></tr></thead><tbody><tr><td><a href="#t01">タスク 01</a></td><td><a href="#t01">プラントを登録</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>7</td><td>3</td></tr><tr><td><a href="#t02">タスク 02</a></td><td><a href="#t02">保管場所を登録する</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>4</td><td>4</td></tr><tr><td><a href="#t03">タスク 03</a></td><td><a href="#t03">購買組織を登録</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t04">タスク 04</a></td><td><a href="#t04">購買グループを登録</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t05">タスク 05</a></td><td><a href="#t05">MRP 管理担当者を定義</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>4</td><td>3</td></tr><tr><td><a href="#t06">タスク 06</a></td><td><a href="#t06">プラントを会社コードに配賦</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t07">タスク 07</a></td><td><a href="#t07">購買組織を会社コードに配賦</a></td><td>—</td><td>—</td><td>4</td><td>3</td></tr><tr><td><a href="#t08">タスク 08</a></td><td><a href="#t08">プラントを購買組織に配賦</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>2</td><td>2</td></tr><tr><td><a href="#t09">タスク 09</a></td><td><a href="#t09">品目グループを定義</a></td><td>—</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t10">タスク 10</a></td><td><a href="#t10">計画マージンキーを定義</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>3</td><td>2</td></tr><tr><td><a href="#t11">タスク 11</a></td><td><a href="#t11">プラントと在庫に関連するプラントパラメータのメンテナンス－在庫引当</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t12">タスク 12</a></td><td><a href="#t12">在庫関連のプラントパラメータのメンテナンス－品目の保管場所ビューの自動登録</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>3</td><td>2</td></tr><tr><td><a href="#t13">タスク 13</a></td><td><a href="#t13">税コードのデフォルト値をメンテナンス</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t14">タスク 14</a></td><td><a href="#t14">会社コードの品目管理の初期期間をメンテナンスします</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>2</td><td>2</td></tr><tr><td><a href="#t15">タスク 15</a></td><td><a href="#t15">資材所要量計画（MRP）に関連するプラントパラメータをメンテナンスします</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>16</td><td>8</td></tr><tr><td><a href="#t16">タスク 16</a></td><td><a href="#t16">資材所要量計画を有効化</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t17">タスク 17</a></td><td><a href="#t17">計画実行の番号範囲を定義</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>7</td><td>4</td></tr><tr><td><a href="#t18">タスク 18</a></td><td><a href="#t18">品目タイプの属性を定義</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t19">タスク 19</a></td><td><a href="#t19">評価管理を定義</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>4</td><td>1</td></tr><tr><td><a href="#t20">タスク 20</a></td><td><a href="#t20">評価範囲の集合をグループ化</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>2</td><td>2</td></tr><tr><td><a href="#t21">タスク 21</a></td><td><a href="#t21">評価クラスを定義する</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>6</td><td>3</td></tr><tr><td><a href="#t22">タスク 22</a></td><td><a href="#t22">原材料（ROH）のマスタデータを新規登録する</a></td><td>—</td><td>—</td><td>15</td><td>9</td></tr><tr><td><a href="#t23">タスク 23</a></td><td><a href="#t23">商品（HAWA）マスタを新規作成</a></td><td>—</td><td>—</td><td>12</td><td>5</td></tr><tr><td><a href="#t24">タスク 24</a></td><td><a href="#t24">完成品（FERT）のマスタデータを新規登録する</a></td><td>—</td><td>—</td><td>10</td><td>4</td></tr><tr><td><a href="#t25">タスク 25</a></td><td><a href="#t25">品目マスタレコード一覧を照会</a></td><td>業務処理（トランザクション）</td><td><code>MM60</code></td><td>3</td><td>1</td></tr><tr><td><a href="#t26">タスク 26</a></td><td><a href="#t26">仕入先購買データを登録</a></td><td>業務処理（トランザクション）</td><td><code>MK01</code></td><td>8</td><td>5</td></tr><tr><td><a href="#t27">タスク 27</a></td><td><a href="#t27">購買情報レコードを新規作成</a></td><td>業務処理（トランザクション）</td><td><code>ME11</code> <code>MM02</code></td><td>16</td><td>9</td></tr><tr><td><a href="#t28">タスク 28</a></td><td><a href="#t28">品目管理の自動記帳をメンテナンスする</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>15</td><td>13</td></tr><tr><td><a href="#t29">タスク 29</a></td><td><a href="#t29">在庫勘定を自動記帳専用に設定する</a></td><td>業務処理（トランザクション）</td><td><code>FS00</code></td><td>3</td><td>2</td></tr><tr><td><a href="#t30">タスク 30</a></td><td><a href="#t30">購買価格差異の許容範囲を設定します</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>6</td><td>3</td></tr><tr><td><a href="#t31">タスク 31</a></td><td><a href="#t31">入庫の許容範囲を設定</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>5</td><td>4</td></tr><tr><td><a href="#t32">タスク 32</a></td><td><a href="#t32">請求書ブロックの許容範囲を設定</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>18</td><td>6</td></tr><tr><td><a href="#t33">タスク 33</a></td><td><a href="#t33">項目金額チェックをメンテナンス</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t34">タスク 34</a></td><td><a href="#t34">資材所要量計画を実行</a></td><td>業務処理（トランザクション）</td><td><code>MD03</code></td><td>10</td><td>4</td></tr><tr><td><a href="#t35">タスク 35</a></td><td><a href="#t35">在庫／所要量一覧を照会</a></td><td>業務処理（トランザクション）</td><td><code>MD04</code></td><td>3</td><td>3</td></tr><tr><td><a href="#t36">タスク 36</a></td><td><a href="#t36">購買依頼を新規作成</a></td><td>—</td><td><code>ME51N</code></td><td>6</td><td>6</td></tr><tr><td><a href="#t37">タスク 37</a></td><td><a href="#t37">購買発注を新規作成</a></td><td>業務処理（トランザクション）</td><td><code>ME21N</code></td><td>9</td><td>8</td></tr><tr><td><a href="#t38">タスク 38</a></td><td><a href="#t38">購買の入庫を登録する</a></td><td>—</td><td><code>MIGO</code></td><td>8</td><td>7</td></tr><tr><td><a href="#t39">タスク 39</a></td><td><a href="#t39">購買請求書を入力する</a></td><td>—</td><td><code>MIRO</code></td><td>5</td><td>4</td></tr><tr><td><a href="#t40">タスク 40</a></td><td><a href="#t40">ブロック請求書の解除</a></td><td>—</td><td><code>MRBR</code></td><td>4</td><td>2</td></tr><tr><td><a href="#t41">タスク 41</a></td><td><a href="#t41">請求書と会計伝票を照会</a></td><td>—</td><td>—</td><td>4</td><td>4</td></tr><tr><td><a href="#t42">タスク 42</a></td><td><a href="#t42">在庫品目を照会</a></td><td>業務処理（トランザクション）</td><td><code>MMBE</code></td><td>3</td><td>3</td></tr></tbody></table></div>
+<h2 id="steps">3. 手順（タスクごと）</h2>
+<div class="box info"><b class="t">このページの使い方</b>各タスクは原教材ドキュメントの順序どおりに掲載しています。まず「説明」を読み、次に「IMG パス」に従って設定ポイントへ進み、その後は番号付きのステップに沿って（各ステップに原教材ドキュメントの実機画面が付いています）、画面ごとに操作していきます。画面の赤い四角や矢印は、原教材ドキュメントの著者が「入力・選択すべき箇所」として付けたものです。画面をクリックすると拡大できます（1×/2×/3×、ESC で閉じる）。</div>
+<div class="steph" id="t01"><span class="no">タスク 01</span><h3>プラントを登録</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">7 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】创建工厂<br></div></details>
+<div class="pathline" data-copy="エンタープライズ構造 → 定義 → ロジスティクス一般 → プラントの定義・コピー・削除・チェック"><b>IMG パス（IMG 設定メニュー）</b>エンタープライズ構造 → 定義 → ロジスティクス一般 → プラントの定義・コピー・削除・チェック</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>企业结构 → 定义 → 后勤常规 → 定义、复制、删除、检查工厂</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 516）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t01/01_1_image524.png"><img src="assets/img/mm/t01/01_1_image524.png" alt="プラントを登録 · ステップ 1：image524.png" loading="lazy" width="388" height="410"></a><figcaption><span class="n">画面 516</span><span class="src">image524.png · 388×410</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t01/01_2_image525.png"><img src="assets/img/mm/t01/01_2_image525.png" alt="プラントを登録 · ステップ 1：image525.png" loading="lazy" width="641" height="680"></a><figcaption><span class="n">画面 517</span><span class="src">image525.png · 641×680</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">ダブルクリックしてプラントを定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击定义工厂</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t01/02_1_image526.png"><img src="assets/img/mm/t01/02_1_image526.png" alt="プラントを登録 · ステップ 2：ダブルクリックしてプラントを定義" loading="lazy" width="499" height="180"></a><figcaption><span class="n">画面 518</span><span class="src">image526.png · 499×180</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">0001 を選択し、「コピー」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">选择 0001，点击复制</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/mm/t01/03_1_image527.png"><img src="assets/img/mm/t01/03_1_image527.png" alt="プラントを登録 · ステップ 3：0001 を選択し、「コピー」をクリック" loading="lazy" width="469" height="623"></a><figcaption><span class="n">画面 519</span><span class="src">image529.png · 469×623</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t01/03_2_image528.png"><img src="assets/img/mm/t01/03_2_image528.png" alt="プラントを登録 · ステップ 3：0001 を選択し、「コピー」をクリック" loading="lazy" width="634" height="950"></a><figcaption><span class="n">画面 520</span><span class="src">image530.png · 634×950</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t01/03_1_image527.png"><img src="assets/img/mm/t01/03_1_image527.png" alt="プラントを登録 · ステップ 3：0001 を選択し、「コピー」をクリック" loading="lazy" width="469" height="623"></a><figcaption><span class="n">画面 519</span><span class="src">image529.png · 469×623</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t01/03_2_image528.png"><img src="assets/img/mm/t01/03_2_image528.png" alt="プラントを登録 · ステップ 3：0001 を選択し、「コピー」をクリック" loading="lazy" width="634" height="950"></a><figcaption><span class="n">画面 520</span><span class="src">image530.png · 634×950</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t02"><span class="no">タスク 02</span><h3>保管場所を登録する</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">4 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】创建库存地点<br></div></details>
+<div class="pathline" data-copy="エンタープライズ構造 → 定義 → 品目管理 → 保管場所のメンテナンス"><b>IMG パス（IMG 設定メニュー）</b>エンタープライズ構造 → 定義 → 品目管理 → 保管場所のメンテナンス</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>企业结构 → 定义 → 物料管理 → 维护仓储地点</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">エンタープライズ構造－定義－品目管理－保管場所のメンテナンス</p>
+<details class="orig"><summary>原文</summary><div class="zh">企业结构－定义－物料管理－维护仓储地点</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t02/01_1_image531.png"><img src="assets/img/mm/t02/01_1_image531.png" alt="保管場所を登録する · ステップ 1：エンタープライズ構造－定義－品目管理－保管場所のメンテナンス" loading="lazy" width="303" height="509"></a><figcaption><span class="n">画面 523</span><span class="src">image531.png · 303×509</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 524）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t02/02_1_image532.png"><img src="assets/img/mm/t02/02_1_image532.png" alt="保管場所を登録する · ステップ 2：image532.png" loading="lazy" width="403" height="248"></a><figcaption><span class="n">画面 524</span><span class="src">image532.png · 403×248</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">Enter</p>
+<details class="orig"><summary>原文</summary><div class="zh">回车</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t02/03_1_image533.png"><img src="assets/img/mm/t02/03_1_image533.png" alt="保管場所を登録する · ステップ 3：Enter" loading="lazy" width="423" height="173"></a><figcaption><span class="n">画面 525</span><span class="src">image533.png · 423×173</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「新規エントリ」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t02/04_1_image534.png"><img src="assets/img/mm/t02/04_1_image534.png" alt="保管場所を登録する · ステップ 4：「新規エントリ」をクリック" loading="lazy" width="377" height="252"></a><figcaption><span class="n">画面 526</span><span class="src">image534.png · 377×252</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>0003 輸送</div>
+<div class="note tip"><b class="t">教材ノート</b>0001 倉庫</div>
+<div class="note tip"><b class="t">教材ノート</b>0002 生産</div>
+</li>
+</ol>
+<div class="steph" id="t03"><span class="no">タスク 03</span><h3>購買組織を登録</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">3 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】创建采购组织<br></div></details>
+<div class="pathline" data-copy="エンタープライズ構造 → 定義 → 品目管理 → 購買組織のメンテナンス"><b>IMG パス（IMG 設定メニュー）</b>エンタープライズ構造 → 定義 → 品目管理 → 購買組織のメンテナンス</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>企业结构 → 定义 → 物料管理 → 维护采购组织</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">エンタープライズ構造－定義－品目管理－購買組織のメンテナンス</p>
+<details class="orig"><summary>原文</summary><div class="zh">企业结构－定义－物料管理－维护采购组织</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t03/01_1_image535.png"><img src="assets/img/mm/t03/01_1_image535.png" alt="購買組織を登録 · ステップ 1：エンタープライズ構造－定義－品目管理－購買組織のメンテナンス" loading="lazy" width="301" height="371"></a><figcaption><span class="n">画面 527</span><span class="src">image535.png · 301×371</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 528）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t03/02_1_image536.png"><img src="assets/img/mm/t03/02_1_image536.png" alt="購買組織を登録 · ステップ 2：image536.png" loading="lazy" width="415" height="143"></a><figcaption><span class="n">画面 528</span><span class="src">image536.png · 415×143</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「新規エントリ」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t03/03_1_image537.png"><img src="assets/img/mm/t03/03_1_image537.png" alt="購買組織を登録 · ステップ 3：「新規エントリ」をクリック" loading="lazy" width="365" height="249"></a><figcaption><span class="n">画面 529</span><span class="src">image537.png · 365×249</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>Y999 頤寧購買組織</div>
+</li>
+</ol>
+<div class="steph" id="t04"><span class="no">タスク 04</span><h3>購買グループを登録</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">3 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】创建采购组<br></div></details>
+<div class="pathline" data-copy="品目管理 → 購買 → 購買グループの登録"><b>IMG パス（IMG 設定メニュー）</b>品目管理 → 購買 → 購買グループの登録</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>物料管理 → 采购 → 创建采购组</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">品目管理－購買－購買グループの登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">物料管理－采购－创建采购组</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t04/01_1_image538.png"><img src="assets/img/mm/t04/01_1_image538.png" alt="購買グループを登録 · ステップ 1：品目管理－購買－購買グループの登録" loading="lazy" width="501" height="259"></a><figcaption><span class="n">画面 530</span><span class="src">image538.png · 501×259</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 531）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t04/02_1_image539.png"><img src="assets/img/mm/t04/02_1_image539.png" alt="購買グループを登録 · ステップ 2：image539.png" loading="lazy" width="616" height="206"></a><figcaption><span class="n">画面 531</span><span class="src">image539.png · 616×206</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「新規エントリ」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t04/03_1_image540.png"><img src="assets/img/mm/t04/03_1_image540.png" alt="購買グループを登録 · ステップ 3：「新規エントリ」をクリック" loading="lazy" width="630" height="205"></a><figcaption><span class="n">画面 532</span><span class="src">image540.png · 630×205</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>PG1 原材料と運営供給</div>
+<div class="note tip"><b class="t">教材ノート</b>PG2 商品（HAWA）</div>
+</li>
+</ol>
+<div class="steph" id="t05"><span class="no">タスク 05</span><h3>MRP 管理担当者を定義</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">4 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义MRP 控制者<br></div></details>
+<div class="pathline" data-copy="生産 → 資材所要量計画 → マスタデータ → MRP 管理担当者の定義"><b>IMG パス（IMG 設定メニュー）</b>生産 → 資材所要量計画 → マスタデータ → MRP 管理担当者の定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>生产 → 物料需求计划 → 主数据 → 定义 MRP 控制者</code></div>
+<table class="tbl vals"><thead><tr><th>項目（日本語）</th><th>画面の中国語</th><th>教材の設定値</th></tr></thead><tbody><tr><td>プラント</td><td><code>工厂</code></td><td>P999</td></tr><tr><td>プラント</td><td><code>工厂</code></td><td>P999</td></tr></tbody></table>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">生産－資材所要量計画－マスタデータ－MRP 管理担当者の定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">生产－物料需求计划－主数据－定义 MRP 控制者</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t05/01_1_image541.png"><img src="assets/img/mm/t05/01_1_image541.png" alt="MRP 管理担当者を定義 · ステップ 1：生産－資材所要量計画－マスタデータ－MRP 管理担当者の定義" loading="lazy" width="328" height="395"></a><figcaption><span class="n">画面 533</span><span class="src">image541.png · 328×395</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t05/01_2_image542.png"><img src="assets/img/mm/t05/01_2_image542.png" alt="MRP 管理担当者を定義 · ステップ 1：生産－資材所要量計画－マスタデータ－MRP 管理担当者の定義" loading="lazy" width="545" height="280"></a><figcaption><span class="n">画面 534</span><span class="src">image542.png · 545×280</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「新規エントリ」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t05/02_1_image543.png"><img src="assets/img/mm/t05/02_1_image543.png" alt="MRP 管理担当者を定義 · ステップ 2：「新規エントリ」をクリック" loading="lazy" width="520" height="497"></a><figcaption><span class="n">画面 535</span><span class="src">image543.png · 520×497</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">MRP 管理担当者 001 自製製品</p>
+<details class="orig"><summary>原文</summary><div class="zh">MRP 控制者 001 自制品</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t05/03_1_image544.png"><img src="assets/img/mm/t05/03_1_image544.png" alt="MRP 管理担当者を定義 · ステップ 3：MRP 管理担当者 001 自製製品" loading="lazy" width="539" height="504"></a><figcaption><span class="n">画面 536</span><span class="src">image544.png · 539×504</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>MRP 管理担当者 002 商品（HAWA）</div>
+</li>
+</ol>
+<div class="steph" id="t06"><span class="no">タスク 06</span><h3>プラントを会社コードに配賦</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">3 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】分配工厂到公司代码<br></div></details>
+<div class="pathline" data-copy="エンタープライズ構造 → 割当 → &quot;ロジスティクス-一般&quot; → 会社コードへのプラントの割当"><b>IMG パス（IMG 設定メニュー）</b>エンタープライズ構造 → 割当 → &quot;ロジスティクス-一般&quot; → 会社コードへのプラントの割当</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>企业结构 → 分配 → &quot;后勤-常规&quot; → 给公司代码分配工厂</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">エンタープライズ構造－割当－「ロジスティクス一般」－会社コードへのプラントの割当</p>
+<details class="orig"><summary>原文</summary><div class="zh">企业结构－分配－&quot;后勤-常规&quot;－给公司代码分配工厂</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t06/01_1_image545.png"><img src="assets/img/mm/t06/01_1_image545.png" alt="プラントを会社コードに配賦 · ステップ 1：エンタープライズ構造－割当－「ロジスティクス一般」－会社コードへのプラントの割当" loading="lazy" width="504" height="261"></a><figcaption><span class="n">画面 537</span><span class="src">image545.png · 504×261</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 538）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t06/02_1_image546.png"><img src="assets/img/mm/t06/02_1_image546.png" alt="プラントを会社コードに配賦 · ステップ 2：image546.png" loading="lazy" width="610" height="171"></a><figcaption><span class="n">画面 538</span><span class="src">image546.png · 610×171</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">「新規エントリ」をクリックし、C999 とプラント P999 を選択して「保存」ボタンをクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击新条目，选择 C999，选择P999工厂，点击保存按钮</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t06/03_1_image547.png"><img src="assets/img/mm/t06/03_1_image547.png" alt="プラントを会社コードに配賦 · ステップ 3：「新規エントリ」をクリックし、C999 とプラント P999 を選択して「保存」ボタンをクリックします" loading="lazy" width="636" height="179"></a><figcaption><span class="n">画面 539</span><span class="src">image547.png · 636×179</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t07"><span class="no">タスク 07</span><h3>購買組織を会社コードに配賦</h3><span class="tc2">4 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】分配采购组织到公司代码<br></div></details>
+<div class="pathline" data-copy="エンタープライズ構造 → 割当 → 品目管理 → 会社コードへの購買組織の割当"><b>IMG パス（IMG 設定メニュー）</b>エンタープライズ構造 → 割当 → 品目管理 → 会社コードへの購買組織の割当</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>企业结构 → 分配 → 物料管理 → 给公司代码分配采购组织</code></div>
+<ol class="oplist">
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/mm/t07/01_1_image548.png"><img src="assets/img/mm/t07/01_1_image548.png" alt="購買組織を会社コードに配賦 · ステップ 1：image548.png" loading="lazy" width="355" height="313"></a><figcaption><span class="n">画面 540</span><span class="src">image548.png · 355×313</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 1 つの購買組織は複数のプラントの購買の IMG 設定を同時に担当できます<br>エンタープライズ構造－割当－品目管理－会社コードへの購買組織の割当</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释:一个采购组织可以同时负责几个工厂的采购后台<br>企业结构－分配－物料管理－给公司代码分配采购组织</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t07/02_1_image549.png"><img src="assets/img/mm/t07/02_1_image549.png" alt="購買組織を会社コードに配賦 · ステップ 2：解説：1 つの購買組織は複数のプラントの購買の IMG 設定を同時に担当できます エンタープライズ構造－割当－品目管理－会社コードへの購買組織の割当" loading="lazy" width="600" height="172"></a><figcaption><span class="n">画面 541</span><span class="src">image549.png · 600×172</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">C999 を選択し、「保存」ボタンをクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">选择 C999 点击保存按钮</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t07/03_1_image550.png"><img src="assets/img/mm/t07/03_1_image550.png" alt="購買組織を会社コードに配賦 · ステップ 3：C999 を選択し、「保存」ボタンをクリックします" loading="lazy" width="638" height="179"></a><figcaption><span class="n">画面 542</span><span class="src">image550.png · 638×179</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t07/03_2_image551.png"><img src="assets/img/mm/t07/03_2_image551.png" alt="購買組織を会社コードに配賦 · ステップ 3：C999 を選択し、「保存」ボタンをクリックします" loading="lazy" width="624" height="190"></a><figcaption><span class="n">画面 543</span><span class="src">image551.png · 624×190</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t08"><span class="no">タスク 08</span><h3>プラントを購買組織に配賦</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">2 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】分配工厂到采购组织<br></div></details>
+<div class="pathline" data-copy="エンタープライズ構造 → 割当 → 品目管理 → プラントへの購買組織の割当"><b>IMG パス（IMG 設定メニュー）</b>エンタープライズ構造 → 割当 → 品目管理 → プラントへの購買組織の割当</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>企业结构 → 分配 → 物料管理 → 给工厂分配采购组织</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">エンタープライズ構造－割当－品目管理－プラントへの購買組織の割当</p>
+<details class="orig"><summary>原文</summary><div class="zh">企业结构－分配－物料管理－给工厂分配采购组织</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t08/01_1_image552.png"><img src="assets/img/mm/t08/01_1_image552.png" alt="プラントを購買組織に配賦 · ステップ 1：エンタープライズ構造－割当－品目管理－プラントへの購買組織の割当" loading="lazy" width="440" height="313"></a><figcaption><span class="n">画面 544</span><span class="src">image552.png · 440×313</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">購買選択 Y999、プラント選択 P999 で「保存」をクリック 購買選択 Y999、プラント選択 P999 で「保存」をクリックし、「新規エントリ」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">采购选择 Y999，工厂选择P999 点击保存采购选择 Y999，工厂选择P999 点击保存点击新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t08/02_1_image553.png"><img src="assets/img/mm/t08/02_1_image553.png" alt="プラントを購買組織に配賦 · ステップ 2：購買選択 Y999、プラント選択 P999 で「保存」をクリック 購買選択 Y999、プラント選択 P999 で「保存」をクリックし、「新規エントリ」をクリック" loading="lazy" width="617" height="210"></a><figcaption><span class="n">画面 545</span><span class="src">image553.png · 617×210</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>「確認」をクリックした後、「保存」ボタンをクリック</div>
+</li>
+</ol>
+<div class="steph" id="t09"><span class="no">タスク 09</span><h3>品目グループを定義</h3><span class="tc2">3 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义物料组<br></div></details>
+<div class="pathline" data-copy="ロジスティクス一般 → 品目マスタレコード → キー項目の設定 → 品目グループの定義"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス一般 → 品目マスタレコード → キー項目の設定 → 品目グループの定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤常规 → 物料主记录 → 设置关键字段 → 定义物料组</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">ロジスティクス一般－品目マスタレコード－キー項目の設定－品目グループの定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">后勤常规－物料主记录－设置关键字段－定义物料组</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t09/01_1_image554.png"><img src="assets/img/mm/t09/01_1_image554.png" alt="品目グループを定義 · ステップ 1：ロジスティクス一般－品目マスタレコード－キー項目の設定－品目グループの定義" loading="lazy" width="268" height="471"></a><figcaption><span class="n">画面 546</span><span class="src">image554.png · 268×471</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 品目は 3 つのグループごとに統計分析する必要があるため、品目マスタをメンテナンスする際に品目グループを割り当てる必要があります。IMG 設定</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：物料需要按三个组来统计分析，在维护物料主数据的时候，需要分配物料组后台</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t09/02_1_image555.png"><img src="assets/img/mm/t09/02_1_image555.png" alt="品目グループを定義 · ステップ 2：解説：品目は 3 つのグループごとに統計分析する必要があるため、品目マスタをメンテナンスする際に品目グループを割り当てる必要があります。IMG 設定" loading="lazy" width="608" height="142"></a><figcaption><span class="n">画面 547</span><span class="src">image555.png · 608×142</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「新規エントリ」をクリックし、3 つの品目グループを追加します</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击新条目，新增 三个物料组</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t09/03_1_image556.png"><img src="assets/img/mm/t09/03_1_image556.png" alt="品目グループを定義 · ステップ 3：「新規エントリ」をクリックし、3 つの品目グループを追加します" loading="lazy" width="612" height="163"></a><figcaption><span class="n">画面 548</span><span class="src">image556.png · 612×163</span></figcaption></figure>
+</li>
+</ol>
+<div class="tblwrap"><table class="tbl"><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>0001</td><td>原材料（ROH）</td></tr><tr><td>0002</td><td>完成品（FERT）</td></tr><tr><td>0003</td><td>商品（HAWA）</td></tr></tbody></table></div>
+<div class="steph" id="t10"><span class="no">タスク 10</span><h3>計画マージンキーを定義</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">3 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义计划边际码<br></div></details>
+<div class="pathline" data-copy="品目管理 → 消費ベースの計画 → 計画 → 浮動（計画マージンキー）の定義"><b>IMG パス（IMG 設定メニュー）</b>品目管理 → 消費ベースの計画 → 計画 → 浮動（計画マージンキー）の定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>物料管理 → 基于消费的计划 → 计划 → 定义浮点（计划毛利码）</code></div>
+<div class="note info"><b class="t">原理の説明</b>解説：この会社では品目の計画を行う際に、通常の購買時間と生産時間のほかに、操作、生産前、生産後、指図発行の各段階で 1 日のバッファ時間を確保することを規定しています。このルールは「計画マージンキー」で定義し、各種品目に（品目マスタで）割り当てます。</div>
+<ol class="oplist">
+<li>
+<p class="opcap">品目管理－消費ベースの計画－計画－浮動（計画マージンキー）の定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">物料管理－基于消费的计划－计划－定义浮点（计划毛利码）</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t10/01_1_image557.png"><img src="assets/img/mm/t10/01_1_image557.png" alt="計画マージンキーを定義 · ステップ 1：品目管理－消費ベースの計画－計画－浮動（計画マージンキー）の定義" loading="lazy" width="446" height="569"></a><figcaption><span class="n">画面 549</span><span class="src">image557.png · 446×569</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t10/01_2_image558.png"><img src="assets/img/mm/t10/01_2_image558.png" alt="計画マージンキーを定義 · ステップ 1：品目管理－消費ベースの計画－計画－浮動（計画マージンキー）の定義" loading="lazy" width="618" height="207"></a><figcaption><span class="n">画面 550</span><span class="src">image558.png · 618×207</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「新規エントリ」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t10/02_1_image559.png"><img src="assets/img/mm/t10/02_1_image559.png" alt="計画マージンキーを定義 · ステップ 2：「新規エントリ」をクリック" loading="lazy" width="627" height="185"></a><figcaption><span class="n">画面 551</span><span class="src">image559.png · 627×185</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t11"><span class="no">タスク 11</span><h3>プラントと在庫に関連するプラントパラメータのメンテナンス－在庫引当</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">3 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】维护工厂和库存相关的工厂参数－库存预留<br></div></details>
+<div class="pathline" data-copy="品目管理 → 在庫管理と実地棚卸 → プラントパラメータ"><b>IMG パス（IMG 設定メニュー）</b>品目管理 → 在庫管理と実地棚卸 → プラントパラメータ</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>物料管理 → 库存管理和实际库存 → 工厂参数</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">プラントには非常に多くの制御パラメータがあります。たとえば在庫管理（MM-IM）では、品目に対して引当番号によって引当を行うことができ、たとえば製造指図や受注伝票に対して引当を行います。このプラントでは、在庫の引当は計画日より 1 か月前倒しして使用でき、同時に、期限切れ後 1 か月以内の引当も引き続き使用できます。</p>
+<details class="orig"><summary>原文</summary><div class="zh">工厂中有非常多的控制参数，比如在库存管理中，对物料可以通过预留号进行预留，比如预留给生产订单或销售订单。在此工厂里，对库存的预留允许比计划日期提前一个月使用，同时过期 1 个月以内的预留仍然可以使用</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t11/01_1_image560.png"><img src="assets/img/mm/t11/01_1_image560.png" alt="プラントと在庫に関連するプラントパラメータのメンテナンス－在庫引当 · ステップ 1：プラントには非常に多くの制御パラメータがあります。たとえば在庫管理（MM-IM）では、品目に対して引当番号によって引当を行うことができ、たとえば製造指図や受注伝票に対して引当を行います。このプラントでは、在庫の引当は計画日より 1 か月前倒しして使用でき、同時に、期限切れ後 1 か月以内の引当も引き続き使用できます。" loading="lazy" width="377" height="257"></a><figcaption><span class="n">画面 552</span><span class="src">image560.png · 377×257</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 553）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t11/02_1_image561.png"><img src="assets/img/mm/t11/02_1_image561.png" alt="プラントと在庫に関連するプラントパラメータのメンテナンス－在庫引当 · ステップ 2：image561.png" loading="lazy" width="427" height="165"></a><figcaption><span class="n">画面 553</span><span class="src">image561.png · 427×165</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「新規エントリ」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t11/03_1_image562.png"><img src="assets/img/mm/t11/03_1_image562.png" alt="プラントと在庫に関連するプラントパラメータのメンテナンス－在庫引当 · ステップ 3：「新規エントリ」をクリック" loading="lazy" width="525" height="687"></a><figcaption><span class="n">画面 554</span><span class="src">image562.png · 525×687</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>「移動を許可」は、引当済みの品目に対して在庫移動を許可するかどうかの制御を指します。「移動可能日数」は、引当の計画使用日より 30 日早くから引当を使用できることを指します</div>
+<div class="note tip"><b class="t">教材ノート</b>保持期間とは、引当の計画使用日から過去 30 日以内であれば、引当を引き続き使用できることを指します</div>
+</li>
+</ol>
+<div class="steph" id="t12"><span class="no">タスク 12</span><h3>在庫関連のプラントパラメータのメンテナンス－品目の保管場所ビューの自動登録</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">3 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】维护和库存相关的工厂参数－自动创建物料的库存地点视图<br></div></details>
+<div class="pathline" data-copy="品目管理 → 在庫管理と実地棚卸 → 出庫/転送記帳 → 保管場所の自動登録"><b>IMG パス（IMG 設定メニュー）</b>品目管理 → 在庫管理と実地棚卸 → 出庫/転送記帳 → 保管場所の自動登録</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>物料管理 → 库存管理和实际库存 → 发货/转储记帐 → 自动建立库存地点</code></div>
+<div class="note tip"><b class="t">教材ノート</b>品目マスタは、会計ビューや購買ビューなど、ビューごとにメンテナンスします。そのうち保管場所ビューは、品目移動のとき、たとえば初回入庫のときにシステムが自動的に作成するように選択できます。</div>
+<ol class="oplist">
+<li>
+<p class="opcap">本プラントでは、どの品目をどの保管場所に保管できるかについて厳格な規定はなく、状況に応じてどの品目も 3 つの保管場所のいずれかに保管される可能性があります</p>
+<details class="orig"><summary>原文</summary><div class="zh">在本工厂里，对具体哪个物料可以存放在哪个库存地点没有硬性规定，根据情况任何物料在三个库存地点存放都有可能</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t12/01_1_image563.png"><img src="assets/img/mm/t12/01_1_image563.png" alt="在庫関連のプラントパラメータのメンテナンス－品目の保管場所ビューの自動登録 · ステップ 1：本プラントでは、どの品目をどの保管場所に保管できるかについて厳格な規定はなく、状況に応じてどの品目も 3 つの保管場所のいずれかに保管される可能性があります" loading="lazy" width="373" height="499"></a><figcaption><span class="n">画面 555</span><span class="src">image563.png · 373×499</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t12/01_2_image564.png"><img src="assets/img/mm/t12/01_2_image564.png" alt="在庫関連のプラントパラメータのメンテナンス－品目の保管場所ビューの自動登録 · ステップ 1：本プラントでは、どの品目をどの保管場所に保管できるかについて厳格な規定はなく、状況に応じてどの品目も 3 つの保管場所のいずれかに保管される可能性があります" loading="lazy" width="286" height="226"></a><figcaption><span class="n">画面 556</span><span class="src">image564.png · 286×226</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">プラントと操作中の品目移動タイプの両方が許可している場合にのみ、システムは品目の保管場所ビューを自動的に作成します。移動タイプについては、システムの標準設定をそのまま使用します。「プラント」をクリックします。</p>
+<details class="orig"><summary>原文</summary><div class="zh">只有当一个工厂和正在操作的物料移动类型都允许时，系统才会自动创建物料的库存地点视图。对于移动类型，我们保留系统的标准设置。点击工厂。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t12/02_1_image565.png"><img src="assets/img/mm/t12/02_1_image565.png" alt="在庫関連のプラントパラメータのメンテナンス－品目の保管場所ビューの自動登録 · ステップ 2：プラントと操作中の品目移動タイプの両方が許可している場合にのみ、システムは品目の保管場所ビューを自動的に作成します。移動タイプについては、システムの標準設定をそのまま使用します。「プラント」をクリックします。" loading="lazy" width="497" height="189"></a><figcaption><span class="n">画面 557</span><span class="src">image565.png · 497×189</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>P999 を選択し、「保管場所の自動登録」をクリック</div>
+</li>
+</ol>
+<div class="steph" id="t13"><span class="no">タスク 13</span><h3>税コードのデフォルト値をメンテナンス</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">3 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】维护税务代码的缺省值<br></div></details>
+<div class="pathline" data-copy="品目管理 → ロジスティクス請求書照合（LIV） → 受入請求書 → 税コードのデフォルト値のメンテナンス"><b>IMG パス（IMG 設定メニュー）</b>品目管理 → ロジスティクス請求書照合（LIV） → 受入請求書 → 税コードのデフォルト値のメンテナンス</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>物料管理 → 后勤发票校验 → 收入发票 → 维护税代码的缺省值</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">品目管理－ロジスティクス請求書照合（LIV）－受入請求書－税コードのデフォルト値のメンテナンス<br>この会社の購買請求書はほとんどが 13％の付加価値税請求書（中国税法では 13％、5％があり、仕入税と売上税に分かれます）であるため、ここでは既定値として設定し、請求書照合を容易にします。もちろん、既定値は業務処理の際に変更できます。</p>
+<details class="orig"><summary>原文</summary><div class="zh">物料管理－后勤发票校验－收入发票－维护税代码的缺省值<br>在此公司里的采购发票大多数是 13％的增值税发票(中国税法 13%,5%,还分进项税和销项税)，所以这里设置为缺省值方便发票校验，当然缺省值在作业务操作时时可以更改的。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t13/01_1_image566.png"><img src="assets/img/mm/t13/01_1_image566.png" alt="税コードのデフォルト値をメンテナンス · ステップ 1：品目管理－ロジスティクス請求書照合（LIV）－受入請求書－税コードのデフォルト値のメンテナンス この会社の購買請求書はほとんどが 13％の付加価値税請求書（中国税法では 13％、5％があり、仕入税と売上税に分かれます）であるため、ここでは既定値として設定し、請求書照合を容易にします。もちろん、既定値は業務処理の際に変更" loading="lazy" width="399" height="536"></a><figcaption><span class="n">画面 558</span><span class="src">image566.png · 399×536</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 559）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t13/02_1_image567.png"><img src="assets/img/mm/t13/02_1_image567.png" alt="税コードのデフォルト値をメンテナンス · ステップ 2：image567.png" loading="lazy" width="421" height="221"></a><figcaption><span class="n">画面 559</span><span class="src">image567.png · 421×221</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「新規エントリ」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t13/03_1_image568.png"><img src="assets/img/mm/t13/03_1_image568.png" alt="税コードのデフォルト値をメンテナンス · ステップ 3：「新規エントリ」をクリック" loading="lazy" width="443" height="342"></a><figcaption><span class="n">画面 560</span><span class="src">image568.png · 443×342</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t14"><span class="no">タスク 14</span><h3>会社コードの品目管理の初期期間をメンテナンスします</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">2 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】维护公司代码下物料管理的初始期间<br></div></details>
+<div class="pathline" data-copy="ロジスティクス一般 → 品目マスタレコード → 基本設定 → 品目管理の会社コードのメンテナンス"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス一般 → 品目マスタレコード → 基本設定 → 品目管理の会社コードのメンテナンス</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤常规 → 物料主记录 → 基本设置 → 维护物料管理的公司代码</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">品目管理では SAP 上で当月の締めしか開けられないか、よくても当月と前月の締めまでしか開けられず、しかも締めは 1 か月ずつ後ろにしか開けられません。そのため、最初に初期期間を設定する必要があります。一般に初期期間は本番稼働前の月に設定します。たとえば 2021 年 12 月に本番稼働する場合は、初期期間を 2021 年 11 月に設定し、11 月に期末在庫残高をインポートします。</p>
+<details class="orig"><summary>原文</summary><div class="zh">物料管理在 SAP 中只能开当前月的帐，或者之多当月和上个月的帐，而且开帐只允许一个月一个月的向后开，所以在一开始我们要设定一个初始期间。一般初始期间设置为上线前的那个月，比如 2021年 12 月上线，就设定初始期间为 2021 年 11 月，在 11 月中导入期末库存余额。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t14/01_1_image569.png"><img src="assets/img/mm/t14/01_1_image569.png" alt="会社コードの品目管理の初期期間をメンテナンスします · ステップ 1：品目管理では SAP 上で当月の締めしか開けられないか、よくても当月と前月の締めまでしか開けられず、しかも締めは 1 か月ずつ後ろにしか開けられません。そのため、最初に初期期間を設定する必要があります。一般に初期期間は本番稼働前の月に設定します。たとえば 2021 年 12 月に本番稼働する場合は、初期期間を 2021" loading="lazy" width="374" height="264"></a><figcaption><span class="n">画面 561</span><span class="src">image569.png · 374×264</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 562）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t14/02_1_image570.png"><img src="assets/img/mm/t14/02_1_image570.png" alt="会社コードの品目管理の初期期間をメンテナンスします · ステップ 2：image570.png" loading="lazy" width="634" height="449"></a><figcaption><span class="n">画面 562</span><span class="src">image570.png · 634×449</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>年には当年を、月には当月を入力します。Abp をオンにすると、前月の在庫帳も同時に開くことを意味します</div>
+</li>
+</ol>
+<div class="steph" id="t15"><span class="no">タスク 15</span><h3>資材所要量計画（MRP）に関連するプラントパラメータをメンテナンスします</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">16 画面 / 8 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】维护和物料需求计划相关的工厂参数<br></div></details>
+<div class="pathline" data-copy="品目管理 → 消費ベースの計画 → プラントパラメータ → プラントパラメータの一括メンテナンスの実行"><b>IMG パス（IMG 設定メニュー）</b>品目管理 → 消費ベースの計画 → プラントパラメータ → プラントパラメータの一括メンテナンスの実行</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>物料管理 → 基于消费的计划 → 工厂参数 → 执行工厂参数总体维护</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">前段で在庫関連のプラントパラメータをメンテナンスしました。本ステップでは、資材所要量計画（MRP）関連のプラントパラメータをメンテナンスします。パラメータが多いため、プラント 0001 をコピーしてから変更します。</p>
+<details class="orig"><summary>原文</summary><div class="zh">前面我们维护了库存相关的工厂参数。本步骤中，我们要维护和物料需求计划 MRP 相关的工厂参数，由于涉及参数太多，我们采用复制 0001 工厂再更改</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/mm/t15/01_1_image571.png"><img src="assets/img/mm/t15/01_1_image571.png" alt="資材所要量計画（MRP）に関連するプラントパラメータをメンテナンスします · ステップ 1：前段で在庫関連のプラントパラメータをメンテナンスしました。本ステップでは、資材所要量計画（MRP）関連のプラントパラメータをメンテナンスします。パラメータが多いため、プラント 0001 をコピーしてから変更します。" loading="lazy" width="313" height="158"></a><figcaption><span class="n">画面 563</span><span class="src">image573.png · 313×158</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t15/01_2_image572.png"><img src="assets/img/mm/t15/01_2_image572.png" alt="資材所要量計画（MRP）に関連するプラントパラメータをメンテナンスします · ステップ 1：前段で在庫関連のプラントパラメータをメンテナンスしました。本ステップでは、資材所要量計画（MRP）関連のプラントパラメータをメンテナンスします。パラメータが多いため、プラント 0001 をコピーしてから変更します。" loading="lazy" width="289" height="304"></a><figcaption><span class="n">画面 564</span><span class="src">image574.png · 289×304</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t15/01_1_image571.png"><img src="assets/img/mm/t15/01_1_image571.png" alt="資材所要量計画（MRP）に関連するプラントパラメータをメンテナンスします · ステップ 1：前段で在庫関連のプラントパラメータをメンテナンスしました。本ステップでは、資材所要量計画（MRP）関連のプラントパラメータをメンテナンスします。パラメータが多いため、プラント 0001 をコピーしてから変更します。" loading="lazy" width="313" height="158"></a><figcaption><span class="n">画面 563</span><span class="src">image573.png · 313×158</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t15/01_2_image572.png"><img src="assets/img/mm/t15/01_2_image572.png" alt="資材所要量計画（MRP）に関連するプラントパラメータをメンテナンスします · ステップ 1：前段で在庫関連のプラントパラメータをメンテナンスしました。本ステップでは、資材所要量計画（MRP）関連のプラントパラメータをメンテナンスします。パラメータが多いため、プラント 0001 をコピーしてから変更します。" loading="lazy" width="289" height="304"></a><figcaption><span class="n">画面 564</span><span class="src">image574.png · 289×304</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">「作成」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击创建</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t15/02_1_image575.png"><img src="assets/img/mm/t15/02_1_image575.png" alt="資材所要量計画（MRP）に関連するプラントパラメータをメンテナンスします · ステップ 2：「作成」をクリック" loading="lazy" width="459" height="235"></a><figcaption><span class="n">画面 567</span><span class="src">image575.png · 459×235</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 568）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t15/03_1_image576.png"><img src="assets/img/mm/t15/03_1_image576.png" alt="資材所要量計画（MRP）に関連するプラントパラメータをメンテナンスします · ステップ 3：image576.png" loading="lazy" width="543" height="424"></a><figcaption><span class="n">画面 568</span><span class="src">image576.png · 543×424</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「コピー」キーをクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击复制键</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t15/04_1_image577.png"><img src="assets/img/mm/t15/04_1_image577.png" alt="資材所要量計画（MRP）に関連するプラントパラメータをメンテナンスします · ステップ 4：「コピー」キーをクリック" loading="lazy" width="459" height="235"></a><figcaption><span class="n">画面 569</span><span class="src">image577.png · 459×235</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">システムに 0001 のパラメータが P999 にコピーされたことが表示されます。次に、不適切なパラメータを変更します。「メンテナンス」ボタンをクリックし、「メンテナンス」をクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">系统显示，0001 的参数已经拷贝至 P999，接下来将不合适的参数改掉，点击维护按钮点击维护</div></details>
+<div class="shot-grid"><figure class="shot narrow"><a class="zoom" href="assets/img/mm/t15/05_1_image578.png"><img src="assets/img/mm/t15/05_1_image578.png" alt="資材所要量計画（MRP）に関連するプラントパラメータをメンテナンスします · ステップ 5：システムに 0001 のパラメータが P999 にコピーされたことが表示されます。次に、不適切なパラメータを変更します。「メンテナンス」ボタンをクリックし、「メンテナンス」をクリックします" loading="lazy" width="277" height="32"></a><figcaption><span class="n">画面 570</span><span class="src">image578.png · 277×32</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t15/05_2_image579.png"><img src="assets/img/mm/t15/05_2_image579.png" alt="資材所要量計画（MRP）に関連するプラントパラメータをメンテナンスします · ステップ 5：システムに 0001 のパラメータが P999 にコピーされたことが表示されます。次に、不適切なパラメータを変更します。「メンテナンス」ボタンをクリックし、「メンテナンス」をクリックします" loading="lazy" width="262" height="249"></a><figcaption><span class="n">画面 571</span><span class="src">image581.png · 262×249</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t15/05_3_image580.png"><img src="assets/img/mm/t15/05_3_image580.png" alt="資材所要量計画（MRP）に関連するプラントパラメータをメンテナンスします · ステップ 5：システムに 0001 のパラメータが P999 にコピーされたことが表示されます。次に、不適切なパラメータを変更します。「メンテナンス」ボタンをクリックし、「メンテナンス」をクリックします" loading="lazy" width="459" height="235"></a><figcaption><span class="n">画面 572</span><span class="src">image582.png · 459×235</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t15/05_4_image583.png"><img src="assets/img/mm/t15/05_4_image583.png" alt="資材所要量計画（MRP）に関連するプラントパラメータをメンテナンスします · ステップ 5：システムに 0001 のパラメータが P999 にコピーされたことが表示されます。次に、不適切なパラメータを変更します。「メンテナンス」ボタンをクリックし、「メンテナンス」をクリックします" loading="lazy" width="616" height="803"></a><figcaption><span class="n">画面 573</span><span class="src">image583.png · 616×803</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t15/05_2_image579.png"><img src="assets/img/mm/t15/05_2_image579.png" alt="資材所要量計画（MRP）に関連するプラントパラメータをメンテナンスします · ステップ 5：システムに 0001 のパラメータが P999 にコピーされたことが表示されます。次に、不適切なパラメータを変更します。「メンテナンス」ボタンをクリックし、「メンテナンス」をクリックします" loading="lazy" width="262" height="249"></a><figcaption><span class="n">画面 571</span><span class="src">image581.png · 262×249</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t15/05_3_image580.png"><img src="assets/img/mm/t15/05_3_image580.png" alt="資材所要量計画（MRP）に関連するプラントパラメータをメンテナンスします · ステップ 5：システムに 0001 のパラメータが P999 にコピーされたことが表示されます。次に、不適切なパラメータを変更します。「メンテナンス」ボタンをクリックし、「メンテナンス」をクリックします" loading="lazy" width="459" height="235"></a><figcaption><span class="n">画面 572</span><span class="src">image582.png · 459×235</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">「メンテナンス」ボタンをクリック<br>「メンテナンス」はすでにメンテナンス済みであることを表し、「初期」はまだメンテナンスされていないことを表します。「番号範囲」キーをクリックすると、次のようになります：</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击维护按钮<br>“维护”表示已经维护了，“ 初始”代表尚未维护，点击号码范围键，进入：</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t15/06_1_image584.png"><img src="assets/img/mm/t15/06_1_image584.png" alt="資材所要量計画（MRP）に関連するプラントパラメータをメンテナンスします · ステップ 6：「メンテナンス」ボタンをクリック 「メンテナンス」はすでにメンテナンス済みであることを表し、「初期」はまだメンテナンスされていないことを表します。「番号範囲」キーをクリックすると、次のようになります：" loading="lazy" width="308" height="508"></a><figcaption><span class="n">画面 576</span><span class="src">image584.png · 308×508</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">関連する資材所要量計画（MRP）の番号範囲はすべてメンテナンス済みです。「戻る」キーをクリックし、「フローティング」をクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">相关物料需求计划的号码范围已经全部维护，点击退回键，点击浮动</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t15/07_1_image585.png"><img src="assets/img/mm/t15/07_1_image585.png" alt="資材所要量計画（MRP）に関連するプラントパラメータをメンテナンスします · ステップ 7：関連する資材所要量計画（MRP）の番号範囲はすべてメンテナンス済みです。「戻る」キーをクリックし、「フローティング」をクリックします" loading="lazy" width="612" height="181"></a><figcaption><span class="n">画面 577</span><span class="src">image585.png · 612×181</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">図のとおり、残りのコピーしたものはすべて削除します。削除後の最終結果は次のとおりです：</p>
+<details class="orig"><summary>原文</summary><div class="zh">如图所示，其余复制的都删除掉。删除之后的最终结果如下：</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t15/08_1_image586.png"><img src="assets/img/mm/t15/08_1_image586.png" alt="資材所要量計画（MRP）に関連するプラントパラメータをメンテナンスします · ステップ 8：図のとおり、残りのコピーしたものはすべて削除します。削除後の最終結果は次のとおりです：" loading="lazy" width="605" height="109"></a><figcaption><span class="n">画面 578</span><span class="src">image586.png · 605×109</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t16"><span class="no">タスク 16</span><h3>資材所要量計画を有効化</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">3 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】激活物料需求计划<br></div></details>
+<div class="pathline" data-copy="品目管理 → 消費ベースの計画 → 計画 → 資材所要量計画（MRP）の有効化"><b>IMG パス（IMG 設定メニュー）</b>品目管理 → 消費ベースの計画 → 計画 → 資材所要量計画（MRP）の有効化</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>物料管理 → 基于消费的计划 → 计划 → 激活物料需求计划</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">品目管理－消費ベースの計画－計画－資材所要量計画（MRP）の有効化</p>
+<details class="orig"><summary>原文</summary><div class="zh">物料管理－基于消费的计划－计划－激活物料需求计划</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t16/01_1_image587.png"><img src="assets/img/mm/t16/01_1_image587.png" alt="資材所要量計画を有効化 · ステップ 1：品目管理－消費ベースの計画－計画－資材所要量計画（MRP）の有効化" loading="lazy" width="377" height="296"></a><figcaption><span class="n">画面 579</span><span class="src">image587.png · 377×296</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 580）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t16/02_1_image588.png"><img src="assets/img/mm/t16/02_1_image588.png" alt="資材所要量計画を有効化 · ステップ 2：image588.png" loading="lazy" width="336" height="251"></a><figcaption><span class="n">画面 580</span><span class="src">image588.png · 336×251</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「資材所要量計画」をクリックし、P999 の行を選択して、「所要量計画の有効化」欄のチェックボックスにチェックを入れ、「保存」をクリックします。</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击物料需求计划，选中 P999 行，勾上激活需求计划栏的方框，点击保存。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t16/03_1_image589.png"><img src="assets/img/mm/t16/03_1_image589.png" alt="資材所要量計画を有効化 · ステップ 3：「資材所要量計画」をクリックし、P999 の行を選択して、「所要量計画の有効化」欄のチェックボックスにチェックを入れ、「保存」をクリックします。" loading="lazy" width="636" height="175"></a><figcaption><span class="n">画面 581</span><span class="src">image589.png · 636×175</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t17"><span class="no">タスク 17</span><h3>計画実行の番号範囲を定義</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">7 画面 / 4 ステップ</span></div>
+<p>解説：資材所要量計画関連のプラントパラメータをコピーする際に、番号範囲も一緒にコピーされました。MRP 内のすべてのオブジェクトに番号範囲（01）が割り当てられていることを確認します。</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义计划运行的号码范围<br>解释：在复制物料需求计划相关的工厂参数时，编号范围一起复制了，确认 MRP 中所有的对象都分配了号码范围(01)。</div></details>
+<div class="pathline" data-copy="品目管理 → 消費ベースの計画 → 番号範囲 → 計画実行の番号範囲の定義"><b>IMG パス（IMG 設定メニュー）</b>品目管理 → 消費ベースの計画 → 番号範囲 → 計画実行の番号範囲の定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>物料管理 → 基于消费的计划 → 号码范围 → 定义计划运行的号码范围</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">品目管理－消費ベースの計画－番号範囲－計画実行の番号範囲の定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">物料管理－基于消费的计划－号码范围－定义计划运行的号码范围</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/mm/t17/01_1_image590.png"><img src="assets/img/mm/t17/01_1_image590.png" alt="計画実行の番号範囲を定義 · ステップ 1：品目管理－消費ベースの計画－番号範囲－計画実行の番号範囲の定義" loading="lazy" width="391" height="273"></a><figcaption><span class="n">画面 582</span><span class="src">image592.png · 391×273</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t17/01_2_image591.png"><img src="assets/img/mm/t17/01_2_image591.png" alt="計画実行の番号範囲を定義 · ステップ 1：品目管理－消費ベースの計画－番号範囲－計画実行の番号範囲の定義" loading="lazy" width="537" height="437"></a><figcaption><span class="n">画面 583</span><span class="src">image593.png · 537×437</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t17/01_1_image590.png"><img src="assets/img/mm/t17/01_1_image590.png" alt="計画実行の番号範囲を定義 · ステップ 1：品目管理－消費ベースの計画－番号範囲－計画実行の番号範囲の定義" loading="lazy" width="391" height="273"></a><figcaption><span class="n">画面 582</span><span class="src">image592.png · 391×273</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t17/01_2_image591.png"><img src="assets/img/mm/t17/01_2_image591.png" alt="計画実行の番号範囲を定義 · ステップ 1：品目管理－消費ベースの計画－番号範囲－計画実行の番号範囲の定義" loading="lazy" width="537" height="437"></a><figcaption><span class="n">画面 583</span><span class="src">image593.png · 537×437</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 画面の各行は MRP 関連の伝票の一種です。「間隔」ボタンには番号間隔の定義が、「番号範囲」ボタンには番号間隔の割当があります。<br>MRP 一覧の番号範囲のインターバルボタンをクリックして進みます</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：屏幕中每一行是一种 MRP 相关的凭证，间隔按钮里是编号间隔的定义，编号范围按钮里是分配编号间隔。<br>点击 MRP 清单号码范围的间隔按钮，进入</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t17/02_1_image594.png"><img src="assets/img/mm/t17/02_1_image594.png" alt="計画実行の番号範囲を定義 · ステップ 2：解説：画面の各行は MRP 関連の伝票の一種です。「間隔」ボタンには番号間隔の定義が、「番号範囲」ボタンには番号間隔の割当があります。 MRP 一覧の番号範囲のインターバルボタンをクリックして進みます" loading="lazy" width="443" height="149"></a><figcaption><span class="n">画面 586</span><span class="src">image594.png · 443×149</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「インターバル変更」をクリックして進む</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击修改间隔，进入</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t17/03_1_image595.png"><img src="assets/img/mm/t17/03_1_image595.png" alt="計画実行の番号範囲を定義 · ステップ 3：「インターバル変更」をクリックして進む" loading="lazy" width="579" height="138"></a><figcaption><span class="n">画面 587</span><span class="src">image595.png · 579×138</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">システムにはすでに番号範囲インターバルが 1 つあるため、インターバル 01 を使用します<br>終了し、「MRP 一覧」の番号範囲の番号範囲をクリックして、次に進みます：</p>
+<details class="orig"><summary>原文</summary><div class="zh">系统中已经有一个号码范围间隔，我们将使用间隔 01<br>退出，点击 MRP 清单号码范围的编号范围，进入：</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t17/04_1_image596.png"><img src="assets/img/mm/t17/04_1_image596.png" alt="計画実行の番号範囲を定義 · ステップ 4：システムにはすでに番号範囲インターバルが 1 つあるため、インターバル 01 を使用します 終了し、「MRP 一覧」の番号範囲の番号範囲をクリックして、次に進みます：" loading="lazy" width="437" height="187"></a><figcaption><span class="n">画面 588</span><span class="src">image596.png · 437×187</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>P999 プラントで 01 の番号範囲を選択</div>
+</li>
+</ol>
+<div class="steph" id="t18"><span class="no">タスク 18</span><h3>品目タイプの属性を定義</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">3 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义物料类型的属性<br></div></details>
+<div class="pathline" data-copy="ロジスティクス一般 → 品目マスタ → 基本設定 → 品目タイプ → 品目タイプ属性の定義"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス一般 → 品目マスタ → 基本設定 → 品目タイプ → 品目タイプ属性の定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤常规 → 物料主数据 → 基本设置 → 物料类型 → 定义物料类型的属性</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 品目タイプは品目マスタを定義する上で最も重要なパラメータの 1 つで、各品目マスタでどの情報とパラメータをメンテナンスする必要があるか、品目マスタの番号範囲などを決定します。頤寧公司は SAP の標準品目タイプ、たとえば HAWA の商品、ROH の原材料、FERT の完成品を使用することにしました。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：物料类型是定义物料主数据最重要的一个参数，它决定了各类物料主数据需要维护哪些信息和参数，物料主数据的编号范围等。颐宁公司决定使用 SAP 的标准物料类型，如 HAWA 贸易商品，ROH 原材料，FERT 产成品。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t18/01_1_image597.png"><img src="assets/img/mm/t18/01_1_image597.png" alt="品目タイプの属性を定義 · ステップ 1：解説：品目タイプは品目マスタを定義する上で最も重要なパラメータの 1 つで、各品目マスタでどの情報とパラメータをメンテナンスする必要があるか、品目マスタの番号範囲などを決定します。頤寧公司は SAP の標準品目タイプ、たとえば HAWA の商品、ROH の原材料、FERT の完成品を使用することにしました。" loading="lazy" width="408" height="370"></a><figcaption><span class="n">画面 589</span><span class="src">image597.png · 408×370</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 590）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t18/02_1_image598.png"><img src="assets/img/mm/t18/02_1_image598.png" alt="品目タイプの属性を定義 · ステップ 2：image598.png" loading="lazy" width="422" height="483"></a><figcaption><span class="n">画面 590</span><span class="src">image598.png · 422×483</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 画面の右側は現在システムにすでにある品目タイプの一覧で、左側は品目タイプのパラメータを階層的にメンテナンスします。該当の品目タイプをダブルクリックすると、第 1 階層の「品目タイプ」パラメータ定義に入れます。私たちはシステム標準の設定は変更せず、第 2 階層の、品目タイプの各プラントにおける「数量／金額更新」をメンテナンスします。<br>品目タイプ「HAWA」の商品（HAWA）を選択し、左欄の「数量/金額更新」をダブルクリックすると、次のようになります：</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：屏幕的右方是目前系统中已经有的物料类型清单，左侧是分层维护物料类型的参数，双击相关的物料类型可以进入第一层：“ 物料类型” 参数定义。我们不改变系统标准的设置，我们维护第二层，物料类型在各工厂“数量/价值更新”。<br>选择物料类型“HAWA”贸易货物，双击左栏的“数量/价值更新”进入如下：</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t18/03_1_image599.png"><img src="assets/img/mm/t18/03_1_image599.png" alt="品目タイプの属性を定義 · ステップ 3：解説：画面の右側は現在システムにすでにある品目タイプの一覧で、左側は品目タイプのパラメータを階層的にメンテナンスします。該当の品目タイプをダブルクリックすると、第 1 階層の「品目タイプ」パラメータ定義に入れます。私たちはシステム標準の設定は変更せず、第 2 階層の、品目タイプの各プラントにおける「数量／金額更新」をメ" loading="lazy" width="623" height="248"></a><figcaption><span class="n">画面 591</span><span class="src">image599.png · 623×248</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>P999 の数量更新および金額更新を選択します</div>
+<div class="note info"><b class="t">原理の説明</b>解説：ある品目タイプを定義し、特定のプラントでは「非評価在庫」、つまり数量のみを記録して評価額を更新しない在庫にしたり、「数量管理なし在庫」にしたりすることができます。</div>
+</li>
+</ol>
+<div class="steph" id="t19"><span class="no">タスク 19</span><h3>評価管理を定義</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">4 画面 / 1 ステップ</span></div>
+<p>解説：品目管理（MM）と財務会計の最大の統合ポイントは自動記帳であり、すなわち MM の在庫移動が自動的に対応する会計伝票を生成します。本ステップと続く 2 つのステップは自動記帳を定義するための準備で、自動記帳そのものは 4.28 品目管理の自動記帳のメンテナンスで定義します。</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义评估控制<br>解释：物料管理和财务会计最大的集成点是自动记账，也就是 MM 中的物料移动会自动产生相应的会计凭证。本步骤和随后的两个步骤是为了定义自动记账做准备，而自动记账则在4.28维护物料管理的自动记账中定义。</div></details>
+<div class="pathline" data-copy="品目管理 → 評価と勘定設定 → 勘定決定 → ウィザードなしの勘定定義 → 評価管理の定義"><b>IMG パス（IMG 設定メニュー）</b>品目管理 → 評価と勘定設定 → 勘定決定 → ウィザードなしの勘定定義 → 評価管理の定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>物料管理 → 评估和科目设置 → 科目确定 → 无向导的科目定义 → 定义评估控制</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">より大きな柔軟性を持たせるため、プラントごとに自動記帳ルールを異なるものにできます。しかし、1 つのグループ企業に多くのプラントがあり、それらの記帳ルールが同じである場合、1 つずつメンテナンスするのは非常に面倒ではありませんか。しかもメンテナンスしにくく、誤りも発生しやすくなります。そこで SAP では、プラントを「グループ」にまとめて記帳ルールを統一的に定義できます。プラントは記帳ルールの中で「評価範囲」として定義され、そのグループは「評価グループコード」と呼ばれます。本ステップでは、このようにグループで記帳ルールを定義することを許可するかどうかを明確にします。次のステップでは、「評価範囲」を「評価グループコード」にまとめます。<br>品目管理－評価と勘定設定－勘定決定－ウィザードなしの勘定定義－評価管理の定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">为了使之具有更大的灵活性，在各自工厂自动记账规则是可以不同的。但是如果一个集团公司有很多工厂，而它们的记账规则又是一样的，那一个一个地维护岂不是非常麻烦？而且也不好维护，容易出错，所以 SAP 允许将工厂集合成“组”来统一定义记账规则，工厂在记账规则中被定义为“评估范围”，而它的组被称为“评估分组代码”。本步骤中，我们将明确是否允许这样分组定义记账规则。下一个步骤是将“评估范围”归并到“评估分组代码”<br>物料管理－评估和科目设置－科目确定－无向导的科目定义－定义评估控制</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/mm/t19/01_1_image600.png"><img src="assets/img/mm/t19/01_1_image600.png" alt="評価管理を定義 · ステップ 1：より大きな柔軟性を持たせるため、プラントごとに自動記帳ルールを異なるものにできます。しかし、1 つのグループ企業に多くのプラントがあり、それらの記帳ルールが同じである場合、1 つずつメンテナンスするのは非常に面倒ではありませんか。しかもメンテナンスしにくく、誤りも発生しやすくなります。そこで SAP では、プラントを「" loading="lazy" width="338" height="451"></a><figcaption><span class="n">画面 592</span><span class="src">image602.png · 338×451</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t19/01_2_image601.png"><img src="assets/img/mm/t19/01_2_image601.png" alt="評価管理を定義 · ステップ 1：より大きな柔軟性を持たせるため、プラントごとに自動記帳ルールを異なるものにできます。しかし、1 つのグループ企業に多くのプラントがあり、それらの記帳ルールが同じである場合、1 つずつメンテナンスするのは非常に面倒ではありませんか。しかもメンテナンスしにくく、誤りも発生しやすくなります。そこで SAP では、プラントを「" loading="lazy" width="454" height="237"></a><figcaption><span class="n">画面 593</span><span class="src">image603.png · 454×237</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t19/01_1_image600.png"><img src="assets/img/mm/t19/01_1_image600.png" alt="評価管理を定義 · ステップ 1：より大きな柔軟性を持たせるため、プラントごとに自動記帳ルールを異なるものにできます。しかし、1 つのグループ企業に多くのプラントがあり、それらの記帳ルールが同じである場合、1 つずつメンテナンスするのは非常に面倒ではありませんか。しかもメンテナンスしにくく、誤りも発生しやすくなります。そこで SAP では、プラントを「" loading="lazy" width="338" height="451"></a><figcaption><span class="n">画面 592</span><span class="src">image602.png · 338×451</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t19/01_2_image601.png"><img src="assets/img/mm/t19/01_2_image601.png" alt="評価管理を定義 · ステップ 1：より大きな柔軟性を持たせるため、プラントごとに自動記帳ルールを異なるものにできます。しかし、1 つのグループ企業に多くのプラントがあり、それらの記帳ルールが同じである場合、1 つずつメンテナンスするのは非常に面倒ではありませんか。しかもメンテナンスしにくく、誤りも発生しやすくなります。そこで SAP では、プラントを「" loading="lazy" width="454" height="237"></a><figcaption><span class="n">画面 593</span><span class="src">image603.png · 454×237</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材ノート</b>この画面では、「評価グループコード有効」を有効化して勘定を定義するか、有効化しないか（つまりプラントごとに 1 つずつ勘定を定義するしかない）を選択できます。ここでは「評価グループコード有効」を選択します。</div>
+</li>
+</ol>
+<div class="steph" id="t20"><span class="no">タスク 20</span><h3>評価範囲の集合をグループ化</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">2 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】将评估范围集合分组<br></div></details>
+<div class="pathline" data-copy="品目管理 → 評価と勘定設定 → 勘定決定 → ウィザードなしの勘定決定 → 評価範囲のグループ化"><b>IMG パス（IMG 設定メニュー）</b>品目管理 → 評価と勘定設定 → 勘定決定 → ウィザードなしの勘定決定 → 評価範囲のグループ化</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>物料管理 → 评估和科目设置 → 科目确定 → 无向导的科目确定 → 将评估范围群集分组</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 前のステップに続けて、「頤寧機械工場」の評価範囲（またはプラント）を、私たちが「CN01」と呼ぶ評価グループコードにまとめます。今後の自動記帳ルールの定義は「CN01」に従って定義します。頤寧公司がプラントを追加する場合、それらを「CN01」に配賦するだけで自動記帳でき、記帳ルールを新たに定義する必要はありません。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：紧跟上个步骤，我们将“颐宁机械工厂”评估范围（或工厂），归入一个我们称之为 “ CN01 ” 的评估分组代码。将来自动记账规则的定义就是按 “ CN01 ” 来定义的。如果颐宁公司增加一个工厂，只需要将它们分配给“CN01”就可以自动记账了，而不必再定义一套记账规则。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t20/01_1_image604.png"><img src="assets/img/mm/t20/01_1_image604.png" alt="評価範囲の集合をグループ化 · ステップ 1：解説：前のステップに続けて、「頤寧機械工場」の評価範囲（またはプラント）を、私たちが「CN01」と呼ぶ評価グループコードにまとめます。今後の自動記帳ルールの定義は「CN01」に従って定義します。頤寧公司がプラントを追加する場合、それらを「CN01」に配賦するだけで自動記帳でき、記帳ルールを新たに定義する必要はありません" loading="lazy" width="340" height="492"></a><figcaption><span class="n">画面 596</span><span class="src">image604.png · 340×492</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">P999 に CN01 を入力</p>
+<details class="orig"><summary>原文</summary><div class="zh">在 P999 输入 CN01</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t20/02_1_image605.png"><img src="assets/img/mm/t20/02_1_image605.png" alt="評価範囲の集合をグループ化 · ステップ 2：P999 に CN01 を入力" loading="lazy" width="613" height="208"></a><figcaption><span class="n">画面 597</span><span class="src">image605.png · 613×208</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t21"><span class="no">タスク 21</span><h3>評価クラスを定義する</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">6 画面 / 3 ステップ</span></div>
+<p>標準の評価クラスで、主なものは「3000 原材料（ROH）」「3100 商品（HAWA）」「7920 完成品」の 3 つです。本ステップでは主に</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义评估类<br>准的评估类，主要有三个“3000 原材料”，“ 3100 贸易商品”，“ 7920 成品”。本步骤主要</div></details>
+<div class="pathline" data-copy="品目管理 → 評価と勘定設定 → 勘定決定 → ウィザードなしの勘定決定 → 評価クラスの定義"><b>IMG パス（IMG 設定メニュー）</b>品目管理 → 評価と勘定設定 → 勘定決定 → ウィザードなしの勘定決定 → 評価クラスの定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>物料管理 → 评估和科目设置 → 科目确定 → 无向导的科目确定 → 定义评估类</code></div>
+<div class="note info"><b class="t">原理の説明</b>解説：プラント以外に、異なる会計勘定を決定するもう 1 つの要因は品目そのものです。そのため、品目マスタで「評価クラス」パラメータを定義し、「評価クラス」によって会計勘定を決定する必要があります。今回使用するのは標準…</div>
+<ol class="oplist">
+<li>
+<p class="opcap">システム標準の評価クラスを確認し、これらの評価クラスが適切な品目タイプに割り当てられているかを確認します。将来品目マスタをメンテナンスする際に、ある品目タイプに対して適切な評価クラスだけを選択できるようにするためです。<br>品目管理－評価と勘定設定－勘定決定－ウィザードなしの勘定決定－評価クラスの定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">就是检查系统标准的评估类，并检查这些评估类被分配给了合适的物料类型，将来在物料主数据维护时，保证只有合适的评估类可以被某类型的物料选用<br>物料管理－评估和科目设置－科目确定－无向导的科目确定－定义评估类</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t21/01_1_image606.png"><img src="assets/img/mm/t21/01_1_image606.png" alt="評価クラスを定義する · ステップ 1：システム標準の評価クラスを確認し、これらの評価クラスが適切な品目タイプに割り当てられているかを確認します。将来品目マスタをメンテナンスする際に、ある品目タイプに対して適切な評価クラスだけを選択できるようにするためです。 品目管理－評価と勘定設定－勘定決定－ウィザードなしの勘定決定－評価クラスの定義" loading="lazy" width="353" height="487"></a><figcaption><span class="n">画面 598</span><span class="src">image606.png · 353×487</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「評価クラス」をクリック、「評価クラス」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击评估类点击评估类</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/mm/t21/02_1_image607.png"><img src="assets/img/mm/t21/02_1_image607.png" alt="評価クラスを定義する · ステップ 2：「評価クラス」をクリック、「評価クラス」をクリック" loading="lazy" width="349" height="259"></a><figcaption><span class="n">画面 599</span><span class="src">image609.png · 349×259</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t21/02_2_image608.png"><img src="assets/img/mm/t21/02_2_image608.png" alt="評価クラスを定義する · ステップ 2：「評価クラス」をクリック、「評価クラス」をクリック" loading="lazy" width="555" height="545"></a><figcaption><span class="n">画面 600</span><span class="src">image610.png · 555×545</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t21/02_1_image607.png"><img src="assets/img/mm/t21/02_1_image607.png" alt="評価クラスを定義する · ステップ 2：「評価クラス」をクリック、「評価クラス」をクリック" loading="lazy" width="349" height="259"></a><figcaption><span class="n">画面 599</span><span class="src">image609.png · 349×259</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t21/02_2_image608.png"><img src="assets/img/mm/t21/02_2_image608.png" alt="評価クラスを定義する · ステップ 2：「評価クラス」をクリック、「評価クラス」をクリック" loading="lazy" width="555" height="545"></a><figcaption><span class="n">画面 600</span><span class="src">image610.png · 555×545</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<p class="opcap">3000、3100、7920 がすでに存在することが確認できます。「戻る」をクリックし、「品目タイプ/勘定分類参照」をクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">可以看到 3000、3100、7920 都已经存在，返回，点击“物料类型/账户分类参考”</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t21/03_1_image611.png"><img src="assets/img/mm/t21/03_1_image611.png" alt="評価クラスを定義する · ステップ 3：3000、3100、7920 がすでに存在することが確認できます。「戻る」をクリックし、「品目タイプ/勘定分類参照」をクリックします" loading="lazy" width="559" height="841"></a><figcaption><span class="n">画面 603</span><span class="src">image611.png · 559×841</span></figcaption></figure>
+<div class="note info"><b class="t">原理の説明</b>解説：評価クラスは追加、削除、変更、コピーができます。評価クラスの横にある「勘定分類参照」は評価クラスをグループ化したものです。「勘定分類参照」自体は上の図の「勘定分類参照」ボタンでメンテナンスし、前の画面の「品目タイプ／勘定分類参照」ボタンによって「勘定分類参照」を各品目タイプに割り当てます。</div>
+<div class="note tip"><b class="t">教材ノート</b>FERT、HAWA および ROH がすでに存在することがわかります。「戻る」をクリックします。</div>
+</li>
+</ol>
+<div class="steph" id="t22"><span class="no">タスク 22</span><h3>原材料（ROH）のマスタデータを新規登録する</h3><span class="tc2">15 画面 / 9 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建原材料主数据<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 品目管理 → 品目マスタ → 品目 → 登録（特殊） → MMR1 原材料（ROH）"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 品目管理 → 品目マスタ → 品目 → 登録（特殊） → MMR1 原材料（ROH）</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 物料管理 → 物料主数据 → 物料 → 创建（特殊） → MMR1 原材料</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 頤寧公司の主な原材料には、フライホイール、管軸などがあります。これらの原材料マスタを新規登録します<br>ロジスティクス－品目管理－品目マスタ－品目－登録（特殊）－MMR1 原材料（ROH）</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：颐宁公司主要的原材料有，飞轮、管轴等，我们要新建这些原材料主数据<br>后勤－物料管理－物料主数据－物料－创建（特殊）－MMR1 原材料</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t22/01_1_image612.png"><img src="assets/img/mm/t22/01_1_image612.png" alt="原材料（ROH）のマスタデータを新規登録する · ステップ 1：解説：頤寧公司の主な原材料には、フライホイール、管軸などがあります。これらの原材料マスタを新規登録します ロジスティクス－品目管理－品目マスタ－品目－登録（特殊）－MMR1 原材料（ROH）" loading="lazy" width="373" height="667"></a><figcaption><span class="n">画面 604</span><span class="src">image612.png · 373×667</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>トランザクションコード MMR1 を入力して次の画面に進みます： R999-100 カバー</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 605）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t22/02_1_image613.png"><img src="assets/img/mm/t22/02_1_image613.png" alt="原材料（ROH）のマスタデータを新規登録する · ステップ 2：image613.png" loading="lazy" width="476" height="289"></a><figcaption><span class="n">画面 605</span><span class="src">image613.png · 476×289</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">品目タイプによって、どのビューをメンテナンスできるかが決まります。次のとおり、ROH には販売ビューがありません</p>
+<details class="orig"><summary>原文</summary><div class="zh">物料类型决定了哪些视图是可维护的，如下 ROH 就没有销售视图</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/mm/t22/03_1_image614.png"><img src="assets/img/mm/t22/03_1_image614.png" alt="原材料（ROH）のマスタデータを新規登録する · ステップ 3：品目タイプによって、どのビューをメンテナンスできるかが決まります。次のとおり、ROH には販売ビューがありません" loading="lazy" width="346" height="707"></a><figcaption><span class="n">画面 606</span><span class="src">image617.png · 346×707</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t22/03_2_image615.png"><img src="assets/img/mm/t22/03_2_image615.png" alt="原材料（ROH）のマスタデータを新規登録する · ステップ 3：品目タイプによって、どのビューをメンテナンスできるかが決まります。次のとおり、ROH には販売ビューがありません" loading="lazy" width="346" height="707"></a><figcaption><span class="n">画面 607</span><span class="src">image618.png · 346×707</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t22/03_3_image616.png"><img src="assets/img/mm/t22/03_3_image616.png" alt="原材料（ROH）のマスタデータを新規登録する · ステップ 3：品目タイプによって、どのビューをメンテナンスできるかが決まります。次のとおり、ROH には販売ビューがありません" loading="lazy" width="543" height="356"></a><figcaption><span class="n">画面 608</span><span class="src">image619.png · 543×356</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t22/03_1_image614.png"><img src="assets/img/mm/t22/03_1_image614.png" alt="原材料（ROH）のマスタデータを新規登録する · ステップ 3：品目タイプによって、どのビューをメンテナンスできるかが決まります。次のとおり、ROH には販売ビューがありません" loading="lazy" width="346" height="707"></a><figcaption><span class="n">画面 606</span><span class="src">image617.png · 346×707</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t22/03_2_image615.png"><img src="assets/img/mm/t22/03_2_image615.png" alt="原材料（ROH）のマスタデータを新規登録する · ステップ 3：品目タイプによって、どのビューをメンテナンスできるかが決まります。次のとおり、ROH には販売ビューがありません" loading="lazy" width="346" height="707"></a><figcaption><span class="n">画面 607</span><span class="src">image618.png · 346×707</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t22/03_3_image616.png"><img src="assets/img/mm/t22/03_3_image616.png" alt="原材料（ROH）のマスタデータを新規登録する · ステップ 3：品目タイプによって、どのビューをメンテナンスできるかが決まります。次のとおり、ROH には販売ビューがありません" loading="lazy" width="543" height="356"></a><figcaption><span class="n">画面 608</span><span class="src">image619.png · 543×356</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">「Enter」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击回车</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t22/04_1_image620.png"><img src="assets/img/mm/t22/04_1_image620.png" alt="原材料（ROH）のマスタデータを新規登録する · ステップ 4：「Enter」をクリック" loading="lazy" width="718" height="825"></a><figcaption><span class="n">画面 612</span><span class="src">image620.png · 718×825</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">Enter で購買ビューへ進む</p>
+<details class="orig"><summary>原文</summary><div class="zh">回车进入采购视图</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t22/05_1_image621.png"><img src="assets/img/mm/t22/05_1_image621.png" alt="原材料（ROH）のマスタデータを新規登録する · ステップ 5：Enter で購買ビューへ進む" loading="lazy" width="647" height="692"></a><figcaption><span class="n">画面 613</span><span class="src">image621.png · 647×692</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">Enter で MRP1 ビューへ進む</p>
+<details class="orig"><summary>原文</summary><div class="zh">回车进入 MRP1 视图</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t22/06_1_image622.png"><img src="assets/img/mm/t22/06_1_image622.png" alt="原材料（ROH）のマスタデータを新規登録する · ステップ 6：Enter で MRP1 ビューへ進む" loading="lazy" width="631" height="689"></a><figcaption><span class="n">画面 614</span><span class="src">image622.png · 631×689</span></figcaption></figure>
+<div class="note warn"><b class="t">つまずき注意</b>ロットサイズ：購買ロットサイズの決定原則は非常に複雑な問題です。SAP は非常に柔軟なツールを提供しており、たとえば期間ベース、動的、固定の GROFF 法、最大在庫まで補充する方法などがあります。ここでは EX（直接ロット発注量）を選択し、ロットごとに決定する方法、つまり具体的な所要量の大きさに応じて最大・最小ロットサイズなどの要素を組み合わせて今回のロットサイズを決定する方法を採用します。</div>
+</li>
+<li>
+<p class="opcap">MRP タイプ：SAP には 8 つの大分類の品目計画方法が組み込まれています。たとえば発注点計画、予測ベースの計画、期間段階計画、MRP、MPS、小売補充計画、MRP なし、MRP BOM 展開なしなどです。これら 8 つの大分類の方法に基づいて、IMG 設定で具体的な MRP タイプ「PD（資材所要量計画）」を定義できます。実際のプロジェクトでは、MPS と MRP の関係を特に区別する必要もあります。</p>
+<details class="orig"><summary>原文</summary><div class="zh">MRP 类型：SAP 内置了八大类物料计划的方法，如重订货点计划，基于预测的计划，时间阶段计划，MRP，MPS，零售补货计划，无 MRP，无 MRP BOM 展开等。根据这八大类方法，可以在后台配置中定义具体的 MRP 类型“PD(物料需求计划) ”。实际项目中还需要特别区分 MPS 和MRP 的关系。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t22/07_1_image623.png"><img src="assets/img/mm/t22/07_1_image623.png" alt="原材料（ROH）のマスタデータを新規登録する · ステップ 7：MRP タイプ：SAP には 8 つの大分類の品目計画方法が組み込まれています。たとえば発注点計画、予測ベースの計画、期間段階計画、MRP、MPS、小売補充計画、MRP なし、MRP BOM 展開なしなどです。これら 8 つの大分類の方法に基づいて、IMG 設定で具体的な MRP タイプ「PD（資材所要量計画）」を定義" loading="lazy" width="690" height="752"></a><figcaption><span class="n">画面 615</span><span class="src">image623.png · 690×752</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">品目タイプは、その品目が自製か外部購買かを決定します。ここでの F は外部購買のみ可能であることを表し、100 は安全在庫 100 個を表します。<br>Enter で MRP3 ビューへ進む</p>
+<details class="orig"><summary>原文</summary><div class="zh">物料类型决定了物料是自生产还是外采购，这里的 F 代表只能从外采购，100 代表 100 件安全库存<br>按回车进入 MRP3 视图</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t22/08_1_image624.png"><img src="assets/img/mm/t22/08_1_image624.png" alt="原材料（ROH）のマスタデータを新規登録する · ステップ 8：品目タイプは、その品目が自製か外部購買かを決定します。ここでの F は外部購買のみ可能であることを表し、100 は安全在庫 100 個を表します。 Enter で MRP3 ビューへ進む" loading="lazy" width="653" height="555"></a><figcaption><span class="n">画面 616</span><span class="src">image624.png · 653×555</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">所要量チェックでは、生産を支えるのに十分な在庫があるかを確認します。主に期間別所要量と個別所要量の 2 種類がありますが、チェックのルールは SAP で柔軟に設定できます。<br>Enter を押して「会計 1」ビューに進みます。ここでは必ず評価クラスをメンテナンスしてください。原書に誤りがあり、原材料の評価クラスは 3000 です</p>
+<details class="orig"><summary>原文</summary><div class="zh">可用性检查是否有足够的库存来支持生产。主要有按期间需求和按单独需求两类，但是检查的规则在 SAP 中有灵活的配置。<br>按回车进入“会计 1”视图 ,此处一定要维护评估类，原书有误，原材料的评估类为3000</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t22/09_1_image625.png"><img src="assets/img/mm/t22/09_1_image625.png" alt="原材料（ROH）のマスタデータを新規登録する · ステップ 9：所要量チェックでは、生産を支えるのに十分な在庫があるかを確認します。主に期間別所要量と個別所要量の 2 種類がありますが、チェックのルールは SAP で柔軟に設定できます。 Enter を押して「会計 1」ビューに進みます。ここでは必ず評価クラスをメンテナンスしてください。原書に誤りがあり、原材料の評価クラスは 300" loading="lazy" width="657" height="604"></a><figcaption><span class="n">画面 617</span><span class="src">image625.png · 657×604</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t22/09_2_image626.png"><img src="assets/img/mm/t22/09_2_image626.png" alt="原材料（ROH）のマスタデータを新規登録する · ステップ 9：所要量チェックでは、生産を支えるのに十分な在庫があるかを確認します。主に期間別所要量と個別所要量の 2 種類がありますが、チェックのルールは SAP で柔軟に設定できます。 Enter を押して「会計 1」ビューに進みます。ここでは必ず評価クラスをメンテナンスしてください。原書に誤りがあり、原材料の評価クラスは 300" loading="lazy" width="698" height="592"></a><figcaption><span class="n">画面 618</span><span class="src">image626.png · 698×592</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>V は移動平均価格による評価、S は標準原価による評価を表します。</div>
+<div class="note tip"><b class="t">教材ノート</b>価格単位：単価が非常に小さい場合は、10 個、100 個単位で価格単位を設定して価格精度を高めることができます。移動平均価格：ここに入力するのは初期価格で、将来の移動平均価格はシステムが自動計算します。</div>
+<div class="note tip"><b class="t">教材ノート</b>品目R999-200フライホイール評価クラスは3000品目R999-300管軸評価クラスは3000品目品目R999-400 R999-500支持フレーム金属片単位はM2評価クラスは3000評価クラスは3000品目R999-200フライホイール評価クラスは3000品目R999-300管軸評価クラスは3000品目品目R999-400 R999-500支持フレーム金属片単位はM2評価クラスは3000評価クラスは3000順に R999-200---R999-500 を登録</div>
+</li>
+</ol>
+<h4>業務処理</h4>
+<div class="steph" id="t23"><span class="no">タスク 23</span><h3>商品（HAWA）マスタを新規作成</h3><span class="tc2">12 画面 / 5 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建贸易商品主数据<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 品目管理 → 品目マスタ → 品目 → 登録（特殊） → MMH1-商品（HAWA）"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 品目管理 → 品目マスタ → 品目 → 登録（特殊） → MMH1-商品（HAWA）</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 物料管理 → 物料主数据 → 物料 → 创建（特殊） → MMH1-贸易货物</code></div>
+<ol class="oplist">
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/mm/t23/01_1_image627.png"><img src="assets/img/mm/t23/01_1_image627.png" alt="商品（HAWA）マスタを新規作成 · ステップ 1：image627.png" loading="lazy" width="477" height="376"></a><figcaption><span class="n">画面 619</span><span class="src">image627.png · 477×376</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t23/01_2_image628.png"><img src="assets/img/mm/t23/01_2_image628.png" alt="商品（HAWA）マスタを新規作成 · ステップ 1：image630.png" loading="lazy" width="346" height="707"></a><figcaption><span class="n">画面 620</span><span class="src">image630.png · 346×707</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t23/01_3_image629.png"><img src="assets/img/mm/t23/01_3_image629.png" alt="商品（HAWA）マスタを新規作成 · ステップ 1：image631.png" loading="lazy" width="543" height="356"></a><figcaption><span class="n">画面 621</span><span class="src">image631.png · 543×356</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t23/01_4_image632.png"><img src="assets/img/mm/t23/01_4_image632.png" alt="商品（HAWA）マスタを新規作成 · ステップ 1：image632.png" loading="lazy" width="332" height="524"></a><figcaption><span class="n">画面 622</span><span class="src">image632.png · 332×524</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t23/01_2_image628.png"><img src="assets/img/mm/t23/01_2_image628.png" alt="商品（HAWA）マスタを新規作成 · ステップ 1：image630.png" loading="lazy" width="346" height="707"></a><figcaption><span class="n">画面 620</span><span class="src">image630.png · 346×707</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t23/01_3_image629.png"><img src="assets/img/mm/t23/01_3_image629.png" alt="商品（HAWA）マスタを新規作成 · ステップ 1：image631.png" loading="lazy" width="543" height="356"></a><figcaption><span class="n">画面 621</span><span class="src">image631.png · 543×356</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/mm/t23/02_1_image633.png"><img src="assets/img/mm/t23/02_1_image633.png" alt="商品（HAWA）マスタを新規作成 · ステップ 2：image633.png" loading="lazy" width="638" height="800"></a><figcaption><span class="n">画面 625</span><span class="src">image633.png · 638×800</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">頤寧公司は自社でポンプを生産するほか、他メーカーの高速過給ターボポンプも販売しています。業務処理<br>ロジスティクス－品目管理－品目マスタ－品目－登録（特殊）－MMH1-商品（HAWA）</p>
+<details class="orig"><summary>原文</summary><div class="zh">颐宁公司除了自己生产泵以外，还经销其他厂家的高速增压涡轮泵。前台<br>后勤－物料管理－物料主数据－物料－创建（特殊）－MMH1-贸易货物</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t23/03_1_image634.png"><img src="assets/img/mm/t23/03_1_image634.png" alt="商品（HAWA）マスタを新規作成 · ステップ 3：頤寧公司は自社でポンプを生産するほか、他メーカーの高速過給ターボポンプも販売しています。業務処理 ロジスティクス－品目管理－品目マスタ－品目－登録（特殊）－MMH1-商品（HAWA）" loading="lazy" width="637" height="700"></a><figcaption><span class="n">画面 626</span><span class="src">image634.png · 637×700</span></figcaption></figure>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/mm/t23/04_1_image635.png"><img src="assets/img/mm/t23/04_1_image635.png" alt="商品（HAWA）マスタを新規作成 · ステップ 4：image635.png" loading="lazy" width="612" height="692"></a><figcaption><span class="n">画面 627</span><span class="src">image635.png · 612×692</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t23/04_2_image636.png"><img src="assets/img/mm/t23/04_2_image636.png" alt="商品（HAWA）マスタを新規作成 · ステップ 4：image636.png" loading="lazy" width="633" height="686"></a><figcaption><span class="n">画面 628</span><span class="src">image636.png · 633×686</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t23/04_3_image637.png"><img src="assets/img/mm/t23/04_3_image637.png" alt="商品（HAWA）マスタを新規作成 · ステップ 4：image637.png" loading="lazy" width="660" height="700"></a><figcaption><span class="n">画面 629</span><span class="src">image637.png · 660×700</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 630）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t23/05_1_image638.png"><img src="assets/img/mm/t23/05_1_image638.png" alt="商品（HAWA）マスタを新規作成 · ステップ 5：image638.png" loading="lazy" width="635" height="600"></a><figcaption><span class="n">画面 630</span><span class="src">image638.png · 635×600</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t24"><span class="no">タスク 24</span><h3>完成品（FERT）のマスタデータを新規登録する</h3><span class="tc2">10 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建产成品主数据<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 品目管理 → 品目マスタ → 品目 → 登録（特殊） → MMF1-完成品"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 品目管理 → 品目マスタ → 品目 → 登録（特殊） → MMF1-完成品</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 物料管理 → 物料主数据 → 物料 → 创建（特殊） → MMF1-成品</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">頤寧公司が生産する製品は「鋳鋼ポンプ 170-230」です 業務処理</p>
+<details class="orig"><summary>原文</summary><div class="zh">颐宁公司生产的产品是“铸钢泵 170-230 ” 前台</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t24/01_1_image639.png"><img src="assets/img/mm/t24/01_1_image639.png" alt="完成品（FERT）のマスタデータを新規登録する · ステップ 1：頤寧公司が生産する製品は「鋳鋼ポンプ 170-230」です 業務処理" loading="lazy" width="362" height="481"></a><figcaption><span class="n">画面 631</span><span class="src">image639.png · 362×481</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t24/01_2_image640.png"><img src="assets/img/mm/t24/01_2_image640.png" alt="完成品（FERT）のマスタデータを新規登録する · ステップ 1：頤寧公司が生産する製品は「鋳鋼ポンプ 170-230」です 業務処理" loading="lazy" width="478" height="284"></a><figcaption><span class="n">画面 632</span><span class="src">image640.png · 478×284</span></figcaption></figure>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/mm/t24/02_1_image641.png"><img src="assets/img/mm/t24/02_1_image641.png" alt="完成品（FERT）のマスタデータを新規登録する · ステップ 2：image641.png" loading="lazy" width="346" height="707"></a><figcaption><span class="n">画面 633</span><span class="src">image641.png · 346×707</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t24/02_2_image642.png"><img src="assets/img/mm/t24/02_2_image642.png" alt="完成品（FERT）のマスタデータを新規登録する · ステップ 2：image642.png" loading="lazy" width="543" height="356"></a><figcaption><span class="n">画面 634</span><span class="src">image642.png · 543×356</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t24/02_3_image643.png"><img src="assets/img/mm/t24/02_3_image643.png" alt="完成品（FERT）のマスタデータを新規登録する · ステップ 2：image643.png" loading="lazy" width="624" height="799"></a><figcaption><span class="n">画面 635</span><span class="src">image643.png · 624×799</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/mm/t24/03_1_image644.png"><img src="assets/img/mm/t24/03_1_image644.png" alt="完成品（FERT）のマスタデータを新規登録する · ステップ 3：image644.png" loading="lazy" width="646" height="700"></a><figcaption><span class="n">画面 636</span><span class="src">image644.png · 646×700</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t24/03_2_image645.png"><img src="assets/img/mm/t24/03_2_image645.png" alt="完成品（FERT）のマスタデータを新規登録する · ステップ 3：image645.png" loading="lazy" width="629" height="708"></a><figcaption><span class="n">画面 637</span><span class="src">image645.png · 629×708</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t24/03_3_image646.png"><img src="assets/img/mm/t24/03_3_image646.png" alt="完成品（FERT）のマスタデータを新規登録する · ステップ 3：image646.png" loading="lazy" width="609" height="557"></a><figcaption><span class="n">画面 638</span><span class="src">image646.png · 609×557</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 639）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t24/04_1_image647.png"><img src="assets/img/mm/t24/04_1_image647.png" alt="完成品（FERT）のマスタデータを新規登録する · ステップ 4：image647.png" loading="lazy" width="664" height="606"></a><figcaption><span class="n">画面 639</span><span class="src">image647.png · 664×606</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t24/05_1_image648.png"><img src="assets/img/mm/t24/05_1_image648.png" alt="完成品（FERT）のマスタデータを新規登録する · ステップ 4：image648.png" loading="lazy" width="672" height="621"></a><figcaption><span class="n">画面 640</span><span class="src">image648.png · 672×621</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>原価計算ロットとは、10 個を標準ロットとして原価計算することです</div>
+</li>
+</ol>
+<div class="steph" id="t25"><span class="no">タスク 25</span><h3>品目マスタレコード一覧を照会</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">MM60</span><span class="tc2">3 画面 / 1 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】显示物料主记录清单<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 品目管理 → 品目マスタレコード → その他 → MM60-品目一覧"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 品目管理 → 品目マスタレコード → その他 → MM60-品目一覧</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 物料管理 → 物料主记录 → 其他 → MM60-物料清单</code></div>
+<ol class="oplist">
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/mm/t25/01_1_image649.png"><img src="assets/img/mm/t25/01_1_image649.png" alt="品目マスタレコード一覧を照会 · ステップ 1：image649.png" loading="lazy" width="341" height="577"></a><figcaption><span class="n">画面 641</span><span class="src">image649.png · 341×577</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t25/01_2_image650.png"><img src="assets/img/mm/t25/01_2_image650.png" alt="品目マスタレコード一覧を照会 · ステップ 1：image650.png" loading="lazy" width="608" height="287"></a><figcaption><span class="n">画面 642</span><span class="src">image650.png · 608×287</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t25/01_3_image651.png"><img src="assets/img/mm/t25/01_3_image651.png" alt="品目マスタレコード一覧を照会 · ステップ 1：image651.png" loading="lazy" width="932" height="276"></a><figcaption><span class="n">画面 643</span><span class="src">image651.png · 932×276</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t26"><span class="no">タスク 26</span><h3>仕入先購買データを登録</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">MK01</span><span class="tc2">8 画面 / 5 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】创建供应商采购数据<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 品目管理 → 購買 → マスタデータ → 仕入先 → 購買-MK01 登録"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 品目管理 → 購買 → マスタデータ → 仕入先 → 購買-MK01 登録</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 物料管理 → 采购 → 主数据 → 供应商 → 采购-MK01 创建</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 紅星軸受工場は原材料の仕入先で、SAP 品目管理（MM）モジュールを使用していなかったときは、すでに財務でそのマスタデータをメンテナンスしていましたが、当時は一般データと会社コードデータ（財務関連）のみをメンテナンスしていました。今回は購買機能を使用してその購買行動を管理するため、その購買データをメンテナンスするだけで済みます。<br>ロジスティクス－品目管理－購買－マスタデータ－仕入先－購買-MK01 登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：红星轴承厂是原材料供应商，在未使用 SAP 物料管理模块时，我们已经在财务中维护了它的主数据，但当时只维护了一般数据和公司代码数据（和财务相关的），现在我们要使用采购功能来管理他的采购行为，只需要维护它的采购数据。<br>后勤－物料管理－采购－主数据－供应商－采购-MK01 创建</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t26/01_1_image652.png"><img src="assets/img/mm/t26/01_1_image652.png" alt="仕入先購買データを登録 · ステップ 1：解説：紅星軸受工場は原材料の仕入先で、SAP 品目管理（MM）モジュールを使用していなかったときは、すでに財務でそのマスタデータをメンテナンスしていましたが、当時は一般データと会社コードデータ（財務関連）のみをメンテナンスしていました。今回は購買機能を使用してその購買行動を管理するため、その購買データをメンテナンスする" loading="lazy" width="367" height="512"></a><figcaption><span class="n">画面 644</span><span class="src">image652.png · 367×512</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">10000000</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/mm/t26/02_1_image653.png"><img src="assets/img/mm/t26/02_1_image653.png" alt="仕入先購買データを登録 · ステップ 2：10000000" loading="lazy" width="326" height="313"></a><figcaption><span class="n">画面 645</span><span class="src">image655.png · 326×313</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t26/02_2_image654.png"><img src="assets/img/mm/t26/02_2_image654.png" alt="仕入先購買データを登録 · ステップ 2：10000000" loading="lazy" width="320" height="343"></a><figcaption><span class="n">画面 646</span><span class="src">image656.png · 320×343</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t26/02_1_image653.png"><img src="assets/img/mm/t26/02_1_image653.png" alt="仕入先購買データを登録 · ステップ 2：10000000" loading="lazy" width="326" height="313"></a><figcaption><span class="n">画面 645</span><span class="src">image655.png · 326×313</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t26/02_2_image654.png"><img src="assets/img/mm/t26/02_2_image654.png" alt="仕入先購買データを登録 · ステップ 2：10000000" loading="lazy" width="320" height="343"></a><figcaption><span class="n">画面 646</span><span class="src">image656.png · 320×343</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 649）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t26/03_1_image657.png"><img src="assets/img/mm/t26/03_1_image657.png" alt="仕入先購買データを登録 · ステップ 3：image657.png" loading="lazy" width="659" height="870"></a><figcaption><span class="n">画面 649</span><span class="src">image657.png · 659×870</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/mm/t26/04_1_image658.png"><img src="assets/img/mm/t26/04_1_image658.png" alt="仕入先購買データを登録 · ステップ 4：image658.png" loading="lazy" width="389" height="314"></a><figcaption><span class="n">画面 650</span><span class="src">image658.png · 389×314</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">同時に他の仕入先もメンテナンスします。10000001、20000000</p>
+<details class="orig"><summary>原文</summary><div class="zh">同时将其他供应商维护好，10000001，20000000</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t26/05_1_image659.png"><img src="assets/img/mm/t26/05_1_image659.png" alt="仕入先購買データを登録 · ステップ 5：同時に他の仕入先もメンテナンスします。10000001、20000000" loading="lazy" width="517" height="330"></a><figcaption><span class="n">画面 651</span><span class="src">image659.png · 517×330</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t27"><span class="no">タスク 27</span><h3>購買情報レコードを新規作成</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">ME11</span><span class="tc">MM02</span><span class="tc2">16 画面 / 9 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建采购信息记录<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 品目管理 → 購買 → マスタデータ → 購買情報レコード → ME11 登録"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 品目管理 → 購買 → マスタデータ → 購買情報レコード → ME11 登録</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 物料管理 → 采购 → 主数据 → 信息记录 → ME11 创建</code></div>
+<ol class="oplist">
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/mm/t27/01_1_image660.png"><img src="assets/img/mm/t27/01_1_image660.png" alt="購買情報レコードを新規作成 · ステップ 1：image660.png" loading="lazy" width="324" height="504"></a><figcaption><span class="n">画面 652</span><span class="src">image660.png · 324×504</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 頤寧は紅星から管軸を購買します。標準発注数量は 50 個、正味価格は 1700 元／個、3 日以内に納入し、購買グループ PG1 が担当します。<br>ロジスティクス－品目管理－購買－マスタデータ－購買情報レコード－ME11 登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：颐宁向红星采购管轴，一般标准订单数量 50 件，净价 1700 元/件，3 天内交货，由采购组 PG1 负责。<br>后勤－物料管理－采购－主数据－信息记录－ME11 创建</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t27/02_1_image661.png"><img src="assets/img/mm/t27/02_1_image661.png" alt="購買情報レコードを新規作成 · ステップ 2：解説：頤寧は紅星から管軸を購買します。標準発注数量は 50 個、正味価格は 1700 元／個、3 日以内に納入し、購買グループ PG1 が担当します。 ロジスティクス－品目管理－購買－マスタデータ－購買情報レコード－ME11 登録" loading="lazy" width="272" height="422"></a><figcaption><span class="n">画面 653</span><span class="src">image661.png · 272×422</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t27/02_2_image662.png"><img src="assets/img/mm/t27/02_2_image662.png" alt="購買情報レコードを新規作成 · ステップ 2：解説：頤寧は紅星から管軸を購買します。標準発注数量は 50 個、正味価格は 1700 元／個、3 日以内に納入し、購買グループ PG1 が担当します。 ロジスティクス－品目管理－購買－マスタデータ－購買情報レコード－ME11 登録" loading="lazy" width="599" height="704"></a><figcaption><span class="n">画面 654</span><span class="src">image662.png · 599×704</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 画面には、購買組織に関係しない一般データ（仕入先データ、原産地データ、単位変換など）をメンテナンスする内容が表示されています<br>「購買組織データ 1」をクリックすると、次の画面が表示されます：</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：屏幕中显示的是维护一些和采购组织无关的一般数据，如供应商数据，原产地数据，单位转换等。<br>点击采购组织数据 1 键，出现如下屏幕：</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t27/03_1_image663.png"><img src="assets/img/mm/t27/03_1_image663.png" alt="購買情報レコードを新規作成 · ステップ 3：解説：画面には、購買組織に関係しない一般データ（仕入先データ、原産地データ、単位変換など）をメンテナンスする内容が表示されています 「購買組織データ 1」をクリックすると、次の画面が表示されます：" loading="lazy" width="607" height="667"></a><figcaption><span class="n">画面 655</span><span class="src">image663.png · 607×667</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">同じ方法で R999-100～R999-500 および T999-100 を登録します</p>
+<details class="orig"><summary>原文</summary><div class="zh">同样的方法把 R999-100－R999-500 及 T999-100 创建</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/mm/t27/04_1_image664.png"><img src="assets/img/mm/t27/04_1_image664.png" alt="購買情報レコードを新規作成 · ステップ 4：同じ方法で R999-100～R999-500 および T999-100 を登録します" loading="lazy" width="294" height="431"></a><figcaption><span class="n">画面 656</span><span class="src">image666.png · 294×431</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t27/04_2_image665.png"><img src="assets/img/mm/t27/04_2_image665.png" alt="購買情報レコードを新規作成 · ステップ 4：同じ方法で R999-100～R999-500 および T999-100 を登録します" loading="lazy" width="611" height="661"></a><figcaption><span class="n">画面 657</span><span class="src">image667.png · 611×661</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t27/04_1_image664.png"><img src="assets/img/mm/t27/04_1_image664.png" alt="購買情報レコードを新規作成 · ステップ 4：同じ方法で R999-100～R999-500 および T999-100 を登録します" loading="lazy" width="294" height="431"></a><figcaption><span class="n">画面 656</span><span class="src">image666.png · 294×431</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t27/04_2_image665.png"><img src="assets/img/mm/t27/04_2_image665.png" alt="購買情報レコードを新規作成 · ステップ 4：同じ方法で R999-100～R999-500 および T999-100 を登録します" loading="lazy" width="611" height="661"></a><figcaption><span class="n">画面 657</span><span class="src">image667.png · 611×661</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">2 番目の品目の購買情報レコード</p>
+<details class="orig"><summary>原文</summary><div class="zh">第二个物料的采购信息记录</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t27/05_1_image668.png"><img src="assets/img/mm/t27/05_1_image668.png" alt="購買情報レコードを新規作成 · ステップ 5：2 番目の品目の購買情報レコード" loading="lazy" width="273" height="427"></a><figcaption><span class="n">画面 660</span><span class="src">image668.png · 273×427</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 661）</span></p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/mm/t27/06_1_image669.png"><img src="assets/img/mm/t27/06_1_image669.png" alt="購買情報レコードを新規作成 · ステップ 6：image669.png" loading="lazy" width="600" height="658"></a><figcaption><span class="n">画面 661</span><span class="src">image669.png · 600×658</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t27/07_1_image670.png"><img src="assets/img/mm/t27/07_1_image670.png" alt="購買情報レコードを新規作成 · ステップ 6：image670.png" loading="lazy" width="286" height="428"></a><figcaption><span class="n">画面 662</span><span class="src">image670.png · 286×428</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t27/08_1_image671.png"><img src="assets/img/mm/t27/08_1_image671.png" alt="購買情報レコードを新規作成 · ステップ 6：image671.png" loading="lazy" width="603" height="653"></a><figcaption><span class="n">画面 663</span><span class="src">image671.png · 603×653</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t27/09_1_image672.png"><img src="assets/img/mm/t27/09_1_image672.png" alt="購買情報レコードを新規作成 · ステップ 6：image672.png" loading="lazy" width="290" height="426"></a><figcaption><span class="n">画面 664</span><span class="src">image672.png · 290×426</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材ノート</b>3 番目の品目の購買情報レコード</div>
+<div class="note tip"><b class="t">教材ノート</b>4 番目の品目の購買情報レコード</div>
+</li>
+<li>
+<p class="opcap">トランザクションコード MM02 で修正</p>
+<details class="orig"><summary>原文</summary><div class="zh">通过事务代码MM02更正</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t27/10_1_image673.png"><img src="assets/img/mm/t27/10_1_image673.png" alt="購買情報レコードを新規作成 · ステップ 7：トランザクションコード MM02 で修正" loading="lazy" width="601" height="655"></a><figcaption><span class="n">画面 665</span><span class="src">image673.png · 601×655</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">5 番目の品目の購買情報レコード</p>
+<details class="orig"><summary>原文</summary><div class="zh">第五个物料的采购信息记录</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t27/11_1_image674.png"><img src="assets/img/mm/t27/11_1_image674.png" alt="購買情報レコードを新規作成 · ステップ 8：5 番目の品目の購買情報レコード" loading="lazy" width="300" height="425"></a><figcaption><span class="n">画面 666</span><span class="src">image674.png · 300×425</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 667）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t27/12_1_image675.png"><img src="assets/img/mm/t27/12_1_image675.png" alt="購買情報レコードを新規作成 · ステップ 9：image675.png" loading="lazy" width="598" height="652"></a><figcaption><span class="n">画面 667</span><span class="src">image675.png · 598×652</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t28"><span class="no">タスク 28</span><h3>品目管理の自動記帳をメンテナンスする</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">15 画面 / 13 ステップ</span></div>
+<p>12110101 棚卸資産－原材料（ROH）</p>
+<p>12310101 棚卸資産－商品（HAWA）</p>
+<p>AUF は生産完了の入庫に関連しており、41010801 製造原価－完成品（FERT）の産出です</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】维护物料管理的自动记帐<br>12110101 存货－原材料<br>12310101 存货－贸易商品<br>AUF 是和生产完工入库相关的，41010801 生产成本－产成品产出</div></details>
+<div class="pathline" data-copy="品目管理 → 評価と勘定設定 → 勘定決定 → ウィザードなしの勘定決定 → 自動記帳の設定"><b>IMG パス（IMG 設定メニュー）</b>品目管理 → 評価と勘定設定 → 勘定決定 → ウィザードなしの勘定決定 → 自動記帳の設定</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>物料管理 → 评估和科目设置 → 科目确定 → 无向导的科目确定 → 配置自动记帐</code></div>
+<table class="tbl vals"><thead><tr><th>項目（日本語）</th><th>画面の中国語</th><th>教材の設定値</th></tr></thead><tbody><tr><td>進む</td><td><code>进入</code></td><td>PRD</td></tr></tbody></table>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> マスタデータのメンテナンスが完了したら、業務を開始する前にまだいくつか必須のシステム設定を行う必要があります。本ステップは SAP で最も重要な統合設定の 1 つ、すなわち品目の在庫移動が SAP でどのように自動的に勘定を見つけて自動記帳を完了するかを設定するものです。その準備作業は 1.19、1.20、1.21 ですでにメンテナンス済みです。<br>品目管理－評価と勘定設定－勘定決定－ウィザードなしの勘定決定－自動記帳の設定</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：主数据维护好了，在开始业务之前，还有一些必须的系统配置要做，本步骤就是设置 SAP 中最为重要的集成配置之一，即物料移动在 SAP 中如何自动找到会计科目完成自动记帐。它的准备工作在 1.19、1.20、1.21 中已经维护好了。<br>物料管理－评估和科目设置－科目确定－无向导的科目确定－配置自动记帐</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t28/01_1_image676.png"><img src="assets/img/mm/t28/01_1_image676.png" alt="品目管理の自動記帳をメンテナンスする · ステップ 1：解説：マスタデータのメンテナンスが完了したら、業務を開始する前にまだいくつか必須のシステム設定を行う必要があります。本ステップは SAP で最も重要な統合設定の 1 つ、すなわち品目の在庫移動が SAP でどのように自動的に勘定を見つけて自動記帳を完了するかを設定するものです。その準備作業は 1.19、1.20、1.2" loading="lazy" width="340" height="503"></a><figcaption><span class="n">画面 668</span><span class="src">image676.png · 340×503</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>表示される画面が下記の画面と異なる場合は、「キャンセル」をクリックすれば問題ありません。この画面は必ずしも表示されるとは限りません。システム内の他の会社コードの設定が不完全なために表示されることがあり、「キャンセル」をクリックすれば問題ありません。</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 669）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t28/02_1_image677.png"><img src="assets/img/mm/t28/02_1_image677.png" alt="品目管理の自動記帳をメンテナンスする · ステップ 2：image677.png" loading="lazy" width="517" height="211"></a><figcaption><span class="n">画面 669</span><span class="src">image677.png · 517×211</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 「勘定割当」ボタンでは正式な勘定割当を行いますが、初心者にとっては「シミュレーション」ボタンが重要です。シミュレーションでは品目、プラント、移動タイプなどを入力でき、システムが「勘定割当」でどのように勘定を定義するかを示します。<br>「勘定割当」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：“ 科目分配” 按钮中是正式的科目分配工作，但是对于初学者来 “ 模拟” 按钮很重要，在模拟按钮中你可以输入物料、工厂、移动类型等，系统会提示你在“科目分配”中如何定义科目。<br>点击“科目分配”</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t28/03_1_image678.png"><img src="assets/img/mm/t28/03_1_image678.png" alt="品目管理の自動記帳をメンテナンスする · ステップ 3：解説：「勘定割当」ボタンでは正式な勘定割当を行いますが、初心者にとっては「シミュレーション」ボタンが重要です。シミュレーションでは品目、プラント、移動タイプなどを入力でき、システムが「勘定割当」でどのように勘定を定義するかを示します。 「勘定割当」をクリック" loading="lazy" width="626" height="855"></a><figcaption><span class="n">画面 670</span><span class="src">image678.png · 626×855</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">「在庫転記 BSX」の行をダブルクリックすると、次の画面が表示されます：</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击“存货记帐 BSX”行，弹出如下屏幕：</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t28/04_1_image679.png"><img src="assets/img/mm/t28/04_1_image679.png" alt="品目管理の自動記帳をメンテナンスする · ステップ 4：「在庫転記 BSX」の行をダブルクリックすると、次の画面が表示されます：" loading="lazy" width="333" height="221"></a><figcaption><span class="n">画面 671</span><span class="src">image679.png · 333×221</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t28/04_2_image680.png"><img src="assets/img/mm/t28/04_2_image680.png" alt="品目管理の自動記帳をメンテナンスする · ステップ 4：「在庫転記 BSX」の行をダブルクリックすると、次の画面が表示されます：" loading="lazy" width="527" height="258"></a><figcaption><span class="n">画面 672</span><span class="src">image680.png · 527×258</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 画面では勘定割当が「トランザクション」別に分類されています。まず在庫の記帳を定義します。品目の移動は常に在庫勘定と関係するため、伝票には必ず在庫勘定の行があります。そこで、システムが在庫勘定をどのように決定するかを定義します。<br>解説：この画面では、在庫勘定が「評価修正」と「評価レベル」の影響を受けるかどうかを明確にします。ここではこの両者の影響を受けるように選択します。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：屏幕中科目分配被按“事务”分类。我们首先定义存货记帐。因为物料移动总和存货科目相关，所以凭证中总有一行是存货科目行，我们定义系统如何确定存货科目。<br>解释：在这个屏幕中，我们明确存货科目是否受“评估修改”和“评估级别”的影响，这里我们选择受这两者的影响。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t28/05_1_image681.png"><img src="assets/img/mm/t28/05_1_image681.png" alt="品目管理の自動記帳をメンテナンスする · ステップ 5：解説：画面では勘定割当が「トランザクション」別に分類されています。まず在庫の記帳を定義します。品目の移動は常に在庫勘定と関係するため、伝票には必ず在庫勘定の行があります。そこで、システムが在庫勘定をどのように決定するかを定義します。 解説：この画面では、在庫勘定が「評価修正」と「評価レベル」の影響を受けるかどうかを明確" loading="lazy" width="609" height="312"></a><figcaption><span class="n">画面 673</span><span class="src">image681.png · 609×312</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">12430101 棚卸資産－完成品（FERT）<br>画面には、定義した各種の在庫勘定が表示されています。保存後に「戻る」をクリックします。</p>
+<details class="orig"><summary>原文</summary><div class="zh">12430101 存货－产成品<br>屏幕中显示的是我们定义的各种存货科目，保存后点击返回。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t28/06_1_image682.png"><img src="assets/img/mm/t28/06_1_image682.png" alt="品目管理の自動記帳をメンテナンスする · ステップ 6：12430101 棚卸資産－完成品（FERT） 画面には、定義した各種の在庫勘定が表示されています。保存後に「戻る」をクリックします。" loading="lazy" width="643" height="463"></a><figcaption><span class="n">画面 674</span><span class="src">image682.png · 643×463</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 品目の購買では材料購買勘定（GR/IR）が関係し、これは「WRX」でメンテナンスします。トランザクション「在庫・請求書清算勘定 WRX」の行をダブルクリックすると、次の画面が表示されます。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：物料采购会涉及材料采购科目（GR/IR）这是在“WRX”中维护的。 双击事务“货物发票清算科目 WRX”行，进入如下屏幕</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t28/07_1_image683.png"><img src="assets/img/mm/t28/07_1_image683.png" alt="品目管理の自動記帳をメンテナンスする · ステップ 7：解説：品目の購買では材料購買勘定（GR/IR）が関係し、これは「WRX」でメンテナンスします。トランザクション「在庫・請求書清算勘定 WRX」の行をダブルクリックすると、次の画面が表示されます。" loading="lazy" width="727" height="469"></a><figcaption><span class="n">画面 675</span><span class="src">image683.png · 727×469</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 676）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t28/08_1_image684.png"><img src="assets/img/mm/t28/08_1_image684.png" alt="品目管理の自動記帳をメンテナンスする · ステップ 8：image684.png" loading="lazy" width="541" height="292"></a><figcaption><span class="n">画面 676</span><span class="src">image684.png · 541×292</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>12010101 材料購買－GR/IR 「戻る」をクリック</div>
+</li>
+<li>
+<p class="opcap">「保存」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击保存</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t28/09_1_image685.png"><img src="assets/img/mm/t28/09_1_image685.png" alt="品目管理の自動記帳をメンテナンスする · ステップ 9：「保存」をクリック" loading="lazy" width="621" height="382"></a><figcaption><span class="n">画面 677</span><span class="src">image685.png · 621×382</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 品目の移動に関連する会計伝票では、在庫の行以外の対応する行の勘定は「GBB」でメンテナンスします。例えば製造原価、売上原価などです。<br>トランザクション「在庫記帳の逆仕訳入力 GBB 行」をダブルクリックすると、次の画面が表示されます</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：和物料移动相关的会计凭证除了库存这一行，对应的那行的会计科目在 “ GBB”中维护，必然生产成本、主营业务成本等。<br>双击事务“库存记帐的冲销输入 GBB 行”，进入如下屏幕</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t28/10_1_image686.png"><img src="assets/img/mm/t28/10_1_image686.png" alt="品目管理の自動記帳をメンテナンスする · ステップ 10：解説：品目の移動に関連する会計伝票では、在庫の行以外の対応する行の勘定は「GBB」でメンテナンスします。例えば製造原価、売上原価などです。 トランザクション「在庫記帳の逆仕訳入力 GBB 行」をダブルクリックすると、次の画面が表示されます" loading="lazy" width="606" height="296"></a><figcaption><span class="n">画面 678</span><span class="src">image686.png · 606×296</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 679）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t28/11_1_image687.png"><img src="assets/img/mm/t28/11_1_image687.png" alt="品目管理の自動記帳をメンテナンスする · ステップ 11：image687.png" loading="lazy" width="607" height="304"></a><figcaption><span class="n">画面 679</span><span class="src">image687.png · 607×304</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>VBR は生産出庫に関連します。41010101 製造原価－原材料消費を入力して「保存」をクリックし、「戻る」ボタンを押します。</div>
+</li>
+<li>
+<p class="opcap">VAX は販売出庫に関連しており、54010201 売上原価－商品（HAWA）です<br>54010101 売上原価－自製製品</p>
+<details class="orig"><summary>原文</summary><div class="zh">VAX是和销售出库相关的，54010201 主营业务成本－贸易商品<br>54010101 主营业务成本－自制产品</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t28/12_1_image688.png"><img src="assets/img/mm/t28/12_1_image688.png" alt="品目管理の自動記帳をメンテナンスする · ステップ 12：VAX は販売出庫に関連しており、54010201 売上原価－商品（HAWA）です 54010101 売上原価－自製製品" loading="lazy" width="640" height="409"></a><figcaption><span class="n">画面 680</span><span class="src">image688.png · 640×409</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 681）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t28/13_1_image689.png"><img src="assets/img/mm/t28/13_1_image689.png" alt="品目管理の自動記帳をメンテナンスする · ステップ 13：image689.png" loading="lazy" width="509" height="277"></a><figcaption><span class="n">画面 681</span><span class="src">image689.png · 509×277</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t28/14_1_image690.png"><img src="assets/img/mm/t28/14_1_image690.png" alt="品目管理の自動記帳をメンテナンスする · ステップ 13：image690.png" loading="lazy" width="593" height="273"></a><figcaption><span class="n">画面 682</span><span class="src">image690.png · 593×273</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>54010301 売上原価－購買価格差異</div>
+<div class="note tip"><b class="t">教材ノート</b>54010401 売上原価－製造指図差異</div>
+</li>
+</ol>
+<div class="steph" id="t29"><span class="no">タスク 29</span><h3>在庫勘定を自動記帳専用に設定する</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">FS00</span><span class="tc2">3 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】将存货科目设置为只能自动记帐<br></div></details>
+<div class="pathline" data-copy="会計 → 財務会計 → 総勘定元帳 → マスタレコード → 総勘定元帳勘定 → 個別処理 → FS00 集中"><b>IMG パス（IMG 設定メニュー）</b>会計 → 財務会計 → 総勘定元帳 → マスタレコード → 総勘定元帳勘定 → 個別処理 → FS00 集中</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计核算 → 财务会计 → 总账 → 主记录 → 总账科目 → 单个处理 → FS00 集中的</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">会計－財務会計－総勘定元帳－マスタレコード－総勘定元帳勘定－個別処理－FS00 集中</p>
+<details class="orig"><summary>原文</summary><div class="zh">会计核算－财务会计－总账－主记录－总账科目－单个处理－FS00 集中的</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t29/01_1_image691.png"><img src="assets/img/mm/t29/01_1_image691.png" alt="在庫勘定を自動記帳専用に設定する · ステップ 1：会計－財務会計－総勘定元帳－マスタレコード－総勘定元帳勘定－個別処理－FS00 集中" loading="lazy" width="324" height="298"></a><figcaption><span class="n">画面 683</span><span class="src">image691.png · 324×298</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t29/01_2_image692.png"><img src="assets/img/mm/t29/01_2_image692.png" alt="在庫勘定を自動記帳専用に設定する · ステップ 1：会計－財務会計－総勘定元帳－マスタレコード－総勘定元帳勘定－個別処理－FS00 集中" loading="lazy" width="626" height="490"></a><figcaption><span class="n">画面 684</span><span class="src">image692.png · 626×490</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 品目管理を有効化すると、一部の勘定は統合によって自動記帳されます。勘定マスタでは、項目を「自動記帳のみ」に設定する必要があります<br>「登録/銀行/利息」を選択します（図のとおり）：12110101</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：启用物料管理后，有些会计科目是通过集成自动记帐的，在会计科目主数据中需要设置条目为“只能自动记帐”<br>选择“创建/银行/利息”，如图所示：12110101</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t29/02_1_image693.png"><img src="assets/img/mm/t29/02_1_image693.png" alt="在庫勘定を自動記帳専用に設定する · ステップ 2：解説：品目管理を有効化すると、一部の勘定は統合によって自動記帳されます。勘定マスタでは、項目を「自動記帳のみ」に設定する必要があります 「登録/銀行/利息」を選択します（図のとおり）：12110101" loading="lazy" width="640" height="622"></a><figcaption><span class="n">画面 685</span><span class="src">image693.png · 640×622</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>12310101 と 12430101 をチェックし、同様に自動記帳を設定します</div>
+</li>
+</ol>
+<div class="steph" id="t30"><span class="no">タスク 30</span><h3>購買価格差異の許容範囲を設定します</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">6 画面 / 3 ステップ</span></div>
+<p>解説：SAP は購買発注を処理するとき、購買発注の価格と品目マスタの原価価格にどれだけ差異があるかをチェックし、同時に購買発注の現金割引が受け入れ可能かどうかもチェックします。差異が一定の許容範囲を超えると、システムは警告メッセージまたはエラーメッセージを発行します。異なる許容範囲チェックは「許容範囲キー」に格納されており、許容範囲キー「PE」は価格をチェックし、「SE」は現金割引をチェックします。</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】设置采购价格差异的容差限制<br>解释：SAP 在处理采购订单时，会检查采购订单中的价格和物料主数据中的成本价格差异有多大，同时也会检查采购订单中的现金折扣是否可接受。如果差异超过一定的容差，系统将发出警告消息或者报错消息。不同的容差检查存放在“容差码”中，容差码“PE ” 是检 查价格的，“ SE ” 是检查现金折扣的。</div></details>
+<div class="pathline" data-copy="品目管理 → 購買 → 購買発注 → 価格差異の許容範囲の設定"><b>IMG パス（IMG 設定メニュー）</b>品目管理 → 購買 → 購買発注 → 価格差異の許容範囲の設定</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>物料管理 → 采购 → 采购订单 → 设置价格差异的容差限制</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">品目管理－購買－購買発注－価格差異の許容範囲の設定</p>
+<details class="orig"><summary>原文</summary><div class="zh">物料管理－采购－采购订单－设置价格差异的容差限制</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/mm/t30/01_1_image694.png"><img src="assets/img/mm/t30/01_1_image694.png" alt="購買価格差異の許容範囲を設定します · ステップ 1：品目管理－購買－購買発注－価格差異の許容範囲の設定" loading="lazy" width="664" height="678"></a><figcaption><span class="n">画面 686</span><span class="src">image696.png · 664×678</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t30/01_2_image695.png"><img src="assets/img/mm/t30/01_2_image695.png" alt="購買価格差異の許容範囲を設定します · ステップ 1：品目管理－購買－購買発注－価格差異の許容範囲の設定" loading="lazy" width="613" height="174"></a><figcaption><span class="n">画面 687</span><span class="src">image697.png · 613×174</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t30/01_1_image694.png"><img src="assets/img/mm/t30/01_1_image694.png" alt="購買価格差異の許容範囲を設定します · ステップ 1：品目管理－購買－購買発注－価格差異の許容範囲の設定" loading="lazy" width="664" height="678"></a><figcaption><span class="n">画面 686</span><span class="src">image696.png · 664×678</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t30/01_2_image695.png"><img src="assets/img/mm/t30/01_2_image695.png" alt="購買価格差異の許容範囲を設定します · ステップ 1：品目管理－購買－購買発注－価格差異の許容範囲の設定" loading="lazy" width="613" height="174"></a><figcaption><span class="n">画面 687</span><span class="src">image697.png · 613×174</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 画面には既に会社がメンテナンスされているため、テンプレート会社 0001 をコピーする方法を採用します。会社 0001 を選択し、TlKy（許容範囲コード）が PE の価格差異、購買行を選択してコピーします。<br>解説：許容範囲には上限と下限があり、絶対差異とパーセント差異のどちらか一方でも超えると、許容範囲を超えたとみなされます。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：屏幕中已经有公司维护了，我们采用复制模板公司 0001 公司的方法。选中 0001 公司，TlKy（容差码）为 PE 的价格差异，采购行，复制。<br>解释：容差分上限和下限，同时绝对差异和百分比差异只要有一个超出就认为容差被超出了。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t30/02_1_image698.png"><img src="assets/img/mm/t30/02_1_image698.png" alt="購買価格差異の許容範囲を設定します · ステップ 2：解説：画面には既に会社がメンテナンスされているため、テンプレート会社 0001 をコピーする方法を採用します。会社 0001 を選択し、TlKy（許容範囲コード）が PE の価格差異、購買行を選択してコピーします。 解説：許容範囲には上限と下限があり、絶対差異とパーセント差異のどちらか一方でも超えると、許容範囲を超えた" loading="lazy" width="602" height="568"></a><figcaption><span class="n">画面 690</span><span class="src">image698.png · 602×568</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">上記の方法を繰り返し、許容範囲 SE 最大キャッシュディスカウント減（購買）を会社コード C999 にコピーします</p>
+<details class="orig"><summary>原文</summary><div class="zh">重复上述方法，复制容差限制 SE 最大现金贴现减少（采购）到公司代码 C999</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t30/03_1_image699.png"><img src="assets/img/mm/t30/03_1_image699.png" alt="購買価格差異の許容範囲を設定します · ステップ 3：上記の方法を繰り返し、許容範囲 SE 最大キャッシュディスカウント減（購買）を会社コード C999 にコピーします" loading="lazy" width="646" height="558"></a><figcaption><span class="n">画面 691</span><span class="src">image699.png · 646×558</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t31"><span class="no">タスク 31</span><h3>入庫の許容範囲を設定</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">5 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】设置收货的容差限制<br></div></details>
+<div class="pathline" data-copy="品目管理 → 在庫管理と実地棚卸 → 入庫 → 許容範囲の設定"><b>IMG パス（IMG 設定メニュー）</b>品目管理 → 在庫管理と実地棚卸 → 入庫 → 許容範囲の設定</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>物料管理 → 库存管理和实际库存 → 收货 → 设置容差限制</code></div>
+<ol class="oplist">
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/mm/t31/01_1_image700.png"><img src="assets/img/mm/t31/01_1_image700.png" alt="入庫の許容範囲を設定 · ステップ 1：image700.png" loading="lazy" width="462" height="395"></a><figcaption><span class="n">画面 692</span><span class="src">image700.png · 462×395</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> SAP では、購買発注の価格設定数量単位と購買発注数量単位を異なるものにできます。たとえば、購買発注数量は個数単位ですが、価格設定はキログラム単位です。この場合、入庫時には両方の単位の数量を入力する必要があります。入庫時、システムは価格設定数量と購買発注の差異をチェックし、許容範囲キー「B1」を超えるとエラーメッセージを発行し、「B2」を超えると警告メッセージを発行します。ここでは、テンプレート会社 0001 をコピーする方法で頤寧公司の入庫許容範囲を登録します。<br>品目管理－在庫管理と実地棚卸－入庫－許容範囲の設定</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：SAP 允许采购订单定价数量单位和采购订单数量单位不同，比如采购订单数量是按件，但是定价是按公斤。在这种情况下，当收货时，两种单位的数量都需要输入。在收货时，系统会检查定价数量和采购订单中的差异，容差码 “ B1 ” 被超出会发出错误信息，“ B2 ” 被超出时会发出警告消息。这里我们采用复制模板公司 0001 的方式建立颐宁公司的收货容差限制。<br>物料管理－库存管理和实际库存－收货－设置容差限制</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t31/02_1_image701.png"><img src="assets/img/mm/t31/02_1_image701.png" alt="入庫の許容範囲を設定 · ステップ 2：解説：SAP では、購買発注の価格設定数量単位と購買発注数量単位を異なるものにできます。たとえば、購買発注数量は個数単位ですが、価格設定はキログラム単位です。この場合、入庫時には両方の単位の数量を入力する必要があります。入庫時、システムは価格設定数量と購買発注の差異をチェックし、許容範囲キー「B1」を超えるとエラーメッ" loading="lazy" width="621" height="605"></a><figcaption><span class="n">画面 693</span><span class="src">image701.png · 621×605</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">B1、B2 を選択してコピーし、会社名を C999 に変更してから Enter を押します</p>
+<details class="orig"><summary>原文</summary><div class="zh">选中 B1、B2 复制，修改公司名称为C999，然后回车姐</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t31/03_1_image702.png"><img src="assets/img/mm/t31/03_1_image702.png" alt="入庫の許容範囲を設定 · ステップ 3：B1、B2 を選択してコピーし、会社名を C999 に変更してから Enter を押します" loading="lazy" width="568" height="612"></a><figcaption><span class="n">画面 694</span><span class="src">image702.png · 568×612</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t31/03_2_image703.png"><img src="assets/img/mm/t31/03_2_image703.png" alt="入庫の許容範囲を設定 · ステップ 3：B1、B2 を選択してコピーし、会社名を C999 に変更してから Enter を押します" loading="lazy" width="569" height="553"></a><figcaption><span class="n">画面 695</span><span class="src">image703.png · 569×553</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 696）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t31/04_1_image704.png"><img src="assets/img/mm/t31/04_1_image704.png" alt="入庫の許容範囲を設定 · ステップ 4：image704.png" loading="lazy" width="612" height="160"></a><figcaption><span class="n">画面 696</span><span class="src">image704.png · 612×160</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t32"><span class="no">タスク 32</span><h3>請求書ブロックの許容範囲を設定</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">18 画面 / 6 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】设置发票冻结的容差限制<br></div></details>
+<div class="pathline" data-copy="品目管理 → ロジスティクス請求書照合（LIV） → 請求書ブロック → 許容範囲の設定"><b>IMG パス（IMG 設定メニュー）</b>品目管理 → ロジスティクス請求書照合（LIV） → 請求書ブロック → 許容範囲の設定</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>物料管理 → 后勤发票校验 → 发票冻结 → 设置容差限制</code></div>
+<div class="note info"><b class="t">原理の説明</b>解説：SAP は請求書照合時に大量のチェックを行い、照合を通過しないと請求書がブロックされます。そのため請求書照合の許容範囲の設定が最も豊富で、許容範囲コードも最も多くなっています。システムには全部で 14 の許容範囲コードがあり、それぞれ異なる目的のチェックを担っています。ここでは主にコピーの方法を用います。</div>
+<ol class="oplist">
+<li>
+<p class="opcap">品目管理－ロジスティクス請求書照合（LIV）－請求書ブロック－許容範囲の設定</p>
+<details class="orig"><summary>原文</summary><div class="zh">物料管理－后勤发票校验－发票冻结－设置容差限制</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t32/01_1_image705.png"><img src="assets/img/mm/t32/01_1_image705.png" alt="請求書ブロックの許容範囲を設定 · ステップ 1：品目管理－ロジスティクス請求書照合（LIV）－請求書ブロック－許容範囲の設定" loading="lazy" width="298" height="525"></a><figcaption><span class="n">画面 697</span><span class="src">image705.png · 298×525</span></figcaption></figure>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/mm/t32/02_1_image706.png"><img src="assets/img/mm/t32/02_1_image706.png" alt="請求書ブロックの許容範囲を設定 · ステップ 2：image706.png" loading="lazy" width="406" height="373"></a><figcaption><span class="n">画面 698</span><span class="src">image706.png · 406×373</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t32/02_2_image707.png"><img src="assets/img/mm/t32/02_2_image707.png" alt="請求書ブロックの許容範囲を設定 · ステップ 2：image707.png" loading="lazy" width="416" height="376"></a><figcaption><span class="n">画面 699</span><span class="src">image707.png · 416×376</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t32/02_3_image708.png"><img src="assets/img/mm/t32/02_3_image708.png" alt="請求書ブロックの許容範囲を設定 · ステップ 2：image708.png" loading="lazy" width="580" height="410"></a><figcaption><span class="n">画面 700</span><span class="src">image708.png · 580×410</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">画面には、すでに存在する許容範囲管理の会社コード一覧が表示されます。<br>会社コード 0110 を選択、TlKy は AN、AP、BD、BR、BW、DQ、DW、KW、PP、PS、ST、VP</p>
+<details class="orig"><summary>原文</summary><div class="zh">屏幕中显示的是已经存在的容差控制的公司代码清单。<br>选择公司代码 0110，TlKy 为 AN、AP、BD、BR、BW、DQ、DW、KW、PP、PS、ST、VP</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t32/03_1_image709.png"><img src="assets/img/mm/t32/03_1_image709.png" alt="請求書ブロックの許容範囲を設定 · ステップ 3：画面には、すでに存在する許容範囲管理の会社コード一覧が表示されます。 会社コード 0110 を選択、TlKy は AN、AP、BD、BR、BW、DQ、DW、KW、PP、PS、ST、VP" loading="lazy" width="595" height="544"></a><figcaption><span class="n">画面 701</span><span class="src">image709.png · 595×544</span></figcaption></figure>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/mm/t32/04_1_image710.png"><img src="assets/img/mm/t32/04_1_image710.png" alt="請求書ブロックの許容範囲を設定 · ステップ 4：image713.png" loading="lazy" width="322" height="351"></a><figcaption><span class="n">画面 702</span><span class="src">image713.png · 322×351</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t32/04_2_image711.png"><img src="assets/img/mm/t32/04_2_image711.png" alt="請求書ブロックの許容範囲を設定 · ステップ 4：image714.png" loading="lazy" width="558" height="559"></a><figcaption><span class="n">画面 703</span><span class="src">image714.png · 558×559</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t32/04_3_image712.png"><img src="assets/img/mm/t32/04_3_image712.png" alt="請求書ブロックの許容範囲を設定 · ステップ 4：image715.png" loading="lazy" width="566" height="555"></a><figcaption><span class="n">画面 704</span><span class="src">image715.png · 566×555</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t32/04_4_image716.png"><img src="assets/img/mm/t32/04_4_image716.png" alt="請求書ブロックの許容範囲を設定 · ステップ 4：image716.png" loading="lazy" width="569" height="560"></a><figcaption><span class="n">画面 705</span><span class="src">image716.png · 569×560</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t32/04_1_image710.png"><img src="assets/img/mm/t32/04_1_image710.png" alt="請求書ブロックの許容範囲を設定 · ステップ 4：image713.png" loading="lazy" width="322" height="351"></a><figcaption><span class="n">画面 702</span><span class="src">image713.png · 322×351</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t32/04_2_image711.png"><img src="assets/img/mm/t32/04_2_image711.png" alt="請求書ブロックの許容範囲を設定 · ステップ 4：image714.png" loading="lazy" width="558" height="559"></a><figcaption><span class="n">画面 703</span><span class="src">image714.png · 558×559</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t32/04_3_image712.png"><img src="assets/img/mm/t32/04_3_image712.png" alt="請求書ブロックの許容範囲を設定 · ステップ 4：image715.png" loading="lazy" width="566" height="555"></a><figcaption><span class="n">画面 704</span><span class="src">image715.png · 566×555</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/mm/t32/05_1_image717.png"><img src="assets/img/mm/t32/05_1_image717.png" alt="請求書ブロックの許容範囲を設定 · ステップ 5：image719.png" loading="lazy" width="586" height="569"></a><figcaption><span class="n">画面 709</span><span class="src">image719.png · 586×569</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t32/05_2_image718.png"><img src="assets/img/mm/t32/05_2_image718.png" alt="請求書ブロックの許容範囲を設定 · ステップ 5：image720.png" loading="lazy" width="562" height="565"></a><figcaption><span class="n">画面 710</span><span class="src">image720.png · 562×565</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t32/05_1_image717.png"><img src="assets/img/mm/t32/05_1_image717.png" alt="請求書ブロックの許容範囲を設定 · ステップ 5：image719.png" loading="lazy" width="586" height="569"></a><figcaption><span class="n">画面 709</span><span class="src">image719.png · 586×569</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t32/05_2_image718.png"><img src="assets/img/mm/t32/05_2_image718.png" alt="請求書ブロックの許容範囲を設定 · ステップ 5：image720.png" loading="lazy" width="562" height="565"></a><figcaption><span class="n">画面 710</span><span class="src">image720.png · 562×565</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 713）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t32/06_1_image721.png"><img src="assets/img/mm/t32/06_1_image721.png" alt="請求書ブロックの許容範囲を設定 · ステップ 6：image721.png" loading="lazy" width="550" height="548"></a><figcaption><span class="n">画面 713</span><span class="src">image721.png · 550×548</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t32/07_1_image722.png"><img src="assets/img/mm/t32/07_1_image722.png" alt="請求書ブロックの許容範囲を設定 · ステップ 6：image722.png" loading="lazy" width="389" height="380"></a><figcaption><span class="n">画面 714</span><span class="src">image722.png · 389×380</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t33"><span class="no">タスク 33</span><h3>項目金額チェックをメンテナンス</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">3 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】维护项目金额检查<br></div></details>
+<div class="pathline" data-copy="品目管理 → ロジスティクス請求書照合（LIV） → 請求書ブロック → 明細金額チェック → 明細金額チェックの有効化"><b>IMG パス（IMG 設定メニュー）</b>品目管理 → ロジスティクス請求書照合（LIV） → 請求書ブロック → 明細金額チェック → 明細金額チェックの有効化</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>物料管理 → 后勤发票校验 → 发票冻结 → 项目金额检查 → 激活项目金额检查</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">品目管理－ロジスティクス請求書照合（LIV）－請求書ブロック－明細金額チェック－明細金額チェックの有効化</p>
+<details class="orig"><summary>原文</summary><div class="zh">物料管理－后勤发票校验－发票冻结－项目金额检查－激活项目金额检查</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t33/01_1_image723.png"><img src="assets/img/mm/t33/01_1_image723.png" alt="項目金額チェックをメンテナンス · ステップ 1：品目管理－ロジスティクス請求書照合（LIV）－請求書ブロック－明細金額チェック－明細金額チェックの有効化" loading="lazy" width="300" height="491"></a><figcaption><span class="n">画面 715</span><span class="src">image723.png · 300×491</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 716）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t33/02_1_image724.png"><img src="assets/img/mm/t33/02_1_image724.png" alt="項目金額チェックをメンテナンス · ステップ 2：image724.png" loading="lazy" width="445" height="231"></a><figcaption><span class="n">画面 716</span><span class="src">image724.png · 445×231</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「新規エントリ」をクリックし、頤寧公司を追加します</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击新条目，将颐宁公司添加进来</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t33/03_1_image725.png"><img src="assets/img/mm/t33/03_1_image725.png" alt="項目金額チェックをメンテナンス · ステップ 3：「新規エントリ」をクリックし、頤寧公司を追加します" loading="lazy" width="486" height="137"></a><figcaption><span class="n">画面 717</span><span class="src">image725.png · 486×137</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t34"><span class="no">タスク 34</span><h3>資材所要量計画を実行</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">MD03</span><span class="tc2">10 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】运行物料需求计划<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 品目管理 → 資材所要量計画（MRP） → 資材所要量計画 → 計画 → MD03 単一レベル"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 品目管理 → 資材所要量計画（MRP） → 資材所要量計画 → 計画 → MD03 単一レベル</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 物料管理 → 物料需求计划（MRP） → 物料需求计划 → 计划 → MD03 单层</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">ロジスティクス－品目管理－資材所要量計画（MRP）－資材所要量計画－計画－MD03 単一レベル</p>
+<details class="orig"><summary>原文</summary><div class="zh">后勤－物料管理－物料需求计划（MRP）－物料需求计划－计划－MD03 单层</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t34/01_1_image726.png"><img src="assets/img/mm/t34/01_1_image726.png" alt="資材所要量計画を実行 · ステップ 1：ロジスティクス－品目管理－資材所要量計画（MRP）－資材所要量計画－計画－MD03 単一レベル" loading="lazy" width="288" height="505"></a><figcaption><span class="n">画面 718</span><span class="src">image726.png · 288×505</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t34/01_2_image727.png"><img src="assets/img/mm/t34/01_2_image727.png" alt="資材所要量計画を実行 · ステップ 1：ロジスティクス－品目管理－資材所要量計画（MRP）－資材所要量計画－計画－MD03 単一レベル" loading="lazy" width="593" height="491"></a><figcaption><span class="n">画面 719</span><span class="src">image727.png · 593×491</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 現在、頤寧機械工場では各種品目の在庫はすべて 0 ですが、多くの品目で安全在庫が要求されています。ここで MRP を実行し、結果を見てみます。BOM は生産計画（PP）モジュールまで待ってメンテナンスするため、現時点では BOM 展開できず、単層計画となります。<br>Enter を押すと、システムがパラメータの確認を促すので、もう一度 Enter を押します</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：现在颐宁机械工厂里各种物料的库存都是 0，但是很多物料都要求有安全库存，现在来运行一下 MRP，看一下结果。由于 BOM 要等到生产计划模块维护，现在不能按 BOM 展开，所以是单层计划<br>回车后，系统会提示检查参数，再次回车</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t34/02_1_image728.png"><img src="assets/img/mm/t34/02_1_image728.png" alt="資材所要量計画を実行 · ステップ 2：解説：現在、頤寧機械工場では各種品目の在庫はすべて 0 ですが、多くの品目で安全在庫が要求されています。ここで MRP を実行し、結果を見てみます。BOM は生産計画（PP）モジュールまで待ってメンテナンスするため、現時点では BOM 展開できず、単層計画となります。 Enter を押すと、システムがパラメータの確認を" loading="lazy" width="616" height="935"></a><figcaption><span class="n">画面 720</span><span class="src">image728.png · 616×935</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 721）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t34/03_1_image729.png"><img src="assets/img/mm/t34/03_1_image729.png" alt="資材所要量計画を実行 · ステップ 3：image729.png" loading="lazy" width="286" height="105"></a><figcaption><span class="n">画面 721</span><span class="src">image729.png · 286×105</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">同じ方法で T999-100、R999-100、R999-200、R999-300、R999-400、R999-500 に対して計画を実行します</p>
+<details class="orig"><summary>原文</summary><div class="zh">同样的方法对 T999-100、R999-100、R999-200、R999-300、R999-400、R999-500 运行计划</div></details>
+<div class="shot-grid"><figure class="shot narrow"><a class="zoom" href="assets/img/mm/t34/04_1_image730.png"><img src="assets/img/mm/t34/04_1_image730.png" alt="資材所要量計画を実行 · ステップ 4：同じ方法で T999-100、R999-100、R999-200、R999-300、R999-400、R999-500 に対して計画を実行します" loading="lazy" width="220" height="56"></a><figcaption><span class="n">画面 722</span><span class="src">image730.png · 220×56</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="assets/img/mm/t34/04_2_image731.png"><img src="assets/img/mm/t34/04_2_image731.png" alt="資材所要量計画を実行 · ステップ 4：同じ方法で T999-100、R999-100、R999-200、R999-300、R999-400、R999-500 に対して計画を実行します" loading="lazy" width="203" height="15"></a><figcaption><span class="n">画面 723</span><span class="src">image731.png · 203×15</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="assets/img/mm/t34/04_3_image732.png"><img src="assets/img/mm/t34/04_3_image732.png" alt="資材所要量計画を実行 · ステップ 4：同じ方法で T999-100、R999-100、R999-200、R999-300、R999-400、R999-500 に対して計画を実行します" loading="lazy" width="203" height="15"></a><figcaption><span class="n">画面 724</span><span class="src">image732.png · 203×15</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="assets/img/mm/t34/04_4_image733.png"><img src="assets/img/mm/t34/04_4_image733.png" alt="資材所要量計画を実行 · ステップ 4：同じ方法で T999-100、R999-100、R999-200、R999-300、R999-400、R999-500 に対して計画を実行します" loading="lazy" width="203" height="15"></a><figcaption><span class="n">画面 725</span><span class="src">image733.png · 203×15</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="assets/img/mm/t34/04_5_image734.png"><img src="assets/img/mm/t34/04_5_image734.png" alt="資材所要量計画を実行 · ステップ 4：同じ方法で T999-100、R999-100、R999-200、R999-300、R999-400、R999-500 に対して計画を実行します" loading="lazy" width="234" height="27"></a><figcaption><span class="n">画面 726</span><span class="src">image734.png · 234×27</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="assets/img/mm/t34/04_6_image735.png"><img src="assets/img/mm/t34/04_6_image735.png" alt="資材所要量計画を実行 · ステップ 4：同じ方法で T999-100、R999-100、R999-200、R999-300、R999-400、R999-500 に対して計画を実行します" loading="lazy" width="203" height="15"></a><figcaption><span class="n">画面 727</span><span class="src">image735.png · 203×15</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t35"><span class="no">タスク 35</span><h3>在庫／所要量一覧を照会</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">MD04</span><span class="tc2">3 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】显示库存/需求清单<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 生産 → 資材所要量計画 → 評価 → MD04-在庫/所要量一覧"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 生産 → 資材所要量計画 → 評価 → MD04-在庫/所要量一覧</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 生产 → 物料需求计划 → 评估 → MD04-库存/需求清单</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 前回の MRP の実行は、たとえば毎晩など定期的に行われ、その結果もシステムに静的に保存されています。品目の動的な需給バランス一覧を確認するには、SAP の「在庫／所要量一覧」を表示します。<br>ロジスティクス－生産－資材所要量計画－評価－MD04-在庫/所要量一覧</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：上个 MRP 的运行是定期进行的，例如每天晚上，他的结果在系统中也是静态保存的。要看动态的物料的供需平衡清单，需要到 SAP“库存/需求清单”中来显示<br>后勤－生产－物料需求计划－评估－MD04-库存/需求清单</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t35/01_1_image736.png"><img src="assets/img/mm/t35/01_1_image736.png" alt="在庫／所要量一覧を照会 · ステップ 1：解説：前回の MRP の実行は、たとえば毎晩など定期的に行われ、その結果もシステムに静的に保存されています。品目の動的な需給バランス一覧を確認するには、SAP の「在庫／所要量一覧」を表示します。 ロジスティクス－生産－資材所要量計画－評価－MD04-在庫/所要量一覧" loading="lazy" width="457" height="729"></a><figcaption><span class="n">画面 728</span><span class="src">image736.png · 457×729</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 729）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t35/02_1_image737.png"><img src="assets/img/mm/t35/02_1_image737.png" alt="在庫／所要量一覧を照会 · ステップ 2：image737.png" loading="lazy" width="404" height="286"></a><figcaption><span class="n">画面 729</span><span class="src">image737.png · 404×286</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">このページは MRP 実行結果と似ていますが、動的に実行でき、データは現在の需給状況を反映します。実行後、購買依頼を生成することも、手動で生成することもできます。</p>
+<details class="orig"><summary>原文</summary><div class="zh">这个页面和 MRP 运行结果类似，但是它可以动态运行，数据反应的是当前供需的情况。运行后采购申请可生成，也可手工生成。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t35/03_1_image738.png"><img src="assets/img/mm/t35/03_1_image738.png" alt="在庫／所要量一覧を照会 · ステップ 3：このページは MRP 実行結果と似ていますが、動的に実行でき、データは現在の需給状況を反映します。実行後、購買依頼を生成することも、手動で生成することもできます。" loading="lazy" width="1155" height="334"></a><figcaption><span class="n">画面 730</span><span class="src">image738.png · 1155×334</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>Enter 後、次の画面へ進む</div>
+</li>
+</ol>
+<div class="steph" id="t36"><span class="no">タスク 36</span><h3>購買依頼を新規作成</h3><span class="tc">ME51N</span><span class="tc2">6 画面 / 6 ステップ</span></div>
+<p>解説：MRP 実行の結果は、原材料（ROH）に対する購買依頼と完成品（FERT）に対する計画手配です。したがって、計画と購買のプロセスのつなぎ目は購買依頼の登録です。PP モジュールの学習では、MRP が生成した購買依頼に基づいて直接購買発注を登録します。ここでは、手作業で新規に購買依頼を登録するところからプロセスを始めます。本ステップでは、頤寧公司の計画</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建采购申请<br>解释：MRP 运行的结果是对原材料的采购申请和对产成品的计划订单，所以生成计划和采购的流程衔接是采购申请的创建。在 PP 模块的学习中我们将根据 MRP 产生的采购申请直接来创建采购订单。现在我们的流程从手工新建采购申请开始。本步骤中，颐宁公司的计划</div></details>
+<div class="pathline" data-copy="ロジスティクス → 品目管理 → 購買--購買依頼 → ME51N → 登録"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 品目管理 → 購買--購買依頼 → ME51N → 登録</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 物料管理 → 采购--采购申请 → ME51N → 创建</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">部門が手作業で購買依頼を作成し、原材料（ROH）と商品（HAWA）の一括購買を申請します。業務処理<br>ロジスティクス－品目管理－購買--購買依頼－ME51N－登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">部门手工填制采购申请，申请采购一批原材料和贸易商品前台<br>后勤－物料管理－采购--采购申请－ME51N－创建</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t36/01_1_image739.png"><img src="assets/img/mm/t36/01_1_image739.png" alt="購買依頼を新規作成 · ステップ 1：部門が手作業で購買依頼を作成し、原材料（ROH）と商品（HAWA）の一括購買を申請します。業務処理 ロジスティクス－品目管理－購買--購買依頼－ME51N－登録" loading="lazy" width="265" height="219"></a><figcaption><span class="n">画面 731</span><span class="src">image739.png · 265×219</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">初めてページを開くとヘルプが表示されますが、閉じてかまいません</p>
+<details class="orig"><summary>原文</summary><div class="zh">第一次进入页面会有帮助，可关闭</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t36/02_1_image740.png"><img src="assets/img/mm/t36/02_1_image740.png" alt="購買依頼を新規作成 · ステップ 2：初めてページを開くとヘルプが表示されますが、閉じてかまいません" loading="lazy" width="808" height="404"></a><figcaption><span class="n">画面 732</span><span class="src">image740.png · 808×404</span></figcaption></figure>
+<div class="note info"><b class="t">原理の説明</b>解説：購買依頼の画面は、主に最上部の「伝票タイプと伝票番号」行とヘッダ情報、明細概要情報、明細詳細情報の 3 層で構成されます。左側のボタンをクリックすると、入力画面を展開または折りたたむことができます。</div>
+</li>
+<li>
+<p class="opcap">「項目概要」ボタンをクリックすると、次の画面に進みます：</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击项目概览按钮，进入如下页面：</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t36/03_1_image741.png"><img src="assets/img/mm/t36/03_1_image741.png" alt="購買依頼を新規作成 · ステップ 3：「項目概要」ボタンをクリックすると、次の画面に進みます：" loading="lazy" width="1150" height="710"></a><figcaption><span class="n">画面 733</span><span class="src">image741.png · 1150×710</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">明細概要で、購買を依頼する品目、数量、納入日付、納入プラントなどの情報を入力します。入力内容は次のとおりです：</p>
+<details class="orig"><summary>原文</summary><div class="zh">在项目概览里，输入申请采购的物料，数量，交货日期和交货工厂等信息，录入如下：</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t36/04_1_image742.png"><img src="assets/img/mm/t36/04_1_image742.png" alt="購買依頼を新規作成 · ステップ 4：明細概要で、購買を依頼する品目、数量、納入日付、納入プラントなどの情報を入力します。入力内容は次のとおりです：" loading="lazy" width="1097" height="348"></a><figcaption><span class="n">画面 734</span><span class="src">image742.png · 1097×348</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">Enter キーを押すと、各明細行が展開されます</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击回车键，各个明细行会被展开</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t36/05_1_image743.png"><img src="assets/img/mm/t36/05_1_image743.png" alt="購買依頼を新規作成 · ステップ 5：Enter キーを押すと、各明細行が展開されます" loading="lazy" width="1075" height="336"></a><figcaption><span class="n">画面 735</span><span class="src">image743.png · 1075×336</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>「保存」をクリックすると、次のメッセージが表示されます：</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 736）</span></p>
+<figure class="shot narrow"><a class="zoom" href="assets/img/mm/t36/06_1_image744.png"><img src="assets/img/mm/t36/06_1_image744.png" alt="購買依頼を新規作成 · ステップ 6：image744.png" loading="lazy" width="243" height="34"></a><figcaption><span class="n">画面 736</span><span class="src">image744.png · 243×34</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t37"><span class="no">タスク 37</span><h3>購買発注を新規作成</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">ME21N</span><span class="tc2">9 画面 / 8 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建采购订单<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 品目管理 → 購買 → 購買発注 → 登録 → ME21N → 既知の仕入先／供給プラント"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 品目管理 → 購買 → 購買発注 → 登録 → ME21N → 既知の仕入先／供給プラント</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 物料管理 → 采购 → 采购订单 → 创建 → ME21N → 已知供应商/供应工厂</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 計画部門の購買依頼に基づき、購買部門は仕入先から購買する必要がありますが、ここで「供給元決定」という問題、すなわちどの仕入先から購買するかがあります。SAP には複数の供給元決定の方式があります。この例では、人為的に仕入先を選択する方式を採用し、購買部門が購買発注を登録するときに仕入先を手入力します。<br>ロジスティクス－品目管理－購買－購買発注－登録－ME21N－既知の仕入先／供給プラント</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：根据计划部门的采购申请，采购部门需要向供应商采购，这其中有一个“货源确定”的问题，即向哪个供应商采购。SAP 有多种货源确定的方式。在我们的例子里，我们采用人为选择供应商的方式，即由采购部门在创建采购订单的时候，手工录入供应商<br>后勤－物料管理－采购－采购订单－创建－ME21N－已知供应商/供应工厂</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t37/01_1_image745.png"><img src="assets/img/mm/t37/01_1_image745.png" alt="購買発注を新規作成 · ステップ 1：解説：計画部門の購買依頼に基づき、購買部門は仕入先から購買する必要がありますが、ここで「供給元決定」という問題、すなわちどの仕入先から購買するかがあります。SAP には複数の供給元決定の方式があります。この例では、人為的に仕入先を選択する方式を採用し、購買部門が購買発注を登録するときに仕入先を手入力します。 ロジスティ" loading="lazy" width="989" height="263"></a><figcaption><span class="n">画面 737</span><span class="src">image745.png · 989×263</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">購買発注の登録画面は購買依頼と似ていますが、伝票タイプが異なり、仕入先項目が追加されています。「伝票概要」のオープンキーをクリックすると、次の画面が表示されます。</p>
+<details class="orig"><summary>原文</summary><div class="zh">新建采购订单和采购申请页面类似，但是凭证类型不同，而且多了供应商字段点击凭证概览打开键，出现如下屏幕</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t37/02_1_image746.png"><img src="assets/img/mm/t37/02_1_image746.png" alt="購買発注を新規作成 · ステップ 2：購買発注の登録画面は購買依頼と似ていますが、伝票タイプが異なり、仕入先項目が追加されています。「伝票概要」のオープンキーをクリックすると、次の画面が表示されます。" loading="lazy" width="1008" height="301"></a><figcaption><span class="n">画面 738</span><span class="src">image746.png · 1008×301</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">左側の小花キーをクリックします（下図の左のとおり）。次に「マイ購買依頼」を選択します（下図の右のとおり）</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击左栏小花键，如下左图，然后选择我的采购申请，如下右边的图</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t37/03_1_image747.png"><img src="assets/img/mm/t37/03_1_image747.png" alt="購買発注を新規作成 · ステップ 3：左側の小花キーをクリックします（下図の左のとおり）。次に「マイ購買依頼」を選択します（下図の右のとおり）" loading="lazy" width="362" height="531"></a><figcaption><span class="n">画面 739</span><span class="src">image747.png · 362×531</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t37/03_2_image748.png"><img src="assets/img/mm/t37/03_2_image748.png" alt="購買発注を新規作成 · ステップ 3：左側の小花キーをクリックします（下図の左のとおり）。次に「マイ購買依頼」を選択します（下図の右のとおり）" loading="lazy" width="363" height="410"></a><figcaption><span class="n">画面 740</span><span class="src">image748.png · 363×410</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 伝票概要は操作担当者にとって便利な各種ツールです。購買発注、購買依頼、枠組み契約などをさまざまな方法で検索できます。ここでは自分で登録した購買依頼を選択します。<br>左側の購買依頼を選択し、「採用」ボタンをクリックします（購買依頼の上部にあるコピーに似たボタンで、小花ボタンの隣のボタンです）</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：凭证概览是方便操作人员的各种工具。我们可以用各种方法来查找采购订单，采购申请，框架协议等，这里我们选择自己创建的采购申请。<br>选择左侧的采购申请点击采用按钮（采购申请上部类似复制的按钮，小花按钮边上的按钮）</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t37/04_1_image749.png"><img src="assets/img/mm/t37/04_1_image749.png" alt="購買発注を新規作成 · ステップ 4：解説：伝票概要は操作担当者にとって便利な各種ツールです。購買発注、購買依頼、枠組み契約などをさまざまな方法で検索できます。ここでは自分で登録した購買依頼を選択します。 左側の購買依頼を選択し、「採用」ボタンをクリックします（購買依頼の上部にあるコピーに似たボタンで、小花ボタンの隣のボタンです）" loading="lazy" width="1066" height="398"></a><figcaption><span class="n">画面 741</span><span class="src">image749.png · 1066×398</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">Enter 後、下図のとおり</p>
+<details class="orig"><summary>原文</summary><div class="zh">回车后，如下图所示</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t37/05_1_image750.jpeg"><img src="assets/img/mm/t37/05_1_image750.jpeg" alt="購買発注を新規作成 · ステップ 5：Enter 後、下図のとおり" loading="lazy" width="1347" height="533"></a><figcaption><span class="n">画面 742</span><span class="src">image750.jpeg · 1347×533</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">購買組織 Y999、仕入先 10000000 を入力<br>「項目概要」をクリックすると、下図のとおり</p>
+<details class="orig"><summary>原文</summary><div class="zh">输入采购组织 Y999，供应商 10000000<br>点击项目概览，如下图所示</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t37/06_1_image751.png"><img src="assets/img/mm/t37/06_1_image751.png" alt="購買発注を新規作成 · ステップ 6：購買組織 Y999、仕入先 10000000 を入力 「項目概要」をクリックすると、下図のとおり" loading="lazy" width="1157" height="364"></a><figcaption><span class="n">画面 743</span><span class="src">image751.png · 1157×364</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 744）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t37/07_1_image752.png"><img src="assets/img/mm/t37/07_1_image752.png" alt="購買発注を新規作成 · ステップ 7：image752.png" loading="lazy" width="459" height="235"></a><figcaption><span class="n">画面 744</span><span class="src">image752.png · 459×235</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">ここは原材料の購買であるべきなので、T999-100 を削除できます。「保存」をクリックすると、該当する購買発注が生成されます。</p>
+<details class="orig"><summary>原文</summary><div class="zh">此处应该是原材料的采购，可将 T999-100 删除。点击保存即可生成相应的采购订单。</div></details>
+<figure class="shot narrow"><a class="zoom" href="assets/img/mm/t37/08_1_image753.png"><img src="assets/img/mm/t37/08_1_image753.png" alt="購買発注を新規作成 · ステップ 8：ここは原材料の購買であるべきなので、T999-100 を削除できます。「保存」をクリックすると、該当する購買発注が生成されます。" loading="lazy" width="278" height="31"></a><figcaption><span class="n">画面 745</span><span class="src">image753.png · 278×31</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t38"><span class="no">タスク 38</span><h3>購買の入庫を登録する</h3><span class="tc">MIGO</span><span class="tc2">8 画面 / 7 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】创建采购收货<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 品目管理 → 在庫管理（MM-IM） → 在庫移動 → 入庫 → 購買発注に対して → 購買発注の GR（MIGO）"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 品目管理 → 在庫管理（MM-IM） → 在庫移動 → 入庫 → 購買発注に対して → 購買発注の GR（MIGO）</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 物料管理 → 库存管理 → 货物移动 → 收货 → 对采购订单 → 采购订单的 GR（MIGO）</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">ロジスティクス－品目管理－在庫管理（MM-IM）－在庫移動－入庫－購買発注に対して－購買発注の GR（MIGO）</p>
+<details class="orig"><summary>原文</summary><div class="zh">后勤－物料管理－库存管理－货物移动－收货－对采购订单－采购订单的 GR（MIGO）</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t38/01_1_image754.png"><img src="assets/img/mm/t38/01_1_image754.png" alt="購買の入庫を登録する · ステップ 1：ロジスティクス－品目管理－在庫管理（MM-IM）－在庫移動－入庫－購買発注に対して－購買発注の GR（MIGO）" loading="lazy" width="411" height="433"></a><figcaption><span class="n">画面 746</span><span class="src">image754.png · 411×433</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t38/01_2_image755.png"><img src="assets/img/mm/t38/01_2_image755.png" alt="購買の入庫を登録する · ステップ 1：ロジスティクス－品目管理－在庫管理（MM-IM）－在庫移動－入庫－購買発注に対して－購買発注の GR（MIGO）" loading="lazy" width="1295" height="546"></a><figcaption><span class="n">画面 747</span><span class="src">image755.png · 1295×546</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 前のステップで購買発注を登録しました。ここで仕入先が品物を納入したため、入庫の業務処理を行う必要があります。業務処理<br>解説：上の図が購買発注の入庫の画面です。画面の右上で購買発注番号とプラントを入力し、画面の中央は品目伝票の明細一覧、画面の下は入庫明細の詳細、画面の左は自分が処理した購買発注と品目伝票の履歴です。では購買発注番号を入力します。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：上一步我们创建了采购订单，现在供应商把货送到了，我们需要办理收货前台<br>解释：上图就是采购订单收货的屏幕，屏幕右上方输入采购订单号和工厂，屏幕中间是物料凭证的行总揽，屏幕下方是个收货行的明细，屏幕的左方是你自己处理过的采购订单和物料凭证的历史。我们来输入采购订单号</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t38/02_1_image756.png"><img src="assets/img/mm/t38/02_1_image756.png" alt="購買の入庫を登録する · ステップ 2：解説：前のステップで購買発注を登録しました。ここで仕入先が品物を納入したため、入庫の業務処理を行う必要があります。業務処理 解説：上の図が購買発注の入庫の画面です。画面の右上で購買発注番号とプラントを入力し、画面の中央は品目伝票の明細一覧、画面の下は入庫明細の詳細、画面の左は自分が処理した購買発注と品目伝票の履歴です。" loading="lazy" width="882" height="114"></a><figcaption><span class="n">画面 748</span><span class="src">image756.png · 882×114</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 749）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t38/03_1_image757.jpeg"><img src="assets/img/mm/t38/03_1_image757.jpeg" alt="購買の入庫を登録する · ステップ 3：image757.jpeg" loading="lazy" width="1304" height="526"></a><figcaption><span class="n">画面 749</span><span class="src">image757.jpeg · 1304×526</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">購買発注の行の明細が自動的に画面下部にコピーされます。明細行の画面で関連情報を入力します。保管場所 001 を入力します。注意：各行で同じ操作を行う必要があります。</p>
+<details class="orig"><summary>原文</summary><div class="zh">采购订单行的明细被自动复制到了屏幕下方，我们在行项目明细的屏幕中填写相关信息。输入库存地点 001，注意，每一行都要做相同的操作</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t38/04_1_image758.jpeg"><img src="assets/img/mm/t38/04_1_image758.jpeg" alt="購買の入庫を登録する · ステップ 4：購買発注の行の明細が自動的に画面下部にコピーされます。明細行の画面で関連情報を入力します。保管場所 001 を入力します。注意：各行で同じ操作を行う必要があります。" loading="lazy" width="1401" height="924"></a><figcaption><span class="n">画面 750</span><span class="src">image758.jpeg · 1401×924</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「明細決定」オプション（左下）にチェックを入れ、「保存」ボタンをクリックします。保存前に「チェック」をクリックして、誤りがないか確認するとよいでしょう</p>
+<details class="orig"><summary>原文</summary><div class="zh">勾上项目确定选项（左下角），点击保存按钮，保存之前最好点个检查，看看是否有误</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t38/05_1_image759.jpeg"><img src="assets/img/mm/t38/05_1_image759.jpeg" alt="購買の入庫を登録する · ステップ 5：「明細決定」オプション（左下）にチェックを入れ、「保存」ボタンをクリックします。保存前に「チェック」をクリックして、誤りがないか確認するとよいでしょう" loading="lazy" width="1320" height="955"></a><figcaption><span class="n">画面 751</span><span class="src">image759.jpeg · 1320×955</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">画面上部の入庫を A04 の表示に変更し、Enter を押してから、タブをファイル情報に切り替えます</p>
+<details class="orig"><summary>原文</summary><div class="zh">将屏幕上方的收货改为显示A04，点击回车，然后将标签页切换到文件信息</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t38/06_1_image760.jpeg"><img src="assets/img/mm/t38/06_1_image760.jpeg" alt="購買の入庫を登録する · ステップ 6：画面上部の入庫を A04 の表示に変更し、Enter を押してから、タブをファイル情報に切り替えます" loading="lazy" width="1351" height="788"></a><figcaption><span class="n">画面 752</span><span class="src">image760.jpeg · 1351×788</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">文書情報ページで「FI 伝票」をクリックすると、伝票の情報を確認できます</p>
+<details class="orig"><summary>原文</summary><div class="zh">在文件信息页，点击 FI 凭证，可以看到凭证的信息</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t38/07_1_image761.png"><img src="assets/img/mm/t38/07_1_image761.png" alt="購買の入庫を登録する · ステップ 7：文書情報ページで「FI 伝票」をクリックすると、伝票の情報を確認できます" loading="lazy" width="753" height="584"></a><figcaption><span class="n">画面 753</span><span class="src">image761.png · 753×584</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t39"><span class="no">タスク 39</span><h3>購買請求書を入力する</h3><span class="tc">MIRO</span><span class="tc2">5 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】输入采购发票<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 品目管理 → ロジスティクス請求書照合（LIV） → 伝票入力 → MIRO 請求書の入力"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 品目管理 → ロジスティクス請求書照合（LIV） → 伝票入力 → MIRO 請求書の入力</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 物料管理 → 后勤发票校验 → 凭证输入 → MIRO 输入发票</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 仕入先の購買請求書は、その後に業務処理へ届きます<br>ロジスティクス－品目管理－ロジスティクス請求書照合（LIV）－伝票入力－MIRO 請求書の入力</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：供应商的采购发票随后送到前台<br>后勤－物料管理－后勤发票校验－凭证输入－MIRO 输入发票</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t39/01_1_image762.png"><img src="assets/img/mm/t39/01_1_image762.png" alt="購買請求書を入力する · ステップ 1：解説：仕入先の購買請求書は、その後に業務処理へ届きます ロジスティクス－品目管理－ロジスティクス請求書照合（LIV）－伝票入力－MIRO 請求書の入力" loading="lazy" width="315" height="211"></a><figcaption><span class="n">画面 754</span><span class="src">image762.png · 315×211</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t20/02_1_image161.png"><img src="assets/img/fi/t20/02_1_image161.png" alt="購買請求書を入力する · ステップ 1：解説：仕入先の購買請求書は、その後に業務処理へ届きます ロジスティクス－品目管理－ロジスティクス請求書照合（LIV）－伝票入力－MIRO 請求書の入力" loading="lazy" width="228" height="194"></a><figcaption><span class="n">画面 158</span><span class="src">image161.png · 228×194</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>PO 参照で、下図のとおりに購買発注を入力し、Enter をクリックします。</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 756）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t39/02_1_image763.png"><img src="assets/img/mm/t39/02_1_image763.png" alt="購買請求書を入力する · ステップ 2：image763.png" loading="lazy" width="882" height="691"></a><figcaption><span class="n">画面 756</span><span class="src">image763.png · 882×691</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">まず「税額を計算」を選択して Enter キーを押し、残高欄の金額を金額欄にコピーして Enter をクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">先选中计算税额，按回车键，将余额处的金额拷贝在金额处，点击回车</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t39/03_1_image764.png"><img src="assets/img/mm/t39/03_1_image764.png" alt="購買請求書を入力する · ステップ 3：まず「税額を計算」を選択して Enter キーを押し、残高欄の金額を金額欄にコピーして Enter をクリックします" loading="lazy" width="985" height="759"></a><figcaption><span class="n">画面 757</span><span class="src">image764.png · 985×759</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 758）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t39/04_1_image765.jpeg"><img src="assets/img/mm/t39/04_1_image765.jpeg" alt="購買請求書を入力する · ステップ 4：image765.jpeg" loading="lazy" width="1149" height="941"></a><figcaption><span class="n">画面 758</span><span class="src">image765.jpeg · 1149×941</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>「保存」をクリックします。許容範囲を超過した場合は、請求書がブロックされます</div>
+</li>
+</ol>
+<div class="steph" id="t40"><span class="no">タスク 40</span><h3>ブロック請求書の解除</h3><span class="tc">MRBR</span><span class="tc2">4 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】下达冻结发票<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 品目管理 → ロジスティクス請求書照合（LIV） → 追加処理 → MRBR ブロック請求書の解除"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 品目管理 → ロジスティクス請求書照合（LIV） → 追加処理 → MRBR ブロック請求書の解除</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 物料管理 → 后勤发票校验 → 进一步处理 → MRBR 下达冻结发票</code></div>
+<div class="note info"><b class="t">原理の説明</b>解説：ブロックされた請求書は、関連する管理担当者がチェックした後に手動で解除できます。業務処理</div>
+<ol class="oplist">
+<li>
+<p class="opcap">ロジスティクス－品目管理－ロジスティクス請求書照合（LIV）－追加処理－MRBR ブロック請求書の解除</p>
+<details class="orig"><summary>原文</summary><div class="zh">后勤－物料管理－后勤发票校验－进一步处理－MRBR 下达冻结发票</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t40/01_1_image766.png"><img src="assets/img/mm/t40/01_1_image766.png" alt="ブロック請求書の解除 · ステップ 1：ロジスティクス－品目管理－ロジスティクス請求書照合（LIV）－追加処理－MRBR ブロック請求書の解除" loading="lazy" width="405" height="548"></a><figcaption><span class="n">画面 759</span><span class="src">image766.png · 405×548</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 760）</span></p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/mm/t40/02_1_image767.jpeg"><img src="assets/img/mm/t40/02_1_image767.jpeg" alt="ブロック請求書の解除 · ステップ 2：image767.jpeg" loading="lazy" width="754" height="789"></a><figcaption><span class="n">画面 760</span><span class="src">image767.jpeg · 754×789</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t40/03_1_image768.jpeg"><img src="assets/img/mm/t40/03_1_image768.jpeg" alt="ブロック請求書の解除 · ステップ 2：image768.jpeg" loading="lazy" width="1848" height="301"></a><figcaption><span class="n">画面 761</span><span class="src">image768.jpeg · 1848×301</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/mm/t40/04_1_image769.jpeg"><img src="assets/img/mm/t40/04_1_image769.jpeg" alt="ブロック請求書の解除 · ステップ 2：image769.jpeg" loading="lazy" width="1892" height="280"></a><figcaption><span class="n">画面 762</span><span class="src">image769.jpeg · 1892×280</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材ノート</b>選択してから小さな緑の旗をクリックし、保存します</div>
+<div class="note tip"><b class="t">教材ノート</b>これで請求書がリリースされました。</div>
+</li>
+</ol>
+<div class="steph" id="t41"><span class="no">タスク 41</span><h3>請求書と会計伝票を照会</h3><span class="tc2">4 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】显示发票和会计凭证<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 品目管理 → ロジスティクス請求書照合（LIV） → 追加処理 → MIR4 請求書伝票の照会"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 品目管理 → ロジスティクス請求書照合（LIV） → 追加処理 → MIR4 請求書伝票の照会</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 物料管理 → 后勤发票校验 → 进一步处理 → MIR4 显示发票凭证</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 請求書照合でも会計伝票が自動的に生成されます。本ステップでは、先に入力した請求書と生成された伝票を業務処理でさらに確認します<br>ロジスティクス－品目管理－ロジスティクス請求書照合（LIV）－追加処理－MIR4 請求書伝票の照会</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：发票校验也会自动生成会计凭证，本步骤进一步展示前面输入的发票及产生的凭证前台<br>后勤－物料管理－后勤发票校验－进一步处理－MIR4 显示发票凭证</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t41/01_1_image770.jpeg"><img src="assets/img/mm/t41/01_1_image770.jpeg" alt="請求書と会計伝票を照会 · ステップ 1：解説：請求書照合でも会計伝票が自動的に生成されます。本ステップでは、先に入力した請求書と生成された伝票を業務処理でさらに確認します ロジスティクス－品目管理－ロジスティクス請求書照合（LIV）－追加処理－MIR4 請求書伝票の照会" loading="lazy" width="472" height="422"></a><figcaption><span class="n">画面 763</span><span class="src">image770.jpeg · 472×422</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 764）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t41/02_1_image771.png"><img src="assets/img/mm/t41/02_1_image771.png" alt="請求書と会計伝票を照会 · ステップ 2：image771.png" loading="lazy" width="453" height="170"></a><figcaption><span class="n">画面 764</span><span class="src">image771.png · 453×170</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「伝票照会」を選択</p>
+<details class="orig"><summary>原文</summary><div class="zh">选择显示凭证</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t41/03_1_image772.jpeg"><img src="assets/img/mm/t41/03_1_image772.jpeg" alt="請求書と会計伝票を照会 · ステップ 3：「伝票照会」を選択" loading="lazy" width="1084" height="787"></a><figcaption><span class="n">画面 765</span><span class="src">image772.jpeg · 1084×787</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>「後続伝票」をクリックすると、会計伝票の概要が表示されます</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 766）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t41/04_1_image773.jpeg"><img src="assets/img/mm/t41/04_1_image773.jpeg" alt="請求書と会計伝票を照会 · ステップ 4：image773.jpeg" loading="lazy" width="926" height="594"></a><figcaption><span class="n">画面 766</span><span class="src">image773.jpeg · 926×594</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t42"><span class="no">タスク 42</span><h3>在庫品目を照会</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">MMBE</span><span class="tc2">3 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】显示库存物料<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 品目管理 → 在庫管理（MM-IM） → 環境 → 在庫 → MMBE → 在庫一覧"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 品目管理 → 在庫管理（MM-IM） → 環境 → 在庫 → MMBE → 在庫一覧</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 物料管理 → 库存管理 → 环境 → 库存 → MMBE → 库存总览</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">ロジスティクス－品目管理－在庫管理（MM-IM）－環境－在庫－MMBE－在庫一覧</p>
+<details class="orig"><summary>原文</summary><div class="zh">后勤－物料管理－库存管理－环境－库存－MMBE－库存总览</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t42/01_1_image774.png"><img src="assets/img/mm/t42/01_1_image774.png" alt="在庫品目を照会 · ステップ 1：ロジスティクス－品目管理－在庫管理（MM-IM）－環境－在庫－MMBE－在庫一覧" loading="lazy" width="396" height="451"></a><figcaption><span class="n">画面 767</span><span class="src">image774.png · 396×451</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/mm/t42/02_1_image775.jpeg"><img src="assets/img/mm/t42/02_1_image775.jpeg" alt="在庫品目を照会 · ステップ 2：image775.jpeg" loading="lazy" width="742" height="836"></a><figcaption><span class="n">画面 768</span><span class="src">image775.jpeg · 742×836</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 769）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/mm/t42/03_1_image776.jpeg"><img src="assets/img/mm/t42/03_1_image776.jpeg" alt="在庫品目を照会 · ステップ 3：image776.jpeg" loading="lazy" width="1178" height="544"></a><figcaption><span class="n">画面 769</span><span class="src">image776.jpeg · 1178×544</span></figcaption></figure>
+</li>
+</ol>
+<h2 id="sources">4. スクリーンショットと設定値について</h2>
+<div class="box warn"><b class="t">画面は原教材ドキュメントのものです</b>本モジュールのスクリーンショットはすべて <code>S4.docx</code> の著者が実システムでキャプチャした中国語インターフェースの画面です（元のファイル名 <code>imageNNN.png</code> は各図の図注に残しているので、Word の原文と 1 枚ずつ照合できます）。当サイトはこれらの画面を一切描き直したり、シミュレーションで再現したりしていません。</div>
+<div class="box info"><b class="t">設定値はご自身のシステムの値を基準にしてください</b>ドキュメント内の組織構造とマスタデータの番号（会社コード <code>C999</code>、会社名「頤寧機械有限公司」、プラント <code>F999</code>、品目 <code>R999-100</code>/<code>T999-100</code>/<code>F999-100</code>、得意先 <code>K001</code>/<code>K002</code> など）はすべて原作者の教材環境のものです。手順どおりに作業するときは、<b>操作の順序と設定ポイントはそのまま流用できますが、具体的な番号や名称はご自身のシステムの値に置き換えてください</b>；ドキュメントと異なるメッセージが出た場合は、まず「<a href="issues.html">トラブルシューティングと注意点</a>」ページで原教材ドキュメントに記録された同種の問題を確認してください。</div>
+<div class="panel" style="margin-top:22px"><a href="co.html">← 前のモジュール：CO 管理会計 CO（Controlling）</a><br><a href="pp.html">次のモジュール：PP 生産計画 PP（Production Planning） →</a><br><a href="tasks.html">全 222 タスクの索引 →</a></div>
+</article></main>
+</div>
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA 日本語実習サイト — 全モジュールの設定と操作手順 · 実機画面</h5>
+  <p>内容は同ディレクトリの教材ドキュメント <code>S4.docx</code>（425 ページ · 6 大モジュール · 222 タスク · 1385 枚の実機スクリーンショット）に基づいて整理しています。すべてのページはオフラインで開くことができ、外部依存はありません。</p>
+  <div><h5>画面について</h5><p>サイト内のすべてのスクリーンショットは<b>原教材ドキュメントの実機画面</b>（中国語インターフェースの SAP GUI）であり、イメージ図やシミュレーションによる生成画像ではありません。ファイル名は原教材ドキュメントの番号をそのまま保持しており、Word の原文と対照できます。ドキュメント内のサンプル値（会社コード <code>C999</code>、プラント <code>F999</code>、品目 <code>R999-100</code> など）は原作者の教材環境のものですので、ご自身のシステムの組織構造と番号範囲に合わせて読み替えてください。</p></div></div>
+  <div class="cols">
+    <div><h5>モジュール</h5>
+      <a href="prep.html">準備 — 準備作業 — システムへのログオンと IMG 設定への移動</a><br>
+      <a href="fi.html">FI — 財務会計 FI</a><br>
+      <a href="co.html">CO — 管理会計 CO</a><br>
+      <a href="mm.html">MM — 品目管理 MM</a><br>
+      <a href="pp.html">PP — 生産計画 PP</a><br>
+      <a href="sd.html">SD — 販売管理 SD</a><br>    </div>
+    <div><h5>サイト全体</h5>
+      <a href="prep.html">準備</a><br>
+      <a href="fi.html">FI</a><br>
+      <a href="co.html">CO</a><br>
+      <a href="mm.html">MM</a><br>
+      <a href="pp.html">PP</a><br>
+      <a href="sd.html">SD</a><br>
+      <a href="tcode.html">T-code</a><br>
+      <a href="glossary.html">用語</a><br>
+      <a href="issues.html">トラブルシューティング</a><br>
+      <a href="tasks.html">索引</a><br>
+      <a href="instructor.html">講師</a><br>
+      <a href="worksheet.html">受講者</a><br>
+      <a href="quiz.html">自習テスト</a><br>    </div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/s4jp.js"></script>
+</body>
+</html>

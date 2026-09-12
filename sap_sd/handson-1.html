@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>练习① 受注登録（VA01） · SAP SD 受注処理（Sales Order Processing）实战训练站</title>
+<meta name="description" content="练习① 受注登録（VA01）：SAP SD 受注処理の実機練習（動画 Unit 14 準拠）。入力値・手順・期待結果・つまずき・検証（証拠の取り方）・验收清单つき。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/sd.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">SD</span><span class="txt">受注処理 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a class="active" href="handson-1.html">①受注登録</a>
+      <a href="handson-2.html">②伝票変更</a>
+      <a href="handson-3.html">③情報照会</a>
+      <a href="handson-4.html">④出荷と請求</a>
+      <a href="handson-5.html">⑤ツールと故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 练习① 受注登録（VA01）</div>
+<main class="page"><article>
+
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。录像里的画面同样可能与你的版本不同。若要换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 一键替换。</div><h1>练习① 受注登録（<code>VA01</code>）—— 動画のデモを自分の環境で再現する</h1>
+<div class="box info"><b class="t">本练习完成什么</b>
+動画（<code>06:48</code>〜<code>21:35</code>）の実演を、自分の環境で 1 件作ります。<b>① 販売エリアの導出 → ② 主データからの提案（パートナー・支払条件）→ ③ 明細入力（<code>T-ATA30</code>）→ ④ 出荷プラントの自動提案 → ⑤ 与力価格・税の決定 → ⑥ 保存（不完全性チェック）</b>。<br>受注番号を取ったら <code>VA03</code> と <code>SE16N</code> で<b>「なぜその値になったか」の証拠</b>を取ります。</div>
+<div class="toc">
+  <a href="#s1">1-1 VA01 初期画面（販売エリアの導出）</a>
+  <a href="#s2">1-2 概況画面（ヘッダと主データからの提案）</a>
+  <a href="#s3">1-3 明細の入力（品目と出荷プラントの自動提案）</a>
+  <a href="#s4">1-4 保存（不完全性チェック）と伝票フロー</a>
+  <a href="#s5">1-5 証拠を取る（テーブルを並べて見る）</a>
+  <a href="#s6">1-6 验收（完成基准）</a>
+</div>
+<h2 id="s1">1-1 <code>VA01</code> 初期画面 —— 販売エリアを導出する（動画 <code>08:37</code> 付近）</h2>
+<p><b>入力値</b></p>
+<table class="tbl wide">
+<tr><th>項目</th><th>値</th><th>説明（なぜ必要か）</th></tr>
+<tr><td>受注タイプ（Order Type）</td><td><code>OR</code></td><td>Standard Order。動画の初期画面で <code>OR</code> → Standard Order が選ばれています</td></tr>
+<tr><td>販売組織 / 販売チャネル / 部門</td><td><code>1000</code> / <code>10</code> / <code>00</code></td><td>販売エリア。動画のデモ値（Germany Frankfurt / Final customer sales / Cross-division）</td></tr>
+<tr><td>得意先（Sold-to party）</td><td><code>1000</code></td><td>動画のデモ得意先（Becker Berlin）。練習用なら <code>T-S62130</code> でも可</td></tr>
+<tr><td>参照（Create with Reference）</td><td>（空のまま）</td><td>動画は新規作成。<b>参照コピーは練習④で扱います</b></td></tr>
+</table>
+<ol class="steps">
+  <li><code>VA01</code> を起動する。タイトルが <b>Create Sales Order: Initial Screen</b> であることを確認（動画と同じ）。</li>
+  <li><b>受注タイプ</b>に <code>OR</code> を入れて Enter。<b>「Organizational data」グループ</b>が開くことを確認する。</li>
+  <li><b>販売組織 <code>1000</code></b> を入れる（F4 で選べることを確認＝組織構造の割当が生きている証拠）。</li>
+  <li><b>得意先 <code>1000</code></b> を入れて Enter。<b>動画と同じく「Sales area for customer」ダイアログが出たら、<code>1000 / 10 / 00</code>（Germany Frankfurt / Final customer sales）を選ぶ</b>。</li>
+  <li>概況画面（<b>Create Standard Order: Overview</b>）に遷移することを確認する。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① 概況画面のタイトルが <b>Create Standard Order: Overview</b> になる（＝受注タイプ <code>OR</code> が効いている）。<br>② ヘッダの <b>Sales area</b> が <code>1000 / 10 / 00</code> になっている。<br>③ 得意先が複数の販売エリアを持つ場合、動画と同じ<b>選択ダイアログ</b>が出る（出ない場合＝その得意先は 1 販売エリアのみ）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>販売組織が F4 に出ない</b> → 組織構造の割当未了（C0）。<br>② 得意先を入れても画面が進まない → 得意先にその<b>販売エリアビュー</b>が無い（<code>XD03</code>）。<br>③ 「<b>Create with Reference</b>」欄に何か入っていないか確認。参照コピーになると、明細カテゴリや品目使用目的が想定外になります（動画も空のまま進めています）。</div>
+<div class="task"><b class="t">練習課題</b>動画の <code>09:02</code> 付近を再生し、<b>「Sales area for customer」ダイアログの選択肢</b>と自分の環境の選択肢を見比べてください。違いがあればその理由（組織構造・得意先マスタ）を書きます。</div>
+<figure class="gui"><img src="assets/gui/handson-1_s01_1.svg" alt="VA01 の初期画面。受注タイプ OR、販売組織 1000、流通チャネル 10、部門 00、得意先 1000、PO 番号 dddd を入力した状態。" loading="lazy"><figcaption><b class="t">VA01 の初期画面（受注タイプ OR と販売エリア・得意先を入力する）</b><span class="tx">VA01</span><span class="scr">Create Sales Order: Initial Screen</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 受注タイプ OR ＝ Standard Order。伝票タイプが明細カテゴリ決定・価格決定手順・不完全性手順を決める起点</li><li><b>2</b> 得意先は複数の販売エリアを持ち得る。Enter 後に選択ダイアログが出るのはそのため</li></ol><p class="gui-tip">自システムでの確認：VA01 初期画面の F4 に自分の販売組織が出るか（出ない＝組織構造の割当未了）。得意先の販売エリアは XD03、PO 番号が必須かは V.02 で確認。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-1_s01_2.svg" alt="得意先 1000 が持つ販売エリアの選択ダイアログ。1000/10/00 の行が選択されている。" loading="lazy"><figcaption><b class="t">「Sales area for customer」ダイアログ（得意先が複数の販売エリアを持つ場合）</b><span class="tx">VA01</span><span class="scr">Sales area for customer</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> ここに出るのは得意先マスタ（KNVV）に登録済みの販売エリアだけ</li><li><b>2</b> 選んだ販売エリアが、以降の与力条件・出荷条件・パートナー・出力の基準になる</li></ol><p class="gui-tip">自システムでの確認：XD03 の販売エリアビューで、その得意先が持つ販売エリアを確認する。</p></figure>
+
+<h2 id="s2">1-2 概況画面 —— ヘッダと主データからの提案（動画 <code>09:28</code>・<code>13:38</code> 付近）</h2>
+<p><b>確認する値（動画のデモ値）</b></p>
+<table class="tbl wide">
+<tr><th>項目</th><th>動画の値</th><th>どこから来るか（源泉）</th><th>確認方法</th></tr>
+<tr><td>Sold-to party</td><td><code>1000</code> Becker Berlin / Calvinstrasse 36 / 13467 Berlin-Hermsdorf</td><td>得意先マスタ（<code>KNA1</code> の住所）</td><td><code>XD03</code></td></tr>
+<tr><td>Ship-to party</td><td><code>1000</code>（与力先と同じ）</td><td>得意先マスタのパートナー機能（<code>KNVP</code>）</td><td><code>XD03</code> → パートナー機能</td></tr>
+<tr><td>PO Number</td><td><code>dddd</code>／<code>test</code>（ダミー）</td><td><b>手入力</b>。動画の環境では<b>必須項目</b>になっている</td><td><code>V.02</code>（不完全な受注一覧）で必須項目を確認</td></tr>
+<tr><td>支払条件（Payment terms）</td><td><code>ZB01</code>（14 Days 3%, 30/2%）</td><td>得意先マスタ（販売エリアデータ）</td><td><code>XD03</code> → 販売エリアデータ</td></tr>
+<tr><td>インコタームズ（Incoterms）</td><td>スライド <code>FOB</code>／実機デモ <code>CIF Berlin</code></td><td>得意先マスタ（販売エリアデータ）</td><td><code>XD03</code> → 販売エリアデータ。<b>動画でも 2 通り出ている＝環境依存の代表例</b></td></tr>
+<tr><td>与力価格日付（Pricing date）</td><td><code>02.06.2007</code></td><td>受注日と与力日付タイプ（<code>VOV6</code> の納入日付タイプ）</td><td><code>VA03</code> ヘッダ（日付）／<code>VOV6</code></td></tr>
+<tr><td>納入希望日（Req. deliv.date）</td><td><code>09.06.2007</code></td><td>手入力＋出荷日程（<code>MM03</code> のリードタイム）</td><td><code>VA03</code> ヘッダ</td></tr>
+<tr><td>正味価額（Net value）</td><td><code>0.00 EUR</code> → 明細投入後 <code>22,990.00 EUR</code></td><td>条件レコード（与力価格）</td><td><code>VA03</code> 条件画面／<code>VK13</code></td></tr>
+</table>
+<ol class="steps">
+  <li>ヘッダを上から確認し、<b>主データから提案された値（住所・支払条件・インコタームズ）</b>を書き出す。</li>
+  <li><b>PO Number を入れる</b>（例：<code>dummy-01</code>）。動画の環境では必須のため、空のままだと保存時に赤いエラーが出ます（<b>動画 <code>09:28</code> 付近の「Enter PO number」がまさにこれ</b>）。</li>
+  <li><b>納入希望日</b>を入れる（例：今日＋数日）。動画は <code>09.06.2007</code>（＝当時のデモ日付）です。<b>自システムでは未来日</b>を入れてください。</li>
+  <li>「<b>Sales</b>」タブで支払条件・インコタームズ・与力価格日付・注文理由を確認する。</li>
+  <li>必要なら<b>出荷先（Ship-to party）だけ変えて</b>、住所と出荷プラントがどう変わるかを見る（練習②の予習。今は<b>保存せずに</b>「戻る」で構いません）。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① 住所・支払条件・インコタームズが<b>得意先マスタと同じ値</b>で入っている（＝提案が効いている）。<br>② PO Number を空にすると<b>エラーで保存できない</b>（動画と同じ症状を再現できる）。<br>③ 「<b>Sales document → ヘッダ → パートナー</b>」（または <code>VA03</code>）で <code>SP</code>／<code>BP</code>／<code>PY</code>／<code>SH</code> が並ぶ。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 支払条件が空 → 得意先マスタに値が無い（<code>XD02</code>）。<b>受注側では直さず、マスタを直す</b>のが原則（業務でも同じ）。<br>② インコタームズが想定と違う → 得意先マスタの値、または伝票タイプの既定値。どちらが効いたかは <code>XD03</code> と <code>VOV8</code> を見比べる。<br>③ 与力価格日付が想定外 → 日付タイプの設定（<code>VOV6</code>）と受注日時の関係を確認。<b>与力日付がずれると条件が拾われず Net value が 0 になります</b>（C12）。</div>
+<div class="task"><b class="t">練習課題</b>ヘッダの項目を 6 つ選び、それぞれ「<b>① 手入力 ② 得意先マスタ由来 ③ Customizing 由来</b>」のどれかを判定してください。判定の根拠にした画面（T-code）も書きます。</div>
+<figure class="gui"><img src="assets/gui/handson-1_s02_1.svg" alt="VA01 の概況画面。受注タイプ OR の Standard Order で、Sold-to party と Ship-to party が 1000、PO Number が dddd、納入希望日 09.06.2007、与力価格日付 02.06.2007、Net value 0.00 EUR、販売エリア 1000 / 10 / 00 が入っている。" loading="lazy"><figcaption><b class="t">概況画面（Create Standard Order: Overview）。ヘッダの住所・支払条件・インコタームズは得意先 1000 のマスタからの提案値</b><span class="tx">VA01</span><span class="scr">Create Standard Order: Overview</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> PO Number はこの環境では必須。空のまま保存すると不完全性チェックで『Enter PO number』の赤いエラーが出る（動画 09:28 付近の症状がこれ）</li><li><b>2</b> 与力価格日付がずれると条件レコードが拾われず Net value が 0 になる（C12）。納入希望日との関係は VOV6 の日付タイプ</li><li><b>3</b> この時点の Net value 0.00 は正常（明細がまだ無い）。明細投入後も 0.00 なら条件レコード不在か有効期間外を疑う</li></ol><p class="gui-tip">自システムでの確認：提案値の出所は XD03（販売エリアビュー）と VOV8（伝票タイプの既定値）。PO Number が必須かは V.02 で確認。与力日付タイプは VOV6。</p></figure>
+
+<h2 id="s3">1-3 明細の入力 —— 品目と出荷プラントの自動提案（動画 <code>18:39</code>・<code>19:51</code> 付近）</h2>
+<p><b>入力値</b></p>
+<pre class="vals">明細 10：  品目 T-ATA30     数量 10 PC     納入希望日 09.06.2007（自システムは未来日）
+明細 20：  品目 T-ATA29     数量 1 PC      （任意。動画の後半デモでは 10 / 20 の 2 明細）
+確認したい値：
+  明細カテゴリ（ItCa） : TAN（Standard Item）
+  出荷プラント         : 品目マスタ 販売組織1 の値（動画では 1200）
+  正味価額             : 明細投入後に自動計算（動画では 22,990.00 EUR）</pre>
+<ol class="steps">
+  <li>概況画面の「<b>All items</b>」グリッドに、<b>明細 <code>10</code> / 品目 <code>T-ATA30</code> / 数量 <code>10</code> / 単位 <code>PC</code></b> を入力して Enter。</li>
+  <li>Enter 後、システムが<b>明細カテゴリ（ItCa）</b>・<b>出荷プラント</b>・<b>与力価格</b>を自動で埋めることを確認する（<b>ここが本站の主题</b>）。</li>
+  <li><b>明細の詳細画面</b>（明細行を選択 → 「Item detail」またはダブルクリック）で、<b>Item category <code>TAN</code></b> と <b>Order Quantity and Delivery Date</b>（数量・初回納入日）を確認する。</li>
+  <li>必要なら <b>明細 <code>20</code></b> に <code>T-ATA29</code> を追加する（動画の後半デモと同じ 2 明細構成）。</li>
+  <li><b>出荷プラントが入っているか</b>を必ず確認する。空の場合は C10（出荷プラントの 3 優先順位）へ。</li>
+  <li>「Sales A」等のタブ／明細詳細で<b>与力条件</b>を見て、<b>Net value が 0 でない</b>ことを確認する。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① 明細カテゴリが <b><code>TAN</code></b>（動画と同じ）。<br>② 明細の <b>Deliver.Plant に値が入っている</b>（動画では <code>1200</code>）。<br>③ <b>Net value が 0 以外</b>になり、明細の与力条件（<code>PR00</code> 等）が表示される。<br>④ 品目を削除・変更すると、明細カテゴリと出荷プラントが<b>再決定される</b>ことを観察できる。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>明細カテゴリが <code>TAN</code> にならない</b> → 品目カテゴリグループと決定テーブル（C8）。<code>MM03</code> 販売組織2 → <code>VOV4</code>。<br>② <b>出荷プラントが空</b> → 3 か所（客先品目情報・得意先マスタ・品目マスタ）をすべて確認（C10）。<br>③ <b>Net value が 0</b> → 条件レコードが無い／有効期間外／与力日付ずれ（C12・<code>VK13</code>）。<br>④ 「品目 <code>T-ATA30</code> が F4 に出ない」 → 品目マスタにその販売エリアのビューが無い、または品目が存在しない。<b>自分の環境の品目に読み替えてください</b>。</div>
+<div class="task"><b class="t">練習課題</b><b>明細カテゴリ・出荷プラント・与力価格の 3 つについて</b>、それぞれ「どのキー（＝どの主データとどの設定）で決まったか」を、画面を指しながら 3 行で書いてください。</div>
+<figure class="gui"><img src="assets/gui/handson-1_s03_1.svg" alt="VA01 の明細概況。明細 10 が T-ATA30、数量 10、明細カテゴリ TAN、出荷プラント 1200。明細 20 は T-ATA29、数量 1 で明細カテゴリと出荷プラントがまだ空。" loading="lazy"><figcaption><b class="t">明細概況（All items）グリッド。明細 10 に T-ATA30 / 10 PC を入れて Enter した直後の状態</b><span class="tx">VA01</span><span class="scr">Create Standard Order: Overview</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> ItCa は品目カテゴリグループ × 伝票タイプの決定テーブルで決まる。TAN にならない＝ VOV4 と MM03 販売組織2 の MTPOS を疑う（C8）</li><li><b>2</b> Deliver.Plant が空なら 3 つの優先順位を順に確認：KNMT（客先品目情報）&gt; KNVV（得意先）&gt; MVKE（品目）。最下位の MVKE は販売エリア込みで見る（C10）</li><li><b>3</b> 明細 20 は任意の追加。決定結果は明細詳細で確認する（ここではまだ空のまま＝決定前の状態）</li></ol><p class="gui-tip">自システムでの確認：T-ATA30 が F4 に出ない環境では、自分の得意先・品目に読み替える。決定結果は明細詳細の ItCa と Deliver.Plant、与力価格は条件で確認。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-1_s03_2.svg" alt="VA01 の明細詳細画面。品目 T-ATA30、明細カテゴリ TAN、受注数量 10、出荷プラント 1200、初回納入日 09.06.2007 が表示され、Sales A タブが選ばれている。" loading="lazy"><figcaption><b class="t">明細詳細（Sales A）。明細カテゴリ TAN と出荷プラント 1200 の決定結果を、数量・初回納入日と一緒に確認する</b><span class="tx">VA01</span><span class="scr">Create Standard Order: Item Data</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> Item category TAN は「伝票タイプ × 品目カテゴリグループ」で決まる。手で変えられるが、変えた理由を説明できるようにする（C8）</li><li><b>2</b> Deliver.Plant 1200 の出所は環境で違う。KNMT に値があればそれが最優先＝品目マスタを直しても変わらない（C10）</li></ol><p class="gui-tip">自システムでの確認：与力条件は Conditions、数量と初回納入日は「Order Quantity and Delivery Date」グループ。Net value が 0 でないことを条件画面（PR00 等）で確認する。</p></figure>
+
+<h2 id="s4">1-4 保存と伝票フロー（不完全性の検証）</h2>
+<ol class="steps">
+  <li><b>保存</b>する（「保存」ボタンまたは <code>Ctrl</code>+<code>S</code>）。</li>
+  <li>ステータスバーに <b>「伝票 &lt;番号&gt; を保存しました」</b>に相当するメッセージが出ることを確認し、<b>受注番号を記録する</b>。</li>
+  <li>エラーが出た場合は、<b>赤いメッセージの項目</b>をメモする（不完全性チェックの症状。C14・<code>V.02</code>）。</li>
+  <li><code>VA03</code> で受注番号を入れ、<b>ヘッダ・明細・納入日程行・パートナー・条件</b>を確認する。</li>
+  <li><code>VA03</code> の「<b>伝票フロー</b>」を開く（今は<b>受注 1 件だけ</b>が表示される。練習④で出荷・請求が増えていく）。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① 受注番号が採番され、<code>VA03</code> で照会できる。<br>② <code>VA03</code> の<b>ヘッダのステータス</b>が「受注済み／処理中」等になっている。<br>③ <b>納入日程行</b>が生成されている（明細 → 納入日程行）。<br>④ 伝票フローに<b>受注のみ</b>が表示される（後続伝票は練習④で作る）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>「不完全な伝票」として警告だけ出る</b> → 保存はされています。<code>V.02</code> で一覧に載っているか確認（＝不完全性チェックの学習チャンス）。<br>② <b>与信ブロック</b>が付く環境では、保存後にブロックが表示されます。<b>ブロックは「保存できない」ではなく「出荷できない」</b>状態（練習②で扱います）。<br>③ 明細を入れてから<b>納入日程行が出ない</b> → 所要量タイプが空の明細では正常なこともあります（C6・C9）。</div>
+<div class="task"><b class="t">練習課題</b>保存時のメッセージを<b>そのまま転記</b>し、「エラー／警告／成功」のどれだったかを分類してください。エラーだった場合は <code>V.02</code> と <code>OVA2</code> を確認し、どの設定が原因かを特定します。</div>
+<figure class="gui"><img src="assets/gui/handson-1_s04_1.svg" alt="VA03 の受注照会画面。得意先 1000、PO Number dddd、納入希望日 09.06.2007、支払条件 ZB01、Net value 22,990.00 EUR、販売エリア 1000 / 10 / 00 が表示され、ステータスバーに受注 0000001234 を保存した旨が出ている。" loading="lazy"><figcaption><b class="t">保存後の照会（VA03）。正味価額 22,990.00 EUR とヘッダのステータス、伝票フローで受注 1 件を確認する</b><span class="tx">VA03</span><span class="scr">Display Standard Order: Overview</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 保存成功のメッセージに出る受注番号が、以降の VA03 / SE16N / V.02 で使う唯一の鍵。必ず記録する</li><li><b>2</b> Net value が 22,990.00 ＝ 明細の与力価格が拾われた証拠。0.00 のままなら条件レコード不在か与力日付ずれ（C12）</li><li><b>3</b> 伝票フローは今は受注 1 件だけ。出荷（VT01N）・請求（VF01）を作るとここに増えていく（練習④）</li></ol><p class="gui-tip">自システムでの確認：伝票フローは VA03 のメニュー／ボタンから開く。納入日程行は明細 → 納入日程行。不完全性は V.02（不完全な受注一覧）と VBUV / VBUK。</p></figure>
+
+<h2 id="s5">1-5 証拠を取る —— テーブルを並べて「どの源泉が効いたか」を示す</h2>
+<p>本站の到達点は「受注が作れる」ことではなく、<b>「なぜその値になったかを証拠で示せる」</b>ことです。
+<code>SE16N</code> で、受注のテーブルと主データのテーブルを<b>並べて</b>見ます。</p>
+<table class="tbl wide">
+<tr><th>テーブル</th><th>見る項目</th><th>何が分かるか</th></tr>
+<tr><td><code>VBAK</code>（受注ヘッダ）</td><td>受注番号・伝票タイプ <code>AUART</code>・得意先 <code>KUNNR</code>・販売エリア・正味価額 <code>NETWR</code>・通貨 <code>WAERK</code></td><td>ヘッダに何が入ったか（販売エリアと金額）</td></tr>
+<tr><td><code>VBAP</code>（受注明細）</td><td>品目 <code>MATNR</code>・<b>明細カテゴリ <code>PSTYV</code></b>・数量 <code>KWMENG</code>・<b>出荷プラント <code>WERKS</code></b></td><td>明細の決定結果（＝明細カテゴリと出荷プラントの答え合わせ）</td></tr>
+<tr><td><code>VBEP</code>（納入日程行）</td><td>納入日 <code>EDATU</code>・納入日程行カテゴリ <code>ETTYP</code></td><td>納入日程行が作られ、カテゴリが何になったか</td></tr>
+<tr><td><code>VBPA</code>（パートナー）</td><td>役割 <code>PARVW</code>（<code>SP</code>/<code>SH</code>/<code>BP</code>/<code>PY</code>）・相手先番号</td><td>4 役割がどう入ったか</td></tr>
+<tr><td><code>KNVV</code>（得意先の販売エリアデータ）</td><td>支払条件 <code>ZTERM</code>・出荷条件・<b>出荷プラント</b></td><td><b>提案元その 1</b>（受注の値と一致するか）</td></tr>
+<tr><td><code>MVKE</code>（品目の販売データ）</td><td>品目カテゴリグループ <code>MTPOS</code>・<b>出荷プラント <code>DWERK</code></b></td><td><b>提案元その 3</b>（最下位の優先度）</td></tr>
+<tr><td><code>KNMT</code>（客先品目情報）</td><td>得意先品目コード・<b>出荷プラント</b></td><td><b>提案元その 1（最優先）</b></td></tr>
+<tr><td><code>VBUV</code>／<code>VBUK</code>（不完全性）</td><td>不完全な項目の記録</td><td>保存時に何が「不完全」と判定されたか</td></tr>
+</table>
+<ol class="steps">
+  <li><code>SE16N</code> で <code>VBAP</code> を開き、受注番号で絞り、<b><code>PSTYV</code>（明細カテゴリ）と <code>WERKS</code>（出荷プラント）</b>を読む。</li>
+  <li><code>MVKE</code> を品目 <code>T-ATA30</code>・販売組織 <code>1000</code>・チャネル <code>10</code> で絞り、<b><code>DWERK</code></b> を読む。<b><code>VBAP-WERKS</code> と一致するか</b>を確認する。</li>
+  <li><code>KNVV</code> を得意先 <code>1000</code>・販売エリアで絞り、<b>支払条件と出荷プラント</b>を読む（受注ヘッダの支払条件と一致するか）。</li>
+  <li>（客先品目情報がある環境なら）<code>KNMT</code> を得意先×品目で絞り、出荷プラントを読む（<b>ここに値があれば最優先される</b>）。</li>
+  <li>3 つの出荷プラント（<code>KNMT</code>／<code>KNVV</code>／<code>MVKE</code>）と受注の値を 1 枚の表にまとめる。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① <b>受注の値の出所を表で説明できる</b>（出荷プラント：3 か所のどれが効いたか／支払条件：<code>KNVV</code> 由来／明細カテゴリ：決定テーブル由来）。<br>② 動画の「Proposing Plants Automatically」スライドの<b>優先順位と自分の環境の結果が一致</b>している（しなければ C10 の拡張の可能性）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <code>SE16N</code> の絞り込みで<b>販売組織・チャネル・部門を忘れる</b> → 別の行を見て混乱します。キーは常に<b>販売エリア込み</b>で。<br>② <code>MVKE-DWERK</code> が空 → 品目マスタにその販売組織のビューが無い／出荷プラント未設定（C10）。</div>
+<div class="task"><b class="t">練習課題</b>受注 1 件について「<b>値 → 出所（テーブル＋項目）→ なぜそれが選ばれたか</b>」の 3 列の表を作ってください（最低 6 項目）。講師は実物の画面で確認します。</div>
+<figure class="gui"><img src="assets/gui/handson-1_s05_1.svg" alt="SE16N の VBAP 照会結果。受注 0000001234 の明細 10 が T-ATA30 / 明細カテゴリ TAN / 出荷プラント 1200、明細 20 が T-ATA29 / TAN / 1200 の 2 行が表示されている。" loading="lazy"><figcaption><b class="t">SE16N で VBAP を照会（受注 2 件）。明細カテゴリと出荷プラントの決定結果を 1 枚の表で確認する</b><span class="tx">SE16N</span><span class="scr">Data Browser: Table VBAP</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 明細カテゴリ（PSTYV）と出荷プラント（WERKS）が伝票に保存された決定結果。VA03 の画面で見た値の答え合わせがこの表でできる</li><li><b>2</b> 出荷プラント 1200 の出所は KNMT &gt; KNVV &gt; MVKE の順に確認。どこに値があるかで処置（マスタ修正か設定か）が変わる（C10）</li><li><b>3</b> 絞り込みは VBELN（受注番号）で。VBAP には販売組織・チャネル・部門が無いので、MVKE / KNVV を見るときは必ず販売エリア込みで絞る</li></ol><p class="gui-tip">自システムでの確認：VBAP（受注番号）、MVKE（品目＋販売組織＋チャネル → DWERK）、KNVV（得意先＋販売エリア → ZTERM・出荷プラント）、KNMT（得意先×品目）。値 → 出所 → なぜその源泉が効いたかを 3 列の表にする。</p></figure>
+
+<h2 id="s6">1-6 验收（完成基准）</h2>
+<ul class="check">
+  <li><code>VA01</code> で <code>OR</code> ＋ 得意先 <code>1000</code> から概況画面まで進み、<b>販売エリアが <code>1000/10/00</code></b> になった</li>
+  <li>「Sales area for customer」ダイアログ（または自動決定）の<b>意味を説明できる</b></li>
+  <li>ヘッダの<b>住所・支払条件・インコタームズが得意先マスタ由来</b>であることを示せた</li>
+  <li>PO Number を空にしたときの<b>エラーを再現</b>し、不完全性チェックの仕組みと結びつけられた</li>
+  <li>明細 <code>T-ATA30</code> を入力し、<b>明細カテゴリ <code>TAN</code></b> になった</li>
+  <li>明細の<b>出荷プラントが自動で入った</b>（動画では <code>1200</code>）</li>
+  <li><b>Net value が 0 以外</b>になり、条件タイプ（<code>PR00</code> 等）を条件画面で指せた</li>
+  <li>保存して<b>受注番号を取得</b>し、<code>VA03</code> でヘッダ・明細・納入日程行・パートナーを確認した</li>
+  <li><code>SE16N</code> で <code>VBAP</code> の <code>PSTYV</code>・<code>WERKS</code> を読み、<b>MVKE／KNVV／KNMT と突き合わせた</b></li>
+  <li>「値の出所」表（最低 6 項目）を作り、<b>4 つの源泉（主データ／既存伝票／Customizing／ABAP）</b>のどれかを分類できた</li>
+  <li>つまずいた点を<b>「症状 → 根因 → 証拠 → 処置 → 再発防止」</b>で 1 件以上記録した</li>
+</ul>
+<div class="box ok"><b class="t">次の一歩</b>
+→ <a href="handson-2.html">练习② 伝票の変更と再決定（<code>VA02</code>）</a>（プラント変更・得意先変更・ブロックを試し、<b>再決定されるデータ／されないデータ</b>を体感します）</div>
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP SD 受注処理（Sales Order Processing）实战训练站</h5><p>動画「录像45 Sales order processing.mp4」の実演を自分の環境で再現するための练习。各手順に「自系统での確認方法」つき。</p><div><h5>下一步</h5><p><a href="handson-5.html">练习⑤ ツール・発展・故障対応</a> まで通したら、<a href="quiz.html">能力测试</a> で確認します。</p></div></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 受注登録（VA01）</a><br><a href="handson-2.html">② 与力価格と ATP</a><br><a href="handson-3.html">③ 特殊取引</a><br><a href="handson-4.html">④ 出荷と請求</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="worksheet.html">学员版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/quiz.js"></script>
+</body>
+</html>

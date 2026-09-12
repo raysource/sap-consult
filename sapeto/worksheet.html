@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学员版 ワークシート（記入用） · SAP S/4HANA 受注設計生産（ETO）实战训练站</title>
+<meta name="description" content="ETO 实训の受講者用ワークシート：配置 C0〜C16 の確認記入欄、練習①〜④ のプロジェクト/WBS/伝票番号・数値記入欄、CJI3 と MSPR の読み取り、故障記録シート、用語の言語化欄。印刷して使う記入用ページ。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/eto.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">ETO</span><span class="txt">受注設計生産 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①项目</a>
+      <a href="handson-2.html">②计划·MRP</a>
+      <a href="handson-3.html">③执行·入库</a>
+      <a href="handson-4.html">④出荷·请求</a>
+      <a href="handson-5.html">⑤发展·故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a class="active" href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 学员版 ワークシート（記入用）</div>
+<main class="page"><article>
+
+<h1>学员版 ワークシート（挖空・記入用）</h1>
+<div class="box info"><b class="t">使い方</b>
+① 印刷するか、ブラウザで開いたまま埋めます（印刷時はナビとボタンが自動的に消えます）。<br>
+② 記入するのは「<b>自分のシステムで実際に見た値・番号・表の行</b>」。資料の丸写しは不可（それが理解の証跡）。<br>
+③ <a href="config.html">配置手顺</a>／<a href="handson-1.html">練習①</a>〜<a href="handson-4.html">練習④</a> を進めながら埋めます。<br>
+④ 仕上げに <a href="quiz.html">能力测试</a>（28 題・75% 以上）＋このシート全欄記入で修了。</div>
+
+<h2>シート A：配置の確認記入（C0〜C16）</h2>
+<table class="tbl wide fill">
+<tr><th>STEP</th><th>何を見るか</th><th>自分の環境での値（記入）</th><th>OK/NG</th><th>気づき・差異</th></tr>
+<tr><td>C0</td><td>CJ20N でプロジェクト作成・WBS 採番・VA01 の販売エリア</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C1</td><td>部品 RM01 / RM02 の在庫（MMBE）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C2</td><td>品目 ZETO-FG01：MRP1（PD/EX/E）・<b>MRP3 戦略グループ</b>・<b>MRP4 個別所要量</b>・販売組織2</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C2'</td><td>OVZG：戦略グループが指す所要量クラスの<b>評価区分</b>と個別在庫</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C3</td><td>BOM（CS03）・作業区（CR03）・工程（CA03）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C4</td><td>PR00 条件レコード（VK13）の金額</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C5</td><td>プロジェクトプロファイル（OPSA）：番号範囲・予算プロファイル・決済パラメータ・コーディングマスク</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C6</td><td>ステータスプロファイルと「解放」の意味</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C7</td><td>ネットワークタイプ/プロファイル/番号範囲（CN21 で作成できるか）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C8</td><td>予算：CJ30 → CJ32 → CJ31、可用性管理 CJBV</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C9</td><td><b>プロジェクト定義の評価付プロジェクト在庫</b>／WBS のフラグ（請求要素・勘定設定要素）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C10</td><td>受注明細に WBS を入力できる明細カテゴリ（実際に使った値）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C11</td><td>請求計画（日付/出来高）・請求タイプ・VTFL</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C12</td><td>決済ルール（CJB2）と、WBS/指図/受注の決済 T-code</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C13</td><td>結果分析キー/収益認識キー、KKA2 → KKAX</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C14</td><td>MD51/MD50 の実行結果（計画手配の勘定設定と在庫区分）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C15</td><td>MMBE のプロジェクト在庫と SE16N: MSPR（SOBKZ=Q）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C16</td><td>Public Cloud（6GD / E2 / E21）との差異で、自分の環境に無いもの</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+
+<h2>シート B：練習①〜④ の記録（番号と数値を埋める）</h2>
+<table class="tbl wide fill">
+<tr><th>項目</th><th>記入欄</th><th>確認方法</th></tr>
+<tr><td>プロジェクト定義 ID ／ WBS（<code>.1/.2/.3</code>）</td><td>&nbsp;</td><td>CJ20N / CJ03</td></tr>
+<tr><td>評価付プロジェクト在庫（ON/OFF）</td><td>&nbsp;</td><td>CJ20N プロジェクト定義</td></tr>
+<tr><td>請求要素にした WBS</td><td>&nbsp;</td><td>CJ20N の WBS フラグ</td></tr>
+<tr><td>ネットワーク番号／活動（利用した場合）</td><td>&nbsp;</td><td>CN23</td></tr>
+<tr><td>計画原価・計画収益（WBS 別）</td><td>&nbsp;</td><td>CJ40 / CJ42 → CJI4</td></tr>
+<tr><td>予算（元予算・解放額）</td><td>&nbsp;</td><td>CJ30 / CJ32 / CJ31</td></tr>
+<tr><td>受注番号 ／ 明細カテゴリ ／ <b>明細の WBS 要素</b></td><td>&nbsp;</td><td>VA03 明細詳細</td></tr>
+<tr><td>所要量タイプ（Q 系か）</td><td>&nbsp;</td><td>VA03 納入日程行 / OVZG</td></tr>
+<tr><td>請求計画（30% / 70% の日付と金額）</td><td>&nbsp;</td><td>VA03 請求計画</td></tr>
+<tr><td>計画手配番号 ／ <b>勘定設定</b> ／ <b>在庫区分</b></td><td>&nbsp;</td><td>MD04 計画手配の明細 / SE16N: PLAF</td></tr>
+<tr><td>製造指図番号 ／ 状態 ／ 勘定設定（WBS）</td><td>&nbsp;</td><td>CO03 / SE16N: AUFK</td></tr>
+<tr><td>部品予約（RM01 / RM02）</td><td>&nbsp;</td><td>CO03 構成品目</td></tr>
+<tr><td>261 出庫の物料伝票番号 ／ 出庫後の部品在庫</td><td>&nbsp;</td><td>MIGO のメッセージ / MMBE</td></tr>
+<tr><td>101 入庫の物料伝票番号 ／ 入庫先（自由在庫 or Q）</td><td>&nbsp;</td><td>MIGO / MMBE</td></tr>
+<tr><td><b>プロジェクト在庫 Q の数量</b> ／ SE16N: MSPR の SOBKZ</td><td>&nbsp;</td><td>MMBE / MB52 / MSPR</td></tr>
+<tr><td>CJI3：WBS <code>.1</code> の収益 ／ <code>.2</code> の原価（請求前）</td><td>&nbsp;</td><td>CJI3</td></tr>
+<tr><td>出荷伝票番号 ／ 在庫区分（Q）／ 引当数量</td><td>&nbsp;</td><td>VL01N / VL03N</td></tr>
+<tr><td>PGI 後の Q 在庫 ／ 移動タイプ</td><td>&nbsp;</td><td>MMBE / MATDOC（601）</td></tr>
+<tr><td>請求伝票番号 ／ 金額（請求計画の何行目か）</td><td>&nbsp;</td><td>VF01 / VF03</td></tr>
+<tr><td>CJI3：WBS <code>.1</code> の収益 ／ <code>.2</code> の原価（請求後）</td><td>&nbsp;</td><td>CJI3</td></tr>
+<tr><td>伝票フローに並んだ伝票（順に列挙）</td><td>&nbsp;</td><td>VA03 環境 → 伝票フロー</td></tr>
+</table>
+
+<h2>シート C：4 点セットの自己チェック（自分の環境の実値で埋める）</h2>
+<table class="tbl wide fill">
+<tr><th>#</th><th>条件</th><th>自分の環境での値</th><th>OK/NG</th></tr>
+<tr><td>①</td><td>プロジェクト定義：評価付プロジェクト在庫</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>②</td><td>品目 MRP4：個別/包括所要量</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>③</td><td>品目 MRP3 戦略グループ → 所要量タイプ → 所要量クラス（評価区分）</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>④</td><td>受注明細の WBS（請求要素）＋所要量タイプ</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+<div class="task"><b class="t">問い</b>4 つのうち<b>どれが欠けると「入庫が自由在庫に入る」</b>？ <b>どれが欠けると「金額が付かない」</b>？ <b>どれが欠けると「CJI3 に収益が出ない」</b>？——自分の環境の値を指して説明できるように。</div>
+
+<h2>シート D：CJI3 の読解（WBS ごとに自分の言葉で）</h2>
+<table class="tbl wide fill">
+<tr><th>WBS</th><th>計画</th><th>実績（費目）</th><th>収益</th><th>意味（自分の言葉で）</th></tr>
+<tr><td><code>.1 設計・調達</code>（請求要素）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td><code>.2 製造</code>（勘定設定要素）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td><code>.3 据付・試運転</code></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+
+<h2>シート E：故障記録（遭遇したものを 3 件まで）</h2>
+<table class="tbl wide fill">
+<tr><th>#</th><th>症状</th><th>根因</th><th>証跡（T-code / 画面・表の行）</th><th>対処</th><th>再発防止</th></tr>
+<tr><td>1</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>2</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>3</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+<div class="box warn"><b class="t">書き方のルール</b>「なんとなく直った」は記録しません。<b>症状 → 根因 → 証跡 → 対処 → 再発防止</b> の 5 点で。
+証跡は必ず <b>T-code ＋ 見た画面/表</b>（例：<span class="mono">SE16N: MSPR に SOBKZ=Q の行が無い → 入庫先が Q でなかった</span>）。</div>
+
+<h2>シート F：用語を自分の言葉で（12 語）</h2>
+<table class="tbl wide fill">
+<tr><th>用語</th><th>自分の言葉での説明（記入）</th></tr>
+<tr><td>受注設計生産（ETO）</td><td>&nbsp;</td></tr>
+<tr><td>プロジェクト在庫（特別在庫 Q）</td><td>&nbsp;</td></tr>
+<tr><td>個別所要量品目</td><td>&nbsp;</td></tr>
+<tr><td>WBS 要素（構造／勘定設定／請求要素の違い）</td><td>&nbsp;</td></tr>
+<tr><td>評価付プロジェクト在庫</td><td>&nbsp;</td></tr>
+<tr><td>ネットワークと活動</td><td>&nbsp;</td></tr>
+<tr><td>請求計画（日付ベース／出来高）</td><td>&nbsp;</td></tr>
+<tr><td>結果分析と WIP</td><td>&nbsp;</td></tr>
+<tr><td>決済（CJ88 / KO88 / VA88 の違い）</td><td>&nbsp;</td></tr>
+<tr><td>予算と可用性管理</td><td>&nbsp;</td></tr>
+<tr><td>MTO の受注在庫（E）との違い</td><td>&nbsp;</td></tr>
+<tr><td>Public Cloud 6GD との違い</td><td>&nbsp;</td></tr>
+</table>
+
+<h2>シート G：質問メモ・講師への確認事項</h2>
+<table class="tbl wide fill">
+<tr><th>#</th><th>質問・確認したいこと（記入）</th><th>回答（講師記入）</th></tr>
+<tr><td>1</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>2</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>3</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>4</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>5</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+
+<h2>修了判定（自分でチェック）</h2>
+<div class="box ok"><b class="t">✓ 修了チェック</b>
+<ul class="check">
+  <li>シート A の全行に、自分の環境での値が記入されている。</li>
+  <li>シート B の番号・数値がすべて埋まっている（プロジェクト／WBS／受注／計画手配／指図／入出庫／出荷／請求）。</li>
+  <li>シート C（4 点セット）を、自分の環境の実値で説明できる。</li>
+  <li>シート D（CJI3）で「収益は請求要素・原価は勘定設定要素」を説明できる。</li>
+  <li>シート E に故障を 1 件以上、5 点セットで記録した。</li>
+  <li>シート F の 12 語を、資料を見ずに説明できる。</li>
+  <li><a href="quiz.html">能力测试</a>で 75% 以上（21/28）。</li>
+</ul></div>
+
+<div class="box info"><b class="t">参照</b>
+<a href="config.html">配置手顺</a>（C 番号）／<a href="handson-1.html">練習①</a>〜<a href="handson-4.html">練習④</a>／<a href="handson-5.html#trouble">故障対照表</a>／<a href="instructor.html">讲师版</a>（解答）。</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>受注設計生産（ETO）实战训练站</h5><p>学员版ワークシート：配置記入・練習記録・4 点セット自己チェック・CJI3 読解・故障記録・用語の言語化。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 項目と受注</a><br><a href="handson-2.html">② 計画・MRP</a><br><a href="handson-3.html">③ 実行・入庫</a><br><a href="handson-4.html">④ 出荷・請求</a><br><a href="handson-5.html">⑤ 発展・故障</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

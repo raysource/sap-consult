@@ -1,0 +1,146 @@
+{
+  "handson-1.html": {
+    "1-2 概況画面": [
+      {
+        "tx": "VA01",
+        "title": "Create Standard Order: Overview",
+        "kind": "form",
+        "fields": [
+          ["Sold-to party", "1000", true],
+          ["Ship-to party", "1000", true],
+          ["PO Number", "dddd", true],
+          ["Req. deliv.date", "09.06.2007", true],
+          ["Payment terms", "ZB01"],
+          ["Incoterms", "FOB"],
+          ["Pricing date", "02.06.2007"],
+          ["Net value", "0.00"],
+          ["Currency", "EUR"],
+          ["Sales area", "1000 / 10 / 00"]
+        ],
+        "note": "動画 09:28 付近の概況画面。項目名・並び順は環境により異なる（支払条件とインコタームズは Sales タブ側に出る場合がある）",
+        "status": ["info", "Sales area 1000 / 10 / 00 determined from sold-to party 1000"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["PO Number はこの環境では必須。空のまま保存すると不完全性チェックで『Enter PO number』の赤いエラーが出る（動画 09:28 付近の症状がこれ）", 350, 183],
+          ["与力価格日付がずれると条件レコードが拾われず Net value が 0 になる（C12）。納入希望日との関係は VOV6 の日付タイプ", 350, 237],
+          ["この時点の Net value 0.00 は正常（明細がまだ無い）。明細投入後も 0.00 なら条件レコード不在か有効期間外を疑う", 950, 237]
+        ],
+        "caption": "概況画面（Create Standard Order: Overview）。ヘッダの住所・支払条件・インコタームズは得意先 1000 のマスタからの提案値",
+        "tip": "自システムでの確認：提案値の出所は XD03（販売エリアビュー）と VOV8（伝票タイプの既定値）。PO Number が必須かは V.02 で確認。与力日付タイプは VOV6。",
+        "aria": "VA01 の概況画面。受注タイプ OR の Standard Order で、Sold-to party と Ship-to party が 1000、PO Number が dddd、納入希望日 09.06.2007、与力価格日付 02.06.2007、Net value 0.00 EUR、販売エリア 1000 / 10 / 00 が入っている。"
+      }
+    ],
+    "1-3 明細の入力": [
+      {
+        "tx": "VA01",
+        "title": "Create Standard Order: Overview",
+        "kind": "table",
+        "table": {
+          "title": "All items",
+          "columns": ["Item", "Material", "Order Quantity", "ItCa", "Deliver.Plant"],
+          "widths": [0.7, 1.4, 1.4, 0.8, 1.2],
+          "rows": [
+            ["10", "T-ATA30", "10", "TAN", "1200"],
+            ["20", "T-ATA29", "1", "", ""]
+          ],
+          "selected": 0,
+          "footer": "ItCa = 明細カテゴリ、Deliver.Plant = 出荷プラント（自動決定）。明細 20 の空欄は決定前で、Enter 後に埋まる"
+        },
+        "note": "動画 18:39 / 19:51 付近。単位（PC）の列名は環境により SU / Sales Unit / Order Unit と表示される",
+        "status": ["success", "Item category TAN determined for material T-ATA30"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["ItCa は品目カテゴリグループ × 伝票タイプの決定テーブルで決まる。TAN にならない＝ VOV4 と MM03 販売組織2 の MTPOS を疑う（C8）", 350, 209],
+          ["Deliver.Plant が空なら 3 つの優先順位を順に確認：KNMT（客先品目情報）> KNVV（得意先）> MVKE（品目）。最下位の MVKE は販売エリア込みで見る（C10）", 950, 209],
+          ["明細 20 は任意の追加。決定結果は明細詳細で確認する（ここではまだ空のまま＝決定前の状態）", 350, 235]
+        ],
+        "caption": "明細概況（All items）グリッド。明細 10 に T-ATA30 / 10 PC を入れて Enter した直後の状態",
+        "tip": "自システムでの確認：T-ATA30 が F4 に出ない環境では、自分の得意先・品目に読み替える。決定結果は明細詳細の ItCa と Deliver.Plant、与力価格は条件で確認。",
+        "aria": "VA01 の明細概況。明細 10 が T-ATA30、数量 10、明細カテゴリ TAN、出荷プラント 1200。明細 20 は T-ATA29、数量 1 で明細カテゴリと出荷プラントがまだ空。"
+      },
+      {
+        "tx": "VA01",
+        "title": "Create Standard Order: Item Data",
+        "kind": "form",
+        "tabs": ["Sales A", "Sales B", "Shipping", "Conditions"],
+        "active_tab": 0,
+        "fields": [
+          ["Material", "T-ATA30"],
+          ["Item category", "TAN"],
+          ["Order Quantity", "10"],
+          ["Deliver.Plant", "1200"],
+          ["Delivery date", "09.06.2007"]
+        ],
+        "note": "Sales A タブの明細詳細。タブの構成と項目名（Delivery date 等）は版・環境により異なる",
+        "status": ["success", "Delivery plant 1200 determined for item 000010"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["Item category TAN は「伝票タイプ × 品目カテゴリグループ」で決まる。手で変えられるが、変えた理由を説明できるようにする（C8）", 350, 183],
+          ["Deliver.Plant 1200 の出所は環境で違う。KNMT に値があればそれが最優先＝品目マスタを直しても変わらない（C10）", 950, 213]
+        ],
+        "caption": "明細詳細（Sales A）。明細カテゴリ TAN と出荷プラント 1200 の決定結果を、数量・初回納入日と一緒に確認する",
+        "tip": "自システムでの確認：与力条件は Conditions、数量と初回納入日は「Order Quantity and Delivery Date」グループ。Net value が 0 でないことを条件画面（PR00 等）で確認する。",
+        "aria": "VA01 の明細詳細画面。品目 T-ATA30、明細カテゴリ TAN、受注数量 10、出荷プラント 1200、初回納入日 09.06.2007 が表示され、Sales A タブが選ばれている。"
+      }
+    ],
+    "1-4 保存と伝票フロー": [
+      {
+        "tx": "VA03",
+        "title": "Display Standard Order: Overview",
+        "kind": "form",
+        "fields": [
+          ["Sold-to party", "1000", true],
+          ["Ship-to party", "1000", true],
+          ["PO Number", "dddd", true],
+          ["Req. deliv.date", "09.06.2007", true],
+          ["Payment terms", "ZB01"],
+          ["Incoterms", "FOB"],
+          ["Pricing date", "02.06.2007"],
+          ["Net value", "22,990.00"],
+          ["Currency", "EUR"],
+          ["Sales area", "1000 / 10 / 00"]
+        ],
+        "note": "保存後に VA03 で照会した状態。受注番号はステータスバーのメッセージで確認して記録する",
+        "status": ["success", "Sales order 0000001234 has been saved"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["保存成功のメッセージに出る受注番号が、以降の VA03 / SE16N / V.02 で使う唯一の鍵。必ず記録する", 350, 150],
+          ["Net value が 22,990.00 ＝ 明細の与力価格が拾われた証拠。0.00 のままなら条件レコード不在か与力日付ずれ（C12）", 950, 237],
+          ["伝票フローは今は受注 1 件だけ。出荷（VT01N）・請求（VF01）を作るとここに増えていく（練習④）", 950, 267]
+        ],
+        "caption": "保存後の照会（VA03）。正味価額 22,990.00 EUR とヘッダのステータス、伝票フローで受注 1 件を確認する",
+        "tip": "自システムでの確認：伝票フローは VA03 のメニュー／ボタンから開く。納入日程行は明細 → 納入日程行。不完全性は V.02（不完全な受注一覧）と VBUV / VBUK。",
+        "aria": "VA03 の受注照会画面。得意先 1000、PO Number dddd、納入希望日 09.06.2007、支払条件 ZB01、Net value 22,990.00 EUR、販売エリア 1000 / 10 / 00 が表示され、ステータスバーに受注 0000001234 を保存した旨が出ている。"
+      }
+    ],
+    "1-5 証拠を取る": [
+      {
+        "tx": "SE16N",
+        "title": "Data Browser: Table VBAP",
+        "kind": "table",
+        "table": {
+          "title": "VBAP (Sales Document: Item Data)",
+          "columns": ["Sales Document", "Item", "Material", "Item Category", "Plant"],
+          "widths": [1.4, 0.6, 1.3, 1.4, 0.9],
+          "rows": [
+            ["0000001234", "10", "T-ATA30", "TAN", "1200"],
+            ["0000001234", "20", "T-ATA29", "TAN", "1200"]
+          ],
+          "selected": 0,
+          "footer": "列見出しは項目の説明名。技術名は VBELN / POSNR / MATNR / PSTYV / WERKS で、PSTYV と WERKS が決定結果"
+        },
+        "note": "明細 20 は任意追加のため、ItCa と Plant が自分の環境で異なる場合がある",
+        "status": ["info", "Number of entries: 2"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["明細カテゴリ（PSTYV）と出荷プラント（WERKS）が伝票に保存された決定結果。VA03 の画面で見た値の答え合わせがこの表でできる", 350, 209],
+          ["出荷プラント 1200 の出所は KNMT > KNVV > MVKE の順に確認。どこに値があるかで処置（マスタ修正か設定か）が変わる（C10）", 950, 209],
+          ["絞り込みは VBELN（受注番号）で。VBAP には販売組織・チャネル・部門が無いので、MVKE / KNVV を見るときは必ず販売エリア込みで絞る", 350, 235]
+        ],
+        "caption": "SE16N で VBAP を照会（受注 2 件）。明細カテゴリと出荷プラントの決定結果を 1 枚の表で確認する",
+        "tip": "自システムでの確認：VBAP（受注番号）、MVKE（品目＋販売組織＋チャネル → DWERK）、KNVV（得意先＋販売エリア → ZTERM・出荷プラント）、KNMT（得意先×品目）。値 → 出所 → なぜその源泉が効いたかを 3 列の表にする。",
+        "aria": "SE16N の VBAP 照会結果。受注 0000001234 の明細 10 が T-ATA30 / 明細カテゴリ TAN / 出荷プラント 1200、明細 20 が T-ATA29 / TAN / 1200 の 2 行が表示されている。"
+      }
+    ]
+  }
+}

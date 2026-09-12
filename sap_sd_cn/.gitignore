@@ -1,0 +1,17 @@
+# --- 源素材（用户提供的教材文档，版权属于原文档；仓库里不含） ---
+S4.docx
+
+# --- docx 解包结果（1385 张原始图片 + document.xml，约 28 MB，可由 work/parse_docx.py 重建） ---
+work/docx_extract/
+
+# --- 纯中间产物（可由脚本重建） ---
+work/doc_stream.json
+work/doc_stream2.json
+work/outline.json
+
+# --- 目视检查用的渲染截图（Chrome 截的，可重建） ---
+work/render/
+
+# --- macOS ---
+.DS_Store
+**/.DS_Store

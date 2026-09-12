@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>练习② MRP 実行と計画手配 · SAP S/4HANA 見込生産（MTS）实战训练站</title>
+<meta name="description" content="MTS 练习② MRP 実行と計画手配：MD01N（MRP Live）の実行、MD04 での純所要量の検算、部品への従属所要量の展開、計画手配の製造指図への変換（CO40/CO41）、ネットチェンジの実験。入力値・手顺・期待结果・つまずき・验收清单。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/mts.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MTS</span><span class="txt">見込生産 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①预测</a>
+      <a class="active" href="handson-2.html">②MRP</a>
+      <a href="handson-3.html">③制造入库</a>
+      <a href="handson-4.html">④出货</a>
+      <a href="handson-5.html">⑤月末</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 练习② MRP 実行と計画手配</div>
+<main class="page"><article>
+
+<h1>练习② MRP 実行と計画手配（把预测变成待生产的订单）</h1>
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。若是想换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 即可一键替换。</div>
+
+<p class="lead">本练习是「纯计算」的一课：<b>把 PIR 的 -1,500 PC 变成 1,500 PC 的计划手配，同时让部品的需求自动出现</b>。做完你应该能自己算出 MRP 为什么给出这个数量——<b>不是背结论，而是能把算式倒着讲回去</b>。</p>
+
+<div class="toc">
+  <a href="#m1">2-1 MRP 実行（MD01N）</a>
+  <a href="#m2">2-2 純所要量の検算（MD04 の読み方）</a>
+  <a href="#m3">2-3 部品への展開（従属所要量）</a>
+  <a href="#m4">2-4 計画手配 → 製造指図（CO40/CO41）</a>
+  <a href="#m5">2-5 ネットチェンジの実験</a>
+  <a href="#expect">期待结果汇总</a>
+  <a href="#trouble">つまずきと対処</a>
+  <a href="#accept">验收（完成基准）</a>
+</div>
+
+<div class="flow">
+  <div class="node">MD01N 実行<br><small>MRP Live</small></div><div class="arrow">→</div>
+  <div class="node">MD04 計画手配<br><small>500 PC</small></div><div class="arrow">→</div>
+  <div class="node">部品の従属所要量<br><small>RM01 1,000</small></div><div class="arrow">→</div>
+  <div class="node">CO40/CO41 変換<br><small>PP01</small></div><div class="arrow">→</div>
+  <div class="node">CO03 で確認<br><small>状態 CRTD</small></div>
+</div>
+
+<h2 id="m1">2-1 MRP 実行（MD01N / MRP Live）</h2>
+<table class="tbl wide">
+<tr><th>入力項目</th><th>値（本教材）</th><th>説明</th></tr>
+<tr><td>プラント</td><td><code>1000</code></td><td>MRP は<b>プラント単位</b>で走る</td></tr>
+<tr><td>品目（或は製品グループ）</td><td><code>ZMTS-FG01</code>（练习用に絞る）</td><td>本番では全体/製品グループ単位で回すのが普通</td></tr>
+<tr><td>処理キー（Processing key）</td><td>環境の既定（例：ネットチェンジ相当）</td><td>F1 で意味を確認。<code>NEUPL</code> = 総再計画 / <code>NETCH</code> = ネットチェンジ</td></tr>
+<tr><td>計画モード / 実行タイプ</td><td>環境の既定</td><td>「MRP 結果の保存」等のフラグは実行後に <code>MD04</code> で検証する</td></tr>
+</table>
+<ol class="steps">
+  <li><code>MD01N</code> → プラント <code>1000</code> / 品目 <code>ZMTS-FG01</code> → 処理キーを確認（F1）→ 実行。</li>
+  <li>実行ログ（結果一覧）を確認。<b>MRP リストは作成されない</b>ので、完了後の検証は <code>MD04</code>。</li>
+  <li><code>MD04</code> → <code>ZMTS-FG01</code>：計画手配が生成されている（在庫区分は空・受注番号なし）。</li>
+  <li>単品目でやり直したいときは <code>MD02</code>（単品目・多階層）。<code>MD03</code> は提供されない。</li>
+</ol>
+
+
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+① <code>MD04</code> に計画手配の行（ダブルクリックで計画手配の明細：数量・納入日・品目）。<br>
+② 表：<code>SE16N: PLAF</code>（キー：品目 + プラント）→ <code>PLNUM</code>（計画手配番号）/ <code>GSMNG</code>（数量）/ <code>PEDTR</code>（納入日）。<br>
+③ MRP パラメータの既定値：<code>OMDU</code>。MRP Live の挙動差は SAP KBA <b>2640393</b> / SAP Note <b>1914010</b>。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <code>MD05</code>/<code>MD06</code>（MRP リスト）を見に行って「無い」と焦る → <b>MRP Live は作りません</b>。<br>
+② 実行したのに <code>MD04</code> が変わらない → 実行のパラメータで「保存」が外れている、或は別プラントで実行した。<code>MD04</code> のヘッダ（品目/プラント）を確認。<br>
+③ 数量が PIR と一致しない → 安全在庫・ロットサイズ・既存在庫・既存の入庫予定が効いている（正常）。次の 2-2 で検算する。</div>
+<figure class="gui"><img src="assets/gui/handson-2_s01_1.svg" alt="MD01N でプラント 1000・品目 ZMTS-FG01 を対象に MRP Live を実行する。MRP リストは作成されない。" loading="lazy"><figcaption><b class="t">MD01N の実行画面</b><span class="tx">MD01N</span><span class="scr">MRP Live 実行：プラント 1000 / 品目 ZMTS-FG01</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 実行後に MD05 / MD06 を探しても無い。MRP Live は MRP リストを作らない（KBA 2640393）</li><li><b>2</b> 「結果の保存」が外れていると逐次表示だけで計画手配が残らないことがある</li></ol><p class="gui-tip">自システムでの確認：実行ログ（処理品目数）と OMDU（MRP パラメータ）。単品目でやり直すときは MD02。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-2_s01_2.svg" alt="MD04 で MRP の結果を確認する。PIR に対して計画手配 600 PC が 3 本生成され、各月末に安全在庫 100 が残る。" loading="lazy"><figcaption><b class="t">MRP 実行後の MD04：計画手配 600 PC × 3</b><span class="tx">MD04</span><span class="scr">在庫/所要量リスト：計画手配が生成された状態</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 数量が PIR と一致しないときは安全在庫・ロットサイズ・既存の入庫予定が効いている（正常）。2-2 で検算する</li><li><b>2</b> ダブルクリックで計画手配の明細（数量・納入日・品目）が開く</li></ol><p class="gui-tip">自システムでの確認：SE16N: PLAF（品目 + プラント）→ PLNUM / GSMNG / PEDTR。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="m2">2-2 純所要量の検算（MD04 の読み方）</h2>
+<p>MRP の結果は必ず次の式で説明できる。合わないときは<b>式の各項を MD04 から拾い直す</b>——これができると故障排查が一気に速くなる。</p>
+<pre class="vals">純所要量 = 総所要量 − 入庫予定 + 安全在庫
+
+本教材の例（1 か月目、PIR 500・在庫 0・安全在庫 100・ロットサイズ EX）
+  総所要量（PIR）      500
+  入庫予定             0
+  安全在庫             100
+  ─────────────────────
+  純所要量             600      ← 計画手配 600 PC（ロットサイズ EX = 端数そのまま）
+  ※ ロットサイズが「EX（ロット単位）」なら 600 のまま。
+     「週ロット」や「固定ロット」なら端数が切り上がる（例 1,000 PC）。</pre>
+<table class="tbl wide">
+<tr><th>MD04 の行</th><th>意味</th><th>式のどこに入るか</th></tr>
+<tr><td>自由在庫（利用可能）</td><td>その場で使える在庫（MTS の入庫先）</td><td>入庫予定（+）</td></tr>
+<tr><td>計画独立所要量</td><td>PIR（受注番号なし）</td><td>総所要量（−）</td></tr>
+<tr><td>得意先所要量</td><td>受注（练习④ で現れる）</td><td>総所要量（−）。ただし PIR を消費した分は差し引き済み</td></tr>
+<tr><td>計画手配 / 製造指図</td><td>未来の入庫予定</td><td>入庫予定（+）</td></tr>
+<tr><td>利用可能数量</td><td>各行の累計。マイナスは不足</td><td>検算の答え合わせ</td></tr>
+</table>
+<ol class="steps">
+  <li><code>MD04</code> → <code>ZMTS-FG01</code>：「入庫/所要量」を上から読む。</li>
+  <li>各行の数量を紙に写し、上の式で <b>計画手配の数量を予測</b>する。然后看系统给的数是否一致。</li>
+  <li>在库存处（例：练习③ 后库存 500）再跑一次 MRP，观察计划手配数量如何下降（入庫予定が増える）。</li>
+  <li>安全在庫を <code>0</code> と <code>100</code> で比較すると、<b>安全在庫が純所要量に足される</b>ことが確かめられる（<code>MM02</code> MRP2 → 変更 → <code>MD02</code> → <code>MD04</code>）。</li>
+</ol>
+
+
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+① 検算：<code>MD04</code> の各行の数量と、<code>SE16N: PLAF</code>（計画手配）・<code>PBED</code>（PIR）・<code>MARD</code>（自由在庫）を突き合わせる。<br>
+② ロットサイズの効果：<code>MM03</code> MRP1 のロットサイズ（<code>EX</code>）と、<code>MD04</code> に現れた数量の端数処理を比較。<br>
+③ S/4HANA の MRP は「正味所要量計算」の結果を <code>MDTB</code>（品目・要素の集計）に持つ——<code>SE16N: MDTB</code> で確認できる。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 検算が合わない最大の原因は「<b>他に誰かが動かしている</b>」：同じ品目に別の計画手配・指図・購買発注が既にある（<code>MD04</code> で全部見える）。<br>
+② 安全在庫の扱いを「今あるべき在庫」と誤解 → 安全在庫は<b>純所要量に足される仮想在庫</b>（在庫 + 100 ではなく、需要 500 + 100 = 600 を補う）。</div>
+<div class="task"><b class="t">練習課題</b>安全在庫を <code>100</code> → <code>300</code> に変えて <code>MD02</code> を実行し、計画手配の数量変化を記録する。次に <code>0</code> に戻して再実行。<b>「安全在庫を上げると在庫が増える」を実測で確かめる</b>（見込生産の在庫最適化の入口）。</div>
+<figure class="gui"><img src="assets/gui/handson-2_s02_1.svg" alt="MD04 の各行を式に当てはめて計画手配 600 PC を検算する。上段に式の各項、下段に MD04 の行を示す。" loading="lazy"><figcaption><b class="t">純所要量の検算：500 − 0 + 100 = 600 PC</b><span class="tx">MD04</span><span class="scr">純所要量の検算：総所要量 − 入庫予定 + 安全在庫</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 安全在庫は「今あるべき在庫」ではなく純所要量に足される仮想在庫（需要 500 + 100 = 600）</li><li><b>2</b> 計画手配は入庫予定（+）。指図に変換されると同じ行が「製造指図」になる</li></ol><p class="gui-tip">自システムでの確認：SE16N: PLAF（計画手配）/ PBED（PIR）/ MARD（自由在庫）/ MDTB（正味所要量計算の結果）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="m3">2-3 部品への展開（従属所要量）</h2>
+<p>完成品の计划手配/指図ができた時点で、<b>BOM が展開されて部品の需要が生まれる</b>。MTS でも MTO でも同じ仕組み（違いは在庫の所属だけ）。</p>
+<pre class="vals">完成品 500 PC（BOM: RM01 × 2、RM02 × 4）
+   → RM01 の従属所要量 1,000 PC
+   → RM02 の従属所要量 2,000 PC
+部品は MRP タイプ PD / 手配タイプ F（外部調達）なので
+   → 購買依頼（或は計画手配）が生まれる（购买流程は练习⑤ の发展课题）</pre>
+<ol class="steps">
+  <li><code>MD04</code> → <code>ZMTS-RM01</code> / プラント <code>1000</code>：従属所要量（或被品目需求）が出ているか確認。</li>
+  <li>在庫（1,000 PC の初期在庫）と比較し、追加調達が必要かどうかを判断する。</li>
+  <li><code>CO03</code>（指図がまだ無ければ <code>MD04</code> から計画手配を開く）で構成品目を確認する。</li>
+  <li>部品の在庫を練習③ の前に十分に用意しておく（<a href="config.html#c1">配置 C1</a>）。</li>
+</ol>
+
+
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+<code>MD04</code>（部品側）・<code>SE16N: RESB</code>（指図の部品予約：指図番号 <code>RSNUM</code> / 品目 / 必要数量）・<code>SE16N: MDTB</code>（従属所要量）。<br>
+「従属所要量」の元素名はシステム言語で変わるので、<b>受注番号/指図番号が参照されているか</b>で判別する。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 部品に需求が出ない → BOM の有効日/用途、或は部品の MRP ビュー欠落（<a href="config.html#c3">C3</a>）。<br>
+② 数量が BOM と合わない → BOM の基本数量（Base quantity）を 100 PC などにしている（×2 の倍数になっている）。<code>CS03</code> で確認。<br>
+③ 部品が受注在庫に引き込まれている → 品目 MRP4 の個別/包括所要量が空でない（MTS では空）。</div>
+<div class="task"><b class="t">練習課題</b>完成品の PIR を 500 → 1,000 PC に変え、<code>MD02</code> 実行後の<b>部品所要量が 2,000 / 4,000</b> になることを確認する。—— これが「見込生産の在庫リスクは BOM を通じて増幅する」ということ。</div>
+<figure class="gui"><img src="assets/gui/handson-2_s03_1.svg" alt="部品 ZMTS-RM01 の MD04。完成品の指図から従属所要量 1,000 PC が発生する。" loading="lazy"><figcaption><b class="t">部品の従属所要量（RM01 1,000 PC / RM02 2,000 PC）</b><span class="tx">MD04</span><span class="scr">在庫/所要量リスト：部品 ZMTS-RM01（従属所要量）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 従属所要量の行に指図番号が参照されている = BOM 展開が効いた証拠</li><li><b>2</b> 初期在庫 1,000 PC がちょうど消費される。练习③ の 261 出庫の前提</li></ol><p class="gui-tip">自システムでの確認：SE16N: RESB（指図の部品予約）/ MDTB（従属所要量）。要素名はシステム言語で変わるため、指図番号の参照有無で判断します。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="m4">2-4 計画手配 → 製造指図（CO40 / CO41）</h2>
+<table class="tbl wide">
+<tr><th>項目</th><th>値</th><th>説明</th></tr>
+<tr><td>変換 T-code</td><td><code>CO40</code>（単品目/計画手配単位）/ <code>CO41</code>（一括）</td><td><code>MD04</code> の計画手配行から「変換」でも可</td></tr>
+<tr><td>指図タイプ</td><td><code>PP01</code>（品目 MRP2 の伝票タイプ）</td><td>変換時に変更可（练习では変更しない）</td></tr>
+<tr><td>指図数量 / 納入日</td><td>計画手配の値（例 500 PC）</td><td>変換後に <code>CO02</code> で変更可</td></tr>
+<tr><td>初期状態</td><td><code>CRTD</code>（作成済・未解放）</td><td>解放（REL）して初めて部品出庫できる</td></tr>
+</table>
+<ol class="steps">
+  <li><code>CO40</code> → 計画手配番号（<code>MD04</code> 或は <code>PLAF</code> で確認）→ 変換 → 指図番号がメッセージで出る。</li>
+  <li><code>CO03</code> → 指図 → ヘッダ（品目・数量・納入日・状態 CRTD）を確認。</li>
+  <li>「構成品目」（部品予約 <code>RESB</code>）と「工程」（作業手順から転記）を確認。</li>
+  <li><b>受注明細参照（<code>AFPO-KDAUF/KDPOS</code>）が空</b>であることを確認——これが MTS の指図の証拠（MTO ならここに受注が入る）。</li>
+  <li>次に <code>CO02</code> → 解放（REL）→ 状態を確認（练习③ の前提）。</li>
+</ol>
+
+
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+<code>CO03</code> ヘッダ（状態・数量）、構成品目、工程。<br>
+表：<code>SE16N: AUFK</code>（指図ヘッダ：<code>AUFNR</code>/<code>AUART</code>/<code>STAT</code>）、<code>SE16N: AFPO</code>（<code>KDAUF</code>/<code>KDPOS</code> が空であること）、<code>SE16N: RESB</code>（部品予約）、<code>SE16N: AFKO</code>（<code>PLNUM</code> = 元の計画手配番号）。<br>
+計画手配が消えていること（変換でなくなる）も <code>MD04</code> / <code>PLAF</code> で確認する。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 変換できない → 品目の手配タイプが空、或は指図タイプ（MRP2）が不正、或は計画手配が既に変換済み。<br>
+② 部品予約の数量が 0 → BOM の有効日切れ、或は工程割当（<code>CA01</code> の割当）忘れ。<br>
+③ 指図が <code>CRTD</code> のまま 261 をしようとしてエラー → 先に解放（<code>CO02</code>）。<br>
+④ 受注参照が入っている → 品目 MRP4 が「個別所要量のみ」（MTO 化している）。<a href="config.html#c2">C2</a> を見直す。</div>
+<div class="task"><b class="t">練習課題</b><code>CO03</code> のヘッダに表示される「状態」を全部読み、<b>CRTD → REL → CNF → DLV → TECO</b> の順にどう変わっていくかを表にする（练习③・⑤ で実際に遷移させる）。讲师版に解答があります（<a href="instructor.html#practice">练习の解答</a>）。</div>
+<figure class="gui"><img src="assets/gui/handson-2_s04_1.svg" alt="CO40 で計画手配 00000123 を指図タイプ PP01 の製造指図に変換する。" loading="lazy"><figcaption><b class="t">CO40：計画手配 → 製造指図（PP01）</b><span class="tx">CO40</span><span class="scr">計画手配の指図への変換</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 指図タイプは品目 MRP2 の伝票タイプ（PP01）。変換時に変更もできるが练习では変えない</li><li><b>2</b> 変換で計画手配は消える（MD04 / PLAF で確認する）</li></ol><p class="gui-tip">自システムでの確認：CO03 でヘッダ確認。表は SE16N: AFKO（PLNUM = 元の計画手配番号）。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-2_s04_2.svg" alt="CO03 の指図ヘッダ。状態 CRTD、受注明細参照は空で、部品予約として RM01 1,000 / RM02 2,000 が入っている。" loading="lazy"><figcaption><b class="t">CO03：ヘッダ（CRTD）と構成品目</b><span class="tx">CO03</span><span class="scr">製造指図 照会：ヘッダと構成品目（状態 CRTD）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 受注明細参照が空であることが MTS の証拠（MTO はここに受注が入る）</li><li><b>2</b> 状態はまだ CRTD。261 の前に 3-1 で解放（REL）する</li></ol><p class="gui-tip">自システムでの確認：SE16N: AUFK（AUFNR / AUART / STAT）/ AFPO（KDAUF・KDPOS が空）/ RESB（部品予約）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="m5">2-5 ネットチェンジの実験（MRP は「全部は計算しない」）</h2>
+<p>現場の MRP は 1 日に何度も回ります。そのたびに全品目を計算していたら日が暮れる——だから MRP は<b>変化したものだけ</b>を計算します（ネットチェンジ）。見込生産では、この「変化」の主役が PIR と库存です。</p>
+<table class="tbl wide">
+<tr><th>モード</th><th>動き</th><th>使いどころ</th></tr>
+<tr><td>ネットチェンジ（<code>NETCH</code> 相当）</td><td>前回の MRP 以降に<b>変化のあった品目</b>だけ再計算</td><td>日次のルーチン</td></tr>
+<tr><td>総再計画（<code>NEUPL</code> 相当）</td><td>MRP 対象の<b>全品目</b>を再計算</td><td>設定変更後・データ不整合時の「リセット」</td></tr>
+</table>
+<ol class="steps">
+  <li><code>MD04</code> で現在の計画手配数量を記録（例 600 PC）。</li>
+  <li><code>MD62</code> で PIR を 500 → 300 に変更。</li>
+  <li><code>MD01N</code>（ネットチェンジ相当・品目 <code>ZMTS-FG01</code>）を実行 → <code>MD04</code> で計画手配が <b>400 PC</b>（300 + 安全在庫 100）に変わっていることを確認。</li>
+  <li>在庫を動かす（练习③ の 101 入庫）→ MRP 再実行 → 需要が減っても库存で賄える分は計画手配が消える、を確認。</li>
+</ol>
+
+
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+<code>MD04</code> の前後比較が最も確実。実行ログ（<code>MD01N</code> の結果一覧）に「処理品目数」が出れば、ネットチェンジが効いている（＝全品目ではない）ことの根拠になる。<br>
+MRP Live と古典 MRP の差異（MRP リスト無し・購買依頼は常に生成可など）は SAP KBA <b>2640393</b>。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① ネットチェンジで変化を取りこぼすと感じる → 「何を変化とみなすか」は MRP の内部判定（計画手配の変換・消費の発生など）。<b>疑わしいときは総再計画（NEUPL）で確かめる</b>のが定石。<br>
+② 総再計画を本番で常用 → 実行時間と負荷が跳ね上がる。<b>練習で両方を体感し、業務では使い分ける</b>。</div>
+<div class="task"><b class="t">練習課題</b>ネットチェンジと総再計画を同じデータで実行し、<b>計画手配の数量が一致するか</b>を確認する。一致しない場合はその理由（消費の再評価・ロットサイズ・他の入庫予定）を <code>MD04</code> の行から説明する。</div>
+<figure class="gui"><img src="assets/gui/handson-2_s05_1.svg" alt="MD04 で PIR を 500 → 300 に変えてネットチェンジを実行した結果。計画手配が 600 → 400 に追従している。" loading="lazy"><figcaption><b class="t">ネットチェンジ：PIR 300 → 計画手配 400 PC</b><span class="tx">MD04</span><span class="scr">在庫/所要量リスト：PIR 300 に変更後の再計算</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 前後の MD04 を比較するのが最も確実。実行ログの「処理品目数」がネットチェンジの根拠になる</li><li><b>2</b> 総再計画（NEUPL）は全品目を再計算する。本番で常用すると負荷が跳ね上がる</li></ol><p class="gui-tip">自システムでの確認：MD01N の実行ログ（処理品目数）と MD04 の前後比較。MRP Live と古典 MRP の差は SAP KBA 2640393。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="expect">期待结果汇总（本练习做完时的系统状态）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>期待结果</th><th>確認方法</th></tr>
+<tr><td>1</td><td><code>MD01N</code> 実行後、<code>ZMTS-FG01</code> に計画手配（例 600 PC / 月）が生成される</td><td><code>MD04</code>・<code>PLAF</code></td></tr>
+<tr><td>2</td><td>計画手配の<b>在庫区分は空・受注番号なし</b></td><td><code>MD04</code> 計画手配の明細</td></tr>
+<tr><td>3</td><td>部品（<code>ZMTS-RM01</code>/<code>RM02</code>）に従属所要量が出る（1,000 / 2,000 PC）</td><td><code>MD04</code>（部品）</td></tr>
+<tr><td>4</td><td><code>CO40</code>/<code>CO41</code> で <code>PP01</code> の製造指図に変換でき、状態 <code>CRTD</code></td><td><code>CO03</code>・<code>AUFK</code></td></tr>
+<tr><td>5</td><td>指図の <code>AFPO-KDAUF/KDPOS</code> が空（見込生産の証拠）</td><td><code>CO03</code> ヘッダ / <code>SE16N: AFPO</code></td></tr>
+<tr><td>6</td><td>純所要量が「総所要量 − 入庫予定 + 安全在庫」で検算できる</td><td>手計算 + <code>MD04</code></td></tr>
+</table>
+
+<h2 id="trouble">つまずきと対処（本练习版）</h2>
+<table class="tbl wide">
+<tr><th>症状</th><th>根因の候補</th><th>確認手順</th></tr>
+<tr><td>MRP 後も計画手配が無い</td><td>MRP タイプ <code>ND</code> / 手配タイプ空 / 純所要量が 0（在庫で足りている）</td><td><code>MM03</code> MRP1・MRP2 → <code>MD04</code> の利用可能数量</td></tr>
+<tr><td>計画手配の数量が想定より多い</td><td>ロットサイズ（固定ロット/週ロット）・安全在庫・既存の入庫予定なし</td><td><code>MM03</code> MRP1 のロットサイズ → <code>MD04</code> 全行</td></tr>
+<tr><td>計画手配の数量が想定より少ない</td><td>既存の計画手配/指図/購買発注が入庫予定として効いている</td><td><code>MD04</code> の入庫予定行・<code>PLAF</code>・<code>AUFK</code></td></tr>
+<tr><td>部品に従属所要量が出ない</td><td>BOM の有効日切れ / 工程割当なし / 部品に MRP ビューなし</td><td><code>CS03</code>・<code>CA03</code>・<code>MM03</code></td></tr>
+<tr><td>変換（CO40/CO41）でエラー</td><td>手配タイプ空・指図タイプ不正・既に変換済み</td><td><code>MM03</code> MRP1/2 → <code>PLAF</code> の残存確認</td></tr>
+<tr><td>「MRP リストが無い」と言われる</td><td>MRP Live（<code>MD01N</code>）は MRP リストを作らない</td><td><code>MD04</code> を見る（KBA 2640393）</td></tr>
+</table>
+
+<h2 id="accept">验收（完成基准）</h2>
+<div class="box ok"><b class="t">全部勾上才算练习② 完成</b>
+<ul class="check">
+  <li><code>MD01N</code> を実行し、<code>MD04</code> に計画手配が生成されたことを確認した。</li>
+  <li>計画手配の数量を「総所要量 − 入庫予定 + 安全在庫」で検算し、数字が合った（或は差の理由を説明できた）。</li>
+  <li>安全在庫を変えると計画手配数量が変わることを実測した。</li>
+  <li>部品（RM01/RM02）に従属所要量が出ることを確認し、<b>BOM の倍数で計算されている</b>と言える。</li>
+  <li><code>CO40</code>/<code>CO41</code> で計画手配を製造指図（<code>PP01</code>）に変換でき、<code>CO03</code> で状態を確認した。</li>
+  <li>指図の受注明細参照（<code>AFPO-KDAUF/KDPOS</code>）が空であることを確認した（MTS の証拠）。</li>
+  <li>ネットチェンジ（PIR 変更 → 再実行）で計画手配が追従することを確認した。</li>
+  <li><code>MD03</code> が無い理由（MRP Live）と、MRP リストを期待してはいけない理由を説明できる。</li>
+</ul></div>
+
+<div class="box info"><b class="t">出典</b>
+MRP Live（<code>MD01N</code>）と古典 MRP の差異・MRP リスト無し・<code>MD03</code> 非提供：SAP KBA <b>2640393</b> / SAP Note <b>1914010</b>。<br>
+正味所要量計算と戦略 40 の挙動：SAP Help <i>Net Requirements Planning (10)</i> / <i>Planning with Final Assembly (40)</i>（SAP ERP）・SAP PRESS blog <i>4 Strategies for Make-to-Stock Production with SAP S/4HANA</i>。<br>
+関連表（<code>PLAF</code>/<code>MDTB</code>/<code>RESB</code>/<code>AFPO</code>/<code>MARC</code>）与 <code>OMDU</code>：SAP Help（Support Content）<i>Frequently used database tables and customizing in MRP</i>。<br>
+部品の従属所要量と BOM 展開、指図タイプ <code>PP01</code>：SAP Learning / SAP Help（Production Orders）。Cloud の対応フローは スコープアイテム <b><code>BJ5</code></b>（PIR → MRP → 計画手配 → 指図変換）。</div>
+
+<div class="box ok"><b class="t">下一步</b>
+→ <a href="handson-3.html">练习③ 製造と入庫（261 / CO11N / 101 → 自由在庫）</a>。</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP 見込生産（MTS）实战训练站</h5><p>练习②：MRP 実行と計画手配（MD01N → MD04 → CO40/CO41、ネットチェンジ）。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 需要予測とPIR</a><br><a href="handson-2.html">② MRP と計画手配</a><br><a href="handson-3.html">③ 製造と入庫</a><br><a href="handson-4.html">④ 受注・出荷・請求</a><br><a href="handson-5.html">⑤ 月末と発展</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

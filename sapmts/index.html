@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>总览 · SAP S/4HANA 見込生産（MTS）实战训练站</title>
+<meta name="description" content="SAP S/4HANA 見込生産（MTS / Make-to-Stock）实训站：需要予測とPIR→MRP→計画手配→製造指図→入庫（自由在庫）→受注の引当て→出荷→請求→差異決済までを通しで練習。含详细 SPRO 配置手顺 C0〜C16、操作手顺、验收清单、故障排查与 On-Premise / Public Cloud 差异对照。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/mts.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MTS</span><span class="txt">見込生産 训练站</span></a>
+    <nav class="main">
+      <a class="active" href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①预测</a>
+      <a href="handson-2.html">②MRP</a>
+      <a href="handson-3.html">③制造入库</a>
+      <a href="handson-4.html">④出货</a>
+      <a href="handson-5.html">⑤月末</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero"><div class="hero-inner">
+  <div class="kicker">SAP S/4HANA · PP × MM × SD × CO 跨模块实训 · 中文 + 日本語术语对照</div>
+  <h1>見込生産（MTS / Make-to-Stock）实战训练站</h1>
+  <p class="lead">一条完整可跑的 <b>見込生産（見込生産 = 予測で作り、在庫から納める）</b> 场景：<b>需要予測と PIR → MRP → 計画手配 → 製造指図 → 部品出庫 261 → 実績 → 完成品入庫 101（自由在庫）→ 受注が在庫から引当てる（ATP）→ 出荷 PGI 601 → 請求 → 差異計算と決済</b>。
+  主口径是 <b>S/4HANA On-Premise</b>，同时给出 <b>Public Cloud（SSCUI / スコープアイテム）</b> 的差异对照。</p>
+  <p class="lead">本站与姊妹站 <b>sapmto（受注生産 / MTO）</b>、<b>sapeto（受注設計生産 / ETO）</b> 成一套：
+  同一个「受注 → 出荷 → 請求」外壳，<b>唯一不同的是「计划起点」和「库存归谁」</b>——MTS 是 <b>PIR 起点 + 自由在庫</b>，MTO 是 <b>受注起点 + 受注在庫（特在 E）</b>。做完本题，你应该能只用一句话说清这两者的分水岭。</p>
+  <div class="toc">
+    <a href="#scope">1. 这个场景教什么</a>
+    <a href="#story">2. 训练场景设定</a>
+    <a href="#flow">3. 端到端流程（10 步）</a>
+    <a href="#plan">4. 练习安排</a>
+    <a href="#objects">5. 设定对象一览（C1〜C17）</a>
+    <a href="#env">6. 前提与环境</a>
+    <a href="#caveat">7. 关于标准值的立场</a>
+    <a href="#sources">8. 出典</a>
+  </div>
+</div></div>
+
+<div class="wrap">
+<main class="page"><article>
+
+<h2 id="scope">1. 这个场景教什么</h2>
+<p>SAP 的「見込生産（MTS）」不是「不做计划的生产」，恰恰相反：它是<b>先做需求预测、把预测登进系统（計画独立所要量 / PIR）、再让 MRP 把预测变成补货</b>。
+它和 MTO 的差别只在两个问题：<b>① 生产是谁引起的？（预测 还是 受注）② 造出来的库存归谁？（全公司可用的自由在庫 还是 只能给某一张受注的個別在庫 E）</b>。
+答对这两个问题，见下面对照表——本站所有配置和练习都是围绕这两个问题展开的。</p>
+
+<div class="grid cards">
+  <div class="card">
+    <h3><a href="config.html">① 练习配置手顺（详细 SPRO）</a></h3>
+    <p>C0〜C15 の配置 STEP ＋ C16 Public Cloud 差异对照：从品目主数据（販売組織2 / MRP2 安全在庫 / MRP3 戦略グループと消費モード / MRP4）、標準原価計算（CK11N・CK40N・CK24）、計画方針グループ（10/11/30/40/70）、所要量タイプ／クラス、明細カテゴリ・納入日程行カテゴリ（在庫確認 ON）、ATP 控制、MRP 侧设置 到 出荷・請求・転記。每步给出 IMG 路径、事务码、输入值、<b>在自系统中的确认方法</b>。</p>
+    <div class="tags"><span>配置</span><span class="tag amber">约 150 分</span></div>
+  </div>
+  <div class="card">
+    <h3><a href="handson-1.html">② 练习流程（5 个实操）</a></h3>
+    <p>练习① 需要予測と PIR（MD61 → MD62 → MD04）→ 练习② MRP 実行と調達提案（MD01N → MD04 → 計画手配 → 指図）→ 练习③ 製造と入庫（261 / CO11N / 101 → 自由在庫）→ 练习④ 受注・引当・出荷・請求（VA01 / ATP / VL01N / PGI / VF01）→ 练习⑤ 月末処理と発展（差異計算 KKS1/KKS2 → 決済 KO88/CO88、棚卸、欠品・安全在庫切れ、故障対照表 12 項）。</p>
+    <div class="tags"><span>实操</span><span class="tag teal">约 240 分</span></div>
+  </div>
+  <div class="card">
+    <h3><a href="concept.html">③ 术语与设计（为什么会这样）</a></h3>
+    <p>見込生産 3 方式的对照（品目レベル / 最終組立レベル / 組立レベル＝戦略 10・40・70 系）、PIR 与消費モード、自由在庫（MARD/MCHB）与 ATP 引当、MRP 的网络变更与净需求算、標準原価与差異、受注在庫との違い、関連テーブル、S/4HANA 变更点、10 个常见误解。</p>
+    <div class="tags"><span>概念</span><span class="tag gray">约 60 分</span></div>
+  </div>
+  <div class="card">
+    <h3><a href="quiz.html">④ 能力测试 + 验收清单</a></h3>
+    <p>28 题（概念 10 / 配置 9 / 流程 6 / 故障 3）× 点击判分 + 解说，外加一份实机验收清单：把系统里的证据（PIR 的 PBED、MD04 的预计行、自由在庫、差異の決済ログ）逐条核对，才算「这个场景跑通了」。</p>
+    <div class="tags"><span>测试</span><span class="tag green">约 30 分</span></div>
+  </div>
+</div>
+
+<h2 id="story">2. 训练场景设定</h2>
+<p>场景取自典型「量产型见込品」：客户按库存订货，工厂<b>按月度预测先造、放在自由在庫，客户下单后直接从库存引当、出荷</b>。受注不产生新的生产需求（而是<b>消费（消費）</b>已有的 PIR）——这就是戦略グループ 40 的舞台。</p>
+
+<h3>组织与主数据（本教程统一使用的值，可按自己环境改）</h3>
+<table class="tbl wide">
+<tr><th>区分</th><th>值</th><th>说明</th></tr>
+<tr><td>会社コード / プラント</td><td><code>1000</code> / <code>1000</code></td><td>工厂即出荷プラント</td></tr>
+<tr><td>販売組織 / 販売チャネル / 部門</td><td><code>1000</code> / <code>10</code> / <code>00</code></td><td>销售区域（販売エリア）</td></tr>
+<tr><td>得意先（受注先・出荷先）</td><td><code>1000</code></td><td>量贩商社 A（要已建 販売ビュー）</td></tr>
+<tr><td>完成品（見込生産品）</td><td><code>ZMTS-FG01</code></td><td>品目タイプ <code>FERT</code>，単位 PC，手配タイプ E（内製）</td></tr>
+<tr><td>部品 1（板材）</td><td><code>ZMTS-RM01</code></td><td>品目タイプ <code>ROH</code>，库存品（見込で備える）</td></tr>
+<tr><td>部品 2（紧固件）</td><td><code>ZMTS-RM02</code></td><td>品目タイプ <code>HAWA</code>，库存品</td></tr>
+<tr><td>作業区 / 作業手順</td><td><code>ZMTS_WC01</code> / 標準作業手順</td><td>組立工程 0010，標準時間 1 H / PC</td></tr>
+<tr><td>BOM</td><td><code>ZMTS-FG01</code> → RM01×2, RM02×4</td><td>1 PC 完成品所需部品（CS01）</td></tr>
+<tr><td>標準価格（標準原価）</td><td><code>8,000</code> JPY / PC</td><td>CK11N → CK24 でマーク・リリースした標準原価（価格管理 <code>S</code>）</td></tr>
+<tr><td>見込量（需要予測）/ 安全在庫</td><td><code>500</code> PC/月 / <code>100</code> PC</td><td>PIR（MD61）に 3 か月分。安全在庫は MRP2</td></tr>
+<tr><td>戦略グループ / 消費モード</td><td><code>40</code> / <code>2</code>（逆消費・順消費）</td><td>最終組立ありの計画。逆消費期間 30 日 / 順消費期間 20 日</td></tr>
+<tr><td>所要量タイプ / 所要量クラス</td><td><code>VSF</code>（/ <code>KSV</code>） → <code>101</code>（/ <code>050</code>）</td><td>独立所要量 VSF / 得意先所要量 KSV。<b>通常は〜。自システムで確認</b></td></tr>
+<tr><td>製造指図タイプ / 移動タイプ</td><td><code>PP01</code> / <code>261・101・601</code></td><td>部品出庫 261、完成入庫 101、出庫確認 601</td></tr>
+<tr><td>出荷タイプ / 請求タイプ</td><td><code>LF</code> / <code>F2</code></td><td>标准出荷・标准请求</td></tr>
+</table>
+
+<div class="box info"><b class="t">练习量（业务故事）</b>
+① <b>预测</b>：<code>ZMTS-FG01</code> 的 1〜3 月需求预测 = <b>各 500 PC/月</b>，登进 PIR（版 <code>00</code>）。MRP3 安全在庫 = <b>100 PC</b>。<br>
+② <b>先造</b>：MRP 跑出计划手配 → 製造指図（例 500 PC）→ 部品 <b>RM01 1,000 PC / RM02 2,000 PC</b> 出库（261）→ 实绩 → 完成品 <b>500 PC 入自由在庫</b>（101）。<br>
+③ <b>再卖</b>：得意先 1000 下单 <code>ZMTS-FG01</code> <b>200 PC</b>（単価 8,000 JPY = 1,600,000 JPY，希望纳期 = 受注日 + 7 日）。
+受注<b>消费（消費）</b>PIR：当月 PIR 500 → 残 300。库存够，<b>ATP 直接引当</b>→ 出荷（PGI 601）→ 请求。<br>
+④ <b>月末</b>：完成品 500 PC 的指図差异（標準 8,000 vs 実際 例 8,300）→ <code>KKS1</code> 差异计算 → <code>KO88</code> 決済 → FI。<br>
+全程可在 <code>MD04</code> / <code>MMBE</code> / <code>MD73</code> / <code>CO03</code> / <code>伝票フロー</code> 中追踪。</div>
+
+<div class="box ok"><b class="t">MTS 的一条主线（背这一句就够）</b>
+<b>予測（PIR）→ MRP → 計画手配 → 指図 → 入庫（自由在庫）→ 受注は「消費」して在庫から引当てる → 出荷 → 請求</b>。
+与 MTO 的唯一分水岭：<b>入庫先が「自由在庫（プラント在庫・MARD）」还是「受注在庫（特在 E・MSKA）」</b>——MTS 是前者，库存谁都能用。</div>
+
+<h2 id="flow">3. 端到端流程（练习要跑通的 10 个动作）</h2>
+<div class="flow">
+  <div class="node">1 MD61 PIR<br><small>見込 500/月</small></div><div class="arrow">→</div>
+  <div class="node">2 MD04 独立所要量<br><small>PIR 需求行</small></div><div class="arrow">→</div>
+  <div class="node">3 MD01N MRP<br><small>純所要量</small></div><div class="arrow">→</div>
+  <div class="node">4 計画手配<br><small>自由在庫用</small></div><div class="arrow">→</div>
+  <div class="node">5 CO40/CO41 指図<br><small>PP01</small></div><div class="arrow">→</div>
+  <div class="node">6 MIGO 261<br><small>部品出庫</small></div><div class="arrow">→</div>
+  <div class="node">7 CO11N 実績<br><small>歩留 500</small></div><div class="arrow">→</div>
+  <div class="node">8 MIGO 101<br><small>自由在庫 +500</small></div><div class="arrow">→</div>
+  <div class="node">9 VA01 + ATP<br><small>消費・引当</small></div><div class="arrow">→</div>
+  <div class="node">10 VL01N→VF01<br><small>601・請求</small></div>
+</div>
+<table class="tbl wide">
+<tr><th>#</th><th>动作</th><th>事务码</th><th>系统里要看什么（证据）</th><th>对应练习</th></tr>
+<tr><td>1</td><td>需要予測の登録（PIR）</td><td><code>MD61</code> / <code>MD62</code></td><td>PIR 数量・納入日、版 <code>00</code>（有効版）、<code>MD73</code> 一览</td><td><a href="handson-1.html">练习①</a></td></tr>
+<tr><td>2</td><td>独立所要量が MD04 に出るか</td><td><code>MD04</code></td><td>「計画独立所要量」行（受注番号なし＝見込の証拠）</td><td><a href="handson-1.html">练习①</a></td></tr>
+<tr><td>3</td><td>MRP 実行</td><td><code>MD01N</code></td><td>計画手配が生成。在庫区分は<b>空（自由在庫）</b>・受注番号なし</td><td><a href="handson-2.html">练习②</a></td></tr>
+<tr><td>4</td><td>計画手配 → 製造指図</td><td><code>MD04</code> / <code>CO40</code> / <code>CO41</code></td><td>指図タイプ PP01、<b>受注明細参照が無い</b>、部品予約（RESB）</td><td><a href="handson-2.html">练习②</a></td></tr>
+<tr><td>5</td><td>部品出庫（261）</td><td><code>MIGO</code> / <code>MB1A</code></td><td>部品のプラント在庫減、指図の実績数量</td><td><a href="handson-3.html">练习③</a></td></tr>
+<tr><td>6</td><td>製造実績（工程確認）</td><td><code>CO11N</code></td><td>歩留数量 = 500、指図状态 CNF</td><td><a href="handson-3.html">练习③</a></td></tr>
+<tr><td>7</td><td>完成品入庫（101 → 自由在庫）</td><td><code>MIGO</code> / <code>MB31</code></td><td><code>MMBE</code> / <code>MB52</code> の<b>プラント在庫（自由在庫）</b> +500 PC。特在区分は空</td><td><a href="handson-3.html">练习③</a></td></tr>
+<tr><td>8</td><td>受注登録と ATP 引当</td><td><code>VA01</code> / <code>CO09</code></td><td>在庫確認結果（確認済数量 200）、PIR の消費（MD04 で残 <b>300</b>）</td><td><a href="handson-4.html">练习④</a></td></tr>
+<tr><td>9</td><td>出荷伝票・ピッキング・PGI 601</td><td><code>VL01N</code> / <code>VL02N</code></td><td>在庫区分<b>空（自由在庫）</b>・引当 200 → PGI で自由在庫 500 → 300</td><td><a href="handson-4.html">练习④</a></td></tr>
+<tr><td>10</td><td>請求伝票登録</td><td><code>VF01</code></td><td>请求 1,600,000 JPY、FI 伝票（<code>FB03</code>）、伝票フロー闭合</td><td><a href="handson-4.html">练习④</a></td></tr>
+</table>
+<div class="box warn"><b class="t">第 11〜12 个动作（练习⑤：月末）</b>
+<code>CO03</code> の原価分析 → <code>KKS1</code>（差異計算）→ <code>KO88</code>（指図の決済）/ <code>CO88</code>（一括）→ <code>FB03</code> で差異の転記を確認。
+これが「見込生産の在庫は標準原価で、実際との差は差異として処理される」という最后一公里です（<a href="handson-5.html">练习⑤</a>）。</div>
+
+<h2 id="plan">4. 练习安排（建议 2 天，或 1 天压缩版）</h2>
+<table class="tbl wide">
+<tr><th>时段</th><th>内容</th><th>页面</th><th>完成基准</th></tr>
+<tr><td>Day1 上午</td><td>概念与设计：MTS 的 3 方式、PIR 与消费、自由在庫与 ATP、標準原価与差異</td><td><a href="concept.html">概念与设计</a></td><td>能画出「PIR → MRP → 入庫 → 引当 → 差異」的链，并说明 MTS 与 MTO 的分水岭</td></tr>
+<tr><td>Day1 下午</td><td>练习配置 C0〜C16（自带系统、自己做）</td><td><a href="config.html">练习配置手顺</a></td><td>配置清单 17 项全部确认，标准原価が 8,000 JPY で <code>MM03</code> 会計1 に出る</td></tr>
+<tr><td>Day2 上午</td><td>练习流程 ①②③（PIR → MRP → 入庫）</td><td><a href="handson-1.html">①②</a> <a href="handson-3.html">③</a></td><td>MD04 に PIR と計画手配、MMBE の自由在庫 +500 PC（特在は空）</td></tr>
+<tr><td>Day2 下午</td><td>练习流程 ④⑤ + 月末 + 故障排查 + 测试</td><td><a href="handson-4.html">④</a> <a href="handson-5.html">⑤</a> <a href="quiz.html">测试</a></td><td>PIR 消費 500→300、PGI 後自由在庫 300、伝票フロー闭合、差異の決済ログ、测试 ≥75%</td></tr>
+</table>
+<div class="box warn"><b class="t">环境要求</b>
+① S/4HANA On-Premise（2020〜2024 均可，画面路径以 2023/2024 为准）；② 拥有可写入的カスタマイジング依頼（Customizing Request）与開発権限；
+③ MM・PP・SD・FI 的基本组织构造已就绪（販売組織/プラント/得意先/会計ビュー）；④ <b>原价计算（CO-PC）可用</b>——CK11N/CK24 与 KKS1 需要成本中心・活動タイプ・原価計算バリアント已就绪。
+若用 Public Cloud，请先读 <a href="config.html#c16">C16 Public Cloud 差异对照</a>：大部分 <b>SPRO 自定义（新规明細カテゴリ・新规伝票タイプ）不可用</b>，以 スコープアイテム <code>BJ5</code>（MTS・离散）/ <code>BJ8</code>（MTS・流程）为基础。</div>
+
+<h2 id="objects">5. 设定对象一览（要配/要确认的 17 项）</h2>
+<p>下表是「标准值 + 本站练习值 + 确认方法」的总表。<b>标准值在不同版本/不同系统可能不同</b>，所以每一项都给出「在自系统中怎么确认」。
+详细手顺见 <a href="config.html">练习配置手顺</a>。</p>
+<table class="tbl wide">
+<tr><th>#</th><th>设定项目</th><th>标准值的通常情况</th><th>本站练习值</th><th>设定/确认处</th></tr>
+<tr><td>C1</td><td>品目カテゴリグループ（Sales Org 2）</td><td><code>0001</code> NORM（标准品）ほか DIEN / LEIS / ERLA / LUMF</td><td><code>0001</code>（练习⑤追加 <code>Z001</code>）</td><td><code>MM03</code> 販売組織2</td></tr>
+<tr><td>C2</td><td>品目 MRP1（調達タイプ）</td><td>MRPタイプ <code>PD</code>、ロットサイズ <code>EX</code>、手配タイプ <code>E</code>（内製）</td><td>PD / EX / E</td><td><code>MM02</code> MRP1</td></tr>
+<tr><td>C3</td><td>品目 MRP2 安全在庫・購買発注タイプ</td><td>安全在庫（固定）は現場が必要量。見込生産では設定されることが多い</td><td><code>100</code> PC</td><td><code>MM02</code> MRP2</td></tr>
+<tr><td>C4</td><td>品目 MRP3 戦略グループと消費モード <span class="pill op">核心</span></td><td>見込生産 <code>10</code>/<code>11</code>/<code>30</code>/<code>40</code>/<code>70</code>。<code>40</code> は受注が PIR を<b>消費</b>する</td><td><code>40</code>、消費モード <code>2</code>、逆 30 日 / 順 20 日</td><td><code>MM02</code> MRP3</td></tr>
+<tr><td>C5</td><td>品目 MRP3 在庫確認（チェックグループ）</td><td>見込生産は ATP 対象（<code>01</code> 日別所要量 / <code>02</code> 個別所要量 など）</td><td><code>02</code>（F4 で説明を確認）</td><td><code>MM02</code> MRP3</td></tr>
+<tr><td>C6</td><td>品目 MRP4 個別/包括所要量</td><td>見込生産は<b>空または <code>2</code>（包括所要量）</b> ＝ 受注紐づきにしない</td><td>空（見込品は受注に紐づけない）</td><td><code>MM02</code> MRP4</td></tr>
+<tr><td>C7</td><td>標準原価の計算・マーク・リリース</td><td>CK11N（単品目）→ CK40N（一括）→ CK24（マーク/リリース）。会計1 の価格管理 <code>S</code></td><td>標準価格 <code>8,000</code> JPY/PC</td><td><code>CK11N</code>・<code>CK40N</code>・<code>CK24</code>・<code>MM03</code> 会計1</td></tr>
+<tr><td>C8</td><td>BOM・作業区・作業手順</td><td>計劃手配の BOM 展開・標準工時の基礎</td><td>RM01×2 / RM02×4、工程 0010・<code>ZMTS_WC01</code>・1 H</td><td><code>CS01</code>・<code>CR01</code>・<code>CA01</code></td></tr>
+<tr><td>C9</td><td>計画方針グループ／計画方針</td><td><code>OPPS</code>（方針）/ <code>OPPJ</code>・<code>OPPT</code>（方針グループ）。<code>10</code> LSF・<code>40</code> VSF・<code>70</code> VSFB など</td><td><code>40</code> を使用、练习⑤ で <code>10</code> と比較</td><td><code>OPPS</code>・<code>OPPJ</code>・<code>OPPT</code></td></tr>
+<tr><td>C10</td><td>需要管理（PIR の登録と消費）</td><td>PIR は <code>MD61/MD62/MD63</code>、版 <code>00</code> が有効版。消費は戦略と消費モードに従う</td><td>版 <code>00</code>、1〜3 月 各 500 PC</td><td><code>MD61</code>・<code>MD62</code>・<code>MD73</code>・<code>MM02</code> MRP3 消費モード</td></tr>
+<tr><td>C11</td><td>所要量タイプ／所要量クラス</td><td>見込生産 <code>LSF</code>（→ 100）/ <code>VSF</code>（→ 101）/ <code>BSF</code>（→ 102）。得意先所要量 <code>KSL</code>（→ 030）/ <code>KSV</code>（→ 050）</td><td><code>VSF</code> / <code>KSV</code> を確認（戦略 40 経由）</td><td><code>OVZG</code>・<code>OVZH</code>・<code>OVZI</code></td></tr>
+<tr><td>C12</td><td>明細カテゴリグループの定義</td><td>NORM / DIEN / LEIS / ERLA / LUMF 等。<b>見込生産専用の標準キーは特に無い</b></td><td>確認 + <code>Z001</code> 追加</td><td>IMG：販売伝票明細 &gt; 定義: 明細カテゴリグループ</td></tr>
+<tr><td>C13</td><td>明細カテゴリの定義 <span class="pill op">VOV7</span></td><td><code>TAN</code>（标准明細）。<b>特別在庫は空（＝自由在庫）</b>が MTS の要点</td><td><code>TAN</code> 確認 + <code>ZTAN</code> 追加（特別在庫 = 空のまま）</td><td><code>VOV7</code></td></tr>
+<tr><td>C14</td><td>明細カテゴリ／納入日程行カテゴリの割当</td><td><code>VOV4</code> の 4 键 → TAN；<code>VOV5</code> の 2 键 → <code>CN</code>/<code>CP</code></td><td><code>OR + Z001 → ZTAN</code>、<code>ZTAN + PD → ZCP</code></td><td><code>VOV4</code>・<code>VOV5</code></td></tr>
+<tr><td>C15</td><td>納入日程行カテゴリ（所要量転送・在庫確認）</td><td><code>CP</code> は MRP 関連あり。<b>見込生産は在庫確認（ATP）も ON</b> にするのが典型</td><td><code>ZCP</code>：所要量転送 ON・在庫確認 ON</td><td><code>VOV6</code>（表 <code>TVEP</code> の <code>BEDSD</code>/<code>ATPPR</code>）</td></tr>
+<tr><td>C16</td><td>在庫確認（ATP）の制御</td><td><code>OVZ9</code>（利用可能在庫確認制御：チェックグループ × チェックルール）</td><td>確認のみ（<code>CO09</code> で動作確認）</td><td><code>OVZ9</code>・<code>CO09</code>・<code>CO06</code></td></tr>
+<tr><td>C17</td><td>出荷・請求・自動転記・棚卸</td><td><code>LF</code>/<code>F2</code>、<code>VTFL</code> コピー制御、<code>OBYC</code>（BSX/GBB）、棚卸は <code>MI01</code>/<code>MI04</code>/<code>MI07</code></td><td>标准のまま使用（確認のみ）</td><td><code>VL01N</code>・<code>VF01</code>・<code>VTFL</code>・<code>OBYC</code>・<code>MI01</code></td></tr>
+</table>
+
+<h2 id="env">6. 前提与环境（练习前 30 分钟做完）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>前提</th><th>确认方法</th></tr>
+<tr><td>1</td><td>販売組織/販売チャネル/部門/プラント/出荷プラント 已建并互相分配</td><td>SPRO 组织构造 + <code>OX10</code>・<code>OVX5</code> 系确认；<code>VA01</code> 能选到销售区域</td></tr>
+<tr><td>2</td><td>得意先 1000 已建（得意先マスタ：一般/会社/販売エリア/出荷先）</td><td><code>BP</code> / <code>XD03</code>，需有出荷先（船積先）</td></tr>
+<tr><td>3</td><td>品目マスタ ZMTS-FG01 / RM01 / RM02 已完成必要视图（Basic / 購買 / MRP1〜4 / 会計1 / 原価計算1 / 販売組織1・2 / プラント在庫）</td><td><code>MM03</code> 逐视图，未建视图会直接导致 MRP 或受注失败</td></tr>
+<tr><td>4</td><td><b>標準原価が計算済み・リリース済み</b>（価格管理 <code>S</code> で 8,000 JPY）</td><td><code>MM03</code> 会計1 に標準価格が見えること。<code>CK11N</code>・<code>CK24</code> が前提</td></tr>
+<tr><td>5</td><td>原価計算の前提：原価センタ・活動タイプ・レート（KP26）・原価計算バリアント</td><td><code>KP26</code>・<code>OKKN</code>。差異を計算するには必須</td></tr>
+<tr><td>6</td><td>番号範囲（受注・出荷・請求・製造指図）有可用区间</td><td><code>VN01</code>（販売伝票）、PP/出荷/請求的番号範囲</td></tr>
+<tr><td>7</td><td>可写入的 カスタマイジング依頼（Customizing Request）</td><td>配置作业时会要求输入请求</td></tr>
+<tr><td>8</td><td>练习用の権限（SD/PP/MM/CO の表示・登録 + SPRO 表示）</td><td>无法执行的事务码请提前向 Basis 申请</td></tr>
+</table>
+
+<h2 id="caveat">7. 关于标准值的立场（请务必读）</h2>
+<div class="box warn"><b class="t">本教程的做法</b>
+SAP 的标准设定会随<b>版本、行业解决方案、激活的业务功能、以及既有项目改造</b>而不同。本场景里差异最大的三处：
+<b>①</b> 戦略グループ（<code>10</code>/<code>11</code>/<code>30</code>/<code>40</code>/<code>70</code> 的哪一个、以及它指向的所要量タイプ／クラス）；
+<b>②</b> PIR 的消费行为（消费モード・逆/順消費期間，甚至「是消费还是消减」）；
+<b>③</b> 受注在庫的评价（MTS 用的是自由在庫，但自由在庫的金额来自 Material Ledger／標準価格，设置差体现在金额而不是有无）。<br>
+因此本站的原则是：<b>把「标准值的通常情况」写清楚，但每一个值都配一条「在你自己的系统里怎么确认」的手顺</b>，
+并给出配置练习（自己建 <code>Z001 / ZTAN / ZCP</code>）确保即使标准值与本站不同，练习依然成立。教学以「机制正确」为优先，不以背标准值为目标。<br>
+<span class="mini">另外提醒：网上常把「組立レベルでの計画」写成戦略 <code>40</code>、把「最終組立ありの計画」写成 <code>30</code>。本站依据 SAP Help / SAP 支持资料核对后采用：<b><code>40</code> = 最終組立ありの計画</b>，<b><code>70</code> = 組立品目（組立）レベルでの計画</b>。请用 <code>OPPS</code>/<code>OPPT</code> 在自己系统里核对描述文字。</span></div>
+
+<h2 id="sources">8. 出典与参考</h2>
+<ul>
+  <li>SAP Help（Support Content）<i>MRP 方針 (PP-MRP)</i>：見込生産の MRP 方針一覧（10 見込生産 / 11 見込生産・総所要量計画 / 30 ロット生産 / 40 最終組立ありの計画 / 70 組立品目レベルでの計画）。
+    <span class="mini">help.sap.com/docs/SUPPORT_CONTENT/mrp/3138697884.html</span></li>
+  <li>SAP Help（Support Content）<i>Frequently used database tables and customizing in MRP</i>：<code>MARA/MARC/MARD/MDTB/PLAF/PBIM/PBED/RESB/AFKO/AFPO</code> 与 <code>OPPS/OPPT/OVZG/OVZH/OVZI/OMDU</code> 的一览。
+    <span class="mini">help.sap.com/docs/SUPPORT_CONTENT/mrp/3138698280.html</span></li>
+  <li>SAP Help（Support Content）<i>Tables and programs of planned independent requirements</i>：PIR の表（<code>PBIM</code> ヘッダ / <code>PBED</code> 明細 / <code>PBHI</code> 履歴、ポインタ <code>BDZEI</code>、<code>T459U</code>）、消費（MD04）と消減（<code>REQUIREMENTS_REDUCTION</code>）の違い、戦略 <code>10</code>/<code>11</code> は消費しないため <code>OVZG</code> の「独立所要量消減」フラグが必要。
+    <span class="mini">help.sap.com/docs/SUPPORT_CONTENT/erpman/3138697931.html</span></li>
+  <li>SAP Help <i>Net Requirements Planning (10)</i>／<i>Planning with Final Assembly (40)</i>：正味所要量の算式と、戦略 <code>40</code> で受注が PIR を消費する（消費モード 2・逆 30 日・順 20 日 の例）挙動。
+    <span class="mini">help.sap.com/docs/SAP_ERP/74c0b3a391174482a66a3a23bb28c10d/dd22bf53d25ab64ce10000000a174cb4.html</span></li>
+  <li>SAP Help（Cloud Public Edition）<i>計画独立所要量 (PIR)</i>／<i>Settlement of Product Cost by Order</i>：PIR の登録方法と、指図の決済（差異・WIP）。
+    <span class="mini">help.sap.com/docs/SAP_S4HANA_CLOUD/…/6023bf53d25ab64ce10000000a174cb4.html</span></li>
+  <li>SAP Help（Support Content）<i>How the planned independent requirements are consumed and reduced by sales order and delivery</i>、SAP KBA <b>1715491</b>（PIR の消費／消減の条件）、SAP KBA <b>2640393</b>（<code>MD01N</code> と古典 MRP の差異）、SAP KBA <b>2964352</b>（<code>BJ8</code> Process Order の MTS）。</li>
+  <li>SAP Best Practices / スコープアイテム：<b><code>BJ5</code> Make-to-Stock Production – Discrete Manufacturing</b>（PIR → MRP → 計画手配 → 指図 → 引当・入出庫・ATP、指図の目標原価/実績原価）、<b><code>BJ8</code> Make-to-Stock – Process Manufacturing Based on Process Order</b>。</li>
+  <li>SAP PRESS blog <i>4 Strategies for Make-to-Stock Production with SAP S/4HANA</i>：戦略 10（所要量タイプ <code>LSF</code>/<code>KSL</code>）、11（<code>BSF</code>/<code>KSL</code>、MRP3 の二重 MRP 区分 = 2）、40（消費あり）、30（PIR は消費されない）の比較。
+    <span class="mini">blog.sap-press.com/4-strategies-for-make-to-stock-production-with-sap-s4hana</span></li>
+  <li>tokulog（SAPコンサルブログ）：<i>MRP方針グループ・消費モードを徹底解説！</i>（方針グループ一覧と消費モード 4 種）、<i>ATP利用可能在庫確認について徹底解説！</i>（品目マスタと納入日程カテゴリの両方が必要、引当はプラント/保管場所/ロット単位で伝票登録順、ATP は見込生産で有効）。
+    <span class="mini">tokulog.org/blog/stgroup_consmptmode/ ・ tokulog.org/blog/atp/</span></li>
+  <li>SAP Tribal Knowledge <i>SAP Planning Strategies</i>：戦略グループ ↔ 独立/得意先所要量タイプ ↔ 所要量クラス の対応表（<code>OPPT</code>/<code>OPPS</code>/<code>OVZH</code>/<code>OVZG</code>）。
+    <span class="mini">saptribalknowledge.wordpress.com/2017/06/13/sap-planning-strategies</span></li>
+  <li>SAP Community：<i>PIR Consumption &amp; Reduction</i>（消費は MD04 上で起き MD61 の表は変わらない／消減は GI・GR で表が更新される）、<i>Material Ledgers / Actual Costing</i>（S/4HANA では Material Ledger が必須、Actual Costing は任意）。</li>
+</ul>
+<div class="box info"><b class="t">下一步</b>
+想先理解机制 → <a href="concept.html">概念与设计</a>；想直接动手配 → <a href="config.html">练习配置手顺</a>；想直接跑流程 → <a href="handson-1.html">练习① 需要予測と PIR</a>。</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP 見込生産（MTS）实战训练站</h5><p>面向 SAP S/4HANA PP/MM 学习者的跨模块实训：見込生産（MTS）の配置手顺 + 全流程实操 + 验收清单。<br>内容为教学整理，标准值请以自系统为准。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 需要予測とPIR</a><br><a href="handson-2.html">② MRP と計画手配</a><br><a href="handson-3.html">③ 製造と入庫</a><br><a href="handson-4.html">④ 受注・出荷・請求</a><br><a href="handson-5.html">⑤ 月末と発展</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="worksheet.html">学员版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

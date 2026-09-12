@@ -1,0 +1,16 @@
+{
+  "name": "n2-dojo",
+  "version": "2.0.0",
+  "private": true,
+  "description": "N2 道場 — JLPT N2 备考学习网站（Node 本地服务 + SQLite 课程库）",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node db/seed.js",
+    "verify": "node db/verify.js",
+    "rebuild": "node db/seed.js --force && node db/verify.js"
+  },
+  "engines": {
+    "node": ">=23.4.0"
+  }
+}

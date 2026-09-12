@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAP S/4HANA 业务实务培训教材（索引）</title>
+<meta name="description" content="SAP S/4HANA の業務実践トレーニング教材 5 本の索引：受注生産（MTO）／受注設計生産（ETO）／見込生産（MTS）／バリアント設定（VC）／受注形態の横断比較。各サイトは静的 HTML＋Excel＋SAP GUI 画面イメージ。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/hub.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">SAP</span><span class="txt">培训教材 索引</span></a>
+    <nav class="main">
+      <a class="active" href="index.html">总览</a>
+      <a href="#sites">8 个站</a>
+      <a href="#route">学习路线</a>
+      <a href="#tools">工具与验证</a>
+      <a href="#stance">立场与注意</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="kicker">SAP S/4HANA · SD / PP / MM / PS / CO 横断</div>
+    <h1>从受注处理到全模块手顺：8 本立て的实战教材</h1>
+    <p class="lead">生产形态不同，后工程的「库存归属・成本对象・请求方式・月末处理」就整体改变。本套教材把 5 种形态各做成一个站：
+      <b>88 页 HTML ＋ 1986 个手顺步骤 ＋ 3145 张画面 ＋ Excel</b>（うち 2738 张は sap_sd_jp / sap_sd_cn の<b>実機スクリーンショット</b>、残りは生成した画面イメージ）（要件定義・手順書 / 学習WBS / 画面撮影リスト）。
+      全部静态、无外部依赖、可离线打开。<span class="mini">数字由 tools/make_hub_page.py 自动统计</span></p>
+  </div>
+</div>
+
+<div class="wrap">
+<main class="page"><article>
+
+<h2 id="sites">8 个站（点击站名直接打开）</h2>
+<div class="grid cards">
+    <div class="card">
+      <h3><a href="sap_sd_jp/index.html">SAP S/4HANA 日本語実習サイト（全モジュール・日本語版）</a></h3>
+      <p>教材ドキュメント S4.docx（425 ページ・実機スクリーンショット 1385 枚）を日本語に翻訳・再構成した全モジュール手順サイト。FI / CO / MM / PP / SD の 6 大モジュール・222 タスクの日本語手順＋実機画面。画面は中国語インターフェースのまま収録し、各ステップに「原文（中国語）」折りたたみ、入力値表に「画面の中国語」列、用語対照表（日本語 ⇔ 中国語画面）を用意。講師用/受講者用/自習テスト付き。</p>
+      <div class="tags"><span class="tag teal">14 页</span><span class="tag green">879 手顺ステップ</span><span class="tag amber">1369 画面</span><span class="tag gray">1 Excel</span></div>
+      <p class="mini">入口: <a href="sap_sd_jp/index.html">index</a> ／ <a href="sap_sd_jp/co.html">co</a> ／ <a href="sap_sd_jp/quiz.html">quiz</a></p>
+    </div>
+    <div class="card">
+      <h3><a href="sap_sd_cn/index.html">SAP S/4HANA 中文实训站（全模块手册・原文中文）</a></h3>
+      <p>教材文档 S4.docx（425 页・実機スクリーンショット 1385 枚）準拠の中国語站。FI / CO / MM / PP / SD の 6 大模块・222 任務の手顺＋実機画面。画面は生成図ではなく原文档の実機截图。T-code 速查・排錯・任務索引・讲师版/学员版/自测 付き。</p>
+      <div class="tags"><span class="tag teal">13 页</span><span class="tag green">879 手顺ステップ</span><span class="tag amber">1369 画面</span><span class="tag gray">1 Excel</span></div>
+      <p class="mini">入口: <a href="sap_sd_cn/index.html">index</a> ／ <a href="sap_sd_cn/co.html">co</a> ／ <a href="sap_sd_cn/quiz.html">quiz</a></p>
+    </div>
+    <div class="card">
+      <h3><a href="sap_sd/index.html">SD 受注処理（Sales Order Processing）</a></h3>
+      <p>録画（SAP Education Unit 14）準拠。伝票データの 4 つの源泉・販売エリア導出・出荷プラントの優先順位・明細カテゴリ決定・変更時の再決定・Sales Summary（VC/2）。受注の「読み方」の土台。</p>
+      <div class="tags"><span class="tag teal">11 页</span><span class="tag green">45 手顺ステップ</span><span class="tag amber">65 画面</span><span class="tag gray">3 Excel</span><span class="tag amber">PNG 65 枚</span><span class="tag teal">画面集 PDF</span></div>
+      <p class="mini">入口: <a href="sap_sd/index.html">index</a> ／ <a href="sap_sd/config.html">config</a> ／ <a href="sap_sd/quiz.html">quiz</a>　／ <a href="sap_sd/SD_講義用画面集.pdf">画面集 PDF</a> <a href="sap_sd/SD_学员用記入シート.pdf">学员版 PDF</a></p>
+    </div>
+    <div class="card">
+      <h3><a href="sapmto/index.html">SD 受注生産（MTO）</a></h3>
+      <p>受注在庫 E の決定链：品目 → VOV4 → 明細カテゴリ → 納入日程行カテゴリ → 所要量タイプ → 所要量クラス。受注が計画の起点。</p>
+      <div class="tags"><span class="tag teal">11 页</span><span class="tag green">44 手顺ステップ</span><span class="tag amber">82 画面</span><span class="tag gray">3 Excel</span><span class="tag amber">PNG 82 枚</span><span class="tag teal">画面集 PDF</span></div>
+      <p class="mini">入口: <a href="sapmto/index.html">index</a> ／ <a href="sapmto/config.html">config</a> ／ <a href="sapmto/quiz.html">quiz</a>　／ <a href="sapmto/MTO_講義用画面集.pdf">画面集 PDF</a> <a href="sapmto/MTO_学员用記入シート.pdf">学员版 PDF</a></p>
+    </div>
+    <div class="card">
+      <h3><a href="sapeto/index.html">受注設計生産（ETO）</a></h3>
+      <p>案件（WBS）× プロジェクト在庫 Q：評価付プロジェクト在庫・請求計画・予算と可用性管理・進捗→結果分析→決済。</p>
+      <div class="tags"><span class="tag teal">11 页</span><span class="tag green">46 手顺ステップ</span><span class="tag amber">97 画面</span><span class="tag gray">3 Excel</span><span class="tag amber">PNG 97 枚</span><span class="tag teal">画面集 PDF</span></div>
+      <p class="mini">入口: <a href="sapeto/index.html">index</a> ／ <a href="sapeto/config.html">config</a> ／ <a href="sapeto/quiz.html">quiz</a>　／ <a href="sapeto/ETO_講義用画面集.pdf">画面集 PDF</a> <a href="sapeto/ETO_学员用記入シート.pdf">学员版 PDF</a></p>
+    </div>
+    <div class="card">
+      <h3><a href="sapmts/index.html">SD 見込生産（MTS）</a></h3>
+      <p>予測（PIR）で作り自由在庫から納める：PIR と消費、MRP のネットチェンジ、標準原価と差異計算、欠品と ATP。</p>
+      <div class="tags"><span class="tag teal">11 页</span><span class="tag green">44 手顺ステップ</span><span class="tag amber">69 画面</span><span class="tag gray">3 Excel</span><span class="tag amber">PNG 69 枚</span><span class="tag teal">画面集 PDF</span></div>
+      <p class="mini">入口: <a href="sapmts/index.html">index</a> ／ <a href="sapmts/config.html">config</a> ／ <a href="sapmts/quiz.html">quiz</a>　／ <a href="sapmts/MTS_講義用画面集.pdf">画面集 PDF</a> <a href="sapmts/MTS_学员用記入シート.pdf">学员版 PDF</a></p>
+    </div>
+    <div class="card">
+      <h3><a href="sapvc/index.html">バリアント設定付き受注生産（VC / AVC）</a></h3>
+      <p>1 品目で無数のバリエーション：特徴 CT04・クラス CL02・KMAT・設定プロファイル・依存関係で BOM と価格を制御。</p>
+      <div class="tags"><span class="tag teal">11 页</span><span class="tag green">40 手顺ステップ</span><span class="tag amber">74 画面</span><span class="tag gray">3 Excel</span><span class="tag amber">PNG 74 枚</span><span class="tag teal">画面集 PDF</span></div>
+      <p class="mini">入口: <a href="sapvc/index.html">index</a> ／ <a href="sapvc/config.html">config</a> ／ <a href="sapvc/quiz.html">quiz</a>　／ <a href="sapvc/VC_講義用画面集.pdf">画面集 PDF</a> <a href="sapvc/VC_学员用記入シート.pdf">学员版 PDF</a></p>
+    </div>
+    <div class="card">
+      <h3><a href="saporderflow/index.html">受注形態の横断比較（講義）</a></h3>
+      <p>MTS / MTO / ETO / ATO / VC を 9 维度で比較。E vs Q の STEP 対照表（同一受注を 2 通りで走らせる）と VC 概観。</p>
+      <div class="tags"><span class="tag teal">6 页</span><span class="tag green">9 手顺ステップ</span><span class="tag amber">20 画面</span><span class="tag gray">3 Excel</span><span class="tag amber">PNG 20 枚</span><span class="tag teal">画面集 PDF</span></div>
+      <p class="mini">入口: <a href="saporderflow/index.html">index</a> ／ <a href="saporderflow/compare.html">compare</a> ／ <a href="saporderflow/quiz.html">quiz</a>　／ <a href="saporderflow/CMP_講義用画面集.pdf">画面集 PDF</a> <a href="saporderflow/CMP_学员用記入シート.pdf">学员版 PDF</a></p>
+    </div>
+    <div class="card">
+      <h3><a href="tools/README.md">tools/（共通工具）</a></h3>
+      <p>画面イメージの生成・検証、学習WBS と要件定義 Excel の生成、実機スクリーンショットへの差し替えまでを 11 のスクリプトで。</p>
+      <div class="tags"><span class="tag gray">verify_all_sites</span><span class="tag gray">make_gui_mockups</span><span class="tag gray">swap_gui_images</span></div>
+      <p class="mini"><a href="tools/README.md">tools/README.md</a> ／ <a href="tools/GUI_SPEC_FORMAT.md">GUI_SPEC_FORMAT.md</a> ／ <a href="PROGRESS.md">PROGRESS.md（進捗メモ）</a></p>
+    </div>
+</div>
+
+<h2 id="route">推荐学习路线</h2>
+<ol class="steps">
+  <li><b>⓪ SAP S/4HANA 日本語実習サイト（sap_sd_jp）</b>——<b>日本語で読める全モジュール手順サイト</b>：FI / CO / MM / PP / SD の 6 大モジュール・222 タスクの手順と実機画面。画面は中国語インターフェースのため、各ステップに「原文（中国語）」の折りたたみと用語対照表を用意。先にここで「どの設定ポイントがあるか」の地図を持っておくと、以下の各站が速い。（中国語の原文で読みたい場合は <b>sap_sd_cn</b> が同一教材の原文版。）</li>
+  <li><b>① SD 受注処理（sap_sd）</b>——先看录像（SAP Education Unit 14）配套的受注处理站：值从哪来（主数据／既存伝票／Customizing／ABAP）、出荷プラント的优先顺序、明細カテゴリ决定、变更时的再决定。后面的每一站都建立在这里。</li>
+  <li><b>② MTO（sapmto）</b>——接着把「决定链」和受注在庫 E 吃下来。这是所有形态的基准，之后每个形态都拿它对照。</li>
+  <li><b>③ ETO（sapeto）</b>——同一件受注换成「案件（WBS）＋ プロジェクト在庫 Q」再走一遍，体会月末处理（進捗 → 結果分析 → 決済）的差别。</li>
+  <li><b>④ 横断比较（saporderflow）</b>——E 与 Q 的 STEP 对照表 + 9 维度矩阵，把 ②③ 的经验整理成「选型判断」。</li>
+  <li><b>⑤ MTS（sapmts）</b>——换成预测驱动（PIR・自由在庫・標準原価），理解「受注 vs 見込」的分界。</li>
+  <li><b>⑥ VC（sapvc）</b>——最后学「构成引擎」：1 品目表现多种规格，靠依存关系控制 BOM 与价格。</li>
+</ol>
+<div class="box info"><b class="t">按角色的短路线</b>
+<b>SD 担当</b>：sap_sd の全体（受注・変更・照会・出荷/請求）＋ 各站の concept ＋ 练习①〜③。<br>
+<b>PP 担当</b>：各站的 concept ＋ 练习②〜④（MRP・指図・入出庫）。<br>
+<b>CO / 管理会計</b>：ETO 的①〜⑤（予算・可用性管理・結果分析・決済）＋ MTS の標準原価と差異。<br>
+<b>要件定義・コンサル</b>：saporderflow の横断比较 ＋ 各站の 讲师版（采分点・必出 Q&A）＋ 故障対照表。</div>
+
+<h2 id="tools">工具与验证（每个站都能自检）</h2>
+<div class="file-tree">
+tools/
+├── verify_all_sites.py          6 站一张表（结构＋GUI 覆盖＋容器健全性）
+├── make_gui_mockups.py          spec → SVG → 手顺页面へ挿入（冪等）
+├── verify_gui_figures.py        手顺ステップの網羅（spec 駆動）
+├── check_gui_render.py          Chrome で栅格化して「本当に描けているか」を確認
+├── check_gui_overlap.py         注記が文字に重なっていないか
+├── pair_gui_figures.py          E / Q 対比を 2 カラムで並べる
+├── add_gui_note.py              「実機スクリーンショットではない」注意書き
+├── swap_gui_images.py           実機で撮った画像に一括差し替え（--apply / --revert）
+├── export_gui_capture_list.py   画面撮影リスト（CSV / XLSX）
+├── make_wbs_xlsx.py             学習WBS（受講者版）— 打勾式の進捗表
+└── GUI_SPEC_FORMAT.md / README.md
+</div>
+<pre class="vals"># 一括検証（まずはこれ）
+cd ~/Desktop/work/training
+python3 tools/verify_all_sites.py
+
+# 実機のスクリーンショットに差し替えるとき
+① 撮影リスト（&lt;CODE&gt;_画面撮影リスト.xlsx）を見ながら実機で撮影
+② 同じベース名の .png を &lt;site&gt;/assets/gui/ に置く
+③ python3 tools/swap_gui_images.py &lt;site&gt; --apply</pre>
+
+<h2 id="stance">立場と注意</h2>
+<div class="box ok"><b class="t">sap_sd_jp / sap_sd_cn の画面は実機スクリーンショット</b>
+この 2 站の画面は教材 Word 文档（S4.docx）から抽出した<b>実機のスクリーンショット</b>（中国語インターフェースの SAP GUI）です。sap_sd_jp はその日本語版（本文は日本語、画面は中国語のまま＋原文併記）、sap_sd_cn は原文の中国語版です。他の 6 站は下記のとおり生成した画面イメージです。</div>
+<div class="box warn"><b class="t">画面イメージについて</b>
+各ステップの画像は <b>SAP GUI の標準レイアウトを再現した図</b>で、<b>実機のスクリーンショットではありません</b>。
+フィールド名・順序・ボタン位置はリリースとカスタマイズで変わります。各ページの「自システムでの確認」に確認用の T-code と表を書いています。</div>
+<div class="box danger"><b class="t">標準値について</b>
+業務サイトはコンパイル検証できないため、標準値は「出典付き」か「通常は〜（自システムで確認）」で記載しています。
+断定を避けたフィールド名（例：所要量クラスの評価区分、<code>OVZI</code> の origin 値、変種価格のキー構造）は、実機での確認を前提にしてください。</div>
+
+<h2>规模一览（自动统计）</h2>
+<table class="tbl wide">
+<tr><th>站</th><th>页数</th><th>手顺ステップ</th><th>画面イメージ</th><th>Excel</th><th>学習WBS</th></tr>
+<tr><td><a href="sap_sd_jp/index.html">SAP S/4HANA 日本語実習サイト（全モジュール・日本語版）</a></td><td>14</td><td>879</td><td>1369</td><td>S4JP_手順書_学習WBS.xlsx</td><td>学習WBS</td></tr><tr><td><a href="sap_sd_cn/index.html">SAP S/4HANA 中文实训站（全模块手册・原文中文）</a></td><td>13</td><td>879</td><td>1369</td><td>S4CN_手順書_学習WBS.xlsx</td><td>学習WBS</td></tr><tr><td><a href="sap_sd/index.html">SD 受注処理（Sales Order Processing）</a></td><td>11</td><td>45</td><td>65</td><td>SD_学習WBS_受講者版.xlsx／SD_画面撮影リスト.xlsx／SD受注処理_要件定義・手順書.xlsx</td><td>学習WBS</td></tr><tr><td><a href="sapmto/index.html">SD 受注生産（MTO）</a></td><td>11</td><td>44</td><td>82</td><td>MTO_学習WBS_受講者版.xlsx／MTO_画面撮影リスト.xlsx／SD受注生産MTO_要件定義・手順書.xlsx</td><td>学習WBS</td></tr><tr><td><a href="sapeto/index.html">受注設計生産（ETO）</a></td><td>11</td><td>46</td><td>97</td><td>ETO_学習WBS_受講者版.xlsx／ETO_画面撮影リスト.xlsx／SD受注設計生産ETO_要件定義・手順書.xlsx</td><td>学習WBS</td></tr><tr><td><a href="sapmts/index.html">SD 見込生産（MTS）</a></td><td>11</td><td>44</td><td>69</td><td>MTS_学習WBS_受講者版.xlsx／MTS_画面撮影リスト.xlsx／SD見込生産MTS_要件定義・手順書.xlsx</td><td>学習WBS</td></tr><tr><td><a href="sapvc/index.html">バリアント設定付き受注生産（VC / AVC）</a></td><td>11</td><td>40</td><td>74</td><td>SDバリアント設定VC_要件定義・手順書.xlsx／VC_学習WBS_受講者版.xlsx／VC_画面撮影リスト.xlsx</td><td>学習WBS</td></tr><tr><td><a href="saporderflow/index.html">受注形態の横断比較（講義）</a></td><td>6</td><td>9</td><td>20</td><td>CMP_学習WBS_受講者版.xlsx／CMP_画面撮影リスト.xlsx／SAP受注形態比較_講義テキスト.xlsx</td><td>学習WBS</td></tr>
+<tr><td><b>合计</b></td><td><b>88</b></td><td><b>1986</b></td><td><b>3145</b></td><td colspan="2">要件定義・手順書 / 講義テキスト ＋ 学習WBS（受講者版）＋ 画面撮影リスト</td></tr>
+</table>
+
+<div class="box ok"><b class="t">再生成の方法</b>
+各站: <code>python3 tools/make_gui_mockups.py &lt;site&gt;</code>（画面）/ <code>cd &lt;site&gt; &amp;&amp; python3 tools/make_*_xlsx.py</code>（要件定義）/ <code>python3 tools/make_wbs_xlsx.py</code>（学習WBS）/ <code>python3 tools/make_hub_page.py</code>（この页）。</div>
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP 培训教材 索引</h5><p>全モジュール手順（日本語版 / 中国語原文版）／受注処理（SD）／受注生産（MTO）／受注設計生産（ETO）／見込生産（MTS）／バリアント設定（VC）／受注形態の横断比較。</p></div>
+  <div class="cols">
+    <div><h5>站点</h5>
+      <a href="sap_sd_jp/index.html">全モジュール（日本語）</a><br><a href="sap_sd_cn/index.html">全モジュール（中文）</a><br>
+      <a href="sap_sd/index.html">受注処理</a><br><a href="sapmto/index.html">MTO</a><br><a href="sapeto/index.html">ETO</a><br>
+      <a href="sapmts/index.html">MTS</a><br><a href="sapvc/index.html">VC</a><br><a href="saporderflow/index.html">横断比較</a></div>
+    <div><h5>ドキュメント</h5>
+      <a href="tools/README.md">tools/README.md</a><br><a href="tools/GUI_SPEC_FORMAT.md">GUI_SPEC_FORMAT.md</a><br><a href="PROGRESS.md">PROGRESS.md</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

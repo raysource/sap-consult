@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>练习② 计划与 MRP · SAP S/4HANA 受注設計生産（ETO）实战训练站</title>
+<meta name="description" content="ETO 练习②：MD51（プロジェクト MRP）/ MD50（受注 MRP）/ MD01N で計画手配を生成し、勘定設定 = WBS・在庫区分 = プロジェクト在庫 Q を確認、CO40/CO08 で製造指図を登録する手顺。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/eto.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">ETO</span><span class="txt">受注設計生産 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①项目</a>
+      <a class="active" href="handson-2.html">②计划·MRP</a>
+      <a href="handson-3.html">③执行·入库</a>
+      <a href="handson-4.html">④出荷·请求</a>
+      <a href="handson-5.html">⑤发展·故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 练习② 计划与 MRP・製造指図</div>
+<main class="page"><article>
+
+<h1>练习② 計画と MRP・製造指図</h1>
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。若是想换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 即可一键替换。</div>
+
+<div class="box info"><b class="t">本练习完成什么</b>
+把练习① 的需求变成<b>可执行的手配</b>：跑 MRP（<code>MD51</code> 为主）→ 确认<b>計画手配の勘定設定 = WBS・在庫区分 = プロジェクト在庫 Q</b> → 转成<b>製造指図</b>（WBS 参照・部品予約・入庫先 Q）→（発展）購買依頼を WBS で作る。
+预计 75 分钟。</div>
+
+<div class="flow">
+  <div class="node">1 計画値の確認<br><small>CJI4</small></div><div class="arrow">→</div>
+  <div class="node">2 MD51 実行<br><small>プロジェクト MRP</small></div><div class="arrow">→</div>
+  <div class="node">3 MD04 確認<br><small>手配の勘定設定=WBS</small></div><div class="arrow">→</div>
+  <div class="node">4 CO40/CO08<br><small>製造指図</small></div><div class="arrow">→</div>
+  <div class="node">5 CO03 確認<br><small>予約・入庫先 Q</small></div><div class="arrow">→</div>
+  <div class="node">6 ME51N（発展）<br><small>WBS 付き購買依頼</small></div>
+</div>
+
+<h2>2-1 計画と予算の再確認（CJI4 / CJI5 / CJ31）</h2>
+<ol class="steps">
+  <li><code>CJI4</code>（計画原価/収益）→ プロジェクト <code>ZETO-1000</code> を指定 → WBS ごとの計画値を確認（<code>.1</code> 収益 5,000,000 / <code>.2</code> 原価 3,200,000）。</li>
+  <li><code>CJI5</code>（コミットメント）→ まだ 0（発注も指図も無いため）。</li>
+  <li><code>CJ31</code>（元予算）→ 予算と解放額を確認。</li>
+</ol>
+
+
+
+
+<div class="box info"><b class="t">为什么先看这三张</b>MRP 之后你会看到大量数字变化。<b>先记录基准值</b>（计划・予算・コミット0），后面才能讲清楚「什么被创建了、什么被消耗了」。</div>
+<figure class="gui"><img src="assets/gui/handson-2_s01_1.svg" alt="CJI4 の計画照会画面。WBS 要素 ZETO-1000.1 の計画収益 5,000,000、ZETO-1000.2 の計画原価 3,200,000 JPY を示す。" loading="lazy"><figcaption><b class="t">CJI4：計画の照会（基準値）</b><span class="tx">CJI4</span><span class="scr">計画原価・計画収益の照会（基準値の記録）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> MRP の前に基準値を記録する。後で「何が作られ、何が消費されたか」を説明するため</li></ol><p class="gui-tip">自システムでの確認：CJI4 の列構成はレイアウトにより異なります。費目別の内訳が必要なら原価要素別の表示に切り替えてください。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-2_s01_2.svg" alt="CJI5 のコミットメント照会画面。WBS 要素ごとのコミットメント（発注残・指図残）が 0 であることを示す。" loading="lazy"><figcaption><b class="t">CJI5：コミットメントの照会（基準値 0）</b><span class="tx">CJI5</span><span class="scr">コミットメントの照会（MRP 前は 0）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 発注すると予定額がここに現れる＝予算を先食いする。CJ31 の使用額と併せて見る</li></ol><p class="gui-tip">コミットメントは「発注したがまだ在庫・費用になっていない金額」です。段階的に増える様子を CJI5 → CJ31 で追いかけると可用性管理の意味が見えます。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>2-2 MRP の実行（MD51：プロジェクト MRP）</h2>
+<p><b>输入值</b></p>
+<pre class="vals">MD51（プロジェクト MRP）
+  対象      : プロジェクト定義 ZETO-1000（WBS/ネットワーク単位で指定する画面構成の場合はその指定）
+  処理キー   : NETCH（正味変更管理）など標準的な値
+  計画モード : 1（値の意味は F1 で確認）
+  ※ 参考：MD50 = 受注単位の MRP、MD01N = 全体（MRP Live。MRP リストは作られない → MD04 で確認）</pre>
+<ol class="steps">
+  <li><code>MD51</code> → プロジェクト（<code>ZETO-1000</code>）を指定 → 処理キー <code>NETCH</code>、計画モード <code>1</code> → 実行。</li>
+  <li>結果一覧で、例外的なメッセージ（新規計画手配など）を確認する。</li>
+  <li>（代替）<code>MD50</code> に受注番号を入れて受注単位で実行しても同じ需要が拾える。<code>MD01N</code>（プラント全体）でも構わないが、<b>どの入口で回したか</b>を必ず意識する。</li>
+</ol>
+
+
+
+
+<div class="box warn"><b class="t">S/4HANA の注意</b>MRP Live（<code>MD01N</code>）は MRP リストを作りません。結果は <code>MD04</code>、または Fiori の「在庫/所要量リスト」アプリで確認します（KBA 2640393 / Note 1914010）。</div>
+<figure class="gui"><img src="assets/gui/handson-2_s02_1.svg" alt="MD51 の実行画面。プロジェクト定義 ZETO-1000、処理キー NETCH、計画モード 1 を指定して MRP を実行する。" loading="lazy"><figcaption><b class="t">MD51：プロジェクト MRP の実行</b><span class="tx">MD51</span><span class="scr">プロジェクト MRP の実行（処理キー NETCH / 計画モード 1）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> どの入口で回したかを必ず意識する（MD51＝案件単位、MD50＝受注単位、MD01N＝全体）</li></ol><p class="gui-tip">MRP Live（MD01N）は MRP リストを作りません。結果は MD04 または Fiori の「在庫/所要量リスト」アプリで確認します（KBA 2640393 / Note 1914010）。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-2_s02_2.svg" alt="MD51 の結果一覧。品目 ZETO-FG01 に計画手配が新規作成され、部品は指図の BOM 展開待ちであることを示す。" loading="lazy"><figcaption><b class="t">MD51：MRP の結果一覧（例外メッセージ）</b><span class="tx">MD51</span><span class="scr">MRP の結果一覧（例外メッセージ）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> ここで計画手配が出ない場合は、MRP タイプ・手配タイプ・ロットサイズ（MM03 の MRP1）を確認する</li></ol><p class="gui-tip">需要があるのに手配が出ないときは、MRP タイプ PD / 手配タイプ E / ロットサイズ EX（C2 の設定）を見直してください。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>2-3 計画手配の確認（MD04）——勘定設定と在庫区分が命</h2>
+<ol class="steps">
+  <li><code>MD04</code> → 品目 <code>ZETO-FG01</code> / プラント <code>1000</code>。<br>
+      ※「プロジェクト/WBS 別」の表示や <code>MD4C</code>（受注レポート）も併用すると見やすい。</li>
+  <li>对照下表确认（<b>第 2、3 行是 ETO 的合格线</b>）：</li>
+</ol>
+<table class="tbl wide">
+<tr><th>MD04 の行</th><th>MRP 実行後の期待値</th><th>意味</th></tr>
+<tr><td>得意先所要量（受注 0000…/000010）</td><td>−1 PC（WBS <code>ZETO-1000.1</code> 付き）</td><td>受注の需要がプロジェクトに帰属している</td></tr>
+<tr><td><b>計画手配</b></td><td><b>+1 PC、勘定設定 = WBS <code>ZETO-1000.2</code>、在庫区分 = プロジェクト在庫（Q）</b></td><td><b>ETO 成立の証拠</b>。MTO ならここが受注在庫 E になる</td></tr>
+<tr><td>プロジェクト在庫</td><td>0 PC</td><td>まだ入庫していない（练习③ で 1 式）</td></tr>
+<tr><td>部品（RM01/RM02）</td><td>指図ができるまで動かない</td><td>部品需要は指図の BOM 展開で生まれる</td></tr>
+</table>
+<ol class="steps" start="3">
+  <li>計画手配を選択 → 「明細」で <b>勘定設定（WBS）</b> と <b>在庫区分（Q）</b> を確認。<code>SE16N: PLAF</code> でも確認可。</li>
+  <li><b>勘定設定が空 / 在庫区分が自由在庫</b>の場合の切り分け：<br>
+      ① 受注明細の WBS が入っているか（<code>VA03</code>）<br>
+      ② 品目 MRP4 が個別所要量のみか（<code>MM03</code>）<br>
+      ③ 戦略グループが Q 系の所要量タイプを指しているか（<code>OVZG</code>）<br>
+      ④ プロジェクト定義の評価付プロジェクト在庫が ON か（<code>CJ20N</code>）</li>
+</ol>
+
+
+
+
+<div class="box ok"><b class="t">判断口诀</b>
+MD04 に出ない → <b>SD/WBS 側</b>（受注明細の WBS・所要量転送）。出たが手配が出ない → <b>PP 側</b>（MRP タイプ・手配タイプ・批量）。
+手配の勘定設定/在庫区分が違う → <b>個別所要量とプロジェクト在庫の前提</b>（C2/C9/C10）。</div>
+<figure class="gui"><img src="assets/gui/handson-2_s03_1.svg" alt="MD04 の在庫/所要量リスト。得意先所要量が WBS ZETO-1000.1 付きで −1 PC、計画手配が +1 PC で勘定設定 WBS ZETO-1000.2・在庫区分 Q、プロジェクト在庫が 0 PC であることを示す。" loading="lazy"><figcaption><b class="t">MD04：ETO の合格線（勘定設定と在庫区分）</b><span class="tx">MD04</span><span class="scr">在庫/所要量リスト：ETO の合格線を確認する</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 3 行目が 0 なのは正常（練習③ の 101 入庫で 1 式になる）</li><li><b>2</b> 勘定設定が空／在庫区分が自由在庫なら、① 受注明細の WBS ② MRP4 の個別所要量 ③ 戦略グループ ④ 評価付在庫の 4 点を切り分ける</li></ol><p class="gui-tip">MD4C（受注レポート）や「プロジェクト/WBS 別」の表示も併用すると見やすくなります。表なら PLAF を SE16N で確認します。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-2_s03_2.svg" alt="計画手配の明細画面。勘定設定が WBS ZETO-1000.2、在庫区分がプロジェクト在庫 Q であることを示す。" loading="lazy"><figcaption><b class="t">計画手配の明細：勘定設定と在庫区分</b><span class="tx">MD04</span><span class="scr">計画手配の明細：勘定設定（WBS）と在庫区分（Q）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> ここが自由在庫／空のまま指図にすると、101 入庫も自由在庫に入ってしまう</li></ol><p class="gui-tip">自システムでの確認：表で裏を取るなら PLAF（計画手配）を SE16N で参照し、勘定設定（WBS）と在庫区分の項目を確認します。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>2-4 製造指図の登録（CO40 / CO08）</h2>
+<table class="tbl wide">
+<tr><th>方法</th><th>事务码</th><th>要点</th></tr>
+<tr><td>計画手配 → 指図（個別変換）</td><td><code>CO40</code>（または <code>MD04</code> から変換）</td><td>計画手配の<b>勘定設定（WBS）と在庫区分（Q）を引き継ぐ</b></td></tr>
+<tr><td>受注紐づきで直接登録</td><td><code>CO08</code></td><td>受注番号＋明細を指定。WBS は受注明細から決まる</td></tr>
+</table>
+<ol class="steps">
+  <li><code>CO40</code> → 計画手配番号（<code>MD04</code> で確認したもの）を入力 → 指図タイプ（<code>PP01</code>）・数量 1 を確認 → 「指図登録」→ <b>指図番号を記録</b>。</li>
+  <li>（別解）<code>CO08</code> → 受注番号／明細 <code>000010</code> → 指図タイプ <code>PP01</code>・数量 1 → 登録。</li>
+  <li>どちらでも構いませんが、<b>练习中はどちらで作ったかを記録</b>してください（片方だけだと差異の原因が追えない）。</li>
+</ol>
+<figure class="gui"><img src="assets/gui/handson-2_s04_1.svg" alt="CO40 の個別変換画面。計画手配番号、指図タイプ PP01、数量 1 を確認して製造指図に変換する。" loading="lazy"><figcaption><b class="t">CO40：計画手配から製造指図へ（個別変換）</b><span class="tx">CO40</span><span class="scr">計画手配 → 製造指図（個別変換）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 計画手配の勘定設定（WBS）と在庫区分（Q）を引き継ぐのがこのトランザクションの役割</li></ol><p class="gui-tip">どの入口で作ったか（CO40 / CO08 / MD04 からの変換）を必ず記録してください。片方だけだと差異の原因が追えません。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-2_s04_2.svg" alt="CO08 の製造指図登録画面。受注番号と明細番号を指定し、指図タイプ PP01、数量 1 で指図を作成する。" loading="lazy"><figcaption><b class="t">CO08：受注紐づきの指図登録</b><span class="tx">CO08</span><span class="scr">受注紐づきで製造指図を直接登録（別解）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 受注を起点にすると、WBS は受注明細から自動的に決まる（明細の WBS が前提）</li></ol><p class="gui-tip">CO40 と CO08 はどちらでも構いませんが、練習中はどちらで作ったかを記録します。CO08 で WBS が決まらない場合は受注明細の WBS（練習① の 1-5）を確認してください。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>2-5 製造指図の確認（CO03）</h2>
+<ol class="steps">
+  <li><code>CO03</code> → 指図番号 → 「ヘッダ」：品目 <code>ZETO-FG01</code>・数量 1・状態 <b>CRTD</b>（未解放）、そして <b>勘定設定 = WBS <code>ZETO-1000.2</code></b>（<code>AUFK-PS_PSP_PNR</code>）。</li>
+  <li>「構成品目」：<code>ZETO-RM01</code> 2 PC・<code>ZETO-RM02</code> 8 PC の予約があること（BOM 展開の結果）。</li>
+  <li>入庫予定（または明細）：<b>入庫先 = プロジェクト在庫 Q、WBS <code>ZETO-1000.2</code></b> であること。</li>
+  <li>「状態」：CRTD → 练习③ で解放（REL）する。</li>
+</ol>
+
+
+
+
+<div class="box warn"><b class="t">ここでつまずいたら</b>
+「構成品目が 0 件」→ BOM の有効日/プラント/用途（<a href="config.html#c3">C3</a>）。
+「入庫先が自由在庫」→ 指図の勘定設定が空（計画手配からの変換で WBS が落ちていないか、<code>CO03</code> で確認）。</div>
+<figure class="gui"><img src="assets/gui/handson-2_s05_1.svg" alt="CO03 のヘッダ画面。品目 ZETO-FG01、数量 1、状態 CRTD、勘定設定 WBS ZETO-1000.2、入庫先がプロジェクト在庫 Q であることを示す。" loading="lazy"><figcaption><b class="t">CO03：製造指図のヘッダ（状態・勘定設定・入庫先）</b><span class="tx">CO03</span><span class="scr">製造指図の照会：ヘッダ（状態・勘定設定・入庫先）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 勘定設定が WBS であること＝指図の原価が WBS に集まる前提（空なら計画手配からの変換で落ちている）</li><li><b>2</b> 入庫先がプロジェクト在庫 Q であること。自由在庫なら 101 入庫で Q にならない</li></ol><p class="gui-tip">自システムでの確認：勘定設定は表では AUFK-PS_PSP_PNR で確認できます（SE16N）。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-2_s05_2.svg" alt="CO03 の構成品目。ZETO-RM01 が 2 PC、ZETO-RM02 が 8 PC 予約されていることを示す。" loading="lazy"><figcaption><b class="t">CO03：構成品目（BOM 展開の結果）</b><span class="tx">CO03</span><span class="scr">製造指図の照会：構成品目（BOM 展開の結果）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> ここに出た予約が、練習③ の 261 出庫（部品 2 / 8）の対象になる</li></ol><p class="gui-tip">構成品目が 0 件のときは CS03 で BOM を確認し、必要なら CO02 で構成品目を再展開します（表なら RESB）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>2-6 購買依頼（発展：外注・材料を WBS で手配）</h2>
+<pre class="vals">ME51N（購買依頼）
+  品目・数量 : 任意（例：外注加工費 一式 800,000 JPY）
+  勘定設定   : 指図（F）または WBS（<b>ZETO-1000.2</b>）← ETO では WBS を入れる
+  購買発注   : ME59N（一括変換）または ME21N（手動）
+  入庫/請求  : MIGO（101）／MIRO（請求書照合）</pre>
+<ol class="steps">
+  <li><code>ME51N</code> で購買依頼を作成し、<b>勘定設定に WBS を指定</b>する（品目は非在庫のサービス/費用でも可）。</li>
+  <li>必要なら <code>ME21N</code> で発注まで進める。発注すると <code>CJI5</code>（コミットメント）に予定額が現れる＝予算を先食いする形になる（可用性管理の練習材料）。</li>
+  <li>確認：<code>CJI5</code>（コミットメント）と <code>CJ31</code>（予算の使用額）を見る。</li>
+</ol>
+
+<h2>期待结果汇总（本练习做完）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>确认项目</th><th>期待值</th><th>确认方法</th></tr>
+<tr><td>1</td><td>MRP 実行</td><td><code>MD51</code>（または <code>MD50</code>/<code>MD01N</code>）で処理完了、結果は <code>MD04</code> で確認</td><td><code>MD51</code>/<code>MD04</code></td></tr>
+<tr><td>2</td><td><b>計画手配</b></td><td><b>1 PC・勘定設定 = WBS <code>.2</code>・在庫区分 = プロジェクト在庫 Q</b></td><td><code>MD04</code> 明細 / <code>SE16N: PLAF</code></td></tr>
+<tr><td>3</td><td>製造指図</td><td>1 件（PP01）・状態 CRTD・勘定設定 = WBS <code>.2</code></td><td><code>CO03</code> / <code>SE16N: AUFK</code></td></tr>
+<tr><td>4</td><td>部品予約</td><td>RM01 2 PC / RM02 8 PC</td><td><code>CO03</code> 構成品目 / <code>SE16N: RESB</code></td></tr>
+<tr><td>5</td><td>入庫予定</td><td>1 式 → プロジェクト在庫 Q（WBS <code>.2</code>）</td><td><code>CO03</code></td></tr>
+<tr><td>6</td><td>（発展）購買依頼</td><td>勘定設定 = WBS、<code>CJI5</code> にコミットメント</td><td><code>ME51N</code>/<code>CJI5</code></td></tr>
+</table>
+
+<h2>つまずきと対処（本练习版）</h2>
+<table class="tbl wide">
+<tr><th>症状</th><th>最可能的根因</th><th>确认 / 対処</th></tr>
+<tr><td>MD04 に需要が出ない</td><td>受注明細に WBS が無い／所要量転送 OFF／戦略グループ未設定</td><td><code>VA03</code> 明細の WBS、明細カテゴリ、<code>MM03</code> MRP3 を順に確認</td></tr>
+<tr><td>需要はあるが計画手配が出ない</td><td>MRP タイプ <code>ND</code>/空白、手配タイプ空白、ロットサイズ</td><td><code>MM03</code> MRP1（PD / E / EX）</td></tr>
+<tr><td>計画手配の勘定設定が空</td><td>受注明細の WBS 未入力 or 需要が WBS に帰属していない</td><td><a href="handson-1.html">练习①</a> の 1-5 に戻る（受注明細の WBS）</td></tr>
+<tr><td>在庫区分が自由在庫（Q でない）</td><td>MRP4 が集合所要量／戦略グループが Q を指していない／評価付フラグ OFF</td><td>C2・C9・C10 の 4 点セットを総点検</td></tr>
+<tr><td>CO40 で「計画手配が指図に変換できない」</td><td>計画手配が他で処理済み／指図タイプ不正／勘定設定の不備</td><td><code>MD04</code> の最新状態を再確認。<code>CO08</code> で作り直すのも可</td></tr>
+<tr><td>指図の構成品目が 0 件</td><td>BOM の有効日・プラント・用途不一致</td><td><code>CS03</code> で確認。必要なら <code>CO02</code> → 構成品目の再展開</td></tr>
+<tr><td>ME51N で勘定設定に WBS が入らない</td><td>プロジェクト未解放／WBS が勘定設定要素でない</td><td><code>CJ20N</code> でステータスとフラグを確認</td></tr>
+</table>
+
+<h2>验收（完成基准）</h2>
+<div class="box ok"><b class="t">✓ 练习②验收清单</b>
+<ul class="check">
+  <li><code>CJI4</code>/<code>CJ31</code> で計画・予算の基準値を記録した。</li>
+  <li><code>MD51</code>（または <code>MD50</code>/<code>MD01N</code>）を実行し、<code>MD04</code> で結果を確認した。</li>
+  <li>計画手配の<b>勘定設定 = WBS</b>・<b>在庫区分 = プロジェクト在庫 Q</b> を確認した。</li>
+  <li>計画手配を製造指図へ変換し（または <code>CO08</code> で登録）、<code>CO03</code> で勘定設定・構成品目・入庫予定を確認した。</li>
+  <li>（発展）<code>ME51N</code> で WBS 付きの購買依頼を作成し、<code>CJI5</code> にコミットメントが出ることを確認した（または省略理由を説明）。</li>
+</ul></div>
+
+<div class="box info"><b class="t">発展課題</b>
+① <code>MD50</code> と <code>MD51</code> の違いを実機で比較する（同じ需要を別の入口で拾えるか）。<br>
+② 計画手配を<b>削除してから</b>もう一度 MRP を実行し、再生成されることを確認（ネットチェンジの意味）。<br>
+③ 部品（RM01）の MRP タイプを <code>PD</code>・手配タイプ <code>F</code> にして購買依頼まで流してみる（発展 2-6 と組み合わせ）。</div>
+
+<div class="box info"><b class="t">下一步</b> → <a href="handson-3.html">练习③ 実行と入庫（プロジェクト在庫 Q へ）</a></div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>受注設計生産（ETO）实战训练站</h5><p>练习②：計画値確認 → MD51/MD50 → 計画手配（勘定設定 WBS・在庫区分 Q）→ CO40/CO08 → CO03 → 購買依頼。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 項目と受注</a><br><a href="handson-2.html">② 計画・MRP</a><br><a href="handson-3.html">③ 実行・入庫</a><br><a href="handson-4.html">④ 出荷・請求</a><br><a href="handson-5.html">⑤ 発展・故障</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="worksheet.html">学员版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

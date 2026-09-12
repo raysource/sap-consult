@@ -1,0 +1,36 @@
+{
+  "name": "sap-training-catalog",
+  "version": "1.0.0",
+  "description": "SAP CAP (Node.js) 训练示例 - 产品目录服务: OData V4 CRUD + 自定义 Action + CSV 测试数据",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@sap/cds": "^8",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^1",
+    "@sap/cds-dk": "^9.9.4"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "cds run",
+    "watch": "cds watch",
+    "deploy": "cds deploy --to sqlite:db.sqlite",
+    "test:smoke": "node test/smoke.mjs"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "sqlite",
+        "credentials": {
+          "url": "db.sqlite"
+        }
+      }
+    }
+  },
+  "allowScripts": {
+    "better-sqlite3@11.10.0": true
+  }
+}

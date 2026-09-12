@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>练习④ 受注・引当・出荷・請求 · SAP S/4HANA 見込生産（MTS）实战训练站</title>
+<meta name="description" content="MTS 练习④ 受注・引当・出荷・請求：VA01 で受注、ATP（CO09/V_V2）で在庫確認、PIR の消費（500→300）を MD04 で確認、VL01N/VL02N で出荷と PGI 601、VF01 で請求、VA03 の伝票フローまで。入力値・手顺・期待结果・つまずき・验收清单。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/mts.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MTS</span><span class="txt">見込生産 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①预测</a>
+      <a href="handson-2.html">②MRP</a>
+      <a href="handson-3.html">③制造入库</a>
+      <a class="active" href="handson-4.html">④出货</a>
+      <a href="handson-5.html">⑤月末</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 练习④ 受注・引当・出荷・請求</div>
+<main class="page"><article>
+
+<h1>练习④ 受注・引当・出荷・請求（库存从「预测的」变成「卖掉的」）</h1>
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。若是想换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 即可一键替换。</div>
+
+<p class="lead">本练习是見込生産的「出口」：<b>受注不创造需求，而是消费预测并抢占库存</b>。做完你应该能在 <code>MD04</code> 里指出<b>PIR 从 500 变成 300</b>（消费 200），并说明这 200 PC 是被谁吃掉的。</p>
+
+<div class="toc">
+  <a href="#s1">4-1 受注登録（VA01）</a>
+  <a href="#s2">4-2 在庫確認（ATP）の確認（CO09 / V_V2）</a>
+  <a href="#s3">4-3 PIR の消費を MD04 で見る</a>
+  <a href="#s4">4-4 出荷と PGI 601（VL01N / VL02N）</a>
+  <a href="#s5">4-5 請求（VF01）と伝票フロー（VA03）</a>
+  <a href="#expect">期待结果汇总</a>
+  <a href="#trouble">つまずきと対処</a>
+  <a href="#accept">验收（完成基准）</a>
+</div>
+
+<div class="flow">
+  <div class="node">VA01 受注<br><small>200 PC</small></div><div class="arrow">→</div>
+  <div class="node">ATP 引当<br><small>CO09 確認済</small></div><div class="arrow">→</div>
+  <div class="node">MD04 消費<br><small>500 → 300</small></div><div class="arrow">→</div>
+  <div class="node">VL01N/VL02N<br><small>PGI 601</small></div><div class="arrow">→</div>
+  <div class="node">VF01 請求<br><small>1,600,000 JPY</small></div>
+</div>
+
+<h2 id="s1">4-1 受注登録（VA01）</h2>
+<table class="tbl wide">
+<tr><th>入力項目</th><th>値</th><th>説明</th></tr>
+<tr><td>受注タイプ</td><td><code>OR</code>（標準受注）</td><td>納入日程行が <code>CP</code>（所要量転送 ON・在庫確認 ON）になる経路</td></tr>
+<tr><td>販売エリア</td><td>1000 / 10 / 00</td><td>—</td></tr>
+<tr><td>得意先 / 出荷先</td><td><code>1000</code> / <code>1000</code></td><td>出荷先（船積先）が無いと出荷伝票が作れない</td></tr>
+<tr><td>品目 / 数量</td><td><code>ZMTS-FG01</code> / <code>200</code> PC</td><td>——本教材では在庫 500 に対して 200 を引当てる</td></tr>
+<tr><td>希望納期</td><td>受注日 + 7 日</td><td>ATP はこの日付でチェックする</td></tr>
+<tr><td>単価（条件 PR00）</td><td><code>8,000</code> JPY / PC（= 1,600,000 JPY）</td><td>未設定なら受注時に警告（<a href="config.html#c5">C5</a>）</td></tr>
+</table>
+<ol class="steps">
+  <li><code>VA01</code> → 受注タイプ <code>OR</code> / 販売エリア 1000/10/00 → 得意先 <code>1000</code>、希望納期、品目 <code>ZMTS-FG01</code>、数量 <code>200</code>。</li>
+  <li>明細の <b>明細カテゴリ = <code>TAN</code></b>、<b>納入日程行カテゴリ = <code>CP</code></b> を確認（<a href="config.html#c6">C6</a>〜<a href="config.html#c9">C9</a> の答え合わせ）。</li>
+  <li>在庫確認の結果（確認済数量 / 確認日）を確認。足りなければ納入日程行が複数（分割）になる。</li>
+  <li>保存 → <b>受注番号</b>を記録。<code>VA03</code> で明細（カテゴリ・納入日程行）を再確認。</li>
+</ol>
+
+
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+① <code>VA03</code> → 明細 → 明細カテゴリ <code>TAN</code>、納入日程行タブ → 納入日程行カテゴリ <code>CP</code>・確認済数量。<br>
+② 表：<code>SE16N: VBAP</code>（<code>PSTYV</code> = 明細カテゴリ）、<code>SE16N: VBEP</code>（<code>ETTYP</code> = 納入日程行カテゴリ / <code>BEDSD</code> 所要量転送 / <code>ATPPR</code> 在庫確認 / <code>BDART</code> 所要量タイプ / 確認済数量）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 受注が保存できない（明細カテゴリ決定不可） → <code>VOV4</code> に <code>OR</code> + <code>0001</code> の行が無い、或は品目カテゴリグループが空。<br>
+② 納入日程行が <code>CN</code> 等になった → <code>VOV5</code> の割当と品目 MRPタイプの組合せを確認（<a href="config.html#c9">C9</a>）。<br>
+③ 価格が 0 → 条件レコード（<code>PR00</code>）の期限切れ/販売組織不一致。</div>
+<div class="task"><b class="t">練習課題</b>受注を保存する<b>前と後</b>で <code>MD04</code> を比べる。受注後は「得意先所要量」行が現れ、<b>PIR の行には「消費済」の数量が増える（行自体は消えない）</b>——この 2 つの行の関係を説明できれば练习④ の前半は合格。</div>
+<figure class="gui"><img src="assets/gui/handson-4_s01_1.svg" alt="VA01 の初期画面。受注タイプ OR と販売エリア 1000 / 10 / 00 を入力する。" loading="lazy"><figcaption><b class="t">受注伝票登録（VA01）の初期画面</b><span class="tx">VA01</span><span class="scr">受注伝票 登録：初期画面</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> MTS の受注は標準の OR で始める（明細カテゴリは品目側の設定で TAN に決まる）</li><li><b>2</b> 販売エリアが合っていないと条件レコード PR00（8,000 JPY）が効かない</li></ol><p class="gui-tip">自システムでの確認：明細カテゴリが TAN・納入日程行カテゴリが CP になるかは VA03 で確認します（C6〜C9 の答え合わせ）。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-4_s01_2.svg" alt="VA01 の明細概況。得意先 1000 に対して ZMTS-FG01 を 200 PC、希望納期 受注日 + 7 日で入力する。" loading="lazy"><figcaption><b class="t">明細概況：ZMTS-FG01 200 PC / 納入日 19.09.2026</b><span class="tx">VA01</span><span class="scr">受注伝票 登録：明細概況（得意先 1000 / 200 PC）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 品目カテゴリは TAN。空だと「明細カテゴリを決定できません」で受注が保存できない</li><li><b>2</b> 所要量タイプ KSV = 戦略 40 の得意先所要量。ここが空なら MRP に需要が立たない</li><li><b>3</b> 希望納期は ATP のチェック日付。在庫 500 PC に対して 200 PC を引当てる</li></ol><p class="gui-tip">自システムでの確認：VA03 → 明細 → 明細カテゴリ（VBAP-PSTYV）/ 納入日程行（VBEP-ETTYP・BEDSD・ATPPR・BDART）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="s2">4-2 在庫確認（ATP）の確認（CO09 / V_V2）</h2>
+<p>ATP 的结果不只是「能不能卖」，还包括<b>「哪一个客户先拿到货」</b>。MTS 的库存是公共的，所以引当顺序（伝票登録順・納期順）直接决定客户体验。</p>
+<table class="tbl wide">
+<tr><th>見るもの</th><th>T-code</th><th>要点</th></tr>
+<tr><td>利用可能数量と内訳</td><td><code>CO09</code></td><td>品目 + プラント + 確認日。入庫予定（計画手配/指図）・出庫予定（受注）を要素として確認</td></tr>
+<tr><td>集団在庫確認</td><td><code>MDVP</code></td><td>複数品目/プラントをまとめて（納期遅延の一次チェック）</td></tr>
+<tr><td>納期再設定・バックオーダー</td><td><code>V_V2</code></td><td>受注の納期を最新の在庫状況で引き直す（引当の再計算）</td></tr>
+</table>
+<ol class="steps">
+  <li>受注を保存する<b>前</b>に <code>CO09</code> で利用可能数量を記録（例：入庫予定 500 − 出庫予定 0 = 500）。</li>
+  <li>受注（200 PC）保存後に <code>CO09</code> を再実行 → 出庫予定に受注が並び、利用可能数量が 300 になることを確認。</li>
+  <li><code>V_V2</code> を実行して納期を再設定 → 確認済数量/日付の変化を見る。</li>
+  <li><code>VA03</code> → 納入日程行の「確認済数量」が 200（不足なし）であることを確認。</li>
+</ol>
+
+
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+<code>CO09</code> の要素一覧（入庫予定 = 製造指図 / 計画手配、出庫予定 = 受注）。<br>
+受注側の結果：<code>VA03</code> 納入日程行の確認済数量、表は <code>VBEP</code>（確認済数量）与 <code>VBBS</code>（引当）。<br>
+在庫確認のスコープ（何を見るか）は <a href="config.html#c13">配置 C13</a>（<code>OVZ9</code> と品目 MRP3 のチェックルール）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 確認済数量が 0 → 納入日程行の在庫確認が OFF、或は品目 MRP3 の在庫確認が空、或はスコープに入庫予定が入っていない。<br>
+② 在庫 500 あるのに欠品扱い → 在庫が<b>別の保管場所/別の特在</b>にある、或は引当優先の受注が既にある（<code>CO09</code> の出庫予定を見る）。<br>
+③ <code>V_V2</code> で納期が繰り下がる → 在庫不足の正当な結果。<b>「在庫が足りない」を隠さない</b>のが見込生産の運用。</div>
+<div class="task"><b class="t">練習課題</b>受注を <b>400 PC</b> に増やして保存し、確認済数量（例 300 / 分割の納入日程行）の変化を観察する。这是在库从 500 变 300 后、再卖 400 会发生什么 的实测——不足分は将来の入庫予定（計画手配）に頼るしかない。</div>
+<figure class="gui"><img src="assets/gui/handson-4_s02_1.svg" alt="CO09 で品目 ZMTS-FG01 の利用可能数量を確認する。在庫 500 から受注 200 が引かれ 300 になる。" loading="lazy"><figcaption><b class="t">CO09：受注前後で 500 → 300</b><span class="tx">CO09</span><span class="scr">利用可能在庫確認：受注前後の利用可能数量</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 入庫予定（製造指図・計画手配）が要素に並ぶか = C13 のスコープに「入庫予定」が入っている証拠</li><li><b>2</b> 利用可能数量の内訳に「在庫 + 入庫予定 − 出庫予定」が効いていることを確認する</li></ol><p class="gui-tip">自システムでの確認：受注側の結果は VA03 → 納入日程行の確認済数量、表は VBEP / VBBS。バッチは MDVP、納期再設定は V_V2。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-4_s02_2.svg" alt="VA03 の納入日程行。納入日程行カテゴリ CP、確認済数量 200 PC、所要量タイプ KSV を確認する。" loading="lazy"><figcaption><b class="t">VA03：納入日程行カテゴリ CP・確認済数量 200</b><span class="tx">VA03</span><span class="scr">受注伝票 照会：納入日程行の確認済数量</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 確認済数量 200 = 不足なし。分割納入になっていれば行が複数になる</li><li><b>2</b> 納入日程行カテゴリ CP + 所要量タイプ KSV。VOV5 / VOV6 の答え合わせができる</li></ol><p class="gui-tip">自システムでの確認：V_V2 で納期再設定（引当の再計算）を実行し、確認済数量と日付の変化を見てください。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="s3">4-3 PIR の消費を MD04 で見る（見込生産の核心）</h2>
+<pre class="vals">受注前の MD04（1 か月目）
+  計画独立所要量（PIR）   500 PC
+  ─────────────────────────
+  利用可能数量          −500 PC（或は在庫 500 で 0）
+
+受注 200 PC の後
+  計画独立所要量（PIR）   500 PC（消費済 200）   ← 数量は 500 のまま！
+  得意先所要量            200 PC                ← 受注は別行で出る
+  ─────────────────────────
+  MRP が見る総所要量     300 PC（= 500 − 200）
+
+ここが「消費」：MD04 の表示上で PIR が食べられる。PBED の数量（500）は変わらない。</pre>
+<table class="tbl wide">
+<tr><th>観点</th><th>消費（Consumption）</th><th>消減（Reduction）</th></tr>
+<tr><td>何が変わる</td><td>MD04 上の「消費済数量」が増える。<b>PBED は変わらない</b></td><td><b>PBED の数量そのものが減る</b></td></tr>
+<tr><td>起きる時</td><td>受注/出荷が PIR を食べる（戦略 40 など）</td><td>入庫（101）・生産/購買の完結など（戦略 10/11 の経路）</td></tr>
+<tr><td>確認方法</td><td><code>MD04</code> の PIR 行（消費済数量）、<code>MD73</code></td><td><code>SE16N: PBED-PLNMG</code> の値そのもの</td></tr>
+</table>
+<ol class="steps">
+  <li><code>MD04</code> → <code>ZMTS-FG01</code>：PIR 行の「消費済数量 / 未消費数量」を読む。</li>
+  <li>PIR 行をダブルクリック → 消費の明細（どの納入日程行/受注が消費したか）を確認。</li>
+  <li><code>SE16N: PBED</code> を開き、<code>PLNMG</code> が<b>減っていない</b>ことを確認（消費の証拠）。</li>
+  <li>受注の数量を変える（例 200 → 100）と、消費量がどう動くかを確認。</li>
+</ol>
+
+
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+<code>MD04</code>（消費済数量）と <code>SE16N: PBED</code>（数量不変）の 2 つを並べて見るのが最も確実。消費モード（<code>MARC-VRMOD</code>）と逆/順消費期間（<code>VINT1</code>/<code>VINT2</code>）を変えると消費のされ方が変わるので、<code>MM03</code> MRP3 と併せて確認する。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 「PIR が減っていないので消費されていない」と判断 → <b>誤り</b>。消費は MD04 側の話。<br>
+② 遠い未来の受注が当月の PIR を食べる → 逆/順消費期間の設定次第（<code>MARC-VINT1/VINT2</code>）。期間外なら消費されない（＝別途 MRP に需求が立つ）。<br>
+③ 戦略 10 の品目で消費を期待する → 戦略 10 は<b>消費しない</b>（SAP PRESS / SAP Help）。消減で処理される。</div>
+<div class="task"><b class="t">練習課題</b>同じ受注で、品目の消費モードを <code>2</code>（逆＋順）→ <code>3</code>（順消費のみ）に変えて <code>MD04</code> を比べる。どちらの PIR が消費されるかが変わることを確認する。（変えたら必ず元に戻す。）</div>
+<figure class="gui"><img src="assets/gui/handson-4_s03_1.svg" alt="MD04 で受注 200 PC が PIR を消費していることを確認する。PIR の行の数量は 500 のままで、消費済 200 として扱われる。" loading="lazy"><figcaption><b class="t">MD04：PIR 500 が消費済 200 で実効 300</b><span class="tx">MD04</span><span class="scr">在庫/所要量リスト：PIR の消費（500 → 実効 300）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> PIR の行は消えない。消費済数量が増えるだけ（行をダブルクリックで消費明細が見える）</li><li><b>2</b> 受注の行は別行で出る。需要は PIR と得意先所要量の 2 本に見えるが、MRP は消費済を差し引いて計算する</li></ol><p class="gui-tip">自システムでの確認：SE16N: PBED の PLNMG が減っていないこと（消費の証拠）。消費モードは MARC-VRMOD / VINT1 / VINT2。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="s4">4-4 出荷と PGI 601（VL01N / VL02N）</h2>
+<table class="tbl wide">
+<tr><th>項目</th><th>値</th><th>説明</th></tr>
+<tr><td>出荷タイプ</td><td><code>LF</code></td><td>受注から納入表（<code>VL10</code> 系）或は <code>VL01N</code> で直接作成</td></tr>
+<tr><td>出荷数量 / 在庫区分</td><td><code>200</code> PC / <b>空（自由在庫）</b></td><td>MTO なら <code>E</code>（受注在庫）が入る</td></tr>
+<tr><td>引当（ピッキング）</td><td>引当数量 200 PC・バッチ/保管場所</td><td><code>VL02N</code> → 明細 → 在庫/引当</td></tr>
+<tr><td>PGI（出庫確認）</td><td>移動タイプ <code>601</code></td><td>在庫が減り、売上原価（標準価格ベース）が計上される</td></tr>
+</table>
+<ol class="steps">
+  <li><code>VL01N</code> → 出荷ポイント / 希望納期 / 受注番号 → 明細を確認 → 保存 → <b>出荷伝票番号</b>を記録。</li>
+  <li><code>VL02N</code> → 明細 → 「在庫/引当」タブで<b>引当数量 200 PC・在庫区分 空（自由在庫）</b>を確認。</li>
+  <li>ピッキング数量を入力（练习では出荷数量と同数）→ 保存。</li>
+  <li>「出庫確認（PGI）」を実行 → 移動タイプ <code>601</code> の転記メッセージを確認。</li>
+  <li><code>MMBE</code> / <code>MB52</code> で自由在庫が 500 → <b>300</b> に減ったことを確認。</li>
+</ol>
+
+
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+① <code>VL03N</code> → 明細 → 在庫/引当（引当数量・在庫区分）。<br>
+② 在庫：<code>MMBE</code> / <code>MB52</code>（自由在庫 300）。<br>
+③ 物料伝票：<code>SE16N: MATDOC</code>（移動タイプ <code>601</code>、出荷伝票参照 <code>VBELN</code>）。<br>
+④ 会計：<code>FB03</code>（在庫勘定の貸方 / 売上原価の借方。勘定は <code>OBYC: BSX</code>・<code>GBB</code>）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① PGI できない（引当不足） → 在庫不足或は引当が未実施（ピッキング数量 0）。<code>VL03N</code> の在庫/引当を見る。<br>
+② 在庫区分が <code>E</code>（受注在庫）になっている → 品目が MTO 化している（<a href="config.html#c2">C2</a>）。<br>
+③ 引当が別の受注の在庫を取った → 自由在庫は登録順なので、先の受注が優先されるのが正常（<code>CO09</code> の出庫予定順）。<br>
+④ PGI 後に在庫がマイナス → 過去データの不整合。見込生産では<b>マイナス在庫を作らない運用</b>が原則。</div>
+<div class="task"><b class="t">練習課題</b>PGI の<b>前と後</b>で <code>VA03</code> → 伝票フローを見る。出荷伝票の状態（出荷済/PGI 済）と、在庫の増減、会計伝票の発生を 1 枚にまとめる。</div>
+<figure class="gui"><img src="assets/gui/handson-4_s04_1.svg" alt="VL01N で受注 0000001234 から出荷伝票を作成する。出荷タイプ LF / 出荷ポイント 1000。" loading="lazy"><figcaption><b class="t">VL01N：受注から出荷伝票を作成</b><span class="tx">VL01N</span><span class="scr">出荷伝票 登録：初期画面</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 出荷ポイントと出荷プラントが未設定だと出荷伝票が作れない（C0 / OVXD 系）</li><li><b>2</b> 出荷日は納入日より前。PGI は出荷日で在庫を落とす</li></ol><p class="gui-tip">自システムでの確認：出荷タイプは 0VLP 系（IMG：ロジスティクス実行 &gt; 出荷）で確認できます。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-4_s04_2.svg" alt="VL02N で自由在庫から 200 PC を引当て、出庫確認（PGI）を実行して移動タイプ 601 を転記する。" loading="lazy"><figcaption><b class="t">VL02N：自由在庫から 200 PC を引当てて PGI 601</b><span class="tx">VL02N</span><span class="scr">出荷伝票 変更：引当と出庫確認（PGI 601）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 在庫区分が空 = 自由在庫からの引当て。ここが MTS（MTO なら E）</li><li><b>2</b> ピッキング数量が 0 だと PGI できない。引当不足なら在庫か別受注の先取りを疑う</li></ol><p class="gui-tip">自システムでの確認：VL03N → 明細 → 在庫/引当。MMBE で自由在庫 500 → 300、SE16N: MATDOC（601・出荷伝票参照）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="s5">4-5 請求（VF01）と伝票フロー（VA03）</h2>
+<table class="tbl wide">
+<tr><th>項目</th><th>値</th><th>説明</th></tr>
+<tr><td>請求タイプ</td><td><code>F2</code>（標準請求）</td><td>出荷ベース（見込生産の標準）</td></tr>
+<tr><td>請求金額</td><td><code>1,600,000</code> JPY（税込は税区分次第）</td><td>200 PC × 8,000 JPY</td></tr>
+<tr><td>会計伝票</td><td>売掛金 / 売上</td><td><code>FB03</code> で確認（売上原価は PGI 側で計上済み）</td></tr>
+<tr><td>伝票フロー</td><td>受注 → 出荷 → 請求</td><td><code>VA03</code> → 環境 &gt; 伝票フロー</td></tr>
+</table>
+<ol class="steps">
+  <li><code>VF01</code> → 出荷伝票番号（或は納期/得意先で選択）→ 請求タイプ <code>F2</code> → 実行 → <b>請求伝票番号</b>を記録。</li>
+  <li><code>VF03</code> で金額（200 × 8,000 = 1,600,000 JPY）と税を確認。</li>
+  <li><code>FB03</code> で請求の会計伝票（売掛金 / 売上）を確認。</li>
+  <li><code>VA03</code> → 環境 &gt; <b>伝票フロー</b>：受注 → 出荷 → 請求 → 会計伝票が一直線につながっていることを確認（= この场景跑通了）。</li>
+</ol>
+
+
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+<code>VF03</code>（金額・税）、<code>FB03</code>（会計伝票）、<code>VA03</code> の伝票フロー。<br>
+表なら <code>VBRK</code>/<code>VBRP</code>（請求ヘッダ/明細）、<code>VBFA</code>（伝票フロー）。<b>伝票フローが一本につながっていれば、SD の設定は少なくともこの経路では正しい</b>。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 請求金額が 0 / 想定と違う → 条件レコード（<code>PR00</code>）或は納入数量・ピッキング数量の違い。<br>
+② 会計伝票が出ない → 会計期間未開、或は請求の転記が未実行。<br>
+③ 伝票フローが途切れる → PGI 未実施のまま請求しようとしている（請求は出荷基準なので出荷が前提）。</div>
+<div class="task"><b class="t">練習課題</b>伝票フローに並ぶ伝票を 1 枚の図にする（受注 → 出荷 → PGI 601 → 請求 → 会計伝票）。<b>MTO 场景的伝票フローと何が違うか</b>を姊妹站 sapmto と比較して 1 行で書く。—— 大きな違いはない（出口は同じ）。違いは<b>入库先と需求源</b>に出る。</div>
+<figure class="gui"><img src="assets/gui/handson-4_s05_1.svg" alt="VF01 で出荷伝票 0080001234 から請求タイプ F2 の請求伝票を作成する。金額は 200 PC × 8,000 = 1,600,000 JPY。" loading="lazy"><figcaption><b class="t">VF01：請求 1,600,000 JPY（200 PC × 8,000）</b><span class="tx">VF01</span><span class="scr">請求伝票 登録：出荷ベースの請求</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 金額 0 のときは条件レコード PR00 の期限切れ / 販売組織不一致を疑う（C5）</li><li><b>2</b> 会計伝票が出ないときは会計期間未開 or OBYC の勘定未設定</li></ol><p class="gui-tip">自システムでの確認：VF03（金額・税）、FB03（売掛金 / 売上）、表は VBRK / VBRP。コピー制御は VTFL（出荷 → 請求）。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-4_s05_2.svg" alt="VA03 の伝票フロー。受注 0000001234 から出荷 0080001234、請求 0090001234、会計伝票 0100012345 が一本につながっている。" loading="lazy"><figcaption><b class="t">VA03 の伝票フロー：受注 → 出荷 → 請求 → 会計伝票</b><span class="tx">VA03</span><span class="scr">伝票フロー：受注 → 出荷 → 請求 → 会計伝票</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 4 本が一本につながっていれば、この経路の SD 設定は少なくとも正しい</li><li><b>2</b> フローが途切れるときは PGI 未実施 or VTFL のコピー制御不備を疑う</li></ol><p class="gui-tip">自システムでの確認：表は VBFA（伝票フロー）。PGI 前後で伝票フローを見比べると状態の変化が分かります。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="expect">期待结果汇总（本练习做完时的系统状态）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>期待结果</th><th>確認方法</th></tr>
+<tr><td>1</td><td>受注（<code>OR</code>/<code>TAN</code>/<code>CP</code>）が保存され、明細カテゴリ・納入日程行カテゴリが標準どおり</td><td><code>VA03</code>・<code>VBAP</code>・<code>VBEP</code></td></tr>
+<tr><td>2</td><td>ATP で確認済数量 200 PC、<code>CO09</code> の利用可能数量が 500 → 300</td><td><code>CO09</code>・<code>VA03</code></td></tr>
+<tr><td>3</td><td><code>MD04</code> で PIR の消費済数量が 200、<code>PBED</code> の数量は 500 のまま</td><td><code>MD04</code>・<code>PBED</code></td></tr>
+<tr><td>4</td><td>出荷伝票の引当が<b>自由在庫（在庫区分 空）</b>から 200 PC</td><td><code>VL03N</code></td></tr>
+<tr><td>5</td><td>PGI 601 で自由在庫 500 → 300 PC</td><td><code>MMBE</code>・<code>MATDOC</code></td></tr>
+<tr><td>6</td><td>請求 1,600,000 JPY、会計伝票（売掛金/売上）生成</td><td><code>VF03</code>・<code>FB03</code></td></tr>
+<tr><td>7</td><td>伝票フローが受注 → 出荷 → 請求 → 会計伝票で閉じている</td><td><code>VA03</code> → 伝票フロー</td></tr>
+</table>
+
+<h2 id="trouble">つまずきと対処（本练习版）</h2>
+<table class="tbl wide">
+<tr><th>症状</th><th>根因の候補</th><th>確認手順</th></tr>
+<tr><td>受注が保存できない</td><td><code>VOV4</code> の割当なし / 品目カテゴリグループ空</td><td><code>VOV4</code>・<code>MM03</code> 販売組織2</td></tr>
+<tr><td>受注が MD04 に出ない</td><td>所要量転送 OFF（納入日程行カテゴリ）</td><td><code>VBEP-BEDSD</code>・<code>VOV6</code></td></tr>
+<tr><td>確認済数量 0</td><td>在庫確認 OFF / 品目 MRP3 空 / スコープに在庫・入庫予定なし</td><td><code>VBEP-ATPPR</code>・<code>OVZ9</code>・<code>CO09</code></td></tr>
+<tr><td>PIR が消費されない</td><td>戦略グループが 10/11 系、或は消費期間外</td><td><code>MM03</code> MRP3・<code>MD04</code> の消費明細</td></tr>
+<tr><td>出荷で引当できない</td><td>在庫不足（別の受注が先）/ 在庫区分が違う</td><td><code>CO09</code>・<code>VL03N</code> の在庫/引当</td></tr>
+<tr><td>PGI ができない</td><td>ピッキング未入力 / 在庫マイナス防止</td><td><code>VL02N</code> のピッキング数量</td></tr>
+<tr><td>請求額が 0</td><td>条件レコード無し・期限切れ</td><td><code>VF03</code>・<code>VK13</code></td></tr>
+<tr><td>伝票フローが途切れる</td><td>PGI 未実施 / コピー制御（<code>VTFL</code>）不備</td><td><code>VA03</code> 伝票フロー・<code>VTFL</code></td></tr>
+</table>
+
+<h2 id="accept">验收（完成基准）</h2>
+<div class="box ok"><b class="t">全部勾上才算练习④ 完成</b>
+<ul class="check">
+  <li><code>VA01</code> で受注 200 PC を登録し、明細カテゴリ <code>TAN</code>・納入日程行カテゴリ <code>CP</code> を確認した。</li>
+  <li><code>CO09</code> で利用可能数量が受注前後で 500 → 300 に変わることを確認した。</li>
+  <li><code>MD04</code> で PIR の消費済数量 200 を確認し、<b><code>PBED</code> の数量が変わっていない</b>ことも確認した。</li>
+  <li>消費と消減の違いを、自分の観察結果を例に説明できる。</li>
+  <li><code>VL01N</code>/<code>VL02N</code> で出荷・引当（在庫区分 空 = 自由在庫）・PGI 601 を完遂した。</li>
+  <li><code>MMBE</code> で自由在庫が 300 PC に減っていることを確認した。</li>
+  <li><code>VF01</code> で請求 1,600,000 JPY を作成し、<code>FB03</code> で会計伝票を確認した。</li>
+  <li><code>VA03</code> の伝票フローが 受注 → 出荷 → 請求 → 会計伝票 で閉じていることを確認した。</li>
+</ul></div>
+
+<div class="box info"><b class="t">出典</b>
+納入日程行カテゴリ <code>CP</code>（所要量転送・在庫確認・移動タイプ 601）と <code>VOV5</code> の決定キー（明細カテゴリ + MRPタイプ）：SAP Community <i>Schedule line category CP</i> / <i>Link between MRP type and schedule line category</i>。<br>
+ATP の仕組み（利用可能在庫数量＝在庫＋入庫予定−出庫予定、<code>CO09</code>）と品目 MRP3 の在庫確認：SAP Help <i>Availability Check</i> / <i>Availability Check According to ATP Logic</i>、tokulog <i>ATP利用可能在庫確認について徹底解説！</i>。<br>
+PIR の消費（MD04 上で起き、<code>PBED</code> は変わらない）：SAP Help（Support Content）<i>Tables and programs of planned independent requirements</i> 与 SAP Community <i>PIR Consumption &amp; Reduction</i>。<br>
+出荷・PGI 601・請求 <code>F2</code>：SAP Help（SD 出荷/請求）。Cloud の対応フローは スコープアイテム <b><code>BJ5</code></b>（引当・入出庫・ATP を含む）。</div>
+
+<div class="box ok"><b class="t">下一步</b>
+→ <a href="handson-5.html">练习⑤ 月末処理と発展（差異計算・決済・故障対照表）</a>。</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP 見込生産（MTS）实战训练站</h5><p>练习④：受注・引当・出荷・請求（VA01 → CO09 → MD04 消費 → VL01N → VF01）。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 需要予測とPIR</a><br><a href="handson-2.html">② MRP と計画手配</a><br><a href="handson-3.html">③ 製造と入庫</a><br><a href="handson-4.html">④ 受注・出荷・請求</a><br><a href="handson-5.html">⑤ 月末と発展</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

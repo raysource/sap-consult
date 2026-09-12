@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>练习③ 販売情報システム（Sales Summary） · SAP SD 受注処理（Sales Order Processing）实战训练站</title>
+<meta name="description" content="练习③ 販売情報システム（Sales Summary）：SAP SD 受注処理の実機練習（動画 Unit 14 準拠）。入力値・手順・期待結果・つまずき・検証（証拠の取り方）・验收清单つき。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/sd.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">SD</span><span class="txt">受注処理 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①受注登録</a>
+      <a href="handson-2.html">②伝票変更</a>
+      <a class="active" href="handson-3.html">③情報照会</a>
+      <a href="handson-4.html">④出荷と請求</a>
+      <a href="handson-5.html">⑤ツールと故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 练习③ 販売情報システム（Sales Summary）</div>
+<main class="page"><article>
+
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。录像里的画面同样可能与你的版本不同。若要换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 一键替换。</div><h1>练习③ 販売情報システム（<code>VC/2</code> Sales Summary）</h1>
+<div class="box info"><b class="t">本练习完成什么</b>
+動画（<code>22:45</code>〜<code>32:29</code>）の主题です。Sales Summary は<b>得意先マスタの情報＋与信＋受注残＋既存伝票</b>を1 画面に集めた照会機能で、<b>受注の「環境」メニューからも開けます</b>。<br>① 初期画面と照会の作法 → ② 情報ビュー／情報ブロックの読み方 → ③ 与信情報 → ④ Last SD documents と統計情報 → ⑤ 出荷伝票へのドリルダウン（動画の <code>80007832</code>）→ ⑥ 出ないときの切り分け（＝C5 の Customizing と結びつける）。</div>
+<div class="toc">
+  <a href="#s1">3-1 初期画面と照会の作法</a>
+  <a href="#s2">3-2 情報ビューと情報ブロックを読む</a>
+  <a href="#s3">3-3 与信情報と Open 値の読み方</a>
+  <a href="#s4">3-4 Last SD documents と統計情報</a>
+  <a href="#s5">3-5 出荷伝票へのドリルダウン（<code>VL03N</code>）</a>
+  <a href="#s6">3-6 出てこないときの切り分け（C5 との対応）</a>
+  <a href="#s7">3-7 验收（完成基准）</a>
+</div>
+<h2 id="s1">3-1 初期画面と照会の作法（動画 <code>29:48</code>・<code>31:15</code> 付近）</h2>
+<p><b>入力値</b></p>
+<pre class="vals">トランザクション： VC/2（Sales Summary）
+得意先：           1000（動画のデモ。概念スライドの例は 5264 = FA IDES）
+販売エリア：       販売組織 1000（＋チャネル／部門は任意。絞ると対象が限定される）
+到達経路（動画で示される 3 通り）：
+  1) コマンドフィールドに VC/2 を直接入力
+  2) SAP メニュー → Sales and Distribution → Sales Support → Information system → VC/2
+  3) 受注（VA01/VA02/VA03）の「環境（Environment）」メニューから Sales Summary</pre>
+<ol class="steps">
+  <li><code>VC/2</code> を起動し、<b>初期（選択）画面</b>の項目を確認する：Customer number（<code>1000</code> to）、Dynamic selections、Sales area（Sales organization <code>1000</code> など）。</li>
+  <li>得意先 <code>1000</code> を入れて<b>実行</b>する。</li>
+  <li>動画と同じく<b>受注から開く経路</b>も試す：<code>VA03</code> → メニュー「<b>Environment</b>」→「<b>Sales Summary</b>」（ステータスバーのトランザクションが <code>VA01</code> のままでも開けることを確認）。</li>
+  <li><b>販売エリアで絞った場合と絞らない場合</b>の結果の違いを見る（絞ると対象の伝票が限定される）。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① 得意先 <code>1000</code> で結果画面が出る（動画と同じ <b>Sales Summary for Customer 0000001000 Becker Berlin</b>）。<br>② <b>受注の環境メニューからも開ける</b>（＝受注処理の道具として組み込まれている）。<br>③ メニューバーが「Program」から「<b>Sales summary</b>」に変わり、ツールバーに <b>Info block／View</b> ボタンが出ることを確認。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 得意先を入れたのにデータが少ない → その得意先に伝票が無い、または販売エリアで絞りすぎ（<b>まず絞らずに実行する</b>）。<br>② 動画の <code>5264</code>（FA IDES, Walldorf）は<b>スライド用の例</b>です。自分の得意先に読み替えてください。<br>③ 権限エラーが出る → <code>VC/2</code> の実行権限（SIS 照会）を講師に確認。</div>
+<div class="task"><b class="t">練習課題</b>得意先 <code>1000</code> について、<b>3 通りの経路</b>（直接入力・SAP メニュー・受注の環境メニュー）で Sales Summary を開き、<b>同じ結果になるか</b>を確認してください。</div>
+<figure class="gui"><img src="assets/gui/handson-3_s01_1.svg" alt="VC/2 の初期（選択）画面。Customer number 1000、Sales organization 1000 を入力し、Distribution channel・Division・Dynamic selections は空の状態。" loading="lazy"><figcaption><b class="t">VC/2 の初期（選択）画面：得意先 1000 と販売エリアを指定する（到達経路は 3 通り）</b><span class="tx">VC/2</span><span class="scr">Sales Summary</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 得意先 1000 は動画のデモ値（概念スライドの 5264 = FA IDES は例）。自分の得意先に読み替える</li><li><b>2</b> 販売エリアで絞ると対象の伝票が限定される。まず絞らずに実行するのが切り分けの定石</li></ol><p class="gui-tip">自システムでの確認：コマンドフィールドに VC/2 ／ SAP メニュー → Sales and Distribution → Sales Support → Information system ／ 受注（VA03）の Environment メニュー「Sales Summary」の 3 通りを試す。実行後のタイトルは Sales Summary for Customer 0000001000 Becker Berlin。</p></figure>
+
+<h2 id="s2">3-2 情報ビュー（Info view）と情報ブロック（Info block）を読む（動画 <code>31:50</code>〜）</h2>
+<p>Sales Summary の画面は <b>情報ビュー</b>（表示する組み合わせ）と、その中に入る <b>情報ブロック</b>（個々のかたまり）の 2 階層です。
+動画では「View」ボタンで情報ビューの一覧が出る場面が示されます。</p>
+<table class="tbl wide">
+<tr><th>情報ビュー（動画で確認できる ID）</th><th>名称</th><th>用途の目安</th></tr>
+<tr><td><code>001</code></td><td>Complete information</td><td><b>既定</b>。住所・分類・主要指標・連絡先・与力・納入情報まで一通り</td></tr>
+<tr><td><code>002</code></td><td>Address/partner info</td><td>住所とパートナー情報だけ</td></tr>
+<tr><td><code>003</code></td><td>Statistical info</td><td>統計指標（受注金額・売上など）</td></tr>
+<tr><td><code>005</code></td><td>Telesales</td><td>テレセールス向け</td></tr>
+<tr><td><code>100</code></td><td>Credit Information</td><td>与信限度・使用額・支払履歴</td></tr>
+<tr><td><code>101</code></td><td>Last SD Documents</td><td><b>直近の受注・請求書の一覧</b>（動画で最も実用的）</td></tr>
+<tr><td><code>102</code></td><td>Backorders</td><td>出荷遅延（バックオーダー）</td></tr>
+<tr><td><code>103</code></td><td>Quick Info</td><td>要点だけ（Last order・与信使用率・請求ブロック件数など）</td></tr>
+<tr><td><code>900</code></td><td>New Internet cust.</td><td>得意先固有のビュー（動画ではユーザ <code>WF-SD-2</code> の既定ビュー）</td></tr>
+</table>
+<ol class="steps">
+  <li>結果画面で「<b>View</b>」ボタンを押し、動画と同じ<b>情報ビューの一覧</b>が出ることを確認する。</li>
+  <li>ビュー <code>001</code>（Complete information）で表示される<b>情報ブロックの見出し</b>を上から書き出す（Address／Classification／Key figures／Contact person／Last SD documents／Document key figures／Pricing など）。</li>
+  <li>ビュー <code>101</code>（Last SD Documents）に切り替え、<b>受注と請求書の一覧</b>が出ることを確認する。</li>
+  <li>ビュー <code>103</code>（Quick Info）に切り替え、動画の概念スライドにあった <b>Last order／Max. credit limit used／Orders blocked for billing</b> に相当する情報が出るか確認する。</li>
+  <li>「<b>Info block</b>」ボタンでブロック単位の表示・非表示が切り替わることを確認する。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① 動画と同じ <b>ID の並び</b>（<code>001</code>／<code>002</code>／<code>003</code>／<code>005</code>／<code>100</code>／<code>101</code>／<code>102</code>／<code>103</code>／<code>900</code>）が「View」に出る。<br>② ビューを切り替えると<b>情報ブロックの構成が変わる</b>ことを説明できる。<br>③ ビュー <code>101</code> で<b>自分の练习①の受注が出る</b>（出れば SIS の統計更新が生きている証拠）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① ビューが <code>001</code> しか出ない → 「Report Views for a User」に自分が割り当てられていない、または追加ビューが未定義（C5）。<br>② ビューを選んでも中身が空 → <b>統計更新が OFF</b>（文書カテゴリ <code>C Order</code>。C5 の ④）。<br>③ 情報ブロックの名称が動画と違う → Customizing で<b>名称を変えている</b>環境があります。<b>ID で合わせる</b>のが確実。</div>
+<div class="task"><b class="t">練習課題</b>ビュー <code>001</code>・<code>101</code>・<code>103</code> を順に表示し、<b>表示される情報ブロックの違い</b>を表にまとめてください。そのうえで「与信を見たいときはどのビューか」を自分の言葉で答えます。</div>
+<figure class="gui"><img src="assets/gui/handson-3_s02_1.svg" alt="Info View Selection ダイアログ。ID と View の 2 列に 001〜900 の 9 件が並び、101 Last SD Documents の行が選択されている。" loading="lazy"><figcaption><b class="t">Info View Selection：ビュー 001〜900 の一覧（実機ではユーザ固有の 900 も並ぶ）</b><span class="tx">VC/2</span><span class="scr">Sales Summary</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 001 が既定（Standard フラグ付き）。ここに並ぶのは Report Views に定義されたビューだけ（出なければ C5 ①/③）</li><li><b>2</b> 101 が Last SD Documents。自分の练习受注が出るかを見る本命のビュー</li></ol><p class="gui-tip">自システムでの確認：001 しか出ないときは「Maintain the Report Views for a User」に自分が割り当てられているかを見る。ビューを選んでも中身が空なら統計更新（文書カテゴリ C Order）を疑う。</p></figure>
+
+<h2 id="s3">3-3 与信情報と Open 値の読み方（動画 <code>25:25</code> 付近）</h2>
+<p>動画のデモでは、得意先 <code>1000</code> の与信関連の値が表示されます。<b>読み方を押さえると、受注がブロックされる理由が分かります</b>。</p>
+<table class="tbl wide">
+<tr><th>項目（動画の画面）</th><th>動画の値</th><th>意味</th></tr>
+<tr><td>Credit Limit（与信限度額）</td><td><code>511,291.88 EUR</code></td><td>その得意先に認められた与信の上限</td></tr>
+<tr><td>Usage Level（使用額）</td><td><code>1,472,653.29 EUR</code></td><td>売掛＋受注残＋出荷残などの合計（＝与信の消費）</td></tr>
+<tr><td>Delta（差額）</td><td><code>-961,361.41</code></td><td><b>マイナス＝限度超過</b>。この状態では新規受注に与信ブロックが付き得ます</td></tr>
+<tr><td>Consumption in %</td><td><code>288</code></td><td>限度額に対する使用率。<b>100 を超えると超過</b></td></tr>
+<tr><td>Receivables</td><td><code>835,166.13 EUR</code></td><td>未回収の売掛金</td></tr>
+<tr><td>Open Delivery Value</td><td><code>528,437.42 EUR</code></td><td>出荷済みだが未請求の金額</td></tr>
+<tr><td>Open Sales Order Val</td><td><code>109,049.74 EUR</code></td><td><b>受注残（まだ出荷していない受注）</b></td></tr>
+<tr><td>Open Bill. Doc. Val</td><td><code>0.00 EUR</code></td><td>請求済みだが未転記などの金額</td></tr>
+</table>
+<ol class="steps">
+  <li>ビュー <code>100</code>（Credit Information）または結果画面の与信ブロックで、<b>Credit Limit／Usage Level／Delta／Consumption in %</b> を読み取る。</li>
+  <li>「<b>自分の練習受注が Open Sales Order Val に入っているか</b>」を確認する（入っていれば受注が与信に効いている証拠）。</li>
+  <li><code>FD32</code>（得意先の与信）で<b>与信限度額と与信区分</b>を確認する（Sales Summary の値の出所）。</li>
+  <li>受注で与信ブロックが付く場合は、<code>VA03</code> のヘッダで<b>与信ステータス</b>を確認し、<code>VKM1</code> 等の与信解除の入口を確認する（実行は不要）。</li>
+  <li><b>Consumption in % が 100 を超えている得意先</b>で新規受注を作ると何が起きるかを予想し、（可能なら）試す。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① <b>Delta の符号と Consumption % の意味</b>を説明できる（マイナス＝超過、100 超＝超過）。<br>② <b>Open Sales Order Val に自分の受注が反映</b>されることを確認した（または反映されない理由を説明できる）。<br>③ Sales Summary の与信値と <code>FD32</code> の値が<b>対応</b>している。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>与信の値が出ない</b> → 与信管理が有効でない、または得意先に与信区分が無い（<code>FD32</code>／<code>OB45</code>／<code>OVA8</code>）。<br>② 「ブロックされた」と「保存できない」を混同 → <b>与信は保存後のブロック</b>、不完全性は保存時のエラー。<b>症状の出るタイミングが違います</b>。</div>
+<div class="task"><b class="t">練習課題</b>Sales Summary の与信ブロックと <code>FD32</code> を見比べ、<b>「Delta がマイナスになる条件」</b>を数式（Usege Level − Credit Limit）で説明し、自分の環境の得意先で実際の数値を確認してください。</div>
+<figure class="gui"><img src="assets/gui/handson-3_s03_1.svg" alt="Sales Summary の Credit Information ブロック。Credit Limit 511,291.88 EUR、Usage Level 1,472,653.29 EUR、Delta -961,361.41、Consumption in % 288 と Payment history の内訳が並ぶ。" loading="lazy"><figcaption><b class="t">ビュー 100（Credit Information）：与信限度 511,291.88 EUR に対し使用額 1,472,653.29 EUR（動画 25:25 付近）</b><span class="tx">VC/2</span><span class="scr">Sales Summary</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> Credit Limit は FD32 で設定した与信限度額。Sales Summary は照会なのでここでは変更できない</li><li><b>2</b> Usage Level − Credit Limit = Delta。マイナスは超過＝新しい受注に与信ブロックが付き得る状態</li></ol><p class="gui-tip">自システムでの確認：FD32 で Credit Limit / Credit limit used を突き合わせる。与信ブロックが出ないときは OVA8（与信管理の有効化）・OB45（与信管理領域）・得意先の与信区分を疑う（不完全性エラーは保存時に出るので症状のタイミングが違う）。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-3_s03_2.svg" alt="FD32 の与信照会画面。Customer 1000、Credit control area 1000、Credit limit 511,291.88 EUR、Credit limit used 1,472,653.29 EUR を表示している。" loading="lazy"><figcaption><b class="t">FD32（得意先の与信）：Sales Summary の与信値の出所を確認しに行く画面</b><span class="tx">FD32</span><span class="scr">Change Customer Credit Management</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> Credit limit が Sales Summary の Credit Limit の出所。値がずれるときは与信管理領域の取り違えを疑う</li><li><b>2</b> Credit limit used が Usage Level と対応する（売掛＋出荷残＋受注残の合計）</li></ol><p class="gui-tip">自システムでの確認：FD32 で得意先と与信管理領域を指定。与信管理の有効化は OVA8、与信管理領域の定義は OB45。与信ステータスの照会は VA03 のヘッダ、与信解除の入口は VKM1。</p></figure>
+
+<h2 id="s4">3-4 Last SD documents と統計情報（動画 <code>31:53</code>・<code>32:07</code> 付近）</h2>
+<p>ビュー <code>101</code>（Last SD Documents）は<b>その得意先の直近の受注と請求書</b>を一覧します。動画では受注 5 件・請求書 4 件の例が示されます。</p>
+<table class="tbl wide">
+<tr><th>区分</th><th>動画の例</th><th>見るポイント</th></tr>
+<tr><td>受注（Order）</td><td><code>11076</code> / <code>11075</code> / <code>11074</code>（100.00 EUR・Open）／<code>11072</code>（52,000.00 EUR）／<code>10765</code>（300,000.00 EUR）</td><td>番号・日付・正味価額・<code>Status</code>（Open など）</td></tr>
+<tr><td>請求書（Invoice）</td><td><code>90035240</code>（30,000.00 EUR・Completed）／<code>90033630</code> / <code>90033619</code>（Being processed）／<code>90023097</code>（536,088.60 EUR）</td><td>ステータス（Completed／Being processed）の違い</td></tr>
+<tr><td>統計情報（ビュー <code>003</code>）</td><td>Net value of incoming orders／Net sales／Open net value of orders／Net value of inc. returns／Net value of credit memos／Number of order items／No. of returns items（<b>2007 vs 2006 の比較</b>）</td><td><b>年度比較</b>で見る。動画では 2007 が 300.00、2006 が 52,000.00 EUR の例</td></tr>
+<tr><td>Quick Info</td><td>Last order <code>5638</code>・Max. credit limit used <code>68 %</code>・Orders blocked for billing <code>2</code>（概念スライドの例）</td><td>「要点だけ」を見る癖を付けると日常業務で速い</td></tr>
+</table>
+<ol class="steps">
+  <li>ビュー <code>101</code> を表示し、<b>自分の练习受注</b>が一覧に出るか確認する（無ければ次の手順で切り分け）。</li>
+  <li>受注番号をダブルクリック（または該当行を選択）して、<b>受注の照会画面（<code>VA03</code>）へ飛べるか</b>を確認する。</li>
+  <li>ビュー <code>003</code>（Statistical info）に切り替え、<b>年度比較の指標</b>を読む。</li>
+  <li>ビュー <code>103</code>（Quick Info）で要点だけを確認する。</li>
+  <li>（発展）請求を作成した後（练习④）に同じ画面を見て、<b>Open Sales Order Val／Open Bill. Doc. Val</b> がどう動くかを記録する。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① ビュー <code>101</code> に<b>受注と請求書が分かれて</b>並び、ステータスが読める。<br>② 受注番号から<b>伝票照会へドリルダウン</b>できる。<br>③ 統計情報が<b>年度（2 期）の比較</b>で表示される。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>Last SD documents が空</b> → 「Last Documents for a Customer」で <code>C Order</code> の統計更新が OFF（C5 ④）。<br>② 出るが<b>自分の受注が無い</b> → 統計ファイルの更新タイミング（定期更新の環境では遅延します）、または販売エリアの絞り込み。<br>③ 動画とステータスの表記が違う → リリース・言語の違いです。<b>「Open／Completed」の意味</b>が読めれば十分。</div>
+<div class="task"><b class="t">練習課題</b>ビュー <code>101</code> の受注と請求書について、<b>「番号の体系（先頭桁）が違う理由」</b>と「ステータスが Open／Completed／Being processed に分かれる理由」を調べて書いてください（分からなければ講師に質問）。</div>
+<figure class="gui"><img src="assets/gui/handson-3_s04_1.svg" alt="Sales Summary の Last SD documents ブロック。受注 11076 / 11075 / 11074 / 11072 / 10765 と請求書 90035240 / 90033630 / 90033619 / 90023097 が日付・正味価額・ステータス付きで並ぶ。" loading="lazy"><figcaption><b class="t">ビュー 101（Last SD Documents）：受注 5 件と請求書 4 件の一覧（動画 31:53 付近）</b><span class="tx">VC/2</span><span class="scr">Sales Summary</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 受注は Status が Open。自分の练习① の受注がここに出れば SIS の統計更新は生きている</li><li><b>2</b> 請求書は番号の体系が違う（8 桁・9 始まり）。Completed と Being processed は請求処理の進み具合</li></ol><p class="gui-tip">自システムでの確認：受注番号をダブルクリックすると VA03 の伝票照会へ飛べる（ドリルダウン）。空のときは「Last Documents for a Customer」で C Order の統計更新を確認する。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-3_s04_2.svg" alt="Sales Summary の Statistical Information ブロック。Net value of incoming orders などの指標が 2007 と 2006 の 2 列で比較され、300.00 / 52,000.00 EUR などの値が入っている。" loading="lazy"><figcaption><b class="t">ビュー 003（Statistical info）：2007 と 2006 の年度比較（動画 32:07〜32:09 付近）</b><span class="tx">VC/2</span><span class="scr">Sales Summary</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 2007 と 2006 の 2 期比較。前年との差で受注と売上の傾向を読む（ビュー 003 の役割）</li><li><b>2</b> 空欄は動画で数値が読めない行。自分の環境の統計データで埋めて、指標の定義を確認する</li></ol><p class="gui-tip">自システムでの確認：行の名称は動画の表記（Net value of incoming orders ／ Net sales ／ Open net value of orders ／ Net value of inc. returns ／ Net value of credit memos ／ Number of order items ／ No. of returns items）を図では短縮している。数値が出ないときはビュー 003 の割当（② Maintain Views for an Evaluation）と統計ファイルの更新を疑う（初期構築は講師に確認）。</p></figure>
+
+<h2 id="s5">3-5 出荷伝票へのドリルダウン（動画 <code>25:24</code> の <code>80007832</code>）</h2>
+<p>動画では、Sales Summary の <b>“Last delivery”</b> から<b>出荷伝票の照会（<code>VL03N</code>）</b>へ飛ぶ流れが示されます。
+伝票番号は <code>80007832</code>、明細は <code>P-102</code>（26 PC）・<code>P-104</code>（39 PC）、ItCa は <code>TAN</code> です。</p>
+<table class="tbl wide">
+<tr><th>出荷伝票の項目（動画）</th><th>値</th><th>見るポイント</th></tr>
+<tr><td>出荷伝票番号</td><td><code>80007832</code></td><td>出荷伝票の採番（受注とは別体系）</td></tr>
+<tr><td>Document Date</td><td><code>22.11.2000</code></td><td>文書日付</td></tr>
+<tr><td>Ship-to party</td><td><code>1000</code> Becker Berlin</td><td>受注から引き継がれた住所</td></tr>
+<tr><td>計画出庫 / 実出庫</td><td><code>21.11.2000</code> / <code>23.11.2000</code></td><td><b>計画と実績の差</b>（遅延の見方）</td></tr>
+<tr><td>タブ</td><td>Item Overview / Picking / Loading / Transport / <b>Status Overview</b> / Goods Movement Data</td><td><b>Status Overview</b> で「出庫過帳済みか」を確認するのが実務の定番</td></tr>
+<tr><td>明細</td><td><code>10 P-102 26 PC</code>／<code>20 P-104 39 PC</code>（ItCa <code>TAN</code>）</td><td>受注明細との対応（数量・品目）</td></tr>
+<tr><td>ボタン</td><td>Post goods issue（<b>グレー＝実行不可</b>）</td><td>既に出庫過帳済み、または権限が無い状態</td></tr>
+</table>
+<ol class="steps">
+  <li><code>VL03N</code> を起動し、出荷伝票番号（自分の環境のもの）を入れて照会する。動画と同じく <b>Status Overview</b> タブを確認する。</li>
+  <li><b>受注から出荷伝票へ飛ぶ</b>：<code>VA03</code> → 伝票フロー → 出荷伝票をダブルクリック。</li>
+  <li><b>出荷伝票から受注へ戻る</b>：<code>VL03N</code> の伝票フローから受注を開く（双方向に辿れることを確認）。</li>
+  <li>Sales Summary の<b>Last delivery</b> に相当する情報（出荷伝票）が、自分の環境ではどこから見られるかを探す。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① <code>VL03N</code> で出荷伝票を照会し、<b>Status Overview の意味</b>（出庫過帳済みか）を説明できる。<br>② <b>受注 ⇄ 出荷伝票</b>を伝票フローで双方向に行き来できた。<br>③ 動画の画面（タブ構成・明細）と自分の環境の<b>違いを指摘</b>できる（リリース差）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 出荷伝票がまだ無い → <b>练习④で作成します</b>。本節は「照会の作法」が目的なので、他人の環境の伝票や既存伝票で構いません。<br>② 動画の <code>80007832</code> を入れても <b>自システムには存在しません</b>（教育用データ）。自分の番号に読み替えてください。</div>
+<div class="task"><b class="t">練習課題</b>動画出荷伝票 <code>80007832</code> の情報を表に写し、<b>自システムの出荷伝票と比較</b>して「同じ項目・違う項目・自システムに無い項目」の 3 つに分類してください。</div>
+<figure class="gui"><img src="assets/gui/handson-3_s05_1.svg" alt="VL03N の出荷伝票照会。出荷伝票 80007832、タブは Item Overview が選択され、明細 10 P-102 26 PC（ItCa TAN）と 20 P-104 39 PC が表示されている。" loading="lazy"><figcaption><b class="t">VL03N：動画の出荷伝票 80007832（明細 P-102 26 PC・P-104 39 PC、タブは 6 つ）</b><span class="tx">VL03N</span><span class="scr">Delivery 80007832 Display: Overview</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 明細は受注からそのまま引き継がれる。数量が受注と違えばピッキングで差が出ている</li><li><b>2</b> 番号 80007832 は動画の教育用データ。計画 21.11.2000 に対し実績 23.11.2000 の差が「遅延」の見方</li></ol><p class="gui-tip">自システムでの確認：自分の出荷伝票番号で VL03N を開き、Status Overview タブと PGI（Post goods issue）ボタンの活性／非活性を見る。実機の明細列は他に Description・Open quantity・Val. type がある（図では省略）。受注 ⇄ 出荷伝票は VA03 の伝票フローから双方向に辿れる（出荷伝票は练习④ で作る）。</p></figure>
+
+<h2 id="s6">3-6 出てこないときの切り分け（C5 の Customizing と結びつける）</h2>
+<p>動画は Sales Summary の Customizing（4 画面）を長く扱います。これは<b>「レポートが出ない理由」を説明できるようにするため</b>です。
+症状から原因を引けるようにしましょう。</p>
+<table class="tbl wide">
+<tr><th>症状</th><th>最初に見る場所</th><th>設定（C5 の 4 画面）</th></tr>
+<tr><td>情報ビューが 1 つしか出ない</td><td><code>VC/2</code> の「View」一覧 → 自分が割り当てられているか</td><td>③ Maintain the Report Views for a User</td></tr>
+<tr><td>ビューはあるが情報ブロックが少ない</td><td>ビューの中身</td><td>② Maintain Views for an Evaluation</td></tr>
+<tr><td>特定のビューが存在しない</td><td>ビューの定義そのもの</td><td>① Maintain Report Views</td></tr>
+<tr><td>Last SD documents が空</td><td>その得意先の伝票有無 → 統計更新</td><td>④ Last Documents for a Customer（<code>C Order</code>）</td></tr>
+<tr><td>統計情報（年度比較）が出ない</td><td>ビュー <code>003</code> の割当と統計ファイル</td><td>①②＋統計の初期構築（講師に確認）</td></tr>
+<tr><td>与信ブロックが出ない</td><td>与信管理の有効化と得意先の与信区分</td><td>C5 ではなく <code>OB45</code>／<code>OVA8</code>／<code>FD32</code></td></tr>
+</table>
+<ol class="steps">
+  <li><b>症状を 1 つ選び</b>、上の表の「最初に見る場所」を実際に開く。</li>
+  <li>該当する Customizing（C5 の 4 画面）で<b>現在の設定値</b>を記録する（例：ユーザ割当が無い、<code>C Order</code> の統計更新が OFF）。</li>
+  <li><b>1 か所だけ変えて</b>（例：自分を「Report Views for a User」に追加）、<code>VC/2</code> の表示がどう変わったかを確認する。</li>
+  <li>「症状 → 原因（設定）→ 証拠（画面）→ 処置」を 1 行にまとめる。</li>
+</ol>
+<div class="box ok"><b class="t">この節の合格ライン</b>
+<b>「Sales Summary に何が出るかは、SIS のカスタマイジング 4 画面で決まる」</b>と言え、<b>症状から 4 画面のどれを疑うか</b>を選べること。動画の 4 画面（<code>27:06</code>〜<code>28:29</code>）と自分の環境の設定を対応づけられれば合格です。</div>
+<figure class="gui"><img src="assets/gui/handson-3_s06_1.svg" alt="Sales Summary の切り分け表。症状（情報ビューが 1 つしか出ない、Last SD documents が空 など）と、見る場所・対応する Customizing 画面の対応が 6 行で並ぶ。" loading="lazy"><figcaption><b class="t">症状から疑う画面を引く：Sales Summary に出る内容は SIS の 4 画面の設定で決まる</b><span class="tx">VC/2</span><span class="scr">Sales Summary</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> まず症状を特定する。症状が決まれば疑う画面が 1 つに絞られる（＝切り分けの型）</li><li><b>2</b> 「Last SD documents が空」の最頻出原因は C Order の統計更新 OFF。④ の画面で確認する</li></ol><p class="gui-tip">自システムでの確認：SPRO → Sales and Distribution → Sales Support → Information System 配下の 4 画面。設定欄は正式名を短縮した（① Maintain Report Views ／ ② Maintain Views for an Evaluation ／ ③ Maintain the Report Views for a User ／ ④ Last Documents for a Customer）。与信は OB45・OVA8・FD32。</p></figure>
+
+<h2 id="s7">3-7 验收（完成基准）</h2>
+<ul class="check">
+  <li><code>VC/2</code> を得意先 <code>1000</code> で実行し、Sales Summary を表示できた</li>
+  <li><b>受注の環境メニューからも Sales Summary を開ける</b>ことを確認した</li>
+  <li>情報ビュー（<code>001</code>／<code>101</code>／<code>103</code> など）を切り替え、<b>情報ブロックの違い</b>を説明できる</li>
+  <li>ビュー <code>101</code>（Last SD Documents）で<b>自分の受注</b>を確認した</li>
+  <li>与信ブロック（Credit Limit／Usage Level／Delta／Consumption %）を読み、<b>Delta マイナスの意味</b>を説明できる</li>
+  <li><code>FD32</code> と突き合わせて、与信値の出所を確認した</li>
+  <li>ビュー <code>003</code> の<b>年度比較</b>の指標を読んだ</li>
+  <li><code>VL03N</code> で出荷伝票を照会し、<b>Status Overview</b> の意味を説明できる</li>
+  <li><b>伝票フローで受注 → 出荷 → 請求</b>を行き来できた（受注と出荷の双方向）</li>
+  <li><b>症状から原因を引く表</b>（情報ビューが出ない／Last SD documents が空 など）を使い、<b>実際に 1 件切り分けた</b></li>
+  <li>つまずいた点を<b>「症状 → 根因 → 証拠 → 処置 → 再発防止」</b>で 1 件以上記録した</li>
+</ul>
+<div class="box ok"><b class="t">次の一歩</b>
+→ <a href="handson-4.html">练习④ 出荷と請求</a>（受注を出荷・請求まで流し、Sales Summary の値が動くのを見ます）</div>
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP SD 受注処理（Sales Order Processing）实战训练站</h5><p>動画「录像45 Sales order processing.mp4」の実演を自分の環境で再現するための练习。各手順に「自系统での確認方法」つき。</p><div><h5>下一步</h5><p><a href="handson-5.html">练习⑤ ツール・発展・故障対応</a> まで通したら、<a href="quiz.html">能力测试</a> で確認します。</p></div></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 受注登録（VA01）</a><br><a href="handson-2.html">② 与力価格と ATP</a><br><a href="handson-3.html">③ 特殊取引</a><br><a href="handson-4.html">④ 出荷と請求</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="worksheet.html">学员版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/quiz.js"></script>
+</body>
+</html>

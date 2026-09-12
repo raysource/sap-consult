@@ -1,0 +1,29 @@
+{
+  "name": "bookshop-fiori",
+  "version": "1.0.0",
+  "dependencies": {
+    "@cap-js/hana": "^2",
+    "@sap/cds": "^9"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^2.4",
+    "cds-plugin-ui5": "^0.17.0"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch-fiori_cap_test": "cds watch --open fioricaptest/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-bookmanager": "cds watch --open bookmanager/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-bookworklist": "cds watch --open bookworklist/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-bookoverview": "cds watch --open bookoverview/index.html?sap-ui-xx-viewCache=false --livereload false"
+  },
+  "private": true,
+  "workspaces": [
+    "app/*"
+  ],
+  "sapux": [
+    "app/fiori_cap_test",
+    "app/bookmanager",
+    "app/bookworklist",
+    "app/bookoverview"
+  ]
+}

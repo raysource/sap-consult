@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>配置手顺 C0〜C16 · SAP S/4HANA バリアント設定付き受注生産（VC / AVC）实战训练站</title>
+<meta name="description" content="SAP VC/AVC 的练习配置手顺 C0〜C16：前提与 AVC/PMEVC 确认、特徴 CT04、クラス CL02（型 300）、設定可能品目 KMAT、設定プロファイル CU41/PMEVC、依存関係 CU01-CU03（前提条件/選択条件/手続き/アクション）、スーパー BOM CS01、作業手順、明細カテゴリ VOV7/VOV4、戦略と所要量クラス OPPS/OPPJ/OVZG、ATP、変種価格 V/06・V/08・VK11、出荷請求、OBYC、Public Cloud 差异，含输入值与自系统确认方法。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/vc.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">VC</span><span class="txt">バリアント設定 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a class="active" href="config.html">配置手顺</a>
+      <a href="handson-1.html">①主数据</a>
+      <a href="handson-2.html">②受注与设定</a>
+      <a href="handson-3.html">③依存与BOM</a>
+      <a href="handson-4.html">④制造与出荷</a>
+      <a href="handson-5.html">⑤发展与故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 配置手顺 C0〜C16</div>
+<main class="page"><article>
+
+<h1>练习配置手顺（C0〜C16）</h1>
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。若是想换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 即可一键替换。</div>
+
+<div class="box info"><b class="t">本页怎么用</b>
+每个 STEP 都是「<b>目的 → IMG 路径 / 事务码 → 输入值 → 操作手顺 → 自系统中的确认 → つまずき → 練習課題</b>」的固定结构。<br>
+① <b>先确认再新增</b>：和本教程一样的配置通常已经存在（尤其是 <code>CT04</code>/<code>CL02</code> 之外的标准设定），先学会「怎么看到它、怎么读它」，再动手建练习用的 <code>ZVC_*</code> 对象；<br>
+② 练习用对象命名约定：<code>ZVC_CAPACITY</code> / <code>ZVC_MATERIAL</code> / <code>ZVC_COATING</code> / <code>ZVC_ACCESSORY</code>（特徴）、<code>ZVC_PUMP_CL</code>（クラス）、<code>ZVC-PUMP01</code>（設定可能品目）、<code>ZVC_PROFILE01</code>（設定プロファイル）、<code>ZVC_DEP_*</code>（依存関係）；<br>
+③ <code>CT04</code>/<code>CL02</code>/<code>CU01</code>/<code>CU41</code> は<b>カスタマイジング扱い</b>（依頼に記録される）。练习后用同一依頼で回滚できるように；<br>
+④ 标准值随环境不同 —— 每个 STEP 的「確認」栏就是让你在自系统里核对它的方法。<br>
+先读完 <a href="concept.html#chain">概念页的决定链</a> 再动手，效率会高很多。</div>
+
+<div class="toc">
+  <a href="#prep">配置前的准备</a>
+  <a href="#c0">C0 前提確認</a>
+  <a href="#c1">C1 特徴（CT04）</a>
+  <a href="#c2">C2 クラス（CL02）</a>
+  <a href="#c3">C3 設定可能品目（KMAT）</a>
+  <a href="#c4">C4 設定プロファイル</a>
+  <a href="#c5">C5 依存関係①前提条件</a>
+  <a href="#c6">C6 依存関係②選択条件</a>
+  <a href="#c7">C7 依存関係③手続き・アクション</a>
+  <a href="#c8">C8 スーパー BOM</a>
+  <a href="#c9">C9 作業手順</a>
+  <a href="#c10">C10 明細カテゴリ</a>
+  <a href="#c11">C11 戦略と所要量クラス</a>
+  <a href="#c12">C12 ATP・在庫確認</a>
+  <a href="#c13">C13 変種価格</a>
+  <a href="#c14">C14 出荷・請求</a>
+  <a href="#c15">C15 自動転記（OBYC）</a>
+  <a href="#c16">C16 Public Cloud 差异</a>
+  <a href="#done">配置完了チェックリスト</a>
+</div>
+
+<h2 id="prep">配置前的准备</h2>
+<p>配置作业会在你的练习系统留下自定义对象。请先确认三件事：<b>①</b> 有可写入的カスタマイジング依頼；<b>②</b> 你的用户能进入 SPRO（<code>SPRO</code> → 「カスタマイジング」→「IMG」）；
+<b>③</b> 练习用的販売組織/プラント/得意先/品目番号範囲可用。</p>
+<div class="box warn"><b class="t">VC 特有の前提（これを最初に確認する）</b>
+① <b>品目タイプ <code>KMAT</code> の番号範囲が空いているか</b>（<code>MMNR</code>）。<code>KMAT</code> が使えない環境では VC の練習が始まりません。
+② <b>AVC か LO-VC か</b>：S/4HANA では <code>PMEVC</code>（AVC）が現行ですが、<code>CU41</code> 系の画面も併存します。<b>どちらで作るかを最初に決めて、全手順をそれに合わせる</b>（途中で混ぜると設定プロファイルの二重管理になる）。
+③ <b>分類システム（Classification）の権限</b>：<code>CT04</code>（特徴）・<code>CL02</code>（クラス）は「カスタマイジング」扱いで、<code>MM01</code> の分類ビュー（<code>CL20N</code> 系アプリでも可）とは別権限になっていることがあります。</div>
+<figure class="gui"><img src="assets/gui/config_prep_1.svg" alt="SPRO の IMG 初期画面。カスタマイジング依頼と VC（AVC）の前提を確認する。" loading="lazy"><figcaption><b class="t">配置前的准备：SPRO（IMG）と前提 3 点</b><span class="tx">SPRO</span><span class="scr">カスタマイジング（IMG）の前提確認（VC / AVC）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 依頼を指定しないと保存できない</li><li><b>2</b> AVC(PMEVC) が使えるかは最初に確認（設計方針が変わる）</li></ol><p class="gui-tip">S/4HANA の AVC では PMEVC が統合モデリング環境です。従来の CU41 系を使うかはプロジェクトで決めてください。</p></figure>
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c0"><span class="no">C0</span><h3>前提与环境确认（権限・AVC/PMEVC の利用可否）</h3><span class="tc">VA01・MMNR・CT04・CL02・CU41・PMEVC・CU50</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>避免「练习跑到一半才发现 <code>KMAT</code> の番号範囲がない／<code>CU50</code> が使えない」という手戻り。<b>VC は 5 つの専用 T-code が揃わないと练习①〜③ が成立しません</b>。</dd>
+  <dt>IMG パス（環境によって呼称が異なる）</dt>
+  <dd>SPRO → クロスアプリケーションコンポーネント → <b>分類システム</b>／<b>バリアント構成</b>。S/4HANA の AVC は <code>PMEVC</code> が入り口（IMG からも起動可）。<b>メニュー名は リリース・言語で変わるため、SPRO の検索窓に「バリアント」「分類」と入れて探すのが確実</b>です。</dd>
+  <dt>T-code</dt>
+  <dd><code>CT04</code>（特徴）・<code>CL02</code>（クラス）・<code>CU01</code>〜<code>CU03</code>（依存関係）・<code>CU41</code>（設定プロファイル）・<code>PMEVC</code>（AVC モデリング環境）・<code>CU50</code>（シミュレーション）・<code>MMNR</code>（品目番号範囲）・<code>VA01</code>（販売区域の確認）</dd>
+  <dt>入力値 / 確認対象</dt>
+  <dd>
+<pre class="vals">販売組織 1000 / 販売チャネル 10 / 部門 00   （販売エリア）
+プラント 1000 / 出荷プラント 1000
+得意先 1000（受注先・出荷先を兼ねる）
+品目タイプ KMAT の番号範囲に空き（内部採番 or 有効な外部番号）
+区分 / クラス型 300 のクラスを新規登録できる権限
+モデリング環境：CU41 系（LO-VC）で作る ／ PMEVC（AVC）で作る   ← どちらかに決める</pre></dd>
+</dl>
+<ol class="steps">
+  <li><b>販売区域</b>：<code>VA01</code> の初期画面で <code>1000</code>/<code>10</code>/<code>00</code> が選べること（選べない＝組織構造の割当未了）。受注伝票に入った画面は閉じてよい。</li>
+  <li><b>得意先</b>：<code>BP</code> または <code>XD03</code> → 得意先 <code>1000</code>：販売エリアビューと出荷先（船積先）が存在すること。</li>
+  <li><b>KMAT の番号範囲</b>：<code>MMNR</code> → <code>KMAT</code> のグループに空きを確認。<b>外部採番にする場合は採番ルール（<code>ZVC-</code> で始める等）を予め決める</b>。</li>
+  <li><b>VC 5 つの T-code を起動確認</b>：<code>CT04</code> → <code>CL02</code> → <code>CU01</code> → <code>CU41</code> → <code>CU50</code> を順に起動する。どこかで「権限がありません」が出たら、その時点で記録して講師に連絡（代替手順を相談）。</li>
+  <li><b>AVC の可否</b>：<code>PMEVC</code> を起動してみる。起動できなければ LO-VC の画面（<code>CU41</code> 系）で進める。<b>この判断が以降の全手順の分岐点</b>です。</li>
+</ol>
+<div class="box info"><b class="t">確認（自システム）</b>
+<code>CT04</code> で「特徴」の初期画面が開き、<code>CU50</code> で品目を指定する画面（または品目が選べる構成画面）が出れば、前提は満たされています。
+<code>IVA01</code>／<code>CU50</code> がロックしている場合は、<b>品目 <code>ZVC-PUMP01</code> を作る前に C0 を終わらせてください</b>（後で権限が判明すると手戻りが大きい）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <code>CT04</code> は「変更モード」で開かないと新規登録できない（<b>照会モードのまま入力して「変更できません」と言われる</b>のが定番）→ 初期画面の「変更」を押すか、<code>CT04</code> のメニュー「特徴 → 登録」。
+② <code>KMAT</code> が品目タイプの F4 に出ない → 品目タイプの品目カテゴリ（<code>OMS2</code> 系）か、番号範囲未設定。
+③ <code>PMEVC</code> が無い環境（ライセンス／スコープアイテム）→ 無理をせず LO-VC 手順へ。**判断を全員で共有**する（個人判断で混ぜると後で破綻）。</div>
+<div class="task"><b class="t">練習課題</b>C0 の 5 項目を一覧にして、自分の環境の実測値（使える／使えない、KMAT の採番方式、AVC 可否）を書いてください。この一覧は練習⑤の故障切り分けで最初に見る資料になります。</div>
+<figure class="gui"><img src="assets/gui/config_s02_1.svg" alt="VA01 の初期画面。受注タイプ OR、販売組織 1000、流通チャネル 10、部門 00、得意先 1000 を入力する。" loading="lazy"><figcaption><b class="t">C0 VA01 の初期画面（販売エリア 1000 / 10 / 00 が選べるか）</b><span class="tx">VA01</span><span class="scr">受注伝票 登録：初期画面</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 販売組織 1000 が F4 で選べる＝組織構造が分配済み。ここが空なら C0 の前提未了</li><li><b>2</b> 得意先 1000 に販売エリアビューと出荷先があるか（XD03 / BP で確認）</li></ol><p class="gui-tip">自システムでの確認：VA01 の初期画面（組織構造）。保存はせず、選べることだけを確かめます。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s02_2.svg" alt="CT04 の初期画面。特徴 ZVC_CAPACITY を入力し、変更モードで開けるかを確認する。" loading="lazy"><figcaption><b class="t">C0 CT04・CL02・CU01・CU41・CU50 の 5 つの T-code を順に起動して権限を確認</b><span class="tx">CT04</span><span class="scr">特徴の初期画面（照会 / 変更）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 「変更」を押すと編集可。ここで権限とカスタマイジング依頼の有無が分かる</li><li><b>2</b> PMEVC が起動できなければ LO-VC（CU41 系）で進める＝以降の全手順の分岐点</li></ol><p class="gui-tip">自システムでの確認：CT04 → CL02 → CU01 → CU41 → CU50 を順に起動。使えない T-code があれば练习①〜③は実施不可（AVC は PMEVC も確認）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c1"><span class="no">C1</span><h3>特徴（Characteristics）の設計と登録</h3><span class="tc">CT04</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>「選べる仕様」を 4 つ定義する。<b>特徴は VC の入力インターフェース</b>なので、値の粒度・必須・複数選択・追加データをここで設計しきる。</dd>
+  <dt>IMG パス</dt>
+  <dd>SPRO → クロスアプリケーションコンポーネント → 分類システム → クラス → <b>特徴（<code>CT04</code>）</b>。※実作業は <code>CT04</code> を直接起動するのが実務的（SPRO のメニューからも同じ画面が開く）。</dd>
+  <dt>T-code</dt>
+  <dd><code>CT04</code>（登録/変更/照会）。照会専用の <code>CT03</code>、値一覧の <code>CT04</code> → 「許可値」タブ。</dd>
+  <dt>入力値</dt>
+  <dd>
+<table class="tbl tight wide">
+<tr><th>特徴（技術名称）</th><th>名称（表示）</th><th>値の型</th><th>許可値</th><th>設計上のポイント</th></tr>
+<tr><td><code>ZVC_CAPACITY</code></td><td>容量 (m3/h)</td><td><code>NUM</code>（数値）</td><td><code>50</code> / <code>80</code> / <code>120</code></td><td>数値型にすると大小比較の依存関係（<code>&gt;</code> <code>&lt;</code>）が書ける</td></tr>
+<tr><td><code>ZVC_MATERIAL</code></td><td>材質</td><td><code>CHAR</code></td><td><code>FC200</code> / <code>SUS304</code> / <code>SUS316</code></td><td><b>価格のキーに使う</b>（加算差が最も出る特徴）</td></tr>
+<tr><td><code>ZVC_COATING</code></td><td>塗装</td><td><code>CHAR</code></td><td><code>NONE</code> / <code>EPOXY</code> / <code>URETHANE</code></td><td>工程の取捨（選択条件）に使う</td></tr>
+<tr><td><code>ZVC_ACCESSORY</code></td><td>付属品</td><td><code>CHAR</code></td><td><code>NONE</code> / <code>PG</code> / <code>FG</code> / <code>PG_FG</code></td><td><b>複数選択（複数値）を許可</b>して練習する。※複数値を使うと単純な <code>=</code> 判定では拾えないため、「組合せ値（<code>PG_FG</code>）」を用意する設計と併用</td></tr>
+</table></dd>
+</dl>
+<ol class="steps">
+  <li><code>CT04</code> → 変更モード → 特徴 <code>ZVC_CAPACITY</code> を入力 → 「登録」。</li>
+  <li>基本データ：<b>名称</b>「容量 (m3/h)」、<b>データタイプ <code>NUM</code></b>、長さ・小数点（例 3.0）、<b>単位</b>（必要な場合）、<b>値チェック</b>は「許可値による」。</li>
+  <li>「許可値」タブ → 値 <code>50</code> / <code>80</code> / <code>120</code> を登録（値ごとに説明文を入れると設定画面で読みやすい）。</li>
+  <li>同様に <code>ZVC_MATERIAL</code> / <code>ZVC_COATING</code> を <code>CHAR</code> で登録（値は上表）。</li>
+  <li><code>ZVC_ACCESSORY</code>：基本データの「<b>複数値</b>（複数選択可）」を ON。値は <code>NONE</code>/<code>PG</code>/<code>FG</code>/<code>PG_FG</code>。</li>
+  <li><b>必須の設計</b>：必須にするかは<b>クラス側（<code>CL02</code> の特徴行）で決める</b>のが基本（同じ特徴を別クラスでは任意にしたいことがあるため）。ここでは <code>CT04</code> では必須にしない。</li>
+  <li><b>追加データ（変種価格用・発展）</b>：価格のキーに使う特徴は「追加データ」タブで テーブル／項目（<code>SDCOM</code>/<code>MMCOM</code> の <code>VKOND</code> という記載）を指定する。→ 詳細は <a href="#c13">C13</a>。</li>
+  <li>4 つ登録できたら <code>CT04</code> → 照会で 4 特徴の名称・データタイプ・許可値を一覧で確認。</li>
+</ol>
+<div class="box info"><b class="t">確認（自システム）</b>
+① <code>CT04</code>（照会）で <code>ZVC_MATERIAL</code> を開き、データタイプ <code>CHAR</code>・許可値 3 件・「複数値」の状態を確認。
+② <code>SE16N</code> で <code>CABN</code> を特徴の技術名称（<b><code>ATNAM</code> という項目</b>という記載が一般的）で絞り、1 件見つかれば登録は有効。値は <code>CAWN</code>／テキストは <code>CAWNT</code> という記載（<b>必ず <code>SE11</code> で項目名を確認してから使う</b>）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>データタイプを後から変えられない</b>（<code>NUM</code> ⇔ <code>CHAR</code>）→ 変えたいなら別名で作り直す。最初に決める。
+② <b>値の先頭に空白・全角文字</b>が混入すると依存関係の <code>=</code> 判定が一致しない（最も多い作業ミス）。<code>CU50</code> で選んだ後に「値が一致しない」症状が出たら、値の前後の空白を疑う。
+③ 複数値（複数選択可）の特徴を、単純な前提条件 <code>$SELF.ZVC_ACCESSORY = 'PG'</code> で判定しようとして「選んだのに反応しない」→ 複数値では「すべての値が条件を満たすか」で判定されるため、<b>組合せ値（<code>PG_FG</code>）を別途用意するか、手続きで単一値に正規化する</b>設計にする。</div>
+<div class="task"><b class="t">練習課題</b>① <code>ZVC_CAPACITY</code> を「数値」ではなく「文字」で作った場合、どんな依存関係が書けなくなるか？ ② なぜ必須フラグをクラス側で持つ設計が良いのか、理由を 2 つ挙げよ（ヒント：クラスの再利用、特徴の再利用）。</div>
+<figure class="gui"><img src="assets/gui/config_s03_1.svg" alt="CT04 の基本データタブ。特徴 ZVC_CAPACITY、名称 容量、データタイプ NUM、桁数 3、値チェック 許可値のみ、複数値 OFF。" loading="lazy"><figcaption><b class="t">C1 特徴 ZVC_CAPACITY の基本データ（データタイプは後から変えられない）</b><span class="tx">CT04</span><span class="scr">特徴の変更：基本データ</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> NUM にすると大小比較（&gt;=）の依存関係が書ける。CHAR にすると容量の条件が書けない</li><li><b>2</b> 値チェック＝許可値のみ。自由入力にすると条件レコードのキーが揃わない</li></ol><p class="gui-tip">自システムでの確認：CT04（照会）＋ SE16N CABN（特徴の技術名称。値は CAWN / テキストは CAWNT という記載 → 項目名は SE11 で確認）。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s03_2.svg" alt="CT04 の許可値タブ。許可値 50・80・120 と説明（小型・標準・大型）が並ぶ。" loading="lazy"><figcaption><b class="t">C1 許可値タブ（50 / 80 / 120 を説明つきで登録）</b><span class="tx">CT04</span><span class="scr">特徴 ZVC_CAPACITY：許可値タブ</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 説明を入れておくと CU50 の設定画面で読みやすい</li></ol><p class="gui-tip">自システムでの確認：CT04 → 該当特徴 → 許可値タブ。SE16N は CAWN（値）/ CAWNT（テキスト）という記載（項目名は SE11 で確認）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c2"><span class="no">C2</span><h3>クラス（型 300）の登録と特徴の割当</h3><span class="tc">CL02（CL01/CL03）</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>4 特徴を 1 つの「質問票」にまとめる。<b>クラス型 <code>300</code>（品目変種）</b>を使うことが VC の必須条件（他の型と混ざると品目の分類ビューにクラスが出ない）。</dd>
+  <dt>IMG パス</dt>
+  <dd>SPRO → クロスアプリケーションコンポーネント → 分類システム → クラス → <b>クラス（<code>CL02</code>）</b>。クラス型の定義は IMG の「クラス型」で確認。</dd>
+  <dt>T-code</dt>
+  <dd><code>CL02</code>（登録/変更）・<code>CL01</code>（登録）・<code>CL03</code>（照会）</dd>
+  <dt>入力値</dt>
+  <dd>
+<pre class="vals">クラス型   300（品目変種 / Variant class）
+クラス名   ZVC_PUMP_CL
+名称       ポンプ バリアントクラス
+特徴の割当 ZVC_CAPACITY（必須=ON） / ZVC_MATERIAL（必須=ON）
+           ZVC_COATING（必須=ON）  / ZVC_ACCESSORY（必須=OFF = 任意）</pre></dd>
+</dl>
+<ol class="steps">
+  <li><code>CL02</code> → クラス型 <code>300</code> を選ぶ（F4 で型一覧が確認できる）。</li>
+  <li>クラス <code>ZVC_PUMP_CL</code> を入力 → 登録 → 名称「ポンプ バリアントクラス」。</li>
+  <li>「特徴」タブ → 行を追加 → 特徴 <code>ZVC_CAPACITY</code> を入力。表示される特徴名・データタイプを確認。</li>
+  <li>同じ行の「必須（必須特徴）」列を <b>ON</b>（<code>ZVC_CAPACITY</code> / <code>ZVC_MATERIAL</code> / <code>ZVC_COATING</code>）。<code>ZVC_ACCESSORY</code> は OFF（任意）にしておく（後で「必須にすると何が起きるか」を練習する余地を残す）。</li>
+  <li>4 行そろったら保存。<b>保存時にカスタマイジング依頼を聞かれる</b>ので、練習用の依頼を指定。</li>
+  <li><code>CL03</code> でクラス <code>ZVC_PUMP_CL</code> を照会し、4 特徴と必須状態を確認。</li>
+</ol>
+<div class="box info"><b class="t">確認（自システム）</b>
+① <code>CL03</code> → クラス <code>ZVC_PUMP_CL</code>：特徴タブに 4 行、必須列の状態が意図どおり。
+② <code>SE16N</code> → <code>KLAH</code>（クラスマスタ）で <code>CLASS = ZVC_PUMP_CL</code>・<b>クラス型の項目 <code>KLART = 300</code></b>（という記載が一般的）を確認。クラスに割り当てた特徴は <code>KSML</code> という記載。
+③ 品目への割当は C3 で行う（クラス単体では受注に効かない）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>クラス型を間違える</b>（<code>001</code> 品目一般など）→ 品目の分類ビューでクラスが見えない。症状が出たら <code>CL03</code> のクラス型を最優先で確認。
+② 特徴の「必須」を全部 ON にすると、<code>CU50</code> で<b>未入力のまま抜けられなくなる</b>（それ自体は正しい動作）。<b>「必須にして止める」のか「任意にして運用でカバーする」かは業務判断</b>（第 3 節の設計判断②と同じ論点）。
+③ 既に受注が流れているクラスに特徴を追加すると、<b>既存受注の再構成が必要</b>になることがある（変更統制の論点 → <a href="handson-5.html">练习⑤</a>）。</div>
+<div class="task"><b class="t">練習課題</b>クラス <code>ZVC_PUMP_CL</code> の <code>ZVC_ACCESSORY</code> を必須に変えて <code>CU50</code> を実行すると、何が起きるか？<b>実際に試して</b>元に戻してください（元に戻せることが「変更統制を理解した」証拠）。</div>
+<figure class="gui"><img src="assets/gui/config_s04_1.svg" alt="CL02 の初期画面。クラス型 300、クラス ZVC_PUMP_CL、名称 ポンプ バリアントクラスを入力する。" loading="lazy"><figcaption><b class="t">C2 クラス型 300（品目変種）を選んでクラス ZVC_PUMP_CL を登録</b><span class="tx">CL02</span><span class="scr">クラス：初期画面（クラス型 300）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> クラス型 300 は VC の必須条件。症状が出たら最初にここを見る</li><li><b>2</b> クラス名は全手順で ZVC_ 統一（品目への割当で見つけやすくする）</li></ol><p class="gui-tip">自システムでの確認：CL03（照会）と SE16N KLAH（CLASS / クラス型の項目 KLART = 300 という記載）→ 項目名は SE11 で確認。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s04_2.svg" alt="CL02 の特徴タブ。ZVC_CAPACITY・ZVC_MATERIAL・ZVC_COATING が必須、ZVC_ACCESSORY が任意として 4 行並ぶ。" loading="lazy"><figcaption><b class="t">C2 特徴の割当と「必須」フラグ（容量・材質・塗装＝ON / 付属品＝OFF）</b><span class="tx">CL02</span><span class="scr">クラス ZVC_PUMP_CL：特徴タブ</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 必須はクラス側で設計する。CT04 では必須にしない（特徴の再利用のため）</li><li><b>2</b> 付属品は任意のまま → 「必須にすると何が起きるか」を後で練習する余地を残す</li></ol><p class="gui-tip">自システムでの確認：CL03 の特徴タブ／SE16N KSML（クラスに割り当てた特徴という記載・CLINT の内部番号で絞る）→ 項目名は SE11 で確認。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c3"><span class="no">C3</span><h3>設定可能品目 <code>ZVC-PUMP01</code>（<code>KMAT</code>）の登録とクラス割当</h3><span class="tc">MM01 / MM02 / MM03</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>VC の親品目を作る。<b>品目タイプ <code>KMAT</code>・品目カテゴリグループ <code>0002</code>・設定可能インジケータ・MRP3 戦略 <code>25</code>・MRP4 個別所要量</b>の 5 点がそろって初めて「受注で設定できる」状態になる。</dd>
+  <dt>IMG パス</dt>
+  <dd>品目マスタは IMG ではなく <code>MM01</code>（必要に応じて SPRO → マスタデータ → 品目マスタの設定を参照）。品目カテゴリグループの定義は <code>VOV7</code> 系ではなく<b>販売伝票の明細カテゴリの決定（C10）</b>で扱う。</dd>
+  <dt>T-code</dt>
+  <dd><code>MM01</code>（登録）・<code>MM02</code>（変更）・<code>MM03</code>（照会）・<code>CL20N</code> 系（分類アプリ、任意）</dd>
+  <dt>入力値（品目 <code>ZVC-PUMP01</code> / 単位 <code>PC</code>）</dt>
+  <dd>
+<table class="tbl wide">
+<tr><th>视图</th><th>项目</th><th>值</th><th>为什么</th></tr>
+<tr><td>基本データ1</td><td>品目タイプ / 品目グループ / 単位</td><td><code>KMAT</code> / 001 / <code>PC</code></td><td><b>VC の前提は品目タイプ <code>KMAT</code></b>（varconf：<code>KMAT</code>、または設定可能インジケータ付きの <code>FERT</code> という記載もあり）</td></tr>
+<tr><td>基本データ1</td><td><b>設定可能（Configurable）インジケータ</b></td><td>ON</td><td>これが OFF だと構成画面が出ない</td></tr>
+<tr><td>販売組織1</td><td>販売組織 / チャネル / 部門</td><td>1000 / 10 / 00</td><td>受注可能な販売エリア</td></tr>
+<tr><td><b>販売組織2</b></td><td><b>品目カテゴリグループ</b></td><td><code>0002</code></td><td>VC の標準（SET 処理は <code>0004</code> という記載）。<code>VOV4</code> の決定キー</td></tr>
+<tr><td>MRP1</td><td>MRPタイプ / ロットサイズ</td><td><code>PD</code> / <code>EX</code></td><td>所要量を計画手配に変換する</td></tr>
+<tr><td>MRP1</td><td><b>手配タイプ</b></td><td><code>E</code>（内製）</td><td>内製＝製造指図。空だと計画手配ができません</td></tr>
+<tr><td>MRP2</td><td>指図タイプ（伝票タイプ）</td><td><code>PP01</code></td><td>製造指図タイプ（練習⑤の戦略 <code>82</code> では <code>PP04</code> 系）</td></tr>
+<tr><td><b>MRP3</b></td><td><b>戦略グループ</b></td><td><code>25</code></td><td>VC の受注生産 → 所要量タイプ <code>KEK</code> → 所要量クラス <code>046</code> 系（varconf）</td></tr>
+<tr><td>MRP3</td><td>在庫確認（確認グループ）</td><td><code>02</code></td><td>個別所要量ベースの在庫確認が前提（varconf：Availability Check <code>02</code>）</td></tr>
+<tr><td><b>MRP4</b></td><td><b>個別/包括所要量</b></td><td><code>1</code>（個別所要量のみ）</td><td>受注在庫（特別在庫 E）を成立させる必須項目</td></tr>
+<tr><td>会計1 / 原価計算1</td><td>評価クラス / 価格管理 / 原価計算ロットサイズ</td><td>（例）7920 / <code>S</code> / <code>EX</code></td><td>受注在庫の評価と指図差異の基準</td></tr>
+<tr><td><b>分類</b></td><td><b>クラス</b></td><td><code>ZVC_PUMP_CL</code></td><td>VC の必須条件。ここで C2 のクラスを割り当てる</td></tr>
+</table></dd>
+</dl>
+<ol class="steps">
+  <li><code>MM01</code> → 品目 <code>ZVC-PUMP01</code> → 産業コード（例 <code>M</code>）→ 品目タイプ <code>KMAT</code> → ビュー選択：<b>基本データ1・2 / 購買（空でも可）/ MRP1〜4 / 会計1 / 原価計算1 / プラント在庫 / 販売組織1・2 / 分類</b> → プラント <code>1000</code>。</li>
+  <li>基本データ1 で <b>設定可能インジケータを ON</b>（ここで ON にすると内部オブジェクト番号が採番される）。</li>
+  <li>販売組織2 で品目カテゴリグループ <code>0002</code>、MRP1〜4 を上表どおり入力。</li>
+  <li><b>分類ビュー</b> → クラス型 <code>300</code> → クラス <code>ZVC_PUMP_CL</code> を入力。<b>クラスの特徴が読み込まれ、値の割当画面（まだ空）になる</b>。</li>
+  <li>保存 → <code>MM03</code> で再確認：基本データ1（設定可能 ON）／販売組織2（<code>0002</code>）／MRP3（<code>25</code>・<code>02</code>）／MRP4（<code>1</code>）／分類（<code>ZVC_PUMP_CL</code>）。</li>
+  <li>「項目が見つからない」場合は、そのビューを選択していないか、項目が非表示（項目状態）。<code>OMS9</code> 系で項目状態を確認できるが、<b>練習では触らず講師に相談</b>。</li>
+</ol>
+<div class="box info"><b class="t">確認（自システム）</b>
+① <code>MM03</code> で 5 点セット（<code>KMAT</code>/設定可能 ON/<code>0002</code>/戦略 <code>25</code>/MRP4 <code>1</code>）を目視確認。これが VC の <b>「受注できる 5 条件」</b>です。
+② クラス割当は <code>MM03</code> の分類ビューでクラス名が見えるかで確認。テーブルで確認したい場合は <code>KSSK</code> という記載（キーの持ち方は画面で確認）。
+③ 戦略グループ <code>25</code> の意味（所要量タイプ <code>KEK</code>／所要量クラス <code>046</code> 系）は <code>OPPS</code>/<code>OPPJ</code>/<code>OVZG</code> で照会 → <a href="#c11">C11</a>。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>設定可能インジケータの ON を忘れる</b>（最頻出）→ 受注しても構成画面が出ない。症状「構成を入力できない」の第一嫌疑。
+② 品目カテゴリグループが <code>0001</code>（NORM）のまま → 明細カテゴリが VC 用に決まらず BOM 展開しない。
+③ <b><code>KMAT</code> は原則として在庫管理されない</b>（<code>MMBE</code> に自由在庫が出ない）。「在庫が見えない」は故障ではなく仕様。在庫の持ち方をどうするかは設計判断（受注在庫 E に構成品目を入れる／材料バリアントを使う等）。
+④ MRP4 の個別所要量を入れずに受注すると、受注在庫（E）にならず「受注在庫に割当できません」系のエラーになる（练习⑤の故障表 #3）。</div>
+<div class="task"><b class="t">練習課題</b>①「受注できる 5 条件」を暗記せずに書けるようになること（<code>KMAT</code>／設定可能 ON／<code>0002</code>／戦略 <code>25</code>／MRP4 個別所要量）。
+② <code>ZVC-PUMP01</code> を <code>MM03</code> で開き、<b>どのビューにどの値が入っているか</b>をワークシート シート A に転記せよ（自分の環境の証跡を残す）。</div>
+<figure class="gui"><img src="assets/gui/config_s05_1.svg" alt="MM01 の初期画面。品目タイプ KMAT、産業コード M、品目 ZVC-PUMP01、ビュー選択とプラント 1000 を入力する。" loading="lazy"><figcaption><b class="t">C3 設定可能品目 ZVC-PUMP01 を品目タイプ KMAT で登録（ビュー選択）</b><span class="tx">MM01</span><span class="scr">品目マスタ 登録：初期画面</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> KMAT が F4 に出ない＝番号範囲（MMNR）か権限。VC の練習が始まらない前提</li><li><b>2</b> 分類ビューを選ばないとクラスを割り当てられない（ここを忘れると受注で構成が出ない）</li></ol><p class="gui-tip">自システムでの確認：品目タイプ KMAT の番号範囲は MMNR、品目タイプの品目カテゴリは OMS2 系（练习では触らず講師に相談）。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s05_2.svg" alt="MM02 の基本データ1 と販売組織2。設定可能インジケータ ON、単位 PC、販売エリア 1000/10/00、品目カテゴリグループ 0002。" loading="lazy"><figcaption><b class="t">C3 設定可能インジケータ ON と品目カテゴリグループ 0002</b><span class="tx">MM02</span><span class="scr">品目 ZVC-PUMP01 の変更：基本データ1 / 販売組織2</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 設定可能インジケータ。OFF なら構成画面が出ない＝「構成を入力できない」の第一嫌疑</li><li><b>2</b> 品目カテゴリグループ 0002 が VOV4 の決定キー（0001 のままだと VC 用の明細カテゴリにならない）</li></ol><p class="gui-tip">自システムでの確認：MM03 の基本データ1（設定可能）と販売組織2（品目カテゴリグループ）。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s05_3.svg" alt="MM02 の MRP3・MRP4・分類ビュー。MRPタイプ PD、ロットサイズ EX、手配タイプ E、戦略グループ 25、在庫確認 02、個別所要量 1、クラス型 300 とクラス ZVC_PUMP_CL。" loading="lazy"><figcaption><b class="t">C3 受注できる 5 条件の残り（戦略 25 / MRP4 個別所要量）とクラス割当</b><span class="tx">MM02</span><span class="scr">品目 ZVC-PUMP01 の変更：MRP3・MRP4・分類ビュー</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 戦略 25 → 所要量タイプ KEK → 所要量クラス 046 系（C11 で照会）</li><li><b>2</b> MRP4 の個別所要量が受注在庫（E）を成立させる必須項目。未設定だと「受注在庫に割当できません」</li><li><b>3</b> 分類ビューにクラス（型 300）が入って初めて受注で特徴が質問される</li></ol><p class="gui-tip">自システムでの確認：MM03 の MRP1〜4 と分類ビュー。テーブルで見る場合は KSSK という記載（キーの持ち方は画面で確認）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c4"><span class="no">C4</span><h3>設定プロファイルの作成と品目への割当（処理形式＝BOM の扱いを決める）</h3><span class="tc">CU41 / CU42 / CU43 / PMEVC</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>「この品目をどう設定させるか」の入り口を作る。<b>処理形式（BOM をどう扱うか）をここで決める</b>ため、後の受注 BOM の見え方を左右する最重要の設計点。</dd>
+  <dt>IMG パス</dt>
+  <dd>SPRO → クロスアプリケーションコンポーネント → バリアント構成 → <b>設定プロファイル</b>（<code>CU41</code>）。S/4HANA（AVC）は <code>PMEVC</code> で作成し、特徴グループを割り当てる。</dd>
+  <dt>T-code</dt>
+  <dd><code>CU41</code>（登録）・<code>CU42</code>（変更）・<code>CU43</code>（照会）・<code>PMEVC</code>（AVC の統合モデリング環境）・<code>CU50</code>（動作確認）</dd>
+  <dt>入力値</dt>
+  <dd>
+<pre class="vals">設定プロファイル名  ZVC_PROFILE01
+名称                ポンプ受注 BOM プロファイル
+割当先品目          ZVC-PUMP01
+処理形式            ★「受注 BOM（Order BOM）」を選択（3 形式のうち）
+クラス              300 / ZVC_PUMP_CL
+チェック            必須チェック ON（未入力で終われないようにする）
+画面（AVC の場合）  特徴グループを割り当て（PMEVC）</pre></dd>
+</dl>
+<table class="tbl wide">
+<tr><th>処理形式（3 択）</th><th>受注明細での見え方</th><th>本站的取舍</th></tr>
+<tr><td>明細 / 生産指図（BOM 展開なし）</td><td>構成品目は受注に出ない（MRP・指図側で展開）</td><td>最も軽い。営業が部品を確認できない</td></tr>
+<tr><td>伝票明細（SET 処理）</td><td>構成品目が子明細として並ぶ（<b>品目カテゴリグループ <code>0004</code> が前提</b>）</td><td>価格・所要量が子明細単位。本场景では採らない</td></tr>
+<tr><td><b>受注 BOM（Order BOM）</b></td><td>受注ごとの BOM を作り、構成品目を確認・手修正できる</td><td><b>採用</b>（泵是按单改的商材）。練習③④ で使う</td></tr>
+</table>
+<ol class="steps">
+  <li><code>CU41</code> → 設定プロファイル名 <code>ZVC_PROFILE01</code> → 登録。</li>
+  <li>「割当（品目）」欄に <code>ZVC-PUMP01</code> を入力（<b>ここで品目にひもづく</b>。品目マスタ側ではなくプロファイル側で指定する）。</li>
+  <li>クラス <code>300</code> / <code>ZVC_PUMP_CL</code> を入力し、特徴が読み込まれることを確認。</li>
+  <li>処理形式を <b>受注 BOM</b> に設定（画面のラベルはリリースで異なる。<b>「BOM」と付く項目を F4 で一覧して選ぶ</b>のが確実）。</li>
+  <li>必須チェック（完全性チェック）を ON。保存 → <code>CU43</code> で照会。</li>
+  <li><b>AVC の場合</b>：<code>PMEVC</code> で設定プロファイルを作成し、特徴グループを割り当てて品目に割当。CU50 相当の確認は Fiori の設定アプリまたは <code>CU50</code> で行う。</li>
+  <li><code>CU50</code> で品目 <code>ZVC-PUMP01</code> を指定し、設定画面（4 特徴）が開くことを確認（<b>ここまでで「設定できる」状態になります</b>）。</li>
+</ol>
+<div class="box info"><b class="t">確認（自システム）</b>
+① <code>CU43</code> でプロファイル <code>ZVC_PROFILE01</code> を照会し、割当品目・クラス・処理形式・必須チェックの状態を確認。
+② <code>CU50</code> → 品目 <code>ZVC-PUMP01</code> で設定画面が開き、値を入力できる。値入力後に「結果（構成）」を確認できる。
+③ 設定プロファイルのマスタは画面経由で保守するのが原則（SAP Help に「機能グループ <code>CUCO</code>＝設定プロファイルマスタの維持、<code>CUCP</code>＝使用箇所一覧」と記載）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>処理形式を後から変える</b>のは危険（受注 BOM を作った後に SET に変えると既存受注が壊れる）。<b>受注を流す前に固める</b>。
+② プロファイルを<b>品目に割り当て忘れる</b>と、<code>CU50</code> では開くのに <code>VA01</code> で構成画面が出ない（受注は品目マスタ経由でプロファイルを探すため）。
+③ 必須チェック ON にした直後は「値が足りない」エラーが続く。<b>これは正常</b>（依存関係を入れる前は全部手入力する必要がある）。
+④ <code>CU41</code> と <code>PMEVC</code> を混ぜて同じ品目に 2 つのプロファイルを作る → どちらが効くか分からなくなる（<b>どちらか一方に統一</b>）。</div>
+<div class="task"><b class="t">練習課題</b><code>CU50</code> で「処理形式の違い」を体感する：受注 BOM 形式で構成し、「BOM 展開」を切って実行すると構成品目が出ないことを確認してください（発展：プロファイルを複製して BOM 展開なしのプロファイル <code>ZVC_PROFILE_NOBOM</code> を作り、<code>VA01</code> の違いを見る）。</div>
+<figure class="gui"><img src="assets/gui/config_s06_1.svg" alt="CU41 の設定プロファイル。設定プロファイル ZVC_PROFILE01、名称、割当品目 ZVC-PUMP01、クラス ZVC_PUMP_CL、処理形式 受注 BOM、必須チェック ON。" loading="lazy"><figcaption><b class="t">C4 設定プロファイル ZVC_PROFILE01（割当品目・クラス・処理形式・必須チェック）</b><span class="tx">CU41</span><span class="scr">設定プロファイルの登録</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 割当品目を忘れると CU50 では開くのに VA01 で構成画面が出ない（受注は品目経由でプロファイルを探す）</li><li><b>2</b> 処理形式を後から変えると既存受注が壊れる。受注を流す前に固める</li></ol><p class="gui-tip">自システムでの確認：CU43（照会）。機能グループ CUCO ＝設定プロファイルマスタの維持、CUCP ＝使用箇所一覧という記載（SAP Help）。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s06_2.svg" alt="CU41 の処理形式一覧。明細/生産指図・伝票明細（SET 処理）・受注 BOM の 3 行と受注明細での見え方が並ぶ。" loading="lazy"><figcaption><b class="t">C4 処理形式 3 択の比較（本站は「受注 BOM」を採用）</b><span class="tx">CU41</span><span class="scr">処理形式の一覧（F4）：BOM をどう扱うか</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 本站は 3 番目を選ぶ（練習③④ の前提）</li></ol><p class="gui-tip">自システムでの確認：CU41 の処理形式欄を F4 で一覧（ラベルはリリースで異なるため「BOM」を含む項目を探す）。CU43 で保存後の値を照会。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c5"><span class="no">C5</span><h3>依存関係①：前提条件（Precondition）</h3><span class="tc">CU01 / CU02 / CU03</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>「物理的に成立しない組合せ」を選べなくする。本站的第一条规则：<b>塗装 <code>EPOXY</code> は材質 <code>SUS316</code> を要求する</b>（<code>FC200</code> では選べない）。</dd>
+  <dt>IMG パス</dt>
+  <dd>SPRO → クロスアプリケーションコンポーネント → バリアント構成 → <b>依存関係（<code>CU01</code>）</b>。実務は特徴/特徴値の画面（<code>CT04</code>）から <code>CU01</code> を作成して貼るのが普通。</dd>
+  <dt>T-code</dt>
+  <dd><code>CU01</code>（登録）・<code>CU02</code>（変更）・<code>CU03</code>（照会）・<code>CT04</code>（適用先＝特徴値）・<code>CL02</code>（適用先＝特徴）・<code>CU50</code>（動作確認）</dd>
+  <dt>入力値</dt>
+  <dd>
+<pre class="vals">依存関係 ID    ZVC_DEP_EPOXY_MAT   （命名：ZVC_DEP_&lt;用途&gt;）
+種類           前提条件（Precondition）
+適用先         特徴値 ZVC_COATING の 'EPOXY'（CT04 の値の「依存関係」欄から割当）
+式（構文）     $SELF.ZVC_MATERIAL = 'SUS316'
+意味           塗装=EPOXY は 材質=SUS316 のときだけ成立する
+※ 成立しないときの挙動：その値が「不採用」になる（エラーで止めたい場合は設定プロファイル側の
+   チェックと組合せで運用を決める）</pre></dd>
+</dl>
+<ol class="steps">
+  <li><code>CT04</code> → <code>ZVC_COATING</code> を変更モードで開く → 許可値 <code>EPOXY</code> の行 → <b>「依存関係」欄（または割当ボタン）</b>から新規作成。</li>
+  <li>依存関係 ID <code>ZVC_DEP_EPOXY_MAT</code>、種類を<b>前提条件</b>、説明「EPOXY は SUS316 のみ」を入力。</li>
+  <li>エディタに式を入力：<code>$SELF.ZVC_MATERIAL = 'SUS316'</code>（<code>$SELF</code> はこの依存関係が貼られている特徴値自身を指す。<b>特徴を指定するときは技術名称を正確に</b>）。</li>
+  <li>構文チェック（「チェック」ボタン。エラーが出たら半角/全角・引用符・セミコロンの有無を確認）→ 保存。</li>
+  <li><code>CU50</code> → 品目 <code>ZVC-PUMP01</code> → 材質 <code>FC200</code> を選んだ状態で塗装 <code>EPOXY</code> を選ぼうとすると<b>選択できない／エラーになる</b>ことを確認。</li>
+  <li><code>CU03</code> で依存関係 <code>ZVC_DEP_EPOXY_MAT</code> を照会し、適用先（どの特徴値に貼られているか）を確認 → <b>「使用箇所一覧」で適用先をたどるのが故障切り分けの基本</b>。</li>
+</ol>
+<div class="box info"><b class="t">確認（自システム）</b>
+① <code>CU03</code> → 依存関係 ID → 「適用先」／「使用箇所一覧」で、<b>どの特徴値に貼られているか</b>が見える（ここが見えないと発火しない）。
+② <code>CU50</code> で 2 通りの組合せ（<code>SUS316</code>+<code>EPOXY</code> / <code>FC200</code>+<code>EPOXY</code>）を試し、<b>違いが出ることを目で確認</b>する。
+③ 構文の細かい文法はリリースで差が出るため、<b>依存関係エディタの「シンタックスチェック」＋<code>CU50</code> の実挙動</b>を正とする。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b><code>$SELF</code>/<code>$ROOT</code>/<code>$PARENT</code> の取り違え</b>：特徴値に貼る前提条件は <code>$SELF</code>、BOM 明細の選択条件は最上位を指す <code>$ROOT</code>（階層の親を指す <code>$PARENT</code> という説明もある。<b>CS03 の選択条件画面の説明に従う</b>）。
+② <b>適用先が「特徴」なのか「特徴値」なのか</b>。「値 <code>EPOXY</code> のときだけ」なら<b>特徴値</b>に貼る。特徴に貼ると<b>塗装全体が使えなくなる</b>（症状が全く違う）。
+③ 前提条件を「エラー」と「不採用」どちらで運用するか決めずに作り、現場で「選べない理由が分からない」混乱が起きる。<b>設定プロファイルのエラー表示／メッセージ設計まで含めて設計する</b>。</div>
+<div class="task"><b class="t">練習課題</b>前提条件を 1 本追加せよ：「付属品 <code>FG</code>（流量計）は容量 <code>120</code> 以上でのみ選べる」。構文は <code>$SELF.ZVC_CAPACITY &gt;= 120</code> の形（数値特徴でないと使えない比較演算子です）。</div>
+<figure class="gui"><img src="assets/gui/config_s07_1.svg" alt="CU01 の依存関係エディタ。依存関係 ZVC_DEP_EPOXY_MAT、種類 前提条件、式 $SELF.ZVC_MATERIAL = &#x27;SUS316&#x27;。" loading="lazy"><figcaption><b class="t">C5 前提条件 ZVC_DEP_EPOXY_MAT（塗装 EPOXY は材質 SUS316 を要求）</b><span class="tx">CU01</span><span class="scr">依存関係の登録：前提条件（Precondition）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> $SELF ＝この依存関係が貼られている特徴値自身。BOM 明細の選択条件は $ROOT を使う</li><li><b>2</b> 適用先は「特徴値 EPOXY」。特徴 ZVC_COATING 全体に貼ると塗装そのものが使えなくなる</li></ol><p class="gui-tip">自システムでの確認：CU03（照会）で「適用先 / 使用箇所一覧」。文法は依存関係エディタの構文チェック＋ CU50 の実挙動を正とする。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s07_2.svg" alt="CT04 の許可値タブ。塗装の値 NONE / EPOXY / URETHANE のうち EPOXY の行に依存関係 ZVC_DEP_EPOXY_MAT が割り当てられている。" loading="lazy"><figcaption><b class="t">C5 前提条件は「特徴値 EPOXY」に貼る（特徴に貼ると症状が全く違う）</b><span class="tx">CT04</span><span class="scr">特徴 ZVC_COATING の許可値と依存関係の適用先</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 依存関係が入っている行＝発火する値。CU03 の使用箇所一覧と一致するか確認する</li></ol><p class="gui-tip">自システムでの確認：CU03 の「適用先 / 使用箇所一覧」で、どの特徴値に貼られているかを見る（ここが見えないと発火しない）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c6"><span class="no">C6</span><h3>依存関係②：選択条件（Selection condition）</h3><span class="tc">CU01 / CS02 / CS03 / CA02 / CU50</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>設定値に応じて<b>BOM の構成品目・作業手順の工程を採用/不採用にする</b>。VC の「動きが見える」のはここ。本站：圧力計・流量計・塗装工程の取捨。</dd>
+  <dt>IMG パス</dt>
+  <dd>SPRO → バリアント構成 → 依存関係（<code>CU01</code> で作成）。適用は BOM 明細（<code>CS02</code> の構成品目 → 「選択条件」）／工程（<code>CA02</code>）。</dd>
+  <dt>T-code</dt>
+  <dd><code>CU01</code>〜<code>CU03</code>・<code>CS01</code>/<code>CS02</code>/<code>CS03</code>（BOM）・<code>CA01</code>/<code>CA02</code>/<code>CA03</code>（作業手順）・<code>CU50</code></dd>
+  <dt>入力値</dt>
+  <dd>
+<pre class="vals">ZVC_DEP_PG   選択条件 使用箇所=圧力計の BOM 明細
+   $ROOT.ZVC_ACCESSORY = 'PG' OR $ROOT.ZVC_ACCESSORY = 'PG_FG'
+ZVC_DEP_FG   選択条件 使用箇所=流量計の BOM 明細
+   $ROOT.ZVC_ACCESSORY = 'FG' OR $ROOT.ZVC_ACCESSORY = 'PG_FG'
+ZVC_DEP_CASING_SUS / _FC   選択条件 使用箇所=ケーシングの BOM 明細（材質別の 3 行）
+   $ROOT.ZVC_MATERIAL = 'SUS316'   ／  $ROOT.ZVC_MATERIAL = 'FC200'
+ZVC_DEP_COAT_OP   選択条件 使用箇所=塗装工程（0030）
+   $ROOT.ZVC_COATING &lt;&gt; 'NONE'</pre></dd>
+</dl>
+<ol class="steps">
+  <li><code>CU01</code> → 依存関係 <code>ZVC_DEP_PG</code> → 種類「<b>選択条件</b>」→ 式 <code>$ROOT.ZVC_ACCESSORY = 'PG' OR $ROOT.ZVC_ACCESSORY = 'PG_FG'</code> → チェック → 保存。</li>
+  <li><code>CS02</code> → 品目 <code>ZVC-PUMP01</code> → 使用箇所 <code>1</code>（スーパー BOM）→ 圧力計の明細行 → <b>「選択条件」欄</b>に <code>ZVC_DEP_PG</code> を割当（またはその場で <code>CU01</code> を起動して作成）。</li>
+  <li>同様に流量計（<code>ZVC_DEP_FG</code>）と材質別ケーシング 3 行（<code>FC200</code>/<code>SUS304</code>/<code>SUS316</code>）に選択条件を貼る。</li>
+  <li><code>CA02</code> → 作業手順 <code>ZVC_RT01</code> → 工程 0030（塗装）→ 選択条件 <code>ZVC_DEP_COAT_OP</code>（<code>$ROOT.ZVC_COATING &lt;&gt; 'NONE'</code>）。</li>
+  <li><code>CU50</code> → 品目 <code>ZVC-PUMP01</code> → 付属品 <code>NONE</code> で構成 → BOM 展開して<b>圧力計・流量計が出ない</b>ことを確認。次に <code>PG_FG</code> で構成 → <b>両方出る</b>ことを確認。</li>
+  <li>塗装 <code>NONE</code> と <code>EPOXY</code> で工程一覧（<code>CU50</code> の工程／<code>CA03</code>）を比べ、<b>0030 が消える</b>ことを確認。</li>
+</ol>
+<div class="box info"><b class="t">確認（自システム）</b>
+① <code>CS03</code> → 品目 <code>ZVC-PUMP01</code> → BOM 明細：各行の<b>選択条件欄に依存関係 ID</b> が入っているか。
+② <code>CA03</code> → 作業手順 <code>ZVC_RT01</code>：工程 0030 に選択条件があるか。
+③ <code>CU50</code> の構成結果で「BOM」タブ／「工程」タブを確認。<b>BOM 展開の切替（しない/1 階層/多階層）を変えて違いを見る</b>（SAP Help の BOM 展開レベルの記述と一致するはず）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>選択条件を「特徴」に貼ってしまう</b>（BOM 明細に貼らないと何も起きない）。適用先の指定は <code>CS02</code> の明細側で行う。
+② <b>BOM の有効日（有効開始日）</b>が将来日付／過去日付で、受注日に展開されない（症状：特定の日付だけ部品が出ない）。
+③ <b>代替 BOM と優先度</b>の指定（使用箇所・代替）を間違え、想定と違う方が展開される。
+④ 複数値特徴（<code>PG_FG</code>）と単一値の組合せ。値に <code>PG_FG</code> を用意せず <code>PG</code> と <code>FG</code> を同時選択した場合、<code>= 'PG'</code> の条件が成立しないことがある（→ 組合せ値を用意するか <code>OR</code> を丁寧に書く）。</div>
+<div class="task"><b class="t">練習課題</b>「材質 <code>SUS316</code> のときだけ軸を <code>ZVC-ROD-SUS</code> に差し替える」選択条件を追加せよ（<b>同じ構成品目に材質別の行を 2 つ用意して選択条件で取捨</b>するのが設計パターン）。なぜ「BOM 側で条件分岐」ではなく「行を増やして選択条件」なのか、理由を説明せよ。</div>
+<figure class="gui"><img src="assets/gui/config_s08_1.svg" alt="CU01 の依存関係エディタ。ZVC_DEP_PG、種類 選択条件、式 $ROOT.ZVC_ACCESSORY = &#x27;PG&#x27; OR $ROOT.ZVC_ACCESSORY = &#x27;PG_FG&#x27;。" loading="lazy"><figcaption><b class="t">C6 選択条件 ZVC_DEP_PG（圧力計は付属品 PG / PG_FG のとき採用）</b><span class="tx">CU01</span><span class="scr">依存関係の登録：選択条件（Selection condition）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> OR を書き忘れると PG_FG を選んだときに片方しか出ない（複数値特徴の定番症状）</li><li><b>2</b> 適用先は BOM 明細（CS02 の 0070）。構成品目の品目マスタに書いても効かない</li></ol><p class="gui-tip">自システムでの確認：CU03 の使用箇所一覧に BOM 明細 0070 が出るか。CS03 の明細で選択条件欄を目視。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s08_2.svg" alt="CS02 の BOM 明細一覧。8 明細のうち、材質別ケーシングと付属品行に選択条件 ID が入っている。" loading="lazy"><figcaption><b class="t">C6 選択条件を BOM 明細（ケーシング 3 行・圧力計・流量計）に貼る</b><span class="tx">CS02</span><span class="scr">品目 ZVC-PUMP01 のスーパー BOM：選択条件の割当</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 行ごとに別 ID を作る（同じ構成品目でも条件が違えば行を分ける）</li><li><b>2</b> 有効日が将来日付だと受注日に展開されない（「部品が出ない」の定番原因）</li></ol><p class="gui-tip">自システムでの確認：CS03 の BOM 明細で選択条件欄を行ごとに目視。CS02 の明細 → 「選択条件」欄から CU01 を起動できる。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c7"><span class="no">C7</span><h3>依存関係③：手続き（Procedure）とアクション（Action）</h3><span class="tc">CU01 / CU02 / CS02 / CA02 / CU50</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>「選ぶだけでは決まらないもの」を計算・自動セットする。本站：<b>容量 <code>120</code> のときモータ数量を 2 に、組立標準時間を 1.4 倍に</b>。また「選んだら他の値を自動で正しくする」手続きも作る。</dd>
+  <dt>IMG パス</dt>
+  <dd>SPRO → バリアント構成 → 依存関係（<code>CU01</code>）。適用は特徴値／BOM 明細／工程（標準値）。</dd>
+  <dt>T-code</dt>
+  <dd><code>CU01</code>〜<code>CU03</code>・<code>CS02</code>（構成品目の数量手続き）・<code>CA02</code>（工程の標準値手続き）・<code>CU50</code></dd>
+  <dt>入力値</dt>
+  <dd>
+<pre class="vals">ZVC_DEP_MTR_QTY   手続き / 適用先＝モータの BOM 明細
+   依頼：容量 120 なら数量 2、それ以外は 1
+   （数量項目の初期値は 1 とし、120 のときだけ書き換える方式が安全）
+ZVC_DEP_AUTO_PG   手続き / 適用先＝付属品の特徴値（または容量値側）
+   $SELF.ZVC_ACCESSORY = 'PG'      ← 容量 120 を選んだら付属品を PG に自動セット
+ZVC_DEP_TIME_120  手続き / 適用先＝工程 0010 の標準値
+   標準時間を 1.4 倍する（標準値項目の名称は自システムの CA03 で確認してから書く）
+ZVC_DEP_ACT_*     アクション（発展。本站では説明のみ、実装は環境依存）</pre></dd>
+</dl>
+<ol class="steps">
+  <li><code>CU01</code> → 新しい依存関係 <code>ZVC_DEP_MTR_QTY</code> → 種類「<b>手続き</b>」。</li>
+  <li>適用先として <code>CS02</code> のモータ明細を指定（<code>CS02</code> の明細 → 「手続き」欄から <code>CU01</code> を呼び出す）。</li>
+  <li>式を書く：容量が 120 のときだけ数量を 2 にする。<b>数量を直接書き換える式の書き方は環境差が出やすい</b>ので、まずは
+  ① モータ明細の数量初期値を <code>1</code> にし、② 容量 <code>120</code> 用に「代替品目/数量 2 の別行」を用意して選択条件で取捨する、という<b>確実なパターン</b>から始める（手続きでの上書きは環境依存の書き方が増えるため、練習では後半で試す）。</li>
+  <li><code>CA02</code> → 工程 0010 → 「標準値」欄に手続きを割当。<b>項目名は <code>CA03</code> の画面で確認してから書く</b>（標準値の項目名はリリース・作業区で異なる）。</li>
+  <li><code>CU50</code> → 容量 <code>50</code> と <code>120</code> で構成し、<b>数量・標準値の差</b>を確認。</li>
+  <li>アクション（発展）：<code>CU01</code> の種類で「アクション」を選ぶと、設定結果を使った処理（伝票項目への転記・出力など）を定義できる。<b>何ができるかはアドオン設計とリリースに依存するため、本站では実装せず「こういう用途がある」まで</b>。</li>
+</ol>
+<div class="box info"><b class="t">確認（自システム）</b>
+① <code>CU50</code> の構成結果で数量・標準値の差を目視（<b>差が出ないときは適用先と式の項目名を疑う</b>）。
+② <code>CU03</code> の「使用箇所一覧」で、手続きがどの BOM 明細／工程に貼られているかを確認。
+③ 標準値項目の名称は <code>CA03</code>（作業手順照会）の標準値欄で確認。<b>本站では項目名を断定していません</b>（リリース差が大きいため）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>手続きの実行順序</b>が想定と違う（複数の手続きは処理順に依存）。「A をセットしてから B を評価する」前提の式を書くと、評価順によって結果が変わる。
+② 数量を手続きで上書きした後、<b>指図側で数量が再展開されて戻る</b>（指図作成時の再展開）→ 依存関係の「再展開タイミング」を理解していないと「指示どおりにならない」。
+③ アクションを安易に使い始めると、<b>設定の副作用（意図しない伝票変更）</b>で現場が混乱する。実務では<b>手続きで済むなら手続きまで</b>に留めるのが安全。
+④ 標準値の書き換えは<b>原価と差異に直結</b>する（標準時間が変われば作業工数原価が変わる）。学習環境でも影響先を意識する。</div>
+<div class="task"><b class="t">練習課題</b>「容量 <code>120</code> のとき、組立標準時間が 1.4 倍になる」を、① 手続き方式と ② BOM 行を増やす方式の両方で考え、<b>どちらが保守しやすいか</b>をトレードオフ付きで説明せよ（正解はありません。設計判断としての一貫性が求められます）。</div>
+<figure class="gui"><img src="assets/gui/config_s09_1.svg" alt="CU01 の依存関係エディタ。ZVC_DEP_MTR_QTY、種類 手続き、適用先 CS02 のモータ明細 0060。" loading="lazy"><figcaption><b class="t">C7 手続き ZVC_DEP_MTR_QTY（容量 120 のときモータ数量を 2 に）</b><span class="tx">CU01</span><span class="scr">依存関係の登録：手続き（Procedure）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 手続きは実行順に依存する。「A をセットしてから B」の式は評価順で結果が変わる</li><li><b>2</b> 項目名を推測で書かない。CA03 / CS03 の画面で確認してから入力する</li></ol><p class="gui-tip">自システムでの確認：CU50 の構成結果で数量・標準値の差を目視。標準値の項目名は CA03 の標準値欄で確認してから書く。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s09_2.svg" alt="CU50 の構成結果。容量 80 と 120 の 2 通りで、モータ数量と組立標準時間が変わることを示す。" loading="lazy"><figcaption><b class="t">C7 手続き（または行分割）の結果を CU50 で確認する</b><span class="tx">CU50</span><span class="scr">設定シミュレーション：数量・標準値の差（容量 80 / 120）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 容量 120 だけ数量 2・標準時間 1.4 倍（手続きの実行結果）</li></ol><p class="gui-tip">自システムでの確認：CU50 で 2 通りを構成して数量・標準値を比較。CU03 の使用箇所一覧で手続きの適用先を確認。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c8"><span class="no">C8</span><h3>スーパー BOM の登録と選択条件</h3><span class="tc">CS01 / CS02 / CS03</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd><b>全バリエーション分の構成品目を 1 つの BOM に入れる</b>（＝スーパー BOM）。選択条件で今回の構成に必要なものだけが受注 BOM に残る。</dd>
+  <dt>IMG パス</dt>
+  <dd>BOM の設定は IMG の「品目 BOM」系。実作業は <code>CS01</code>。BOM 用途（<code>1</code>＝生産）とプラントを確認。</dd>
+  <dt>T-code</dt>
+  <dd><code>CS01</code>（登録）・<code>CS02</code>（変更）・<code>CS03</code>（照会）・<code>CS11</code>/<code>CS12</code>/<code>CS13</code>（多階層）・<code>CU50</code></dd>
+  <dt>入力値</dt>
+  <dd>
+<table class="tbl wide">
+<tr><th>構成品目</th><th>品目コード</th><th>数量</th><th>選択条件（依存関係）</th></tr>
+<tr><td>ケーシング（FC200）</td><td><code>ZVC-CAS-FC</code></td><td>1</td><td><code>ZVC_DEP_CAS_FC</code>（<code>$ROOT.ZVC_MATERIAL = 'FC200'</code>）</td></tr>
+<tr><td>ケーシング（SUS304）</td><td><code>ZVC-CAS-SUS304</code></td><td>1</td><td><code>ZVC_DEP_CAS_SUS</code>（<code>= 'SUS304'</code>）</td></tr>
+<tr><td>ケーシング（SUS316）</td><td><code>ZVC-CAS-SUS316</code></td><td>1</td><td><code>ZVC_DEP_CAS_SUS</code>（<code>= 'SUS316'</code>。行ごとに別 ID を作るのが安全）</td></tr>
+<tr><td>羽根車 / 軸</td><td><code>ZVC-IMP</code> / <code>ZVC-ROD</code></td><td>1 / 1</td><td>（なし＝全構成で採用）</td></tr>
+<tr><td>モータ</td><td><code>ZVC-MTR</code></td><td>1（容量 120 は 2）</td><td>（なし。数量は手続きか行追加で制御 → C7）</td></tr>
+<tr><td>圧力計</td><td><code>ZVC-PG</code></td><td>1</td><td><code>ZVC_DEP_PG</code></td></tr>
+<tr><td>流量計</td><td><code>ZVC-FG</code></td><td>1</td><td><code>ZVC_DEP_FG</code></td></tr>
+</table></dd>
+</dl>
+<ol class="steps">
+  <li>部品品目（<code>ZVC-CAS-*</code>/<code>ZVC-IMP</code>/<code>ZVC-ROD</code>/<code>ZVC-MTR</code>/<code>ZVC-PG</code>/<code>ZVC-FG</code>）を <code>MM01</code> で作成（品目タイプは <code>ROH</code>/<code>HALB</code> 等、MRP1 は <code>PD</code>／ロットサイズ <code>EX</code>。練習用に初期在庫は 561 で入れておくと以后の入出庫で詰まらない）。</li>
+  <li><code>CS01</code> → 品目 <code>ZVC-PUMP01</code> → プラント <code>1000</code> → BOM 用途 <code>1</code>（生産）→ 有効日（受注日より前、例 年初）を入力。</li>
+  <li>上表の 7〜8 行を入力（<b>ケーシングは材質別に 3 行</b>。<b>スーパー BOM なので「全部入れる」</b>のが正しい）。</li>
+  <li>各行の「選択条件」欄に依存関係 ID を割当（C6 で作ったもの。無ければその場で作成）。</li>
+  <li>保存 → <code>CS03</code> で明細と選択条件を確認。</li>
+  <li><code>CU50</code> → 材質 <code>SUS316</code> で構成 → BOM 展開 → <b>ケーシングが <code>ZVC-CAS-SUS316</code> の 1 行だけになる</b>ことを確認（他 2 行が消える）。</li>
+</ol>
+<div class="box info"><b class="t">確認（自システム）</b>
+① <code>CS03</code>：明細数と選択条件の有無。② <code>CU50</code>：構成ごとの展開結果（BOM 展開レベルを変えて比較）。
+③ 数量は <code>CS03</code> の明細数量と <code>CU50</code> の展開結果が一致するか（手続きを入れた後は必ず見る）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>「1 つの構成品目に 1 つの選択条件」を後から書き換える</b>と、他のバリエーションが壊れる → <b>行を分けて ID を分ける</b>のが安全（保守性の設計判断）。
+② 有効日・変更番号（<code>ECN</code>）の運用が厳しい環境では、BOM 変更が承認フローに入り当日に直せない（→ 変更統制の論点）。
+③ 代替 BOM・使用箇所（<code>1</code>＝生産）を間違えると、指図に展開されない。
+④ スーパー BOM を「受注 BOM にコピーした後に直す」運用を混同する：<b>直すべきはスーパー BOM</b>（受注 BOM はコピー。手修正は受注単位の例外）。</div>
+<div class="task"><b class="t">練習課題</b>「材質別ケーシング 3 行」を 1 行（<code>ZVC-CAS</code>）にして、手続きで品目を切り替える方式は可能か？<b>可能だが推奨しない理由</b>を、保守性・可読性・故障切り分けの 3 観点で説明せよ。</div>
+<figure class="gui"><img src="assets/gui/config_s10_1.svg" alt="CS01 の BOM 明細入力画面。明細 0010〜0080 の 8 行（材質別ケーシング 3 行を含む）を入力する。" loading="lazy"><figcaption><b class="t">C8 スーパー BOM＝全バリエーション分を 1 つの BOM に入れる（全部入れて、後で絞る）</b><span class="tx">CS01</span><span class="scr">品目 ZVC-PUMP01 の BOM 登録：明細一覧（スーパー BOM）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 材質別ケーシングを 3 行。ここで削らず選択条件で取捨するのがスーパー BOM の設計</li><li><b>2</b> 付属品行は C6 の選択条件で取捨される</li></ol><p class="gui-tip">自システムでの確認：CS03（照会）で明細数と選択条件の有無。CS11 / CS12 / CS13 は多階層照会。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s10_2.svg" alt="CS03 の BOM 明細照会。8 明細と各行の選択条件 ID が表示されている。" loading="lazy"><figcaption><b class="t">C8 保存後に CS03 で明細と選択条件を行ごとに目視する</b><span class="tx">CS03</span><span class="scr">BOM 明細の照会：選択条件の確認</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 有効日が未来／過去だと CU50・VA01 で展開されない（特定の日付だけ部品が出ない症状）</li></ol><p class="gui-tip">自システムでの確認：CS03 の選択条件欄（行ごと）と有効日。CU50 の展開結果と一致するか。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c9"><span class="no">C9</span><h3>作業手順（工程）と依存関係</h3><span class="tc">CA01 / CA02 / CA03 / CU01</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd><b>作業手順にも「全部の工程」を入れておき、選択条件で取捨する</b>。塗装なしの構成では塗装工程が消える、という動きを作る。標準値の書き換え（手続き）もここで効く。</dd>
+  <dt>IMG パス</dt>
+  <dd>作業手順は IMG の「製造」系（作業区・工程管理）。実作業は <code>CA01</code>。作業区 <code>ZVC_WC01</code>・作業手順グループの確認は IMG の工程管理側。</dd>
+  <dt>T-code</dt>
+  <dd><code>CA01</code>（登録）・<code>CA02</code>（変更）・<code>CA03</code>（照会）・<code>CU01</code>（選択条件・手続き）・<code>CU50</code></dd>
+  <dt>入力値</dt>
+  <dd>
+<pre class="vals">作業手順グループ / 作業手順  ZVC_RT01
+プラント 1000 / 品目 ZVC-PUMP01
+工程 0010 組立（作業区 ZVC_WC01）標準時間 1.0 H  ← 全構成で採用
+工程 0020 検査（作業区 ZVC_WC01）標準時間 0.5 H  ← 全構成で採用
+工程 0030 塗装（作業区 ZVC_WC01）標準時間 0.8 H  ← 選択条件 ZVC_DEP_COAT_OP（塗装 NONE では非採用）
+確認        CA03 の標準値欄で項目名を確認してから手続きを書く（項目名は環境依存）</pre></dd>
+</dl>
+<ol class="steps">
+  <li><code>CA01</code> → 品目 <code>ZVC-PUMP01</code> / プラント <code>1000</code> → グループ <code>ZVC_RT01</code> → 工程 0010/0020/0030 と作業区・標準時間を入力。</li>
+  <li>工程 0030 の「選択条件」欄に <code>ZVC_DEP_COAT_OP</code>（<code>$ROOT.ZVC_COATING &lt;&gt; 'NONE'</code>）を割当。</li>
+  <li><code>CA02</code> で標準値の項目名を確認し、必要なら C7 の手続き（標準時間 1.4 倍）を割当。</li>
+  <li><code>CU50</code> → 塗装 <code>NONE</code> で構成 → <b>工程 0030 が出ない</b>、<code>EPOXY</code> で構成 → <b>出る</b>ことを確認。</li>
+  <li>製造指図を作成する练习（<a href="handson-4.html">④</a>）で、指図の工程一覧にも同じ取捨が効くことを確認（<code>CO03</code>）。</li>
+</ol>
+<div class="box info"><b class="t">確認（自システム）</b>
+① <code>CA03</code> で工程と選択条件を照会。② <code>CU50</code> の「工程」結果で取捨を確認。
+③ 指図側は <code>CO03</code> → 工程ボタン → 「工程の選択」結果。<b>受注 BOM と同様、指図作成時に選択条件が再評価される</b>ことを確認する。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>作業手順の有効日・作業手順グループ</b>の相違で、品目に手順が見つからない（<code>CO03</code> で工程が出ない症状）。
+② 工程を消す条件を「工程の削除フラグ」でやろうとする → <b>選択条件を使う</b>のが VC の正解。
+③ 標準値の手続きを入れた後、<b>指図の再展開で標準値が元に戻る</b>（再評価タイミングの理解不足）。</div>
+<div class="task"><b class="t">練習課題</b>「容量 <code>120</code> のときだけ検査工程を 2 回（0020 を 2 行）にする」設計を、① 選択条件方式 ② 手続き（標準時間）方式 の 2 案で比較せよ。</div>
+<figure class="gui"><img src="assets/gui/config_s11_1.svg" alt="CA01 の作業手順。工程 0010 組立・0020 検査・0030 塗装と、作業区 ZVC_WC01・標準時間・選択条件が並ぶ。" loading="lazy"><figcaption><b class="t">C9 工程も「全部入れて選択条件で取捨」（塗装 NONE で 0030 が消える）</b><span class="tx">CA01</span><span class="scr">作業手順 ZVC_RT01：工程一覧</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 塗装工程の選択条件。これが無いと塗装 NONE でも工程 0030 が出る</li></ol><p class="gui-tip">自システムでの確認：CA03（照会）で工程と選択条件。CU50 の「工程」ビューで取捨を確認。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s11_2.svg" alt="CA02 の工程詳細。工程 0030 塗装の標準値欄に手続き ZVC_DEP_TIME_120 を割り当てる。" loading="lazy"><figcaption><b class="t">C9 標準値の手続き（組立標準時間 1.4 倍）は項目名を CA03 で確認してから</b><span class="tx">CA02</span><span class="scr">作業手順の変更：工程 0030 の標準値と手続き</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 項目名を推測で書かない：CA03 の標準値欄で確認してから手続きを割り当てる</li></ol><p class="gui-tip">自システムでの確認：CA03 の標準値欄で項目名を確認。指図側は CO03 → 工程で再評価されることを確認。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c10"><span class="no">C10</span><h3>明細カテゴリの確認（VC 品目がどう決定されるか）</h3><span class="tc">VOV7 / VOV4 / VA03</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>「設定可能品目を入れたら、どの明細カテゴリが決まるか」を確認する。<b>VC 用の明細カテゴリが決まらないと構成画面が出ない／BOM が展開されない</b>。</dd>
+  <dt>IMG パス</dt>
+  <dd>SPRO → 販売と流通 → 販売伝票 → 販売伝票明細 → <b>明細カテゴリの定義（<code>VOV7</code>）</b>／<b>明細カテゴリの割当（<code>VOV4</code>）</b>。</dd>
+  <dt>T-code</dt>
+  <dd><code>VOV7</code>（定義）・<code>VOV4</code>（割当）・<code>VOV5</code>/<code>VOV6</code>（納入日程行カテゴリ）・<code>VA03</code>（実機確認）</dd>
+  <dt>入力値 / 確認対象</dt>
+  <dd>
+<pre class="vals">決定要素（VOV4 のキー）  販売伝票タイプ ／ 品目カテゴリグループ ／ 用途 ／ 上位明細カテゴリ
+本站の受注            OR（標準受注）＋ 品目カテゴリグループ 0002 ＋ 用途（空）＋ 上位（空）
+結果                  環境により異なる（「通常は TAN 系」という記載があるが、TAC 等の VC 専用カテゴリを
+                       使う設計もある → VOV4 と受注明細で必ず実測する）
+TAN 以外だった場合     その明細カテゴリの属性（構成入力／BOM 展開／価格設定／納入日程行許可）を VOV7 で確認</pre></dd>
+</dl>
+<ol class="steps">
+  <li><code>VOV4</code> → 販売伝票タイプ <code>OR</code> を選び、品目カテゴリグループ <code>0002</code> の行を探す（F4 で一覧）。<b>決定の優先順（より特定的な行が勝つ）</b>を確認。</li>
+  <li>決まった明細カテゴリ（例 <code>TAN</code>）を <code>VOV7</code> で開き、属性を確認：<b>構成入力（設定の可否）／BOM 展開／価格設定／納入日程行カテゴリの許可</b>。</li>
+  <li><code>VOV5</code>/<code>VOV6</code> で納入日程行カテゴリ（所要量転送の有無）を確認。<b>所要量が転送されないと MD04 に何も出ません</b>。</li>
+  <li><code>VA01</code> で実際に受注を 1 件作り（保存しないでよい）、明細カテゴリが何になったかを <code>VA03</code> で確認 → <b>これが唯一の確実な答え</b>。</li>
+  <li>必要なら <b>専用の明細カテゴリを自前で作る</b>（<code>VOV7</code> で <code>TAN</code> をコピー → <code>ZVC1</code> など。用途は発展課題）。<b>明細カテゴリの新規作成は影響が大きい</b>ので、必ず練習依頼に入れて後で回滚する。</li>
+</ol>
+<div class="box info"><b class="t">確認（自システム）</b>
+① <code>VA03</code> の明細：<b>明細カテゴリ</b>と、その明細が「構成入力可」かどうか（構成ボタンの有無）。
+② <code>VOV7</code> の該当カテゴリの属性（構成・BOM 展開・価格設定）。
+③ 「通常は <code>TAN</code>」という記載（varconf）と、<code>TAC</code>＝Configurable material item という記載（thesdvault）が<b>両方存在するため、本站では標準値を断定しません</b>。<b><code>VOV4</code>＋<code>VA03</code> の実測を正とする</b>。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>「VC 専用の明細カテゴリ」が標準にあると思い込む</b>（明細カテゴリ <code>TAK</code> が標準に存在しない、という SAP Note 2708455 の話と同種の落とし穴）。
+② 品目カテゴリグループを <code>0001</code> のままにして「構成画面が出ない」。
+③ 納入日程行カテゴリで<b>所要量転送が OFF</b> のため MD04 に需要が出ない（故障表 #2 の第一嫌疑になる）。
+④ 明細カテゴリを後から変えると<b>既存受注の構造が変わる</b>（価格・所要量・在庫区分に波及）。</div>
+<div class="task"><b class="t">練習課題</b>自分の環境で <code>VOV4</code> が決める<i>明細カテゴリ</i>を実測し、その属性（構成入力／BOM 展開／所要量転送）をワークシートに記録せよ。講義資料の記載と違ったら、<b>差異と推測理由</b>も書く。</div>
+<figure class="gui"><img src="assets/gui/config_s12_1.svg" alt="VOV4 の明細カテゴリ割当画面。販売伝票タイプ OR、品目カテゴリグループ 0002 の行と決定される明細カテゴリが並ぶ。" loading="lazy"><figcaption><b class="t">C10 販売伝票タイプ OR × 品目カテゴリグループ 0002 の行を実測する</b><span class="tx">VOV4</span><span class="scr">明細カテゴリの割当：決定キーの確認</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> VC 品目のキーは 0002。0001 のままにすると VC 用の明細カテゴリが決まらず BOM が展開しない</li><li><b>2</b> 決まった明細カテゴリは環境差が大きい（TAN 系という記載／TAC 等の専用カテゴリ設計もある）</li></ol><p class="gui-tip">自システムでの確認：VA01 で受注を 1 件作り（保存しなくてよい）、VA03 の明細で実際の明細カテゴリを見る＝唯一の確実な答え。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s12_2.svg" alt="VOV7 の明細カテゴリ属性。明細カテゴリ TAN の構成入力・BOM 展開・価格設定・納入日程行カテゴリの許可を確認する。" loading="lazy"><figcaption><b class="t">C10 明細カテゴリの属性（構成入力 / BOM 展開 / 価格設定 / 納入日程行の許可）を確認</b><span class="tx">VOV7</span><span class="scr">明細カテゴリの属性（定義）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 構成入力が許可でないと構成ボタンが出ない</li><li><b>2</b> BOM 展開が許可でないと受注で構成品目が出ない（処理形式と合わせて確認）</li><li><b>3</b> 所要量転送が OFF だと MD04 に需要が出ない（故障表 #9 の第一嫌疑）</li></ol><p class="gui-tip">自システムでの確認：VOV7 の該当カテゴリの属性、VOV5 / VOV6 で納入日程行カテゴリ（所要量転送の有無）。所要量転送が OFF だと MD04 に需要が出ない。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c11"><span class="no">C11</span><h3>戦略グループと所要量クラス（VC × 生産形態の接点）</h3><span class="tc">OPPS / OPPJ / OVZG</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>VC を「どの生産形態に乗せるか」を確認する。本站：<b>戦略 <code>25</code> → 所要量タイプ <code>KEK</code> → 所要量クラス <code>046</code> 系（受注在庫 E）</b>。練習⑤では <code>82</code>/<code>KMFA</code>/<code>201</code>/<code>PP04</code> へ切り替える。</dd>
+  <dt>IMG パス</dt>
+  <dd>SPRO → 生産 → 生産計画 → <b>計画手配/計画方針（<code>OPPS</code>＝戦略グループ、<code>OPPJ</code>＝計画方針）</b>／SPRO → 生産 → MRP → <b>所要量転送（<code>OVZG</code>）</b>。</dd>
+  <dt>T-code</dt>
+  <dd><code>OPPS</code>・<code>OPPJ</code>・<code>OVZG</code>・<code>MD04</code>・<code>CO03</code></dd>
+  <dt>入力値 / 確認対象</dt>
+  <dd>
+<pre class="vals">戦略グループ 25   名称：Make-to-Order Production w/ Configuration
+   → 所要量タイプ KEK     → 所要量クラス 046 系（受注在庫・評価の扱いは要確認）
+戦略グループ 82   名称：組立処理（Assemble-to-Order）
+   → 所要量タイプ KMFA    → 所要量クラス 201 → 指図タイプ PP04（受注と指図 1:1・BOM 必須）
+確認：OPPS で 25 / 82 のエントリと紐づく所要量タイプ、OVZG で 046 / 201 の属性
+      （在庫区分・評価区分・指図/計画手配の種別）を照会する</pre></dd>
+</dl>
+<ol class="steps">
+  <li><code>OPPS</code> → 戦略グループ <code>25</code> を照会し、紐づく所要量タイプ（<code>KEK</code>）と計画方針を確認。</li>
+  <li><code>OPPJ</code> → 計画方針（方可）の属性（指図タイプ・所要量クラス）を確認。</li>
+  <li><code>OVZG</code> → 所要量クラス <code>046</code> の属性を確認：<b>在庫区分（受注在庫）・評価の有無・指図タイプ・計画手配タイプ</b>。<b>この 1 画面が VC 受注生産の挙動を決めます</b>。</li>
+  <li>品目 <code>ZVC-PUMP01</code> の MRP3 戦略グループが <code>25</code> であることを <code>MM03</code> で再確認（C3）。</li>
+  <li>受注 → MRP 実行（<code>MD01N</code>/<code>MD02</code>）→ <code>MD04</code> で計画手配の在庫区分が受注在庫（E）になっているか確認（→ <a href="handson-4.html">练习④</a>）。</li>
+</ol>
+<div class="box info"><b class="t">確認（自システム）</b>
+① <code>OVZG</code> で <code>046</code> の属性（評価区分・在庫区分）を目視。② <code>MD04</code> の計画手配の「在庫区分」列。③ <code>MMBE</code> で受注在庫（特別在庫 E）の行が出るか。
+<b>評価（金額）まで見る場合は、品目の会計ビューと所要量クラスの評価区分を合わせて確認</b>します。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>戦略グループの値が環境で異なる</b>（<code>20</code>/<code>25</code>/<code>82</code> は一般的だが、業界ソリューションや既有改造で名称・紐づけが違う）→ <code>OPPS</code> の実測を正とする。
+② 所要量クラス <code>046</code> が<b>無い環境</b>（古いリリース・Cloud のスコープ依存）→ 類似のクラス（<code>040</code> 系）を使う。<b>「受注在庫(E)／個別所要量／指図タイプ」の 3 属性が合っているかで判断</b>する。
+③ 戦略 <code>82</code> に切り替えたのに<b>指図が自動作成されない</b> → BOM 未整備・指図タイプ <code>PP04</code> の設定不足（练习⑤）。</div>
+<div class="task"><b class="t">練習課題</b><code>OVZG</code> で <code>046</code> と <code>201</code> の属性を並べて比較し、<b>違いが業務にどう現れるか</b>（受注と指図の関係・在庫の持ち方・所要量の出方）を 3 点で説明せよ。</div>
+<figure class="gui"><img src="assets/gui/config_s13_1.svg" alt="OPPS の戦略グループ一覧。戦略 25 と 82 の名称・所要量タイプが並ぶ。" loading="lazy"><figcaption><b class="t">C11 戦略 25 → 所要量タイプ KEK、82 → KMFA（練習⑤で切替）</b><span class="tx">OPPS</span><span class="scr">戦略グループの定義（25 / 82）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> VC × 受注生産の入口。ここが 25 でないと受注在庫（E）にならない</li></ol><p class="gui-tip">自システムでの確認：OPPS の 25 / 82 のエントリと紐づく所要量タイプ、OPPJ で計画方針の属性（指図タイプ・所要量クラス）。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s13_2.svg" alt="OVZG の所要量クラス。所要量クラス 046 の在庫区分・評価・指図タイプ・計画手配タイプを確認する。" loading="lazy"><figcaption><b class="t">C11 この 1 画面が VC 受注生産の挙動を決める（在庫区分・評価・指図タイプ）</b><span class="tx">OVZG</span><span class="scr">所要量クラスの属性（046 / 201）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 在庫区分が受注在庫でないと、受注在庫（E）にならない（故障表 #3）</li><li><b>2</b> 評価区分の有無が入出庫の仕訳と差異に効く（C15 と合わせて確認）</li></ol><p class="gui-tip">自システムでの確認：OVZG で 046 の属性（在庫区分・評価区分・指図タイプ）と 201（指図タイプ PP04）。評価まで見る場合は品目の会計ビューと合わせる。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c12"><span class="no">C12</span><h3>ATP・在庫確認（納期が決まる仕組み）</h3><span class="tc">MM02（MRP3）・OVZ2 系・CO09・CU50</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>「設定した内容で、いつ納品できるか」を出す仕組みを確認する。<b>VC の ATP は「構成品目の可用性」にも依存する</b>ため、在庫確認の範囲（Scope of Check）と構成品目への展開を理解する。</dd>
+  <dt>IMG パス</dt>
+  <dd>SPRO → 販売と流通 → 基本機能 → <b>在庫確認（<code>OVZ2</code> 系・確認グループと確認規則）</b>／SPRO → 生産 → MRP → 計画手配（構成品目の在庫確認）。</dd>
+  <dt>T-code</dt>
+  <dd><code>MM02</code>（MRP3 在庫確認 <code>02</code>）・<code>OVZ2</code> 系（確認グループ）・<code>CO09</code>（可用量）・<code>CU50</code>・<code>VA01</code>（納期決定の実挙動）</dd>
+  <dt>入力値 / 確認対象</dt>
+  <dd>
+<pre class="vals">品目 ZVC-PUMP01 の MRP3 在庫確認（確認グループ） = 02（個別所要量ベース）という記載（varconf）
+受注時の挙動：納入日程行の希望納期 → 品目の在庫確認 → 構成品目の可用性（設定プロファイル/BOM 展開の範囲）
+確認の観点：① 何を見て納期を決めたか（CO09 の ATP 要素） ② 構成品目の在庫が納期に効くか
+          ③ 在庫確認が OFF の納入日程行カテゴリだと納期が「希望のまま」になること</pre></dd>
+</dl>
+<ol class="steps">
+  <li><code>MM03</code> → MRP3 の在庫確認（確認グループ）が何になっているか確認（本站は <code>02</code> を仮定）。</li>
+  <li><code>OVZ2</code> 系で確認グループと確認規則（在庫・入庫・指図・購買のどれを見るか）を照会。</li>
+  <li><code>CO09</code> → 品目 <code>ZVC-PUMP01</code>：可用量と ATP 要素（受注がどう引当てられているか）を確認。</li>
+  <li><code>VA01</code> で受注を入力し、<b>納入日程行の納期が希望どおりか／引当てされたか</b>を確認（在庫ゼロなら希望納期のままで受注が通る＝MTO の正常動作）。</li>
+  <li>構成品目の在庫（<code>MMBE</code>）と <code>CO09</code> を見比べ、<b>どこまで ATP が見ているか</b>を記録（環境差が最も出る領域）。</li>
+</ol>
+<div class="box info"><b class="t">確認（自システム）</b>
+① <code>CO09</code> の画面で「確認の範囲（Scope of Check）」を確認。② 受注明細の納入日程行で<b>引当タイプ・確認数量</b>を確認。
+③ 構成品目に在庫がある状態（561 で投入）で受注を 2 回作り、納期が変わるかを見る（変わらない＝親品目だけを見ている＝<b>設計意図の確認</b>）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>在庫ゼロで納期が希望のまま</b>でも MTO では正常（見込在庫を持たない）。これを「ATP の故障」と誤診しない。
+② 構成品目まで ATP を見たい場合は<b>設定プロファイル／BOM 展開／利用可能在庫の設計</b>が必要（プロジェクト判断）。
+③ 確認グループ <code>02</code> が環境に無い／別の値（例 <code>01</code>）→ <code>MM03</code> と <code>OVZ2</code> の実測を正とする。</div>
+<div class="task"><b class="t">練習課題</b>受注時に「構成品目の在庫が 0 のときだけ納期が遅れる」業務にしたい。この要件を実現するにはどの設定・設計が必要か、<b>3 つの候補</b>を挙げてトレードオフを書け。</div>
+<figure class="gui"><img src="assets/gui/config_s14_1.svg" alt="MM02 の MRP3 ビュー。戦略グループ 25、在庫確認（確認グループ）02、個別/包括所要量 1。" loading="lazy"><figcaption><b class="t">C12 VC 受注生産は個別所要量ベースの在庫確認（02 系）が前提</b><span class="tx">MM02</span><span class="scr">品目 ZVC-PUMP01 の変更：MRP3 在庫確認（確認グループ）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 確認グループ＝ATP が何を見るか。環境に 02 が無ければ MM03 と OVZ2 の実測を正とする</li><li><b>2</b> 在庫ゼロでも受注が通るのは MTO の正常動作（見込在庫を持たない）</li></ol><p class="gui-tip">自システムでの確認：MM03 の MRP3 で確認グループを確認（本站は 02 を仮定）。OVZ2 系で確認グループと確認規則（在庫・入庫・指図・購買のどれを見るか）を照会。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s14_2.svg" alt="CO09 の可用量照会。受注明細の納入日程行と確認数量、確認の範囲が並ぶ。" loading="lazy"><figcaption><b class="t">C12 受注がどう引当てられているかを CO09 で読む</b><span class="tx">CO09</span><span class="scr">可用量照会：ATP 要素と確認の範囲</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 確認の範囲（Scope of Check）と確認数量。ここで納期の決まり方が見える</li></ol><p class="gui-tip">自システムでの確認：CO09 の「確認の範囲（Scope of Check）」と受注明細の納入日程行の引当タイプ・確認数量。構成品目の在庫（MMBE）と見比べる。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c13"><span class="no">C13</span><h3>変種価格（<code>VA00</code> と特徴の追加データ）</h3><span class="tc">CT04 / V/06 / V/08 / VK11 / VK13</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>「選んだオプションで価格が上がる」仕組みを作る。<b>条件タイプ <code>VA00</code>（変種条件）＋計算手続＋条件レコード＋特徴の追加データ</b>の 4 点セット。</dd>
+  <dt>IMG パス</dt>
+  <dd>SPRO → 販売と流通 → 基本機能 → <b>価格決定 → 条件タイプの定義（<code>V/06</code>）／計算手続の定義（<code>V/08</code>）</b>。条件レコードは <code>VK11</code>。</dd>
+  <dt>T-code</dt>
+  <dd><code>CT04</code>（追加データ）・<code>V/06</code>・<code>V/08</code>・<code>VK11</code>/<code>VK12</code>/<code>VK13</code>・<code>VA03</code>（条件画面）</dd>
+  <dt>入力値</dt>
+  <dd>
+<pre class="vals">条件タイプ  VA00（変種条件。名称は「Variant condition」系）
+特徴の追加データ  ZVC_MATERIAL（または専用の価格用特徴）に
+                  テーブル SDCOM / 項目 VKOND を指定（LO-VC の記載。AVC は MMCOM-VKOND という記載）
+                  → CT04 の「追加データ」タブで設定。SE11 で構造の実在を確認する
+計算手続          標準の受注用手続に VA00 のステップが存在するか、順序（小計との前後）を確認
+条件レコード       VK11 → VA00 → キー（VKOND の値 = 特徴値）ごとに金額
+  例）SUS316 = 120,000 / EPOXY = 35,000 / FG = 48,000（例。自システムの金額が正）
+基本価格          PR00 = 850,000（条件レコード）</pre></dd>
+</dl>
+<ol class="steps">
+  <li><code>CT04</code> → 価格のキーに使う特徴（本站は <code>ZVC_MATERIAL</code>、練習では専用特徴 <code>ZVC_PRICEKEY</code> を作るのも可）を開き、<b>「追加データ」タブ</b>でテーブル／項目を指定。</li>
+  <li><code>SE11</code> で その構造（<code>SDCOM</code>/<code>MMCOM</code>）と項目（<code>VKOND</code>）が存在するか確認。<b>存在しなければ自分の環境の正しい構造を探して指定する</b>（本站では存在を断定していません）。</li>
+  <li><code>V/06</code> → <code>VA00</code> の属性（計算タイプ＝加算／小計など）と有効な販売組織を確認。</li>
+  <li><code>V/08</code> → 受注の計算手続に <code>VA00</code> のステップがあるか、順序と「小計（<code>X</code> 系）」との関係を確認。</li>
+  <li><code>VK11</code> → <code>VA00</code> → キー（特徴値）ごとに条件レコードを作成（<code>SUS316</code>/<code>SUS304</code>/<code>FC200</code>/<code>EPOXY</code>/<code>URETHANE</code>/<code>PG</code>/<code>FG</code>）。</li>
+  <li><code>VA01</code> で受注を入力 → <code>VA03</code> の条件画面で <b><code>VA00</code> の行が出て、設定値に応じた金額になっている</b>ことを確認。</li>
+</ol>
+<div class="box info"><b class="t">確認（自システム）</b>
+① <code>VK13</code>：条件レコードの一覧（キーの値と金額）。② <code>VA03</code> 条件画面：<code>VA00</code> の行、決定された条件レコードのキー。
+③ <code>CT04</code> 追加データ：テーブル／項目名。
+④ SAP KBA 1934081 の説明どおり、<b>標準では「<code>VKOND</code> を参照する特徴の値」が変種条件行を決める</b>——受注画面で値がキーとして飛んでいるかを確認します。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>追加データが未設定</b>（最も多い）→ 価格のキーが空になり、条件レコードが引けず加算 0。
+② <b>計算手続に <code>VA00</code> が無い／順序が小計より前後で表示桁が変わる</b>（設計の合意対象）。
+③ 条件レコードの<b>キーの値が特徴値と完全一致していない</b>（大文字小文字・空白・全角）。
+④ <b>AVC 環境で <code>SDCOM</code> を指定して動かない</b> → <code>MMCOM-VKOND</code> という記載を疑う（<code>CT04</code> の追加データと <code>SE11</code> で確認）。</div>
+<div class="task"><b class="t">練習課題</b>① 材質 <code>SUS316</code> ＋ 容量 <code>120</code> の<b>組合せにだけ</b>追加加算を付ける方法を考える（ヒント：専用の価格用特徴と手続きでキーを作る）。
+② 加算を「金額」ではなく「率（％）」で持つ場合の設計を考え、金額方式とのトレードオフを書け。</div>
+<figure class="gui"><img src="assets/gui/config_s15_1.svg" alt="CT04 の追加データタブ。特徴 ZVC_MATERIAL にテーブル SDCOM（LO-VC の記載）と項目 VKOND を指定する。" loading="lazy"><figcaption><b class="t">C13 価格のキーに使う特徴に「追加データ」でテーブル / 項目を指定する</b><span class="tx">CT04</span><span class="scr">特徴の変更：追加データ（変種価格のキー）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 価格のキーに使う特徴にだけ追加データを定義する</li><li><b>2</b> 項目 VKOND に特徴値が飛ぶと、条件タイプ VA00 の条件レコードが引ける</li></ol><p class="gui-tip">自システムでの確認：SE11 で構造（SDCOM / MMCOM）と項目（VKOND）が存在するか確認。AVC は MMCOM-VKOND という記載。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s15_2.svg" alt="V/06 の条件タイプ定義と V/08 の計算手続。条件タイプ VA00、計算タイプ 加算、計算手続のステップ順序を確認する。" loading="lazy"><figcaption><b class="t">C13 条件タイプ VA00（変種条件）＋計算手続に VA00 のステップがあるか</b><span class="tx">V/06</span><span class="scr">条件タイプ VA00 と計算手続のステップ（V/08）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> ステップが無い／有効期間外だと条件画面に VA00 が出ない（加算が出ない第一嫌疑）</li><li><b>2</b> 小計（X 系）との前後で表示桁が変わる＝設計の合意対象</li></ol><p class="gui-tip">自システムでの確認：V/06 で VA00 の属性（計算タイプ＝加算／小計など）と有効な販売組織、V/08 で受注の計算手続に VA00 のステップがあるか。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s15_3.svg" alt="VK11 の条件レコード。条件タイプ VA00、販売組織 1000、キー（特徴値）ごとに金額と通貨が並ぶ。" loading="lazy"><figcaption><b class="t">C13 条件レコードはキー（特徴値）ごとに作る（VA03 の条件画面で加算が出る）</b><span class="tx">VK11</span><span class="scr">条件レコードの登録：VA00（特徴値ごとの加算）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> キーの値は特徴値と完全一致させる（大文字小文字・空白・全角に注意）</li><li><b>2</b> 有効期間外だと VA01 の条件画面に VA00 の加算が出ない</li></ol><p class="gui-tip">自システムでの確認：VK13 の条件レコード一覧（キーの値と金額）。VA03 の条件画面で決定された条件レコードのキーを見る。金額は例（自システムの金額が正）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c14"><span class="no">C14</span><h3>出荷・請求の前提（VC での見え方）</h3><span class="tc">VL01N / VL02N / VF01 / VTFL</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>構成された製品を出荷・請求まで通す前提を確認する。<b>操作は MTO/ETO と同じ</b>だが、<b>受注在庫（E）からの出庫</b>と<b>変種価格の加算</b>の 2 点が VC の見どころ。</dd>
+  <dt>IMG パス</dt>
+  <dd>SPRO → 販売と流通 → 出荷 → 出荷伝票（出荷タイプ <code>LF</code>）／販売 → 請求 → 請求伝票（請求タイプ <code>F2</code>・<code>VTFL</code> のコピー制御）。</dd>
+  <dt>T-code</dt>
+  <dd><code>VL01N</code>・<code>VL02N</code>（出庫確認 601）・<code>VF01</code>・<code>VF03</code>・<code>VTFL</code>・<code>VA03</code>（伝票フロー）</dd>
+  <dt>入力値 / 確認対象</dt>
+  <dd>
+<pre class="vals">出荷タイプ LF（標準）／ 出荷の在庫区分 = 受注在庫 E（= 受注明細に帰属）
+出庫確認（PGI）の移動タイプ 601（受注在庫からの出庫）
+請求タイプ F2 ／ コピー制御（出荷 → 請求）が有効であること
+請求書には VA00 の加算行が乗る（条件は出荷から請求へコピーされる）</pre></dd>
+</dl>
+<ol class="steps">
+  <li>完成品が受注在庫（E）に入庫されていることを <code>MMBE</code> で確認（→ <a href="handson-4.html">练习④</a>）。</li>
+  <li><code>VL01N</code> → 出荷作成 → 明細で <b>在庫区分 E と受注番号</b>、引当数量を確認。</li>
+  <li><code>VL02N</code> → 出庫確認（PGI）→ <b>移動タイプ 601</b> で受注在庫が減少し、会計伝票が生成されることを確認。</li>
+  <li><code>VF01</code> → 請求 → 明細の条件に <b><code>PR00</code>＋<code>VA00</code> の加算</b>が乗っているか確認。</li>
+  <li><code>VA03</code> → 伝票フローで 受注 → 出荷 → 請求 → 会計伝票 が閉じているか確認。</li>
+</ol>
+<div class="box info"><b class="t">確認（自システム）</b>
+① <code>VL01N</code> 明細の在庫区分。② PGI 後の <code>MMBE</code>（受注在庫が 0）。③ <code>VF03</code> の条件タブ（<code>VA00</code> 行）。
+④ 伝票フロー（履歴）で伝票チェーンが完結しているか。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>受注在庫が 0</b> なのに出荷しようとする（入庫 101 忘れ、または指図が受注明細に紐づいていない）。
+② 在庫区分が E でない（自由在庫）ため引当てできない → 品目/明細の特別在庫設計を見直す。
+③ 請求に <code>VA00</code> が乗らない → 条件のコピー制御か、条件レコードの有効期間。
+④ 出荷の明細に<b>受注 BOM の構成品目が並ぶ</b>と思い込む（実際は親品目を出荷し、構成品目は製造で消費する設計が通常）。</div>
+<div class="task"><b class="t">練習課題</b>「客先に出荷するのは完成品 1 台、その中に設定で選んだ付属品が入っている」ことを、帳票（納品書）に表現したい。標準機能でどこまで出せるか、<b>2 案</b>を検討せよ。</div>
+<figure class="gui"><img src="assets/gui/config_s16_1.svg" alt="VL01N の出荷伝票。出荷タイプ LF、出荷先 1000、受注 0000001234、明細の在庫区分 E、引当数量 10 PC。" loading="lazy"><figcaption><b class="t">C14 VC の出荷は受注在庫（E）から出る（構成品目は製造で消費する）</b><span class="tx">VL01N</span><span class="scr">出荷伝票の登録（在庫区分 E ＝受注在庫）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 在庫区分が E でない（自由在庫）と引当できない。受注在庫 0 なら 101 の入庫漏れ</li><li><b>2</b> 出荷明細に構成品目は並ばない（親品目を出荷し、部品は製造で消費する設計）</li></ol><p class="gui-tip">自システムでの確認：VL01N 明細の在庫区分、PGI 後の MMBE（受注在庫が 0）、MB03 の品目伝票で 601 と会計伝票。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s16_2.svg" alt="VF01 の請求書。請求タイプ F2、出荷 0080001234、条件 PR00 と VA00 の加算行、合計金額。" loading="lazy"><figcaption><b class="t">C14 請求に PR00 ＋ VA00 が乗るか（条件は出荷から請求へコピーされる）</b><span class="tx">VF01</span><span class="scr">請求書の登録：変種価格（VA00）の加算</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> VA00 の加算が出荷から請求へコピーされている（VC の変種価格が請求まで運ばれる証拠）</li><li><b>2</b> 加算が無い場合は VTFL（コピー制御）か条件レコードの有効期間を確認</li></ol><p class="gui-tip">自システムでの確認：VF03 の条件タブ（VA00 の行）、VTFL のコピー制御（出荷 → 請求）、VA03 の伝票フロー。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c15"><span class="no">C15</span><h3>自動転記（<code>OBYC</code>）と評価の確認</h3><span class="tc">OBYC / FB03 / MM03</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>受注在庫（E）の入出庫と製造指図の差異が、どこに仕訳されるかを確認する。<b>「在庫が動いているのに会計に来ない」は VC 固有の問題ではないが、VC 練習では必ず詰まる</b>。</dd>
+  <dt>IMG パス</dt>
+  <dd>SPRO → 会計 → 財務会計 → 総勘定元帳 → <b>自動転記（<code>OBYC</code>）</b>：<code>BSX</code>（在庫勘定）・<code>WRX</code>（入庫/在庫）・<code>GBB</code>（消費・差異）。品目の評価クラス（<code>MM03</code> 会計1）と合わせて確認。</dd>
+  <dt>T-code</dt>
+  <dd><code>OBYC</code>・<code>MM03</code>（会計1 評価クラス）・<code>FB03</code>（会計伝票照会）・<code>MB03</code>（品目伝票）・<code>KO88</code>（指図決済）</dd>
+  <dt>入力値 / 確認対象</dt>
+  <dd>
+<pre class="vals">品目 ZVC-PUMP01 の評価クラス（会計1）        例 7920（自システムで確認）
+受注在庫の入庫（101）→ BSX/WRX の在庫勘定      品目伝票 MB03 → 会計伝票 FB03
+部品の出庫（261）→ GBB の消費勘定
+指図差異の決済（KO88）→ 差異の行き先（所要量クラス 046 が決済プロファイルを統制という記載）</pre></dd>
+</dl>
+<ol class="steps">
+  <li><code>MM03</code> → <code>ZVC-PUMP01</code> の会計1：評価クラスと価格管理を確認。</li>
+  <li><code>OBYC</code> → <code>BSX</code>/<code>WRX</code>/<code>GBB</code> のエントリが評価クラスぶん存在するか照会。</li>
+  <li>入出庫を行った後、<code>MB03</code>（品目伝票）→ 「会計伝票」ボタン → <code>FB03</code> で仕訳を確認。</li>
+  <li>製造指図を技術完了 → <code>KO88</code> で決済（発展。本站では練習④ の最後に確認のみ）。</li>
+</ol>
+<div class="box info"><b class="t">確認（自システム）</b>
+① <code>MB03</code> の会計伝票ボタンが<b>グレーアウトしていないか</b>（評価されていない品目では伝票が作られないことがある）。
+② <code>FB03</code> で在庫勘定と相手勘定の組合せ。③ 差異は <code>KO88</code> 後の <code>FB03</code> 系で確認。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 品目の評価クラスが未設定 → 入庫時にエラー（<code>MM03</code> 会計ビューが未整備）。
+② <b>受注在庫（E）が評価されるかどうかは環境で異なる</b>（S/4HANA Cloud の MTO は評価付が前提という記載）。標準原価や差異の扱いを業務と合意しておく。
+③ <code>OBYC</code> を練習で書き換えない（会計影響が大きい）。<b>見るだけ</b>にする。</div>
+<div class="task"><b class="t">練習課題</b>受注在庫（E）10 台が入庫したときの仕訳を <code>FB03</code> で 1 件抜き出し、「在庫が増えた／負債が増えた」の関係を説明せよ。</div>
+<figure class="gui"><img src="assets/gui/config_s17_1.svg" alt="OBYC の自動転記設定。取引キー BSX・WRX・GBB と評価クラス、勘定科目の組合せを照会する。" loading="lazy"><figcaption><b class="t">C15 受注在庫（E）の入出庫と指図差異がどこに仕訳されるかを確認（見るだけ）</b><span class="tx">OBYC</span><span class="scr">自動転記の設定（在庫・消費・差異の勘定）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 評価クラスが品目の会計1ビューと一致していないと入庫でエラーになる</li><li><b>2</b> 受注在庫（E）が評価されるかは環境差が大きい（Cloud の MTO は評価付が前提という記載）</li></ol><p class="gui-tip">自システムでの確認：MM03 の会計1（評価クラス・価格管理）と OBYC の BSX / WRX / GBB のエントリが評価クラスぶん存在するか。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s17_2.svg" alt="MB03 の品目伝票照会。品目伝票 4900001235、移動タイプ 101、品目 ZVC-PUMP01、数量 10 PC、受注在庫 E。" loading="lazy"><figcaption><b class="t">C15 「在庫が動いているのに会計に来ない」を最初に疑う画面</b><span class="tx">MB03</span><span class="scr">品目伝票の照会 → 会計伝票（FB03）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> ボタンがグレーアウトしていないか＝評価の有無の判定</li><li><b>2</b> 受注在庫（E）10 台の仕訳を 1 件提示できることが C15 の完了条件</li></ol><p class="gui-tip">自システムでの確認：MB03 の「会計伝票」ボタンがグレーアウトしていないか、FB03 で在庫勘定と相手勘定の組合せ。差異は KO88 後の FB03 系で確認。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c16"><span class="no">C16</span><h3>Public Cloud 差异对照（AVC 前提・SSCUI でできないこと）</h3><span class="tc">SSCUI・スコープアイテム IYT / 7DM</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>Public Cloud で VC をやると何が変わるかを把握する。<b>Cloud は AVC が前提で、SSCUI（セルフサービス設定 UI）では作れない領域がある</b>。</dd>
+  <dt>IMG パス（Cloud）</dt>
+  <dd>「設定」アプリ → <b>SSCUI</b>（セルフサービス設定 UI）。スコープアイテムの確認は「スコープと依存関係の管理」系アプリ。</dd>
+  <dt>T-code / アプリ</dt>
+  <dd><code>PMEVC</code>（AVC モデリング。Cloud は Fiori アプリ中心）・「製品設定」系アプリ・「スコープアイテムの確認」</dd>
+  <dt>入力値 / 確認対象</dt>
+  <dd>
+<pre class="vals">必須スコープアイテム（例）
+  IYT   受注生産（MTO）＋バリアント設定
+  7DM   アドバンスド社内販売 ＋ MTO ＋ VC（2502 で導入。5D2 との組合せも可という記載）
+Cloud で変わる点
+  ・モデリングは AVC（PMEVC / 特徴グループ）。CU50 のクラシック画面は Fiori 系に置き換わる記載
+  ・明細カテゴリの新規作成など「標準にない伝票カテゴリの追加」は SSCUI では不可の領域がある
+  ・価格キーは MMCOM-VKOND という記載（LO-VC の SDCOM-VKOND ではない）
+  ・スコープアイテムを活性化しないと該当機能が現れない（後から足すには追加契約・再活性の考慮）</pre></dd>
+</dl>
+<ol class="steps">
+  <li>「スコープアイテムの確認」アプリで <code>IYT</code>／<code>7DM</code> の活性状態を確認。<b>活性でない場合は機能自体が出ない</b>。</li>
+  <li>「製品設定」系アプリ（AVC）で、特徴グループと設定画面がどう見えるかを確認。</li>
+  <li>設定可能品目の品目マスタ（Cloud の「製品マスタ」アプリ）で、品目タイプ <code>KMAT</code>／品目カテゴリグループ <code>0002</code>／戦略 <code>25</code>／MRP4 個別所要量が設定できるか確認する。</li>
+  <li>「変更できない項目」に当たったら、それが<b>SSCUI で不可</b>なのか<b>権限</b>なのかを切り分けて記録する。</li>
+</ol>
+<table class="tbl wide">
+<tr><th>領域</th><th>On-Premise</th><th>Public Cloud</th></tr>
+<tr><td>モデリング環境</td><td>LO-VC（<code>CU41</code> 系）と AVC（<code>PMEVC</code>）が併存</td><td><b>AVC が前提</b>。Fiori アプリ＋特徴グループ</td></tr>
+<tr><td>設定画面（<code>CU50</code>）</td><td>クラシック画面が使える</td><td>Fiori 系アプリ／特徴グループに置換（記載）</td></tr>
+<tr><td>明細カテゴリ等の追加</td><td><code>VOV7</code>/<code>VOV4</code> で自由に追加できる</td><td><b>SSCUI で不可の領域がある</b>（標準にない伝票カテゴリ等）</td></tr>
+<tr><td>価格のキー</td><td><code>SDCOM-VKOND</code>（LO-VC の記載）</td><td><code>MMCOM-VKOND</code>（AVC の記載）</td></tr>
+<tr><td>機能の有効化</td><td>カスタマイジング＋権限</td><td><b>スコープアイテム</b>（<code>IYT</code>/<code>7DM</code> 等）の活性</td></tr>
+<tr><td>在庫の評価</td><td>環境差が大きい（<code>OVZG</code> の評価区分で確認）</td><td>MTO は評価付販売伝票在庫が前提という記載</td></tr>
+</table>
+<div class="box warn"><b class="t">つまずき</b>
+① 「オンプレと同じ手順書」を Cloud に持ち込む（<code>VOV7</code>/<code>VOV4</code> に相当する画面が無い／SSCUI の範囲外 → <b>要件そのものを変える必要がある</b>）。
+② スコープアイテムを活性化していないため「機能が存在しない」と誤診する。
+③ <code>CU41</code> の知識だけで Cloud に挑む → <b>AVC の特徴グループ・Fiori アプリの学習が必要</b>（varconf の AVC 連載が参考になる）。</div>
+<div class="task"><b class="t">練習課題</b>自分の組織が Cloud に移行したと仮定し、本站の C0〜C16 のうち <b>「そのまま使える / 読み替えが必要 / 実現できない」</b>の 3 分類をして表にせよ（判断理由つき）。</div>
+<figure class="gui"><img src="assets/gui/config_s18_1.svg" alt="スコープアイテムの確認画面。IYT（受注生産＋バリアント設定）と 7DM（アドバンスド社内販売＋MTO＋VC）の状態が並ぶ。" loading="lazy"><figcaption><b class="t">C16 Cloud はスコープアイテムを活性化しないと該当機能が現れない</b><span class="tx">スコープと依存関係の管理</span><span class="scr">スコープアイテムの確認（IYT / 7DM）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> IYT / 7DM の活性状態が Cloud で VC をやる前提</li></ol><p class="gui-tip">自システムでの確認：「スコープアイテムの確認」系アプリで IYT / 7DM の活性状態を見る（活性でないと機能自体が出ない）。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s18_2.svg" alt="PMEVC のモデリング環境。品目 ZVC-PUMP01、クラス型 300、特徴グループ、価格のキー MMCOM-VKOND を確認する。" loading="lazy"><figcaption><b class="t">C16 Cloud は AVC が前提（CU50 のクラシック画面は Fiori 系に置換という記載）</b><span class="tx">PMEVC</span><span class="scr">AVC モデリング環境（特徴グループ）— Cloud / On-Premise の差</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> CU41 の知識だけで Cloud に挑むと詰まる（特徴グループ＋Fiori の学習が必要）</li><li><b>2</b> 価格のキーが SDCOM-VKOND（LO-VC）から MMCOM-VKOND（AVC）に変わるという記載</li></ol><p class="gui-tip">自システムでの確認：PMEVC の起動可否、設定プロファイルの所在（CU43 と PMEVC）、Cloud はスコープアイテム（IYT / 7DM）と「製品設定」系アプリ。</p></figure>
+
+
+
+
+
+
+
+
+
+<h2 id="done">配置完了チェックリスト（受講者用）</h2>
+<p>以下が全部「はい」と言える（＝証跡を見せられる）なら配置は完了です。<a href="worksheet.html">学员版ワークシート</a>に記入して提出してください。</p>
+<ul class="check">
+  <li>C0：<code>CT04</code>/<code>CL02</code>/<code>CU01</code>/<code>CU41</code>/<code>CU50</code> の 5 つが起動でき、AVC（<code>PMEVC</code>）の可否を判断した</li>
+  <li>C1：特徴 4 つ（<code>ZVC_CAPACITY</code>/<code>ZVC_MATERIAL</code>/<code>ZVC_COATING</code>/<code>ZVC_ACCESSORY</code>）が許可値つきで登録され、データタイプを説明できる</li>
+  <li>C2：クラス <code>ZVC_PUMP_CL</code>（クラス型 <code>300</code>）に 4 特徴が割当たり、必須状態を意図どおりにした</li>
+  <li>C3：<code>ZVC-PUMP01</code> に「受注できる 5 条件」（<code>KMAT</code>／設定可能 ON／<code>0002</code>／戦略 <code>25</code>／MRP4 個別所要量）が入り、分類ビューにクラスが割当たっている</li>
+  <li>C4：設定プロファイル <code>ZVC_PROFILE01</code> が品目に割当たり、処理形式（受注 BOM）と必須チェックの状態を説明できる</li>
+  <li>C5：前提条件 <code>ZVC_DEP_EPOXY_MAT</code> が特徴値に貼られ、<code>CU50</code> で <code>FC200</code>＋<code>EPOXY</code> が成立しないことを見せられる</li>
+  <li>C6：選択条件が BOM 明細（圧力計・流量計・ケーシング）と工程に貼られ、<code>CU50</code> で取捨が変わることを見せられる</li>
+  <li>C7：手続き（または数量を制御する代替手段）により、容量 <code>120</code> で数量/標準値が変わることを説明できる</li>
+  <li>C8：スーパー BOM に材質別 3 行を含む構成品目が入り、<code>CU50</code> の展開結果と一致する</li>
+  <li>C9：作業手順 <code>ZVC_RT01</code> に 3 工程があり、塗装 <code>NONE</code> で 0030 が消える</li>
+  <li>C10：<code>VOV4</code> で <code>OR</code>＋<code>0002</code> の決定行を実際に見つけ、<code>VA03</code> の明細カテゴリと納入日程行カテゴリ（所要量転送）を記録した</li>
+  <li>C11：<code>OPPS</code>/<code>OPPJ</code>/<code>OVZG</code> で戦略 <code>25</code> → <code>KEK</code> → <code>046</code> 系の紐づけを自分の目で確認した</li>
+  <li>C12：在庫確認グループ（<code>02</code> 系）と受注時の納期決定の挙動（在庫ゼロでも受注が通る）を説明できる</li>
+  <li>C13：<code>VA00</code> の条件レコードを作り、<code>VA03</code> の条件画面で設定値に応じた加算が出ることを見せられる</li>
+  <li>C14：出荷（在庫区分 E）→ 出庫確認 601 → 請求（<code>VA00</code> 込み）まで通し、伝票フローが閉じている</li>
+  <li>C15：受注在庫の入庫の仕訳を <code>MB03</code>→<code>FB03</code> で 1 件提示できる</li>
+  <li>C16：Cloud との差異表を作り、「読み替えが必要 / 実現できない」項目を理由つきで挙げられる</li>
+</ul>
+
+
+
+
+<div class="box info"><b class="t">下一步</b>
+→ <a href="handson-1.html">练习① 特徴とクラスの設計</a>（実機での作業へ）。配置は手を動かさないと身に付きません。</div>
+
+
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA バリアント設定付き受注生産（VC / AVC）实战训练站</h5><p>配置手顺 C0〜C16：特徴・クラス・KMAT・設定プロファイル・依存関係・スーパー BOM・明細カテゴリ・戦略/所要量クラス・変種価格・出荷請求・自動転記・Public Cloud 差异。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 特徴とクラス</a><br><a href="handson-2.html">② 設定可能品目とプロファイル</a><br><a href="handson-3.html">③ 依存関係とスーパー BOM</a><br><a href="handson-4.html">④ 受注で構成・製造・出荷</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

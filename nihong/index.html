@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="日本語能力試験（JLPT）N2 学习网站：词汇、语法、阅读、听力、模拟考全覆盖。N2 対策の学習サイトです。">
+<title>N2 道場 — 日本語能力試験対策サイト</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎌</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar" id="topbar">
+  <div class="topbar-inner">
+    <button class="icon-btn nav-toggle" id="navToggle" aria-label="菜单／メニュー" aria-expanded="false">☰</button>
+    <a class="brand" href="#/" data-nav="home">
+      <span class="brand-badge">N2</span>
+      <span class="brand-text">
+        <strong>道場</strong>
+        <small lang="ja">日本語能力試験 対策サイト</small>
+      </span>
+    </a>
+    <div class="top-right">
+      <span class="cd-chip" id="cdChip" title="距离目标考试的天数"></span>
+      <button class="icon-btn" id="themeBtn" title="切换明暗主题／テーマ切替" aria-label="切换主题">🌙</button>
+    </div>
+  </div>
+</header>
+
+<div class="layout" id="layout">
+  <nav class="side" id="side" aria-label="主导航">
+    <div class="side-inner" id="sideInner"></div>
+  </nav>
+
+  <main class="main" id="main">
+    <div class="view" id="view"></div>
+    <footer class="foot">
+      <p lang="zh-CN">本站学习素材均为原创整理，仅供 N2 备考练习，非官方真题。建议搭配官方模拟题与市售教材（如「新完全マスター」系列）使用。祝考试顺利！</p>
+      <p lang="ja">本サイトの内容は独自に作成した学習素材です。公式問題集と併用して学習を進めてください。合格を願っています！</p>
+    </footer>
+  </main>
+</div>
+
+<div class="scrim" id="scrim"></div>
+
+<!-- 数据经 /api 注入：window.N2DATA 先给空对象，boot 后原地 Object.assign 填充（绝不整体替换） -->
+<script>window.N2DATA = {};</script>
+<!-- 主题防闪：catalog 到达前先按本机缓存上色，/api/state 到达后由 app 对账 -->
+<script>(function(){try{var t=JSON.parse(localStorage.getItem('n2.theme')||'""');if(t==='dark'||t==='light'){document.documentElement.setAttribute('data-theme',t);var b=document.getElementById('themeBtn');if(b)b.textContent=(t==='dark'?'☀️':'🌙');}}catch(e){}})();</script>
+<script src="js/app.js"></script>
+</body>
+</html>

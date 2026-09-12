@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学员版 · SAP SD 受注処理（Sales Order Processing）实战训练站</title>
+<meta name="description" content="受講者用の記入ワークシート：環境基本情報、受注 1 件の記録、値の出所表（主データ/既存伝票/Customizing/ABAP）、出荷プラント 3 か所、変更前後比較、ブロック 3 階層、Sales Summary の記録、出荷・請求の記録、故障記録、自己判定。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/sd.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">SD</span><span class="txt">受注処理 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①受注登録</a>
+      <a href="handson-2.html">②伝票変更</a>
+      <a href="handson-3.html">③情報照会</a>
+      <a href="handson-4.html">④出荷と請求</a>
+      <a href="handson-5.html">⑤ツールと故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a class="active" href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 学员版</div>
+<main class="page"><article>
+
+<h1>学员版 —— 記入用ワークシート</h1>
+<div class="box info"><b class="t">使い方</b>
+印刷して手元に置き、<b>実機の画面を見ながら記入</b>してください。空欄は自分の環境の値です（動画の値とは違って当然です）。記入が終わったら <a href="quiz.html">能力测试</a> へ。</div>
+<p class="mini">記入欄は罫線になっています（印刷すると書きやすくなります）。</p>
+<h2 id="env">1. 環境基本情報（C0）</h2>
+<table class="tbl wide fill">
+<tr><th>項目</th><th>自分の環境の値</th><th>確認 T-code / 確認した画面</th></tr>
+<tr><td>クライアント / ユーザ</td><td></td><td>ログオン情報</td></tr>
+<tr><td>販売組織 / チャネル / 部門</td><td></td><td><code>VA01</code> 初期画面の F4</td></tr>
+<tr><td>得意先（受注先）</td><td></td><td><code>XD03</code></td></tr>
+<tr><td>品目（明細 10 用）</td><td></td><td><code>MM03</code></td></tr>
+<tr><td>品目カテゴリグループ</td><td></td><td><code>MM03</code> → 販売組織 2</td></tr>
+<tr><td>出荷プラント（品目マスタ販売組織1）</td><td></td><td><code>MM03</code> → 販売組織 1</td></tr>
+<tr><td>支払条件 / インコタームズ</td><td></td><td><code>XD03</code> → 販売エリアデータ</td></tr>
+<tr><td>与力条件（<code>PR00</code>）の有無と期間</td><td></td><td><code>VK13</code></td></tr>
+<tr><td>受注タイプ</td><td></td><td><code>VOV8</code></td></tr>
+<tr><td>不完全性の必須項目（例：PO 番号）</td><td></td><td><code>V.02</code> / <code>OVA2</code></td></tr>
+</table>
+<h2 id="order">2. 受注 1 件の記録（练习①）</h2>
+<table class="tbl wide fill">
+<tr><th>項目</th><th>記入</th><th>どこで見たか</th></tr>
+<tr><td>受注番号</td><td></td><td><code>VA03</code></td></tr>
+<tr><td>販売エリア（実値）</td><td></td><td><code>VA03</code> ヘッダ</td></tr>
+<tr><td>Sold-to / Ship-to</td><td></td><td><code>VA03</code> ヘッダ</td></tr>
+<tr><td>明細 10：品目 / 数量</td><td></td><td><code>VA03</code> 明細</td></tr>
+<tr><td>明細カテゴリ（ItCa）</td><td></td><td><code>VA03</code> 明細詳細</td></tr>
+<tr><td><b>出荷プラント</b></td><td></td><td><code>VA03</code> 明細 ／ <code>VBAP-WERKS</code></td></tr>
+<tr><td>納入日程行カテゴリ / 納入日</td><td></td><td><code>VA03</code> 明細 → 納入日程行</td></tr>
+<tr><td>正味価額（Net value）と通貨</td><td></td><td><code>VA03</code> ヘッダ</td></tr>
+<tr><td>支払条件 / インコタームズ</td><td></td><td><code>VA03</code> → Sales タブ</td></tr>
+<tr><td>与力価格日付</td><td></td><td><code>VA03</code> ヘッダ（日付）</td></tr>
+<tr><td>保存時のメッセージ（そのまま）</td><td></td><td>ステータスバー</td></tr>
+</table>
+<h2 id="source">3. 値の出所表（3 列を埋める／最低 6 項目）</h2>
+<table class="tbl wide fill">
+<tr><th>項目と値</th><th>出所（テーブル・項目）</th><th>源泉（主データ／既存伝票／Customizing／ABAP）</th></tr>
+<tr><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td></tr>
+</table>
+<h2 id="plant">4. 出荷プラントの 3 か所（练习①・発展②）</h2>
+<table class="tbl wide fill">
+<tr><th>優先度</th><th>保守箇所（T-code）</th><th>記入した値</th><th>受注で採用された？</th></tr>
+<tr><td>1（最優先）</td><td>客先品目情報 <code>VD51/VD53</code></td><td></td><td></td></tr>
+<tr><td>2</td><td>得意先マスタ 出荷先 <code>XD02</code> 出荷タブ</td><td></td><td></td></tr>
+<tr><td>3（最後）</td><td>品目マスタ 販売組織1 <code>MM02</code></td><td></td><td></td></tr>
+<tr><td colspan="3">受注に入った値（<code>VBAP-WERKS</code>）</td><td></td></tr>
+</table>
+<h2 id="change">5. 変更前後の比較（练习②）</h2>
+<table class="tbl wide fill">
+<tr><th>項目</th><th>変更前</th><th>変更後</th><th>再決定された？<br>（Redetermined / Unchanged）</th></tr>
+<tr><td>与力価格（Net value）</td><td></td><td></td><td></td></tr>
+<tr><td>与力価格日付</td><td></td><td></td><td></td></tr>
+<tr><td>出荷プラント</td><td></td><td></td><td></td></tr>
+<tr><td>出荷ポイント</td><td></td><td></td><td></td></tr>
+<tr><td>支払条件</td><td></td><td></td><td></td></tr>
+<tr><td>インコタームズ</td><td></td><td></td><td></td></tr>
+<tr><td>パートナー（SP/SH）</td><td></td><td></td><td></td></tr>
+<tr><td>販売エリア</td><td></td><td></td><td></td></tr>
+<tr><td>販売事務所／販売グループ</td><td></td><td></td><td></td></tr>
+<tr><td>納入日程行の日付</td><td></td><td></td><td></td></tr>
+</table>
+<h2 id="block">6. ブロックの 3 階層（练习②）</h2>
+<table class="tbl wide fill">
+<tr><th>階層</th><th>設定したブロック</th><th>症状（何ができなくなったか）</th><th>解除した？</th></tr>
+<tr><td>ヘッダ</td><td></td><td></td><td></td></tr>
+<tr><td>明細</td><td></td><td></td><td></td></tr>
+<tr><td>納入日程行</td><td></td><td></td><td></td></tr>
+</table>
+<h2 id="sis">7. Sales Summary の記録（练习③）</h2>
+<table class="tbl wide fill">
+<tr><th>項目</th><th>記入</th></tr>
+<tr><td>「View」に出た情報ビューの ID 一覧</td><td></td></tr>
+<tr><td>Credit Limit / Usage Level / Delta / Consumption %</td><td></td></tr>
+<tr><td>Open Sales Order Val / Open Delivery Value / Open Bill. Doc. Val</td><td></td></tr>
+<tr><td>Last SD documents に出た受注番号（上位 3 件）</td><td></td></tr>
+<tr><td>Last SD documents に出た請求書番号（上位 3 件）</td><td></td></tr>
+<tr><td>統計情報（年度比較）で見た指標と値</td><td></td></tr>
+<tr><td>出荷伝票番号と Status Overview の状態</td><td></td></tr>
+</table>
+<h2 id="ship">8. 出荷・請求の記録（练习④）</h2>
+<table class="tbl wide fill">
+<tr><th>項目</th><th>記入</th></tr>
+<tr><td>出荷伝票番号 / 出荷数量</td><td></td></tr>
+<tr><td>ピッキング数量 / PGI 実行日時</td><td></td></tr>
+<tr><td>PGI 前後の在庫数量（プラント）</td><td></td></tr>
+<tr><td>移動タイプ <code>601</code> の明細（<code>MB51</code>）</td><td></td></tr>
+<tr><td>請求書番号 / 正味価額 / 税額</td><td></td></tr>
+<tr><td>伝票フローに並んだ伝票（受注・出荷・請求）</td><td></td></tr>
+</table>
+<h2 id="trouble">9. 故障記録（症状 → 根因 → 証拠 → 処置 → 再発防止）</h2>
+<table class="tbl wide fill">
+<tr><th>症状</th><th>根因</th><th>証拠（画面・T-code）</th><th>処置</th><th>再発防止</th></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+<h2 id="self">10. 到達度の自己判定</h2>
+<table class="tbl wide fill">
+<tr><th>項目</th><th>○/△/×</th><th>根拠（証拠・画面）</th></tr>
+<tr><td>伝票データの 4 つの源泉を言える</td><td></td><td></td></tr>
+<tr><td>出荷プラントの 3 段階の優先順位を実測で示せる</td><td></td><td></td></tr>
+<tr><td>明細カテゴリ決定の 4 キーを暗唱できる</td><td></td><td></td></tr>
+<tr><td>変更時の再決定／不変を 7 項目・4 項目で言える</td><td></td><td></td></tr>
+<tr><td>ブロックの 3 階層と由来 3 通りを言える</td><td></td><td></td></tr>
+<tr><td>Sales Summary のビューとブロックの関係を説明できる</td><td></td><td></td></tr>
+<tr><td>不完全性チェックの 3 階層と <code>V.02</code> の運用を説明できる</td><td></td><td></td></tr>
+<tr><td>受注 → 出荷 → 請求を 1 本に繋げ、伝票フローで示せる</td><td></td><td></td></tr>
+<tr><td>異常時に 4 画面を順に開いて切り分けられる</td><td></td><td></td></tr>
+</table>
+<div class="box ok"><b class="t">次の一歩</b>
+記入が終わったら <a href="quiz.html">能力测试（28 題・75% 合格）</a> を受けてください。△／× の項目は、対応する頁（概念・配置手顺・练习番号）に戻って実機で確かめます。</div>
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP SD 受注処理（Sales Order Processing）实战训练站</h5><p>受講者用：印刷して実機を見ながら記入するワークシート。記入後は能力测试（28 題）で確認。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 受注登録（VA01）</a><br><a href="handson-2.html">② 与力価格と ATP</a><br><a href="handson-3.html">③ 特殊取引</a><br><a href="handson-4.html">④ 出荷と請求</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="worksheet.html">学员版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/quiz.js"></script>
+</body>
+</html>

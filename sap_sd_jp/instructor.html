@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>講師用 · S/4HANA 日本語実習サイト</title>
+<meta name="description" content="S/4HANA 日本語実習サイトの講師用：5 日間の時間割、各モジュールで必ず実演するタスク、必出の 12 問と採点の提案。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/s4jp.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">S4</span><span class="txt">日本語実習サイト</span></a>
+    <nav class="main">
+      <a href="index.html">ホーム</a>
+      <a href="prep.html">準備</a>
+      <a href="fi.html">FI</a>
+      <a href="co.html">CO</a>
+      <a href="mm.html">MM</a>
+      <a href="pp.html">PP</a>
+      <a href="sd.html">SD</a>
+      <a href="tcode.html">T-code</a>
+      <a href="glossary.html">用語</a>
+      <a href="issues.html">トラブルシューティング</a>
+      <a href="tasks.html">索引</a>
+      <a class="active" href="instructor.html">講師</a>
+      <a href="worksheet.html">受講者</a>
+      <a href="quiz.html">自習テスト</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page"><article>
+<p class="breadcrumb"><a href="index.html">ホーム</a> / <span>講師用</span></p>
+<h1>講師用 — 授業設計、デモスクリプトと採点の提案</h1>
+<p>この教材を使って講習を担当する講師向けのページです。当サイトの素材は教材ドキュメント <code>S4.docx</code> に基づいています：
+<b>222 タスク／1369 枚の実機画面</b>。すべての画面は原作者が実際のシステムでキャプチャした中国語インターフェースです。</p>
+<div class="box info"><b class="t">当サイトの立場（講義の際は同じ説明をしてください）</b>
+① 画面は原教材ドキュメントの実機スクリーンショットであり、模式図ではありません。② ドキュメント内の組織構造とマスタデータの番号（<code>C999</code> / <code>F999</code> /
+<code>R999-100</code> / <code>K001</code> …）は原作者の教材環境に属します。<b>操作の順序はそのまま行い、設定値は受講者ご自身のシステムのものに置き換えてください</b>。
+③ 当サイトは原教材ドキュメントにない標準値、項目一覧、SAP Note を補足しません。</div>
+<h2 id="plan">1. 授業時間割の提案（5 日 / 30 時間）</h2>
+<p>タスク数も画面数も非常に多く、講義しきれないのは当然です。そこで「<b>設定は主要な流れだけ、業務はすべて実演</b>」をお勧めします：
+各モジュールの IMG 設定から重要なタスクを 1〜2 件選んでデモし、業務処理のタスク（伝票の登録、入庫、請求）はすべて一通り実施します。</p>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>日程</th><th>内容</th><th>対応するタスク</th><th>何を説明／実演するか</th></tr></thead><tbody><tr><td>Day 1</td><td>準備作業 + 財務会計 FI（前半）</td><td><code>prep + fi タスク 01〜21</code></td><td>ログオンと SPRO；会社コード／勘定科目表／会計年度バリアント／与信管理領域；勘定グループと項目ステータスバリアント（重点的にデモ）；4 種類の勘定（貸借対照表／調整勘定／材料購買 GR-IR／損益）を登録。伝票番号範囲と転記期間。</td></tr><tr><td>Day 2</td><td>財務会計 FI（後半）+ 管理会計 CO</td><td><code>fi タスク 22〜45 + co タスク 01〜34</code></td><td>得意先／仕入先の勘定グループとマスタデータ；売掛（請求書、全額／一部入金、残高）と買掛（請求書、支払、残高）； CO 管理会計領域 → 原価センタ → 原価要素／作業タイプ → 配賦（賃料）と按分（電気料金）→ 内部指図と決済。</td></tr><tr><td>Day 3</td><td>品目管理（MM）</td><td><code>mm タスク 01〜42</code></td><td>プラント／保管場所／購買組織／購買グループ → 品目タイプと評価クラス（重要：OBYC との関係）→ 3 種類の品目マスタ → 自動記帳 OBYC → 許容範囲 → MRP 実行 → 購買依頼→購買発注→入庫→請求書照合→ブロック請求書の解除。</td></tr><tr><td>Day 4</td><td>生産計画（PP）</td><td><code>pp タスク 01〜51</code></td><td>BOM／作業区／工順 → 原価計算バリアントと原価構成 → CK11N で見積、CK24 でマーク・リリース → 所要量チェックと計画戦略グループ → 独立所要量 MD61 → MRP MD02 → 計画手配から製造指図への変換 → 指図発行／出庫／確認／入庫 → 原価表示、技術的完了、差異決済 KO88。</td></tr><tr><td>Day 5</td><td>販売管理 SD + 総合トラブルシューティングとテスト</td><td><code>sd タスク 01〜48 + 自習テスト 30 問</code></td><td>販売エリアと出荷マスタデータ → 価格決定手順と税の決定 → パートナ決定 → 品目／得意先の販売ビュー → 見積 VA21 → 受注伝票 → 納入 VL01N → 請求書 VF01/VF02 → 元伝票 → 伝票一覧と販売分析；最後に「トラブルシューティングと注意点」と、本ページ第 4 節の必ず出る質問を実施します。</td></tr></tbody></table></div>
+<h2 id="pick">2. 各モジュールで「必ず実演する」タスク</h2>
+<p>以下のタスクは各モジュールの骨格です。一度実際にデモするほうが、10 回説明するより分かります。残りのタスクは、受講者が当サイトの手順に沿って自習できます。</p>
+<h3>準備 — 準備作業 — システムへのログオンと IMG 設定への移動</h3>
+<ul><li><a href="prep.html#t01">タスク 01 システムにログオン</a>　<span class="dim">3 画面</span></li><li><a href="prep.html#t02">タスク 02 IMG 設定へ進む</a>　<span class="dim">2 画面</span></li></ul>
+<h3>FI — 財務会計 FI（Financial Accounting）</h3>
+<ul><li><a href="fi.html#t01">タスク 01 会社コードを登録する</a>　<span class="dim">IMG：<code>エンタープライズ構造 → 定義 → 財務会計 → 会社コードの編集／コピー／削除／チェック、会社コードデータの編集 「会社コードデータの編集」を選択</code></span>　<span class="dim">2 画面</span></li><li><a href="fi.html#t06">タスク 06 勘定グループと入力制御を定義</a>　<span class="dim">IMG：<code>財務会計 → 総勘定元帳会計 → 総勘定元帳勘定 → マスタデータ → 準備 → 勘定グループの定義</code></span>　<span class="dim">9 画面</span></li><li><a href="fi.html#t07">タスク 07 項目ステータスバリアントを定義</a>　<span class="dim">IMG：<code>財務会計（新） → 財務会計のグローバル設定（新） → 項目 → 項目ステータスバリアントの定義</code></span>　<span class="dim">19 画面</span></li><li><a href="fi.html#t10">タスク 10 一般的な貸借対照表勘定を新規作成</a>　<span class="dim">IMG：<code>21710102 未払税金 → 付加価値税 → 売上税額</code></span>　<span class="dim">2 画面</span></li><li><a href="fi.html#t12">タスク 12 材料購買勘定を新規登録する</a>　<span class="dim">3 画面</span></li><li><a href="fi.html#t13">タスク 13 損益勘定を新規登録する</a>　<span class="dim">72 画面</span></li><li><a href="fi.html#t18">タスク 18 転記期間を設定（業務処理）</a>　<span class="dim">IMG：<code>会計 → 財務会計 → 総勘定元帳 → 環境 → 現行設定 → 未消込転記期間と締め済み転記期間</code></span>　<span class="dim">4 画面</span></li><li><a href="fi.html#t32">タスク 32 得意先請求書を入力</a>　<span class="dim">3 画面</span></li><li><a href="fi.html#t33">タスク 33 得意先から全額の入金を受領</a>　<span class="dim">IMG：<code>会計 → 財務会計 → 売掛金 → 伝票入力 → F-28 入金</code></span>　<span class="dim">5 画面</span></li><li><a href="fi.html#t37">タスク 37 仕入先請求書を受領</a>　<span class="dim">IMG：<code>会計 → 財務会計 → 買掛金 → 伝票入力 → FB60 請求書</code></span>　<span class="dim">5 画面</span></li><li><a href="fi.html#t39">タスク 39 仕入先へ支払</a>　<span class="dim">IMG：<code>会計 → 財務会計 → 買掛金 → 伝票入力 → 支払 → F-53 転記</code></span>　<span class="dim">3 画面</span></li><li><a href="fi.html#t45">タスク 45 貸借対照表を実行</a>　<span class="dim">IMG：<code>会計 → 財務会計 → 総勘定元帳 → 情報システム → 総勘定元帳レポート → 貸借対照表／損益計算書／キャッシュフロー → 一般 → 計画／実績比較 → 年度計画／実績比較</code></span>　<span class="dim">3 画面</span></li></ul>
+<h3>CO — 管理会計 CO（Controlling）</h3>
+<ul><li><a href="co.html#t01">タスク 01 管理会計領域を登録する</a>　<span class="dim">IMG：<code>エンタープライズ構造 → 定義 → 管理会計 → 管理会計領域のメンテナンス</code></span>　<span class="dim">4 画面</span></li><li><a href="co.html#t02">タスク 02 会社コードを管理会計領域に割り当てる</a>　<span class="dim">IMG：<code>エンタープライズ構造 → 割当 → 管理会計 → 会社コードの管理会計領域への配賦</code></span>　<span class="dim">4 画面</span></li><li><a href="co.html#t04">タスク 04 原価センタグループと原価センタをメンテナンス</a>　<span class="dim">IMG：<code>会計 → 管理会計 → 原価センタ会計 → マスタデータ → 標準階層 → OKEON-変更</code></span>　<span class="dim">20 画面</span></li><li><a href="co.html#t05">タスク 05 一次原価要素を新規作成</a>　<span class="dim">IMG：<code>会計 → 管理会計 → 原価センタ会計 → マスタデータ → 原価要素 → 個別処理 → KA01-一次原価要素の登録</code></span>　<span class="dim">30 画面</span></li><li><a href="co.html#t12">タスク 12 作業出力価格を設定する</a>　<span class="dim">IMG：<code>会計 → 管理会計 → 原価センタ会計 → 計画 → 作業出力/価格 → KP26 → 変更</code></span>　<span class="dim">7 画面</span></li><li><a href="co.html#t20">タスク 20 配賦サイクルを定義</a>　<span class="dim">IMG：<code>会計 → 管理会計 → 原価センタ会計 → 期末決算 → 現行設定 → 配賦の定義</code></span>　<span class="dim">6 画面</span></li><li><a href="co.html#t21">タスク 21 配賦</a>　<span class="dim">IMG：<code>会計 → 管理会計 → 原価センタ会計 → 期末決算 → 単一機能 → 割当 → KSV5 配賦</code></span>　<span class="dim">3 画面</span></li><li><a href="co.html#t23">タスク 23 按分サイクルを定義</a>　<span class="dim">IMG：<code>会計 → 管理会計 → 原価センタ会計 → 期末決算 → 現行設定 → 評価の定義</code></span>　<span class="dim">8 画面</span></li><li><a href="co.html#t24">タスク 24 按分</a>　<span class="dim">IMG：<code>会計 → 管理会計 → 原価センタ会計 → 期末決算 → 単一機能 → 割当 → KSU5-配賦</code></span>　<span class="dim">4 画面</span></li><li><a href="co.html#t31">タスク 31 内部指図を登録</a>　<span class="dim">IMG：<code>会計 → 管理会計 → 内部指図 → マスタデータ → KO04-指図管理担当者</code></span>　<span class="dim">10 画面</span></li><li><a href="co.html#t33">タスク 33 内部指図の決済</a>　<span class="dim">IMG：<code>管理会計 → 内部指図 → 単一機能 → 決済 → KO88-個別処理</code></span>　<span class="dim">3 画面</span></li></ul>
+<h3>MM — 品目管理 MM（Materials Management）</h3>
+<ul><li><a href="mm.html#t01">タスク 01 プラントを登録</a>　<span class="dim">IMG：<code>エンタープライズ構造 → 定義 → ロジスティクス一般 → プラントの定義・コピー・削除・チェック</code></span>　<span class="dim">7 画面</span></li><li><a href="mm.html#t21">タスク 21 評価クラスを定義する</a>　<span class="dim">IMG：<code>品目管理 → 評価と勘定設定 → 勘定決定 → ウィザードなしの勘定決定 → 評価クラスの定義</code></span>　<span class="dim">6 画面</span></li><li><a href="mm.html#t22">タスク 22 原材料（ROH）のマスタデータを新規登録する</a>　<span class="dim">IMG：<code>ロジスティクス → 品目管理 → 品目マスタ → 品目 → 登録（特殊） → MMR1 原材料（ROH）</code></span>　<span class="dim">15 画面</span></li><li><a href="mm.html#t27">タスク 27 購買情報レコードを新規作成</a>　<span class="dim">IMG：<code>ロジスティクス → 品目管理 → 購買 → マスタデータ → 購買情報レコード → ME11 登録</code></span>　<span class="dim">16 画面</span></li><li><a href="mm.html#t28">タスク 28 品目管理の自動記帳をメンテナンスする</a>　<span class="dim">IMG：<code>品目管理 → 評価と勘定設定 → 勘定決定 → ウィザードなしの勘定決定 → 自動記帳の設定</code></span>　<span class="dim">15 画面</span></li><li><a href="mm.html#t34">タスク 34 資材所要量計画を実行</a>　<span class="dim">IMG：<code>ロジスティクス → 品目管理 → 資材所要量計画（MRP） → 資材所要量計画 → 計画 → MD03 単一レベル</code></span>　<span class="dim">10 画面</span></li><li><a href="mm.html#t36">タスク 36 購買依頼を新規作成</a>　<span class="dim">IMG：<code>ロジスティクス → 品目管理 → 購買--購買依頼 → ME51N → 登録</code></span>　<span class="dim">6 画面</span></li><li><a href="mm.html#t37">タスク 37 購買発注を新規作成</a>　<span class="dim">IMG：<code>ロジスティクス → 品目管理 → 購買 → 購買発注 → 登録 → ME21N → 既知の仕入先／供給プラント</code></span>　<span class="dim">9 画面</span></li><li><a href="mm.html#t38">タスク 38 購買の入庫を登録する</a>　<span class="dim">IMG：<code>ロジスティクス → 品目管理 → 在庫管理（MM-IM） → 在庫移動 → 入庫 → 購買発注に対して → 購買発注の GR（MIGO）</code></span>　<span class="dim">8 画面</span></li><li><a href="mm.html#t39">タスク 39 購買請求書を入力する</a>　<span class="dim">IMG：<code>ロジスティクス → 品目管理 → ロジスティクス請求書照合（LIV） → 伝票入力 → MIRO 請求書の入力</code></span>　<span class="dim">5 画面</span></li><li><a href="mm.html#t40">タスク 40 ブロック請求書の解除</a>　<span class="dim">IMG：<code>ロジスティクス → 品目管理 → ロジスティクス請求書照合（LIV） → 追加処理 → MRBR ブロック請求書の解除</code></span>　<span class="dim">4 画面</span></li></ul>
+<h3>PP — 生産計画 PP（Production Planning）</h3>
+<ul><li><a href="pp.html#t06">タスク 06 部品表（BOM）を新規作成</a>　<span class="dim">IMG：<code>ロジスティクス → 生産 → マスタデータ → 部品表（BOM） → 品目 BOM → CS01 新規登録</code></span>　<span class="dim">3 画面</span></li><li><a href="pp.html#t12">タスク 12 人工工数タイプの作業区を新規作成</a>　<span class="dim">IMG：<code>ロジスティクス → 生産 → マスタデータ → 作業区 → 作業区 → CR01-登録</code></span>　<span class="dim">22 画面</span></li><li><a href="pp.html#t14">タスク 14 工順を新規作成</a>　<span class="dim">IMG：<code>ロジスティクス → 生産 → マスタデータ → 工順 → 工順 → 標準工順 → CA01-登録</code></span>　<span class="dim">20 画面</span></li><li><a href="pp.html#t22">タスク 22 製品原価見積を新規登録する</a>　<span class="dim">IMG：<code>会計 → 管理会計 → 製品原価管理 → 製品原価計画 → 品目原価計算 → 数量構成付き原価計算 → CK11N 登録</code></span>　<span class="dim">10 画面</span></li><li><a href="pp.html#t23">タスク 23 価格のマーク</a>　<span class="dim">IMG：<code>会計 → 管理会計 → 製品原価管理 → 製品原価計画 → 品目原価計算 → CK24-価格更新</code></span>　<span class="dim">12 画面</span></li><li><a href="pp.html#t25">タスク 25 価格をリリース</a>　<span class="dim">IMG：<code>会計 → 管理会計 → 製品原価管理 → 製品原価計画 → 品目原価計算 → CK24-価格更新</code></span>　<span class="dim">2 画面</span></li><li><a href="pp.html#t33">タスク 33 品目の独立所要量計画を登録</a>　<span class="dim">IMG：<code>ロジスティクス → 生産 → 生産計画 → 所要量管理 → 計画独立所要量 → MD61-登録</code></span>　<span class="dim">5 画面</span></li><li><a href="pp.html#t36">タスク 36 資材所要量計画を実行</a>　<span class="dim">IMG：<code>解説：本ステップでは、システムが BOM に従って品目所要量を自動的に展開します ロジスティクス → 生産 → 資材所要量計画 → 計画 → MD02-単品、多階層</code></span>　<span class="dim">14 画面</span></li><li><a href="pp.html#t37">タスク 37 計画手配を製造指図に変換</a>　<span class="dim">IMG：<code>ロジスティクス → 生産 → 資材所要量計画 → 評価 → MD04-在庫/所要量一覧</code></span>　<span class="dim">4 画面</span></li><li><a href="pp.html#t42">タスク 42 製造指図を指図発行</a>　<span class="dim">IMG：<code>ロジスティクス → 生産 → 生産管理 → 指図 → CO02-変更</code></span>　<span class="dim">6 画面</span></li><li><a href="pp.html#t44">タスク 44 指図確認</a>　<span class="dim">IMG：<code>ロジスティクス → 生産 → 生産管理 → 確認 → Enter → 作業用 → CO11N-作業票</code></span>　<span class="dim">10 画面</span></li><li><a href="pp.html#t45">タスク 45 製造指図に対して入庫</a>　<span class="dim">IMG：<code>ロジスティクス → 品目管理 → 在庫管理（MM-IM） → 在庫移動 → 入庫 → 指図の GR（MIGO） MIGO_GO</code></span>　<span class="dim">2 画面</span></li><li><a href="pp.html#t48">タスク 48 製造指図の差異決済</a>　<span class="dim">IMG：<code>会計 → 管理会計 → 製品原価管理 → 原価対象管理 → 受注別製品原価 → 期末決算 → 単一機能 → KO88 個別処理</code></span>　<span class="dim">2 画面</span></li></ul>
+<h3>SD — 販売管理 SD（Sales and Distribution）</h3>
+<ul><li><a href="sd.html#t01">タスク 01 販売組織を定義</a>　<span class="dim">IMG：<code>エンタープライズ構造 → 定義 → 販売管理（SD） → 販売組織の定義・コピー・削除・チェック</code></span>　<span class="dim">6 画面</span></li><li><a href="sd.html#t07">タスク 07 販売エリアを設定</a>　<span class="dim">IMG：<code>エンタープライズ構造 → 割当 → 販売管理（SD） → 販売エリアの設定</code></span>　<span class="dim">4 画面</span></li><li><a href="sd.html#t21">タスク 21 得意先勘定グループの販売データをメンテナンス</a>　<span class="dim">IMG：<code>財務会計（新） → 売掛金・買掛金 → 得意先勘定 → マスタデータ → 得意先マスタ登録準備 → 画面フォーマット付きの勘定グループの定義（得意先）</code></span>　<span class="dim">16 画面</span></li><li><a href="sd.html#t22">タスク 22 価格決定手順を定義</a>　<span class="dim">IMG：<code>販売管理（SD） → 基本機能 → 価格設定 → 価格設定管理 → 価格決定手順の定義と割当</code></span>　<span class="dim">4 画面</span></li><li><a href="sd.html#t24">タスク 24 価格決定手順の決定を定義</a>　<span class="dim">IMG：<code>販売管理（SD） → 基本機能 → 価格設定 → 価格設定管理 → 価格決定手順の定義と割当</code></span>　<span class="dim">4 画面</span></li><li><a href="sd.html#t33">タスク 33 パートナ決定を設定</a>　<span class="dim">IMG：<code>販売管理（SD） → 基本機能 → パートナ決定 → パートナ決定の設定</code></span>　<span class="dim">5 画面</span></li><li><a href="sd.html#t34">タスク 34 品目マスタの販売ビューをメンテナンス</a>　<span class="dim">IMG：<code>ロジスティクス → 品目管理 → 品目マスタレコード → 品目 → 登録（一般） → MM01 即時</code></span>　<span class="dim">10 画面</span></li><li><a href="sd.html#t35">タスク 35 品目の販売価格をメンテナンス</a>　<span class="dim">IMG：<code>ロジスティクス → 販売管理（SD） → マスタデータ → 条件 → 条件タイプ別選択 → VK11 → 登録</code></span>　<span class="dim">5 画面</span></li><li><a href="sd.html#t40">タスク 40 見積を登録</a>　<span class="dim">IMG：<code>ロジスティクス → 販売管理（SD） → 販売 → 見積 → VA21-登録</code></span>　<span class="dim">9 画面</span></li><li><a href="sd.html#t41">タスク 41 受注伝票を登録</a>　<span class="dim">IMG：<code>ロジスティクス → 販売管理（SD） → 販売 → 見積 → 後続機能 → V-01-受注伝票</code></span>　<span class="dim">6 画面</span></li><li><a href="sd.html#t42">タスク 42 出荷伝票（外向納入）を登録する</a>　<span class="dim">IMG：<code>ロジスティクス → 販売管理（SD） → 出荷と輸送 → 出荷伝票（外向納入） → 登録 → 個別伝票 → VL01N</code></span>　<span class="dim">4 画面</span></li><li><a href="sd.html#t43">タスク 43 請求伝票を登録</a>　<span class="dim">IMG：<code>ロジスティクス → 販売管理（SD） → 請求 → 請求伝票 → VF01-登録</code></span>　<span class="dim">3 画面</span></li><li><a href="sd.html#t44">タスク 44 請求書をリリース</a>　<span class="dim">IMG：<code>ロジスティクス → 販売管理（SD） → 請求 → 請求伝票 → VF02-変更</code></span>　<span class="dim">3 画面</span></li><li><a href="sd.html#t47">タスク 47 販売分析</a>　<span class="dim">IMG：<code>ロジスティクス → 販売管理（SD） → 販売情報システム → 標準分析 → MCTA-得意先</code></span>　<span class="dim">4 画面</span></li></ul>
+<h2 id="qa">3. 必ず出る質問（12 問、標準回答付き）</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>#</th><th>受講者が必ず聞くこと</th><th>このように答えるとよい</th></tr></thead><tbody><tr><td>1</td><td>この教材の設定作業はどこから始めますか？</td><td>「準備作業」の <code>SPRO</code> から IMG 設定に入り、その後は FI → CO → MM → PP → SD の順に進めます。FI のタスク 01〜05（会社コード / 勘定科目表 / 会計年度バリアント / 与信管理領域 / グローバルパラメータ）は全モジュール共通の前提なので、必ず最初に実施してください。</td></tr><tr><td>2</td><td>FI の最初のタスクが「勘定の登録」ではなく「会社コードの登録」なのはなぜですか？</td><td>会社コードは「1 つの完全な会計実体」です（原教材ドキュメントの表現）。以降のすべての勘定、伝票、期間、レポートはこの会社コードに紐づきます。教材で登録するのは <code>C999</code>「頤寧機械有限公司」です。</td></tr><tr><td>3</td><td>勘定を登録したのに、伝票である項目が見えない（または項目がグレーになる）のはなぜですか？</td><td>「勘定グループ + 項目ステータスバリアント」で決まります：タスク 06 で勘定グループと入力制御を定義し、タスク 07 で項目ステータスバリアントを定義し、タスク 08 でバリアントを会社コードに割り当てます。そのため、勘定を説明する前に、まずこの 2 つを説明する必要があります。</td></tr><tr><td>4</td><td>「材料購買勘定」は何のためにあるのですか？なぜ GR/IR とも呼ばれるのですか？</td><td>原教材ドキュメントの説明：入庫時は「在庫」を借方・「材料購買」を貸方に記帳し、請求書受領時は「材料購買」を借方・「買掛金」を貸方に記帳し、勘定は「1 件ずつ消し込む」必要があり、入庫と請求書受領の間をつなぐ中間勘定（GR/IR）です。貸方残高は <code>WRX</code> トランザクションキーに計上されます。</td></tr><tr><td>5</td><td>MM で最も間違いやすい接点はどこですか？</td><td>品目マスタの「評価クラス」と自動記帳 <code>OBYC</code>：評価クラスが勘定決定を左右し、評価クラスを誤って入力するとエラーになります「明細 A999 BSX CN01 に対して勘定を決定できません」。原教材ドキュメントでの対応は、作成済みの購買発注を削除し、品目の会計ビュー 1 の評価クラスを変更するというものです（当期／前期／前年度のすべてを変更する必要があります）。品目を登録する時点で正しく設定しておくことをおすすめします。</td></tr><tr><td>6</td><td>税コードのエラー FS217 はどう対処しますか？</td><td><code>FS00</code> でその総勘定元帳勘定を開き、「制御データ」で税分類を緩めます：<code>-</code> は仕入税のみ許可、<code>+</code> は売上税のみ許可、<code>*</code> はすべて許可。変更後は <code>MIRO</code> を終了して入り直します。</td></tr><tr><td>7</td><td>PP の標準原価見積は、どの T-code をどの順で使いますか？</td><td><code>CK11N</code> で見積 → <code>CK24</code> でマーク → <code>CK24</code> でリリース。作業価格が欠落している場合（例：「内部作業 LAB 1001 の価格を確定できません」）は、まず <code>KP26</code> で作業の出力価格をメンテナンスし、再び <code>CK11N</code> に戻ります——原教材ドキュメントが特に注意を促しているのは、メンテナンス後に<b>CK11N を終了して CK24 を再実行する</b>という点です。</td></tr><tr><td>8</td><td>製造指図を指図発行から決済まで実演するとき、正しい順序はどれですか？</td><td>指図発行 <code>CO02</code> → 出庫（製造指図への出庫）→ 確認 <code>CO11N</code> → 入庫 <code>MIGO</code> → 原価照会 <code>CO03</code> → 技術的完了 <code>CO02</code> → 差異決済 <code>KO88</code> → 原価レポート。（PP のタスク 42〜49 に対応）</td></tr><tr><td>9</td><td>SD の「販売エリア」とは何ですか？なぜ受注伝票の最初に必ず入力するのですか？</td><td>販売エリア = 販売組織 + 流通チャネル + 製品部門 で、SD の業務区分です（タスク 01〜07）。受注伝票の価格決定手順、納入、税の決定、供給可能量はいずれもこれで特定するため、販売エリアを入力しないと何もできません。</td></tr><tr><td>10</td><td>得意先マスタのパートナはなぜ 4 つあるのですか？</td><td>原教材ドキュメントに記載されているのは：<code>SP</code> 受注先、<code>BP</code> 請求先、<code>PY</code> 支払先、<code>SH</code> 納入先。同じ得意先でも、役割ごとに別の相手を設定できます（例えば受領先 <code>K002</code> を納入先にするなど）。受注伝票ではこれらの役割が自動的に反映されます。</td></tr><tr><td>11</td><td>1 件の取引が見積から会計伝票に至るまで、どの T-code を実演しますか？</td><td>見積 <code>VA21</code> → 受注伝票（見積を参照して登録）→ 納入 <code>VL01N</code> → 請求書 <code>VF01</code> → 転記 <code>VF02</code> → 会計伝票（元伝票をクリック）→ 伝票一覧 <code>VA05</code> / 販売分析 <code>MCTA</code>。</td></tr><tr><td>12</td><td>受講者のシステムで出るエラーが教材と違うときはどうしますか？</td><td>まず「トラブルシューティングと注意点」ページの 6 つの前提チェック（期間のオープン／クローズ、組織構造の割当、評価クラスと OBYC、価格のマークとリリース、在庫、マスタデータ）を行い、教材に出てくるエラーのほとんどは、この 6 つの分類に当てはまります。それでも解決しない場合は、F1/F4 と SPRO のドキュメントボタンで項目を確認してください —— 他人の標準値をそのまま写さないでください。</td></tr></tbody></table></div>
+<h2 id="grading">4. 採点と受入確認の提案</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>項目</th><th>配点</th><th>判定基準</th></tr></thead><tbody>
+<tr><td>自習テスト（<a href="quiz.html">quiz.html</a> 30 題）</td><td>30%</td><td>75% 以上で合格（23 題以上）。誤答した問題は該当のタスクに戻って復習してください。</td></tr>
+<tr><td>手順の完成度（<a href="worksheet.html">受講者用の記入表</a>）</td><td>40%</td><td>FI 01〜21 + MM 21〜28 + PP 22〜25 + SD 34〜44 の「重要チェーンのタスク」はすべてチェックが必要です。</td></tr>
+<tr><td>トラブルシューティング問題（<a href="issues.html">トラブルシューティングページ</a> の 10 現象）</td><td>20%</td><td>「現象 → 原因 → 対処 T-code」の 3 要素を言えること。5 題を抽出し、全問正解で満点です。</td></tr>
+<tr><td>口頭で流れを復唱</td><td>10%</td><td>購買チェーン（ME51N→ME21N→MIGO→MIRO→MRBR）と販売チェーン（VA21→受注伝票→VL01N→VF01→VF02）の 2 つの T-code の流れを自力で言えること。</td></tr>
+</tbody></table></div>
+<div class="box ok"><b class="t">1 回の授業の最後の 20 分はこう締めくくります</b>① 受講者に受講者用の記入表で「遭遇した問題」欄を記入してもらう；② トラブルシューティングページの現象表を一緒に確認する；③ 自習テストページを一通り解き、その場で間違いを確認する。④「自分のシステムに戻って、会社コード／プラント／販売エリアを自分の値に置き換える」という課題を出す。</div>
+</article></main>
+</div>
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA 日本語実習サイト — 全モジュールの設定と操作手順 · 実機画面</h5>
+  <p>内容は同ディレクトリの教材ドキュメント <code>S4.docx</code>（425 ページ · 6 大モジュール · 222 タスク · 1385 枚の実機スクリーンショット）に基づいて整理しています。すべてのページはオフラインで開くことができ、外部依存はありません。</p>
+  <div><h5>画面について</h5><p>サイト内のすべてのスクリーンショットは<b>原教材ドキュメントの実機画面</b>（中国語インターフェースの SAP GUI）であり、イメージ図やシミュレーションによる生成画像ではありません。ファイル名は原教材ドキュメントの番号をそのまま保持しており、Word の原文と対照できます。ドキュメント内のサンプル値（会社コード <code>C999</code>、プラント <code>F999</code>、品目 <code>R999-100</code> など）は原作者の教材環境のものですので、ご自身のシステムの組織構造と番号範囲に合わせて読み替えてください。</p></div></div>
+  <div class="cols">
+    <div><h5>モジュール</h5>
+      <a href="prep.html">準備 — 準備作業 — システムへのログオンと IMG 設定への移動</a><br>
+      <a href="fi.html">FI — 財務会計 FI</a><br>
+      <a href="co.html">CO — 管理会計 CO</a><br>
+      <a href="mm.html">MM — 品目管理 MM</a><br>
+      <a href="pp.html">PP — 生産計画 PP</a><br>
+      <a href="sd.html">SD — 販売管理 SD</a><br>    </div>
+    <div><h5>サイト全体</h5>
+      <a href="prep.html">準備</a><br>
+      <a href="fi.html">FI</a><br>
+      <a href="co.html">CO</a><br>
+      <a href="mm.html">MM</a><br>
+      <a href="pp.html">PP</a><br>
+      <a href="sd.html">SD</a><br>
+      <a href="tcode.html">T-code</a><br>
+      <a href="glossary.html">用語</a><br>
+      <a href="issues.html">トラブルシューティング</a><br>
+      <a href="tasks.html">索引</a><br>
+      <a href="instructor.html">講師</a><br>
+      <a href="worksheet.html">受講者</a><br>
+      <a href="quiz.html">自習テスト</a><br>    </div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/s4jp.js"></script>
+</body>
+</html>

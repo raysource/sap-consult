@@ -1,0 +1,207 @@
+[
+  {
+    "ID": "O-20260001",
+    "customer_ID": "CUST-01",
+    "customerName": "张伟",
+    "orderDate": "2026-08-03",
+    "totalAmount": 21493.0,
+    "items": [
+      {
+        "product_ID": "P-1001",
+        "productName": "SAP 培训笔记本电脑 (ThinkPad X1)",
+        "quantity": 2,
+        "unitPrice": 8999.0,
+        "lineTotal": 17998.0
+      },
+      {
+        "product_ID": "P-1008",
+        "productName": "USB-C 扩展坞",
+        "quantity": 5,
+        "unitPrice": 699.0,
+        "lineTotal": 3495.0
+      }
+    ]
+  },
+  {
+    "ID": "O-20260002",
+    "customer_ID": "CUST-03",
+    "customerName": "王强",
+    "orderDate": "2026-08-05",
+    "totalAmount": 30522.0,
+    "items": [
+      {
+        "product_ID": "P-1006",
+        "productName": "企业级无线 AP",
+        "quantity": 8,
+        "unitPrice": 1299.0,
+        "lineTotal": 10392.0
+      },
+      {
+        "product_ID": "P-1007",
+        "productName": "千兆企业交换机",
+        "quantity": 3,
+        "unitPrice": 2380.0,
+        "lineTotal": 7140.0
+      },
+      {
+        "product_ID": "P-1017",
+        "productName": "企业固态硬盘 1TB",
+        "quantity": 10,
+        "unitPrice": 1299.0,
+        "lineTotal": 12990.0
+      }
+    ]
+  },
+  {
+    "ID": "O-20260003",
+    "customer_ID": "CUST-02",
+    "customerName": "李娜",
+    "orderDate": "2026-08-08",
+    "totalAmount": 14415.0,
+    "items": [
+      {
+        "product_ID": "P-1003",
+        "productName": "无线机械键盘",
+        "quantity": 20,
+        "unitPrice": 459.0,
+        "lineTotal": 9180.0
+      },
+      {
+        "product_ID": "P-1013",
+        "productName": "防蓝光护眼灯",
+        "quantity": 15,
+        "unitPrice": 349.0,
+        "lineTotal": 5235.0
+      }
+    ]
+  },
+  {
+    "ID": "O-20260004",
+    "customer_ID": "CUST-05",
+    "customerName": "刘洋",
+    "orderDate": "2026-08-11",
+    "totalAmount": 16891.0,
+    "items": [
+      {
+        "product_ID": "P-1004",
+        "productName": "人体工学椅",
+        "quantity": 4,
+        "unitPrice": 1899.0,
+        "lineTotal": 7596.0
+      },
+      {
+        "product_ID": "P-1005",
+        "productName": "升降办公桌",
+        "quantity": 2,
+        "unitPrice": 3299.0,
+        "lineTotal": 6598.0
+      },
+      {
+        "product_ID": "P-1014",
+        "productName": "白板套装 (磁性)",
+        "quantity": 3,
+        "unitPrice": 899.0,
+        "lineTotal": 2697.0
+      }
+    ]
+  },
+  {
+    "ID": "O-20260005",
+    "customer_ID": "CUST-04",
+    "customerName": "陈静",
+    "orderDate": "2026-08-14",
+    "totalAmount": 19884.0,
+    "items": [
+      {
+        "product_ID": "P-1002",
+        "productName": "27 寸 4K 显示器",
+        "quantity": 6,
+        "unitPrice": 2599.0,
+        "lineTotal": 15594.0
+      },
+      {
+        "product_ID": "P-1019",
+        "productName": "显示器支架臂",
+        "quantity": 10,
+        "unitPrice": 429.0,
+        "lineTotal": 4290.0
+      }
+    ]
+  },
+  {
+    "ID": "O-20260006",
+    "customer_ID": "CUST-01",
+    "customerName": "张伟",
+    "orderDate": "2026-08-16",
+    "totalAmount": 18494.0,
+    "items": [
+      {
+        "product_ID": "P-1009",
+        "productName": "会议全向麦",
+        "quantity": 3,
+        "unitPrice": 1599.0,
+        "lineTotal": 4797.0
+      },
+      {
+        "product_ID": "P-1015",
+        "productName": "视频会议终端",
+        "quantity": 1,
+        "unitPrice": 6499.0,
+        "lineTotal": 6499.0
+      },
+      {
+        "product_ID": "P-1024",
+        "productName": "培训室音响套装",
+        "quantity": 2,
+        "unitPrice": 3599.0,
+        "lineTotal": 7198.0
+      }
+    ]
+  },
+  {
+    "ID": "O-20260007",
+    "customer_ID": "CUST-03",
+    "customerName": "王强",
+    "orderDate": "2026-08-19",
+    "totalAmount": 12590.0,
+    "items": [
+      {
+        "product_ID": "P-1022",
+        "productName": "UPS 不间断电源",
+        "quantity": 4,
+        "unitPrice": 1799.0,
+        "lineTotal": 7196.0
+      },
+      {
+        "product_ID": "P-1023",
+        "productName": "无线投屏器",
+        "quantity": 6,
+        "unitPrice": 899.0,
+        "lineTotal": 5394.0
+      }
+    ]
+  },
+  {
+    "ID": "O-20260008",
+    "customer_ID": "CUST-02",
+    "customerName": "李娜",
+    "orderDate": "2026-08-22",
+    "totalAmount": 8168.0,
+    "items": [
+      {
+        "product_ID": "P-1012",
+        "productName": "便携投影仪",
+        "quantity": 2,
+        "unitPrice": 3199.0,
+        "lineTotal": 6398.0
+      },
+      {
+        "product_ID": "P-1021",
+        "productName": "培训白板笔套装",
+        "quantity": 30,
+        "unitPrice": 59.0,
+        "lineTotal": 1770.0
+      }
+    ]
+  }
+]

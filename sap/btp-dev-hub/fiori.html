@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiori / UI5 · SAP BTP 开发者训练站</title>
+<meta name="description" content="Fiori / UI5 开发：elements vs Freestyle、可运行示例、OData 对接与注解">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">SAP</span><span class="txt">SAP BTP 开发者训练站</span></a>
+    <nav class="main"><a href="index.html">首页</a><a href="isuite.html">Integration Suite</a><a href="iflow.html">iFlow 实战</a><a href="rap.html">RAP</a><a href="cap.html">CAP</a><a class="active" href="fiori.html">Fiori / UI5</a><a href="dev-course.html">全流程课件</a><a href="samples.html">示例工程</a></nav>
+  </div>
+</header>
+<div class="hero"><div class="hero-inner"><div class="kicker">体验层开发</div><h1>Fiori / UI5：少写页面，多写注解</h1><p class="lead">讲清 UI5 / Fiori / Fiori elements 的关系，给一个能本地跑的示例，再教你把页面接到 CAP / RAP 服务上。</p></div></div><main class="page"><div class="wrap"><article><div class="toc"><a href="#what">UI5/Fiori/elements 关系</a><a href="#choose">怎么选</a><a href="#demo">可运行示例</a><a href="#odata">对接真实服务</a><a href="#annot">elements 注解长啥样</a><a href="#scaffold">从零建应用</a><a href="#next">下一步</a></div><h2 id="what">先分清三个词</h2><table class="tbl"><tr><th>词</th><th>是什么</th></tr>
+<tr><td><b>SAPUI5 / OpenUI5</b></td><td>UI 技术框架(控件库 + 数据绑定 + 路由)。SAPUI5 是 SAP 发行版，OpenUI5 是开源版</td></tr>
+<tr><td><b>SAP Fiori</b></td><td>体验规范(设计语言 + 启动台 FLP + 应用类型)。Fiori 应用 = 符合规范的 UI5 应用</td></tr>
+<tr><td><b>Fiori elements</b></td><td>“配置即应用”：只写注解，框架自动生成 List Report / Object Page 等页面模板</td></tr>
+</table><div class="flow"><span class="node0">浏览器 UI5 控件</span><span class="arrow">→</span><span class="node0">OData V4 模型</span><span class="arrow">→</span><span class="node0">服务 (CAP / RAP / S4 网关)</span><span class="arrow">→</span><span class="node0">数据库</span></div><p>现代 SAP 开发的默认姿势：<b>后端用 CAP 或 RAP 把业务建模成 OData V4 服务，前端用 Fiori elements 消费</b>——两端都用“声明式”，UI 注解甚至可以写在服务端 CDS 里。</p><h2 id="choose">Freestyle 还是 Fiori elements？</h2><table class="tbl"><tr><th>场景</th><th>推荐</th><th>理由</th></tr>
+<tr><td>标准 CRUD / 列表报表 / 主从</td><td><b>Fiori elements</b></td><td>写注解不写页面，模板自带搜索/过滤/分页/草稿</td></tr>
+<tr><td>强定制交互/可视化大屏</td><td><b>Freestyle</b></td><td>页面自由，控件任选</td></tr>
+<tr><td>混合</td><td>elements + 自定义扩展</td><td>用 element 模板做 80%，Controller 扩展做 20%</td></tr>
+</table><h2 id="demo">本站配套：一个能本地跑的 Freestyle 示例</h2><p><code>projects/fiori/</code> 是一个完整 UI5 应用（manifest + XML 视图 + 控制器 + JSONModel 数据），含列表/搜索/排序/行点击四个交互。运行：</p><pre class="hl"><div class="code-head"><span class="lang">Shell</span><button class="copy-btn" type="button">复制</button></div><code class="lang-bash">cd btp-dev-hub/projects/fiori/webapp
+python3 -m http.server 8080
+# 浏览器打开 http://localhost:8080/index.html  (需联网加载 OpenUI5 CDN)</code></pre><pre class="hl"><div class="code-head"><span class="lang">Text</span><button class="copy-btn" type="button">复制</button></div><code class="lang-text">projects/fiori/webapp/
+├── index.html               引导: 加载 OpenUI5 + 指定 resourceroot
+├── Component.js             UIComponent(manifest 驱动)
+├── manifest.json            应用描述符: 根视图/模型/库依赖
+├── view/Products.view.xml   XML 视图: 工具栏 + ObjectListItem 列表
+├── controller/Products.controller.js   搜索/排序/点击
+├── model/formatter.js       格式化器示例
+└── data/products.json       JSONModel 测试数据</code></pre><p>视图里“值随库存变红”的写法，是 UI5 表达式绑定的典型用法：</p><pre class="hl"><div class="code-head"><span class="lang">XML</span><button class="copy-btn" type="button">复制</button></div><code class="lang-xml">&lt;ObjectListItem
+    type=&quot;Active&quot;
+    title=&quot;{products&gt;name}&quot;
+    number=&quot;{parts: [{path: &#x27;products&gt;price&#x27;}, {path: &#x27;products&gt;currency&#x27;}],
+            type: &#x27;sap.ui.model.type.Currency&#x27;}&quot;
+    numberState=&quot;{= ${products&gt;stock} &amp;lt;= ${products&gt;reorderLevel} ? &#x27;Error&#x27; : &#x27;Success&#x27; }&quot;&gt;
+    &lt;firstStatus&gt;
+        &lt;ObjectStatus text=&quot;库存 {products&gt;stock}&quot;
+                      state=&quot;{= ${products&gt;stock} &amp;lt;= ${products&gt;reorderLevel} ? &#x27;Error&#x27; : &#x27;None&#x27; }&quot;/&gt;
+    &lt;/firstStatus&gt;
+&lt;/ObjectListItem&gt;</code></pre><p>搜索 = 给列表的 binding 加 Filter；排序 = 换 Sorter。完整实现见示例控制器。</p><h2 id="odata">从本地 JSON 换到真实 OData（生产形态）</h2><pre class="hl"><div class="code-head"><span class="lang">JSON</span><button class="copy-btn" type="button">复制</button></div><code class="lang-json">// manifest.json: 把 JSONModel 换成 ODataModel
+&quot;dataSources&quot;: {
+  &quot;catalogService&quot;: {
+    &quot;type&quot;: &quot;OData&quot;,
+    &quot;uri&quot;: &quot;/odata/catalog/&quot;,                  // 指向 CAP/RAP 服务
+    &quot;settings&quot;: { &quot;odataVersion&quot;: &quot;4.0&quot; }
+  }
+},
+&quot;models&quot;: {
+  &quot;&quot;: { &quot;dataSource&quot;: &quot;catalogService&quot; }       // 默认模型 = 该服务
+}</code></pre><div class="box ok"><b class="t">验证通过 · 零成本试真服务</b><p>先跑本站 <code>projects/node-cap</code>（CAP Node.js 服务，本机已验证），就能拿到一个OData V4 端点 <code>/odata/catalog/</code>；把下面 dataSource 指向它，再刷新 UI5 页面，列表就会变成真后端数据。</p></div><h2 id="annot">Fiori elements：注解长什么样</h2><p>elements 消费的是服务 metadata 里的 <b>UI 注解</b>。CAP 里直接在 CDS 写注解即可，运行时自动进入 metadata：</p><pre class="hl"><div class="code-head"><span class="lang">CDS</span><button class="copy-btn" type="button">复制</button></div><code class="lang-cds">// 在服务定义处 annotate(推荐做法: 与模型同源)
+annotate CatalogService.Products with {
+  @title            : &#x27;产品&#x27;
+  @UI.SelectionFields: [name, category_ID];   // 列表页顶部过滤字段
+  @UI.LineItem       : [
+    { $Type : &#x27;UI.DataField&#x27;, Value : name,        Label : &#x27;产品名称&#x27; },
+    { $Type : &#x27;UI.DataField&#x27;, Value : category.name, Label : &#x27;分类&#x27; },
+    { $Type : &#x27;UI.DataField&#x27;, Value : price,       Label : &#x27;单价&#x27; },
+    { $Type : &#x27;UI.DataField&#x27;, Value : stock,       Label : &#x27;库存&#x27; }
+  ];                                            // List Report 的列
+  @UI.HeaderInfo      : { TypeName : &#x27;产品&#x27;, TypeNamePlural : &#x27;产品&#x27; };
+}</code></pre><p>同一套注解数据流到 RAP 侧时，通常写在 ABAP 的<b>元数据扩展</b>或投影视图里（语法同为 CDS 注解，见 RAP 页）。生成后的服务 metadata($metadata)里就是等效的 OData V4 注解 XML。</p><h2 id="scaffold">从零建一个 Fiori elements 应用</h2><ol class="steps">
+<li>在 BAS / VS Code 打开 Fiori 项目：菜单 <b>Fiori: Open Application Generator</b></li>
+<li>模板选 <b>List Report Object Page</b>；Data Source 指向你的 OData V4 服务(或本机 node-cap 的 /odata/catalog/)</li>
+<li>指定主实体(Products)与导航实体(Categories) → 生成即得到一个可运行的 elements 应用</li>
+<li>运行: 应用内 <b>Run Configurations → Start</b>(自动起 UI5 并代理服务)</li>
+<li>缺列/缺字段? 别改前端, 回服务端补注解后刷新 metadata</li>
+</ol><h2 id="next">下一步</h2><div class="grid cards"><div class="card"><h3><a href="cap.html">CAP：把后端建起来</a></h3><p>模型 → 服务 → 注解，CAP 页含两种运行时与全套样例。</p><div class="tags"><span class="tag ">后端</span></div></div><div class="card"><h3><a href="rap.html">RAP：ABAP 侧的同类能力</a></h3><p>CDS 视图 + 行为定义 + 元数据扩展，ABAP 云上建模。</p><div class="tags"><span class="tag ">ABAP</span></div></div><div class="card"><h3><a href="samples.html">示例工程与测试数据</a></h3><p>Fiori 应用文件、CAP 工程与数据集总入口。</p><div class="tags"><span class="tag ">下载</span></div></div></div></article></div></main>
+<footer class="site">
+  <div class="inner">
+    <div>
+      <h5>SAP BTP 开发者训练站</h5>
+      <p>面向培训/自学的中文资料站 · 代码与数据见 “示例工程” 页<br>
+      内容基于公开官方文档整理，非 SAP 官方交付物，请以 help.sap.com / cap.cloud.sap 为准。</p>
+      <p>© <span data-year>2026</span> 学习用途</p>
+    </div>
+    <div class="cols">
+      <div><h5>官方文档</h5><ul style="margin:0;padding-left:18px"><li><a href="https://help.sap.com/docs/btp" target="_blank" rel="noopener">SAP BTP 帮助中心 ↗</a></li><li><a href="https://help.sap.com/docs/integration-suite" target="_blank" rel="noopener">Integration Suite ↗</a></li><li><a href="https://help.sap.com/docs/cloud-integration" target="_blank" rel="noopener">Cloud Integration ↗</a></li><li><a href="https://cap.cloud.sap/docs/" target="_blank" rel="noopener">CAP (capire) ↗</a></li><li><a href="https://sapui5.hana.ondemand.com/" target="_blank" rel="noopener">SAPUI5 ↗</a></li><li><a href="https://help.sap.com/docs/btp/sap-abap-development-user-guide" target="_blank" rel="noopener">ABAP 开发用户指南 ↗</a></li></ul></div>
+    </div>
+  </div>
+</footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

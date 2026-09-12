@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>财务会计 FI（Financial Accounting） · 手顺与实机画面</title>
+<meta name="description" content="财务会计 FI（Financial Accounting）：45 个任务的手顺、IMG 路径、T-code 与 304 张实机画面截图。内容依据教材文档 S4.docx 整理。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/s4cn.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">S4</span><span class="txt">中文实训站</span></a>
+    <nav class="main">
+      <a href="index.html">首页</a>
+      <a href="prep.html">准备</a>
+      <a class="active" href="fi.html">FI</a>
+      <a href="co.html">CO</a>
+      <a href="mm.html">MM</a>
+      <a href="pp.html">PP</a>
+      <a href="sd.html">SD</a>
+      <a href="tcode.html">T-code</a>
+      <a href="issues.html">排错</a>
+      <a href="tasks.html">索引</a>
+      <a href="instructor.html">讲师</a>
+      <a href="worksheet.html">学员</a>
+      <a href="quiz.html">自测</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page"><article>
+<p class="breadcrumb"><a href="index.html">首页</a> / <span>财务会计 FI（Financial Accounting）</span></p>
+<h1>财务会计 FI（Financial Accounting）</h1>
+<p class="kicker">财务会计 · 组织结构 · 科目主数据 · 应收应付 · 财务报表</p>
+<div class="toc"><a href="#guide">1. 本模块导读</a><a href="#toc">2. 任务目录</a><a href="#steps">3. 手顺（逐个任务）</a><a href="#sources">4. 关于截图与取值</a></div>
+<div class="grid cards"><div class="card"><b>45</b><span>个任务</span></div><div class="card"><b>304</b><span>张实机画面</span></div><div class="card"><b>181</b><span>个手顺步骤</span></div><div class="card"><b>7/0</b><span>后台 / 前台任务</span></div></div>
+<h2 id="guide">1. 本模块导读</h2>
+<p>FI 主线是「先搭组织结构，再建科目，最后跑凭证与报表」：组织结构（公司代码 / 会计科目表 / 会计年度变式 / 信贷控制范围）→ 全局参数 → 科目组与字段状态变式 → 科目主数据（资产负债、统驭科目应收应付、材料采购 GR/IR、损益）→ 凭证号码范围与记账期间 → 过账容差组 → 总账凭证与余额 → 客户/供应商账户组、编号范围与主数据 → 应收应付（客户发票 / 收款 / 供应商发票 / 付款 / 余额）→ 财务报表结构（资产负债表与损益表）与报表运行。</p>
+<p>本站按原文档顺序保留 45 个任务，每个任务都给出 IMG 路径、T-code（文档中出现的）与原文档的实机画面。教材场景是「颐宁机械有限公司」从零建公司代码 <code>C999</code>，一直做到能出资产负债表和损益表。</p>
+<div class="panel"><b>本模块重点</b><ul><li>组织结构四件套：公司代码 / 会计科目表 / 会计年度变式 / 信贷控制范围</li><li>科目主数据：<code>FS00</code> 新建一般资产负债科目、统驭科目（应收/应付）、材料采购科目（GR/IR）、损益科目</li><li>记账期间与凭证号码范围：开关账机制（关掉的期间不允许改凭证）</li><li>应收应付闭环：客户发票 <code>FB70</code>、收款、供应商发票 <code>FB60</code>、付款、余额查询（<code>FD10N</code> / <code>FK10N</code>）</li></ul>
+<p style="margin-top:10px">文档中出现的 T-code：<a class="tag gray" href="tcode.html#FS00">FS00</a> <a class="tag gray" href="tcode.html#FB50">FB50</a> <a class="tag gray" href="tcode.html#FB03">FB03</a> <a class="tag gray" href="tcode.html#FS10N">FS10N</a> <a class="tag gray" href="tcode.html#FD01">FD01</a> <a class="tag gray" href="tcode.html#FK01">FK01</a> <a class="tag gray" href="tcode.html#FB70">FB70</a> <a class="tag gray" href="tcode.html#FD10N">FD10N</a> <a class="tag gray" href="tcode.html#FB60">FB60</a> <a class="tag gray" href="tcode.html#FK10N">FK10N</a>（完整说明见 <a href="tcode.html">T-code / IMG 路径速查</a>）</p>
+</div>
+<h2 id="toc">2. 任务目录（45 个）</h2>
+<p>其中 34 个任务给出了原文档中的 IMG 后台菜单路径；带 <span class="fb">后台</span> 标注的是定制（配置）任务，带 <span class="fb img">前台</span> 标注的是日常业务操作任务；没有标注的任务原文未指明，请按任务名自行判断（一般「定义/维护…参数」＝后台，「创建/输入/显示…凭证、订单、发票」＝前台）。</p>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>序号</th><th>任务</th><th>前后台</th><th>文档中的 T-code</th><th>画面</th><th>手顺步</th></tr></thead><tbody><tr><td><a href="#t01">任务 01</a></td><td><a href="#t01">创建公司代码</a></td><td>—</td><td>—</td><td>2</td><td>2</td></tr><tr><td><a href="#t02">任务 02</a></td><td><a href="#t02">创建会计科目表</a></td><td>—</td><td>—</td><td>2</td><td>2</td></tr><tr><td><a href="#t03">任务 03</a></td><td><a href="#t03">定义会计年度变式</a></td><td>—</td><td>—</td><td>2</td><td>2</td></tr><tr><td><a href="#t04">任务 04</a></td><td><a href="#t04">创建信贷控制范围</a></td><td>—</td><td>—</td><td>2</td><td>2</td></tr><tr><td><a href="#t05">任务 05</a></td><td><a href="#t05">维护公司代码的全局参数</a></td><td>—</td><td>—</td><td>2</td><td>2</td></tr><tr><td><a href="#t06">任务 06</a></td><td><a href="#t06">定义科目组及输入控制</a></td><td>—</td><td>—</td><td>9</td><td>9</td></tr><tr><td><a href="#t07">任务 07</a></td><td><a href="#t07">定义字段状态变式</a></td><td>—</td><td>—</td><td>19</td><td>10</td></tr><tr><td><a href="#t08">任务 08</a></td><td><a href="#t08">向字段状态变式分配公司代码</a></td><td>—</td><td>—</td><td>2</td><td>2</td></tr><tr><td><a href="#t09">任务 09</a></td><td><a href="#t09">定义存留收益科目</a></td><td>—</td><td>—</td><td>7</td><td>2</td></tr><tr><td><a href="#t10">任务 10</a></td><td><a href="#t10">新建一般资产负债科目</a></td><td>—</td><td><code>FS00</code></td><td>2</td><td>2</td></tr><tr><td><a href="#t11">任务 11</a></td><td><a href="#t11">新建统驭科目－应收/应付</a></td><td>—</td><td><code>FS00</code></td><td>10</td><td>3</td></tr><tr><td><a href="#t12">任务 12</a></td><td><a href="#t12">新建材料采购科目</a></td><td>—</td><td><code>FS00</code></td><td>3</td><td>1</td></tr><tr><td><a href="#t13">任务 13</a></td><td><a href="#t13">新建损益科目</a></td><td>—</td><td><code>FS00</code></td><td>72</td><td>36</td></tr><tr><td><a href="#t14">任务 14</a></td><td><a href="#t14">显示科目汇总</a></td><td>—</td><td>—</td><td>1</td><td>1</td></tr><tr><td><a href="#t15">任务 15</a></td><td><a href="#t15">复制凭证号码范围到公司代码</a></td><td>—</td><td>—</td><td>5</td><td>4</td></tr><tr><td><a href="#t16">任务 16</a></td><td><a href="#t16">定义记帐期间变式</a></td><td>—</td><td>—</td><td>2</td><td>1</td></tr><tr><td><a href="#t17">任务 17</a></td><td><a href="#t17">将记帐期间变式分配给公司代码</a></td><td>—</td><td>—</td><td>2</td><td>1</td></tr><tr><td><a href="#t18">任务 18</a></td><td><a href="#t18">设置记帐期间(前台)</a></td><td>—</td><td>—</td><td>4</td><td>2</td></tr><tr><td><a href="#t19">任务 19</a></td><td><a href="#t19">定义过帐容差组</a></td><td>—</td><td>—</td><td>3</td><td>2</td></tr><tr><td><a href="#t20">任务 20</a></td><td><a href="#t20">输入总帐科目凭证</a></td><td>—</td><td><code>FB50</code> <code>FB03</code></td><td>4</td><td>4</td></tr><tr><td><a href="#t21">任务 21</a></td><td><a href="#t21">显示总帐科目余额</a></td><td>—</td><td><code>FS10N</code></td><td>11</td><td>7</td></tr><tr><td><a href="#t22">任务 22</a></td><td><a href="#t22">定义应收应付容差组</a></td><td>后台</td><td>—</td><td>3</td><td>2</td></tr><tr><td><a href="#t23">任务 23</a></td><td><a href="#t23">定义供应商账号组</a></td><td>后台</td><td>—</td><td>11</td><td>8</td></tr><tr><td><a href="#t24">任务 24</a></td><td><a href="#t24">定义供应商账户编号范围</a></td><td>后台</td><td>—</td><td>6</td><td>5</td></tr><tr><td><a href="#t25">任务 25</a></td><td><a href="#t25">分配供应商编号范围</a></td><td>后台</td><td>—</td><td>2</td><td>1</td></tr><tr><td><a href="#t26">任务 26</a></td><td><a href="#t26">定义客户账户组</a></td><td>后台</td><td>—</td><td>10</td><td>8</td></tr><tr><td><a href="#t27">任务 27</a></td><td><a href="#t27">定义客户账户编号</a></td><td>后台</td><td>—</td><td>5</td><td>4</td></tr><tr><td><a href="#t28">任务 28</a></td><td><a href="#t28">分配客户编号范围</a></td><td>—</td><td>—</td><td>2</td><td>1</td></tr><tr><td><a href="#t29">任务 29</a></td><td><a href="#t29">新建订货方主数据</a></td><td>—</td><td><code>FD01</code></td><td>9</td><td>4</td></tr><tr><td><a href="#t30">任务 30</a></td><td><a href="#t30">新建收货方主数据</a></td><td>—</td><td><code>FD01</code></td><td>0</td><td>0</td></tr><tr><td><a href="#t31">任务 31</a></td><td><a href="#t31">新建供应商主数据</a></td><td>—</td><td><code>FK01</code></td><td>6</td><td>1</td></tr><tr><td><a href="#t32">任务 32</a></td><td><a href="#t32">输入客户发票</a></td><td>—</td><td><code>FB70</code></td><td>3</td><td>2</td></tr><tr><td><a href="#t33">任务 33</a></td><td><a href="#t33">收到客户全额还款</a></td><td>—</td><td>—</td><td>5</td><td>4</td></tr><tr><td><a href="#t34">任务 34</a></td><td><a href="#t34">收到客户部分还款</a></td><td>—</td><td><code>FB70</code></td><td>7</td><td>4</td></tr><tr><td><a href="#t35">任务 35</a></td><td><a href="#t35">显示应收帐款余额</a></td><td>—</td><td>—</td><td>4</td><td>1</td></tr><tr><td><a href="#t36">任务 36</a></td><td><a href="#t36">显示客户余额</a></td><td>—</td><td><code>FD10N</code></td><td>2</td><td>2</td></tr><tr><td><a href="#t37">任务 37</a></td><td><a href="#t37">收到供应商发票</a></td><td>—</td><td><code>FB60</code></td><td>5</td><td>1</td></tr><tr><td><a href="#t38">任务 38</a></td><td><a href="#t38">模拟</a></td><td>—</td><td>—</td><td>1</td><td>1</td></tr><tr><td><a href="#t39">任务 39</a></td><td><a href="#t39">向供应商付款</a></td><td>—</td><td>—</td><td>3</td><td>2</td></tr><tr><td><a href="#t40">任务 40</a></td><td><a href="#t40">显示应付帐款余额</a></td><td>—</td><td>—</td><td>3</td><td>1</td></tr><tr><td><a href="#t41">任务 41</a></td><td><a href="#t41">显示供应商余额</a></td><td>—</td><td><code>FK10N</code></td><td>7</td><td>2</td></tr><tr><td><a href="#t42">任务 42</a></td><td><a href="#t42">总帐科目余额汇总表</a></td><td>—</td><td>—</td><td>5</td><td>2</td></tr><tr><td><a href="#t43">任务 43</a></td><td><a href="#t43">将收入科目设置为只能自动记帐</a></td><td>—</td><td><code>FS00</code></td><td>7</td><td>2</td></tr><tr><td><a href="#t44">任务 44</a></td><td><a href="#t44">定义资产负债表和损益表结构</a></td><td>后台</td><td>—</td><td>29</td><td>23</td></tr><tr><td><a href="#t45">任务 45</a></td><td><a href="#t45">运行资产负债表</a></td><td>—</td><td>—</td><td>3</td><td>3</td></tr></tbody></table></div>
+<h2 id="steps">3. 手顺（逐个任务）</h2>
+<div class="box info"><b class="t">怎么用这一页</b>每个任务按原文档的顺序保留：先读「说明」，再照「IMG 路径」进入配置点，然后按编号步骤（每一步都配原文档的实机画面）逐屏操作。画面里的红色方框/箭头是原文档作者标注的「要填/要选的地方」。点击任意画面可放大（1×/2×/3×，ESC 关闭）。</div>
+<div class="steph" id="t01"><span class="no">任务 01</span><h3>创建公司代码</h3><span class="tc2">2 画面 / 2 步</span></div>
+<div class="pathline" data-copy="企业结构 → 定义 → 财务会计 → 编辑/复制/删除/检查公司代码、编辑公司代码数据选择编辑公司代码数据"><b>IMG 路径（后台菜单）</b>企业结构 → 定义 → 财务会计 → 编辑/复制/删除/检查公司代码、编辑公司代码数据选择编辑公司代码数据</div>
+<table class="tbl vals"><thead><tr><th>项目</th><th>文档中的取值</th></tr></thead><tbody><tr><td>公司代码</td><td>C999</td></tr><tr><td>货币</td><td>RMB</td></tr><tr><td>语言</td><td>ZH</td></tr></tbody></table>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 我们现在创建一家公司，并展开创建的此家公司的业务，我们创建的此家公司为颐宁机械有限公司。<br>公司代码描述的是一个完整的会计实体.有资产负债表等</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t01/01_1_image7.png"><img src="assets/img/fi/t01/01_1_image7.png" alt="创建公司代码 · 第 1 步：解释：我们现在创建一家公司，并展开创建的此家公司的业务，我们创建的此家公司为颐宁机械有限公司。 公司代码描述的是一个完整的会计实体.有资产负债表等" loading="lazy" width="394" height="363"></a><figcaption><span class="n">画面 6</span><span class="src">image7.png · 394×363</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>国家 CN</div>
+</li>
+<li>
+<p class="opcap">公司名称 颐宁机械有限公司城市 上海<br>输入上述公司信息，如下图所示，输入完毕点击保存按钮</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t01/03_1_image9.png"><img src="assets/img/fi/t01/03_1_image9.png" alt="创建公司代码 · 第 2 步：公司名称 颐宁机械有限公司城市 上海 输入上述公司信息，如下图所示，输入完毕点击保存按钮" loading="lazy" width="348" height="299"></a><figcaption><span class="n">画面 7</span><span class="src">image9.png · 348×299</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t02"><span class="no">任务 02</span><h3>创建会计科目表</h3><span class="tc2">2 画面 / 2 步</span></div>
+<div class="pathline" data-copy="财务会计新 → 总帐会计新 → 总帐科目 → 主数据 → 总账科目-准备 → 编辑科目表清单按下图进行创建，创建完毕后点击保存按钮"><b>IMG 路径（后台菜单）</b>财务会计新 → 总帐会计新 → 总帐科目 → 主数据 → 总账科目-准备 → 编辑科目表清单按下图进行创建，创建完毕后点击保存按钮</div>
+<table class="tbl vals"><thead><tr><th>项目</th><th>文档中的取值</th></tr></thead><tbody><tr><td>总帐科目号长度</td><td>8</td></tr></tbody></table>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 创建会计科目表是进行会计部分设置最基础的工作，不同的公司代码可以分配给不同的会计科目表,关系是多对一，路径如下图，我们从头开始设置。</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t02/01_1_image10.png"><img src="assets/img/fi/t02/01_1_image10.png" alt="创建会计科目表 · 第 1 步：解释：创建会计科目表是进行会计部分设置最基础的工作，不同的公司代码可以分配给不同的会计科目表,关系是多对一，路径如下图，我们从头开始设置。" loading="lazy" width="351" height="412"></a><figcaption><span class="n">画面 8</span><span class="src">image10.png · 351×412</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">财务会计新－总帐会计新－总帐科目－主数据－总账科目-准备－编辑科目表清单按下图进行创建，创建完毕后点击保存按钮</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t02/02_1_image11.png"><img src="assets/img/fi/t02/02_1_image11.png" alt="创建会计科目表 · 第 2 步：财务会计新－总帐会计新－总帐科目－主数据－总账科目-准备－编辑科目表清单按下图进行创建，创建完毕后点击保存按钮" loading="lazy" width="600" height="443"></a><figcaption><span class="n">画面 9</span><span class="src">image11.png · 600×443</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>帐目表 A999</div>
+<div class="note info"><b class="t">原理说明</b>说明 颐宁机械有限公司会计科目表维护语言</div>
+<div class="note tip"><b class="t">教材笔记</b>成本控制集成 自动创建成本要素</div>
+</li>
+</ol>
+<div class="steph" id="t03"><span class="no">任务 03</span><h3>定义会计年度变式</h3><span class="tc2">2 画面 / 2 步</span></div>
+<div class="pathline" data-copy="财务会计 → 财务会计的全局设置 → 会计年度 → 分类账 → 会计年度和过账期间 → 维护会计年度变式（维护缩短的会计年度）点击新建按钮新条目"><b>IMG 路径（后台菜单）</b>财务会计 → 财务会计的全局设置 → 会计年度 → 分类账 → 会计年度和过账期间 → 维护会计年度变式（维护缩短的会计年度）点击新建按钮新条目</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 会计年度变式将用于后续的财务操作，会计年度变式表明过账期间和特殊期间的数目，即在哪些期间进行过账</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t03/01_1_image12.png"><img src="assets/img/fi/t03/01_1_image12.png" alt="定义会计年度变式 · 第 1 步：解释：会计年度变式将用于后续的财务操作，会计年度变式表明过账期间和特殊期间的数目，即在哪些期间进行过账" loading="lazy" width="452" height="396"></a><figcaption><span class="n">画面 10</span><span class="src">image12.png · 452×396</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">财务会计－财务会计的全局设置－会计年度－分类账－会计年度和过账期间－维护会计年度变式（维护缩短的会计年度）点击新建按钮新条目</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t03/02_1_image13.png"><img src="assets/img/fi/t03/02_1_image13.png" alt="定义会计年度变式 · 第 2 步：财务会计－财务会计的全局设置－会计年度－分类账－会计年度和过账期间－维护会计年度变式（维护缩短的会计年度）点击新建按钮新条目" loading="lazy" width="798" height="489"></a><figcaption><span class="n">画面 11</span><span class="src">image13.png · 798×489</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t04"><span class="no">任务 04</span><h3>创建信贷控制范围</h3><span class="tc2">2 画面 / 2 步</span></div>
+<div class="pathline" data-copy="企业结构 → 定义 → 财务会计 → 定义信贷控制范围创建如下信息："><b>IMG 路径（后台菜单）</b>企业结构 → 定义 → 财务会计 → 定义信贷控制范围创建如下信息：</div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap"><span class="lead">解释：</span> 信贷范围用于管理在进行信用控制时，信用在哪个范围内起作用。它是 SAP 销售和应收帐款模块中用于控制信用风险的组织结构.公司代码和信贷控制范围是多对一关系。</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t04/01_1_image14.png"><img src="assets/img/fi/t04/01_1_image14.png" alt="创建信贷控制范围 · 第 1 步：解释：信贷范围用于管理在进行信用控制时，信用在哪个范围内起作用。它是 SAP 销售和应收帐款模块中用于控制信用风险的组织结构.公司代码和信贷控制范围是多对一关系。" loading="lazy" width="398" height="439"></a><figcaption><span class="n">画面 12</span><span class="src">image14.png · 398×439</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 13）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t04/02_1_image15.png"><img src="assets/img/fi/t04/02_1_image15.png" alt="创建信贷控制范围 · 第 2 步：image15.png" loading="lazy" width="450" height="334"></a><figcaption><span class="n">画面 13</span><span class="src">image15.png · 450×334</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>C999 颐宁信贷控制范围</div>
+<div class="note tip"><b class="t">教材笔记</b>RMB</div>
+</li>
+</ol>
+<div class="steph" id="t05"><span class="no">任务 05</span><h3>维护公司代码的全局参数</h3><span class="tc2">2 画面 / 2 步</span></div>
+<div class="pathline" data-copy="财务会计 → 财务会计的全局设置 → 公司代码 → 输入全局参数"><b>IMG 路径（后台菜单）</b>财务会计 → 财务会计的全局设置 → 公司代码 → 输入全局参数</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 公司代码全局参数用于设置创建公司的帐目表，信贷控制范围，会计年度变式等。主要输入公司代码的全局参数,把上面的三个组织结构分配给公司代码。</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t05/01_1_image16.png"><img src="assets/img/fi/t05/01_1_image16.png" alt="维护公司代码的全局参数 · 第 1 步：解释：公司代码全局参数用于设置创建公司的帐目表，信贷控制范围，会计年度变式等。主要输入公司代码的全局参数,把上面的三个组织结构分配给公司代码。" loading="lazy" width="352" height="360"></a><figcaption><span class="n">画面 14</span><span class="src">image16.png · 352×360</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">财务会计－财务会计的全局设置－公司代码－输入全局参数</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t05/02_1_image17.png"><img src="assets/img/fi/t05/02_1_image17.png" alt="维护公司代码的全局参数 · 第 2 步：财务会计－财务会计的全局设置－公司代码－输入全局参数" loading="lazy" width="608" height="656"></a><figcaption><span class="n">画面 15</span><span class="src">image17.png · 608×656</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>帐目表 A999公司</div>
+<div class="note tip"><b class="t">教材笔记</b>国家表/科目财务管理范围</div>
+<div class="note tip"><b class="t">教材笔记</b>信贷控制范围 C999 会计年度变式 ZF</div>
+</li>
+</ol>
+<div class="steph" id="t06"><span class="no">任务 06</span><h3>定义科目组及输入控制</h3><span class="tc2">9 画面 / 9 步</span></div>
+<p>双击进入会计科目表 A999 组 BSA</p>
+<p>资产负债类科目</p>
+<p>A999 BSA 资产负债类科目 10000000 39999999</p>
+<p>A999 PLA 损益类科目 40000000 59999999</p>
+<div class="pathline" data-copy="财务会计 → 总帐会计 → 总帐科目 → 主数据 → 准备 → 定义科目组"><b>IMG 路径（后台菜单）</b>财务会计 → 总帐会计 → 总帐科目 → 主数据 → 准备 → 定义科目组</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 用于创建科目组，并进行输入控制，即在输入科目时，哪些字段允许输入，哪些字段隐藏等。科目组是将性质类似的科目分类，主要维护前台会计科目主数据。(统驭科目--字 段状态组--凭证输入)。</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t06/01_1_image18.png"><img src="assets/img/fi/t06/01_1_image18.png" alt="定义科目组及输入控制 · 第 1 步：解释：用于创建科目组，并进行输入控制，即在输入科目时，哪些字段允许输入，哪些字段隐藏等。科目组是将性质类似的科目分类，主要维护前台会计科目主数据。(统驭科目--字 段状态组--凭证输入)。" loading="lazy" width="429" height="494"></a><figcaption><span class="n">画面 16</span><span class="src">image18.png · 429×494</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">财务会计－总帐会计－总帐科目－主数据－准备－定义科目组</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t06/02_1_image19.png"><img src="assets/img/fi/t06/02_1_image19.png" alt="定义科目组及输入控制 · 第 2 步：财务会计－总帐会计－总帐科目－主数据－准备－定义科目组" loading="lazy" width="589" height="381"></a><figcaption><span class="n">画面 17</span><span class="src">image19.png · 589×381</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">A999 RAA 统驭科目 11300000 21699999<br>双击 BSA 进入</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t06/03_1_image20.png"><img src="assets/img/fi/t06/03_1_image20.png" alt="定义科目组及输入控制 · 第 3 步：A999 RAA 统驭科目 11300000 21699999 双击 BSA 进入" loading="lazy" width="398" height="377"></a><figcaption><span class="n">画面 18</span><span class="src">image20.png · 398×377</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">双击科目控制</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t06/04_1_image21.png"><img src="assets/img/fi/t06/04_1_image21.png" alt="定义科目组及输入控制 · 第 4 步：双击科目控制" loading="lazy" width="558" height="459"></a><figcaption><span class="n">画面 19</span><span class="src">image21.png · 558×459</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">双击凭证输入</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t06/05_1_image22.png"><img src="assets/img/fi/t06/05_1_image22.png" alt="定义科目组及输入控制 · 第 5 步：双击凭证输入" loading="lazy" width="546" height="329"></a><figcaption><span class="n">画面 20</span><span class="src">image22.png · 546×329</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">双击进入 PLA</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t06/06_1_image23.png"><img src="assets/img/fi/t06/06_1_image23.png" alt="定义科目组及输入控制 · 第 6 步：双击进入 PLA" loading="lazy" width="267" height="385"></a><figcaption><span class="n">画面 21</span><span class="src">image23.png · 267×385</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">进入账户管理</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t06/07_1_image24.png"><img src="assets/img/fi/t06/07_1_image24.png" alt="定义科目组及输入控制 · 第 7 步：进入账户管理" loading="lazy" width="559" height="364"></a><figcaption><span class="n">画面 22</span><span class="src">image24.png · 559×364</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 23）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t06/08_1_image25.png"><img src="assets/img/fi/t06/08_1_image25.png" alt="定义科目组及输入控制 · 第 8 步：image25.png" loading="lazy" width="603" height="345"></a><figcaption><span class="n">画面 23</span><span class="src">image25.png · 603×345</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">进入统驭科目</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t06/09_1_image26.png"><img src="assets/img/fi/t06/09_1_image26.png" alt="定义科目组及输入控制 · 第 9 步：进入统驭科目" loading="lazy" width="587" height="344"></a><figcaption><span class="n">画面 24</span><span class="src">image26.png · 587×344</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t07"><span class="no">任务 07</span><h3>定义字段状态变式</h3><span class="tc2">19 画面 / 10 步</span></div>
+<p>新建如下组</p>
+<div class="pathline" data-copy="财务会计(新) → 财务会计全局设置(新) → 字段 → 定义字段状态变式"><b>IMG 路径（后台菜单）</b>财务会计(新) → 财务会计全局设置(新) → 字段 → 定义字段状态变式</div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap"><span class="lead">解释：</span> 字段状态变式是分配给公司代码的一项重要参数,在字段状态变式中罗列了很多字段状态组,而字段状态组是会计科目中的一个重要参数.它控制在输入一张会计记帐凭证时,该科目的那些辅助核算项目是必须输入的,哪些是不允许输入的,哪些是可以选择的</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t07/01_1_image27.png"><img src="assets/img/fi/t07/01_1_image27.png" alt="定义字段状态变式 · 第 1 步：解释：字段状态变式是分配给公司代码的一项重要参数,在字段状态变式中罗列了很多字段状态组,而字段状态组是会计科目中的一个重要参数.它控制在输入一张会计记帐凭证时,该科目的那些辅助核算项目是必须输入的,哪些是不允许输入的,哪些是可以选择的" loading="lazy" width="597" height="479"></a><figcaption><span class="n">画面 25</span><span class="src">image27.png · 597×479</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">重点:科目组是控制科目中的参数,字段状态组是控制凭证中的辅助核算项</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t07/02_1_image28.png"><img src="assets/img/fi/t07/02_1_image28.png" alt="定义字段状态变式 · 第 2 步：重点:科目组是控制科目中的参数,字段状态组是控制凭证中的辅助核算项" loading="lazy" width="363" height="452"></a><figcaption><span class="n">画面 26</span><span class="src">image28.png · 363×452</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">财务会计(新)－财务会计全局设置(新) — 字段－定义字段状态变式</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t07/03_1_image29.png"><img src="assets/img/fi/t07/03_1_image29.png" alt="定义字段状态变式 · 第 3 步：财务会计(新)－财务会计全局设置(新) — 字段－定义字段状态变式" loading="lazy" width="447" height="123"></a><figcaption><span class="n">画面 27</span><span class="src">image29.png · 447×123</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">Z001 公司代码 C999 字段状态组</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t07/04_1_image30.png"><img src="assets/img/fi/t07/04_1_image30.png" alt="定义字段状态变式 · 第 4 步：Z001 公司代码 C999 字段状态组" loading="lazy" width="445" height="125"></a><figcaption><span class="n">画面 28</span><span class="src">image30.png · 445×125</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t07/04_2_image31.png"><img src="assets/img/fi/t07/04_2_image31.png" alt="定义字段状态变式 · 第 4 步：Z001 公司代码 C999 字段状态组" loading="lazy" width="565" height="147"></a><figcaption><span class="n">画面 29</span><span class="src">image31.png · 565×147</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">双击字段状态组</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t07/05_1_image32.png"><img src="assets/img/fi/t07/05_1_image32.png" alt="定义字段状态变式 · 第 5 步：双击字段状态组" loading="lazy" width="577" height="265"></a><figcaption><span class="n">画面 30</span><span class="src">image32.png · 577×265</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">ZEXP 费用科目<br>ZGBS 一般资产负债科目 ZMMA 材料采购科目（GR/IR） ZRAA 统驭科目-应收/应付 ZREV 收入科目</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t07/06_1_image33.png"><img src="assets/img/fi/t07/06_1_image33.png" alt="定义字段状态变式 · 第 6 步：ZEXP 费用科目 ZGBS 一般资产负债科目 ZMMA 材料采购科目（GR/IR） ZRAA 统驭科目-应收/应付 ZREV 收入科目" loading="lazy" width="274" height="408"></a><figcaption><span class="n">画面 31</span><span class="src">image33.png · 274×408</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t07/06_2_image34.png"><img src="assets/img/fi/t07/06_2_image34.png" alt="定义字段状态变式 · 第 6 步：ZEXP 费用科目 ZGBS 一般资产负债科目 ZMMA 材料采购科目（GR/IR） ZRAA 统驭科目-应收/应付 ZREV 收入科目" loading="lazy" width="481" height="542"></a><figcaption><span class="n">画面 32</span><span class="src">image34.png · 481×542</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>双击 ZGBS</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 33）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t07/07_1_image35.png"><img src="assets/img/fi/t07/07_1_image35.png" alt="定义字段状态变式 · 第 7 步：image35.png" loading="lazy" width="261" height="466"></a><figcaption><span class="n">画面 33</span><span class="src">image35.png · 261×466</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t07/07_2_image36.png"><img src="assets/img/fi/t07/07_2_image36.png" alt="定义字段状态变式 · 第 7 步：image36.png" loading="lazy" width="512" height="866"></a><figcaption><span class="n">画面 34</span><span class="src">image36.png · 512×866</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">双击ZMMA</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t07/08_1_image37.png"><img src="assets/img/fi/t07/08_1_image37.png" alt="定义字段状态变式 · 第 8 步：双击ZMMA" loading="lazy" width="253" height="472"></a><figcaption><span class="n">画面 35</span><span class="src">image37.png · 253×472</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t07/08_2_image38.png"><img src="assets/img/fi/t07/08_2_image38.png" alt="定义字段状态变式 · 第 8 步：双击ZMMA" loading="lazy" width="510" height="405"></a><figcaption><span class="n">画面 36</span><span class="src">image38.png · 510×405</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t07/08_3_image39.png"><img src="assets/img/fi/t07/08_3_image39.png" alt="定义字段状态变式 · 第 8 步：双击ZMMA" loading="lazy" width="522" height="862"></a><figcaption><span class="n">画面 37</span><span class="src">image41.png · 522×862</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t07/08_4_image40.png"><img src="assets/img/fi/t07/08_4_image40.png" alt="定义字段状态变式 · 第 8 步：双击ZMMA" loading="lazy" width="521" height="427"></a><figcaption><span class="n">画面 38</span><span class="src">image42.png · 521×427</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t07/08_3_image39.png"><img src="assets/img/fi/t07/08_3_image39.png" alt="定义字段状态变式 · 第 8 步：双击ZMMA" loading="lazy" width="522" height="862"></a><figcaption><span class="n">画面 37</span><span class="src">image41.png · 522×862</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t07/08_4_image40.png"><img src="assets/img/fi/t07/08_4_image40.png" alt="定义字段状态变式 · 第 8 步：双击ZMMA" loading="lazy" width="521" height="427"></a><figcaption><span class="n">画面 38</span><span class="src">image42.png · 521×427</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">系统会提示“不一致的字段状态，参加帮助文本”回车即可返回</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t07/09_1_image43.png"><img src="assets/img/fi/t07/09_1_image43.png" alt="定义字段状态变式 · 第 9 步：系统会提示“不一致的字段状态，参加帮助文本”回车即可返回" loading="lazy" width="508" height="554"></a><figcaption><span class="n">画面 41</span><span class="src">image43.png · 508×554</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">双击 ZREV</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t07/10_1_image44.png"><img src="assets/img/fi/t07/10_1_image44.png" alt="定义字段状态变式 · 第 10 步：双击 ZREV" loading="lazy" width="362" height="466"></a><figcaption><span class="n">画面 42</span><span class="src">image44.png · 362×466</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t07/10_2_image45.png"><img src="assets/img/fi/t07/10_2_image45.png" alt="定义字段状态变式 · 第 10 步：双击 ZREV" loading="lazy" width="513" height="272"></a><figcaption><span class="n">画面 43</span><span class="src">image45.png · 513×272</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t08"><span class="no">任务 08</span><h3>向字段状态变式分配公司代码</h3><span class="tc2">2 画面 / 2 步</span></div>
+<div class="pathline" data-copy="财务会计 → 财务会计全局设置 → 凭证 → 行项目 → 控制 → 向字段状态变式分配公司代码"><b>IMG 路径（后台菜单）</b>财务会计 → 财务会计全局设置 → 凭证 → 行项目 → 控制 → 向字段状态变式分配公司代码</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释:</span> 先分配给公司代码,以后可以把字段信息分配给会计科目</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t08/01_1_image46.png"><img src="assets/img/fi/t08/01_1_image46.png" alt="向字段状态变式分配公司代码 · 第 1 步：解释:先分配给公司代码,以后可以把字段信息分配给会计科目" loading="lazy" width="394" height="443"></a><figcaption><span class="n">画面 44</span><span class="src">image46.png · 394×443</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 45）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t08/02_1_image47.png"><img src="assets/img/fi/t08/02_1_image47.png" alt="向字段状态变式分配公司代码 · 第 2 步：image47.png" loading="lazy" width="545" height="378"></a><figcaption><span class="n">画面 45</span><span class="src">image47.png · 545×378</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t09"><span class="no">任务 09</span><h3>定义存留收益科目</h3><span class="tc2">7 画面 / 2 步</span></div>
+<div class="pathline" data-copy="财务会计(新) → 总帐会计(新) → 主数据 → 总帐科目 → 准备 → 定义留存收益科目"><b>IMG 路径（后台菜单）</b>财务会计(新) → 总帐会计(新) → 主数据 → 总帐科目 → 准备 → 定义留存收益科目</div>
+<div class="note warn"><b class="t">踩坑提醒</b>解释：SAP 总账在年结时可以自动结转本年利润或未分配利润，也就是说系统自动将利润表科目余额转入资产负债表科目中的本年利润或未分配利润。这里是定义转入的科目。SAP称之为留存收益科目。在项目实施中有两种处理方式：一是设置为&quot;本年利润科目&quot;，这样所有的损益表科目的余额都会自动转入本年利润科目，而利润分配表中的科目视同资产负债表科目，结转未分配利润用于手工凭证处理；另一种是设置为&quot;未分配利润科目&quot;，这样所有的损益表科目和所有利润分配表科目的余额都要自动传入未分配利润科目而利润分配表中的科目视同损益表科目，不需要定义本年利润科目，也不存在本年利润结转，本年利润的金额通过损益表报表反映。</div>
+<ol class="oplist">
+<li>
+<p class="opcap">财务会计(新)－总帐会计(新)－主数据－总帐科目－准备－定义留存收益科目</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t09/01_1_image48.png"><img src="assets/img/fi/t09/01_1_image48.png" alt="定义存留收益科目 · 第 1 步：财务会计(新)－总帐会计(新)－主数据－总帐科目－准备－定义留存收益科目" loading="lazy" width="389" height="514"></a><figcaption><span class="n">画面 46</span><span class="src">image48.png · 389×514</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">X 410901X 410901</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t09/02_1_image49.png"><img src="assets/img/fi/t09/02_1_image49.png" alt="定义存留收益科目 · 第 2 步：X 410901X 410901" loading="lazy" width="333" height="221"></a><figcaption><span class="n">画面 47</span><span class="src">image52.png · 333×221</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t09/02_2_image50.png"><img src="assets/img/fi/t09/02_2_image50.png" alt="定义存留收益科目 · 第 2 步：X 410901X 410901" loading="lazy" width="394" height="257"></a><figcaption><span class="n">画面 48</span><span class="src">image53.png · 394×257</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="assets/img/fi/t09/02_3_image51.png"><img src="assets/img/fi/t09/02_3_image51.png" alt="定义存留收益科目 · 第 2 步：X 410901X 410901" loading="lazy" width="324" height="40"></a><figcaption><span class="n">画面 49</span><span class="src">image54.png · 324×40</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t09/02_1_image49.png"><img src="assets/img/fi/t09/02_1_image49.png" alt="定义存留收益科目 · 第 2 步：X 410901X 410901" loading="lazy" width="333" height="221"></a><figcaption><span class="n">画面 47</span><span class="src">image52.png · 333×221</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t09/02_2_image50.png"><img src="assets/img/fi/t09/02_2_image50.png" alt="定义存留收益科目 · 第 2 步：X 410901X 410901" loading="lazy" width="394" height="257"></a><figcaption><span class="n">画面 48</span><span class="src">image53.png · 394×257</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="assets/img/fi/t09/02_3_image51.png"><img src="assets/img/fi/t09/02_3_image51.png" alt="定义存留收益科目 · 第 2 步：X 410901X 410901" loading="lazy" width="324" height="40"></a><figcaption><span class="n">画面 49</span><span class="src">image54.png · 324×40</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材笔记</b>系统提示“… 未建立” 回车即可通过</div>
+</li>
+</ol>
+<div class="steph" id="t10"><span class="no">任务 10</span><h3>新建一般资产负债科目</h3><span class="tc">FS00</span><span class="tc2">2 画面 / 2 步</span></div>
+<p>点击新建科目按钮（带模板按钮边上那个按钮）帐目表: A999 = 颐宁机械有限公司会计科目表总帐帐号 科目名称</p>
+<p>10010101 现金</p>
+<p>10020101 银行存款－工商银行上海分行南京西路支行</p>
+<p>10020111 银行存款－中国银行上海分行淮海中路支行 3101968</p>
+<p>12110101 存货－原材料</p>
+<p>12310101 存货－贸易商品</p>
+<p>12430101 存货－产成品</p>
+<div class="pathline" data-copy="21710102 未交税金 → 增值税 → 销项税额"><b>IMG 路径（后台菜单）</b>21710102 未交税金 → 增值税 → 销项税额</div>
+<div class="note info"><b class="t">原理说明</b>解释：在前台创建资产负债类科目。定义资产负债类会计科目。在 SAP 中,会计科目的定义分为两层：科目表层和公司代码层。比如：一个集团企业可以定义一套会计科目表，但是下面的每个公司代码，从中选择哪些科目，这些科目的各项参数又是可以自己决定的，从而达到集中和灵活兼顾的效果。定义总帐科目：科目表层和公司代码层。科目组和会计科目表相关，和公司代码无关。字段状态组和公司代码相关。在这里，新建立了 C999 公司代码下的 10 张总帐会计科目。</div>
+<ol class="oplist">
+<li>
+<p class="opcap">事务代码：FS00</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t10/01_1_image55.png"><img src="assets/img/fi/t10/01_1_image55.png" alt="新建一般资产负债科目 · 第 1 步：事务代码：FS00" loading="lazy" width="331" height="458"></a><figcaption><span class="n">画面 53</span><span class="src">image55.png · 331×458</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 54）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t10/02_1_image56.png"><img src="assets/img/fi/t10/02_1_image56.png" alt="新建一般资产负债科目 · 第 2 步：image56.png" loading="lazy" width="648" height="303"></a><figcaption><span class="n">画面 54</span><span class="src">image56.png · 648×303</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>31410101 利润分配－未分配利润</div>
+<div class="note tip"><b class="t">教材笔记</b>31010101 实收资本</div>
+</li>
+</ol>
+<div class="steph" id="t11"><span class="no">任务 11</span><h3>新建统驭科目－应收/应付</h3><span class="tc">FS00</span><span class="tc2">10 画面 / 3 步</span></div>
+<p>解释：这也是创建一些总账会计科目。不同的是这些科目，如应收帐和应付账款会有相应的明细分类账模块。如客户账户，供应商账户。业务入账只能记入这些明细分类账中，通过集成自动更新总账，而不能直接记入总账。这样杜绝了明细分类账和总账不付的情况发生。这些总账科目就为统驭科目。</p>
+<table class="tbl vals"><thead><tr><th>项目</th><th>文档中的取值</th></tr></thead><tbody><tr><td>事务代码</td><td>FS00</td></tr></tbody></table>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">其他总账科目创建如现金总账的创建</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t11/01_1_image57.png"><img src="assets/img/fi/t11/01_1_image57.png" alt="新建统驭科目－应收/应付 · 第 1 步：其他总账科目创建如现金总账的创建" loading="lazy" width="639" height="515"></a><figcaption><span class="n">画面 55</span><span class="src">image57.png · 639×515</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t11/01_2_image58.png"><img src="assets/img/fi/t11/01_2_image58.png" alt="新建统驭科目－应收/应付 · 第 1 步：其他总账科目创建如现金总账的创建" loading="lazy" width="643" height="663"></a><figcaption><span class="n">画面 56</span><span class="src">image58.png · 643×663</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">创建应收账款 FS00 11310101</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t11/02_1_image59.png"><img src="assets/img/fi/t11/02_1_image59.png" alt="新建统驭科目－应收/应付 · 第 2 步：创建应收账款 FS00 11310101" loading="lazy" width="623" height="786"></a><figcaption><span class="n">画面 57</span><span class="src">image59.png · 623×786</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t11/02_2_image60.png"><img src="assets/img/fi/t11/02_2_image60.png" alt="新建统驭科目－应收/应付 · 第 2 步：创建应收账款 FS00 11310101" loading="lazy" width="652" height="672"></a><figcaption><span class="n">画面 58</span><span class="src">image60.png · 652×672</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t11/02_3_image61.png"><img src="assets/img/fi/t11/02_3_image61.png" alt="新建统驭科目－应收/应付 · 第 2 步：创建应收账款 FS00 11310101" loading="lazy" width="635" height="516"></a><figcaption><span class="n">画面 59</span><span class="src">image61.png · 635×516</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">创建应付科目<br>21210101 应付帐款</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t11/03_1_image62.png"><img src="assets/img/fi/t11/03_1_image62.png" alt="新建统驭科目－应收/应付 · 第 3 步：创建应付科目 21210101 应付帐款" loading="lazy" width="626" height="520"></a><figcaption><span class="n">画面 60</span><span class="src">image64.png · 626×520</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t11/03_2_image63.png"><img src="assets/img/fi/t11/03_2_image63.png" alt="新建统驭科目－应收/应付 · 第 3 步：创建应付科目 21210101 应付帐款" loading="lazy" width="656" height="678"></a><figcaption><span class="n">画面 61</span><span class="src">image65.png · 656×678</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t11/03_3_image66.png"><img src="assets/img/fi/t11/03_3_image66.png" alt="新建统驭科目－应收/应付 · 第 3 步：创建应付科目 21210101 应付帐款" loading="lazy" width="664" height="779"></a><figcaption><span class="n">画面 62</span><span class="src">image66.png · 664×779</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t11/03_1_image62.png"><img src="assets/img/fi/t11/03_1_image62.png" alt="新建统驭科目－应收/应付 · 第 3 步：创建应付科目 21210101 应付帐款" loading="lazy" width="626" height="520"></a><figcaption><span class="n">画面 60</span><span class="src">image64.png · 626×520</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t11/03_2_image63.png"><img src="assets/img/fi/t11/03_2_image63.png" alt="新建统驭科目－应收/应付 · 第 3 步：创建应付科目 21210101 应付帐款" loading="lazy" width="656" height="678"></a><figcaption><span class="n">画面 61</span><span class="src">image65.png · 656×678</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t12"><span class="no">任务 12</span><h3>新建材料采购科目</h3><span class="tc">FS00</span><span class="tc2">3 画面 / 1 步</span></div>
+<table class="tbl vals"><thead><tr><th>项目</th><th>文档中的取值</th></tr></thead><tbody><tr><td>事务代码</td><td>FS00</td></tr></tbody></table>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释:</span> 材料采购科目也是创建一个总账会计科目。这个科目需要&quot;逐笔逐清&quot;的中间过渡科目--材料采购科目。也叫 GR/IR(收货/收发票)。在收货时系统自动生成会计凭证。借:库存 贷:材料采购.而收发票时，系统也自动生成会计凭证。 借:材料采购，贷:应付账款.两边的&quot;材料采购&quot; 凭证行相互匹配的过程叫&quot;清账&quot;，对上的叫&quot;已清项&quot;，对不上的叫&quot;未清项&quot;，未清项反映了货或者发票有一方未到。这是个风险点，其他需要用&quot;清账&quot;来管理的科目大多是一些中间过渡科目，如银行未达科目。或者是反映债权债务(但又不用应付应收模块管理)科目，如长期借款。客户和供应商明细账就是采用清账来管理的。<br>创建材料采购－GR/IR 科目</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t12/01_1_image67.png"><img src="assets/img/fi/t12/01_1_image67.png" alt="新建材料采购科目 · 第 1 步：解释:材料采购科目也是创建一个总账会计科目。这个科目需要&quot;逐笔逐清&quot;的中间过渡科目--材料采购科目。也叫 GR/IR(收货/收发票)。在收货时系统自动生成会计凭证。借:库存 贷:材料采购.而收发票时，系统也自动生成会计凭证。 借:材料采购，贷:应付账款.两边的&quot;材料采购&quot; 凭证行相互匹配的过程叫&quot;清账&quot;，对上的叫&quot;已清" loading="lazy" width="630" height="485"></a><figcaption><span class="n">画面 65</span><span class="src">image67.png · 630×485</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t12/01_2_image68.png"><img src="assets/img/fi/t12/01_2_image68.png" alt="新建材料采购科目 · 第 1 步：解释:材料采购科目也是创建一个总账会计科目。这个科目需要&quot;逐笔逐清&quot;的中间过渡科目--材料采购科目。也叫 GR/IR(收货/收发票)。在收货时系统自动生成会计凭证。借:库存 贷:材料采购.而收发票时，系统也自动生成会计凭证。 借:材料采购，贷:应付账款.两边的&quot;材料采购&quot; 凭证行相互匹配的过程叫&quot;清账&quot;，对上的叫&quot;已清" loading="lazy" width="630" height="640"></a><figcaption><span class="n">画面 66</span><span class="src">image68.png · 630×640</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t12/01_3_image69.png"><img src="assets/img/fi/t12/01_3_image69.png" alt="新建材料采购科目 · 第 1 步：解释:材料采购科目也是创建一个总账会计科目。这个科目需要&quot;逐笔逐清&quot;的中间过渡科目--材料采购科目。也叫 GR/IR(收货/收发票)。在收货时系统自动生成会计凭证。借:库存 贷:材料采购.而收发票时，系统也自动生成会计凭证。 借:材料采购，贷:应付账款.两边的&quot;材料采购&quot; 凭证行相互匹配的过程叫&quot;清账&quot;，对上的叫&quot;已清" loading="lazy" width="644" height="808"></a><figcaption><span class="n">画面 67</span><span class="src">image69.png · 644×808</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t13"><span class="no">任务 13</span><h3>新建损益科目</h3><span class="tc">FS00</span><span class="tc2">72 画面 / 36 步</span></div>
+<p>解释：损益类科目的特点是在做年结的时候，损益类科目的年末余额会结转到&quot;未分配利润</p>
+<p>&quot;(或者本年利润)科目的年初余额。而他们自己的年初余额清为 0。</p>
+<p>创建损益科目</p>
+<table class="tbl vals"><thead><tr><th>项目</th><th>文档中的取值</th></tr></thead><tbody><tr><td>事务代码</td><td>FS00</td></tr></tbody></table>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">51010101 主营业务收入-自制产品</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t13/01_1_image70.png"><img src="assets/img/fi/t13/01_1_image70.png" alt="新建损益科目 · 第 1 步：51010101 主营业务收入-自制产品" loading="lazy" width="620" height="507"></a><figcaption><span class="n">画面 68</span><span class="src">image73.png · 620×507</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/01_2_image71.png"><img src="assets/img/fi/t13/01_2_image71.png" alt="新建损益科目 · 第 1 步：51010101 主营业务收入-自制产品" loading="lazy" width="624" height="744"></a><figcaption><span class="n">画面 69</span><span class="src">image74.png · 624×744</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/01_3_image72.png"><img src="assets/img/fi/t13/01_3_image72.png" alt="新建损益科目 · 第 1 步：51010101 主营业务收入-自制产品" loading="lazy" width="625" height="673"></a><figcaption><span class="n">画面 70</span><span class="src">image75.png · 625×673</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/01_1_image70.png"><img src="assets/img/fi/t13/01_1_image70.png" alt="新建损益科目 · 第 1 步：51010101 主营业务收入-自制产品" loading="lazy" width="620" height="507"></a><figcaption><span class="n">画面 68</span><span class="src">image73.png · 620×507</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/01_2_image71.png"><img src="assets/img/fi/t13/01_2_image71.png" alt="新建损益科目 · 第 1 步：51010101 主营业务收入-自制产品" loading="lazy" width="624" height="744"></a><figcaption><span class="n">画面 69</span><span class="src">image74.png · 624×744</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/01_3_image72.png"><img src="assets/img/fi/t13/01_3_image72.png" alt="新建损益科目 · 第 1 步：51010101 主营业务收入-自制产品" loading="lazy" width="625" height="673"></a><figcaption><span class="n">画面 70</span><span class="src">image75.png · 625×673</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t13/02_1_image76.png"><img src="assets/img/fi/t13/02_1_image76.png" alt="新建损益科目 · 第 2 步：image78.png" loading="lazy" width="618" height="495"></a><figcaption><span class="n">画面 74</span><span class="src">image78.png · 618×495</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/02_2_image77.png"><img src="assets/img/fi/t13/02_2_image77.png" alt="新建损益科目 · 第 2 步：image79.png" loading="lazy" width="477" height="753"></a><figcaption><span class="n">画面 75</span><span class="src">image79.png · 477×753</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/02_1_image76.png"><img src="assets/img/fi/t13/02_1_image76.png" alt="新建损益科目 · 第 2 步：image78.png" loading="lazy" width="618" height="495"></a><figcaption><span class="n">画面 74</span><span class="src">image78.png · 618×495</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/02_2_image77.png"><img src="assets/img/fi/t13/02_2_image77.png" alt="新建损益科目 · 第 2 步：image79.png" loading="lazy" width="477" height="753"></a><figcaption><span class="n">画面 75</span><span class="src">image79.png · 477×753</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">创建生产成本－原材料消耗<br>41010101</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/03_1_image80.png"><img src="assets/img/fi/t13/03_1_image80.png" alt="新建损益科目 · 第 3 步：创建生产成本－原材料消耗 41010101" loading="lazy" width="630" height="623"></a><figcaption><span class="n">画面 78</span><span class="src">image80.png · 630×623</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">创建生产成本－订单差异 41010901</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t13/04_1_image81.png"><img src="assets/img/fi/t13/04_1_image81.png" alt="新建损益科目 · 第 4 步：创建生产成本－订单差异 41010901" loading="lazy" width="609" height="677"></a><figcaption><span class="n">画面 79</span><span class="src">image84.png · 609×677</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/04_2_image82.png"><img src="assets/img/fi/t13/04_2_image82.png" alt="新建损益科目 · 第 4 步：创建生产成本－订单差异 41010901" loading="lazy" width="637" height="780"></a><figcaption><span class="n">画面 80</span><span class="src">image85.png · 637×780</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/04_3_image83.png"><img src="assets/img/fi/t13/04_3_image83.png" alt="新建损益科目 · 第 4 步：创建生产成本－订单差异 41010901" loading="lazy" width="614" height="508"></a><figcaption><span class="n">画面 81</span><span class="src">image86.png · 614×508</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/04_1_image81.png"><img src="assets/img/fi/t13/04_1_image81.png" alt="新建损益科目 · 第 4 步：创建生产成本－订单差异 41010901" loading="lazy" width="609" height="677"></a><figcaption><span class="n">画面 79</span><span class="src">image84.png · 609×677</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/04_2_image82.png"><img src="assets/img/fi/t13/04_2_image82.png" alt="新建损益科目 · 第 4 步：创建生产成本－订单差异 41010901" loading="lazy" width="637" height="780"></a><figcaption><span class="n">画面 80</span><span class="src">image85.png · 637×780</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/04_3_image83.png"><img src="assets/img/fi/t13/04_3_image83.png" alt="新建损益科目 · 第 4 步：创建生产成本－订单差异 41010901" loading="lazy" width="614" height="508"></a><figcaption><span class="n">画面 81</span><span class="src">image86.png · 614×508</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t13/05_1_image87.png"><img src="assets/img/fi/t13/05_1_image87.png" alt="新建损益科目 · 第 5 步：image90.png" loading="lazy" width="637" height="670"></a><figcaption><span class="n">画面 85</span><span class="src">image90.png · 637×670</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/05_2_image88.png"><img src="assets/img/fi/t13/05_2_image88.png" alt="新建损益科目 · 第 5 步：image91.png" loading="lazy" width="630" height="769"></a><figcaption><span class="n">画面 86</span><span class="src">image91.png · 630×769</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/05_3_image89.png"><img src="assets/img/fi/t13/05_3_image89.png" alt="新建损益科目 · 第 5 步：image92.png" loading="lazy" width="612" height="497"></a><figcaption><span class="n">画面 87</span><span class="src">image92.png · 612×497</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/05_1_image87.png"><img src="assets/img/fi/t13/05_1_image87.png" alt="新建损益科目 · 第 5 步：image90.png" loading="lazy" width="637" height="670"></a><figcaption><span class="n">画面 85</span><span class="src">image90.png · 637×670</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/05_2_image88.png"><img src="assets/img/fi/t13/05_2_image88.png" alt="新建损益科目 · 第 5 步：image91.png" loading="lazy" width="630" height="769"></a><figcaption><span class="n">画面 86</span><span class="src">image91.png · 630×769</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/05_3_image89.png"><img src="assets/img/fi/t13/05_3_image89.png" alt="新建损益科目 · 第 5 步：image92.png" loading="lazy" width="612" height="497"></a><figcaption><span class="n">画面 87</span><span class="src">image92.png · 612×497</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/06_1_image93.png"><img src="assets/img/fi/t13/06_1_image93.png" alt="新建损益科目 · 第 6 步：image93.png" loading="lazy" width="627" height="680"></a><figcaption><span class="n">画面 91</span><span class="src">image93.png · 627×680</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/06_2_image94.png"><img src="assets/img/fi/t13/06_2_image94.png" alt="新建损益科目 · 第 6 步：image94.png" loading="lazy" width="632" height="438"></a><figcaption><span class="n">画面 92</span><span class="src">image94.png · 632×438</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">创建制造费用－工资 41050101</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/07_1_image95.png"><img src="assets/img/fi/t13/07_1_image95.png" alt="新建损益科目 · 第 7 步：创建制造费用－工资 41050101" loading="lazy" width="620" height="508"></a><figcaption><span class="n">画面 93</span><span class="src">image95.png · 620×508</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/08_1_image96.png"><img src="assets/img/fi/t13/08_1_image96.png" alt="新建损益科目 · 第 8 步：image96.png" loading="lazy" width="635" height="408"></a><figcaption><span class="n">画面 94</span><span class="src">image96.png · 635×408</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">创建制造费用－电费 41050121</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t13/09_1_image97.png"><img src="assets/img/fi/t13/09_1_image97.png" alt="新建损益科目 · 第 9 步：创建制造费用－电费 41050121" loading="lazy" width="633" height="352"></a><figcaption><span class="n">画面 95</span><span class="src">image99.png · 633×352</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/09_2_image98.png"><img src="assets/img/fi/t13/09_2_image98.png" alt="新建损益科目 · 第 9 步：创建制造费用－电费 41050121" loading="lazy" width="640" height="685"></a><figcaption><span class="n">画面 96</span><span class="src">image100.png · 640×685</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/09_1_image97.png"><img src="assets/img/fi/t13/09_1_image97.png" alt="新建损益科目 · 第 9 步：创建制造费用－电费 41050121" loading="lazy" width="633" height="352"></a><figcaption><span class="n">画面 95</span><span class="src">image99.png · 633×352</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/09_2_image98.png"><img src="assets/img/fi/t13/09_2_image98.png" alt="新建损益科目 · 第 9 步：创建制造费用－电费 41050121" loading="lazy" width="640" height="685"></a><figcaption><span class="n">画面 96</span><span class="src">image100.png · 640×685</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/10_1_image101.png"><img src="assets/img/fi/t13/10_1_image101.png" alt="新建损益科目 · 第 10 步：image101.png" loading="lazy" width="645" height="697"></a><figcaption><span class="n">画面 99</span><span class="src">image101.png · 645×697</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/10_2_image102.png"><img src="assets/img/fi/t13/10_2_image102.png" alt="新建损益科目 · 第 10 步：image102.png" loading="lazy" width="631" height="413"></a><figcaption><span class="n">画面 100</span><span class="src">image102.png · 631×413</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">创建主营业务收入－贸易商品 51010201</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/11_1_image103.png"><img src="assets/img/fi/t13/11_1_image103.png" alt="新建损益科目 · 第 11 步：创建主营业务收入－贸易商品 51010201" loading="lazy" width="624" height="331"></a><figcaption><span class="n">画面 101</span><span class="src">image103.png · 624×331</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/12_1_image104.png"><img src="assets/img/fi/t13/12_1_image104.png" alt="新建损益科目 · 第 12 步：image104.png" loading="lazy" width="624" height="700"></a><figcaption><span class="n">画面 102</span><span class="src">image104.png · 624×700</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/12_2_image105.png"><img src="assets/img/fi/t13/12_2_image105.png" alt="新建损益科目 · 第 12 步：image105.png" loading="lazy" width="647" height="424"></a><figcaption><span class="n">画面 103</span><span class="src">image105.png · 647×424</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">创建主营业务收入－自制产品 54010101</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/13_1_image106.png"><img src="assets/img/fi/t13/13_1_image106.png" alt="新建损益科目 · 第 13 步：创建主营业务收入－自制产品 54010101" loading="lazy" width="632" height="347"></a><figcaption><span class="n">画面 104</span><span class="src">image106.png · 632×347</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/14_1_image107.png"><img src="assets/img/fi/t13/14_1_image107.png" alt="新建损益科目 · 第 14 步：image107.png" loading="lazy" width="606" height="692"></a><figcaption><span class="n">画面 105</span><span class="src">image107.png · 606×692</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/14_2_image108.png"><img src="assets/img/fi/t13/14_2_image108.png" alt="新建损益科目 · 第 14 步：image108.png" loading="lazy" width="620" height="407"></a><figcaption><span class="n">画面 106</span><span class="src">image108.png · 620×407</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">创建主营业务成本－贸易商品 54010201</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/15_1_image109.png"><img src="assets/img/fi/t13/15_1_image109.png" alt="新建损益科目 · 第 15 步：创建主营业务成本－贸易商品 54010201" loading="lazy" width="636" height="364"></a><figcaption><span class="n">画面 107</span><span class="src">image109.png · 636×364</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/16_1_image110.png"><img src="assets/img/fi/t13/16_1_image110.png" alt="新建损益科目 · 第 16 步：image110.png" loading="lazy" width="609" height="680"></a><figcaption><span class="n">画面 108</span><span class="src">image110.png · 609×680</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/16_2_image111.png"><img src="assets/img/fi/t13/16_2_image111.png" alt="新建损益科目 · 第 16 步：image111.png" loading="lazy" width="635" height="413"></a><figcaption><span class="n">画面 109</span><span class="src">image111.png · 635×413</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">创建主营成本－采购价差 54010301</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/17_1_image112.png"><img src="assets/img/fi/t13/17_1_image112.png" alt="新建损益科目 · 第 17 步：创建主营成本－采购价差 54010301" loading="lazy" width="636" height="338"></a><figcaption><span class="n">画面 110</span><span class="src">image112.png · 636×338</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/18_1_image113.png"><img src="assets/img/fi/t13/18_1_image113.png" alt="新建损益科目 · 第 18 步：image113.png" loading="lazy" width="649" height="627"></a><figcaption><span class="n">画面 111</span><span class="src">image113.png · 649×627</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/18_2_image114.png"><img src="assets/img/fi/t13/18_2_image114.png" alt="新建损益科目 · 第 18 步：image114.png" loading="lazy" width="624" height="408"></a><figcaption><span class="n">画面 112</span><span class="src">image114.png · 624×408</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">创建主营业务成本－生产订单差异 54010401</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/19_1_image115.png"><img src="assets/img/fi/t13/19_1_image115.png" alt="新建损益科目 · 第 19 步：创建主营业务成本－生产订单差异 54010401" loading="lazy" width="635" height="349"></a><figcaption><span class="n">画面 113</span><span class="src">image115.png · 635×349</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/20_1_image116.png"><img src="assets/img/fi/t13/20_1_image116.png" alt="新建损益科目 · 第 20 步：image116.png" loading="lazy" width="595" height="637"></a><figcaption><span class="n">画面 114</span><span class="src">image116.png · 595×637</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/20_2_image117.png"><img src="assets/img/fi/t13/20_2_image117.png" alt="新建损益科目 · 第 20 步：image117.png" loading="lazy" width="642" height="417"></a><figcaption><span class="n">画面 115</span><span class="src">image117.png · 642×417</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">创建销售费用－运费 55010101</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/21_1_image118.png"><img src="assets/img/fi/t13/21_1_image118.png" alt="新建损益科目 · 第 21 步：创建销售费用－运费 55010101" loading="lazy" width="619" height="343"></a><figcaption><span class="n">画面 116</span><span class="src">image118.png · 619×343</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/22_1_image119.png"><img src="assets/img/fi/t13/22_1_image119.png" alt="新建损益科目 · 第 22 步：image119.png" loading="lazy" width="619" height="686"></a><figcaption><span class="n">画面 117</span><span class="src">image119.png · 619×686</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/22_2_image120.png"><img src="assets/img/fi/t13/22_2_image120.png" alt="新建损益科目 · 第 22 步：image120.png" loading="lazy" width="652" height="421"></a><figcaption><span class="n">画面 118</span><span class="src">image120.png · 652×421</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">创建销售费用－市场费用 55010111</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/23_1_image121.png"><img src="assets/img/fi/t13/23_1_image121.png" alt="新建损益科目 · 第 23 步：创建销售费用－市场费用 55010111" loading="lazy" width="634" height="332"></a><figcaption><span class="n">画面 119</span><span class="src">image121.png · 634×332</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/24_1_image122.png"><img src="assets/img/fi/t13/24_1_image122.png" alt="新建损益科目 · 第 24 步：image122.png" loading="lazy" width="648" height="775"></a><figcaption><span class="n">画面 120</span><span class="src">image122.png · 648×775</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/24_2_image123.png"><img src="assets/img/fi/t13/24_2_image123.png" alt="新建损益科目 · 第 24 步：image123.png" loading="lazy" width="631" height="422"></a><figcaption><span class="n">画面 121</span><span class="src">image123.png · 631×422</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">创建管理费用－工资 55020101</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/25_1_image124.png"><img src="assets/img/fi/t13/25_1_image124.png" alt="新建损益科目 · 第 25 步：创建管理费用－工资 55020101" loading="lazy" width="650" height="358"></a><figcaption><span class="n">画面 122</span><span class="src">image124.png · 650×358</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/26_1_image125.png"><img src="assets/img/fi/t13/26_1_image125.png" alt="新建损益科目 · 第 26 步：image125.png" loading="lazy" width="558" height="692"></a><figcaption><span class="n">画面 123</span><span class="src">image125.png · 558×692</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/26_2_image126.png"><img src="assets/img/fi/t13/26_2_image126.png" alt="新建损益科目 · 第 26 步：image126.png" loading="lazy" width="621" height="407"></a><figcaption><span class="n">画面 124</span><span class="src">image126.png · 621×407</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">创建管理费用－折旧 55020111</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/27_1_image127.png"><img src="assets/img/fi/t13/27_1_image127.png" alt="新建损益科目 · 第 27 步：创建管理费用－折旧 55020111" loading="lazy" width="627" height="341"></a><figcaption><span class="n">画面 125</span><span class="src">image127.png · 627×341</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/28_1_image128.png"><img src="assets/img/fi/t13/28_1_image128.png" alt="新建损益科目 · 第 28 步：image128.png" loading="lazy" width="650" height="631"></a><figcaption><span class="n">画面 126</span><span class="src">image128.png · 650×631</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/28_2_image129.png"><img src="assets/img/fi/t13/28_2_image129.png" alt="新建损益科目 · 第 28 步：image129.png" loading="lazy" width="629" height="420"></a><figcaption><span class="n">画面 127</span><span class="src">image129.png · 629×420</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">创建管理费用－电话费 55020121</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/29_1_image130.png"><img src="assets/img/fi/t13/29_1_image130.png" alt="新建损益科目 · 第 29 步：创建管理费用－电话费 55020121" loading="lazy" width="641" height="336"></a><figcaption><span class="n">画面 128</span><span class="src">image130.png · 641×336</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/30_1_image131.png"><img src="assets/img/fi/t13/30_1_image131.png" alt="新建损益科目 · 第 30 步：image131.png" loading="lazy" width="631" height="628"></a><figcaption><span class="n">画面 129</span><span class="src">image131.png · 631×628</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/30_2_image132.png"><img src="assets/img/fi/t13/30_2_image132.png" alt="新建损益科目 · 第 30 步：image132.png" loading="lazy" width="609" height="404"></a><figcaption><span class="n">画面 130</span><span class="src">image132.png · 609×404</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">创建管理费用－办公用品 55020131</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/31_1_image133.png"><img src="assets/img/fi/t13/31_1_image133.png" alt="新建损益科目 · 第 31 步：创建管理费用－办公用品 55020131" loading="lazy" width="648" height="356"></a><figcaption><span class="n">画面 131</span><span class="src">image133.png · 648×356</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/32_1_image134.png"><img src="assets/img/fi/t13/32_1_image134.png" alt="新建损益科目 · 第 32 步：image134.png" loading="lazy" width="625" height="692"></a><figcaption><span class="n">画面 132</span><span class="src">image134.png · 625×692</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/32_2_image135.png"><img src="assets/img/fi/t13/32_2_image135.png" alt="新建损益科目 · 第 32 步：image135.png" loading="lazy" width="631" height="424"></a><figcaption><span class="n">画面 133</span><span class="src">image135.png · 631×424</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">创建管理费用－租金 55020141</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/33_1_image136.png"><img src="assets/img/fi/t13/33_1_image136.png" alt="新建损益科目 · 第 33 步：创建管理费用－租金 55020141" loading="lazy" width="601" height="330"></a><figcaption><span class="n">画面 134</span><span class="src">image136.png · 601×330</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/34_1_image137.png"><img src="assets/img/fi/t13/34_1_image137.png" alt="新建损益科目 · 第 34 步：image137.png" loading="lazy" width="609" height="625"></a><figcaption><span class="n">画面 135</span><span class="src">image137.png · 609×625</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/34_2_image138.png"><img src="assets/img/fi/t13/34_2_image138.png" alt="新建损益科目 · 第 34 步：image138.png" loading="lazy" width="635" height="423"></a><figcaption><span class="n">画面 136</span><span class="src">image138.png · 635×423</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">创建管理费用－其他 55029101</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/35_1_image139.png"><img src="assets/img/fi/t13/35_1_image139.png" alt="新建损益科目 · 第 35 步：创建管理费用－其他 55029101" loading="lazy" width="614" height="343"></a><figcaption><span class="n">画面 137</span><span class="src">image139.png · 614×343</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t13/36_1_image140.png"><img src="assets/img/fi/t13/36_1_image140.png" alt="新建损益科目 · 第 36 步：image140.png" loading="lazy" width="643" height="642"></a><figcaption><span class="n">画面 138</span><span class="src">image140.png · 643×642</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t13/36_2_image141.png"><img src="assets/img/fi/t13/36_2_image141.png" alt="新建损益科目 · 第 36 步：image141.png" loading="lazy" width="635" height="420"></a><figcaption><span class="n">画面 139</span><span class="src">image141.png · 635×420</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t14"><span class="no">任务 14</span><h3>显示科目汇总</h3><span class="tc2">1 画面 / 1 步</span></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 创建上述步骤中创建的会计科目</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t14/01_1_image143.png"><img src="assets/img/fi/t14/01_1_image143.png" alt="显示科目汇总：解释：创建上述步骤中创建的会计科目" loading="lazy" width="752" height="661"></a><figcaption><span class="n">画面 140</span><span class="src">image143.png · 752×661</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>S_alr_87012326</div>
+</li>
+</ol>
+<div class="steph" id="t15"><span class="no">任务 15</span><h3>复制凭证号码范围到公司代码</h3><span class="tc2">5 画面 / 4 步</span></div>
+<div class="pathline" data-copy="财务会计(新) → 财务会计全局设置(新) → 凭证 → 凭证号范围 → 复制到公司代码"><b>IMG 路径（后台菜单）</b>财务会计(新) → 财务会计全局设置(新) → 凭证 → 凭证号范围 → 复制到公司代码</div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">财务会计(新)－财务会计全局设置(新)－凭证－凭证号范围－复制到公司代码</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t15/01_1_image144.png"><img src="assets/img/fi/t15/01_1_image144.png" alt="复制凭证号码范围到公司代码 · 第 1 步：财务会计(新)－财务会计全局设置(新)－凭证－凭证号范围－复制到公司代码" loading="lazy" width="392" height="481"></a><figcaption><span class="n">画面 141</span><span class="src">image144.png · 392×481</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t15/01_2_image145.png"><img src="assets/img/fi/t15/01_2_image145.png" alt="复制凭证号码范围到公司代码 · 第 1 步：财务会计(新)－财务会计全局设置(新)－凭证－凭证号范围－复制到公司代码" loading="lazy" width="599" height="562"></a><figcaption><span class="n">画面 142</span><span class="src">image145.png · 599×562</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> SAP 中对于凭证等需号码的单据，均需要用号码范围来进行管理。通常号码范围设置好之后即可分配到各自使用的范围内。<br>输入源公司(0001)及目标公司(C999)</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t15/02_1_image146.png"><img src="assets/img/fi/t15/02_1_image146.png" alt="复制凭证号码范围到公司代码 · 第 2 步：解释：SAP 中对于凭证等需号码的单据，均需要用号码范围来进行管理。通常号码范围设置好之后即可分配到各自使用的范围内。 输入源公司(0001)及目标公司(C999)" loading="lazy" width="613" height="329"></a><figcaption><span class="n">画面 143</span><span class="src">image146.png · 613×329</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击是</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t15/03_1_image147.png"><img src="assets/img/fi/t15/03_1_image147.png" alt="复制凭证号码范围到公司代码 · 第 3 步：点击是" loading="lazy" width="368" height="208"></a><figcaption><span class="n">画面 144</span><span class="src">image147.png · 368×208</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 145）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t15/04_1_image148.png"><img src="assets/img/fi/t15/04_1_image148.png" alt="复制凭证号码范围到公司代码 · 第 4 步：image148.png" loading="lazy" width="919" height="564"></a><figcaption><span class="n">画面 145</span><span class="src">image148.png · 919×564</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t16"><span class="no">任务 16</span><h3>定义记帐期间变式</h3><span class="tc2">2 画面 / 1 步</span></div>
+<div class="pathline" data-copy="财务会计(新) → 财务会计全局设置(新) → 分类账 → 会计年度和过账期间 → 过账期间-定义未清过账期间变式"><b>IMG 路径（后台菜单）</b>财务会计(新) → 财务会计全局设置(新) → 分类账 → 会计年度和过账期间 → 过账期间-定义未清过账期间变式</div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">财务会计(新)－财务会计全局设置(新)－分类账－会计年度和过账期间－过账期间-定义未清过账期间变式</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t16/01_1_image149.png"><img src="assets/img/fi/t16/01_1_image149.png" alt="定义记帐期间变式 · 第 1 步：财务会计(新)－财务会计全局设置(新)－分类账－会计年度和过账期间－过账期间-定义未清过账期间变式" loading="lazy" width="519" height="576"></a><figcaption><span class="n">画面 146</span><span class="src">image149.png · 519×576</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t16/01_2_image150.png"><img src="assets/img/fi/t16/01_2_image150.png" alt="定义记帐期间变式 · 第 1 步：财务会计(新)－财务会计全局设置(新)－分类账－会计年度和过账期间－过账期间-定义未清过账期间变式" loading="lazy" width="398" height="118"></a><figcaption><span class="n">画面 147</span><span class="src">image150.png · 398×118</span></figcaption></figure>
+<div class="note warn"><b class="t">踩坑提醒</b>解释：这是用来对凭证的开关。已经关掉的会计期间就不允许对凭证进行更改。多个公司代码可以被统一控制开账和关帐。先给各个公司代码赋予记账期间变式参数。</div>
+<div class="note tip"><b class="t">教材笔记</b>P999 颐宁记账期间变式</div>
+</li>
+</ol>
+<div class="steph" id="t17"><span class="no">任务 17</span><h3>将记帐期间变式分配给公司代码</h3><span class="tc2">2 画面 / 1 步</span></div>
+<div class="pathline" data-copy="财务会计(新) → 财务会计全局设置(新) → 分类账 → 会计年度和过账期间 → 过账期间-将变式分配给公司代码"><b>IMG 路径（后台菜单）</b>财务会计(新) → 财务会计全局设置(新) → 分类账 → 会计年度和过账期间 → 过账期间-将变式分配给公司代码</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 148）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t17/01_1_image151.png"><img src="assets/img/fi/t17/01_1_image151.png" alt="将记帐期间变式分配给公司代码 · 第 1 步：image151.png" loading="lazy" width="513" height="485"></a><figcaption><span class="n">画面 148</span><span class="src">image151.png · 513×485</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t17/01_2_image152.png"><img src="assets/img/fi/t17/01_2_image152.png" alt="将记帐期间变式分配给公司代码 · 第 1 步：image152.png" loading="lazy" width="511" height="446"></a><figcaption><span class="n">画面 149</span><span class="src">image152.png · 511×446</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>P999</div>
+</li>
+</ol>
+<h4>财务会计(新)－财务会计全局设置(新)－分类账－会计年度和过账期间－过账期间-将变式分配给公司代码</h4>
+<div class="steph" id="t18"><span class="no">任务 18</span><h3>设置记帐期间(前台)</h3><span class="tc2">4 画面 / 2 步</span></div>
+<div class="pathline" data-copy="会计核算 → 财务会计 → 总帐 → 环境 → 当前设置 → 未清过帐期间和已结过帐期间"><b>IMG 路径（后台菜单）</b>会计核算 → 财务会计 → 总帐 → 环境 → 当前设置 → 未清过帐期间和已结过帐期间</div>
+<div class="note tip"><b class="t">教材笔记</b>S_ALR_87003642</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释:</span> 完成开帐和关帐，通常作为月结的一个环节。<br>会计核算－财务会计－总帐－环境－当前设置－未清过帐期间和已结过帐期间</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t18/01_1_image153.png"><img src="assets/img/fi/t18/01_1_image153.png" alt="设置记帐期间(前台) · 第 1 步：解释:完成开帐和关帐，通常作为月结的一个环节。 会计核算－财务会计－总帐－环境－当前设置－未清过帐期间和已结过帐期间" loading="lazy" width="492" height="725"></a><figcaption><span class="n">画面 150</span><span class="src">image153.png · 492×725</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t18/01_2_image154.png"><img src="assets/img/fi/t18/01_2_image154.png" alt="设置记帐期间(前台) · 第 1 步：解释:完成开帐和关帐，通常作为月结的一个环节。 会计核算－财务会计－总帐－环境－当前设置－未清过帐期间和已结过帐期间" loading="lazy" width="361" height="194"></a><figcaption><span class="n">画面 151</span><span class="src">image154.png · 361×194</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">P999 +/A/D/K/S 1-12 期间 2006 年 13－16 期间，+/A/D/K/S 分别代表如下含义</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t18/02_1_image155.png"><img src="assets/img/fi/t18/02_1_image155.png" alt="设置记帐期间(前台) · 第 2 步：P999 +/A/D/K/S 1-12 期间 2006 年 13－16 期间，+/A/D/K/S 分别代表如下含义" loading="lazy" width="171" height="266"></a><figcaption><span class="n">画面 152</span><span class="src">image155.png · 171×266</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t18/02_2_image156.png"><img src="assets/img/fi/t18/02_2_image156.png" alt="设置记帐期间(前台) · 第 2 步：P999 +/A/D/K/S 1-12 期间 2006 年 13－16 期间，+/A/D/K/S 分别代表如下含义" loading="lazy" width="673" height="304"></a><figcaption><span class="n">画面 153</span><span class="src">image156.png · 673×304</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t19"><span class="no">任务 19</span><h3>定义过帐容差组</h3><span class="tc2">3 画面 / 2 步</span></div>
+<p>解释：设置对会计人员出凭证的一些限定,比如：单笔凭证的金额不能超过多少，</p>
+<div class="pathline" data-copy="财务会计(新) → 财务会计的全局设置(新) → 凭证 → 容差组 → 定义雇员的容差组"><b>IMG 路径（后台菜单）</b>财务会计(新) → 财务会计的全局设置(新) → 凭证 → 容差组 → 定义雇员的容差组</div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">财务会计(新)－财务会计的全局设置(新)－凭证－容差组－定义雇员的容差组</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t19/01_1_image157.png"><img src="assets/img/fi/t19/01_1_image157.png" alt="定义过帐容差组 · 第 1 步：财务会计(新)－财务会计的全局设置(新)－凭证－容差组－定义雇员的容差组" loading="lazy" width="344" height="577"></a><figcaption><span class="n">画面 154</span><span class="src">image157.png · 344×577</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t19/01_2_image158.png"><img src="assets/img/fi/t19/01_2_image158.png" alt="定义过帐容差组 · 第 1 步：财务会计(新)－财务会计的全局设置(新)－凭证－容差组－定义雇员的容差组" loading="lazy" width="567" height="352"></a><figcaption><span class="n">画面 155</span><span class="src">image158.png · 567×352</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">单笔未清项(如发票)的金额不能超过多少。我们把这些条件设置在容差组里,再给会计人员分配容差组<br>复制一条</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t19/02_1_image159.png"><img src="assets/img/fi/t19/02_1_image159.png" alt="定义过帐容差组 · 第 2 步：单笔未清项(如发票)的金额不能超过多少。我们把这些条件设置在容差组里,再给会计人员分配容差组 复制一条" loading="lazy" width="601" height="426"></a><figcaption><span class="n">画面 156</span><span class="src">image159.png · 601×426</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t20"><span class="no">任务 20</span><h3>输入总帐科目凭证</h3><span class="tc">FB50</span><span class="tc">FB03</span><span class="tc2">4 画面 / 4 步</span></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释:</span> ：在总帐中输入会计凭证，记录我们收到 2 800 000 的实收资本，存入工商银行账户。事务代码 FB50</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t20/01_1_image160.png"><img src="assets/img/fi/t20/01_1_image160.png" alt="输入总帐科目凭证 · 第 1 步：解释:：在总帐中输入会计凭证，记录我们收到 2 800 000 的实收资本，存入工商银行账户。事务代码 FB50" loading="lazy" width="409" height="344"></a><figcaption><span class="n">画面 157</span><span class="src">image160.png · 409×344</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">10020101 31010101<br>输入不同公司的凭证可点击公司代码按钮</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t20/02_1_image161.png"><img src="assets/img/fi/t20/02_1_image161.png" alt="输入总帐科目凭证 · 第 2 步：10020101 31010101 输入不同公司的凭证可点击公司代码按钮" loading="lazy" width="228" height="194"></a><figcaption><span class="n">画面 158</span><span class="src">image161.png · 228×194</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 159）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t20/03_1_image162.png"><img src="assets/img/fi/t20/03_1_image162.png" alt="输入总帐科目凭证 · 第 3 步：image162.png" loading="lazy" width="867" height="487"></a><figcaption><span class="n">画面 159</span><span class="src">image162.png · 867×487</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">可预制，也可以直接保存后过账（下图为FB03查询得到的结果）</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t20/04_1_image163.png"><img src="assets/img/fi/t20/04_1_image163.png" alt="输入总帐科目凭证 · 第 4 步：可预制，也可以直接保存后过账（下图为FB03查询得到的结果）" loading="lazy" width="721" height="344"></a><figcaption><span class="n">画面 160</span><span class="src">image163.png · 721×344</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t21"><span class="no">任务 21</span><h3>显示总帐科目余额</h3><span class="tc">FS10N</span><span class="tc2">11 画面 / 7 步</span></div>
+<div class="pathline" data-copy="后台 财务会计(新) → 财务会计的全局设置(新) → 销售/购置税 → 过帐 → 定义税务科目"><b>IMG 路径（后台菜单）</b>后台 财务会计(新) → 财务会计的全局设置(新) → 销售/购置税 → 过帐 → 定义税务科目</div>
+<table class="tbl vals"><thead><tr><th>项目</th><th>文档中的取值</th></tr></thead><tbody><tr><td>定义进项税</td><td>21710101</td></tr></tbody></table>
+<ol class="oplist">
+<li>
+<p class="opcap">事务代码 FS10N</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t21/01_1_image164.png"><img src="assets/img/fi/t21/01_1_image164.png" alt="显示总帐科目余额 · 第 1 步：事务代码 FS10N" loading="lazy" width="388" height="455"></a><figcaption><span class="n">画面 161</span><span class="src">image164.png · 388×455</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t21/01_2_image165.png"><img src="assets/img/fi/t21/01_2_image165.png" alt="显示总帐科目余额 · 第 1 步：事务代码 FS10N" loading="lazy" width="614" height="180"></a><figcaption><span class="n">画面 162</span><span class="src">image165.png · 614×180</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 163）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t21/02_1_image166.png"><img src="assets/img/fi/t21/02_1_image166.png" alt="显示总帐科目余额 · 第 2 步：image166.png" loading="lazy" width="630" height="773"></a><figcaption><span class="n">画面 163</span><span class="src">image166.png · 630×773</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">1、 维护自动税收过帐</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t21/03_1_image167.png"><img src="assets/img/fi/t21/03_1_image167.png" alt="显示总帐科目余额 · 第 3 步：1、 维护自动税收过帐" loading="lazy" width="461" height="437"></a><figcaption><span class="n">画面 164</span><span class="src">image167.png · 461×437</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">定义销项税</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t21/04_1_image168.png"><img src="assets/img/fi/t21/04_1_image168.png" alt="显示总帐科目余额 · 第 4 步：定义销项税" loading="lazy" width="567" height="565"></a><figcaption><span class="n">画面 165</span><span class="src">image168.png · 567×565</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">双击销项税，定义销项税</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t21/05_1_image169.png"><img src="assets/img/fi/t21/05_1_image169.png" alt="显示总帐科目余额 · 第 5 步：双击销项税，定义销项税" loading="lazy" width="333" height="221"></a><figcaption><span class="n">画面 166</span><span class="src">image169.png · 333×221</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t21/05_2_image170.png"><img src="assets/img/fi/t21/05_2_image170.png" alt="显示总帐科目余额 · 第 5 步：双击销项税，定义销项税" loading="lazy" width="503" height="222"></a><figcaption><span class="n">画面 167</span><span class="src">image170.png · 503×222</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击保存按钮，输入 21710102</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t21/06_1_image171.png"><img src="assets/img/fi/t21/06_1_image171.png" alt="显示总帐科目余额 · 第 6 步：点击保存按钮，输入 21710102" loading="lazy" width="514" height="243"></a><figcaption><span class="n">画面 168</span><span class="src">image171.png · 514×243</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 169）</span></p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t21/07_1_image172.png"><img src="assets/img/fi/t21/07_1_image172.png" alt="显示总帐科目余额 · 第 7 步：image172.png" loading="lazy" width="596" height="417"></a><figcaption><span class="n">画面 169</span><span class="src">image172.png · 596×417</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t21/07_2_image173.png"><img src="assets/img/fi/t21/07_2_image173.png" alt="显示总帐科目余额 · 第 7 步：image173.png" loading="lazy" width="520" height="234"></a><figcaption><span class="n">画面 170</span><span class="src">image173.png · 520×234</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t21/07_3_image174.png"><img src="assets/img/fi/t21/07_3_image174.png" alt="显示总帐科目余额 · 第 7 步：image174.png" loading="lazy" width="552" height="224"></a><figcaption><span class="n">画面 171</span><span class="src">image174.png · 552×224</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t22"><span class="no">任务 22</span><h3>定义应收应付容差组</h3><span class="fb">后台</span><span class="tc2">3 画面 / 2 步</span></div>
+<div class="pathline" data-copy="财务会计(新) → 应收账目和应付账目 → 业务交易 → 对外支付 → 付款 → 手工对外支付 → 定义容差组"><b>IMG 路径（后台菜单）</b>财务会计(新) → 应收账目和应付账目 → 业务交易 → 对外支付 → 付款 → 手工对外支付 → 定义容差组</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 对于和客户或供应商的收付业务，我们可以定义一些控制条件。比如对某类客户的收款差异不能超过 100 元，或发票的 0.1%等。容差组是分配给每个客户和供应商的主数据。<br>财务会计(新)－应收账目和应付账目－业务交易－对外支付－付款－手工对外支付－定义容差组</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t22/01_1_image175.png"><img src="assets/img/fi/t22/01_1_image175.png" alt="定义应收应付容差组 · 第 1 步：解释：对于和客户或供应商的收付业务，我们可以定义一些控制条件。比如对某类客户的收款差异不能超过 100 元，或发票的 0.1%等。容差组是分配给每个客户和供应商的主数据。 财务会计(新)－应收账目和应付账目－业务交易－对外支付－付款－手工对外支付－定义容差组" loading="lazy" width="357" height="537"></a><figcaption><span class="n">画面 172</span><span class="src">image175.png · 357×537</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">复制 0001 的</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t22/02_1_image176.png"><img src="assets/img/fi/t22/02_1_image176.png" alt="定义应收应付容差组 · 第 2 步：复制 0001 的" loading="lazy" width="511" height="164"></a><figcaption><span class="n">画面 173</span><span class="src">image176.png · 511×164</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t22/02_2_image177.png"><img src="assets/img/fi/t22/02_2_image177.png" alt="定义应收应付容差组 · 第 2 步：复制 0001 的" loading="lazy" width="529" height="775"></a><figcaption><span class="n">画面 174</span><span class="src">image177.png · 529×775</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t23"><span class="no">任务 23</span><h3>定义供应商账号组</h3><span class="fb">后台</span><span class="tc2">11 画面 / 8 步</span></div>
+<p>解释：供应商是按照账户组来管理的，如原料供应商，贸易产品供应商等。供应商主数据信息分三个层次：一般数据，公司代码数据和采购数据。</p>
+<div class="pathline" data-copy="财务会计 → 应收账目和应付账目 → 供应商账号 → 主数据 → 供应商主数据创建准备 → 定义带有屏幕格式的账户组（供应商）"><b>IMG 路径（后台菜单）</b>财务会计 → 应收账目和应付账目 → 供应商账号 → 主数据 → 供应商主数据创建准备 → 定义带有屏幕格式的账户组（供应商）</div>
+<ol class="oplist">
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t23/01_1_image178.png"><img src="assets/img/fi/t23/01_1_image178.png" alt="定义供应商账号组 · 第 1 步：image180.png" loading="lazy" width="437" height="475"></a><figcaption><span class="n">画面 175</span><span class="src">image180.png · 437×475</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t23/01_2_image179.png"><img src="assets/img/fi/t23/01_2_image179.png" alt="定义供应商账号组 · 第 1 步：image181.png" loading="lazy" width="425" height="551"></a><figcaption><span class="n">画面 176</span><span class="src">image181.png · 425×551</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t23/01_1_image178.png"><img src="assets/img/fi/t23/01_1_image178.png" alt="定义供应商账号组 · 第 1 步：image180.png" loading="lazy" width="437" height="475"></a><figcaption><span class="n">画面 175</span><span class="src">image180.png · 437×475</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t23/01_2_image179.png"><img src="assets/img/fi/t23/01_2_image179.png" alt="定义供应商账号组 · 第 1 步：image181.png" loading="lazy" width="425" height="551"></a><figcaption><span class="n">画面 176</span><span class="src">image181.png · 425×551</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">G001组 原材料，对其设置 G002组 贸易商品供应商 G003组 费用供应商<br>财务会计－应收账目和应付账目－供应商账号－主数据－供应商主数据创建准备－定义带有屏幕格式的账户组（供应商）</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t23/02_1_image182.png"><img src="assets/img/fi/t23/02_1_image182.png" alt="定义供应商账号组 · 第 2 步：G001组 原材料，对其设置 G002组 贸易商品供应商 G003组 费用供应商 财务会计－应收账目和应付账目－供应商账号－主数据－供应商主数据创建准备－定义带有屏幕格式的账户组（供应商）" loading="lazy" width="476" height="348"></a><figcaption><span class="n">画面 179</span><span class="src">image182.png · 476×348</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">双击基础数据</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t23/03_1_image183.png"><img src="assets/img/fi/t23/03_1_image183.png" alt="定义供应商账号组 · 第 3 步：双击基础数据" loading="lazy" width="417" height="358"></a><figcaption><span class="n">画面 180</span><span class="src">image183.png · 417×358</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">双击地址</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t23/04_1_image184.png"><img src="assets/img/fi/t23/04_1_image184.png" alt="定义供应商账号组 · 第 4 步：双击地址" loading="lazy" width="563" height="890"></a><figcaption><span class="n">画面 181</span><span class="src">image184.png · 563×890</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">双击公司代码数据</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t23/05_1_image185.png"><img src="assets/img/fi/t23/05_1_image185.png" alt="定义供应商账号组 · 第 5 步：双击公司代码数据" loading="lazy" width="255" height="334"></a><figcaption><span class="n">画面 182</span><span class="src">image185.png · 255×334</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">双击账户管理</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t23/06_1_image186.png"><img src="assets/img/fi/t23/06_1_image186.png" alt="定义供应商账号组 · 第 6 步：双击账户管理" loading="lazy" width="570" height="716"></a><figcaption><span class="n">画面 183</span><span class="src">image186.png · 570×716</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">双击支付交易</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t23/07_1_image187.png"><img src="assets/img/fi/t23/07_1_image187.png" alt="定义供应商账号组 · 第 7 步：双击支付交易" loading="lazy" width="595" height="720"></a><figcaption><span class="n">画面 184</span><span class="src">image187.png · 595×720</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>同理创建其他的组（复制方式创建）</div>
+</li>
+<li>
+<p class="opcap">拷贝 G002 G003</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t23/08_1_image188.png"><img src="assets/img/fi/t23/08_1_image188.png" alt="定义供应商账号组 · 第 8 步：拷贝 G002 G003" loading="lazy" width="295" height="194"></a><figcaption><span class="n">画面 185</span><span class="src">image188.png · 295×194</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t24"><span class="no">任务 24</span><h3>定义供应商账户编号范围</h3><span class="fb">后台</span><span class="tc2">6 画面 / 5 步</span></div>
+<p>点击间隔 点击间隔＋,点击三次，一次维护</p>
+<p>Z1 10000000 19999999</p>
+<div class="pathline" data-copy="财务会计 → 应收账目和应付账目 → 供应商账户 → 主数据 → 供应商主记录创建准备 → 创建供应商账户编号范围"><b>IMG 路径（后台菜单）</b>财务会计 → 应收账目和应付账目 → 供应商账户 → 主数据 → 供应商主记录创建准备 → 创建供应商账户编号范围</div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">财务会计－应收账目和应付账目－供应商账户－主数据－供应商主记录创建准备－创建供应商账户编号范围</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t24/01_1_image189.png"><img src="assets/img/fi/t24/01_1_image189.png" alt="定义供应商账户编号范围 · 第 1 步：财务会计－应收账目和应付账目－供应商账户－主数据－供应商主记录创建准备－创建供应商账户编号范围" loading="lazy" width="406" height="680"></a><figcaption><span class="n">画面 186</span><span class="src">image189.png · 406×680</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 187）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t24/02_1_image190.png"><img src="assets/img/fi/t24/02_1_image190.png" alt="定义供应商账户编号范围 · 第 2 步：image190.png" loading="lazy" width="470" height="159"></a><figcaption><span class="n">画面 187</span><span class="src">image190.png · 470×159</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t24/02_2_image191.png"><img src="assets/img/fi/t24/02_2_image191.png" alt="定义供应商账户编号范围 · 第 2 步：image191.png" loading="lazy" width="568" height="219"></a><figcaption><span class="n">画面 188</span><span class="src">image191.png · 568×219</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t24/03_1_image192.png"><img src="assets/img/fi/t24/03_1_image192.png" alt="定义供应商账户编号范围 · 第 3 步：image192.png" loading="lazy" width="570" height="288"></a><figcaption><span class="n">画面 189</span><span class="src">image192.png · 570×288</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">Z2 20000000 29999999<br>Z3 30000000 39999999</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t24/04_1_image193.png"><img src="assets/img/fi/t24/04_1_image193.png" alt="定义供应商账户编号范围 · 第 4 步：Z2 20000000 29999999 Z3 30000000 39999999" loading="lazy" width="566" height="393"></a><figcaption><span class="n">画面 190</span><span class="src">image193.png · 566×393</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 191）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t24/05_1_image194.png"><img src="assets/img/fi/t24/05_1_image194.png" alt="定义供应商账户编号范围 · 第 5 步：image194.png" loading="lazy" width="599" height="562"></a><figcaption><span class="n">画面 191</span><span class="src">image194.png · 599×562</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t25"><span class="no">任务 25</span><h3>分配供应商编号范围</h3><span class="fb">后台</span><span class="tc2">2 画面 / 1 步</span></div>
+<div class="pathline" data-copy="财务会计 → 应收账目和应付账目 → 供应商账户 → 主数据 → 供应商主记录创建准备 → 供应商账户组分配编号范围"><b>IMG 路径（后台菜单）</b>财务会计 → 应收账目和应付账目 → 供应商账户 → 主数据 → 供应商主记录创建准备 → 供应商账户组分配编号范围</div>
+<ol class="oplist">
+<li>
+<p class="opcap">财务会计－应收账目和应付账目－供应商账户－主数据－供应商主记录创建准备－供应商账户组分配编号范围</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t25/01_1_image195.png"><img src="assets/img/fi/t25/01_1_image195.png" alt="分配供应商编号范围 · 第 1 步：财务会计－应收账目和应付账目－供应商账户－主数据－供应商主记录创建准备－供应商账户组分配编号范围" loading="lazy" width="434" height="605"></a><figcaption><span class="n">画面 192</span><span class="src">image195.png · 434×605</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t25/01_2_image196.png"><img src="assets/img/fi/t25/01_2_image196.png" alt="分配供应商编号范围 · 第 1 步：财务会计－应收账目和应付账目－供应商账户－主数据－供应商主记录创建准备－供应商账户组分配编号范围" loading="lazy" width="408" height="382"></a><figcaption><span class="n">画面 193</span><span class="src">image196.png · 408×382</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t26"><span class="no">任务 26</span><h3>定义客户账户组</h3><span class="fb">后台</span><span class="tc2">10 画面 / 8 步</span></div>
+<div class="pathline" data-copy="财务会计(新) → 应收账款和应付账款 → 客户账户 → 主数据 → 创建客户主记录准备 → 定义带有格式的账户组（客户）"><b>IMG 路径（后台菜单）</b>财务会计(新) → 应收账款和应付账款 → 客户账户 → 主数据 → 创建客户主记录准备 → 定义带有格式的账户组（客户）</div>
+<ol class="oplist">
+<li>
+<p class="opcap">财务会计(新)－应收账款和应付账款－客户账户－主数据－创建客户主记录准备－定义带有格式的账户组（客户）</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t26/01_1_image197.png"><img src="assets/img/fi/t26/01_1_image197.png" alt="定义客户账户组 · 第 1 步：财务会计(新)－应收账款和应付账款－客户账户－主数据－创建客户主记录准备－定义带有格式的账户组（客户）" loading="lazy" width="465" height="394"></a><figcaption><span class="n">画面 194</span><span class="src">image197.png · 465×394</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">创建新条目</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t26/02_1_image198.png"><img src="assets/img/fi/t26/02_1_image198.png" alt="定义客户账户组 · 第 2 步：创建新条目" loading="lazy" width="430" height="347"></a><figcaption><span class="n">画面 195</span><span class="src">image198.png · 430×347</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">K001 订货方-颐宁</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t26/03_1_image199.png"><img src="assets/img/fi/t26/03_1_image199.png" alt="定义客户账户组 · 第 3 步：K001 订货方-颐宁" loading="lazy" width="464" height="382"></a><figcaption><span class="n">画面 196</span><span class="src">image199.png · 464×382</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">双击基本信息</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t26/04_1_image200.png"><img src="assets/img/fi/t26/04_1_image200.png" alt="定义客户账户组 · 第 4 步：双击基本信息" loading="lazy" width="409" height="442"></a><figcaption><span class="n">画面 197</span><span class="src">image200.png · 409×442</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>双击地址</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 198）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t26/05_1_image201.png"><img src="assets/img/fi/t26/05_1_image201.png" alt="定义客户账户组 · 第 5 步：image201.png" loading="lazy" width="255" height="370"></a><figcaption><span class="n">画面 198</span><span class="src">image201.png · 255×370</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">拷贝 K001</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t26/06_1_image202.png"><img src="assets/img/fi/t26/06_1_image202.png" alt="定义客户账户组 · 第 6 步：拷贝 K001" loading="lazy" width="465" height="869"></a><figcaption><span class="n">画面 199</span><span class="src">image202.png · 465×869</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t26/06_2_image203.png"><img src="assets/img/fi/t26/06_2_image203.png" alt="定义客户账户组 · 第 6 步：拷贝 K001" loading="lazy" width="592" height="645"></a><figcaption><span class="n">画面 200</span><span class="src">image203.png · 592×645</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t26/06_3_image204.png"><img src="assets/img/fi/t26/06_3_image204.png" alt="定义客户账户组 · 第 6 步：拷贝 K001" loading="lazy" width="544" height="182"></a><figcaption><span class="n">画面 201</span><span class="src">image204.png · 544×182</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">K002 收货方-颐宁<br>退回后，双击公司代码数据</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t26/07_1_image205.png"><img src="assets/img/fi/t26/07_1_image205.png" alt="定义客户账户组 · 第 7 步：K002 收货方-颐宁 退回后，双击公司代码数据" loading="lazy" width="242" height="367"></a><figcaption><span class="n">画面 202</span><span class="src">image205.png · 242×367</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">双击账户管理</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t26/08_1_image206.png"><img src="assets/img/fi/t26/08_1_image206.png" alt="定义客户账户组 · 第 8 步：双击账户管理" loading="lazy" width="455" height="371"></a><figcaption><span class="n">画面 203</span><span class="src">image206.png · 455×371</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t27"><span class="no">任务 27</span><h3>定义客户账户编号</h3><span class="fb">后台</span><span class="tc2">5 画面 / 4 步</span></div>
+<div class="pathline" data-copy="财务会计(新) → 应收账款和应付账款 → 客户账户 → 主数据 → 创建客户主记录准备 → 创建客户账户编号范围"><b>IMG 路径（后台菜单）</b>财务会计(新) → 应收账款和应付账款 → 客户账户 → 主数据 → 创建客户主记录准备 → 创建客户账户编号范围</div>
+<ol class="oplist">
+<li>
+<p class="opcap">财务会计(新)－应收账款和应付账款－客户账户－主数据－创建客户主记录准备－创建客户账户编号范围</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t27/01_1_image207.png"><img src="assets/img/fi/t27/01_1_image207.png" alt="定义客户账户编号 · 第 1 步：财务会计(新)－应收账款和应付账款－客户账户－主数据－创建客户主记录准备－创建客户账户编号范围" loading="lazy" width="475" height="710"></a><figcaption><span class="n">画面 204</span><span class="src">image207.png · 475×710</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t27/01_2_image208.png"><img src="assets/img/fi/t27/01_2_image208.png" alt="定义客户账户编号 · 第 1 步：财务会计(新)－应收账款和应付账款－客户账户－主数据－创建客户主记录准备－创建客户账户编号范围" loading="lazy" width="448" height="147"></a><figcaption><span class="n">画面 205</span><span class="src">image208.png · 448×147</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">Z1 10000000 19999999</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t27/02_1_image209.png"><img src="assets/img/fi/t27/02_1_image209.png" alt="定义客户账户编号 · 第 2 步：Z1 10000000 19999999" loading="lazy" width="430" height="237"></a><figcaption><span class="n">画面 206</span><span class="src">image209.png · 430×237</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">Z2 20000000 29999999</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t27/03_1_image210.png"><img src="assets/img/fi/t27/03_1_image210.png" alt="定义客户账户编号 · 第 3 步：Z2 20000000 29999999" loading="lazy" width="526" height="288"></a><figcaption><span class="n">画面 207</span><span class="src">image210.png · 526×288</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 208）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t27/04_1_image211.png"><img src="assets/img/fi/t27/04_1_image211.png" alt="定义客户账户编号 · 第 4 步：image211.png" loading="lazy" width="599" height="562"></a><figcaption><span class="n">画面 208</span><span class="src">image211.png · 599×562</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t28"><span class="no">任务 28</span><h3>分配客户编号范围</h3><span class="tc2">2 画面 / 1 步</span></div>
+<div class="pathline" data-copy="财务会计(新) → 应收账款和应付账款 → 客户账户 → 主数据 → 创建客户主记录准备 → 分配客户账户编号范围"><b>IMG 路径（后台菜单）</b>财务会计(新) → 应收账款和应付账款 → 客户账户 → 主数据 → 创建客户主记录准备 → 分配客户账户编号范围</div>
+<div class="note tip"><b class="t">教材笔记</b>后台</div>
+<ol class="oplist">
+<li>
+<p class="opcap">财务会计(新)－应收账款和应付账款－客户账户－主数据－创建客户主记录准备－分配客户账户编号范围</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t28/01_1_image212.png"><img src="assets/img/fi/t28/01_1_image212.png" alt="分配客户编号范围 · 第 1 步：财务会计(新)－应收账款和应付账款－客户账户－主数据－创建客户主记录准备－分配客户账户编号范围" loading="lazy" width="434" height="585"></a><figcaption><span class="n">画面 209</span><span class="src">image212.png · 434×585</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t28/01_2_image213.png"><img src="assets/img/fi/t28/01_2_image213.png" alt="分配客户编号范围 · 第 1 步：财务会计(新)－应收账款和应付账款－客户账户－主数据－创建客户主记录准备－分配客户账户编号范围" loading="lazy" width="410" height="241"></a><figcaption><span class="n">画面 210</span><span class="src">image213.png · 410×241</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t29"><span class="no">任务 29</span><h3>新建订货方主数据</h3><span class="tc">FD01</span><span class="tc2">9 画面 / 4 步</span></div>
+<table class="tbl vals"><thead><tr><th>项目</th><th>文档中的取值</th></tr></thead><tbody><tr><td>再创建一个威力国贸公司</td><td>100000002</td></tr></tbody></table>
+<ol class="oplist">
+<li>
+<p class="opcap">建立三个客户:远东造船长, 新益汽轮机场.威力工贸公司 事务代码 FD01</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t29/01_1_image214.png"><img src="assets/img/fi/t29/01_1_image214.png" alt="新建订货方主数据 · 第 1 步：建立三个客户:远东造船长, 新益汽轮机场.威力工贸公司 事务代码 FD01" loading="lazy" width="387" height="517"></a><figcaption><span class="n">画面 211</span><span class="src">image214.png · 387×517</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t29/01_2_image215.png"><img src="assets/img/fi/t29/01_2_image215.png" alt="新建订货方主数据 · 第 1 步：建立三个客户:远东造船长, 新益汽轮机场.威力工贸公司 事务代码 FD01" loading="lazy" width="522" height="383"></a><figcaption><span class="n">画面 212</span><span class="src">image217.png · 522×383</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t29/01_3_image216.png"><img src="assets/img/fi/t29/01_3_image216.png" alt="新建订货方主数据 · 第 1 步：建立三个客户:远东造船长, 新益汽轮机场.威力工贸公司 事务代码 FD01" loading="lazy" width="524" height="443"></a><figcaption><span class="n">画面 213</span><span class="src">image218.png · 524×443</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t29/01_2_image215.png"><img src="assets/img/fi/t29/01_2_image215.png" alt="新建订货方主数据 · 第 1 步：建立三个客户:远东造船长, 新益汽轮机场.威力工贸公司 事务代码 FD01" loading="lazy" width="522" height="383"></a><figcaption><span class="n">画面 212</span><span class="src">image217.png · 522×383</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t29/01_3_image216.png"><img src="assets/img/fi/t29/01_3_image216.png" alt="新建订货方主数据 · 第 1 步：建立三个客户:远东造船长, 新益汽轮机场.威力工贸公司 事务代码 FD01" loading="lazy" width="524" height="443"></a><figcaption><span class="n">画面 213</span><span class="src">image218.png · 524×443</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<p class="opcap">统驭科目 11310101 排序码 001</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t29/02_1_image219.png"><img src="assets/img/fi/t29/02_1_image219.png" alt="新建订货方主数据 · 第 2 步：统驭科目 11310101 排序码 001" loading="lazy" width="608" height="526"></a><figcaption><span class="n">画面 216</span><span class="src">image219.png · 608×526</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t29/02_2_image220.png"><img src="assets/img/fi/t29/02_2_image220.png" alt="新建订货方主数据 · 第 2 步：统驭科目 11310101 排序码 001" loading="lazy" width="492" height="576"></a><figcaption><span class="n">画面 217</span><span class="src">image220.png · 492×576</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">远东造船厂</p>
+<figure class="shot narrow"><a class="zoom" href="assets/img/fi/t29/03_1_image221.png"><img src="assets/img/fi/t29/03_1_image221.png" alt="新建订货方主数据 · 第 3 步：远东造船厂" loading="lazy" width="347" height="37"></a><figcaption><span class="n">画面 218</span><span class="src">image221.png · 347×37</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 219）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t29/04_1_image222.png"><img src="assets/img/fi/t29/04_1_image222.png" alt="新建订货方主数据 · 第 4 步：image222.png" loading="lazy" width="379" height="115"></a><figcaption><span class="n">画面 219</span><span class="src">image222.png · 379×115</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t30"><span class="no">任务 30</span><h3>新建收货方主数据</h3><span class="tc">FD01</span><span class="tc2">0 画面 / 0 步</span></div>
+<p>FD01</p>
+<div class="note tip"><b class="t">教材笔记</b>远东造船厂第三分公司</div>
+<div class="note tip"><b class="t">教材笔记</b>远东造船厂第三分公司作为收货方来维护 系统编号：20000000</div>
+<div class="steph" id="t31"><span class="no">任务 31</span><h3>新建供应商主数据</h3><span class="tc">FK01</span><span class="tc2">6 画面 / 1 步</span></div>
+<p>原料供应商--红星轴承厂，长平铁工厂，</p>
+<p>公司代码依次如下(付款条件为001)：</p>
+<div class="pathline" data-copy="会计核算 → 财务会计 → 供应商 → 主记录"><b>IMG 路径（后台菜单）</b>会计核算 → 财务会计 → 供应商 → 主记录</div>
+<ol class="oplist">
+<li>
+<p class="opcap">贸易商品供应商--思普机械设备进出口有限公司 费用供应商---上海市电力公司，佳音房地产有限公司，京通运输公司<br>FK01</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t31/01_1_image223.png"><img src="assets/img/fi/t31/01_1_image223.png" alt="新建供应商主数据 · 第 1 步：贸易商品供应商--思普机械设备进出口有限公司 费用供应商---上海市电力公司，佳音房地产有限公司，京通运输公司 FK01" loading="lazy" width="1031" height="358"></a><figcaption><span class="n">画面 220</span><span class="src">image226.png · 1031×358</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t31/01_2_image224.png"><img src="assets/img/fi/t31/01_2_image224.png" alt="新建供应商主数据 · 第 1 步：贸易商品供应商--思普机械设备进出口有限公司 费用供应商---上海市电力公司，佳音房地产有限公司，京通运输公司 FK01" loading="lazy" width="264" height="533"></a><figcaption><span class="n">画面 221</span><span class="src">image227.png · 264×533</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t31/01_3_image225.png"><img src="assets/img/fi/t31/01_3_image225.png" alt="新建供应商主数据 · 第 1 步：贸易商品供应商--思普机械设备进出口有限公司 费用供应商---上海市电力公司，佳音房地产有限公司，京通运输公司 FK01" loading="lazy" width="356" height="308"></a><figcaption><span class="n">画面 222</span><span class="src">image228.png · 356×308</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t31/01_1_image223.png"><img src="assets/img/fi/t31/01_1_image223.png" alt="新建供应商主数据 · 第 1 步：贸易商品供应商--思普机械设备进出口有限公司 费用供应商---上海市电力公司，佳音房地产有限公司，京通运输公司 FK01" loading="lazy" width="1031" height="358"></a><figcaption><span class="n">画面 220</span><span class="src">image226.png · 1031×358</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t31/01_2_image224.png"><img src="assets/img/fi/t31/01_2_image224.png" alt="新建供应商主数据 · 第 1 步：贸易商品供应商--思普机械设备进出口有限公司 费用供应商---上海市电力公司，佳音房地产有限公司，京通运输公司 FK01" loading="lazy" width="264" height="533"></a><figcaption><span class="n">画面 221</span><span class="src">image227.png · 264×533</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t31/01_3_image225.png"><img src="assets/img/fi/t31/01_3_image225.png" alt="新建供应商主数据 · 第 1 步：贸易商品供应商--思普机械设备进出口有限公司 费用供应商---上海市电力公司，佳音房地产有限公司，京通运输公司 FK01" loading="lazy" width="356" height="308"></a><figcaption><span class="n">画面 222</span><span class="src">image228.png · 356×308</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材笔记</b>红星：10000000 长平铁工厂：10000001思普机械设备进出口有限公司：20000000</div>
+<div class="note tip"><b class="t">教材笔记</b>上海电力:30000000 佳音地产公司：30000001 京通运输公司：30000002</div>
+</li>
+</ol>
+<div class="steph" id="t32"><span class="no">任务 32</span><h3>输入客户发票</h3><span class="tc">FB70</span><span class="tc2">3 画面 / 2 步</span></div>
+<ol class="oplist">
+<li>
+<p class="opcap">卖给远东造船厂一批货物，含税销售额 58000 需要录入相应的会计凭证<br>FB70</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t32/01_1_image229.png"><img src="assets/img/fi/t32/01_1_image229.png" alt="输入客户发票 · 第 1 步：卖给远东造船厂一批货物，含税销售额 58000 需要录入相应的会计凭证 FB70" loading="lazy" width="328" height="439"></a><figcaption><span class="n">画面 226</span><span class="src">image229.png · 328×439</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t32/01_2_image230.png"><img src="assets/img/fi/t32/01_2_image230.png" alt="输入客户发票 · 第 1 步：卖给远东造船厂一批货物，含税销售额 58000 需要录入相应的会计凭证 FB70" loading="lazy" width="751" height="600"></a><figcaption><span class="n">画面 227</span><span class="src">image230.png · 751×600</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>模拟</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 228）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t32/02_1_image231.png"><img src="assets/img/fi/t32/02_1_image231.png" alt="输入客户发票 · 第 2 步：image231.png" loading="lazy" width="724" height="294"></a><figcaption><span class="n">画面 228</span><span class="src">image231.png · 724×294</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t33"><span class="no">任务 33</span><h3>收到客户全额还款</h3><span class="tc2">5 画面 / 4 步</span></div>
+<div class="pathline" data-copy="会计 → 财务会计 → 应收帐款 → 凭证输入 → F-28 收款"><b>IMG 路径（后台菜单）</b>会计 → 财务会计 → 应收帐款 → 凭证输入 → F-28 收款</div>
+<ol class="oplist">
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t33/01_1_image232.png"><img src="assets/img/fi/t33/01_1_image232.png" alt="收到客户全额还款 · 第 1 步：image232.png" loading="lazy" width="484" height="437"></a><figcaption><span class="n">画面 229</span><span class="src">image232.png · 484×437</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> 全额则只需要清账,而部分还款则需要先清掉原来的帐单,再把剩余的金额生成另外一张单<br>会计－财务会计－应收帐款－凭证输入－F-28 收款</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t33/02_1_image233.png"><img src="assets/img/fi/t33/02_1_image233.png" alt="收到客户全额还款 · 第 2 步：解释：全额则只需要清账,而部分还款则需要先清掉原来的帐单,再把剩余的金额生成另外一张单 会计－财务会计－应收帐款－凭证输入－F-28 收款" loading="lazy" width="601" height="646"></a><figcaption><span class="n">画面 230</span><span class="src">image233.png · 601×646</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t33/02_2_image234.png"><img src="assets/img/fi/t33/02_2_image234.png" alt="收到客户全额还款 · 第 2 步：解释：全额则只需要清账,而部分还款则需要先清掉原来的帐单,再把剩余的金额生成另外一张单 会计－财务会计－应收帐款－凭证输入－F-28 收款" loading="lazy" width="718" height="821"></a><figcaption><span class="n">画面 231</span><span class="src">image234.png · 718×821</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">模拟</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t33/03_1_image235.png"><img src="assets/img/fi/t33/03_1_image235.png" alt="收到客户全额还款 · 第 3 步：模拟" loading="lazy" width="560" height="301"></a><figcaption><span class="n">画面 232</span><span class="src">image235.png · 560×301</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 233）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t33/04_1_image236.png"><img src="assets/img/fi/t33/04_1_image236.png" alt="收到客户全额还款 · 第 4 步：image236.png" loading="lazy" width="593" height="325"></a><figcaption><span class="n">画面 233</span><span class="src">image236.png · 593×325</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t34"><span class="no">任务 34</span><h3>收到客户部分还款</h3><span class="tc">FB70</span><span class="tc2">7 画面 / 4 步</span></div>
+<div class="note tip"><b class="t">教材笔记</b>F-28 做该部分之前 需要用FB70做一张客户发票，金额为164800</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 234）</span></p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t34/01_1_image237.png"><img src="assets/img/fi/t34/01_1_image237.png" alt="收到客户部分还款 · 第 1 步：image237.png" loading="lazy" width="582" height="641"></a><figcaption><span class="n">画面 234</span><span class="src">image237.png · 582×641</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t34/02_1_image238.png"><img src="assets/img/fi/t34/02_1_image238.png" alt="收到客户部分还款 · 第 1 步：image238.png" loading="lazy" width="1017" height="619"></a><figcaption><span class="n">画面 235</span><span class="src">image238.png · 1017×619</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t34/03_1_image239.png"><img src="assets/img/fi/t34/03_1_image239.png" alt="收到客户部分还款 · 第 1 步：image239.png" loading="lazy" width="844" height="246"></a><figcaption><span class="n">画面 236</span><span class="src">image239.png · 844×246</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材笔记</b>点击剩余项目</div>
+</li>
+<li>
+<p class="opcap">光标放到剩余项，双击</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t34/04_1_image240.png"><img src="assets/img/fi/t34/04_1_image240.png" alt="收到客户部分还款 · 第 2 步：光标放到剩余项，双击" loading="lazy" width="1055" height="855"></a><figcaption><span class="n">画面 237</span><span class="src">image240.png · 1055×855</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">模拟</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t34/05_1_image241.png"><img src="assets/img/fi/t34/05_1_image241.png" alt="收到客户部分还款 · 第 3 步：模拟" loading="lazy" width="791" height="854"></a><figcaption><span class="n">画面 238</span><span class="src">image241.png · 791×854</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">双击凭证 002 行</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t34/06_1_image242.png"><img src="assets/img/fi/t34/06_1_image242.png" alt="收到客户部分还款 · 第 4 步：双击凭证 002 行" loading="lazy" width="601" height="360"></a><figcaption><span class="n">画面 239</span><span class="src">image242.png · 601×360</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t34/06_2_image243.png"><img src="assets/img/fi/t34/06_2_image243.png" alt="收到客户部分还款 · 第 4 步：双击凭证 002 行" loading="lazy" width="640" height="520"></a><figcaption><span class="n">画面 240</span><span class="src">image243.png · 640×520</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>返回后保存</div>
+</li>
+</ol>
+<div class="steph" id="t35"><span class="no">任务 35</span><h3>显示应收帐款余额</h3><span class="tc2">4 画面 / 1 步</span></div>
+<div class="pathline" data-copy="会计 → 财务会计 → 应收帐款 → 信息系统 → 应收帐款会计核算报表 → 客户余额 → s_alr_87012172"><b>IMG 路径（后台菜单）</b>会计 → 财务会计 → 应收帐款 → 信息系统 → 应收帐款会计核算报表 → 客户余额 → s_alr_87012172</div>
+<ol class="oplist">
+<li>
+<p class="opcap">会计－财务会计－应收帐款－信息系统－应收帐款会计核算报表－客户余额—s_alr_87012172</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t35/01_1_image244.png"><img src="assets/img/fi/t35/01_1_image244.png" alt="显示应收帐款余额 · 第 1 步：会计－财务会计－应收帐款－信息系统－应收帐款会计核算报表－客户余额—s_alr_87012172" loading="lazy" width="811" height="876"></a><figcaption><span class="n">画面 241</span><span class="src">image246.png · 811×876</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t35/01_2_image245.png"><img src="assets/img/fi/t35/01_2_image245.png" alt="显示应收帐款余额 · 第 1 步：会计－财务会计－应收帐款－信息系统－应收帐款会计核算报表－客户余额—s_alr_87012172" loading="lazy" width="1093" height="538"></a><figcaption><span class="n">画面 242</span><span class="src">image247.png · 1093×538</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t35/01_1_image244.png"><img src="assets/img/fi/t35/01_1_image244.png" alt="显示应收帐款余额 · 第 1 步：会计－财务会计－应收帐款－信息系统－应收帐款会计核算报表－客户余额—s_alr_87012172" loading="lazy" width="811" height="876"></a><figcaption><span class="n">画面 241</span><span class="src">image246.png · 811×876</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t35/01_2_image245.png"><img src="assets/img/fi/t35/01_2_image245.png" alt="显示应收帐款余额 · 第 1 步：会计－财务会计－应收帐款－信息系统－应收帐款会计核算报表－客户余额—s_alr_87012172" loading="lazy" width="1093" height="538"></a><figcaption><span class="n">画面 242</span><span class="src">image247.png · 1093×538</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t36"><span class="no">任务 36</span><h3>显示客户余额</h3><span class="tc">FD10N</span><span class="tc2">2 画面 / 2 步</span></div>
+<div class="pathline" data-copy="会计 → 财务会计 → 应收帐款 → 账户 → FD10N"><b>IMG 路径（后台菜单）</b>会计 → 财务会计 → 应收帐款 → 账户 → FD10N</div>
+<ol class="oplist">
+<li>
+<p class="opcap">会计－财务会计－应收帐款－账户－FD10N</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t36/01_1_image249.png"><img src="assets/img/fi/t36/01_1_image249.png" alt="显示客户余额 · 第 1 步：会计－财务会计－应收帐款－账户－FD10N" loading="lazy" width="615" height="152"></a><figcaption><span class="n">画面 245</span><span class="src">image249.png · 615×152</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 246）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t36/02_1_image250.png"><img src="assets/img/fi/t36/02_1_image250.png" alt="显示客户余额 · 第 2 步：image250.png" loading="lazy" width="807" height="766"></a><figcaption><span class="n">画面 246</span><span class="src">image250.png · 807×766</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t37"><span class="no">任务 37</span><h3>收到供应商发票</h3><span class="tc">FB60</span><span class="tc2">5 画面 / 1 步</span></div>
+<div class="pathline" data-copy="会计 → 财务会计 → 应付帐款 → 凭证输入 → FB60 发票"><b>IMG 路径（后台菜单）</b>会计 → 财务会计 → 应付帐款 → 凭证输入 → FB60 发票</div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">会计－财务会计－应付帐款－凭证输入－FB60 发票</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t37/01_1_image251.png"><img src="assets/img/fi/t37/01_1_image251.png" alt="收到供应商发票 · 第 1 步：会计－财务会计－应付帐款－凭证输入－FB60 发票" loading="lazy" width="353" height="413"></a><figcaption><span class="n">画面 247</span><span class="src">image253.png · 353×413</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t37/01_2_image252.png"><img src="assets/img/fi/t37/01_2_image252.png" alt="收到供应商发票 · 第 1 步：会计－财务会计－应付帐款－凭证输入－FB60 发票" loading="lazy" width="228" height="194"></a><figcaption><span class="n">画面 248</span><span class="src">image254.png · 228×194</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t37/01_3_image255.png"><img src="assets/img/fi/t37/01_3_image255.png" alt="收到供应商发票 · 第 1 步：会计－财务会计－应付帐款－凭证输入－FB60 发票" loading="lazy" width="732" height="533"></a><figcaption><span class="n">画面 249</span><span class="src">image255.png · 732×533</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t37/01_1_image251.png"><img src="assets/img/fi/t37/01_1_image251.png" alt="收到供应商发票 · 第 1 步：会计－财务会计－应付帐款－凭证输入－FB60 发票" loading="lazy" width="353" height="413"></a><figcaption><span class="n">画面 247</span><span class="src">image253.png · 353×413</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t37/01_2_image252.png"><img src="assets/img/fi/t37/01_2_image252.png" alt="收到供应商发票 · 第 1 步：会计－财务会计－应付帐款－凭证输入－FB60 发票" loading="lazy" width="228" height="194"></a><figcaption><span class="n">画面 248</span><span class="src">image254.png · 228×194</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t38"><span class="no">任务 38</span><h3>模拟</h3><span class="tc2">1 画面 / 1 步</span></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 252）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t38/01_1_image257.png"><img src="assets/img/fi/t38/01_1_image257.png" alt="模拟：image257.png" loading="lazy" width="699" height="299"></a><figcaption><span class="n">画面 252</span><span class="src">image257.png · 699×299</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t39"><span class="no">任务 39</span><h3>向供应商付款</h3><span class="tc2">3 画面 / 2 步</span></div>
+<div class="pathline" data-copy="会计 → 财务会计 → 应付帐款 → 凭证输入 → 付款 → F-53 过帐"><b>IMG 路径（后台菜单）</b>会计 → 财务会计 → 应付帐款 → 凭证输入 → 付款 → F-53 过帐</div>
+<ol class="oplist">
+<li>
+<p class="opcap">会计－财务会计－应付帐款－凭证输入－付款－F-53 过帐</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t39/01_1_image258.png"><img src="assets/img/fi/t39/01_1_image258.png" alt="向供应商付款 · 第 1 步：会计－财务会计－应付帐款－凭证输入－付款－F-53 过帐" loading="lazy" width="373" height="594"></a><figcaption><span class="n">画面 253</span><span class="src">image258.png · 373×594</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 254）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t39/02_1_image259.png"><img src="assets/img/fi/t39/02_1_image259.png" alt="向供应商付款 · 第 2 步：image259.png" loading="lazy" width="716" height="826"></a><figcaption><span class="n">画面 254</span><span class="src">image259.png · 716×826</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t39/03_1_image260.png"><img src="assets/img/fi/t39/03_1_image260.png" alt="向供应商付款 · 第 2 步：image260.png" loading="lazy" width="724" height="338"></a><figcaption><span class="n">画面 255</span><span class="src">image260.png · 724×338</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>模拟</div>
+</li>
+</ol>
+<div class="steph" id="t40"><span class="no">任务 40</span><h3>显示应付帐款余额</h3><span class="tc2">3 画面 / 1 步</span></div>
+<div class="pathline" data-copy="会计 → 财务会计 → 应付帐款 → 信息系统 → 应付科目会计核算报表 → s_alr_87012082"><b>IMG 路径（后台菜单）</b>会计 → 财务会计 → 应付帐款 → 信息系统 → 应付科目会计核算报表 → s_alr_87012082</div>
+<ol class="oplist">
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t40/01_1_image261.png"><img src="assets/img/fi/t40/01_1_image261.png" alt="显示应付帐款余额 · 第 1 步：image261.png" loading="lazy" width="616" height="861"></a><figcaption><span class="n">画面 256</span><span class="src">image261.png · 616×861</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t40/01_2_image262.png"><img src="assets/img/fi/t40/01_2_image262.png" alt="显示应付帐款余额 · 第 1 步：image262.png" loading="lazy" width="1087" height="506"></a><figcaption><span class="n">画面 257</span><span class="src">image262.png · 1087×506</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t40/01_3_image263.png"><img src="assets/img/fi/t40/01_3_image263.png" alt="显示应付帐款余额 · 第 1 步：image263.png" loading="lazy" width="434" height="677"></a><figcaption><span class="n">画面 258</span><span class="src">image263.png · 434×677</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t41"><span class="no">任务 41</span><h3>显示供应商余额</h3><span class="tc">FK10N</span><span class="tc2">7 画面 / 2 步</span></div>
+<div class="pathline" data-copy="会计 → 财务会计 → 应付帐款 → 账户 → FK10N → 显示余额"><b>IMG 路径（后台菜单）</b>会计 → 财务会计 → 应付帐款 → 账户 → FK10N → 显示余额</div>
+<ol class="oplist">
+<li>
+<p class="opcap">会计－财务会计－应付帐款－账户－FK10N－显示余额</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t41/01_1_image264.png"><img src="assets/img/fi/t41/01_1_image264.png" alt="显示供应商余额 · 第 1 步：会计－财务会计－应付帐款－账户－FK10N－显示余额" loading="lazy" width="344" height="480"></a><figcaption><span class="n">画面 259</span><span class="src">image264.png · 344×480</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 260）</span></p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t41/02_1_image265.png"><img src="assets/img/fi/t41/02_1_image265.png" alt="显示供应商余额 · 第 2 步：image267.png" loading="lazy" width="608" height="169"></a><figcaption><span class="n">画面 260</span><span class="src">image267.png · 608×169</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t41/02_2_image266.png"><img src="assets/img/fi/t41/02_2_image266.png" alt="显示供应商余额 · 第 2 步：image268.png" loading="lazy" width="797" height="777"></a><figcaption><span class="n">画面 261</span><span class="src">image268.png · 797×777</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t41/02_1_image265.png"><img src="assets/img/fi/t41/02_1_image265.png" alt="显示供应商余额 · 第 2 步：image267.png" loading="lazy" width="608" height="169"></a><figcaption><span class="n">画面 260</span><span class="src">image267.png · 608×169</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t41/02_2_image266.png"><img src="assets/img/fi/t41/02_2_image266.png" alt="显示供应商余额 · 第 2 步：image268.png" loading="lazy" width="797" height="777"></a><figcaption><span class="n">画面 261</span><span class="src">image268.png · 797×777</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t41/03_1_image269.png"><img src="assets/img/fi/t41/03_1_image269.png" alt="显示供应商余额 · 第 2 步：image269.png" loading="lazy" width="659" height="523"></a><figcaption><span class="n">画面 264</span><span class="src">image269.png · 659×523</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t41/04_1_image270.png"><img src="assets/img/fi/t41/04_1_image270.png" alt="显示供应商余额 · 第 2 步：image270.png" loading="lazy" width="603" height="504"></a><figcaption><span class="n">画面 265</span><span class="src">image270.png · 603×504</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材笔记</b>双击第3行的行项目</div>
+</li>
+</ol>
+<div class="steph" id="t42"><span class="no">任务 42</span><h3>总帐科目余额汇总表</h3><span class="tc2">5 画面 / 2 步</span></div>
+<div class="pathline" data-copy="会计 → 财务会计 → 总帐 → 信息系统 → 总帐报表(新) → 科目余额 → 常规 → 总帐科目余额"><b>IMG 路径（后台菜单）</b>会计 → 财务会计 → 总帐 → 信息系统 → 总帐报表(新) → 科目余额 → 常规 → 总帐科目余额</div>
+<div class="note tip"><b class="t">教材笔记</b>s_alr_87012276</div>
+<ol class="oplist">
+<li>
+<p class="opcap">会计－财务会计－总帐－信息系统－总帐报表(新)－科目余额－常规－总帐科目余额－</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t42/01_1_image271.png"><img src="assets/img/fi/t42/01_1_image271.png" alt="总帐科目余额汇总表 · 第 1 步：会计－财务会计－总帐－信息系统－总帐报表(新)－科目余额－常规－总帐科目余额－" loading="lazy" width="473" height="634"></a><figcaption><span class="n">画面 266</span><span class="src">image273.png · 473×634</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t42/01_2_image272.png"><img src="assets/img/fi/t42/01_2_image272.png" alt="总帐科目余额汇总表 · 第 1 步：会计－财务会计－总帐－信息系统－总帐报表(新)－科目余额－常规－总帐科目余额－" loading="lazy" width="628" height="547"></a><figcaption><span class="n">画面 267</span><span class="src">image274.png · 628×547</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t42/01_1_image271.png"><img src="assets/img/fi/t42/01_1_image271.png" alt="总帐科目余额汇总表 · 第 1 步：会计－财务会计－总帐－信息系统－总帐报表(新)－科目余额－常规－总帐科目余额－" loading="lazy" width="473" height="634"></a><figcaption><span class="n">画面 266</span><span class="src">image273.png · 473×634</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t42/01_2_image272.png"><img src="assets/img/fi/t42/01_2_image272.png" alt="总帐科目余额汇总表 · 第 1 步：会计－财务会计－总帐－信息系统－总帐报表(新)－科目余额－常规－总帐科目余额－" loading="lazy" width="628" height="547"></a><figcaption><span class="n">画面 267</span><span class="src">image274.png · 628×547</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 270）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t42/02_1_image275.png"><img src="assets/img/fi/t42/02_1_image275.png" alt="总帐科目余额汇总表 · 第 2 步：image275.png" loading="lazy" width="1212" height="636"></a><figcaption><span class="n">画面 270</span><span class="src">image275.png · 1212×636</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t43"><span class="no">任务 43</span><h3>将收入科目设置为只能自动记帐</h3><span class="tc">FS00</span><span class="tc2">7 画面 / 2 步</span></div>
+<div class="note tip"><b class="t">教材笔记</b>FS00</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 271）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t43/01_1_image276.png"><img src="assets/img/fi/t43/01_1_image276.png" alt="将收入科目设置为只能自动记帐 · 第 1 步：image276.png" loading="lazy" width="614" height="667"></a><figcaption><span class="n">画面 271</span><span class="src">image276.png · 614×667</span></figcaption></figure>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t43/02_1_image277.png"><img src="assets/img/fi/t43/02_1_image277.png" alt="将收入科目设置为只能自动记帐 · 第 2 步：image280.png" loading="lazy" width="633" height="654"></a><figcaption><span class="n">画面 272</span><span class="src">image280.png · 633×654</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t43/02_2_image278.png"><img src="assets/img/fi/t43/02_2_image278.png" alt="将收入科目设置为只能自动记帐 · 第 2 步：image281.png" loading="lazy" width="611" height="662"></a><figcaption><span class="n">画面 273</span><span class="src">image281.png · 611×662</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t43/02_3_image279.png"><img src="assets/img/fi/t43/02_3_image279.png" alt="将收入科目设置为只能自动记帐 · 第 2 步：image282.png" loading="lazy" width="620" height="654"></a><figcaption><span class="n">画面 274</span><span class="src">image282.png · 620×654</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t43/02_1_image277.png"><img src="assets/img/fi/t43/02_1_image277.png" alt="将收入科目设置为只能自动记帐 · 第 2 步：image280.png" loading="lazy" width="633" height="654"></a><figcaption><span class="n">画面 272</span><span class="src">image280.png · 633×654</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t43/02_2_image278.png"><img src="assets/img/fi/t43/02_2_image278.png" alt="将收入科目设置为只能自动记帐 · 第 2 步：image281.png" loading="lazy" width="611" height="662"></a><figcaption><span class="n">画面 273</span><span class="src">image281.png · 611×662</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t43/02_3_image279.png"><img src="assets/img/fi/t43/02_3_image279.png" alt="将收入科目设置为只能自动记帐 · 第 2 步：image282.png" loading="lazy" width="620" height="654"></a><figcaption><span class="n">画面 274</span><span class="src">image282.png · 620×654</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t44"><span class="no">任务 44</span><h3>定义资产负债表和损益表结构</h3><span class="fb">后台</span><span class="tc2">29 画面 / 23 步</span></div>
+<p>11 流动资产</p>
+<p>1131 应收账款</p>
+<p>1201存货</p>
+<p>120101 材料采购</p>
+<p>121101 存货-原材料</p>
+<p>123101 存货-贸易商品</p>
+<p>124301 存货-产成品</p>
+<p>1001 货币资金</p>
+<p>21 负债</p>
+<p>212101 应付账款</p>
+<p>217101 未交税金</p>
+<p>31 所有者权益</p>
+<p>3101 实收资本</p>
+<p>5 损益及利润分配表</p>
+<p>51 主营业务利润</p>
+<p>5101 主营业务收入</p>
+<p>510102 主营业务利润-贸易商品</p>
+<p>5401 主营业务成本</p>
+<p>5402 主营业务税金及附加</p>
+<p>55 费用</p>
+<p>5501 销售费用</p>
+<p>5502 管理费用</p>
+<p>5503 财务费用</p>
+<p>57 所得税</p>
+<p>58 利润分配</p>
+<p>59 本年净增未分配利润</p>
+<p>6 P+L P＋L 结果分配账户</p>
+<p>选择 100101 现金，点击分配会计科目</p>
+<p>11 流动资产</p>
+<p>1001 货币资金</p>
+<p>100101 现金</p>
+<p>0010010101 现金</p>
+<p>100201 银行存款</p>
+<p>1131 应收账款</p>
+<p>1201 存货</p>
+<p>120101 材料采购</p>
+<p>121101 存货-原材料</p>
+<p>123101 存货-贸易商品</p>
+<p>21 负债</p>
+<p>2101 流动负债</p>
+<p>217101 未交税金</p>
+<p>21710101 未交增值税-进项税额</p>
+<p>21710102 未交增值税-销项税额</p>
+<p>2222 长期负债</p>
+<p>31 所有者权益</p>
+<p>3101 实收资本</p>
+<p>3141 期初未分配利润</p>
+<p>5 损益及利润分配表</p>
+<p>51 主营业务利润</p>
+<p>5101 主营业务收入</p>
+<p>510101 主营业务利润-自制</p>
+<p>510102 主营业务利润-贸易商品</p>
+<p>5401 主营业务成本</p>
+<p>540101 主营业务成本-自制</p>
+<p>540102 主营业务成本-贸易商品</p>
+<p>5402 主营业务税金及附加</p>
+<p>55 费用</p>
+<p>5501 销售费用</p>
+<p>5502 管理费用</p>
+<p>0055020101 管理费用－工资</p>
+<p>0055020111 管理费用－折旧</p>
+<p>0055020121 管理费用－电话费</p>
+<p>0055020131 管理费用－办公用品</p>
+<p>0055020141 管理费用－租金</p>
+<p>0055029101 管理费用－其他</p>
+<p>5503 财务费用</p>
+<p>57 所得税</p>
+<p>58 利润分配</p>
+<div class="pathline" data-copy="财务会计 → 总帐会计 → 业务往来 → 结算 → 编制凭证 → 定义会计报表版本"><b>IMG 路径（后台菜单）</b>财务会计 → 总帐会计 → 业务往来 → 结算 → 编制凭证 → 定义会计报表版本</div>
+<ol class="oplist">
+<li>
+<p class="opcap">财务会计－总帐会计－业务往来－结算－编制凭证－定义会计报表版本</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/01_1_image283.png"><img src="assets/img/fi/t44/01_1_image283.png" alt="定义资产负债表和损益表结构 · 第 1 步：财务会计－总帐会计－业务往来－结算－编制凭证－定义会计报表版本" loading="lazy" width="380" height="464"></a><figcaption><span class="n">画面 278</span><span class="src">image283.png · 380×464</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 279）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/02_1_image284.png"><img src="assets/img/fi/t44/02_1_image284.png" alt="定义资产负债表和损益表结构 · 第 2 步：image284.png" loading="lazy" width="543" height="569"></a><figcaption><span class="n">画面 279</span><span class="src">image284.png · 543×569</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">新的分录</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/03_1_image285.png"><img src="assets/img/fi/t44/03_1_image285.png" alt="定义资产负债表和损益表结构 · 第 3 步：新的分录" loading="lazy" width="361" height="324"></a><figcaption><span class="n">画面 280</span><span class="src">image285.png · 361×324</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击会计报表项目</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/04_1_image286.png"><img src="assets/img/fi/t44/04_1_image286.png" alt="定义资产负债表和损益表结构 · 第 4 步：点击会计报表项目" loading="lazy" width="372" height="309"></a><figcaption><span class="n">画面 281</span><span class="src">image286.png · 372×309</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t44/04_2_image287.png"><img src="assets/img/fi/t44/04_2_image287.png" alt="定义资产负债表和损益表结构 · 第 4 步：点击会计报表项目" loading="lazy" width="510" height="247"></a><figcaption><span class="n">画面 282</span><span class="src">image287.png · 510×247</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>双击资产</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 283）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/05_1_image288.png"><img src="assets/img/fi/t44/05_1_image288.png" alt="定义资产负债表和损益表结构 · 第 5 步：image288.png" loading="lazy" width="396" height="788"></a><figcaption><span class="n">画面 283</span><span class="src">image288.png · 396×788</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">填写如下：</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/06_1_image289.png"><img src="assets/img/fi/t44/06_1_image289.png" alt="定义资产负债表和损益表结构 · 第 6 步：填写如下：" loading="lazy" width="663" height="851"></a><figcaption><span class="n">画面 284</span><span class="src">image289.png · 663×851</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">选择颐宁公司财务报表版本，点击创建项目 8 损益及利润分配表</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/07_1_image290.png"><img src="assets/img/fi/t44/07_1_image290.png" alt="定义资产负债表和损益表结构 · 第 7 步：选择颐宁公司财务报表版本，点击创建项目 8 损益及利润分配表" loading="lazy" width="522" height="369"></a><figcaption><span class="n">画面 285</span><span class="src">image290.png · 522×369</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">选中资产，点击创建项目</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/fi/t44/08_1_image291.png"><img src="assets/img/fi/t44/08_1_image291.png" alt="定义资产负债表和损益表结构 · 第 8 步：选中资产，点击创建项目" loading="lazy" width="537" height="278"></a><figcaption><span class="n">画面 286</span><span class="src">image293.png · 537×278</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t44/08_2_image292.png"><img src="assets/img/fi/t44/08_2_image292.png" alt="定义资产负债表和损益表结构 · 第 8 步：选中资产，点击创建项目" loading="lazy" width="767" height="430"></a><figcaption><span class="n">画面 287</span><span class="src">image294.png · 767×430</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t44/08_1_image291.png"><img src="assets/img/fi/t44/08_1_image291.png" alt="定义资产负债表和损益表结构 · 第 8 步：选中资产，点击创建项目" loading="lazy" width="537" height="278"></a><figcaption><span class="n">画面 286</span><span class="src">image293.png · 537×278</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t44/08_2_image292.png"><img src="assets/img/fi/t44/08_2_image292.png" alt="定义资产负债表和损益表结构 · 第 8 步：选中资产，点击创建项目" loading="lazy" width="767" height="430"></a><figcaption><span class="n">画面 287</span><span class="src">image294.png · 767×430</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">15 固定资产<br>18 无形及递延资产</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/09_1_image295.png"><img src="assets/img/fi/t44/09_1_image295.png" alt="定义资产负债表和损益表结构 · 第 9 步：15 固定资产 18 无形及递延资产" loading="lazy" width="382" height="286"></a><figcaption><span class="n">画面 290</span><span class="src">image295.png · 382×286</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>21 负债</div>
+</li>
+<li>
+<p class="opcap">选中负债及所有者权益，点击创建项目</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/10_1_image296.png"><img src="assets/img/fi/t44/10_1_image296.png" alt="定义资产负债表和损益表结构 · 第 10 步：选中负债及所有者权益，点击创建项目" loading="lazy" width="522" height="231"></a><figcaption><span class="n">画面 291</span><span class="src">image296.png · 522×231</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t44/10_2_image297.png"><img src="assets/img/fi/t44/10_2_image297.png" alt="定义资产负债表和损益表结构 · 第 10 步：选中负债及所有者权益，点击创建项目" loading="lazy" width="521" height="239"></a><figcaption><span class="n">画面 292</span><span class="src">image297.png · 521×239</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">100101 现金<br>100201 银行存款</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/11_1_image298.png"><img src="assets/img/fi/t44/11_1_image298.png" alt="定义资产负债表和损益表结构 · 第 11 步：100101 现金 100201 银行存款" loading="lazy" width="312" height="648"></a><figcaption><span class="n">画面 293</span><span class="src">image298.png · 312×648</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>2101 流动负债</div>
+</li>
+<li>
+<p class="opcap">21710101 未交增值税-进项税额<br>21710102 未交增值税-销项税额</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/12_1_image299.png"><img src="assets/img/fi/t44/12_1_image299.png" alt="定义资产负债表和损益表结构 · 第 12 步：21710101 未交增值税-进项税额 21710102 未交增值税-销项税额" loading="lazy" width="514" height="519"></a><figcaption><span class="n">画面 294</span><span class="src">image299.png · 514×519</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">3141 期初未分配利润<br>3142 本年净增未分配利润</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/13_1_image300.png"><img src="assets/img/fi/t44/13_1_image300.png" alt="定义资产负债表和损益表结构 · 第 13 步：3141 期初未分配利润 3142 本年净增未分配利润" loading="lazy" width="577" height="417"></a><figcaption><span class="n">画面 295</span><span class="src">image300.png · 577×417</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">选中净值结果：亏损，调整到 3142 下</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/14_1_image301.png"><img src="assets/img/fi/t44/14_1_image301.png" alt="定义资产负债表和损益表结构 · 第 14 步：选中净值结果：亏损，调整到 3142 下" loading="lazy" width="1005" height="826"></a><figcaption><span class="n">画面 296</span><span class="src">image301.png · 1005×826</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/fi/t44/14_2_image302.png"><img src="assets/img/fi/t44/14_2_image302.png" alt="定义资产负债表和损益表结构 · 第 14 步：选中净值结果：亏损，调整到 3142 下" loading="lazy" width="764" height="654"></a><figcaption><span class="n">画面 297</span><span class="src">image302.png · 764×654</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 298）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/15_1_image303.png"><img src="assets/img/fi/t44/15_1_image303.png" alt="定义资产负债表和损益表结构 · 第 15 步：image303.png" loading="lazy" width="433" height="442"></a><figcaption><span class="n">画面 298</span><span class="src">image303.png · 433×442</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">净值结果：利润和亏损两个系统预定义的报表项目会自动计算资产负债表的轧差数，实质上就是本年净增（或净减）的未分配利润数</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/16_1_image304.png"><img src="assets/img/fi/t44/16_1_image304.png" alt="定义资产负债表和损益表结构 · 第 16 步：净值结果：利润和亏损两个系统预定义的报表项目会自动计算资产负债表的轧差数，实质上就是本年净增（或净减）的未分配利润数" loading="lazy" width="510" height="725"></a><figcaption><span class="n">画面 299</span><span class="src">image304.png · 510×725</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>P&amp;L 结果也是系统预定义的报表项目，它自动计算损益表和利润分配表的轧差数，实质上也是“本年净增未分配利润”。</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 299）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/16_1_image304.png"><img src="assets/img/fi/t44/16_1_image304.png" alt="定义资产负债表和损益表结构 · 第 17 步：image304.png" loading="lazy" width="510" height="725"></a><figcaption><span class="n">画面 299</span><span class="src">image304.png · 510×725</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>510101 主营业务利润-自制</div>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/18_1_image305.png"><img src="assets/img/fi/t44/18_1_image305.png" alt="定义资产负债表和损益表结构 · 第 18 步：image305.png" loading="lazy" width="298" height="572"></a><figcaption><span class="n">画面 301</span><span class="src">image305.png · 298×572</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">10010101 10019999<br>D 指如果科目余额在借方，就归入这个报表项目</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/19_1_image306.png"><img src="assets/img/fi/t44/19_1_image306.png" alt="定义资产负债表和损益表结构 · 第 19 步：10010101 10019999 D 指如果科目余额在借方，就归入这个报表项目" loading="lazy" width="510" height="898"></a><figcaption><span class="n">画面 302</span><span class="src">image306.png · 510×898</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">1 资产 资产</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/20_1_image307.png"><img src="assets/img/fi/t44/20_1_image307.png" alt="定义资产负债表和损益表结构 · 第 20 步：1 资产 资产" loading="lazy" width="559" height="825"></a><figcaption><span class="n">画面 303</span><span class="src">image307.png · 559×825</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>A999 0010010101 - 0010019999 X X</div>
+</li>
+<li>
+<p class="opcap">124301 存货-产成品<br>A9990012430101 - 0012439999 X X</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/21_1_image308.png"><img src="assets/img/fi/t44/21_1_image308.png" alt="定义资产负债表和损益表结构 · 第 21 步：124301 存货-产成品 A9990012430101 - 0012439999 X X" loading="lazy" width="606" height="859"></a><figcaption><span class="n">画面 304</span><span class="src">image308.png · 606×859</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>212101 应付账款</div>
+</li>
+<li>
+<p class="opcap">3142 本年净增未分配利润<br>7 净值结果：亏损 净值结果：亏损</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/22_1_image309.png"><img src="assets/img/fi/t44/22_1_image309.png" alt="定义资产负债表和损益表结构 · 第 22 步：3142 本年净增未分配利润 7 净值结果：亏损 净值结果：亏损" loading="lazy" width="543" height="857"></a><figcaption><span class="n">画面 305</span><span class="src">image309.png · 543×857</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>540103 主营业务成本-差异结算</div>
+</li>
+<li>
+<p class="opcap">59 本年净增未分配利润<br>6 P+L P＋L 结果</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t44/23_1_image310.png"><img src="assets/img/fi/t44/23_1_image310.png" alt="定义资产负债表和损益表结构 · 第 23 步：59 本年净增未分配利润 6 P+L P＋L 结果" loading="lazy" width="393" height="675"></a><figcaption><span class="n">画面 306</span><span class="src">image310.png · 393×675</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t45"><span class="no">任务 45</span><h3>运行资产负债表</h3><span class="tc2">3 画面 / 3 步</span></div>
+<div class="pathline" data-copy="会计 → 财务会计 → 总分类帐 → 信息系统 → 总帐报表 → 资产负债表/损益表/现金流 → 常规 → 计划/实际比较 → 年度计划/实际比较"><b>IMG 路径（后台菜单）</b>会计 → 财务会计 → 总分类帐 → 信息系统 → 总帐报表 → 资产负债表/损益表/现金流 → 常规 → 计划/实际比较 → 年度计划/实际比较</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 307）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t45/01_1_image311.png"><img src="assets/img/fi/t45/01_1_image311.png" alt="运行资产负债表 · 第 1 步：image311.png" loading="lazy" width="488" height="572"></a><figcaption><span class="n">画面 307</span><span class="src">image311.png · 488×572</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/fi/t45/02_1_image312.png"><img src="assets/img/fi/t45/02_1_image312.png" alt="运行资产负债表 · 第 2 步：image312.png" loading="lazy" width="675" height="563"></a><figcaption><span class="n">画面 308</span><span class="src">image312.png · 675×563</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">10 代表本位币</p>
+<figure class="shot"><a class="zoom" href="assets/img/fi/t45/03_1_image313.png"><img src="assets/img/fi/t45/03_1_image313.png" alt="运行资产负债表 · 第 3 步：10 代表本位币" loading="lazy" width="1147" height="687"></a><figcaption><span class="n">画面 309</span><span class="src">image313.png · 1147×687</span></figcaption></figure>
+</li>
+</ol>
+<h2 id="sources">4. 关于截图与取值</h2>
+<div class="box warn"><b class="t">画面来自原教材文档</b>本模块的截图全部来自 <code>S4.docx</code> 中作者在真实系统里截取的中文界面画面（原始文件名 <code>imageNNN.png</code> 保留在每张图的图注里，可与 Word 原文逐张对照）。本站没有对这些画面做任何重绘或模拟。</div>
+<div class="box info"><b class="t">取值请以自系统为准</b>文档中的组织结构与主数据编号（公司代码 <code>C999</code>、公司名「颐宁机械有限公司」、工厂 <code>F999</code>、物料 <code>R999-100</code>/<code>T999-100</code>/<code>F999-100</code>、客户 <code>K001</code>/<code>K002</code> 等）都来自原作者的教材环境。照着手顺做时，<b>操作顺序与配置点可以照搬，具体编号/名称请换成你自己系统里的值</b>；遇到与文档不同的提示消息，先看「<a href="issues.html">排错与踩坑</a>」页里原文档记录的同类问题。</div>
+<div class="panel" style="margin-top:22px"><a href="prep.html">← 上一模块：准备 准备工作 — 登录系统与进入后台</a><br><a href="co.html">下一模块：CO 管理会计 CO（Controlling） →</a><br><a href="tasks.html">全部 222 个任务索引 →</a></div>
+</article></main>
+</div>
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA 中文实训站 — 全模块配置与操作手顺 · 实机画面</h5>
+  <p>内容依据同目录教材文档 <code>S4.docx</code>（425 页 · 6 大模块 · 222 个任务 · 1385 张实机截图）整理。全部页面可离线打开，无外部依赖。</p>
+  <div><h5>关于画面</h5><p>站内所有截图都是<b>原教材文档中的实机画面</b>（中文界面 SAP GUI），不是示意图、也不是模拟生成图；文件名保留原文档编号以便与 Word 原文对照。文档中的示例值（公司代码 <code>C999</code>、工厂 <code>F999</code>、物料 <code>R999-100</code> 等）属于原作者的教材环境，请以自己系统的组织结构与编号范围为准。</p></div></div>
+  <div class="cols">
+    <div><h5>模块</h5>
+      <a href="prep.html">准备 — 准备工作 — 登录系统与进入后台</a><br>
+      <a href="fi.html">FI — 财务会计 FI</a><br>
+      <a href="co.html">CO — 管理会计 CO</a><br>
+      <a href="mm.html">MM — 物料管理 MM</a><br>
+      <a href="pp.html">PP — 生产计划 PP</a><br>
+      <a href="sd.html">SD — 销售与分销 SD</a><br>    </div>
+    <div><h5>全站</h5>
+      <a href="prep.html">准备</a><br>
+      <a href="fi.html">FI</a><br>
+      <a href="co.html">CO</a><br>
+      <a href="mm.html">MM</a><br>
+      <a href="pp.html">PP</a><br>
+      <a href="sd.html">SD</a><br>
+      <a href="tcode.html">T-code</a><br>
+      <a href="issues.html">排错</a><br>
+      <a href="tasks.html">索引</a><br>
+      <a href="instructor.html">讲师</a><br>
+      <a href="worksheet.html">学员</a><br>
+      <a href="quiz.html">自测</a><br>    </div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/s4cn.js"></script>
+</body>
+</html>

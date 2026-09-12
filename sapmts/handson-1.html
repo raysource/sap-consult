@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>练习① 需要予測と PIR · SAP S/4HANA 見込生産（MTS）实战训练站</title>
+<meta name="description" content="MTS 练习① 需要予測と PIR：MD61 で計画独立所要量を登録し、MD62/MD73 で変更・一覧、MD04 で独立所要量の確認、戦略グループと PIR の関係、消費の起き方まで。入力値・手顺・期待结果・つまずき・验收清单。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/mts.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MTS</span><span class="txt">見込生産 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a class="active" href="handson-1.html">①预测</a>
+      <a href="handson-2.html">②MRP</a>
+      <a href="handson-3.html">③制造入库</a>
+      <a href="handson-4.html">④出货</a>
+      <a href="handson-5.html">⑤月末</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 练习① 需要予測と PIR</div>
+<main class="page"><article>
+
+<h1>练习① 需要予測と PIR（見込生産の起点）</h1>
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。若是想换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 即可一键替换。</div>
+
+<p class="lead">本练习只做一件事：<b>把「预计卖 500 PC/月」这句人话，变成系统能算的需求</b>。做完你应该能在 <code>MD04</code> 里指着那行「計画独立所要量」说：这就是見込生産的需求源，它<b>不带受注番号</b>。</p>
+
+<div class="toc">
+  <a href="#p1">1-1 前提确认（品目と戦略グループ）</a>
+  <a href="#p2">1-2 PIR の登録（MD61）</a>
+  <a href="#p3">1-3 PIR の変更と版（MD62 / MD73）</a>
+  <a href="#p4">1-4 MD04 で独立所要量を確認</a>
+  <a href="#p5">1-5 需要予測の作り方（発展）</a>
+  <a href="#expect">期待结果汇总</a>
+  <a href="#trouble">つまずきと対処</a>
+  <a href="#accept">验收（完成基准）</a>
+</div>
+
+<div class="flow">
+  <div class="node">品目・プラント確認<br><small>MM03</small></div><div class="arrow">→</div>
+  <div class="node">MD61 PIR 投入<br><small>500 / 500 / 500</small></div><div class="arrow">→</div>
+  <div class="node">MD73 一覧で照合<br><small>版 00</small></div><div class="arrow">→</div>
+  <div class="node">MD04 独立所要量<br><small>受注番号なし</small></div><div class="arrow">→</div>
+  <div class="node">MD62 で変更<br><small>500 → 600</small></div>
+</div>
+
+<h2 id="p1">1-1 前提确认（品目と戦略グループ）</h2>
+<p>PIR 是<b>品目＋プラント＋版</b>的需求。所以做之前先确认这三件事存在，尤其是 <b>MRP3 の戦略グループ</b>——它决定「PIR 会不会被受注消费」，是后面练习④ 能不能成立的前提。</p>
+<table class="tbl wide">
+<tr><th>確認項目</th><th>値（本教材）</th><th>見る画面 / 表</th></tr>
+<tr><td>品目 / プラント / 版</td><td><code>ZMTS-FG01</code> / <code>1000</code> / 版 <code>00</code>（有効版）</td><td><code>MM03</code>・<code>MD61</code> の初期画面</td></tr>
+<tr><td>MRP タイプ</td><td><code>PD</code>（MRP 対象）</td><td><code>MM03</code> MRP1 / <code>MARC-DISMM</code></td></tr>
+<tr><td><b>戦略グループ</b></td><td><code>40</code>（最終組立ありの計画 = 受注が PIR を消費）</td><td><code>MM03</code> MRP3 / <code>MARC-STRGR</code> / <code>OPPT</code></td></tr>
+<tr><td>消費モード / 消費期間</td><td><code>2</code>（逆＋順）/ 逆 30 日・順 20 日</td><td><code>MM03</code> MRP3 / <code>MARC-VRMOD</code>・<code>VINT1</code>・<code>VINT2</code></td></tr>
+<tr><td>安全在庫</td><td><code>100</code> PC</td><td><code>MM03</code> MRP2 / <code>MARC-EISBE</code></td></tr>
+<tr><td>現在の自由在庫</td><td>（例）<code>0</code> PC（练习③ の 101 入庫で 500 になる）</td><td><code>MMBE</code> / <code>MB52</code></td></tr>
+</table>
+<ol class="steps">
+  <li><code>MM03</code> → <code>ZMTS-FG01</code> / プラント <code>1000</code> → MRP3 を開き、<b>戦略グループが空でないこと</b>を確認（空なら <a href="config.html#c2">配置 C2</a> に戻る）。</li>
+  <li><code>MMBE</code> で自由在庫と受注在庫（特別在庫）を確認。この時点でどちらも 0 でも問題ない（見込生産は「先に造る」ので、库存は练习③ で作る）。</li>
+  <li><code>MD04</code> を開いて<b>空の在庫/所要量リスト</b>を見ておく（前後比較のため）。</li>
+</ol>
+
+
+<div class="box warn"><b class="t">つまずき（开始前）</b>
+<code>MD61</code> の初期画面で品目やプラントが選択できない → プラント在庫ビュー（<code>MARC</code>）未登録。<code>MD04</code> で「品目マスタがありません」 → 同じ原因。</div>
+<figure class="gui"><img src="assets/gui/handson-1_s01_1.svg" alt="MM03 で ZMTS-FG01 の MRP3 を開き、戦略グループ 40・消費モード 2・在庫確認 02 が入っていることを確認する。" loading="lazy"><figcaption><b class="t">MRP3 の確認（戦略グループ 40 / 消費モード 2）</b><span class="tx">MM03</span><span class="scr">品目マスタ 照会：MRP 3 ビュー（戦略グループの確認）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 戦略グループ 40 = 受注が PIR を消費する。空だと练习④ の「消費」が起きない</li><li><b>2</b> 消費モード 2・逆 30 / 順 20。遠い未来の受注が当月の PIR を食べるかどうかはここ次第</li></ol><p class="gui-tip">自システムでの確認：SE16N: MARC → STRGR（戦略グループ）/ VRMOD・VINT1・VINT2（消費）/ DISMM（MRPタイプ）/ EISBE（安全在庫）。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-1_s01_2.svg" alt="MMBE の在庫一覧。品目 ZMTS-FG01 は自由在庫 0・特別在庫 0 で、练习③ の入庫 101 で自由在庫に入る。" loading="lazy"><figcaption><b class="t">MMBE：自由在庫 0・特別在庫 0 から始まる</b><span class="tx">MMBE</span><span class="scr">在庫一覧：自由在庫と受注在庫（练习前）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 入庫先が「非制限利用」＝ 自由在庫。ここが MTS の証拠（MTO なら特別在庫に受注番号付きで入る）</li><li><b>2</b> 特別在庫（得意先別）は最後まで空のまま。MSKA に何も入らないことを確認する</li></ol><p class="gui-tip">自システムでの確認：MB52（プラント横断）と SE16N: MARD（LABST = 非制限在庫）。対照で MTO は MSKA に受注番号付きで入ります。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="p2">1-2 PIR の登録（MD61）</h2>
+<table class="tbl wide">
+<tr><th>入力項目</th><th>値</th><th>説明</th></tr>
+<tr><td>品目 / プラント</td><td><code>ZMTS-FG01</code> / <code>1000</code></td><td>—</td></tr>
+<tr><td><b>版（Version）</b></td><td><code>00</code></td><td><b>有効版</b>。02/03 等はシミュレーション用（MRP 対象外）。版の有効性は <code>T459U</code></td></tr>
+<tr><td>需要タイプ / 計画タイプ</td><td>標準（例 <code>LSF</code>/<code>VSF</code> 系。環境で確認）</td><td>戦略グループ経由で決まる所要量タイプが使われる</td></tr>
+<tr><td>期間区分</td><td><code>M</code>（月）または <code>W</code>（週）</td><td>练习用に月単位（例：本月・翌月・翌々月）</td></tr>
+<tr><td>数量</td><td>各月 <code>500</code> PC</td><td>本教材の「見込 500 PC/月」</td></tr>
+<tr><td>納入日</td><td>各月の末日（或は月初）</td><td>MRP の着手計算の基準日。環境の計量単位に合わせる</td></tr>
+</table>
+<ol class="steps">
+  <li><code>MD61</code> → 品目 <code>ZMTS-FG01</code> / プラント <code>1000</code> / <b>版 <code>00</code></b> → 実行。</li>
+  <li>計画テーブル（各列 = 期間）で、対象期間のセルに <code>500</code> を入力。3 か月分（例：本月・翌月・翌々月）。</li>
+  <li>「計画データの変更」メッセージを確認 → <b>保存</b>。</li>
+  <li><code>MD04</code> を開き直し、MRP 要素に「<b>計画独立所要量</b>」が並ぶことを確認（数量 500 が 3 行）。</li>
+</ol>
+
+
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+① <code>MD04</code> の行：<b>計画独立所要量 500 PC（受注番号なし）</b>。ここに「得意先」や受注番号が見えたら、それは PIR ではなく受注（別物）。<br>
+② 一覧：<code>MD73</code>（品目横断の PIR 一覧）。<br>
+③ 表：<code>SE16N: PBED</code>（キーに品目・プラント・版 <code>VERID</code>）→ <code>PDATU</code>（納入日）/ <code>PLNMG</code>（数量）/ <code>VERID</code>（版）。ヘッダは <code>PBIM</code>。<br>
+④ 有効版：<code>SE16N: T459U</code>。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 版を <code>00</code> 以外で登録 → MRP は <code>00</code> しか見ないので計画手配が生まれない（症状：MD04 に何も出ない）。<br>
+② 期間のずれ（1 年前の日付など）→ MD04 の範囲外で見えない。<b>MD61 の日付と MD04 の表示期間を必ず見る</b>。<br>
+③ 「明細ではなく見込数量に直接入力」など画面の列を間違える → 保存はできるが MD04 に出ない。列ヘッダを確認。</div>
+<div class="task"><b class="t">練習課題</b>PIR を 3 か月分入れた後、<b>4 か月目</b>にも 500 を足してみる。MD04 の表示期間（先頭日付）をどこで変えるか探す（<code>MD04</code> → 設定/日付）。—— 見込生産では「预测的视界（planning horizon）」が实物在庫と同格に効く、という感覚をここで掴む。</div>
+<figure class="gui"><img src="assets/gui/handson-1_s02_1.svg" alt="MD61 の初期画面。品目 ZMTS-FG01 / プラント 1000 / 版 00（有効版）を指定して計画テーブルを開く。" loading="lazy"><figcaption><b class="t">MD61 の初期画面（品目 / プラント / 版 00）</b><span class="tx">MD61</span><span class="scr">計画独立所要量 登録：初期画面</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 版は必ず 00。00 以外で登録すると MRP が見ず、MD04 に何も出ない</li><li><b>2</b> 期間区分は M（月）。W（週）や日で入れると数量の意味が変わる</li></ol><p class="gui-tip">自システムでの確認：品目・プラントが選べないときはプラント在庫ビュー（MARC）未登録を疑う。有効版は SE16N: T459U。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-1_s02_2.svg" alt="MD61 の計画テーブル。各月 500 PC を 3 か月分入力し、版 00 で保存する。" loading="lazy"><figcaption><b class="t">MD61 の計画テーブル：各月 500 PC × 3 か月</b><span class="tx">MD61</span><span class="scr">計画独立所要量 登録：計画テーブル（3 か月分）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 各月 500 PC = 月次の見込数量。期間の列を間違えると保存はできても MD04 に出ない</li><li><b>2</b> 納入日が MD04 の表示期間外だと見えない。MD61 の日付と MD04 の期間を必ず突き合わせる</li></ol><p class="gui-tip">自システムでの確認：MD04 の「計画独立所要量」、MD73 の一覧、SE16N: PBED（PDATU / PLNMG / VERID）。列名は版により異なります。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="p3">1-3 PIR の変更と版（MD62 / MD73）</h2>
+<p>预测是会变的（客户需求更新、销售改了预估）。<b>改预测不该动库存，只改需求行</b>——这就是 PIR 的价值。</p>
+<table class="tbl wide">
+<tr><th>操作</th><th>T-code</th><th>要点</th></tr>
+<tr><td>変更（単品目）</td><td><code>MD62</code></td><td>品目 + プラント + 版 <code>00</code> → 数量を変更（例 本月 500 → 600）→ 保存</td></tr>
+<tr><td>一覧・照会</td><td><code>MD73</code></td><td>複数品目・複数プラントの PIR をまとめて見る（月次の需要レビューに使う）</td></tr>
+<tr><td>照会（単品目）</td><td><code>MD63</code></td><td>変更しない確認だけ</td></tr>
+</table>
+<ol class="steps">
+  <li><code>MD62</code> → 品目 <code>ZMTS-FG01</code> / プラント <code>1000</code> / 版 <code>00</code> → 本月の 500 を <code>600</code> に変更 → 保存。</li>
+  <li><code>MD04</code> で数量が 600 に変わっていることを確認（<b>MRP はまだ跑っていないので計画手配は古いまま</b>——これが「MRP を再実行する理由」）。</li>
+  <li><code>MD73</code> で一覧を開き、品目・品目グループ単位で需要を俯瞰する。</li>
+</ol>
+
+
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+<code>MD04</code> の計画独立所要量行（600）、<code>SE16N: PBED</code> の <code>PLNMG</code>、<code>MD73</code> の一覧の 3 つが一致すること。<br>
+<b>注意</b>：受注による<b>消費</b>は <code>PBED</code> の数量を変えません（表示側で「消費済」として扱われる）。したがって「PBED の数量＝売れる見込み＋まだ食べられていない分」ではありません。<a href="handson-4.html">练习④</a> で体感します。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 変更が反映されない → 別の版（<code>00</code> 以外）或は別プラントを編集している。ヘッダを毎回見る。<br>
+② 「削除」と「0 にする」を混同：0 にすると需求行は残り数量 0（MRP は何もしない）。消すなら行削除。</div>
+<div class="task"><b class="t">練習課題</b>同じ品目で<b>版 <code>00</code> と版 <code>01</code></b> に別々の数量（例 600 / 300）を入れ、<code>MD04</code> に<b>どちらが出るか</b>を確かめる。（答：有効版 <code>00</code> のみ。版の有効性は <code>T459U</code> と <code>MD61</code> の版照合画面で確認できる。）</div>
+<figure class="gui"><img src="assets/gui/handson-1_s03_1.svg" alt="MD62 で ZMTS-FG01 の版 00 の本月数量を 600 に変更する。" loading="lazy"><figcaption><b class="t">MD62 で本月の数量を 600 に変更</b><span class="tx">MD62</span><span class="scr">計画独立所要量 変更：本月の数量を 500 → 600</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 変更が反映されないときは別の版・別プラントを編集している。ヘッダを毎回見る</li><li><b>2</b> 「削除」と「0 にする」は違う。0 にすると需要行は残って数量 0 になる</li></ol><p class="gui-tip">自システムでの確認：MD04 で 600 に変わっていること（MRP はまだ未実行なので計画手配は古いまま = MRP を再実行する理由）。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-1_s03_2.svg" alt="MD73 の PIR 一覧。品目 ZMTS-FG01 の 3 か月分の需要を版 00 で一覧表示する。" loading="lazy"><figcaption><b class="t">MD73 の PIR 一覧</b><span class="tx">MD73</span><span class="scr">計画独立所要量の一覧（品目横断）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> MD04 / MD73 / SE16N: PBED の 3 つが一致することを確認する</li><li><b>2</b> 版 00 以外（01 など）は MRP の対象外。照合は T459U</li></ol><p class="gui-tip">自システムでの確認：MD73 は複数品目・複数プラントをまとめて見られます。列構成は版本により異なる場合があります。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="p4">1-4 MD04 で独立所要量を確認（本练习的核心）</h2>
+<p><code>MD04</code>（在庫/所要量リスト）是見込生産的仪表盘。练习① 只要求你会读<b>这一行</b>：</p>
+<pre class="vals">MD04 の行（例）
+  ── 在庫 ─────────────────────────
+    自由在庫（利用可能）        0 PC
+  ── 所要量 ───────────────────────
+    計画独立所要量  (PIR)     500 PC     ← ★ 受注番号なし = 見込の証拠
+    計画独立所要量  (PIR)     500 PC
+    計画独立所要量  (PIR)     500 PC
+  ── 入庫予定 ─────────────────────
+    （まだ無し。练习② で計画手配がここに並ぶ）
+  ─────────────────────────────
+    利用可能数量               -1,500 PC   ← 需求に対して供給が足りない状態</pre>
+<ol class="steps">
+  <li><code>MD04</code> → <code>ZMTS-FG01</code> / プラント <code>1000</code> → 明細行を上から順に読む。</li>
+  <li>「計画独立所要量」の行をダブルクリック → <b>MRP 要素の明細</b>（版・需要タイプ・納入日）。ここに受注番号や得意先が出てこないことを確認。</li>
+  <li>「利用可能数量」がマイナス = MRP が補うべき量。<b>このマイナスを消すのが练习② の仕事</b>。</li>
+  <li>行の並び（日付順）と、MD04 の「設定」で表示期間を広げる方法を覚える。</li>
+</ol>
+
+
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+<code>MD04</code> の行と、<code>MD73</code>／<code>SE16N: PBED</code> の数量が一致すること。<br>
+MRP 要素の種別名（「計画独立所要量」「得意先所要量」「計画手配」など）はシステム言語で変わるので、<b>要素の内容（受注番号の有無）で判断する</b>のが確実。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① PIR が MD04 に出ない → 品目/プラント/版のどれかが違う、或は MRP タイプが <code>ND</code>。② 数量が想定と違う → 別の期間（日/週/月単位の換算）で見ている。<code>MD61</code> の単位と MD04 の日付を突き合わせる。</div>
+<div class="task"><b class="t">練習課題</b>MD04 のスクリーンショット（或は手書き）に<b>「見込の証拠」と「受注の証拠」</b>を印を付ける。受注の証拠は练习④ で現れる——両方を並べると MTS の構造が一目で分かる。</div>
+<figure class="gui"><img src="assets/gui/handson-1_s04_1.svg" alt="MD04 の在庫/所要量リスト。計画独立所要量が 3 行並び、受注番号が無いことと利用可能数量 -1,500 を確認する。" loading="lazy"><figcaption><b class="t">MD04：PIR 3 行と利用可能数量 -1,500</b><span class="tx">MD04</span><span class="scr">在庫/所要量リスト：PIR だけが並ぶ状態</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 受注番号も得意先も無い = 見込（PIR）の需要。行をダブルクリックすると版・需要タイプ・納入日が見える</li><li><b>2</b> 利用可能数量 -1,500 = 需要に対して供給が足りない。このマイナスを消すのが练习② の仕事</li></ol><p class="gui-tip">自システムでの確認：MD73 / SE16N: PBED の数量と一致すること。要素名（「計画独立所要量」等）はシステム言語で変わるため、受注番号の有無で判断するのが確実です。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="p5">1-5 需要予測の作り方（発展：ここが MTS の「一番人間的な部分」）</h2>
+<p>SAP 里的 PIR 只是「预测的容器」，<b>预测本身怎么来</b>才是見込生産的业务核心。现场常见三种做法，教学上按成熟度排序：</p>
+<table class="tbl wide">
+<tr><th>やり方</th><th>中身</th><th>向いている場面</th></tr>
+<tr><td>① 手入力・Excel 转记</td><td>销售/企画做 Excel → 用 <code>MD61</code> 或批量上传（LSMW / 程序）投入</td><td>品种少、预测按月的量产线（本教材的场景）</td></tr>
+<tr><td>② 统计预测 + 调整</td><td>用历史销量做统计预测（SAP 的预测功能 / 外部工具），人再修</td><td>需求有季节性或趋势</td></tr>
+<tr><td>③ 计划系统联动（IBP 等）</td><td>需求计划系统 → PIR/需求接口 → MRP</td><td>多工厂、多层级、需要 S&amp;OP 闭环</td></tr>
+</table>
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+<code>MD61</code> の計画タイプ/需要タイプにどんな値が選べるかを F4 で見る（環境によっては統計予測（SAP の Forecast）と連動する項目がある）。<br>
+Cloud では Fiori アプリ「Manage Planned Independent Requirements」が入口（<a href="config.html#c16">C16</a>）。</div>
+<div class="task"><b class="t">練習課題（発展）</b>自分の現場（或は想定業界）で、上表の ①②③ のどれが現実的かを選び、<b>理由を 3 行</b>で書く。<br>
+さらに：<b>预测错了会怎样？</b>（库存堆积 vs 缺品）——这题的答案在 <a href="handson-5.html">练习⑤</a> 的欠品/安全在庫切れ章节。</div>
+
+<h2 id="expect">期待结果汇总（本练习做完时的系统状态）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>期待结果</th><th>確認方法</th></tr>
+<tr><td>1</td><td><code>ZMTS-FG01</code> に版 <code>00</code> の PIR が 3 行（各 500 PC、変更後は 600 PC）</td><td><code>MD73</code>・<code>SE16N: PBED</code></td></tr>
+<tr><td>2</td><td><code>MD04</code> に「計画独立所要量」が並び、<b>受注番号は無い</b></td><td><code>MD04</code> 明細</td></tr>
+<tr><td>3</td><td>利用可能数量がマイナス（= MRP の出番待ち）</td><td><code>MD04</code> 最下行</td></tr>
+<tr><td>4</td><td>自由在庫・受注在庫はまだ 0（見込生産は库存をここで作る）</td><td><code>MMBE</code></td></tr>
+<tr><td>5</td><td>戦略グループ <code>40</code> と消費モード <code>2</code> が品目に入っている（练习④ の前提）</td><td><code>MM03</code> MRP3</td></tr>
+</table>
+
+<h2 id="trouble">つまずきと対処（本练习版）</h2>
+<table class="tbl wide">
+<tr><th>症状</th><th>根因の候補</th><th>確認手順</th></tr>
+<tr><td><code>MD61</code> に品目/プラントが出ない</td><td>プラント在庫ビュー未登録（<code>MARC</code> 無し）</td><td><code>MM03</code> プラント在庫 → 無ければ <code>MM01</code> でビュー追加</td></tr>
+<tr><td>登録したが <code>MD04</code> に出ない</td><td>版が <code>00</code> でない / 納入日が表示期間外</td><td><code>SE16N: T459U</code> と <code>PBED-VERID</code>、MD04 の期間設定</td></tr>
+<tr><td>MRP を跑らせても計画手配が出ない</td><td>MRP タイプが <code>ND</code>（計画なし）</td><td><code>MM03</code> MRP1 → <code>PD</code> に変更（<a href="config.html#c2">C2</a>）</td></tr>
+<tr><td>数量が半分/倍になっている</td><td>期間単位（日/週/月）の取り違え</td><td><code>MD61</code> の単位表示と <code>MD04</code> の日付</td></tr>
+<tr><td>受注を入れたのに PIR の数量が変わらない</td><td><b>正常</b>（消費 ≠ 消減）</td><td><code>MD04</code> の消費済数量と <code>PBED</code> を比較（<a href="concept.html#pir">概念 第 2 节</a>）</td></tr>
+</table>
+
+<h2 id="accept">验收（完成基准）</h2>
+<div class="box ok"><b class="t">全部勾上才算练习① 完成</b>
+<ul class="check">
+  <li><code>MD61</code> で <code>ZMTS-FG01</code> / プラント <code>1000</code> / 版 <code>00</code> に 3 か月分の PIR を登録し、保存できた。</li>
+  <li><code>MD73</code> の一覧で自分の登録が確認できる。</li>
+  <li><code>MD04</code> の「計画独立所要量」行を開き、<b>受注番号がないこと</b>を自分の目で確認した。</li>
+  <li><code>MD62</code> で数量を変更し、<code>MD04</code> に反映された（MRP はまだ未実行であることも説明できる）。</li>
+  <li>品目 MRP3 の戦略グループ（<code>40</code>）と消費モード（<code>2</code>）を <code>MM03</code> で読み上げられる。</li>
+  <li>「消費」と「消減」の違いを、<code>PBED</code> の数量が変わらないことを例に説明できる。</li>
+  <li>版 <code>00</code> 以外を登録しても MRP は使わない、と理由付きで説明できる。</li>
+</ul></div>
+
+<div class="box info"><b class="t">出典</b>
+PIR の表・消費と消減の違い・戦略 10/11 が消費しないこと：SAP Help（Support Content）<i>Tables and programs of planned independent requirements</i>（<code>PBIM</code>/<code>PBED</code>/<code>PBHI</code>・<code>T459U</code>・<code>REQUIREMENTS_REDUCTION</code>）。<br>
+消費モード 4 種と逆/順消費期間：LeanX / SAP Datasheet（<code>MARC-VRMOD/VINT1/VINT2</code> の値 1〜4）。戦略グループと所要量タイプの対応：SAP Tribal Knowledge <i>SAP Planning Strategies</i>。<br>
+PIR の登録手顺（版 00 = 有効版、期間 M/W）：SAP Learning / SAP Community の MD61 解説。<span class="mini">Cloud 側の入口は Fiori「Manage Planned Independent Requirements」（SAP Best Practices のテストスクリプト）</span></div>
+
+<div class="box ok"><b class="t">下一步</b>
+→ <a href="handson-2.html">练习② MRP 実行と計画手配</a>（PIR を計画手配に変える）。</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP 見込生産（MTS）实战训练站</h5><p>练习①：需要予測と PIR（MD61/MD62/MD73 → MD04）。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 需要予測とPIR</a><br><a href="handson-2.html">② MRP と計画手配</a><br><a href="handson-3.html">③ 製造と入庫</a><br><a href="handson-4.html">④ 受注・出荷・請求</a><br><a href="handson-5.html">⑤ 月末と発展</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

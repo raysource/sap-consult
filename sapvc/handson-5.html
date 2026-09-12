@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>练习⑤ 発展と故障対応 · SAP S/4HANA バリアント設定付き受注生産（VC / AVC）实战训练站</title>
+<meta name="description" content="VC 练习⑤：戦略 82（受注組立・KMFA・201・PP04・受注と指図 1:1）への切替、変更統制（受注後の構成変更と再展開）、12 項の故障対照表（症状→根因→確認手順）、CU50/CU03/CU02 の読み方、発展課題（材料バリアント・SET 処理・制約・AVC 特徴グループ）。含手顺、期待结果、つまずき、验收清单。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/vc.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">VC</span><span class="txt">バリアント設定 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①主数据</a>
+      <a href="handson-2.html">②受注与设定</a>
+      <a href="handson-3.html">③依存与BOM</a>
+      <a href="handson-4.html">④制造与出荷</a>
+      <a class="active" href="handson-5.html">⑤发展与故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 练习⑤ 発展と故障対応</div>
+<main class="page"><article>
+
+<h1>练习⑤ 発展（戦略 <code>82</code>・変更統制）と故障対応</h1>
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。若是想换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 即可一键替换。</div>
+
+<div class="box info"><b class="t">本练习完成什么</b>
+前半は<b>「守り」</b>：受注後に構成を変えたら何が壊れるかを体験し、<b>変更統制のルール</b>を設計します。後半は<b>「攻め」</b>：戦略 <code>82</code>（受注組立・<code>KMFA</code>/<code>201</code>/<code>PP04</code>）に切り替えて<b>受注と指図が 1:1</b> になる動きを見ます。最後に<b>12 項の故障対照表</b>で、症状から原因を引けるようにします。预计 90 分钟。<br>
+<b>本练习的重点不是「作る」而是「読む」</b>：<code>CU50</code>（再現）/ <code>CU03</code>（適用先の照会）/ <code>CU02</code>（式の変更）の 3 画面を使いこなせれば、VC の故障は自分で直せます。</div>
+
+<div class="flow">
+  <div class="node">1 変更統制<br><small>受注後の変更</small></div><div class="arrow">→</div>
+  <div class="node">2 戦略 82<br><small>受注組立 1:1</small></div><div class="arrow">→</div>
+  <div class="node">3 3 画面の読み方<br><small>CU50/CU03/CU02</small></div><div class="arrow">→</div>
+  <div class="node">4 故障対照表<br><small>12 項</small></div><div class="arrow">→</div>
+  <div class="node">5 発展課題<br><small>材料バリアント等</small></div><div class="arrow">→</div>
+  <div class="node">✓ 验收</div>
+</div>
+
+<h2 id="change">5-1 変更統制：受注後に構成を変えたら何が起きるか</h2>
+<p>業務では必ず起きます。「客先が材質を <code>SUS316</code> から <code>SUS304</code> に変えたいと言ってきた」。このとき<b>システムは自動では追従しません</b>——ここを理解していないと現場が壊れます。</p>
+<table class="tbl wide">
+<tr><th>変更するもの</th><th>受注（<code>VA02</code>）</th><th>受注 BOM</th><th>所要量/MRP</th><th>製造指図</th><th>価格</th></tr>
+<tr><td>特徴値（構成）</td><td>再構成が必要（<code>VA02</code> → 構成 → 値変更）</td><td><b>再展開しないと古いまま</b></td><td>再 MRP が必要</td><td><b>自動では変わらない</b>（指図の再展開が必要）</td><td>再価格決定しないと旧価格のまま</td></tr>
+<tr><td>数量</td><td>明細数量の変更</td><td>—</td><td>所要量が変わる</td><td>指図数量の調整が必要</td><td>再価格決定</td></tr>
+<tr><td>納期</td><td>納入日程行の変更</td><td>—</td><td>再 MRP（所要日が変わる）</td><td>指図の基本日付の再計算</td><td>—</td></tr>
+</table>
+<ol class="steps">
+  <li><a href="handson-4.html">练习④</a> で作った受注を <code>VA02</code> で開き、構成を <code>SUS316</code> → <code>SUS304</code> に変更して保存する。</li>
+  <li>明細の「構成品目（受注 BOM）」を確認 → <b>ケーシングが変わっていない</b>（再展開していないため）ことを確認。<b>ここが「自動で追従しない」証拠</b>。</li>
+  <li>受注明細で<b>再展開（構成品目の再展開）</b>を実行 → ケーシングが <code>ZVC-CAS-SUS304</code> に変わることを確認。</li>
+  <li><code>CO03</code> で既存の製造指図を確認 → <b>指図の構成は <code>SUS316</code> のまま</b>であることを確認。</li>
+  <li>指図側で「構成品目の再展開」（<code>CO02</code> の機能）を実行するか、<b>指図を作り直す</b>運用にするかを決める。</li>
+  <li>価格：<code>VA02</code> → 条件画面 → 更新（再価格決定）→ <code>VA00</code> の金額が <code>SUS304</code> の条件レコードに変わることを確認。</li>
+</ol>
+<div class="dep"><b class="t">設計判断：変更統制の 3 案とトレードオフ</b>
+① <b>変更を許し、都度再展開する</b>＝ 客先対応は柔軟。ただし<b>指図の再展開漏れが事故になる</b>（運用の徹底が必要）。<br>
+② <b>指図リリース後は構成変更禁止</b>（業務ルール）＝ 現場は安定。ただし<b>「本当に必要な変更」への例外処理</b>を決めておかないと闇運用になる。<br>
+③ <b>構成変更時は受注を作り直す</b>（取消→再受注）＝ 会計・所要量の一貫性は最も高いが、<b>手間とリードタイムのコスト</b>が大きい。<br>
+<b>おすすめは「リリース前は①、リリース後は②＋例外は③」</b>。どの案でも<b>ルールを文書化して、誰が承認するかを決める</b>のが本質です（システムは統制してくれません）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 「受注で材質を変えたのに指図が古い」→ 仕様です。<b>指図の再展開</b>を忘れない運用設計を。
+② 再展開すると<b>部品の予約（RESB）が増減</b>し、出庫済み部品があると差異になる（<b>リリース後変更が危険な理由</b>）。
+③ 条件は<b>受注にコピーされている</b>ため、条件レコードを直しても既存受注の金額は変わらない（再価格決定が必要）。</div>
+<div class="task"><b class="t">練習課題</b>自分の現場（または想定企業）の変更統制ルールを 1 枚にまとめよ：① 誰が承認するか ② どこまで許すか（リリース前／後） ③ 例外時の手順 ④ 記録の残し方。</div>
+<figure class="gui"><img src="assets/gui/handson-5_s01_1.svg" alt="VA03 の明細構成品目。受注の構成を SUS304 に変更した直後、構成品目は ZVC-CAS-SUS316 のまま。" loading="lazy"><figcaption><b class="t">5-1 構成を SUS316 → SUS304 に変えても構成品目は古いまま（再展開が必要）</b><span class="tx">VA03</span><span class="scr">受注の構成変更後：受注 BOM は自動で追従しない</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 構成を変えても受注 BOM は古いまま＝再展開が必要（システムは統制してくれない）</li><li><b>2</b> 変更統制は「リリース前は再展開、リリース後は禁止＋例外」のルール設計が本質</li></ol><p class="gui-tip">自システムでの確認：VA02 で構成値を変更 → 明細の構成品目が変わっていないことを確認 → 受注明細の再展開（構成品目の再展開）で変わることを確認。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-5_s01_2.svg" alt="CO03 の指図の構成。受注の構成を SUS304 に変えた後でも指図の構成は SUS316 のまま。" loading="lazy"><figcaption><b class="t">5-1 指図側は古い構成のまま（部品予約 RESB の増減と差異に注意）</b><span class="tx">CO03</span><span class="scr">製造指図：構成変更は指図に自動で伝わらない</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 「受注で材質を変えたのに指図が古い」は仕様（再展開の運用設計が必要）</li><li><b>2</b> 条件は受注にコピーされているため、条件レコードを直しても既存受注の金額は変わらない</li></ol><p class="gui-tip">自システムでの確認：CO03 の構成が SUS316 のままであること、CO02 の「構成品目の再展開」または指図の作り直しのどちらで運用するかを決める。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>5-2 戦略 <code>82</code>（受注組立）への切替 — 受注と指図が 1:1</h2>
+<p>VC を MTO ではなく<b>受注組立（Assemble-to-Order）</b>に乗せ替えます。切り替わるのは<b>受注と指図の関係</b>です。</p>
+<table class="tbl wide">
+<tr><th>観点</th><th>戦略 <code>25</code>（练习①〜④）</th><th>戦略 <code>82</code>（本节）</th></tr>
+<tr><td>所要量タイプ / 所要量クラス</td><td><code>KEK</code> / <code>046</code> 系</td><td><code>KMFA</code> / <code>201</code>（指図タイプ <code>PP04</code>）</td></tr>
+<tr><td>受注と指図の関係</td><td>MRP 経由（計画手配 → 指図）</td><td><b>1:1（受注保存と同時に指図が作られる）</b></td></tr>
+<tr><td>BOM</td><td>スーパー BOM から選択条件で絞る</td><td>同じ（ただし <b>BOM が必須</b>という記載）</td></tr>
+<tr><td>向いている場面</td><td>納期に余裕のある受注生産品</td><td>短納期・組立型（在庫部品を組み合わせる）</td></tr>
+</table>
+<ol class="steps">
+  <li><code>OPPS</code> で戦略グループ <code>82</code> を照会し、所要量タイプ <code>KMFA</code> と紐づく計画方針を確認。<code>OVZG</code> で所要量クラス <code>201</code> の属性（受注在庫・指図タイプ <code>PP04</code>）を確認。</li>
+  <li>品目 <code>ZVC-PUMP01</code> の MRP3 戦略グループを <code>25</code> → <code>82</code> に変更（<code>MM02</code>）。<b>この変更は以降の新規受注にだけ効く</b>（既存受注は元のまま）。</li>
+  <li>新しい受注を <code>VA01</code> で作成（構成を入れて保存）。</li>
+  <li>保存後すぐに<code>COOIS</code> または <code>CO03</code> で<b>製造指図が作られているか</b>を確認（戦略 <code>82</code> の動き）。</li>
+  <li><code>MD04</code> で受注と指図の関係を確認（<b>指図が受注明細に 1:1 で紐づく</b>）。</li>
+  <li>確認後、戦略グループを <code>25</code> に戻す（<b>元に戻せることを確認するのが大事</b>）。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待结果）</b>
+① <code>OVZG</code> の <code>201</code> が指図タイプ <code>PP04</code> を持つ（SAP Help の組立処理の標準設定に一致）。
+② 受注保存時に指図が自動作成される（<b>戦略 <code>25</code> との決定的な違い</b>）。③ 指図に構成が引き継がれる。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 指図が自動作成されない → BOM 未整備／指図タイプの設定／所要量クラス <code>201</code> の設定（<b>「BOM 必須」が効いています</b>）。
+② 戦略 <code>25</code> で作った既存受注に期待してしまう → <b>変更は新規受注にだけ効く</b>。
+③ 環境によって <code>82</code> の名称・紐づけが違う → <code>OPPS</code> の実測を正とする（本站は「通常は〜」として提示）。</div>
+<div class="task"><b class="t">練習課題</b>戦略 <code>25</code> と <code>82</code> を<b>同じ品目で切り替えて受注を 2 本作り</b>、<code>MD04</code> と指図の作られ方の違いを表にせよ。どちらの商売にどちらが合うか、理由つきで書くこと。</div>
+<figure class="gui"><img src="assets/gui/handson-5_s02_1.svg" alt="MM02 の MRP3 ビュー。戦略グループを 25 から 82 に変更する（出庫後の確認で 25 に戻す）。" loading="lazy"><figcaption><b class="t">5-2 戦略 82 は受注と指図が 1:1（変更は新規受注にだけ効く）</b><span class="tx">MM02</span><span class="scr">品目 ZVC-PUMP01 の変更：MRP3 戦略グループ 25 → 82</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 82 に切り替えると受注保存と同時に指図が作られる（25 との決定的な違い）</li><li><b>2</b> 既存受注には効かない（新規受注で確認する）</li></ol><p class="gui-tip">自システムでの確認：MM03 の MRP3。変更は新規受注にだけ効き、既存受注は元のままであることを VA03 / CO03 で確認。確認後は 25 に戻す。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-5_s02_2.svg" alt="OVZG の所要量クラス 201。在庫区分・指図タイプ PP04 などの属性を 046 と並べて比較する。" loading="lazy"><figcaption><b class="t">5-2 201 が指図タイプ PP04 を持つか（SAP Help の組立処理の標準設定）</b><span class="tx">OVZG</span><span class="scr">所要量クラス 201 の属性（戦略 82 側の比較）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 指図タイプ PP04 が受注組立の鍵（自動作成されないなら BOM 未整備・指図タイプ設定を疑う）</li></ol><p class="gui-tip">自システムでの確認：OVZG の 201（指図タイプ PP04）、OPPS / OPPJ の 82 → KMFA、受注保存後に COOIS / CO03 で指図が自動作成されているか、MD04 で受注と指図が 1:1 か。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>5-3 故障対応の 3 画面（<code>CU50</code> / <code>CU03</code> / <code>CU02</code> の読み方）</h2>
+<table class="tbl wide">
+<tr><th>画面</th><th>何に使うか</th><th>読むポイント</th></tr>
+<tr><td><b><code>CU50</code></b><br><span class="mini">シミュレーション</span></td><td><b>受注に触らずに構成を再現する</b>（最強の切り分けツール）</td><td>① 設定画面が出るか（＝ 5 条件・プロファイル）② 値が選べるか（＝前提条件）③ BOM 展開の結果（＝選択条件）④ 展開レベルを変えた差</td></tr>
+<tr><td><b><code>CU03</code></b><br><span class="mini">依存関係の照会</span></td><td>「この依存関係が<b>どこに貼られているか</b>」を見る</td><td>適用先／使用箇所一覧。<b>ここに出ない依存関係は絶対に発火しない</b>——無反応の第一チェック</td></tr>
+<tr><td><b><code>CU02</code></b><br><span class="mini">依存関係の変更</span></td><td>式を直して<b>即 <code>CU50</code> で確認</b>する（修正→確認のループ）</td><td>構文チェックの結果、<code>$SELF</code>/<code>$ROOT</code> の対象、特徴の技術名称の綴り</td></tr>
+</table>
+<pre class="vals">故障切り分けの型（この順にやれば最短）
+  ① CU50 で同じ構成を再現できるか
+      できる  → 受注/指図側の問題（明細カテゴリ・指図の作り方・再展開漏れ）
+      できない → 設計側の問題（下へ）
+  ② CU50 で設定画面が出ない      → 品目 5 条件（MM03）・設定プロファイル（CU43）
+  ③ 値が選べない/選べすぎる      → 前提条件（CU03 の適用先）
+  ④ BOM が変わらない            → 選択条件（CS03）・有効日・展開指定
+  ⑤ 工程が変わらない            → 工程側の選択条件（CA03）
+  ⑥ 数量・標準値が想定と違う     → 手続きの適用先・実行順・再展開
+  ⑦ 価格が加算されない          → 追加データ（CT04）→ 条件タイプ(V/06) → 手続(V/08) → 条件レコード(VK13)</pre>
+<div class="box info"><b class="t">確認（期待结果）</b>
+この 3 画面だけで、本站の故障対照表 12 項のうち <b>10 項は原因特定まで到達できます</b>（残り 2 項は伝票・会計側）。</div>
+<div class="task"><b class="t">練習課題</b>講師が<b>故意に壊した</b>モデル（依存関係の適用先違い／選択条件の <code>OR</code> 漏れ／プロファイルの処理形式違い のいずれか）を、上記の型で切り分けて原因を特定せよ。使った手順を時系列で記録すること。</div>
+<figure class="gui"><img src="assets/gui/handson-5_s03_1.svg" alt="CU50 の設定シミュレーション。品目 ZVC-PUMP01、容量 80、材質 SUS316、塗装 EPOXY、付属品 PG_FG、BOM 展開 1 階層で、構成品目 6 件が展開されている。" loading="lazy"><figcaption><b class="t">5-3 CU50 で同じ構成を再現する（受注に触らずに切り分ける最強の 1 画面）</b><span class="tx">CU50</span><span class="scr">設定シミュレーション：設定値と選択された構成品目</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 設定画面が出る＝品目の 5 条件（MM03）とプロファイル割当（CU43）が揃っている証拠</li><li><b>2</b> 展開レベルを切り替えて差を見る（「部品が出ない」の 2 箇所目はここ）</li><li><b>3</b> 構成品目は選択条件（CU03 で適用先を確認）が効いた結果。受注の構成品目と突き合わせる</li></ol><p class="gui-tip">自システムでの確認：CU50 の BOM 展開を しない / 1 階層 / 多階層 で切り替えて結果を比較し、受注 0000001234 の構成品目と一致するかを見る。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-5_s03_2.svg" alt="CU03 の依存関係照会。選択条件 5 本の適用先（BOM 明細・工程）と対象が一覧表示され、ZVC_DEP_CAS_SUS316 の行が選択されている。" loading="lazy"><figcaption><b class="t">5-3 CU03 で「この選択条件がどこに貼られているか」を見る（出ない＝絶対に発火しない）</b><span class="tx">CU03</span><span class="scr">依存関係の照会：選択条件の適用先 / 使用箇所</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 適用先が BOM 明細になっていること＝BOM が変わる。特徴値に貼ると無反応（症状は同じ）</li><li><b>2</b> 選択条件は BOM 明細・工程、前提条件は特徴値に貼る（種類と適用先の組合せを覚える）</li></ol><p class="gui-tip">自システムでの確認：CU03 で依存関係を 1 本ずつ選び、適用先 / 使用箇所一覧に BOM 明細と工程が出るか（出ない依存関係は無反応の原因）。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-5_s03_3.svg" alt="CU02 の依存関係変更画面。ZVC_DEP_CAS_SUS316 の選択条件の式 $ROOT.ZVC_MATERIAL = &#x27;SUS316&#x27; を修正し、構文チェックはエラーなし、参照先は $ROOT ＝ ZVC-PUMP01。" loading="lazy"><figcaption><b class="t">5-3 CU02 で式を直し、同じ依存関係を CU50 で即確認する（修正 → 確認のループ）</b><span class="tx">CU02</span><span class="scr">依存関係の変更：式の修正と構文チェック</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 適用先違いが無反応の第 1 位（特徴に選択条件を貼る等）。式より先に適用先を見る</li><li><b>2</b> $SELF と $ROOT の取り違えは症状が全く同じ「無反応」→ 参照先を意識する</li><li><b>3</b> 直したら同じ依存関係を CU50 で即確認（部品が 1 行変わるか）</li></ol><p class="gui-tip">自システムでの確認：CU02 で式を直して保存 → CU50 の構成品目が 1 行変わるかを確認（正しさを決めるのは CU50 の挙動）。</p></figure>
+
+
+
+
+
+
+
+
+<h2>5-4 故障対照表（12 項・症状から引く）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>症状</th><th>根因（第一嫌疑）</th><th>確認手顺</th></tr>
+<tr><td>1</td><td>受注で構成画面が出ない／構成ボタンがグレー</td><td>品目が設定可能でない（設定可能インジケータ OFF・品目タイプが <code>KMAT</code> でない）／設定プロファイル未割当／品目カテゴリグループが <code>0002</code> でない</td><td><code>MM03</code> 基本データ1 → <code>CU43</code> の割当 → <code>MM03</code> 販売組織2 → <code>VOV4</code></td></tr>
+<tr><td>2</td><td>設定したのに受注の構成品目（部品）が変わらない</td><td>選択条件の適用先違い／<code>$ROOT</code> と特徴名の不一致／BOM の有効日／BOM 展開レベル</td><td><code>CU50</code> で再現 → <code>CS03</code> の選択条件 → <code>CU03</code> の使用箇所 → 有効日</td></tr>
+<tr><td>3</td><td>「受注在庫に割当できません」エラー／在庫区分が E にならない</td><td>MRP4 の個別/包括所要量が未設定／所要量クラスの在庫区分が受注在庫でない／戦略グループ未設定</td><td><code>MM03</code> MRP4 → <code>OVZG</code>（所要量クラス）→ <code>MM03</code> MRP3（戦略 <code>25</code>）</td></tr>
+<tr><td>4</td><td>製造指図に設定値が反映されない</td><td>指図を<b>受注明細参照で作っていない</b>／指図作成後の再展開漏れ</td><td><code>CO03</code> の構成 → 指図ヘッダの受注明細参照 → <code>CO02</code> の再展開機能</td></tr>
+<tr><td>5</td><td>変種価格（加算）が出ない／金額 0</td><td>特徴の追加データ未設定（<code>VKOND</code> が空）／条件タイプ <code>VA00</code> が計算手続に無い／条件レコードのキー不一致</td><td><code>VA03</code> 条件画面 → <code>V/08</code> → <code>VK13</code> → <code>CT04</code> 追加データ（<code>SE11</code> で構造確認）</td></tr>
+<tr><td>6</td><td>必須項目なのにチェックされない</td><td>クラス側の「必須」フラグ OFF／設定プロファイルの必須・完全性チェック OFF</td><td><code>CL03</code> の必須列 → <code>CU43</code> のチェック設定 → <code>CU50</code> の挙動</td></tr>
+<tr><td>7</td><td>依存関係を作ったのに何も起きない</td><td>適用先違い（特徴に選択条件を貼った等）／<code>$SELF</code> と <code>$ROOT</code> の取り違え／複数値特徴の判定</td><td><code>CU03</code> の「適用先/使用箇所」→ <code>CU02</code> で式を修正 → <code>CU50</code> で再確認</td></tr>
+<tr><td>8</td><td>工程（作業手順）が設定値で消えない／出ない</td><td>工程への選択条件の貼り忘れ／作業手順の有効日・作業手順グループ／指図作成時の再評価</td><td><code>CA03</code> の工程と選択条件 → <code>CA02</code> で有効日 → <code>CO03</code> の工程</td></tr>
+<tr><td>9</td><td>所要量が MD04 に出ない</td><td>納入日程行カテゴリの所要量転送 OFF／戦略グループ未設定／納期が過去</td><td><code>VA03</code> 納入日程行カテゴリ → <code>VOV6</code>/<code>VOV5</code> → <code>MM03</code> MRP3</td></tr>
+<tr><td>10</td><td>受注後に構成を変えたら製造が混乱した</td><td>変更統制の欠如（再展開の運用ルールが無い）／リリース後の変更</td><td><a href="#change">5-1</a> の表で影響範囲を確認 → 運用ルールの設計（練習課題）</td></tr>
+<tr><td>11</td><td>在庫が見えない／在庫を持てない</td><td><b><code>KMAT</code> は原則として在庫管理されない</b>（仕様）／受注在庫（E）の評価設計</td><td><code>MMBE</code> の構造を理解 → 材料バリアントや別品目の設計を検討（発展課題）</td></tr>
+<tr><td>12</td><td>数量・標準時間が設定値どおりにならない</td><td>手続きの実行順／項目名の誤り／指図作成時の再展開で上書き</td><td><code>CU50</code> で数量・標準値を確認 → BOM 明細/工程の手続き適用先 → 結合方式（行を分ける方式）への切替</td></tr>
+<tr><td>13</td><td>AVC 環境で AVC の画面（特徴グループ）が出ない／<code>CU41</code> で作ったものが見えない</td><td>モデリング環境の混在（LO-VC と AVC の二重管理）／スコープアイテム未活性</td><td><code>PMEVC</code> の起動可否 → 設定プロファイルの所在（<code>CU43</code> と <code>PMEVC</code>）→ Cloud はスコープアイテム（<code>IYT</code>/<code>7DM</code>）を確認</td></tr>
+<tr><td>14</td><td>受注の構成が「不完全」で保存できない</td><td>必須特徴の未入力／構成を確定せずに保存</td><td>構成画面で未入力の必須特徴を特定（<code>CL03</code> の必須列と照合）→ 構成を確定してから保存</td></tr>
+</table>
+<div class="box info"><b class="t">確認（期待结果）</b>
+上表の<b>「確認手顺」を読まずに口で言える</b>症状を、自分の担当範囲で 5 つ以上にしてください（それが「故障に強い」状態です）。</div>
+<div class="box warn"><b class="t">教訓</b>
+VC の故障の <b>8 割は「適用先（どこに貼ったか）」と「5 条件（品目マスタ）」</b>の 2 つに集約されます。<code>CU03</code> と <code>MM03</code> を最初に見る習慣をつけてください。</div>
+
+<h2>5-5 発展課題（時間の余裕に応じて 2 つ以上）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>課題</th><th>学べること</th><th>ヒント（T-code）</th></tr>
+<tr><td>1</td><td><b>材料バリアント</b>を作る：よく売れる構成（例：容量 <code>80</code>・<code>SUS316</code>・<code>EPOXY</code>・<code>PG</code>）を固い品目番号として登録し、受注時に品目が差し替わる動きを見る</td><td>見込生産と受注生産のハイブリッド設計</td><td>構成画面の「材料バリアント作成」系機能／S/4HANA の切替 <code>VCHMOVMVAR</code>（<b>機能の所在は環境で確認</b>）</td></tr>
+<tr><td>2</td><td><b>SET 処理</b>を試す：設定可能品目の品目カテゴリグループを <code>0004</code> にした複製品目で、構成品目が<b>子明細</b>として並ぶ動きを見る</td><td>子明細側で価格・所要量を持つ設計</td><td><code>MM01</code>（<code>0004</code>）＋設定プロファイルの処理形式を「伝票明細（SET）」に。varconf の記載参照</td></tr>
+<tr><td>3</td><td><b>多階層 BOM</b>：ケーシングを <code>HALB</code>（半製品）にして下位に構成を持たせ、<b>多階層展開</b>で選択条件がどう効くかを見る</td><td>BOM 階層と <code>$ROOT</code>/<code>$PARENT</code> の関係</td><td><code>CS01</code>（半製品側）→ <code>CS12</code>/<code>CS13</code>（多階層照会）</td></tr>
+<tr><td>4</td><td><b>制約（Constraints）</b>の概念を学ぶ（AVC）：手続きではなく<b>宣言的な整合性ルール</b>で組合せを制限する</td><td>AVC の設計思想（手続き疲れからの脱却）</td><td>制約ネット系（<code>CU21</code> 〜 <code>CU23</code> 系）※バージョンで名称が異なる</td></tr>
+<tr><td>5</td><td><b>AVC の特徴グループ</b>で設定画面を設計する（画面に並べる順序・グループ化）</td><td>設定 UI の設計（営業が使える画面にする）</td><td><code>PMEVC</code>（特徴グループ）</td></tr>
+<tr><td>6</td><td><b>依存関係の引用（Reference）</b>で共通ロジックを再利用する（同じ式を 5 か所にコピペしない）</td><td>保守性の設計（変更点を 1 か所にする）</td><td><code>CU01</code> の「引用」機能（<b>画面の所在は環境で確認</b>）</td></tr>
+<tr><td>7</td><td><b>翻訳・言語依存</b>：特徴の名称を日本語/英語/中国語で持ち、設定画面が言語で変わることを確認</td><td>グローバル展開の実務</td><td><code>CT04</code> の「言語」／<code>SE63</code> 系</td></tr>
+<tr><td>8</td><td><b>レポート/抽出</b>：受注の構成値（<code>VKOND</code>・特徴値）を一覧にする（<code>AUSP</code>/<code>CUOBJ</code> の理解）</td><td>「構成値がどこにあるか」を data として理解</td><td><code>VA03</code> → 構成 → <code>SE16N</code> <code>AUSP</code>（<b>項目名は <code>SE11</code> で確認</b>）</td></tr>
+</table>
+<figure class="gui"><img src="assets/gui/handson-5_s04_1.svg" alt="MM01 の販売組織 2 ビュー。複製品目 ZVC-PUMP01-SET の品目カテゴリグループを 0002 から 0004 に変更する。" loading="lazy"><figcaption><b class="t">5-5 発展 2 SET 処理：0004 にすると構成品目が子明細として並ぶ（varconf の記載）</b><span class="tx">MM01</span><span class="scr">複製品目の品目カテゴリグループ 0002 → 0004（SET 処理の前提）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 0004 は子明細（SET）の前提。親明細は情報のみで価格・所要量は子明細側に移る</li><li><b>2</b> 処理形式は受注を流す前に固める（既存受注がある状態で変えると壊れる）</li></ol><p class="gui-tip">自システムでの確認：MM03 販売組織 2 で品目カテゴリグループを確認 → プロファイルを SET にして受注を流し、構成品目が子明細として並ぶかを見る。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-5_s04_2.svg" alt="CU42 の設定プロファイル変更。処理形式を受注 BOM から伝票明細（SET 処理）に変更する。" loading="lazy"><figcaption><b class="t">5-5 発展 2 SET へ切り替える（構成品目が子明細で並ぶ動きを見る）</b><span class="tx">CU42</span><span class="scr">設定プロファイル ZVC_PROFILE01：処理形式を伝票明細（SET）に</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> SET にすると構成品目が受注の子明細として並ぶ（価格は子明細側に付く）</li><li><b>2</b> 処理形式は「BOM をどこに置くか」の設計判断。受注を流す前に固める</li></ol><p class="gui-tip">自システムでの確認：CU43 で処理形式を照会 → 受注（VA01）で構成品目が子明細として並ぶか、価格が子明細側に付くかを確認（varconf の記載）。</p></figure>
+
+
+
+
+
+
+
+
+<h2>5-6 本练习的期待结果汇总</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>成果物</th><th>期待值</th><th>証跡</th></tr>
+<tr><td>1</td><td>変更統制の理解</td><td>受注の構成変更 → 受注 BOM・指図・価格が自動で追従しないことを実機で確認</td><td>変更前後の <code>VA03</code>/<code>CO03</code> の記録</td></tr>
+<tr><td>2</td><td>戦略 <code>82</code></td><td>受注保存で指図が 1:1 に作られることを確認し、<code>25</code> に戻した</td><td><code>OPPS</code>/<code>OVZG</code>／<code>CO03</code></td></tr>
+<tr><td>3</td><td>3 画面の使い方</td><td><code>CU50</code>/<code>CU03</code>/<code>CU02</code> の役割を説明でき、故障を切り分けられる</td><td>切り分けの手順記録</td></tr>
+<tr><td>4</td><td>故障対照表</td><td>14 項のうち 5 項以上を、手顺を見ずに原因まで言える</td><td><a href="worksheet.html">シート D</a> の故障記録</td></tr>
+<tr><td>5</td><td>発展課題</td><td>2 つ以上を実施（材料バリアント／SET／多階層／制約／特徴グループなど）</td><td>実施記録（画面 or メモ）</td></tr>
+</table>
+
+<h2>5-7 つまずきと対処（発展編）</h2>
+<table class="tbl wide">
+<tr><th>症状</th><th>原因の第一嫌疑</th><th>确认手顺</th></tr>
+<tr><td>材料バリアント作成後、受注で品目が置き換わらない</td><td>構成値が材料バリアントと完全一致していない／置換の設定</td><td>構成画面の材料バリアント機能／品目の分類と特徴値の一致を確認</td></tr>
+<tr><td>SET 処理にしたら価格が合わない</td><td>価格が<b>子明細側</b>に移った（親明細は情報のみ）</td><td>受注の条件画面で「どの明細に条件が付いているか」を確認</td></tr>
+<tr><td>多階層で選択条件が効かない</td><td><code>$ROOT</code> と <code>$PARENT</code> の参照先の違い</td><td><code>CS03</code> の選択条件画面 → <code>CU50</code> で多階層展開して確認</td></tr>
+<tr><td>制約／特徴グループの画面が見つからない</td><td>AVC の機能（LO-VC には無い）／権限</td><td><code>PMEVC</code> の起動 → リリース・ライセンスの確認（C0 に戻る）</td></tr>
+<tr><td>戦略 <code>82</code> にしたら受注が保存できない</td><td>BOM が無い／指図タイプが不正（<code>82</code> は BOM 必須）</td><td><code>CS03</code> で BOM の有無 → <code>OVZG</code>／指図タイプの設定</td></tr>
+</table>
+
+<h2>5-8 验收（完成基准）</h2>
+<ul class="check">
+  <li>受注の構成を変更し、<b>受注 BOM・製造指図・価格が自動で追従しないこと</b>を実機で確認した（<code>VA03</code>/<code>CO03</code>）</li>
+  <li>再展開（受注明細／指図）の手順を実際に実行し、結果の変化を確認した</li>
+  <li>変更統制のルール案（① 承認者 ② 許容範囲 ③ 例外手順 ④ 記録）を書いた</li>
+  <li>戦略グループを <code>82</code> に切り替え、<b>受注と指図が 1:1</b> になることを確認し、<code>25</code> に戻した</li>
+  <li><code>OPPS</code>/<code>OVZG</code> で <code>82</code>/<code>KMFA</code>/<code>201</code>/<code>PP04</code> の紐づけを自分の目で確認した</li>
+  <li><code>CU50</code>/<code>CU03</code>/<code>CU02</code> の役割の違いを説明できる</li>
+  <li>故障対照表のうち <b>5 項以上</b>を、確認手顺を見ずに切り分けの型で説明できる</li>
+  <li>故意に壊したモデルの原因を特定できた（切り分けの記録を提出）</li>
+  <li>発展課題を 2 つ以上実施し、実施内容と気づきを記録した</li>
+  <li><a href="worksheet.html">シート D 故障記録</a>に、症状→根因→証拠→処置→再発防止を 1 件以上記入した</li>
+</ul>
+
+<div class="box info"><b class="t">コース完了へ</b>
+→ <a href="quiz.html">能力测试（28 題・合格 75%）</a> と <a href="worksheet.html">学员版ワークシート</a>の全欄記入で修了です。講師は <a href="instructor.html">讲师版</a> の採点基準を参照してください。</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA バリアント設定付き受注生産（VC / AVC）实战训练站</h5><p>练习⑤：変更統制・戦略 <code>82</code>（受注組立 1:1）・<code>CU50</code>/<code>CU03</code>/<code>CU02</code> の読み方・故障対照表 14 項・発展課題 8 件。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 特徴とクラス</a><br><a href="handson-2.html">② 設定可能品目とプロファイル</a><br><a href="handson-3.html">③ 依存関係とスーパー BOM</a><br><a href="handson-4.html">④ 受注で構成・製造・出荷</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

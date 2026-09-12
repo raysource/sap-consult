@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>练习④ 受注で構成し製造・出荷まで通す · SAP S/4HANA バリアント設定付き受注生産（VC / AVC）实战训练站</title>
+<meta name="description" content="VC 练习④：VA01 で受注（構成画面で特徴値を選択）→ VA03 で受注 BOM の構成品目を確認 → 変種価格 VA00 の条件画面 → MD04/MRP（KEK・受注在庫 E）→ 製造指図 CO40/CO03 への設定値伝搬 → MIGO 261/CO11N/MIGO 101 → VL01N/VL02N（601）→ VF01 の請求と伝票フロー。含输入值、手顺、期待结果、つまずき、验收清单。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/vc.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">VC</span><span class="txt">バリアント設定 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①主数据</a>
+      <a href="handson-2.html">②受注与设定</a>
+      <a href="handson-3.html">③依存与BOM</a>
+      <a class="active" href="handson-4.html">④制造与出荷</a>
+      <a href="handson-5.html">⑤发展与故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 练习④ 受注で構成・製造・出荷・請求</div>
+<main class="page"><article>
+
+<h1>练习④ 受注で構成し、製造・出荷・請求まで通す</h1>
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。若是想换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 即可一键替换。</div>
+
+<div class="box info"><b class="t">本练习完成什么</b>
+练习①〜③ で作った<b>構成エンジンを業務の流れに載せます</b>。受注（<code>VA01</code>）で構成値を入力 → 受注 BOM の構成品目と変種価格を確認 → <code>MD04</code>/MRP → 製造指図（<code>CO40</code>・<code>CO03</code>）へ<b>設定値が伝搬することを確認</b> → 部品出庫（261）・実績（<code>CO11N</code>）・完成入庫（101）→ 出荷（<code>VL01N</code>/<code>VL02N</code>・601）→ 請求（<code>VF01</code>・変種価格込み）→ <b>伝票フローが閉じる</b>まで。预计 80 分钟。<br>
+<b>本练习之后系统里的状态是</b>：受注 10 台の構成値が受注 BOM・所要量・指図・請求まで一気通貫で追える（＝ VC が「業務で使える」状態）。</div>
+
+<div class="flow">
+  <div class="node">1 VA01<br><small>10 台＋構成</small></div><div class="arrow">→</div>
+  <div class="node">2 VA03<br><small>受注 BOM</small></div><div class="arrow">→</div>
+  <div class="node">3 条件画面<br><small>VA00 加算</small></div><div class="arrow">→</div>
+  <div class="node">4 MD04/MRP<br><small>KEK・E</small></div><div class="arrow">→</div>
+  <div class="node">5 CO40/CO03<br><small>設定値伝搬</small></div><div class="arrow">→</div>
+  <div class="node">6 261/実績/101</div><div class="arrow">→</div>
+  <div class="node">7 VL01N<br><small>601</small></div><div class="arrow">→</div>
+  <div class="node">8 VF01<br><small>伝票フロー</small></div>
+</div>
+
+<h2>4-1 受注登録と構成入力（<code>VA01</code>）</h2>
+<p><b>入力值</b></p>
+<table class="tbl wide">
+<tr><th>項目</th><th>值</th><th>説明</th></tr>
+<tr><td>販売伝票タイプ</td><td><code>OR</code></td><td>標準受注</td></tr>
+<tr><td>販売組織 / チャネル / 部門</td><td><code>1000</code> / <code>10</code> / <code>00</code></td><td>販売エリア</td></tr>
+<tr><td>得意先（受注先・出荷先）</td><td><code>1000</code></td><td>出荷先未指定なら受注先と同じ</td></tr>
+<tr><td>購買発注番号（得意先参照）</td><td><code>PO-VC-0001</code></td><td>客先注文番号（追跡用）</td></tr>
+<tr><td>受注日 / 希望納期</td><td>今日 / 今日 ＋ 45 日</td><td>ポンプは納期に余裕を持たせる想定</td></tr>
+<tr><td>明細 10：品目 / 数量 / プラント</td><td><code>ZVC-PUMP01</code> / <code>10</code> <code>PC</code> / <code>1000</code></td><td><b>設定可能品目</b></td></tr>
+<tr><td><b>構成（設定値）</b></td><td>容量 <code>80</code> / 材質 <code>SUS316</code> / 塗装 <code>EPOXY</code> / 付属品 <code>PG_FG</code></td><td>明細の「構成」から設定画面を開いて入力</td></tr>
+<tr><td>明細 10：単価（<code>PR00</code>）</td><td><code>850,000</code> JPY（自動決定）</td><td>条件レコードから自動で決定される</td></tr>
+</table>
+<ol class="steps">
+  <li><code>VA01</code> → <code>OR</code> → 販売エリア・得意先・納期を入力 → 明細に <code>ZVC-PUMP01</code>／<code>10</code> <code>PC</code>／プラント <code>1000</code> を入力。</li>
+  <li>明細を選択した状態で<b>「構成（Configuration）」ボタン</b>を押す → 設定画面が開く（<b>開かない場合は <a href="config.html#c3">C3</a> の 5 条件へ戻る</b>）。</li>
+  <li>容量 <code>80</code> / 材質 <code>SUS316</code> / 塗装 <code>EPOXY</code> / 付属品 <code>PG_FG</code> を選択。<b>前提条件・手続きが発火する</b>ので、選べない値・自動で変わる値を観察する（练习③の成果が出る場面）。</li>
+  <li>構成結果（BOM 展開）を確認してから<b>構成を確定（戻る）</b>。明細の<b>構成品目（受注 BOM）</b>ボタンで構成品目を確認。</li>
+  <li>納入日程行（希望納期）を確認 → 保存 → <b>受注番号を記録</b>（ワークシート シート B）。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待结果）</b>
+① 明細の<b>明細カテゴリ</b>が VC 用に決まり、構成が入力できる。<b>実測値を記録</b>（<code>TAN</code> 系という記載もあるが環境差あり → <a href="config.html#c10">C10</a>）。
+② 明細の「<b>構成品目</b>」に、選んだ構成に対応する部品（ケーシング <code>SUS316</code>・羽根車・軸・モータ・圧力計・流量計）が並ぶ。
+③ <code>VA03</code> → 明細 → 「構成」で<b>設定値が保存されている</b>（受注の構成は業務データとして保存される。<code>CU50</code> のシミュレーションとはここが違う）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>構成ボタンがグレー／出ない</b>→ 品目が設定可能でない・プロファイル未割当・明細カテゴリが構成不可（<a href="config.html#c3">C3</a> → <a href="config.html#c10">C10</a> の順）。
+② <b>部品（構成品目）が出ない</b>→ 設定プロファイルの処理形式が「展開なし」／BOM の有効日／<code>CU50</code> では出るのに受注で出ない場合は <b>プロファイルの処理形式</b>を最優先で疑う。
+③ 前提条件で値が選べず「入力が進まない」→ <a href="handson-3.html">练习③</a> の依存関係が<b>設計どおりに効いている</b>証拠。選べる組合せに変更して進める。
+④ 構成を<b>確定せずに保存</b>→ 「構成が不完全」エラー（必須特徴を入れ忘れ）。</div>
+<div class="task"><b class="t">練習課題</b>「<code>CU50</code> の構成」と「受注の構成」の違いを表にせよ（保存先・後工程への影響・所要量/在庫への波及の 3 点）。2-3 で書いた予想と答え合わせをすること。</div>
+<figure class="gui"><img src="assets/gui/handson-4_s01_1.svg" alt="VA01 の明細入力。得意先 1000、購買発注番号 PO-VC-0001、明細 10 に ZVC-PUMP01 / 10 PC / プラント 1000、希望納期 受注日 + 45 日。" loading="lazy"><figcaption><b class="t">4-1 明細カテゴリが VC 用に決まり、構成ボタンが押せるか</b><span class="tx">VA01</span><span class="scr">受注伝票の登録：明細（ZVC-PUMP01 × 10 台）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 構成ボタンが出ない／グレー＝品目が設定可能でない・プロファイル未割当・明細カテゴリが構成不可</li><li><b>2</b> 希望納期は納入日程行。在庫ゼロでも希望のままなら MTO の正常動作</li></ol><p class="gui-tip">自システムでの確認：明細の明細カテゴリ（実測値を記録。TAN 系という記載もあるが環境差あり）と、構成ボタンの有無。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-4_s01_2.svg" alt="VA01 の構成入力画面。4 特徴に値が入り、構成が確定されている（必须チェックは通過済み）。" loading="lazy"><figcaption><b class="t">4-1 前提条件・手続きが発火する場面（选べない値・自動で変わる値を観察する）</b><span class="tx">VA01</span><span class="scr">受注の構成入力（設定画面）：容量 80 / SUS316 / EPOXY / PG_FG</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 前提条件で選べない値があること自体が設計どおり（止まるときは組合せを変更する）</li><li><b>2</b> 構成を確定せずに保存すると「構成が不完全」エラーになる</li></ol><p class="gui-tip">自システムでの確認：VA03 → 明細 → 「構成」で設定値が保存されているか（受注の構成は業務データとして保存される）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>4-2 変種価格の確認（条件画面）</h2>
+<ol class="steps">
+  <li><code>VA03</code> → 受注番号 → 明細 → 「<b>条件</b>」ボタン → 条件画面を開く。</li>
+  <li><code>PR00</code>（基本価格 850,000）の行を確認。</li>
+  <li><b><code>VA00</code>（変種条件）の行</b>を確認し、<b>金額</b>と<b>決定された条件レコードのキー</b>を見る（材質 <code>SUS316</code> などがキーになっている）。</li>
+  <li>合計金額が「基本価格 × 10 台 ＋ 加算 × 10 台」になっているか電卓で確認する（差異があれば設計ミス）。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待结果）</b>
+① 条件画面に <code>PR00</code> と <code>VA00</code> の<b>両方</b>が出る。② キーに設定値（特徴値）が入っている。
+③ 加算が出ない場合は <a href="config.html#c13">C13</a> の 4 点セット（追加データ／条件タイプ／計算手続／条件レコード）を順に確認。<b>「出ない」の切り分けはこの順序が最短</b>です。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <code>VA00</code> の行はあるが金額 0 → <b>条件レコードのキー不一致</b>（<code>VK13</code> で確認。<code>VKOND</code> に値が飛んでいない＝特徴の追加データ未設定）。
+② 条件画面自体に <code>VA00</code> が出ない → 計算手続（<code>V/08</code>）に <code>VA00</code> のステップが無い／有効期間外。
+③ 受注後に条件が変わった（<code>VK12</code> で更新）→ <b>既存受注は再価格決定しない限り古い金額のまま</b>。<b>これは「故障」ではなく仕様</b>。業務ルールを決める（→ 练习⑤ の変更統制）。</div>
+<div class="task"><b class="t">練習課題</b>「容量 <code>120</code> ＋ 材質 <code>SUS316</code> の組合せだけに追加加算」を作り、受注の条件画面でその加算が出ることを確認せよ（→ <a href="config.html#c13">C13</a> の練習課題）。</div>
+<figure class="gui"><img src="assets/gui/handson-4_s02_1.svg" alt="VA03 の明細条件画面。PR00 850,000 と VA00（変種条件）の複数行、決定された条件レコードのキーが並ぶ。" loading="lazy"><figcaption><b class="t">4-2 基本価格 850,000 と設定値にひもづく加算の行を確認する</b><span class="tx">VA03</span><span class="scr">受注の条件画面：PR00 と VA00（変種条件）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> キーに設定値（特徴値）が入っている＝特徴の追加データが効いている</li><li><b>2</b> VA00 の行が出ない → 計算手続（V/08）→ 追加データ（CT04）→ 条件レコード（VK13）の順で疑う</li></ol><p class="gui-tip">自システムでの確認：VK13 の条件レコード一覧（キーの値と金額）と VA03 の条件画面（VA00 の行と決定キー）。金額は例。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>4-3 所要量と MRP（<code>MD04</code> / <code>MD01N</code>）</h2>
+<ol class="steps">
+  <li><code>MD04</code> → 品目 <code>ZVC-PUMP01</code>／プラント <code>1000</code> → <b>受注明細の「得意先所要量」行</b>が出ること（受注番号・明細番号つき）を確認。</li>
+  <li>MRP を実行（<code>MD01N</code>（MRP Live：品目/プラント指定）または <code>MD02</code>）。</li>
+  <li>MD04 を再表示 → <b>計画手配</b>が生成され、その<b>在庫区分が受注在庫（特別在庫 E）</b>になっていることを確認（戦略 <code>25</code> → 所要量タイプ <code>KEK</code> → 所要量クラス <code>046</code> 系）。</li>
+  <li><code>MMBE</code> → 品目 <code>ZVC-PUMP01</code>：<b>受注在庫（特別在庫 E）の行が出る</b>こと（数量はまだ 0）。</li>
+  <li>構成品目（部品）側の所要量が MD04 に出るかも確認（BOM が展開されて部品需要が発生しているか）。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待结果）</b>
+① MD04 の「得意先所要量」行に受注番号。② 計画手配の在庫区分 = 受注在庫。③ <code>MMBE</code> に受注在庫 E の行。
+④ 部品（ケーシングなど）の所要量が発生している（BOM が効いている証拠）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>MD04 に何も出ない</b>→ 納入日程行カテゴリの<b>所要量転送</b>が OFF（<a href="config.html#c10">C10</a>）／MRP3 戦略グループ未設定。
+② 計画手配の在庫区分が E でない → MRP4 の個別所要量（<a href="config.html#c3">C3</a>）と所要量クラスの在庫区分（<a href="config.html#c11">C11</a>）。
+③ 部品の需要が出ない → BOM が展開されていない（有効日・プロファイルの処理形式）。
+④ 「受注在庫に割当できません」エラー → MRP4 個別所要量が未設定（练习⑤ 故障表 #3）。</div>
+<div class="task"><b class="t">練習課題</b><code>MD04</code> の画面を<b>そのまま読めるようになること</b>：「得意先所要量」「計画手配」「在庫区分」の 3 語の意味を、この受注の数字で説明せよ。</div>
+<figure class="gui"><img src="assets/gui/handson-4_s03_1.svg" alt="MD04 の在庫/所要量一覧。得意先所要量（受注 0000001234 / 明細 10 / 10 PC）と計画手配の行、在庫区分が並ぶ。" loading="lazy"><figcaption><b class="t">4-3 得意先所要量が出て、計画手配の在庫区分が受注在庫（E）になるか</b><span class="tx">MD04</span><span class="scr">所要量と計画手配（受注在庫 E）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 「得意先所要量」＝受注明細が需要として流れている証拠</li><li><b>2</b> 計画手配の在庫区分が E でない → MRP4 個別所要量と所要量クラスの在庫区分（C11）</li></ol><p class="gui-tip">自システムでの確認：MD04 の「得意先所要量」行に受注番号、計画手配の在庫区分＝受注在庫、MMBE に受注在庫 E の行。MRP 実行は MD01N（MRP Live）または MD02。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-4_s03_2.svg" alt="MMBE の在庫概況。受注在庫（特別在庫 E）の行が受注番号つきで表示され、数量はまだ 0。" loading="lazy"><figcaption><b class="t">4-3 KMAT に自由在庫は出ないが、受注在庫（E）の行は出る</b><span class="tx">MMBE</span><span class="scr">受注在庫（特別在庫 E）の行</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 受注在庫の行が出ること＝戦略 25 / 所要量クラス 046 系の挙動</li></ol><p class="gui-tip">自システムでの確認：MMBE の在庫区分の行。MB52 でも同じ行が見える。構成品目側の所要量が MD04 に出ているかも確認（BOM が効いている証拠）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>4-4 製造指図への設定値伝搬（<code>CO40</code> / <code>CO08</code> / <code>CO03</code>）</h2>
+<ol class="steps">
+  <li>MD04 の計画手配から<b>製造指図を作成</b>（計画手配を選択 → 「変換」。または <code>CO40</code>（受注明細を参照して指図作成）／<code>CO08</code>）。</li>
+  <li><code>CO03</code> → 指図番号 → 「<b>構成</b>」ボタン → <b>受注で選んだ設定値（<code>80</code>/<code>SUS316</code>/<code>EPOXY</code>/<code>PG_FG</code>）が表示される</b>ことを確認。<b>ここが本练习の核心</b>。</li>
+  <li>構成品目（部品一覧）が受注 BOM と同じ構成になっているか確認（ケーシング <code>SUS316</code> のみ、圧力計・流量計あり）。</li>
+  <li>工程一覧を確認 → 塗装工程が<b>採用されている</b>（塗装 <code>EPOXY</code> のため）。</li>
+  <li>指図を<b>指図リリース</b>（<code>CO02</code> → リリース、または <code>CO05N</code> 一括リリース）。<b>リリースしないと入出庫・実績ができません</b>。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待结果）</b>
+① <code>CO03</code> の「構成」に設定値。② 構成品目が受注 BOM と一致。③ 工程の取捨が効いている。④ 指図のヘッダに<b>受注明細への参照</b>（販売伝票・明細）がある。
+<b>VC の故障はほとんど「受注では正しいのに指図が違う」</b>の形で現れるので、この 4 点が確認の型になります。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 指図の構成が空 → 指図を<b>受注明細参照で作っていない</b>（<code>CO01</code> で品目だけ入れて作ると構成が引き継がれない）。<code>CO40</code>/<code>CO08</code> や計画手配から変換して作る。
+② 指図作成後に設定値を変えた → 指図側は<b>古い構成のまま</b>（再展開が必要）。<b>これが「現場が壊れる」典型</b>（→ 练习⑤ 変更統制）。
+③ 工程が出ない／違う → 作業手順の選択条件と有効日。
+④ 指図リリース前に入出庫しようとしてエラー → リリース手順を飛ばしている。</div>
+<div class="task"><b class="t">練習課題</b>受注の構成値を <code>SUS316</code> → <code>SUS304</code> に変更し、<b>指図が自動で変わらないこと</b>を確認せよ。その上で「どう運用すべきか」を 2 案（再展開する／変更禁止にする）書く。</div>
+<figure class="gui"><img src="assets/gui/handson-4_s04_1.svg" alt="CO03 の指図照会。指図 1000123、品目 ZVC-PUMP01、数量 10 PC、ヘッダに販売伝票 0000001234 / 明細 10 の参照、構成に設定値。" loading="lazy"><figcaption><b class="t">4-4 指図の「構成」に受注で選んだ設定値が表示される（本练习の核心）</b><span class="tx">CO03</span><span class="scr">製造指図の照会：構成（設定値の伝搬）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> ヘッダの受注明細参照が無い＝構成が引き継がれない第一嫌疑</li><li><b>2</b> 指図作成後に受注の構成を変えても指図は自動で変わらない（再展開が必要。练习⑤）</li></ol><p class="gui-tip">自システムでの確認：CO03 の「構成」ボタンで設定値、指図ヘッダの受注明細への参照（販売伝票・販売伝票明細）。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-4_s04_2.svg" alt="CO03 の指図の構成品目一覧と工程。ケーシング SUS316・羽根車・軸・モータ・圧力計・流量計と工程 0010/0020/0030。" loading="lazy"><figcaption><b class="t">4-4 構成品目が受注 BOM と一致し、塗装工程が採用されているか</b><span class="tx">CO03</span><span class="scr">指図の構成品目と工程（受注 BOM との一致）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 構成値が効いて工程の取捨も効いている（塗装 EPOXY なので 0030 が採用）</li><li><b>2</b> 「受注では正しいのに指図が違う」＝ VC の故障の典型パターン。この画面の 4 点で確認する</li></ol><p class="gui-tip">自システムでの確認：CO03 → 構成品目（部品一覧）が受注 BOM と同じか、工程一覧で塗装工程が採用されているか、指図がリリース済みか（CO02 でリリース）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>4-5 部品出庫・製造実績・完成入庫（261 / <code>CO11N</code> / 101）</h2>
+<ol class="steps">
+  <li><b>部品出庫（261）</b>：<code>MIGO</code> → 移動タイプ <code>261</code> → 指図番号 → 構成品目（<code>ZVC-CAS-SUS316</code> など）を出庫。<b>受注 BOM に無い部品は出庫できない</b>ことを知る（＝選択条件が効いている証拠）。</li>
+  <li><b>製造実績</b>：<code>CO11N</code> → 指図番号・工程・歩留数量 <code>10</code> を入力。<b>バックフラッシュ設定なら部品が自動出庫</b>される。</li>
+  <li><b>完成入庫（101）</b>：<code>MIGO</code>／<code>MB31</code> → 移動タイプ <code>101</code> → 指図番号 → 数量 <code>10</code>。<b>入庫先は受注在庫（E）</b>。</li>
+  <li><code>MMBE</code> → 品目 <code>ZVC-PUMP01</code>：<b>受注在庫（E）10 PC</b>（受注番号つき）になっていることを確認。</li>
+  <li><code>CO03</code> → 指図の状態を確認（<b>CNF</b>＝確認済、または部分確認）。差異（実際原価と標準原価）も見ておく。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待结果）</b>
+① <code>MMBE</code> の受注在庫 E に 10 PC。② <code>MB52</code> でも同じ行が見える。③ 部品の在庫が減っている（261／バックフラッシュ）。
+④ 指図の状態が CNF 系。<b>VC 固有の見どころは「選ばなかった部品は出庫できない」こと</b>——構成エンジンが在庫の動きまで統制している証拠です。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 261 で「指図に部品がありません」→ 指図の BOM が展開されていない（プロファイル処理形式・有効日）。
+② 101 の入庫先が自由在庫になる → MRP4／所要量クラスの在庫区分（受注在庫になっていない）。
+③ 実績で数量が入らない／エラー → 歩留数量・不良数量の入力、または指図がリリースされていない。
+④ 差異が大きい（標準時間と実績時間）→ 標準値の設計（手続き）と実績の整合を確認。</div>
+<div class="task"><b class="t">練習課題</b>「選ばなかった材質のケーシング（<code>ZVC-CAS-FC</code>）を 261 で出庫しようとすると何が起きるか」を実際に試し、<b>この統制が業務上なぜ重要か</b>（誤品出庫の防止）を 3 行で説明せよ。</div>
+<figure class="gui"><img src="assets/gui/handson-4_s05_1.svg" alt="MIGO の品目伝票。移動タイプ 261、指図 1000123、構成品目 ZVC-CAS-SUS316、数量 10 PC、保管場所 0001。" loading="lazy"><figcaption><b class="t">4-5 受注 BOM に無い部品は出庫できない（選択条件が効いている証拠）</b><span class="tx">MIGO</span><span class="scr">部品出庫（移動タイプ 261）：指図への材料の出庫</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> エラーになること自体が統制が効いている証拠（誤品出庫の防止）</li><li><b>2</b> 「指図に部品がありません」→ 指図の BOM 未展開（プロファイル処理形式・有効日）</li></ol><p class="gui-tip">自システムでの確認：MIGO で 261 → 指図番号 → 構成品目を出庫。受注 BOM に無い部品（ZVC-CAS-FC）を入れるとエラーになることを確認。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-4_s05_2.svg" alt="MIGO の完成入庫。移動タイプ 101、指図 1000123、数量 10 PC、入庫先は受注在庫（E）。CO11N で歩留数量 10 を入力済み。" loading="lazy"><figcaption><b class="t">4-5 歩留数量 10 を確認し、101 で受注在庫（E）に 10 PC 入庫する</b><span class="tx">MIGO</span><span class="scr">製造実績（CO11N）と完成入庫（101 → 受注在庫 E）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 入庫先が自由在庫になる → MRP4 個別所要量／所要量クラスの在庫区分（受注在庫でない）</li><li><b>2</b> 部品は 261 またはバックフラッシュで自動出庫される</li></ol><p class="gui-tip">自システムでの確認：MMBE の受注在庫（E）10 PC（受注番号つき）、MB52、部品在庫の減少（261 / バックフラッシュ）、CO03 の指図状態（CNF 系）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>4-6 出荷・出庫確認（<code>VL01N</code> / <code>VL02N</code>・601）</h2>
+<ol class="steps">
+  <li><code>VL01N</code> → 出荷先 <code>1000</code>／受注番号 → 出荷作成 → 明細の<b>在庫区分が E（受注在庫）</b>、引当数量 <code>10</code> になっていることを確認。</li>
+  <li>ピッキング数量を入力（<code>VL02N</code>）。</li>
+  <li><code>VL02N</code> → <b>出庫確認（PGI）</b> → 移動タイプ <code>601</code>。<b>受注在庫が 0 になる</b>こと、会計伝票が生成されることを確認。</li>
+  <li><code>MMBE</code> → 受注在庫 E が 0、自由在庫も増えていないことを確認（受注在庫は客先へ出た）。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待结果）</b>
+① 出荷明細の在庫区分 E＋受注番号。② PGI 後の <code>MMBE</code>（E = 0）。③ <code>MB03</code> の品目伝票で 601 と会計伝票。
+<b>受注在庫が「受注の都合だけで動いている」ことが VC × MTO の本質</b>です。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 引当できない（在庫無し）→ 完成入庫（101）が済んでいない／在庫区分が E でない。
+② PGI で「在庫が不足」→ 数量不一致（指図の歩留と入庫数量を確認）。
+③ 出荷に構成品目を載せようとする → <b>通常は親品目を出荷</b>し、部品は製造で消費する設計。SET 処理を選んだ場合だけ子明細が出る。</div>
+<div class="task"><b class="t">練習課題</b>「客先に出荷するのは完成品 1 台で、中に付属品が入っている」ことを納品書に表現する方法を 2 案検討せよ（→ <a href="config.html#c14">C14</a> の練習課題と同題）。</div>
+<figure class="gui"><img src="assets/gui/handson-4_s06_1.svg" alt="VL02N の出荷変更。出荷 0080001234、在庫区分 E、ピッキング数量 10、出庫確認済み（601）で受注在庫が 0 になる。" loading="lazy"><figcaption><b class="t">4-6 受注在庫（E）から客先へ出る（在庫区分 E と 601）</b><span class="tx">VL02N</span><span class="scr">出庫確認（PGI / 移動タイプ 601）— 受注在庫が 0 になる</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 在庫区分 E からの出庫＝受注在庫が「受注の都合だけで動いている」ことが VC × MTO の本質</li><li><b>2</b> PGI で「在庫が不足」→ 101 入庫の数量不一致を確認</li></ol><p class="gui-tip">自システムでの確認：出荷明細の在庫区分 E と受注番号、PGI 後の MMBE（E = 0）、MB03 の品目伝票で 601 と会計伝票。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>4-7 請求と伝票フロー（<code>VF01</code>）</h2>
+<ol class="steps">
+  <li><code>VF01</code> → 出荷番号（または <code>VF04</code> の請求一覧）→ 請求 → <b>明細の条件に <code>PR00</code> と <code>VA00</code> の加算</b>が乗っていることを確認。</li>
+  <li>保存 → <b>請求書番号を記録</b>。金額を電卓で検算（10 台分）。</li>
+  <li><code>VA03</code> → 受注番号 → 「<b>伝票フロー</b>」→ 受注 → 出荷 → 請求 → 会計伝票 が<b>すべて閉じている</b>ことを確認。</li>
+  <li><code>FB03</code> で請求の会計伝票（売掛金・売上）と、入出庫の在庫勘定を 1 件ずつ確認（発展）。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待结果）</b>
+① 請求に <code>VA00</code> の加算行がある（変種価格が出荷・請求まで運ばれた）。
+② 伝票フローが 受注 → 出荷 → 請求 → 会計 で完結。<b>これが「VC の受注生産を 1 周した」という最終証拠</b>です。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 請求に <code>VA00</code> が乗らない → 条件のコピー制御（出荷 → 請求）か条件レコードの有効期間。
+② 金額が受注時と違う → 条件レコードが受注後に変更された（再価格決定の有無）。
+③ 伝票フローが途中で止まる → 前工程の未完（PGI 済みか、請求対象か）。</div>
+<div class="task"><b class="t">練習課題</b>受注金額・請求金額を突き合わせ、<b>一致しない場合の原因候補を 3 つ</b>挙げよ（条件レコードの期間変更／数量差異／手動値引き）。</div>
+<figure class="gui"><img src="assets/gui/handson-4_s07_1.svg" alt="VF01 の請求書。請求タイプ F2、出荷 0080001234、条件 PR00 と VA00 の加算、合計 10,530,000 JPY（例）。" loading="lazy"><figcaption><b class="t">4-7 請求に PR00 ＋ VA00 が乗り、伝票フローが閉じるか</b><span class="tx">VF01</span><span class="scr">請求書の登録：変種価格（VA00）を載せて請求まで通す</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> VA00 の加算が請求まで運ばれる（変種価格の最終証拠）</li><li><b>2</b> 加算が無い → VTFL（出荷 → 請求のコピー制御）か条件レコードの有効期間</li></ol><p class="gui-tip">自システムでの確認：VF03 の条件タブ（VA00 行）、伝票フロー（履歴）、FB03 の会計伝票（売掛金・売上）。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-4_s07_2.svg" alt="VA03 の伝票フロー。受注 0000001234 から出荷 0080001234、請求 0090001234、会計伝票がすべて閉じている。" loading="lazy"><figcaption><b class="t">4-7 VC の受注生産を 1 周した最終証拠</b><span class="tx">VA03</span><span class="scr">伝票フロー：受注 → 出荷 → 請求 → 会計伝票</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> チェーンが閉じている＝VC の受注生産を 1 周した証拠</li></ol><p class="gui-tip">自システムでの確認：VA03 → 伝票フロー（履歴）で各伝票のステータス、FB03 で請求の会計伝票と入出庫の在庫勘定を 1 件ずつ。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>4-8 本练习的期待结果汇总</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>工程</th><th>期待值</th><th>証跡</th></tr>
+<tr><td>1</td><td>受注（<code>VA01</code>）</td><td><code>ZVC-PUMP01</code> × 10 / 構成 <code>80</code>・<code>SUS316</code>・<code>EPOXY</code>・<code>PG_FG</code> / 受注番号取得</td><td><code>VA03</code> 明細＋構成</td></tr>
+<tr><td>2</td><td>受注 BOM</td><td>ケーシング <code>SUS316</code>・羽根車・軸・モータ・圧力計・流量計</td><td><code>VA03</code> → 明細 → 構成品目</td></tr>
+<tr><td>3</td><td>変種価格</td><td><code>VA00</code> の加算行と条件レコードのキー</td><td><code>VA03</code> 条件画面／<code>VK13</code></td></tr>
+<tr><td>4</td><td>所要量</td><td>MD04 の得意先所要量＝10、計画手配の在庫区分 E</td><td><code>MD04</code></td></tr>
+<tr><td>5</td><td>指図</td><td>構成に設定値、構成品目・工程が受注 BOM と一致、リリース済</td><td><code>CO03</code></td></tr>
+<tr><td>6</td><td>入出庫</td><td>261 で部品出庫 → <code>CO11N</code> 歩留 10 → 101 で受注在庫 E に 10 PC</td><td><code>MB03</code>／<code>MMBE</code></td></tr>
+<tr><td>7</td><td>出荷</td><td>在庫区分 E・引当 10・601 で E = 0</td><td><code>VL01N</code>/<code>VL02N</code>／<code>MMBE</code></td></tr>
+<tr><td>8</td><td>請求</td><td><code>PR00</code>＋<code>VA00</code> の金額、伝票フロー完結</td><td><code>VF03</code>／<code>VA03</code> 伝票フロー</td></tr>
+</table>
+
+<h2>4-9 つまずきと対処（まとめ）</h2>
+<table class="tbl wide">
+<tr><th>症状</th><th>原因の第一嫌疑</th><th>确认手顺</th></tr>
+<tr><td>受注で構成できない</td><td>5 条件／プロファイル／明細カテゴリ</td><td><code>MM03</code> → <code>CU43</code> → <code>VOV4</code></td></tr>
+<tr><td>受注 BOM が出ない</td><td>プロファイルの処理形式／BOM 有効日／選択条件</td><td><code>CU43</code> → <code>CS03</code> → <code>CU03</code>（<code>CU50</code> で再現できるか先に見る）</td></tr>
+<tr><td>指図に設定値が来ない</td><td>指図の作り方（受注明細参照でない）</td><td><code>CO03</code> の構成 → 指図ヘッダの受注明細参照</td></tr>
+<tr><td>加算が出ない</td><td>追加データ／条件タイプ／手続／条件レコード</td><td><code>VA03</code> 条件 → <code>V/06</code> → <code>V/08</code> → <code>VK13</code> → <code>CT04</code> 追加データ</td></tr>
+<tr><td>所要量が出ない</td><td>納入日程行カテゴリの所要量転送／戦略グループ</td><td><code>VA03</code> 納入日程行 → <code>VOV5</code>/<code>VOV6</code> → <code>MM03</code> MRP3</td></tr>
+<tr><td>受注在庫に入らない（自由在庫）</td><td>MRP4 個別所要量／所要量クラスの在庫区分</td><td><code>MM03</code> MRP4 → <code>OVZG</code></td></tr>
+<tr><td>出荷できない</td><td>入庫未完了／在庫区分が E でない</td><td><code>MMBE</code> → <code>MB03</code>（101 の有無）</td></tr>
+</table>
+
+<h2>4-10 验收（完成基准）</h2>
+<ul class="check">
+  <li>受注 <code>ZVC-PUMP01</code> × 10 台が登録され、<b>構成値（<code>80</code>/<code>SUS316</code>/<code>EPOXY</code>/<code>PG_FG</code>）が保存</b>されている</li>
+  <li>受注明細の「構成品目（受注 BOM）」が構成どおり（ケーシング <code>SUS316</code> のみ・圧力計/流量計あり）</li>
+  <li>条件画面に <code>VA00</code> の加算行があり、キーに設定値が入っている</li>
+  <li><code>MD04</code> に得意先所要量が出て、計画手配の在庫区分が受注在庫（E）になっている</li>
+  <li><code>MMBE</code> で受注在庫（E）の行を提示できる</li>
+  <li>製造指図の「構成」に設定値が伝搬し、構成品目・工程が受注 BOM と一致している</li>
+  <li>261 で部品出庫 → <code>CO11N</code> で歩留 10 → 101 で受注在庫 E に 10 PC 入庫した</li>
+  <li><code>VL01N</code> で在庫区分 E・引当 10、<code>VL02N</code> の 601 で受注在庫が 0 になった</li>
+  <li><code>VF01</code> の請求に <code>PR00</code>＋<code>VA00</code> の金額が乗り、伝票フローが受注→出荷→請求→会計で完結している</li>
+  <li>受注番号・指図番号・出荷番号・請求番号を <a href="worksheet.html">シート B</a> に記録した</li>
+</ul>
+
+<div class="box info"><b class="t">下一步</b> → <a href="handson-5.html">练习⑤ 発展（戦略 <code>82</code>・変更統制）と故障対応</a>（守りと一歩先の設計に進みます）</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA バリアント設定付き受注生産（VC / AVC）实战训练站</h5><p>练习④：<code>VA01</code> で構成 → 受注 BOM と <code>VA00</code> → <code>MD04</code>/MRP（E）→ <code>CO03</code> へ設定値伝搬 → 261/101 → <code>VL01N</code> 601 → <code>VF01</code> と伝票フロー。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 特徴とクラス</a><br><a href="handson-2.html">② 設定可能品目とプロファイル</a><br><a href="handson-3.html">③ 依存関係とスーパー BOM</a><br><a href="handson-4.html">④ 受注で構成・製造・出荷</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

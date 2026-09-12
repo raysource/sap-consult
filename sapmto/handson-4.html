@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>练习④ 出荷・出庫確認・請求 · SAP S/4HANA SD 受注生産（MTO）实战训练站</title>
+<meta name="description" content="MTO 练习④：VL01N 出荷伝票 → VL02N ピッキングと出庫確認（601）→ VF01 請求、确认受注在庫（E）被消化、会计传票与伝票フロー闭合。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/mto.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MTO</span><span class="txt">SD 受注生産 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①受注</a>
+      <a href="handson-2.html">②MRP</a>
+      <a href="handson-3.html">③出入库</a>
+      <a class="active" href="handson-4.html">④出货</a>
+      <a href="handson-5.html">⑤发展</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 练习④ 出荷・出庫確認・請求</div>
+<main class="page"><article>
+
+<h1>练习④ 出荷・出庫確認・請求</h1>
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。若是想换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 即可一键替换。</div>
+
+<div class="box info"><b class="t">本练习完成什么</b>
+把练习③ 的受注在庫 10 PC 交出去并收钱：<b>出荷伝票（VL01N）→ ピッキング → 出庫確認 PGI（601）→ 請求（VF01）</b>，
+最后用 <b>伝票フロー</b> 把「受注 → 指図 → 出荷 → 請求」串成一条完整的链。
+做完之后系统里的状态是：受注在庫 E = 0、受注明細请求完了、売上が計上されている。预计 50 分钟。</div>
+
+<div class="flow">
+  <div class="node">1 VL01N 出荷伝票<br><small>LF / 10 PC</small></div><div class="arrow">→</div>
+  <div class="node">2 VL02N ピッキング<br><small>特在 E 引当</small></div><div class="arrow">→</div>
+  <div class="node">3 VL02N 出庫確認<br><small>PGI 601</small></div><div class="arrow">→</div>
+  <div class="node">4 VF01 請求<br><small>F2 / 120,000</small></div><div class="arrow">→</div>
+  <div class="node">5 伝票フロー<br><small>全闭合</small></div><div class="arrow">→</div>
+  <div class="node">✓ 验收</div>
+</div>
+
+<h2>4-1 出荷伝票の登録（VL01N）</h2>
+<p><b>输入值</b></p>
+<pre class="vals">出荷タイプ      : LF（標準の出荷）
+出荷ポイント    : 自動決定（プラント 1000 / 得意先 1000 から。決まらない場合は C15 の出荷ポイント決定を確認）
+出荷先（得意先）: 1000
+納入日付範囲    : 今日を含む範囲（例 今日 − 7 日 〜 今日 + 30 日）
+参照            : 受注 0000001234（または VA03 → 明細 → 「出荷」から作成）
+数量            : 10 PC（受注残数量）
+</pre>
+<ol class="steps">
+  <li>做法 A（从受注进去）：<code>VA03</code> → 受注 <code>0000001234</code> → 明細 10 → 菜单「明細」→「<b>出荷</b>」（または <code>VL01N</code>）→ 直接以该行为基础创建出荷伝票。</li>
+  <li>做法 B（标准入口）：<code>VL01N</code> → 出荷タイプ <code>LF</code>、出荷ポイント（自动）、出荷先 <code>1000</code>、納入日付范围 → Enter → 在「納入日程行の選択」画面勾选受注 <code>0000001234</code> 的纳期行 → 复制数量 <code>10</code> → Enter。</li>
+  <li>确认明細：品目 <code>ZMTO-FG01</code>、数量 10 PC、<b>在庫区分 = 受注在庫（特別在庫 E）</b>、受注番号/明細が引き継がれていること。</li>
+  <li>確認「引当（引当数量）」是否已为 10（受注库存货存在时应自动引当）。若为 0 → 见下方故障表。</li>
+  <li>「保存」→ 记下<b>出荷伝票番号</b>（例 <code>0080001234</code>）。状态为「A（未処理/ピッキング待ち）」。 </li>
+</ol>
+<figure class="gui"><img src="assets/gui/handson-4_s01_1.svg" alt="VL01N の初期画面。出荷タイプ LF、出荷先 1000、納入日付範囲、参照受注 0000001234 を入力する。" loading="lazy"><figcaption><b class="t">4-1 VL01N：出荷タイプ LF・出荷先 1000・参照に受注 0000001234</b><span class="tx">VL01N</span><span class="scr">出荷伝票の登録：初期画面</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 出荷ポイントはプラント 1000 と出荷先 1000 から決定されます。決まらないと出荷伝票は保存できません</li><li><b>2</b> 受注を参照すると納期行が提案され、受注在庫 E がそのまま引き継がれます</li></ol><p class="gui-tip">自システムでの確認：VA03 → 明細 → メニュー「明細」→「出荷」から、受注明細をそのまま出荷伝票にすることもできます。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-4_s01_2.svg" alt="VL01N の出荷伝票明細。品目 ZMTO-FG01 を 10 PC、在庫区分が受注在庫（特別在庫 E）で引当済みの状態。" loading="lazy"><figcaption><b class="t">4-1 出荷明細：品目 ZMTO-FG01 / 10 PC / 在庫区分 受注在庫 E / 引当 10</b><span class="tx">VL01N</span><span class="scr">出荷伝票の登録：明細</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 在庫区分が受注在庫（E）になっていること。自由在庫だと出荷と受注在庫がつながっていません</li><li><b>2</b> 引当（引当数量）が 10 なら現物が確保できています</li></ol><p class="gui-tip">自システムでの確認：引当が 0 のときは受注在庫の数量（MMBE）と納期行の日付を確認してください。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>4-2 ピッキングと確認（VL02N）</h2>
+<ol class="steps">
+  <li><code>VL02N</code> → 出荷伝票番号 → Enter。</li>
+  <li>明細行の「<b>ピッキング数量</b>」に <code>10</code> を入力（現物を引当てた、という意思表示）。Enter 后引当状态变为「引当済」/「完全引当」。</li>
+  <li>确认画面上的 <b>特別在庫 E と受注番号</b>：出荷明細も受注在庫を向いていること（ここが自由在庫になっていたら、出荷が受注在庫とつながっていません）。</li>
+  <li>「保存」。出荷状態が「B（ピッキング済/出庫確認待ち）」になります。</li>
+  <li>（実務との違い）仓储作业的 TO/確認（<code>LT03</code>/<code>LT12</code>、ハンディ端末）在 LE/WM 场景里使用；本站是 IM（在庫管理）场景，直接在出荷伝票上做ピッキング＋出庫確認。</li>
+</ol>
+<figure class="gui"><img src="assets/gui/handson-4_s02_1.svg" alt="VL02N の出荷伝票変更画面。明細のピッキング数量に 10 を入力し、引当済になっている。" loading="lazy"><figcaption><b class="t">4-2 VL02N：ピッキング数量 10 を入力し、出荷ステータスを B へ</b><span class="tx">VL02N</span><span class="scr">出荷伝票の変更：ピッキング</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 明細の在庫区分と受注番号をここでも確認。自由在庫になっていたら出荷と受注在庫がつながっていません</li><li><b>2</b> ピッキング数量を入れる＝現物を確保したという意思表示。ステータス B がピッキング完了の状態です</li></ol><p class="gui-tip">自システムでの確認：本站は IM（在庫管理）场景のため、出荷伝票上でピッキングと出庫確認を行います（LE/WM の倉庫管理を有効にしている場合は TO 確認が必要です）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>4-3 出庫確認（PGI / 移動タイプ 601）</h2>
+<ol class="steps">
+  <li>仍在 <code>VL02N</code> → 菜单「出荷伝票」→「<b>出庫確認（PGI）</b>」→ Enter（或按画面上方的「出庫確認」按钮）。</li>
+  <li>系統会提示是否保存：确认消息「出庫確認が転記されました」。记下<b>物料传票番号</b>与<b>会计传票番号</b>（可在后续用 <code>FB03</code> 打开）。</li>
+  <li>确认库存：<code>MMBE</code> → <code>ZMTO-FG01</code>/<code>1000</code> → <b>受注在庫 E = 0</b>（10 PC 已出库给客户）。这是「受注在庫被消化」的瞬间。</li>
+  <li>确认移动类型：<code>SE16N</code> → <code>MATDOC</code>（/<code>MSEG</code>）→ 出荷伝票番号 或 年月 → 应看到移動タイプ <code>601</code>、特別在庫 <code>E</code>、数量 10。</li>
+  <li>确认会计：<code>FB03</code> → 会计传票 → 看「库存/売上原価」侧的借方（受注在庫的評価額が費用化）。金额取决于受注在庫的評価（C10/C16）。</li>
+  <li>ポイント：<b>出庫確認后出荷状态为「C（出庫確認済）」</b>，且受注明細状态会更新为「一部納入済/完了」。</li>
+</ol>
+<div class="box warn"><b class="t">出庫確認を取り消したい場合</b>
+<code>VL09</code>（出庫確認の取消）→ 出荷伝票 → 执行。库存会戻到受注在庫（数量恢复），会计传票冲销。
+练习中可以故意做一次「PGI → 取消 → 重新确认」，体会库存与会计的双向变化。</div>
+<figure class="gui"><img src="assets/gui/handson-4_s03_1.svg" alt="VL02N で出庫確認（PGI）を実行する画面。出荷伝票 0080001234 の出荷ステータスが C になる。" loading="lazy"><figcaption><b class="t">4-3 PGI 実行：出庫確認が転記され、移動タイプ 601 で受注在庫が消化される</b><span class="tx">VL02N</span><span class="scr">出荷伝票：出庫確認（PGI）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> PGI で受注在庫 E から 601 で出庫します。受注在庫が 0 になります（消化の瞬間）</li><li><b>2</b> 取り消すときは VL09（出庫確認の取消）。库存と会計が両方向に戻るのを練習すると理解が深まります</li></ol><p class="gui-tip">自システムでの確認：SE16N → MATDOC（旧構造は MSEG）で移動タイプ 601・特別在庫 E・数量 10 の行を確認します。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-4_s03_2.svg" alt="MMBE の在庫概要（出庫確認後）。特別在庫（得意先在庫 E）が 0 PC になっている。" loading="lazy"><figcaption><b class="t">4-3 確認：受注在庫が 10 → 0 PC になり、受注が納入済になる</b><span class="tx">MMBE</span><span class="scr">在庫概要：受注在庫 0 PC</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 受注在庫が 0 になる＝売れた分が在庫から抜けた。ここまでで SD×PP×MM が一周します</li></ol><p class="gui-tip">自システムでの確認：FB03 で PGI の会計伝票（売上原価 / 在庫）を確認できます。C16（OBYC）で見た設定が効いています。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>4-4 請求伝票の登録（VF01）</h2>
+<pre class="vals">請求タイプ  : F2（標準の請求）
+参照        : 出荷伝票 0080001234（または 納入日付範囲で一括請求）
+請求数量    : 10 PC
+金額        : 120,000 JPY（12,000 × 10。条件 PR00）
+税区分      : 販売組織2 の税区分に従う（例 10% → 税額 12,000 / 合計 132,000）
+</pre>
+<ol class="steps">
+  <li><code>VF01</code> → 請求タイプ <code>F2</code>、納入日付（または出荷伝票番号）→ Enter。</li>
+  <li>画面上部に請求对象（受注 <code>0000001234</code> / 出荷伝票）が表示される → 「保存」→ 记下<b>請求伝票番号</b>（例 <code>0090001234</code>）。</li>
+  <li>確認金额构成：用 <code>VF03</code> → 請求伝票 → 「条件」タブ：PR00 12,000 × 10 = 120,000、税額与合计。</li>
+  <li>确认会计：<code>VF03</code> → 「会計伝票」/ 或 <code>FB03</code>：売掛金（借）/ 売上（贷）。<b>至此，受注がお金になった</b>。</li>
+  <li>确认请求的取消方式（练习用）：<code>VF11</code>（請求伝票の取消）。注意：请求取消后 <code>VF01</code> 可以重新生成（同一出荷传票）。</li>
+</ol>
+<figure class="gui"><img src="assets/gui/handson-4_s04_1.svg" alt="VF01 の初期画面。請求タイプ F2 と、参照する出荷伝票 0080001234（または納入日付範囲）を入力する。" loading="lazy"><figcaption><b class="t">4-4 VF01：請求タイプ F2・参照に出荷伝票 0080001234</b><span class="tx">VF01</span><span class="scr">請求伝票の登録：初期画面</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 請求タイプ F2 が使えること、そして出荷伝票 LF → 請求 F2 のコピー制御が有効であることが前提です（C15）</li><li><b>2</b> 請求数量・金額は出荷実績（10 PC）と条件 PR00 から決まります</li></ol><p class="gui-tip">自システムでの確認：請求をやり直すときは VF11（請求伝票の取消）。取消後は VF01 で再作成できます。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-4_s04_2.svg" alt="請求伝票の条件タブ。PR00 120,000 JPY、税額 12,000、合計 132,000 JPY が表示されている。" loading="lazy"><figcaption><b class="t">4-4 請求金額：PR00 12,000 × 10 = 120,000 JPY、税 12,000、合計 132,000 JPY</b><span class="tx">VF01</span><span class="scr">請求伝票の条件</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 120,000 JPY は受注時の条件（PR00 12,000 × 10）と一致しているはず。ここまで金額がつながると受注がお金になりました</li></ol><p class="gui-tip">自システムでの確認：VF03 で請求伝票を照会し、条件タブと会計伝票（売掛金 / 売上）を確認します。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>4-5 伝票フローで全プロセスを串起来（本练习的收尾）</h2>
+<ol class="steps">
+  <li><code>VA03</code> → 受注 <code>0000001234</code> → 菜单「環境」→「<b>伝票フロー（Document Flow）</b>」。</li>
+  <li>应显示一条完整的链（顺序与显示项目随版本略有差异）：<br>
+     <span class="mono">受注 0000001234 → 製造指図 1000123 → 入庫（物料伝票 49…）→ 出荷 0080001234 → 出庫確認（物料伝票 49…）→ 請求 0090001234</span></li>
+  <li>从出荷伝票侧也能反向查看（<code>VL03N</code> → 「環境」→「伝票フロー」），确认「受注 ⇄ 出荷 ⇄ 請求」互相能看到。</li>
+  <li>表层面（可选）：<code>SE16N</code> → <code>VBFA</code>（伝票フロー）→ 输入受注番号 → 看到后续传票的关联记录。</li>
+  <li>最后再回 <code>MD04</code>：应显示「需要（得意先所要量）已被吸收 / 受注在庫 0 / 指図完了 / 利用可能 0」——<b>整个 MTO 链路闭合</b>。</li>
+</ol>
+<figure class="gui"><img src="assets/gui/handson-4_s05_1.svg" alt="VA03 の伝票フロー。受注 0000001234 から製造指図 1000123・素材伝票・出荷伝票 0080001234・請求伝票 0090001234 までの連鎖が表示されている。" loading="lazy"><figcaption><b class="t">4-5 伝票フロー：受注 → 指図 → 入庫 → 出荷 → 出庫確認 → 請求 が一本につながる</b><span class="tx">VA03</span><span class="scr">伝票フロー</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 受注 1 件から指図・出荷・請求までがすべてつながっていること＝ MTO の全工程が成立した証明です</li></ol><p class="gui-tip">自システムでの確認：SE16N → VBFA（伝票フロー）に受注番号を入れると、後続伝票の関連レコードを直接確認できます。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-4_s05_2.svg" alt="MD04 の在庫/所要量一覧（請求まで完了後）。需要が吸収され、受注在庫 0・利用可能数量 0 で閉じている。" loading="lazy"><figcaption><b class="t">4-5 最後の MD04：需求が吸収され、受注在庫 0・指図完了・利用可能 0 で閉じる</b><span class="tx">MD04</span><span class="scr">品目在庫/所要量一覧（クロージング確認）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 受注由来の需要・供給がすべて納入済みになり、余った在庫もありません（自由在庫 0 のまま）</li></ol><p class="gui-tip">自システムでの確認：得意先別表示に切り替えると、この受注の在庫と需要が消えていることを確認できます。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>期待结果汇总（本练习做完）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>确认项目</th><th>期待值</th><th>确认方法</th></tr>
+<tr><td>1</td><td>出荷伝票</td><td>1 件、10 PC、状態 C（出庫確認済）</td><td><code>VL03N</code></td></tr>
+<tr><td>2</td><td>出荷明細の在庫区分</td><td>特別在庫 <code>E</code> + 受注番号</td><td><code>VL03N</code> 明細</td></tr>
+<tr><td>3</td><td><b>受注在庫 E</b></td><td><b>10 → 0</b></td><td><code>MMBE</code>/<code>MB52</code></td></tr>
+<tr><td>4</td><td>在庫伝票</td><td>移動タイプ 601（特別在庫 E）、数量 10</td><td><code>MATDOC</code>（/<code>MSEG</code>）</td></tr>
+<tr><td>5</td><td>請求伝票</td><td>1 件、120,000 JPY（税別）</td><td><code>VF03</code></td></tr>
+<tr><td>6</td><td>会計伝票</td><td>出庫：受注在庫 → 売上原価／請求：売掛金 → 売上</td><td><code>FB03</code></td></tr>
+<tr><td>7</td><td>受注明細状態</td><td>「完了」/「請求済」</td><td><code>VA03</code></td></tr>
+<tr><td>8</td><td><b>伝票フロー</b></td><td><b>受注 → 指図 → 入庫 → 出荷 → 請求 が全部つながっている</b></td><td><code>VA03</code> 環境 → 伝票フロー（/ <code>VBFA</code>）</td></tr>
+</table>
+<p class="mini">金額与仕訳的具体数字取决于你系统的税区分与受注在庫的評価方式（評価付/評価なし）。<b>要看的是「方向与结构」是否正确</b>：受注在庫が減って売上原価になり、売掛金と売上が計上される。</p>
+
+<h2>つまずきと対処（本练习版）</h2>
+<table class="tbl wide">
+<tr><th>症状</th><th>最可能的根因</th><th>确认 / 対処</th></tr>
+<tr><td>VL01N に出荷対象（納期行）が出ない</td><td>受注明細が「完了」、納入日付範囲外、納入ブロック、出荷タイプ違い</td><td><code>VA03</code> 明細状態と納期行の納入日を确认；納入日付範囲を広げる</td></tr>
+<tr><td>引当数量が 0 になる</td><td>受注在庫に在庫がない（入庫漏れ）、保管場所違い、引当が他で消費済</td><td><code>MMBE</code> で受注在庫 10 PC を确认；出荷明細の保管場所を受注在庫のある場所に</td></tr>
+<tr><td>出荷明細の在庫区分が空／自由在庫になる</td><td>受注明細の特別在庫 E が無い（＝配置側の問題）</td><td><a href="config.html#c6">C6</a>（明細カテゴリ）／<a href="config.html#c2">C2</a>（MRP4）／<a href="config.html#c10">C10</a>（所要量クラス）→ 修正后新建受注で再試行</td></tr>
+<tr><td>PGI で「勘定が見つからない」（FI エラー）</td><td><code>OBYC</code> の GBB/BSX 等の勘定決定が未設定</td><td>FI 顾问确认 <code>OBYC</code>；练习环境通常已配好，若未配可用「表示」先理解设定</td></tr>
+<tr><td>PGI で数量不足エラー</td><td>受注在庫が 10 未満（部分入庫）／他出荷が先に引当</td><td><code>MMBE</code> 复核；数量を合わせる or 部分出荷で継続</td></tr>
+<tr><td>VF01 で請求金额 0</td><td>条件 PR00 無し / 有効期間外 / 得意先違う / 計算手続</td><td><code>VK13</code> 确认条件；<code>VF02</code> → 再決定（<code>VF11</code> 取消后重做）</td></tr>
+<tr><td>請求対象が出ない</td><td>出荷が未出庫確認（PGI 前不能请求）、請求関連 OFF、コピー制御（<code>VTFL</code>）</td><td><code>VL03N</code> 状態が C か确认；<code>VTFL</code> の出荷 → 請求コピー制御を确认</td></tr>
+<tr><td>伝票フローに指図が出ない</td><td>指図の受注明細参照が無い（CO01 で作った等）</td><td>MTO では <code>CO08</code>／計画手配转换で作れば出ます。仕様として「出ない」なら理由を说明できるように</td></tr>
+</table>
+
+<h2>验收（完成基准）</h2>
+<div class="box ok"><b class="t">✓ 练习④验收清单</b>
+<ul class="check">
+  <li><code>VL01N</code> で受注から出荷伝票を作成した（在庫区分 E / 受注番号付き）。</li>
+  <li><code>VL02N</code> でピッキング数量 10 を入力し、引当済にした。</li>
+  <li>出庫確認（PGI, 601）を実行し、<code>MMBE</code> の受注在庫が <b>0</b> になった。</li>
+  <li><code>VF01</code> で請求伝票（120,000 JPY）を作成し、<code>VF03</code> で条件明细を確認した。</li>
+  <li><code>FB03</code> で出库・请求の会计传票を開き、借貸方向（受注在庫→売上原価、売掛金→売上）を说明できる。</li>
+  <li><code>VA03</code> の伝票フローで「受注 → 指図 → 入庫 → 出荷 → 請求」が全部つながっている。</li>
+  <li><code>VL09</code> または <code>VF11</code> の取消手顺を 1 つ试过（または説明できる）。</li>
+</ul></div>
+
+<div class="box info"><b class="t">発展課題</b>
+① <b>部分出荷</b>：受注 10 PC に対し 101 で 6 PC 入庫 → 出荷 6 PC → 请求 6 PC を見る（受注明細状態が「一部納入済」のまま）。<br>
+② <b>複数受注の受注在庫を同時に見る</b>：别の得意先で同品目の受注を作り、<code>MMBE</code> で「受注在庫が受注ごとに分かれている」ことを确认（MTO の本質）。<br>
+③ <b>受注在庫のままでの請求</b>：出荷せずに請求できない理由（<code>VTFL</code> のコピー制御と請求関連項目）を确认。</div>
+
+<div class="box info"><b class="t">下一步</b> → <a href="handson-5.html">练习⑤ 発展（組立処理・差異決済）と故障対応</a> → <a href="quiz.html">能力测试</a></div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SD 受注生産（MTO）实战训练站</h5><p>练习④：出荷伝票 → ピッキング → 出庫確認（601）→ 請求 → 伝票フロー。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 受注と所要量</a><br><a href="handson-2.html">② MRP と製造指図</a><br><a href="handson-3.html">③ 出庫と入庫</a><br><a href="handson-4.html">④ 出荷と請求</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">练习配置手顺</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

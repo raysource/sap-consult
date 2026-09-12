@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>首页 · RAP 专项训练站（ABAP RESTful Programming）</title>
+<meta name="description" content="RAP 专项训练站：参照 S/4HANA 学习 WBS 整理的 RAP（Restful ABAP Programming Model）实训——从数据模型到 Draft / Action / Fiori Elements 预览，含详细手顺、项目代码与能力测试。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">RAP</span><span class="txt">RAP 专项训练站</span></a>
+    <nav class="main">
+      <a class="active" href="index.html">首页</a>
+      <a href="concept.html">概念与架构</a>
+      <a href="project.html">完整项目</a>
+      <a href="handson-1.html">手顺① 数据模型</a>
+      <a href="handson-2.html">手顺② CDS 视图</a>
+      <a href="handson-3.html">手顺③ RAP 行为</a>
+      <a href="handson-4.html">手顺④ 服务与 Fiori</a>
+      <a href="code.html">项目代码</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero"><div class="hero-inner">
+  <div class="kicker">ABAP 经验者向け · 中文实训 · 对照学习 WBS</div>
+  <h1>RAP 专项训练站</h1>
+  <p class="lead">以《SAP_S4HANA_BTP 学習WBS.xlsx》为蓝本，抽出其中 RAP 学习路径（WBS PH3 3.1〜3.8 + 統合ミニプロジェクト），整理成一套可照做的实训：<b>每个阶段都有详细手顺、操作流程图、可复制的项目代码与能力测试</b>。从建表开始，到 Draft 启用的 Managed BO、Action / Validation / Determination、OData V4 服务发布与 Fiori Elements 预览，一站走完。</p>
+</div></div>
+
+<div class="wrap">
+<main class="page">
+<article>
+
+<h2 id="nav">学习导航</h2>
+<div class="box info"><b class="t">新</b> 想一口气做完一个完整项目？直接进 <a href="project.html"><b>完整项目：ZPURORDER_APP 开发手顺（STEP1〜10）</b></a> —— 手顺与全部代码按 STEP 串成一页，代码与 project-code/ 文件夹一一对应。</div>
+<div class="grid cards">
+  <div class="card">
+    <h3><a href="concept.html">① RAP 概念与架构</a></h3>
+    <p>RAP 是什么、BO 五层结构、Managed / Unmanaged、Draft 与 VDM 命名（I/C/P）、与 CDS / OData V4 / Fiori Elements 的关系（对照 Sheet「RAP Layer」）。</p>
+    <div class="tags"><span>概念</span><span class="tag teal">约 1h</span></div>
+  </div>
+  <div class="card">
+    <h3><a href="handson-1.html">② 手顺① 数据模型准备</a></h3>
+    <p>建包与 Transport、创建 Z_PO_HDR / Z_PO_ITM / Z_VENDOR_TXT 三张表、SE16N 造数（WBS PH0、统合项目 STEP1）。</p>
+    <div class="tags"><span>实操</span><span class="tag teal">约 2h</span></div>
+  </div>
+  <div class="card">
+    <h3><a href="handson-2.html">③ 手顺② CDS 视图</a></h3>
+    <p>Root BO 视图 ZR_ZPOHEADER / ZR_ZPOITEM、Composition 与 Association、数据预览确认关联结果（WBS 3.1、统合项目 STEP2）。</p>
+    <div class="tags"><span>实操</span><span class="tag teal">约 4h</span></div>
+  </div>
+  <div class="card">
+    <h3><a href="handson-3.html">④ 手顺③ RAP 行为层</a></h3>
+    <p>Managed BDEF（含 Draft）、Behavior Implementation：编号、Determination、Validation、Action「确定订单」、字段控制（WBS 3.2〜3.7、STEP4）。</p>
+    <div class="tags"><span>实操</span><span class="tag amber">核心 · 约 15h</span></div>
+  </div>
+  <div class="card">
+    <h3><a href="handson-4.html">⑤ 手顺④ 服务发布与 Fiori</a></h3>
+    <p>Projection 视图、Service Definition / Binding（OData V4 UI）、Fiori Elements 列表预览、UI 注解（WBS 3.4 / 4.x 最小集、STEP5/6/10 验收）。</p>
+    <div class="tags"><span>实操</span><span class="tag teal">约 4h</span></div>
+  </div>
+  <div class="card">
+    <h3><a href="code.html">⑥ 项目代码</a></h3>
+    <p>统合迷你项目（ZPURORDER_APP）完整代码：DDL 表、CDS、BDEF、BIL、EML 测试程序、DCL 示例 —— 全部带复制按钮。</p>
+    <div class="tags"><span>代码</span></div>
+  </div>
+  <div class="card">
+    <h3><a href="quiz.html">⑦ 能力测试</a></h3>
+    <p>按 WBS 知识点组织的单选题（点击即判分 + 解说），以及按「统合项目 STEP10 验收」拆解的实作检查表与达标判定。</p>
+    <div class="tags"><span>测试</span><span class="tag green">自我验收</span></div>
+  </div>
+</div>
+
+<h2 id="scope">本站在学习 WBS 中的范围</h2>
+<p>Excel《SAP_S4HANA_BTP-学習WBS.xlsx》是一份面向 ABAP 经验者的完整 S/4HANA 开发路线（Phase 0〜7，合计约 122h）。本站<b>只做其中的 RAP 路线</b>，即围绕「統合ミニプロジェクト：Z 购买订单管理应用（ZPURORDER_APP）」展开的 RAP 部分：</p>
+<table class="tbl">
+<tr><th>WBS 范围</th><th>内容</th><th>本站承接</th></tr>
+<tr><td>PH3 RAP 3.1〜3.8</td><td>Managed BO / BDEF / BIL / Projection / Service / Draft / Action / Numbering / Authorization</td><td>手顺②③④ + 能力测试（含 PH3 完成基准）</td></tr>
+<tr><td>Sheet③ 統合ミニプロジェクト</td><td>Z_PO_HDR / Z_PO_ITM / Z_VENDOR_TXT 的购买订单管理 App（STEP1〜10）</td><td>作为本站贯穿始终的实训项目（STEP10 最终验收 → 能力测试页）</td></tr>
+<tr><td>PH1 CDS（最小前置）</td><td>Root Entity / Composition / Association / 注解</td><td>手顺② 内联讲解，不再单独开篇</td></tr>
+<tr><td>PH4 Fiori Elements（最小集）</td><td>List Report 预览所需的 UI 注解</td><td>手顺④ 内联讲解（深度 UI 定制属 Fiori 课程，不在本站）</td></tr>
+<tr><td>PH0 / PH5 / PH5' / PH6 / PH7 其余内容</td><td>SEGW OData V2、项目追加（Developer/KeyUser）、SVF 报表等</td><td>明确不在本站范围（Excel 中另属 OData / 扩展 / 报表课程）</td></tr>
+</table>
+
+<h2 id="flow">端到端操作流程（总览）</h2>
+<div class="flow">
+  <div class="node">① 建表<br><small>Z_PO_HDR / ITM / VENDOR</small></div><div class="arrow">→</div>
+  <div class="node">② CDS BO 视图<br><small>ZR_ZPOHEADER / ZR_ZPOITEM</small></div><div class="arrow">→</div>
+  <div class="node">③ BDEF + BIL<br><small>Draft / Action / 校验</small></div><div class="arrow">→</div>
+  <div class="node">④ Projection<br><small>ZC_ZPOHEADER / ZC_ZPOITEM</small></div><div class="arrow">→</div>
+  <div class="node">⑤ Service<br><small>ZSD_ → Binding OData V4</small></div><div class="arrow">→</div>
+  <div class="node">⑥ Fiori Elements<br><small>List Report 预览</small></div><div class="arrow">→</div>
+  <div class="node dim">⑦ 验收测试<br><small>能力测试页</small></div>
+</div>
+
+<h2 id="objects">实训对象一览（全部可复制）</h2>
+<div class="obj-list">
+  <div class="obj-item"><b>Table (SE11)</b>z_po_hdr · z_po_itm · z_vendor_txt</div>
+  <div class="obj-item"><b>CDS BO View</b>ZR_ZPOHEADER（root）<br>ZR_ZPOITEM（child）</div>
+  <div class="obj-item"><b>Behavior</b>ZR_ZPOHEADER（BDEF, managed + draft）<br>zbp_zr_zpoheader（BIL 池）</div>
+  <div class="obj-item"><b>Projection</b>ZC_ZPOHEADER · ZC_ZPOITEM</div>
+  <div class="obj-item"><b>Service</b>ZSD_ZPURCHASEORDER<br>ZUI_ZPURCHASEORDER_O4（OData V4 UI）</div>
+  <div class="obj-item"><b>扩展/测试</b>ZNPO（番号范围）· DCL 示例<br>EML 测试程序 ZRAP_EML_DEMO</div>
+</div>
+<div class="box info"><b class="t">💡 学习建议（来自 WBS 备注）</b>
+RAP 是“骨架自动生成后读代码”最有效的部分：先在 ADT 用 RAP Generator / Quick Assist 生成对象，再对照本站代码逐行理解，最后手写改动。统合项目 STEP4 卡住的人最多，本站把 STEP4 拆成手顺③的 6 个小节，请放慢速度。</div>
+
+<h2 id="time">预计学习时间（对照 WBS ①）</h2>
+<table class="tbl">
+<tr><th>阶段</th><th>本站页面</th><th>难度</th><th>时间(h)</th></tr>
+<tr><td>PH0 环境准备</td><td>手顺①</td><td>★☆☆☆☆</td><td>2</td></tr>
+<tr><td>PH1 CDS 前置（最小集）</td><td>手顺②</td><td>★★☆☆☆</td><td>4</td></tr>
+<tr><td>PH3 RAP（本站核心）</td><td>手顺③④</td><td>★★★★☆</td><td>18</td></tr>
+<tr><td>PH7 統合ミニプロジェクト</td><td>全站 + 能力测试</td><td>★★★★☆</td><td>6（RAP 部分）</td></tr>
+</table>
+<p style="color:var(--muted)">※ 其余路线（SEGW OData V2、SVF、KeyUser/Developer 扩展）不在本站范围内，请回到原 WBS 学习。</p>
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div>
+    <h5>RAP 专项训练站</h5>
+    <p>基于《SAP_S4HANA_BTP-学習WBS.xlsx》（WBS PH3 RAP + 統合ミニプロジェクト）整理。<br>与主站 <a href="../sap/btp-dev-hub/index.html">SAP BTP 开发者训练站</a> 互补。</p>
+  </div>
+  <div class="cols">
+    <div><h5>内容</h5><a href="project.html">完整项目</a><br><a href="code.html">项目代码</a><br><a href="quiz.html">能力测试</a></div>
+    <div><h5>手顺</h5><a href="handson-1.html">① 数据模型</a><br><a href="handson-2.html">② CDS 视图</a><br><a href="handson-3.html">③ RAP 行为</a><br><a href="handson-4.html">④ 服务与 Fiori</a></div>
+  </div>
+</div></footer>
+
+<script src="assets/main.js"></script>
+</body>
+</html>

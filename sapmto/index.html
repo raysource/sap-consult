@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>总览 · SAP S/4HANA SD 受注生産（MTO）实战训练站</title>
+<meta name="description" content="SAP S/4HANA SD 受注生産（MTO）实训站：受注→個別在庫(E特在)→MRP→製造指図→完成入庫→出荷→請求的一条龙练习，含详细 SPRO 配置手顺、操作手顺、验收清单、故障排查与 On-Premise / Public Cloud 差异对照。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/mto.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MTO</span><span class="txt">SD 受注生産 训练站</span></a>
+    <nav class="main">
+      <a class="active" href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①受注</a>
+      <a href="handson-2.html">②MRP</a>
+      <a href="handson-3.html">③出入库</a>
+      <a href="handson-4.html">④出货</a>
+      <a href="handson-5.html">⑤发展</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero"><div class="hero-inner">
+  <div class="kicker">SAP S/4HANA · SD × PP × MM × FI 跨模块实训 · 中文 + 日本語术语对照</div>
+  <h1>SD 受注生産（MTO）实战训练站</h1>
+  <p class="lead">一条完整可跑的 <b>受注生産（Make-to-Order / MTO）</b> 场景：<b>受注 → 得意先個別在庫（特在 E）→ MRP → 製造指図 → 完成品入庫 → 出荷・出庫確認 → 請求</b>。
+  本站分两层：<b>练习配置</b>（VOV4 / VOV7 / VOV5 / VOV6 / OVZG / OVZI / OPPS 的 SPRO 手顺，逐步给到输入值与确认方法）与
+  <b>练习流程</b>（VA01 起的 5 个实操练习，每个练习都有输入值表、操作手顺、期待结果、故障对策、验收清单）。
+  主口径为 <b>S/4HANA On-Premise</b>，同步给出 <b>Public Cloud（SSCUI / スコープアイテム）</b> 的差异对照。</p>
+  <div class="toc">
+    <a href="#scope">1. 这个场景教什么</a>
+    <a href="#story">2. 训练场景设定</a>
+    <a href="#flow">3. 端到端流程</a>
+    <a href="#plan">4. 练习安排</a>
+    <a href="#objects">5. 设定对象一览</a>
+    <a href="#env">6. 前提与环境</a>
+    <a href="#caveat">7. 关于标准值的立场</a>
+    <a href="#sources">8. 出典</a>
+  </div>
+</div></div>
+
+<div class="wrap">
+<main class="page"><article>
+
+<h2 id="scope">1. 这个场景教什么</h2>
+<p>SAP 的「受注生産（MTO）」不是单一模块的功能，而是 SD（受注・出荷・請求）× PP（所要量・指図）× MM（在庫・入出庫）× CO/FI（評価・差異）四块拼起来的机制。
+它的关键点只有一个：<b>需求与库存都要「按受注明细」区分开</b>——这就是「得意先個別在庫（特別在庫区分 E）」。一旦这一点没配好，
+后面所有症状都会出现：MD04 看不到需求、计划订单不生成、生产订单吃不到销售订单库存、交货时无法引当、销售订单库存不被评估。</p>
+
+<div class="grid cards">
+  <div class="card">
+    <h3><a href="config.html">① 练习配置手顺（详细 SPRO）</a></h3>
+    <p>C0〜C16 共 17 个 STEP：从品目主数据（销售组织2 / MRP1〜4 / 会计）到 明細カテゴリグループ・明細カテゴリ・納入日程行カテゴリ・所要量タイプ／クラス・計画方針グループ 的逐项配置，每步给出 IMG 路径、事务码、输入值、<b>在自系统中的确认方法</b>。</p>
+    <div class="tags"><span>配置</span><span class="tag amber">约 150 分</span></div>
+  </div>
+  <div class="card">
+    <h3><a href="handson-1.html">② 练习流程（5 个实操）</a></h3>
+    <p>练习① 受注与所要量转送 → 练习② MRP 与製造指図 → 练习③ 部品出庫・実績・完成入庫 → 练习④ 出荷・出庫確認・請求 → 练习⑤ 组立处理（自働指図）与差异结算。每个练习都是「照做即可」的详细手顺 + 期待结果 + 验收清单。</p>
+    <div class="tags"><span>实操</span><span class="tag teal">约 240 分</span></div>
+  </div>
+  <div class="card">
+    <h3><a href="concept.html">③ 术语与设计（为什么会这样）</a></h3>
+    <p>MTS / MTO / 组立处理的差异、明細カテゴリ 4 键决定逻辑、所要量タイプ → 所要量クラス → 個別在庫 E 的传递链、相关表（VBAK/VBAP/VBEP/VBBS/MSKA/AUFK…）与 S/4HANA 变更点（MRP Live、受注在庫の評価）。</p>
+    <div class="tags"><span>概念</span><span class="tag gray">约 60 分</span></div>
+  </div>
+  <div class="card">
+    <h3><a href="quiz.html">④ 能力测试 + 验收清单</a></h3>
+    <p>27 题（概念 / 配置 / 流程 / 故障）× 点击判分 + 解说，外加一份实机验收清单：按清单把系统里的证据（受注明細、MD04、MMBE 特在 E、伝票フロー）逐条核对，才能算「这个场景跑通了」。</p>
+    <div class="tags"><span>测试</span><span class="tag green">约 30 分</span></div>
+  </div>
+</div>
+
+<h2 id="story">2. 训练场景设定</h2>
+<p>场景取自典型「特注品受注生産」：客户订购特注组立品（按单生产、不做库存），系统按受注明细管理个别库存，生产完成后只供该客户。</p>
+
+<h3>组织与主数据（本教程统一使用的值，可按自己环境改）</h3>
+<table class="tbl wide">
+<tr><th>区分</th><th>值</th><th>说明</th></tr>
+<tr><td>会社コード / プラント</td><td><code>1000</code> / <code>1000</code></td><td>工厂即出荷プラント</td></tr>
+<tr><td>販売組織 / 販売チャネル / 部門</td><td><code>1000</code> / <code>10</code> / <code>00</code></td><td>销售区域（販売エリア）</td></tr>
+<tr><td>得意先（受注先・出荷先）</td><td><code>1000</code></td><td>特注机械商社 A（要已建 販売ビュー）</td></tr>
+<tr><td>完成品（受注生産品）</td><td><code>ZMTO-FG01</code></td><td>品目タイプ <code>FERT</code>，単位 PC，手配タイプ E（内製）</td></tr>
+<tr><td>部品 1（板材）</td><td><code>ZMTO-RM01</code></td><td>品目タイプ <code>ROH</code>（or HAWA），库存品</td></tr>
+<tr><td>部品 2（紧固件）</td><td><code>ZMTO-RM02</code></td><td>品目タイプ <code>HAWA</code>，库存品</td></tr>
+<tr><td>作業区 / 作業手順</td><td><code>ZMTO_WC01</code> / 标准作业组</td><td>组立工程 0010，标准时间 1 H</td></tr>
+<tr><td>BOM</td><td><code>ZMTO-FG01</code> → RM01×2, RM02×8</td><td>1 EA 完成品所需部品（CS01）</td></tr>
+<tr><td>販売伝票タイプ / 明細カテゴリ</td><td><code>OR</code> / <code>TAN</code>（练习中追加 <code>ZTAK</code>）</td><td>受注・明細</td></tr>
+<tr><td>納入日程行カテゴリ</td><td><code>CN</code> / <code>CP</code>（练习中追加 <code>ZCP</code>）</td><td>受注納入日程（所要量転送あり）</td></tr>
+<tr><td>戦略グループ / 所要量タイプ</td><td><code>20</code> / <code>KE</code></td><td>受注生産（組立指図なし）→ 所要量クラス <code>040</code>（S/4HANA Cloud 的 MTO 为 <code>046</code>）</td></tr>
+<tr><td>製造指図タイプ / 移動タイプ</td><td><code>PP01</code> / <code>261・101・601</code></td><td>部品出庫 261、完成入庫 101、出庫確認 601</td></tr>
+<tr><td>出荷タイプ / 請求タイプ</td><td><code>LF</code> / <code>F2</code></td><td>标准出荷・标准请求</td></tr>
+</table>
+
+<div class="box info"><b class="t">练习量（业务故事）</b>
+得意先 1000 下达特注品 <code>ZMTO-FG01</code> <b>10 PC</b>（单价 12,000 JPY，合计 120,000 JPY），希望纳期 = 受注日 + 30 日。
+系统应产生：①受注明细的個別所要量（特在 E）→ ②计划订单 → ③生产订单（关联销售订单明细）→ ④部品 20 / 80 的出库 → ⑤完成品 10 PC 入「受注在庫 E」
+→ ⑥出荷 10 PC + 出庫確認（601）→ ⑦请求 120,000 JPY。全程在 MD04 / MMBE / MB52 / 伝票フロー 中可追踪。</div>
+
+<h2 id="flow">3. 端到端流程（练习要跑通的 10 个动作）</h2>
+<div class="flow">
+  <div class="node">1 VA01 受注<br><small>TAN / CP</small></div><div class="arrow">→</div>
+  <div class="node">2 MD04 個別所要量<br><small>特在 E</small></div><div class="arrow">→</div>
+  <div class="node">3 MD01N / MD02<br><small>MRP 実行</small></div><div class="arrow">→</div>
+  <div class="node">4 計画手配<br><small>＝受注在庫用</small></div><div class="arrow">→</div>
+  <div class="node">5 CO08 / CO40<br><small>製造指図</small></div><div class="arrow">→</div>
+  <div class="node">6 MIGO 261<br><small>部品出庫</small></div><div class="arrow">→</div>
+  <div class="node">7 CO11N<br><small>製造実績</small></div><div class="arrow">→</div>
+  <div class="node">8 MIGO 101<br><small>完成品入庫 E</small></div><div class="arrow">→</div>
+  <div class="node">9 VL01N/VL02N<br><small>出荷・601</small></div><div class="arrow">→</div>
+  <div class="node">10 VF01<br><small>請求</small></div>
+</div>
+<table class="tbl wide">
+<tr><th>#</th><th>动作</th><th>事务码</th><th>系统里要看什么（证据）</th><th>对应练习</th></tr>
+<tr><td>1</td><td>受注登録（受注明細 + 納入日程行）</td><td><code>VA01</code></td><td>明細カテゴリ / 納入日程行カテゴリ / 所要量タイプ / 特別在庫 E</td><td><a href="handson-1.html">练习①</a></td></tr>
+<tr><td>2</td><td>所要量与在库的确认</td><td><code>MD04</code>・<code>CO09</code>・<code>MMBE</code></td><td>「得意先所要量」行（带受注番号・明細），受注在庫 E 的现有量</td><td><a href="handson-1.html">练习①</a></td></tr>
+<tr><td>3</td><td>MRP 実行</td><td><code>MD01N</code> / <code>MD02</code></td><td>计划订单生成，其「在庫区分」为受注在庫（E）</td><td><a href="handson-2.html">练习②</a></td></tr>
+<tr><td>4</td><td>計画手配 → 製造指図</td><td><code>MD04</code> / <code>CO40</code> / <code>CO08</code></td><td>指図的品质，受注明細参照（販売伝票・明細），部品予約（RESB）</td><td><a href="handson-2.html">练习②</a></td></tr>
+<tr><td>5</td><td>部品出庫（261）</td><td><code>MIGO</code> / <code>MB1A</code></td><td>部品のプラント在庫減、指図の実績数量（AFPO 系）</td><td><a href="handson-3.html">练习③</a></td></tr>
+<tr><td>6</td><td>製造実績（工程確認）</td><td><code>CO11N</code></td><td>歩留数量 = 10，指図状态 CNF</td><td><a href="handson-3.html">练习③</a></td></tr>
+<tr><td>7</td><td>完成品入庫（101 → 受注在庫 E）</td><td><code>MIGO</code> / <code>MB31</code></td><td>MMBE / MB52 的「受注在庫」10 PC（区分 E、受注番号付き）</td><td><a href="handson-3.html">练习③</a></td></tr>
+<tr><td>8</td><td>出荷伝票・ピッキング</td><td><code>VL01N</code></td><td>出荷明細的 在庫区分 E + 受注番号、引当数量 10</td><td><a href="handson-4.html">练习④</a></td></tr>
+<tr><td>9</td><td>出庫確認（PGI 601）</td><td><code>VL02N</code></td><td>受注在庫 E が 0 に、在庫が得意先へ（MSEG / 会計伝票）</td><td><a href="handson-4.html">练习④</a></td></tr>
+<tr><td>10</td><td>請求伝票登録</td><td><code>VF01</code></td><td>请求 120,000 JPY、FI 伝票（<code>FB03</code>）、伝票フロー闭合</td><td><a href="handson-4.html">练习④</a></td></tr>
+</table>
+
+<div class="box ok"><b class="t">授课用の成果物</b>
+① <a href="instructor.html"><b>讲师版（解答・採点ポイント）</b></a>：時間割 / 事前準備 / 配置 C0〜C16 の解答と採点ポイント / 必出 Q&A 11 件 / 故障の教え方 / 評価基準。<br>
+② <a href="worksheet.html"><b>学员版ワークシート（挖空・記入用）</b></a>：配置確認・伝票番号の記録・MD04 読解・故障記録・用語の言語化（印刷可）。<br>
+③ <b>Excel 版</b>：<span class="mono">SD受注生産MTO_要件定義・手順書.xlsx</span>（11 シート：概要 / 環境前提 / 設定一覧 / 配置手順 / 練習手順 / 期待結果 / 故障対照表 / 用語集 / 出典 / 受講者チェック / 講師用ガイド）。
+再生成は <span class="mono">python3 tools/make_mto_xlsx.py</span>（openpyxl が必要）。</div>
+
+<h2 id="plan">4. 练习安排（建议 2 天，或 1 天压缩版）</h2>
+<table class="tbl wide">
+<tr><th>时段</th><th>内容</th><th>页面</th><th>完成基准</th></tr>
+<tr><td>Day1 上午</td><td>概念与设计：MTO 的机制、明細カテゴリ 4 键、E 特在的传递链</td><td><a href="concept.html">概念与设计</a></td><td>能画出发注→指图→入库的字段传递链并说明 3 个 E 特在成立条件</td></tr>
+<tr><td>Day1 下午</td><td>练习配置 C0〜C16（自带系统、自己做）</td><td><a href="config.html">练习配置手顺</a></td><td>配置清单 17 项全部确认，ZTAK / Z001 / ZCP 可被 VA01 自动决定出来</td></tr>
+<tr><td>Day2 上午</td><td>练习流程 ①〜③（受注 → MRP → 入库）</td><td><a href="handson-1.html">①②</a> <a href="handson-3.html">③</a></td><td>MD04 可见受注在庫 E 的入库行，MMBE 受注在庫 10 PC</td></tr>
+<tr><td>Day2 下午</td><td>练习流程 ④〜⑤ + 故障排查 + 测试</td><td><a href="handson-4.html">④</a> <a href="handson-5.html">⑤</a> <a href="quiz.html">测试</a></td><td>伝票フロー 受注→指図→入庫→出荷→請求 全闭合；测试 ≥75%</td></tr>
+</table>
+<div class="box warn"><b class="t">环境要求</b>
+① S/4HANA On-Premise（2020〜2024 均可，画面路径以 2023/2024 为准）；② 拥有可写入的カスタマイジング依頼（Customizing Request）与開発権限；
+③ SD・MM・PP・FI 的基本组织构造已就绪（販売組織/プラント/得意先/会計ビュー）；④ 练习用客户与品目编号范围可用。
+若用 Public Cloud，请先读 <a href="config.html#cloud">Public Cloud 差异对照</a>：大部分 <b>SPRO 自定义（新规明細カテゴリ・新规伝票タイプ）不可用</b>，只能通过 SSCUI 与 スコープアイテム（BJE / IYT / 1BM）实现。</div>
+
+<h2 id="objects">5. 设定对象一览（要配/要确认的 17 项）</h2>
+<p>下表是「标准值 + 本站练习值 + 确认方法」的总表。<b>标准值在不同版本/不同系统可能不同</b>，所以每一项都给出「在自系统中怎么确认」。
+详细手顺见 <a href="config.html">练习配置手顺</a>。</p>
+<table class="tbl wide">
+<tr><th>#</th><th>设定项目</th><th>标准值的通常情况</th><th>本站练习值</th><th>设定/确认处</th></tr>
+<tr><td>C1</td><td>品目カテゴリグループ（Sales Org 2）</td><td><code>0001</code> NORM（标准品）ほか DIEN / LEIS / ERLA / LUMF</td><td><code>0001</code>（练习⑤追加 <code>Z001</code>）</td><td><code>MM01/MM03</code> 販売組織2</td></tr>
+<tr><td>C2</td><td>品目 MRP1</td><td>MRPタイプ PD、ロットサイズ EX、手配タイプ E</td><td>PD / EX / E（内製）</td><td><code>MM02</code> MRP1</td></tr>
+<tr><td>C3</td><td>品目 MRP3 戦略グループ</td><td>见込生産 <code>10</code>、受注生産 <code>20</code>、组立処理 <code>82</code> 等</td><td><code>20</code>（练习⑤用 <code>82</code>）</td><td><code>MM02</code> MRP3</td></tr>
+<tr><td>C4</td><td>品目 MRP3 在庫確認</td><td>受注生産向けは個別所要量ベースの checking group（<code>02</code> 等）</td><td><code>02</code></td><td><code>MM02</code> MRP3</td></tr>
+<tr><td>C5</td><td>品目 MRP4 個別／包括所要量 <span class="pill op">核心</span></td><td>空（＝包括所要量）。受注在庫 E を成立させる必須項目</td><td><code>1</code>（個別所要量のみ）</td><td><code>MM02</code> MRP4</td></tr>
+<tr><td>C6</td><td>明細カテゴリグループの定義</td><td>NORM / DIEN / LEIS / ERLA / LUMF 等</td><td>確認 + <code>Z001</code> 追加（手工决定 ZTAK 用）</td><td>IMG：販売伝票明細 &gt; 定義: 明細カテゴリグループ</td></tr>
+<tr><td>C7</td><td>明細カテゴリの定義 <span class="pill op">VOV7</span></td><td><code>TAN</code>（标准明細）等。<b>受注生産専用の標準明細カテゴリは存在しない</b></td><td><code>TAN</code> 确认 + <code>ZTAK</code> 追加（特別在庫 = E）</td><td><code>VOV7</code></td></tr>
+<tr><td>C8</td><td>明細カテゴリの割当 <span class="pill op">VOV4</span></td><td>OR + NORM(&#8203;) + 用途(&#8203;) + 上位明細(&#8203;) → <code>TAN</code></td><td>OR + Z001 → <code>ZTAK</code> を追加</td><td><code>VOV4</code></td></tr>
+<tr><td>C9</td><td>納入日程行カテゴリの定義 <span class="pill op">VOV6</span></td><td><code>CN</code>（標準受注納入日程）、<code>CP</code>（MRP 関連あり）等</td><td><code>CP</code> 确认 + <code>ZCP</code> 追加（所要量転送 ON / 在庫確認 OFF）</td><td><code>VOV6</code></td></tr>
+<tr><td>C10</td><td>納入日程行カテゴリの割当 <span class="pill op">VOV5</span></td><td>TAN → CN（/CP）</td><td>ZTAK → <code>ZCP</code> を追加</td><td><code>VOV5</code></td></tr>
+<tr><td>C11</td><td>所要量クラス <span class="pill op">OVZG</span></td><td>受注生産用 <code>040</code>（個別在庫）。S/4HANA Cloud の MTO シナリオは評価付の <code>046</code></td><td><code>040</code> の属性確認（必要なら <code>Z040</code> コピー）</td><td><code>OVZG</code>（IMG：在庫確認と所要量転送 &gt; 所要量転送）</td></tr>
+<tr><td>C12</td><td>所要量タイプ／その決定 <span class="pill op">OVZG・OVZI</span></td><td>戦略グループ <code>20</code> → 所要量タイプ <code>KE</code>；戦略グループが無い場合は 明細カテゴリ + MRPタイプ で決定（<code>OVZI</code>）</td><td><code>KE</code> 确认；<code>OVZI</code> の決定順位（戦略グループ優先）を実機で確認</td><td><code>OVZI</code> / <code>OVZG</code></td></tr>
+<tr><td>C13</td><td>計画方針グループ／計画方針 <span class="pill op">OPPJ・OPPS</span></td><td><code>20</code> 受注生産（組立指図なし）、<code>82</code> 組立処理（所要量タイプ <code>KMFA</code> / 所要量クラス <code>201</code> / 指図タイプ <code>PP04</code>）</td><td><code>20</code> を使用、练习⑤で <code>82</code> を試す</td><td><code>OPPJ</code> / <code>OPPS</code></td></tr>
+<tr><td>C14</td><td>MRPタイプ・ロットサイズ・指図タイプ</td><td>PD / EX / PP01</td><td>PD / EX / PP01（受注明細参照の指図は <code>CO08</code>/<code>CO40</code> でも可）</td><td>PP カスタマイズ + <code>MM02</code> MRP2 の伝票タイプ</td></tr>
+<tr><td>C15</td><td>価格条件（受注での価格決定）</td><td>条件タイプ <code>PR00</code> 等 + 計算手続</td><td><code>PR00</code> = 12,000 JPY/PC の条件レコード</td><td><code>V/06</code>・<code>V/08</code>・<code>VK11</code></td></tr>
+<tr><td>C16</td><td>出荷・請求の前提（出荷タイプ / 請求タイプ / コピー制御）</td><td>LF / F2、出荷→請求のコピー制御が有効</td><td>标准のまま使用（確認のみ）</td><td><code>VL01N</code> の出荷タイプ、<code>VF01</code>、<code>VTFL</code></td></tr>
+<tr><td>C17</td><td>自動転記（在庫・差異の勘定）</td><td>OBYC の BSX / WRX / GBB（VBR 等）が設定済み</td><td>確認のみ（受注在庫の在庫勘定が仕訳されること）</td><td><code>OBYC</code> + <code>FB03</code></td></tr>
+</table>
+
+<h2 id="env">6. 前提与环境（练习前 30 分钟做完）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>前提</th><th>确认方法</th></tr>
+<tr><td>1</td><td>販売組織/販売チャネル/部門/プラント/出荷プラント 已建并互相分配</td><td>SPRO 组织构造 + <code>OX10</code>・<code>OVX5</code> 系确认；<code>VA01</code> 能选到销售区域</td></tr>
+<tr><td>2</td><td>得意先 1000 已建（得意先マスタ：一般/会社/販売エリア/出荷先）</td><td><code>BP</code> / <code>XD03</code>，需有出荷先（船積先）</td></tr>
+<tr><td>3</td><td>品目マスタ ZMTO-FG01 / RM01 / RM02 已完成必要视图（Basic / 购买 / MRP / 会计 / 原价 / 销售组织1・2 / 工厂库存等）</td><td><code>MM03</code> 逐视图，未建视图会直接导致 MRP 或受注失败</td></tr>
+<tr><td>4</td><td>番号範囲（受注・出荷・請求・製造指図）有可用区间</td><td><code>VN01</code>（販売伝票）、PP/出荷/請求的番号範囲</td></tr>
+<tr><td>5</td><td>可写入的 カスタマイジング依頼（Customizing Request）</td><td>配置作业时会要求输入请求</td></tr>
+<tr><td>6</td><td>练习用の権限（SD/PP/MM の表示・登録 + SPRO 表示）</td><td>无法执行的事务码请提前向 Basis 申请</td></tr>
+</table>
+
+<h2 id="caveat">7. 关于标准值的立场（请务必读）</h2>
+<div class="box warn"><b class="t">本教程的做法</b>
+SAP 的标准设定会随<b>版本、行业解决方案、激活的业务功能、以及既有项目改造</b>而不同（例如：受注生産用の所要量クラスは <code>040</code> 系か評価付の <code>046</code> 系か、
+明細カテゴリ <code>TAK</code> 是否存在于标准（SAP Note 2708455 明确说明 <b>TAK 并非 Sapp 标准定义</b>，很多项目是自己建的），
+受注在庫の評価の扱い（S/4HANA Cloud 的 MTO 场景以 <b>評価付の販売伝票在庫（評価区分 M）</b> 为前提）等）。<br>
+因此本站的原则是：<b>把「标准值的通常情况」写清楚，但每一个值都配一条「在你自己的系统里怎么确认」的手顺</b>，
+并给出配置练习（自己建 <code>Z001 / ZTAK / ZCP / Z040</code>）确保即使标准值与本站不同，练习依然成立。教学以「机制正确」为优先，不以背标准值为目标。</div>
+
+<h2 id="sources">8. 出典与参考</h2>
+<ul>
+  <li>SAP Help（S/4HANA On-Premise）<i>Special Settings for Production Orders</i>：组立处理的标准设定（戦略グループ 82 / 所要量タイプ KMFA / 所要量クラス 201 / 指図タイプ PP04）。
+    <span class="mini">help.sap.com/docs/SAP_S4HANA_ON-PREMISE/eedc1019283a438a8b73fdde490abc4f/d242b853ff98b44ce10000000a174cb4.html</span></li>
+  <li>SAP Help（S/4HANA Cloud Public Edition, Production Accounting）<i>Make-to-Order (MTO)</i>：評価付販売伝票在庫、MRP4 の 個別／包括所要量、所要量クラス <code>046</code>（評価 M / 原価計算 B）。
+    <span class="mini">help.sap.com/docs/SAP_S4HANA_CLOUD/4032610758dc437089f0c28320eec93f/1427c273802f4052a64933db7d7bdf9a.html</span></li>
+  <li>SAP Help <i>Determination of the Requirements Type</i>：所要量タイプは主として品目マスタの<b>戦略グループ</b>から決定される。
+    <span class="mini">help.sap.com/docs/SAP_ERP/74c0b3a391174482a66a3a23bb28c10d/6623bf53d25ab64ce10000000a174cb4.html</span></li>
+  <li>SAP Help <i>Types of Stock</i>：得意先個別在庫（受注在庫）＝特別在庫区分 <code>E</code>。
+    <span class="mini">help.sap.com/docs/SAP_S4HANA_ON-PREMISE/b2dee5e83e2446149294f9860a7c08f0/4f5bc4530b29b44ce10000000a174cb4.html</span></li>
+  <li>SAP Note 2708455（<i>Item category TAK (make-to-order) is not defined in the standard SAP system</i>）、SAP Knowledge Base 2197844（<code>OVZI</code> に新規エントリを作る際の注意）、KBA 2640393（MRP Live <code>MD01N</code> と古典 MRP の差異）、SAP Note 1914010（MRP Live の制限）。</li>
+  <li>SAP Community：<i>SAP Make-to-Order Insights</i>（MTO の設定チェックリストと代表エラー）、<i>How to influence the requirements type</i>（<code>OVZI</code> の決定の仕組み）、<i>Scope of Check in CO09</i>、S/4HANA Cloud Sales の FAQ（Public Cloud では明細カテゴリの新規作成ができない）。</li>
+  <li>SAP Learning：<i>Explaining Make-to-Order (MTO) Production</i>、<i>Reviewing the Master Data Required for a Make-to-Order (MTO) Scenario</i>（戦略グループ <code>20</code> と所要量クラスの関係、MRP4 の前提）。</li>
+  <li>外部解説（日本語）：明細カテゴリグループの定義（SAP知恵の輪）、販売伝票タイプ・明細カテゴリ・納入日程行カテゴリの解説（tokulog）、品目マスタ各ビューと在庫確認ルール（sap.gugulii）、<code>OVZG</code>/<code>OVZI</code> の IMG パス（howtolearnsap / marchukan）。</li>
+</ul>
+<div class="box info"><b class="t">下一步</b>
+想先理解机制 → <a href="concept.html">概念与设计</a>；想直接动手配 → <a href="config.html">练习配置手顺</a>；想直接跑流程 → <a href="handson-1.html">练习①</a>。</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SD 受注生産（MTO）实战训练站</h5><p>面向 SAP S/4HANA SD/PP 学习者的跨模块实训：配置手顺 + 全流程实操 + 验收清单。<br>内容为教学整理，标准值请以自系统为准。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 受注と所要量</a><br><a href="handson-2.html">② MRP と製造指図</a><br><a href="handson-3.html">③ 出庫と入庫</a><br><a href="handson-4.html">④ 出荷と請求</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="concept.html">概念与设计</a><br><a href="config.html">练习配置手顺</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

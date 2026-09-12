@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>讲师版 解答与進め方 · SAP S/4HANA SD 受注生産（MTO）实战训练站</title>
+<meta name="description" content="MTO 实训的讲师版：時間割、事前準備、板書用の決定链、配置 C0〜C16 の解答と採点ポイント、練習①〜⑤ の期待値、受講者からの必出質問 Q&A、故障の教え方、評価基準。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/mto.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MTO</span><span class="txt">SD 受注生産 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①受注</a>
+      <a href="handson-2.html">②MRP</a>
+      <a href="handson-3.html">③出入库</a>
+      <a href="handson-4.html">④出货</a>
+      <a href="handson-5.html">⑤发展</a>
+      <a class="active" href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 讲师版 解答与進め方</div>
+<main class="page"><article>
+
+<h1>讲师版：解答・採点ポイント・進め方</h1>
+<div class="box warn"><b class="t">配布の注意</b>
+本ページは<b>講師用（解答つき）</b>です。受講者には <a href="worksheet.html">学员版ワークシート（記入用・挖空）</a> を配布してください。
+Excel 版（<span class="mono">SD受注生産MTO_要件定義・手順書.xlsx</span> の <span class="mono">10_講師用ガイド</span>）にも同じ内容を収録しています。</div>
+
+<div class="toc">
+  <a href="#plan">1. 時間割</a>
+  <a href="#prep">2. 事前準備</a>
+  <a href="#board">3. 板書用の決定链</a>
+  <a href="#ans-cfg">4. 配置の解答と採点ポイント</a>
+  <a href="#ans-flow">5. 練習の解答（期待値）</a>
+  <a href="#qa">6. 必出質問 Q&A</a>
+  <a href="#teach">7. 故障の教え方</a>
+  <a href="#grade">8. 評価基準</a>
+  <a href="#next">9. 発展の導線</a>
+</div>
+
+<h2 id="plan">1. 時間割</h2>
+<table class="tbl wide">
+<tr><th>形態</th><th>時間割</th><th>要点</th></tr>
+<tr><td><b>2 日版（標準）</b></td><td>Day1：概念 60 分 → 配置 C0〜C16 150 分（午前/午後）／Day2：練習①〜④ 240 分 → 練習⑤ 90 分 → テスト 30 分</td><td>配置は必ず「確認 → 自建」の順で。受講者が自分の Z オブジェクトを作る時間を削らない</td></tr>
+<tr><td>1 日版（短縮）</td><td>概念 45 分（決定链と 3 つの成立条件のみ） → 配置 C2・C6〜C11 に絞り 60 分 → 練習①〜④ 180 分（講師デモ併用） → テスト 20 分</td><td>練習⑤ と Excel の詳細は宿題（自習）に回す</td></tr>
+<tr><td>半日デモ版</td><td>講師デモで受注→請求を通し、MD04 / MMBE / 伝票フローだけ見せる（90 分）</td><td>「決定链の 1 枚」＋「MD04 と MMBE の 2 画面」に絞る。設定は触らない</td></tr>
+</table>
+
+<h2 id="prep">2. 事前準備チェック（講師・前日までに）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>準備</th><th>完了条件</th></tr>
+<tr><td>1</td><td>受注〜請求が通る 1 セットを用意（得意先 1000 / 品目 ZMTO-FG01 / 条件 PR00 / 出荷タイプ LF / 請求タイプ F2）</td><td>講師アカウントで VA01→MD01N→CO08→MIGO→VL01N→VF01 が通しで完了する</td></tr>
+<tr><td>2</td><td>部品の初期在庫（RM01 100 / RM02 500 PC）を 561 で投入</td><td>MMBE で確認済み</td></tr>
+<tr><td>3</td><td>BOM（RM01×2・RM02×8）と工程 0010、作業区 ZMTO_WC01</td><td>CS03 / CA03 で表示できる</td></tr>
+<tr><td>4</td><td>受講者の権限（SD/PP/MM の登録、MIGO、SPRO 表示、カスタマイジング依頼 の書き込み）</td><td>受講者アカウントで VA01 と VOV7 が開く</td></tr>
+<tr><td>5</td><td>練習環境の「リセット方法」を決めておく（受注取消・指図削除・カスタマイジング依頼のコピー）</td><td>受講者が失敗しても 10 分でやり直せる手順が用意されている</td></tr>
+<tr><td>6</td><td>ワークシート印刷（<a href="worksheet.html">学员版</a>）と Excel 版の配布</td><td>受講者人数分</td></tr>
+</table>
+
+<h2 id="board">3. 板書用の決定链（これ 1 枚で全体が説明できる）</h2>
+<pre class="vals">［品目マスタ］                                  ［カスタマイズ］                          ［結果］
+販売組織2 品目カテゴリグループ ─┐
+                                ├─ VOV4（4 キー）→ 明細カテゴリ（TAN / ZTAK）
+  販売伝票タイプ OR ────────────┘        │  VOV7：価格設定・納入日程行許可・特別在庫 = E
+                                          ▼
+                            VOV5（明細カテゴリ + MRPタイプ）→ 納入日程行カテゴリ（CN / CP / ZCP）
+                                          │  VOV6：所要量転送（ON か）／在庫確認
+                                          ▼
+                      所要量タイプの決定：① 品目 MRP3 戦略グループ 20 → KE（通常こちら）
+                                          ② 戦略グループが無い場合 → OVZI（明細カテゴリ + MRPタイプ）
+                                          ▼
+                      所要量クラス 040（/046）＝ 個別在庫 E・MRP 転送・在庫確認・評価・原価計算
+                                          ▼
+        MD04：得意先所要量 → 計画手配（受注在庫 E）→ 製造指図（受注明細参照）→ 101 入庫
+                                          ▼
+        MMBE：受注在庫（特在 E）→ VL01N → PGI 601 → 受注在庫 0 → VF01 請求</pre>
+<div class="box ok"><b class="t">受講者に必ず口頭で言う 3 点</b>
+① 受注在庫（E）は <b>3 点セット</b>（MRP4 個別所要量／所要量クラスの個別在庫／明細カテゴリの特別在庫 E）で成立する。<br>
+② 切り分けは <b>MD04 に出るか＝SD 側、出た後の補貨＝PP 側、補貨の在庫区分＝個別所要量</b>。<br>
+③ 標準値は環境依存 → <b>必ず自分のシステムで確認</b>（TAK は標準に存在しない、040/046 は環境差、など）。</div>
+
+<h2 id="ans-cfg">4. 配置の解答と採点ポイント（C0〜C16）</h2>
+<table class="tbl wide">
+<tr><th>STEP</th><th>本練習の解答（設定値）</th><th>採点ポイント／よくある間違い</th></tr>
+<tr><td>C0</td><td>販売エリア 1000/10/00、得意先 1000（販売エリア＋出荷先）、各番号範囲に空き</td><td>前提を飛ばして VA01 から始め、保存時エラーで 30 分溶かす。冒頭で「保存せずに画面まで入る」確認を必ず実施させる</td></tr>
+<tr><td>C1</td><td>RM01：ROH / PD / EX / F / 初期在庫 100 ・RM02：HAWA / PD / EX / F / 初期在庫 500（MRP4 は空）</td><td>部品にも受注生産設定（MRP4 個別所要量）を入れてしまう → 部品は見込で持つ、と明確に区別させる</td></tr>
+<tr><td>C2</td><td>FERT / PD / EX / <b>手配タイプ E</b> / MRP3 戦略グループ <b>20</b>・在庫確認 02 / <b>MRP4 個別所要量のみ</b> / 販売組織2 品目カテゴリグループ 0001</td><td>この 3 フィールド（販売組織2・MRP3・MRP4）を<b>口頭で言わせる</b>。手配タイプ空／MRP タイプ ND は計画手配が出ないので必ず指摘</td></tr>
+<tr><td>C3</td><td>BOM RM01×2・RM02×8（用途 1）／作業区 ZMTO_WC01／工程 0010 組立 1H</td><td>BOM 無しで練習② に進むと 261 で詰まる。CS03 の表示確認までやらせる</td></tr>
+<tr><td>C4</td><td>PR00 = 12,000 JPY/PC（得意先 1000 × ZMTO-FG01）</td><td>「請求は後で直せる」と思って飛ばす → 練習④で金額 0 になり詰まる</td></tr>
+<tr><td>C5</td><td>Z001「受注生産品（練習用）」を追加（標準キーの一覧を記録させる）</td><td>「受注生産という標準キーがある」と思い込む。標準キーの実物を画面で見せて納得させる</td></tr>
+<tr><td>C6</td><td>ZTAK：価格設定 X・納入日程行許可 ON・請求関連 ON・<b>特別在庫 = E</b></td><td>納入日程行許可 OFF／特別在庫 E の入れ忘れ。SE16N: TVAP-SOBKZ でも見せる（表で確認する癖）</td></tr>
+<tr><td>C7</td><td>OR + Z001 + （空）+ （空） → ZTAK（代替に TAN）</td><td>用途・上位明細に何か入れてしまい決定されない。空値もキーであることを強調</td></tr>
+<tr><td>C8</td><td>ZCP：所要量転送 ON・在庫確認 OFF・納入関連 ON・所要量タイプは空</td><td>所要量転送 OFF → MD04 が空（故障 #1）。所要量タイプに値を入れて自動決定を殺してしまう</td></tr>
+<tr><td>C9</td><td>ZTAK + MRPタイプ PD → ZCP</td><td>MRP タイプを変えたのに VOV5 に追加しない（将来の落とし穴）</td></tr>
+<tr><td>C10</td><td>040 の属性を読む（個別在庫・評価・MRP 転送）。Cloud は 046（評価 M）</td><td>「040 が受注生産の正解」と断定してしまう。環境差を前提に<b>読み方を教える</b></td></tr>
+<tr><td>C11</td><td>KE → 040 の連鎖。OVZI の起点（origin）で戦略グループ優先を確認</td><td>決定順序を逆に覚える。MD04 で最終確認までやらせる</td></tr>
+<tr><td>C12</td><td>OPPS で 20（KE）／82（KMFA・201・PP04）を確認</td><td>「20 と 82 の使い分け」を必ず質問される（Q&A #3）</td></tr>
+<tr><td>C13</td><td>品目 MRP3 在庫確認 02、CO09 で要素確認</td><td>練習用 ZCP は在庫確認 OFF なので、ATP を期待すると混乱する（説明しておく）</td></tr>
+<tr><td>C14</td><td>PD / EX / PP01（発展で PP04）</td><td>計画手配の在庫区分が受注在庫（E）になっているかを MD04 で確認させる</td></tr>
+<tr><td>C15</td><td>LF / F2 / 出荷ポイント自動決定 / VTFL のコピー制御</td><td>「出荷ポイントが決まらないと保存できない」を実機で体感させる</td></tr>
+<tr><td>C16</td><td>OBYC の BSX / GBB 系が設定済み（確認のみ）</td><td>深追いしない。ここは「確認だけでよい」と明言して時間を守る</td></tr>
+</table>
+
+<h2 id="ans-flow">5. 練習の解答（期待値の要点）</h2>
+<table class="tbl wide">
+<tr><th>練習</th><th>期待値（解答の要点）</th><th>採点のポイント</th></tr>
+<tr><td>① 受注</td><td>受注番号採番・明細カテゴリ TAN（または ZTAK）・納期行あり・所要量タイプ KE 系・MD04 に得意先所要量 −10（受注番号付き）・MMBE に受注在庫（E）0 PC の行</td><td><b>「MD04 に出たか」が唯一の合格判定</b>。出なければ SD 側（VOV6 の所要量転送 / VOV5 の決定 / VOV7 の納入日程行許可）へ戻す</td></tr>
+<tr><td>② MRP・指図</td><td>計画手配 10 PC（在庫区分＝受注在庫 E・受注番号付き）→ 製造指図 10 PC（受注明細参照・部品予約 20/80・入庫予定が受注在庫）</td><td>「自由在庫の計画手配」になっていたら MRP4 と所要量クラス。「受注参照の無い指図」は CO08 で作り直させる</td></tr>
+<tr><td>③ 出庫・入庫</td><td>261 で部品 80/420、CO11N で CNF、101 で受注在庫 E = 10 PC・自由在庫は 0、MSKA に SOBKZ=E</td><td><b>自由在庫 0 を必ず確認させる</b>。ここが MTO の分水嶺。バックフラッシュとの二重出庫にも注意</td></tr>
+<tr><td>④ 出荷・請求</td><td>出荷明細の在庫区分 E・引当 10 → PGI 601 で受注在庫 0 → 請求 120,000 JPY → 伝票フローで全闭合</td><td>伝票フローを<b>受講者自身の言葉で読み上げさせる</b>（受注→指図→入庫→出荷→PGI→請求）。FB03 で借貸の方向も確認</td></tr>
+<tr><td>⑤ 発展</td><td>戦略 82 で受注保存と同時に指図生成／ZTAK 切替の決定／KKS1→KO88 の差異と決済／部品の購買連携／取消の逆順</td><td>2 つ以上実施。<b>「なぜそうなるのか」を説明できたら満点</b>。操作だけでは評価しない</td></tr>
+</table>
+
+<h2 id="qa">6. 必出質問 Q&A（模範回答つき）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>質問</th><th>模範回答</th></tr>
+<tr><td>1</td><td>テキストの TAK を使わないのですか？</td><td>TAK は SAP 標準に存在しません（SAP Note 2708455 が明記）。網上教材の TAK は自建か旧版のものです。本教材は自建 ZTAK（特別在庫 E）で同じことを実現します</td></tr>
+<tr><td>2</td><td>所要量クラスは 040 と 046 のどちらを使うべき？</td><td>「受注在庫を評価するか」で選びます。評価付なら評価区分 M を持つクラス（S/4HANA Cloud の MTO は 046）。実際に使われるのは品目戦略グループ経由で決まるので、OVZG と MM03 で確認するのが正解</td></tr>
+<tr><td>3</td><td>戦略 20 と 82 の使い分けは？</td><td>「指図をいつ作るか」です。20＝MRP 実行後に計画手配から変換（一般的な受注生産）、82＝受注保存と同時に指図を自動生成（1:1、組立型・BOM 必須、所要量クラス 201・指図タイプ PP04）</td></tr>
+<tr><td>4</td><td>品目カテゴリグループ 0002 を使うのでは？</td><td>標準の 0002 は LUMF 系（BOM／設定可能品の構成品目側）で、受注生産専用のキーではありません。普通の MTO は 0001/NORM のままでも成立します。まず IMG の「明細カテゴリグループ定義」で実物を見てください</td></tr>
+<tr><td>5</td><td>MRP タイプ ND にすれば MRP が走らず受注生産になる？</td><td>逆です。ND は計画なしなので計画手配が生まれず、在庫も作れません。MTO は MRP 対象（PD 等）が前提です</td></tr>
+<tr><td>6</td><td>受注在庫に入れず、自由在庫で運用してはだめ？</td><td>だめです。自由在庫に入れた時点で他の受注が引当でき、按单生产（MTO）の意味が失われます。按单入库是 MTO 的最小要求</td></tr>
+<tr><td>7</td><td>明細カテゴリだけ／MRP4 だけでも受注在庫になりますか？</td><td>環境差があります。だから本教材は 3 点セットで確認し、<b>自分のシステムでの実測結果</b>を要件定義に書く、という進め方を取ります（断言せず、実測を優先）</td></tr>
+<tr><td>8</td><td>MRP リストどこですか（MD05）？</td><td>MRP Live（MD01N）は MRP リストを作りません。MD04（在庫/所要量リスト）または Fiori アプリで見ます（KBA 2640393 参照）</td></tr>
+<tr><td>9</td><td>受注在庫は金額（評価）を持ちますか？</td><td>設定次第です。所要量クラスの評価区分と品目会計ビューで決まります。Cloud の MTO は評価付が前提。MMBE の金額欄で必ず実測してください</td></tr>
+<tr><td>10</td><td>差異は誰の仕事ですか？</td><td>差異は製造指図に発生し、KKS1（差異計算）と KO88（決済）で処理されます。SD も「受注在庫が出荷時に売上原価になる」最后一公里を知っておく必要があります</td></tr>
+<tr><td>11</td><td>Public Cloud でも同じ練習ができますか？</td><td>できません。Cloud では明細カテゴリ・販売伝票タイプの新規作成ができず、SSCUI とスコープアイテム（BJE/IYT/1BM/7DM）の Test Script に従います。本教材は机制理解と差異の把握に使い、実施は Test Script で行ってください</td></tr>
+</table>
+
+<h2 id="teach">7. 故障の教え方（切り分けの物語）</h2>
+<p>故障演習は「設定を直す」ことが目的ではありません。<b>症状から層を特定できるようになること</b>が目的です。次の 4 層で必ず声に出して確認させてください。</p>
+<table class="tbl wide">
+<tr><th>層</th><th>問いかけ</th><th>見る画面 / T-code</th><th>ここで終わらせる結論</th></tr>
+<tr><td>① SD 側</td><td>需要が MD04 に出ているか？</td><td><code>VA03</code>（納期行カテゴリ・所要量タイプ）→ <code>MD04</code></td><td>出ていない＝所要量転送／納期行／明細カテゴリの問題（PP を触らない）</td></tr>
+<tr><td>② PP 側</td><td>補貨（計画手配）が出ているか？</td><td><code>MM03</code> MRP1 → <code>MD01N</code>/<code>MD02</code> → <code>MD04</code></td><td>出ていない＝MRP タイプ・手配タイプ・批量・計画対象の問題</td></tr>
+<tr><td>③ 在庫区分</td><td>その補貨は受注在庫（E）か？</td><td><code>MM03</code> MRP4 → <code>OVZG</code> → <code>VA03</code> の特別在庫</td><td>自由在庫なら個別所要量の 3 点セットを見直す</td></tr>
+<tr><td>④ MM/FI 側</td><td>在庫は動いたか？ 引当はできたか？ 勘定は出たか？</td><td><code>MMBE</code> / <code>MATDOC</code> / <code>VL03N</code> / <code>FB03</code></td><td>在庫・引当・転記の問題（指図の受注参照、OBYC 等）</td></tr>
+</table>
+<div class="box info"><b class="t">証跡として必ず控えさせる T-code</b>
+<code>VA03</code>・<code>MD04</code>・<code>MMBE</code>・<code>SE16N</code>（<code>VBAP</code>/<code>VBEP</code>/<code>MSKA</code>/<code>AFPO</code>/<code>MATDOC</code>）・<code>CO03</code>・<code>VL03N</code>・<code>VF03</code>・<code>FB03</code>。
+「根因 + 証跡（T-code + 画面/表の行）」の 2 点セットで書かせると、障害票の書き方が身につきます。</div>
+
+<h2 id="grade">8. 評価基準（3 観点）</h2>
+<table class="tbl wide">
+<tr><th>観点</th><th>配点</th><th>合格ライン</th><th>見方</th></tr>
+<tr><td>知識（選択問題）</td><td>40</td><td>28 題で 75% 以上（21 問）</td><td><a href="quiz.html">能力测试</a>。誤答はどの分野（概念/配置/流程/故障）かを見て、戻るページを指示する</td></tr>
+<tr><td>実技（証跡）</td><td>40</td><td><a href="worksheet.html">学员版チェックリスト</a>の全項目が証跡つき</td><td>伝票番号・表の行・画面の要点が記録されているか。「できた」だけの申告は不可</td></tr>
+<tr><td>言語化（説明力）</td><td>20</td><td>決定链と故障 1 件を、資料を見ずに 3 分で説明できる</td><td>用語が正確か（所要量転送／所要量クラス／個別所要量／特在 E）</td></tr>
+</table>
+<div class="box ok"><b class="t">フィードバック文例（そのまま使える）</b>
+「受注〜請求は通っています（証跡 OK）。次のステップは<b>説明力</b>です。『この受注の需要は MD04 にどう出て、なぜ受注在庫に入るのか』を、設定画面を開かずに 3 分で話してみてください。
+そのあと、故障 #3（自由在庫に入る）を自分で人に説明できるようになれば、このシナリオは卒業です。」</div>
+
+<h2 id="next">9. 発展の導線</h2>
+<table class="tbl wide">
+<tr><th>方向</th><th>追加で必要な知識</th><th>本教材から流用できる部分</th></tr>
+<tr><td>受注設計生産（ETO）</td><td>プロジェクト在庫 Q・WBS・ネットワーク指図・売上原価の按分</td><td>決定链（明細カテゴリ／所要量クラス）と MD04/MMBE の読み方はほぼ同じ</td></tr>
+<tr><td>バリアント設定付き（VC）</td><td>特徴とクラス（CT04/CL02）・依存関係・設定プロファイル（CU41）・CU50 シミュレーション・戦略 25 / KEK / 046</td><td>受注在庫 E の成立条件、納期行と所要量転送の考え方は同じ（キーが 0002/LUMF 系になる点だけ差）</td></tr>
+<tr><td>外注・第三社処理</td><td>外注支給在庫 O・購買発注タイプ・納入日程行カテゴリの購買関連項目</td><td>納入日程行カテゴリ（VOV6）の購買関連・移動タイプの読み方</td></tr>
+<tr><td>ATP 詳細 / 与信・輸出管理</td><td>チェックルール・スコープ・バックオーダー処理、与信管理の再構築（S/4HANA）</td><td>品目 MRP3 の在庫確認と CO09 の要素読み取り</td></tr>
+</table>
+
+<div class="box info"><b class="t">関連ページ</b>
+<a href="config.html">配置手顺（C0〜C17）</a>／<a href="handson-5.html#trouble">故障対照表</a>／<a href="worksheet.html">学员版ワークシート</a>／<a href="quiz.html">能力测试</a></div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SD 受注生産（MTO）实战训练站</h5><p>讲师版：時間割・事前準備・解答と採点ポイント・必出 Q&A・故障の教え方・評価基準。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 受注</a><br><a href="handson-2.html">② MRP・指図</a><br><a href="handson-3.html">③ 出入庫</a><br><a href="handson-4.html">④ 出荷・請求</a><br><a href="handson-5.html">⑤ 発展・故障</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="worksheet.html">学员版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

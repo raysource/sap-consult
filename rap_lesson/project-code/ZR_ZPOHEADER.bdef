@@ -1,0 +1,61 @@
+# ZR_ZPOHEADER — Behavior Definition（BDEF）
+# managed + draft + early numbering
+# 创建: 右键 ZR_ZPOHEADER -> New Behavior Definition (Managed, Draft Enabled)
+managed implementation in class zbp_zr_zpoheader unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZR_ZPOHEADER alias ZpoHeader
+persistent table z_po_hdr
+lock master
+authorization master ( instance )
+early numbering
+{
+  create;
+  update;
+  delete;
+
+  field ( readonly : update ) CreatedBy;   " 创建人：仅创建时由 Determination 填充，之后只读
+  field ( readonly ) PoNum;                 " 主键：仅编号方法可填，客户端始终只读
+
+  mapping for z_po_hdr corresponding
+  {
+    PoNum      = po_num;
+    PoDate     = po_date;
+    VendorCode = vendor_code;
+    Status     = status;
+    CreatedBy  = created_by;
+    ZzMemo     = zz_memo;
+  }
+
+  determination setDefaultValues on modify { create; }
+  validation validateVendor on save { create; update; }
+
+  action ConfirmOrder result [1] self;
+
+  association _Items { create; with draft; }
+}
+
+define behavior for ZR_ZPOITEM alias ZpoItem
+persistent table z_po_itm
+{
+  create;
+  update;
+  delete;
+
+  field ( readonly ) PoNum;
+  field ( mandatory ) Matnr, Qty, NetPrice;
+
+  validation validateItemAmount on save { create; update; }
+
+  mapping for z_po_itm corresponding
+  {
+    PoNum    = po_num;
+    ItemNum  = item_num;
+    Matnr    = matnr;
+    Qty      = qty;
+    Unit     = unit;
+    NetPrice = net_price;
+    Currency = currency;
+  }
+}

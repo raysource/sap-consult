@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iFlow 实战 · SAP BTP 开发者训练站</title>
+<meta name="description" content="SAP CPI iFlow 实战：Header/Property、Content Modifier、Groovy、MPL 排查与可抄手册">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">SAP</span><span class="txt">SAP BTP 开发者训练站</span></a>
+    <nav class="main"><a href="index.html">首页</a><a href="isuite.html">Integration Suite</a><a class="active" href="iflow.html">iFlow 实战</a><a href="rap.html">RAP</a><a href="cap.html">CAP</a><a href="fiori.html">Fiori / UI5</a><a href="dev-course.html">全流程课件</a><a href="samples.html">示例工程</a></nav>
+  </div>
+</header>
+<div class="hero"><div class="hero-inner"><div class="kicker">Cloud Integration 实战</div><h1>iFlow：从画布到会排查</h1><p class="lead">概念 + 表达式 + Groovy + 手册四件套。看完本页，你能独立在 CPI 里搭一条能跑、能查、能改的集成流。</p></div></div><main class="page"><div class="wrap"><article><div class="toc"><a href="#pipeline">管线长什么样</a><a href="#hvsp">Header vs Property</a><a href="#build">第 1 步 建包建模</a><a href="#expr">常用表达式</a><a href="#groovy">Groovy 三板斧</a><a href="#err">异常与重试</a><a href="#mpl">排查: MPL</a><a href="#pit">常见坑</a><a href="#files">配套文件</a></div><h2 id="pipeline">一条 iFlow 长什么样</h2><p>Cloud Integration(CPI)里，集成流 = <b>发件方 + 步骤链 + 收件方</b>。消息一路流过去，每一步都能读改写 body，或读写 header / property。本站配套示例是一条“OData 拉取 → 低库存 → CSV”预警流：</p><div class="flow"><span class="node">HTTPS 调用(或 Timer)</span><span class="arrow">→</span><span class="node">Content Modifier</span><span class="arrow">→</span><span class="node">Request Reply(OData)</span><span class="arrow">→</span><span class="node">Script: XML→CSV</span><span class="arrow">→</span><span class="node">Content Modifier: 补表头</span><span class="arrow">→</span><span class="node">Receiver(HTTP/Mail)</span></div><p>完整建模手册（逐字段可抄）：<code>projects/iflow/manual/01-build-low-stock-alert.md</code>；本页把其中最需要“讲原理”的部分展开。</p><h2 id="hvsp">第一个必须过关的概念：Header vs Property</h2><table class="tbl"><tr><th></th><th>Header(报文头)</th><th>Property(消息属性)</th></tr>
+<tr><td>作用域</td><td>随消息<b>出站</b>发给外部系统</td><td>只在当前 iFlow 内部流转</td></tr>
+<tr><td>典型用途</td><td>HTTP 头、认证信息、Content-Type</td><td>中间计算结果、路由标志、查询参数</td></tr>
+<tr><td>表达式读取</td><td><code>${header.名字}</code></td><td><code>${property.名字}</code></td></tr>
+<tr><td>Groovy 读取</td><td><code>message.getHeader('x')</code></td><td><code>message.getProperty('x')</code></td></tr>
+<tr><td>设置</td><td>Content Modifier / <code>setHeader</code></td><td>Content Modifier / <code>setProperty</code></td></tr>
+</table><div class="box warn"><b class="t">注意 · 新手最常踩的坑</b><p>把业务中间量(如查询条件)放进 Header，导致它被无脑发给下游外部系统——轻则报错，重则把内部字段泄给第三方。<b>内部中间量一律用 Property。</b></p></div><h2 id="build">第 1 步：三个 Content Modifier 练手</h2><p>Content Modifier 是 CPI 里最常用的步骤：改 header、改 property、改 body，三种动作一个组件全包。以本站样例为例（完整字段表见 <code>projects/iflow/resources/config/content-modifier-values.md</code>）：</p><pre class="hl"><div class="code-head"><span class="lang">XML</span><button class="copy-btn" type="button">复制</button></div><code class="lang-xml">&lt;!-- 场景1: 把常量变成 Property(稍后拼进 OData $filter) --&gt;
+Message Properties:
+  Name: maxStock    Type: String   Source: Constant    Value: 15
+  Name: dateTime    Type: String   Source: Constant    Value: ${date:now:yyyyMMdd_HHmmss}
+
+Message Header:
+  Name: X-Source    Type: String   Source: Constant    Value: training
+
+&lt;!-- 场景2: 用 XPath 从入站 XML 里抠一个值放进 Header(发给下游) --&gt;
+Message Header:
+  Name: OrderNo     Source: XPath   Value: //OrderNumber
+
+&lt;!-- 场景3: 改写 body: 引用上一个消息体并补表头 --&gt;
+Message Body (Type: Text):
+  ProductID,ProductName,UnitPrice,UnitsInStock
+  ${in.body}</code></pre><p>关键理解：CM 的 <code>Message Body</code> 页签里 <code>${in.body}</code> 表示<b>引用上一个步骤产出的消息体</b>——这正是“补表头 / 套壳 / 拼装”的惯用法。</p><h2 id="expr">常用表达式速查（CM 与适配器配置里通用）</h2><table class="tbl"><tr><th>表达式</th><th>含义</th></tr>
+<tr><td><code>${in.body}</code></td><td>上一步产出的消息体文本</td></tr>
+<tr><td><code>${header.X}</code> / <code>${property.X}</code></td><td>取 header / property 值</td></tr>
+<tr><td><code>${date:now:yyyyMMdd_HHmmss}</code></td><td>当前时间(格式 Java SimpleDateFormat)</td></tr>
+<tr><td><code>${header.originalMessageId}</code></td><td>消息 ID(排查用)</td></tr>
+<tr><td><code>${property.camelError...}</code></td><td>异常子流程里读取错误信息</td></tr>
+</table><h2 id="groovy">Groovy 脚本三板斧（Script 步骤直接粘贴）</h2><h3>① 读 body / header / property</h3><pre class="hl"><div class="code-head"><span class="lang">Groovy</span><button class="copy-btn" type="button">复制</button></div><code class="lang-groovy">def Message processData(Message message) {
+    // body 当文本读
+    String body = message.getBody(String.class)
+
+    // header 与 property(区别见上)
+    String src = message.getHeader(&#x27;X-Source&#x27;)      // 可能为 null
+    String max = message.getProperty(&#x27;maxStock&#x27;)
+
+    // 写 property / header
+    message.setProperty(&#x27;trace.maxStock&#x27;, max ?: &#x27;NOT SET&#x27;)
+    message.setHeader(&#x27;X-Source&#x27;, src ?: &#x27;unknown&#x27;)
+
+    // 打日志(在 MPL 的 Logs 页签可见)
+    def log = message.getLog() ?: java.util.logging.Logger.getLogger(&#x27;iflow&#x27;)
+    return message
+}</code></pre><h3>② 解析 XML 并转换（XmlSlurper，样例核心）</h3><pre class="hl"><div class="code-head"><span class="lang">Groovy</span><button class="copy-btn" type="button">复制</button></div><code class="lang-groovy">import groovy.xml.XmlSlurper
+import java.nio.charset.StandardCharsets
+
+def Message processData(Message message) {
+    String body = message.getBody(String.class)
+    def xml = new XmlSlurper().parseText(body)
+
+    // Atom/OData 命名空间别名
+    def d = new groovy.xml.Namespace(&#x27;http://schemas.microsoft.com/ado/2007/08/dataservices&#x27;, &#x27;d&#x27;)
+
+    StringBuilder csv = new StringBuilder()
+    int count = 0
+    String maxStock = message.getProperty(&#x27;maxStock&#x27;) ?: &#x27;15&#x27;
+
+    xml.&#x27;**&#x27;.findAll { it.name() == &#x27;entry&#x27; }.each { entry -&gt;
+        def p = entry.content.properties
+        String stock = p.UnitsInStock.text()?.trim()
+        if (stock &amp;&amp; (stock as int) &gt; (maxStock as int)) return   // 业务过滤
+        csv.append(p.ProductID.text()).append(&#x27;,&#x27;).append(p.ProductName.text()).append(&#x27;\n&#x27;)
+        count++
+    }
+
+    message.setBody(csv.toString(), StandardCharsets.UTF_8.name())
+    message.setProperty(&#x27;csvLineCount&#x27;, count.toString())
+    return message
+}</code></pre><h3>③ JSON 版本（JsonSlurper，OData JSON / REST 入站用）</h3><pre class="hl"><div class="code-head"><span class="lang">Groovy</span><button class="copy-btn" type="button">复制</button></div><code class="lang-groovy">import groovy.json.*
+
+def Message processData(Message message) {
+    def json = new JsonSlurper().parseText(message.getBody(String.class))
+    def rows = json.value instanceof List ? json.value : [json.value]  // OData 集合
+    def out  = rows.findAll { (it.UnitsInStock as int) &lt;= 15 }
+                 .collect { [id: it.ProductID, name: it.ProductName, stock: it.UnitsInStock] }
+    message.setBody(JsonOutput.prettyPrint(JsonOutput.toJson(out)), &#x27;UTF-8&#x27;)
+    message.setProperty(&#x27;filteredCount&#x27;, out.size().toString())
+    return message
+}</code></pre><div class="box info"><b class="t">提示 · 脚本最佳实践</b><ul><li>签名永远是 <code>def Message processData(Message message)</code></li><li>取到的外部值先判空再用；数字类先 <code>isNumber()</code> 再转型</li><li>日志不要打整包敏感信息；多打 property 少打 body</li><li>脚本里抛异常会直接让消息变 Failed，想优雅失败请看下一节</li></ul></div><h2 id="err">异常与重试：让 iFlow 优雅地失败</h2><table class="tbl"><tr><th>机制</th><th>位置</th><th>用途</th></tr>
+<tr><td>Exception Subprocess</td><td>步骤右键可包成子流程</td><td>把“正常流程”和“出错补救”分开画</td></tr>
+<tr><td>Escalation / Error End</td><td>子流程边界</td><td>失败时走告警(发邮件/Webhook)或写错误存储</td></tr>
+<tr><td>Groovy raise</td><td>脚本内</td><td>业务校验失败主动中断:<code>throw new Exception('价格不合法')</code></td></tr>
+<tr><td>Retry(重试)</td><td>Request-Reply 属性</td><td>对瞬时故障(超时/5xx)按次数与间隔重试</td></tr>
+</table><pre class="hl"><div class="code-head"><span class="lang">Groovy</span><button class="copy-btn" type="button">复制</button></div><code class="lang-groovy">// 主动失败 + 带错误上下文(配合 Exception Subprocess 读取)
+def Message processData(Message message) {
+    String id = message.getProperty(&#x27;orderId&#x27;)
+    if (id == null) {
+        message.setProperty(&#x27;errorStage&#x27;, &#x27;validate&#x27;)
+        throw new Exception(&#x27;orderId 缺失, 终止处理&#x27;)
+    }
+    return message
+}</code></pre><h2 id="mpl">排查三板斧：MPL / Trace / 重放</h2><ol class="steps">
+<li><b>看 MPL</b>：Monitor → Message Processing Log，选一条消息，逐步骤看状态(绿/黄/红)与耗时</li>
+<li><b>开 Trace</b>：MPL 详情里对失败步骤看入/出站 payload——80% 的问题在这一步现行(字段名/编码/空值)</li>
+<li><b>重放/重试</b>：排障修复后，对失败消息点 Retry 重放；正式环境再配 Alert 通知</li>
+</ol><h2 id="pit">常见坑速查</h2><table class="tbl"><tr><th>现象</th><th>原因</th><th>处理</th></tr>
+<tr><td>端点 404</td><td>Sender Address 与部署后实际端点不一致</td><td>以 Monitor 展示的端点为唯一事实来源</td></tr>
+<tr><td>变量 undefined</td><td>Header/Property 拼写或作用域错</td><td>先用日志脚本打印 getHeaders()/getProperties()</td></tr>
+<tr><td>中文乱码</td><td>编码不一致</td><td>统一 UTF-8；Receiver 显式 Content-Type charset</td></tr>
+<tr><td>OData 401</td><td>认证/证书没配</td><td>先 Postman 单独调通目标，再接 iFlow；生产用 OAuth2ClientCredentials</td></tr>
+<tr><td>偶发超时</td><td>目标慢且没重试</td><td>Request-Reply 打开重试 + 增大超时</td></tr>
+</table><h2 id="files">配套文件（复制即用）</h2><pre class="hl"><div class="code-head"><span class="lang">Text</span><button class="copy-btn" type="button">复制</button></div><code class="lang-text">projects/iflow/
+├── manual/01-build-low-stock-alert.md      端到端建模手册(推荐先看)
+├── resources/script/
+│   ├── 01-read-and-log.groovy              调试三件套: 读/打日志
+│   ├── 02-xml-to-csv.groovy                核心: XML feed → CSV
+│   └── 03-json-transform.groovy            JSON 备用版
+├── resources/payload/
+│   ├── in-odata-products.xml               入站响应样例(可当 Mock)
+│   └── out-low-stock-products.csv          期望输出
+└── resources/config/content-modifier-values.md  三个 CM 的精确配置值</code></pre><div class="box warn"><b class="t">注意 · 关于 .iflow 文件</b><p>iFlow 在 Web UI 里是可视化对象，导出为 .iflow XML 依赖当前租户的 schema 版本；与其给一份“大概率导入失败”的旧 XML，本站给出<b>可照抄的建模手册</b>——在租户里 15 分钟能画出等价流程，且一定与你的版本匹配。</p></div></article></div></main>
+<footer class="site">
+  <div class="inner">
+    <div>
+      <h5>SAP BTP 开发者训练站</h5>
+      <p>面向培训/自学的中文资料站 · 代码与数据见 “示例工程” 页<br>
+      内容基于公开官方文档整理，非 SAP 官方交付物，请以 help.sap.com / cap.cloud.sap 为准。</p>
+      <p>© <span data-year>2026</span> 学习用途</p>
+    </div>
+    <div class="cols">
+      <div><h5>官方文档</h5><ul style="margin:0;padding-left:18px"><li><a href="https://help.sap.com/docs/btp" target="_blank" rel="noopener">SAP BTP 帮助中心 ↗</a></li><li><a href="https://help.sap.com/docs/integration-suite" target="_blank" rel="noopener">Integration Suite ↗</a></li><li><a href="https://help.sap.com/docs/cloud-integration" target="_blank" rel="noopener">Cloud Integration ↗</a></li><li><a href="https://cap.cloud.sap/docs/" target="_blank" rel="noopener">CAP (capire) ↗</a></li><li><a href="https://sapui5.hana.ondemand.com/" target="_blank" rel="noopener">SAPUI5 ↗</a></li><li><a href="https://help.sap.com/docs/btp/sap-abap-development-user-guide" target="_blank" rel="noopener">ABAP 开发用户指南 ↗</a></li></ul></div>
+    </div>
+  </div>
+</footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

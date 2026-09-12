@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>手顺④ 服务发布与 Fiori · RAP 专项训练站</title>
+<meta name="description" content="RAP 实训第四步：Projection 视图 ZC_、Service Definition / Binding（OData V4 UI）、Fiori Elements List Report 预览与 UI 注解（WBS 3.4 / PH4 最小集、统合项目 STEP5/6）。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">RAP</span><span class="txt">RAP 专项训练站</span></a>
+    <nav class="main">
+      <a href="index.html">首页</a>
+      <a href="concept.html">概念与架构</a>
+      <a href="project.html">完整项目</a>
+      <a href="handson-1.html">手顺① 数据模型</a>
+      <a href="handson-2.html">手顺② CDS 视图</a>
+      <a href="handson-3.html">手顺③ RAP 行为</a>
+      <a class="active" href="handson-4.html">手顺④ 服务与 Fiori</a>
+      <a href="code.html">项目代码</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">首页</a> / 手顺④ 服务发布与 Fiori</div>
+<main class="page"><article>
+
+<h1>手顺④ 服务发布与 Fiori Elements 预览</h1>
+<div class="box info"><b class="t">本页对应</b>
+WBS PH3 3.4（Projection 層 / Service Definition / Binding）+ PH4 4.1〜4.4 的最小集（List Report 预览所需 UI 注解）＋ 统合项目 STEP5/6。
+完成基准：Service Binding 的 Fiori Elements Preview 能看到订单列表，并能 Create / Edit / 执行「确定订单」Action。</div>
+
+<h2>操作流程（本页总览）</h2>
+<div class="flow">
+  <div class="node">1 投影视图<br><small>ZC_ZPOHEADER / ZC_ZPOITEM</small></div><div class="arrow">→</div>
+  <div class="node">2 Service Definition<br><small>ZSD_ZPURCHASEORDER</small></div><div class="arrow">→</div>
+  <div class="node">3 Service Binding<br><small>OData V4 UI</small></div><div class="arrow">→</div>
+  <div class="node">4 UI 注解<br><small>lineItem/selectionField</small></div><div class="arrow">→</div>
+  <div class="node">5 Preview 试操作<br><small>CRUD + Action</small></div><div class="arrow">→</div>
+  <div class="node">✓ 验收（STEP6）</div>
+</div>
+
+<h2>STEP 4-1 创建投影视图 ZC_ZPOHEADER</h2>
+<ol class="steps">
+  <li>右键包 → New → Data Definition → 模板选「<b>Define Projection View</b>」，名称 <code>ZC_ZPOHEADER</code>，来源实体 <code>ZR_ZPOHEADER</code>。</li>
+  <li>投影视图 = 只读的“裁剪层”：只能投影 BO 视图已有字段/关联，不能新算字段。UI 注解写在这里（或 Metadata Extension）。</li>
+</ol>
+<pre class="hl"><div class="code-head"><span class="lang">cds · ZC_ZPOHEADER（消费投影 + 基础 UI 注解）</span><button class="copy-btn" type="button">复制</button></div><code class="lang-cds">@EndUserText.label: '采购订单消费投影'
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@Metadata.ignorePropagatedAnnotations: true
+@UI: {
+  headerInfo: {
+    typeName: '采购订单',
+    typeNamePlural: '采购订单',
+    title: { type: #FOR_KEY, value: 'PoNum' }
+  },
+  presentationVariant: [ { sortOrder: [ { by: 'PoDate', direction: #DESC } ] } ]
+}
+@Search.searchable: true
+define root view entity ZC_ZPOHEADER
+  provider contract transactional_query
+  as projection on ZR_ZPOHEADER
+{
+  @UI: {
+    lineItem:       [ { position: 10, label: '订单号' } ],
+    selectionField: [ { position: 10 } ],
+    identification: [ { position: 10 } ]
+  }
+  @Search.defaultSearchElement: true
+  key PoNum,
+
+  @UI: {
+    lineItem:       [ { position: 20, label: '采购日期' } ],
+    selectionField: [ { position: 20 } ],
+    identification: [ { position: 20 } ]
+  }
+  PoDate,
+
+  @UI: {
+    lineItem:       [ { position: 30, label: '供应商' } ],
+    selectionField: [ { position: 30 } ],
+    identification: [ { position: 30 } ]
+  }
+  @Consumption.valueHelpDefinition: [ { entity: { name: 'ZR_VENDOR_TXT', element: 'VendorCode' } } ]
+  VendorCode,
+
+  @UI: {
+    lineItem:       [ { position: 40, label: '状态' } ],
+    selectionField: [ { position: 40 } ],
+    identification: [ { position: 40 } ]
+  }
+  Status,
+
+  @UI: { lineItem: [ { position: 50, label: '备注' } ] }
+  ZzMemo,
+
+  @UI.hidden: true
+  CreatedBy
+}
+</code></pre>
+<div class="box info"><b class="t">为什么 headerInfo 不显示供应商名称？</b>
+投影视图（projection on ...）只能投影下层 BO 视图已有的字段；<code>VendorName</code> 在 ZR_ZPOHEADER 中并不存在（只有 VendorCode + _Vendor 关联）。要在标题/列表显示名称，需在 BO 层把名称做成字段或用关联展开（Fiori 课程范围）。本站用 <b>供应商 F4 值帮助</b> 让用户看到名称即可。</div>
+
+<h2>STEP 4-2 明细投影视图 ZC_ZPOITEM</h2>
+<pre class="hl"><div class="code-head"><span class="lang">cds · ZC_ZPOITEM（明细消费投影）</span><button class="copy-btn" type="button">复制</button></div><code class="lang-cds">@EndUserText.label: '采购订单明细消费投影'
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@Metadata.ignorePropagatedAnnotations: true
+@UI: {
+  headerInfo: { typeName: '采购订单明细', typeNamePlural: '采购订单明细' }
+}
+define view entity ZC_ZPOITEM
+  provider contract transactional_query
+  as projection on ZR_ZPOITEM
+{
+  @UI: { lineItem: [ { position: 10 } ], identification: [ { position: 10 } ] }
+  key ItemNum,
+
+  @UI: { lineItem: [ { position: 20, label: '物料' } ], identification: [ { position: 20 } ] }
+  Matnr,
+
+  @UI: { lineItem: [ { position: 30, label: '数量' } ], identification: [ { position: 30 } ] }
+  Qty,
+
+  @UI: { lineItem: [ { position: 40, label: '单位' } ], identification: [ { position: 40 } ] }
+  Unit,
+
+  @UI: { lineItem: [ { position: 50, label: '单价' } ], identification: [ { position: 50 } ] }
+  NetPrice,
+
+  @UI: { lineItem: [ { position: 60, label: '币种' } ], identification: [ { position: 60 } ] }
+  Currency,
+
+  @UI.hidden: true
+  PoNum
+}
+</code></pre>
+<div class="box info"><b class="t">供应商 F4 值帮助的目标实体</b>
+ZC_ZPOHEADER 的 VendorCode 注解指向 <code>ZR_VENDOR_TXT</code>（值帮助视图）。要让 Fiori 能调它，需把它也放进服务定义（下一步的 <code>expose ZR_VENDOR_TXT as VendorTxt</code>）。值帮助视图本身只读即可，不需要投影包装。</div>
+
+<h2>STEP 4-3 Service Definition 与 Binding</h2>
+<ol class="steps">
+  <li>右键包 → New → Other ABAP Repository Object → Cloud/Service 相关 → <b>Service Definition</b>：名称 <code>ZSD_ZPURCHASEORDER</code>，暴露上面三个投影。</li>
+  <li>再右键 → New → <b>Service Binding</b>：名称 <code>ZUI_ZPURCHASEORDER_O4</code>，绑定类型 <b>OData V4 (UI)</b>，引用 ZSD_ZPURCHASEORDER。</li>
+  <li>激活后，双击 Binding 里的实体 → 点「预览 / Preview」打开 Fiori Elements 列表页。</li>
+</ol>
+<pre class="hl"><div class="code-head"><span class="lang">cds · Service Definition ZSD_ZPURCHASEORDER</span><button class="copy-btn" type="button">复制</button></div><code class="lang-cds">@EndUserText.label: '采购订单 RAP 服务'
+define service ZSD_ZPURCHASEORDER {
+  expose ZC_ZPOHEADER as ZpoHeader;
+  expose ZC_ZPOITEM   as ZpoItem;
+  expose ZR_VENDOR_TXT as VendorTxt;
+}
+</code></pre>
+<div class="box info"><b class="t">为什么服务里要有 VendorTxt？</b>
+VendorCode 字段的值帮助（valueHelpDefinition）指向 ZR_VENDOR_TXT，OData 服务需要能访问它（F4 下拉从同一服务取数）。ZpoHeader / ZpoItem 是可读写 BO 投影；VendorTxt 是只读值帮助实体，三者同属一个服务。</div>
+
+<h2>STEP 4-4 在 Preview 中验收（统合项目 STEP6 期望动作）</h2>
+<ol class="steps">
+  <li>列表页（List Report）出现：<b>订单号 / 采购日期 / 供应商 / 状态</b> 等列，顶部可按订单号/状态筛选；</li>
+  <li>点「Create」→ 输入供应商、日期 → 明细表加 2 行（物料/数量/单价）→ Save（Draft）→ Activate；</li>
+  <li>点某行 → Object Page 显示抬头 + 明细 Facet（由 ZC_ZPOITEM 的 lineItem 注解自动成表）；</li>
+  <li>对状态 NEW 的行执行 <b>「ConfirmOrder」按钮</b>（若想按钮出现在列表，需在注解里加 <code>@UI.lineItem: [{ type: #FOR_ACTION, dataAction: 'ConfirmOrder', position: 60 }]</code> 或把它加为 identification 区域按钮）；</li>
+  <li>保存后返回列表 → 状态变为 CONFIRMED；</li>
+  <li>再对 CONFIRMED 行执行 ConfirmOrder → 报错（后台校验拦截）。</li>
+</ol>
+<div class="box warn"><b class="t">按钮显示注解（WBS 4.4 Custom Column / Action 列）</b>
+要让 Action 出现在列表行内，需在投影字段（或 entity 级注解）里加 dataAction 引用；示例：<br>
+<code>@UI.lineItem: [ { type: #FOR_ACTION, dataAction: 'ConfirmOrder', position: 99, label: '确定' } ]</code><br>
+（本站在代码页给出完整版；UI 深度定制属 Fiori 课程范围。）</div>
+
+<h2>STEP 4-5 检查 OData V4（可选）</h2>
+<ol class="steps">
+  <li>在 Service Binding 里复制服务 URL，浏览器打开 <code>…/sap/opu/odata4/sap/zui_zpurchaseorder_o4/…/$metadata</code>，应看到 ZpoHeader / ZpoItem 实体与 ConfirmOrder 动作。</li>
+  <li>用 GW_CLIENT（/IWFND/GW_CLIENT）或 Postman 测试 GET / POST / PATCH 与 $expand。</li>
+</ol>
+
+<h2>验收（完成基准）</h2>
+<div class="box ok"><b class="t">✓ 手顺④验收清单（= 统合项目 STEP5/6 + STEP10 前 4 步）</b>
+<ol>
+<li>Service Binding 激活，Preview 能打开 Fiori Elements 列表；</li>
+<li>列表显示 ≥5 列、可按订单号/状态搜索过滤；</li>
+<li>新建订单（抬头 + 2 行明细）→ Draft → Activate 成功；</li>
+<li>对象页（Object Page）显示抬头 + 明细；</li>
+<li>ConfirmOrder 动作可用、状态机正确；</li>
+<li>供应商名（VendorName）在抬头/标题中可见（若保留了关联投影）。</li>
+</ol></div>
+
+<div class="box info"><b class="t">恭喜！RAP 核心链路已通 🎉</b>
+到这里，你已经完成了 WBS「Table → CDS → Behavior → Projection → Service → OData V4 → Fiori Elements」的完整链路。接下来建议：<br>
+① 到 <a href="quiz.html">能力测试</a> 自测；<br>
+② 通读 <a href="code.html">项目代码</a> 把每个对象串起来；<br>
+③ 若继续学 WBS 的扩展（Developer/KeyUser 追加字段、SVF 报表）请回原 Excel（不在本站范围）。</div>
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>RAP 专项训练站</h5><p>基于《SAP_S4HANA_BTP-学習WBS.xlsx》整理。</p></div>
+  <div class="cols">
+    <div><h5>手顺</h5><a href="handson-1.html">① 数据模型</a><br><a href="handson-2.html">② CDS 视图</a><br><a href="handson-3.html">③ RAP 行为</a><br><a href="handson-4.html">④ 服务与 Fiori</a></div>
+    <div><h5>其他</h5><a href="project.html">完整项目</a><br><a href="code.html">项目代码</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

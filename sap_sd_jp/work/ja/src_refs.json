@@ -1,0 +1,15699 @@
+[
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+47,
+119
+],
+"inner": [
+50,
+116
+],
+"tokens": [],
+"runs": [
+{
+"id": "tf3d58a89e2",
+"start": 50,
+"end": 116
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+759,
+763
+],
+"inner": [
+760,
+762
+],
+"tokens": [],
+"runs": [
+{
+"id": "t424a2ad8f7",
+"start": 760,
+"end": 762
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+771,
+775
+],
+"inner": [
+772,
+774
+],
+"tokens": [],
+"runs": [
+{
+"id": "t424a2ad8f7",
+"start": 772,
+"end": 774
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+792,
+810
+],
+"inner": [
+793,
+809
+],
+"tokens": [],
+"runs": [
+{
+"id": "tcbdf13f654",
+"start": 793,
+"end": 809
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+828,
+854
+],
+"inner": [
+829,
+853
+],
+"tokens": [],
+"runs": [
+{
+"id": "t62eb39719d",
+"start": 829,
+"end": 853
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+886,
+986
+],
+"inner": [
+887,
+985
+],
+"tokens": [],
+"runs": [
+{
+"id": "t220810ea41",
+"start": 887,
+"end": 985
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+1001,
+1235
+],
+"inner": [
+1002,
+1234
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t0b8a8d556d",
+"start": 1002,
+"end": 1194
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+1265,
+1293
+],
+"inner": [
+1266,
+1292
+],
+"tokens": [],
+"runs": [
+{
+"id": "taab063c929",
+"start": 1266,
+"end": 1292
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+1311,
+1367
+],
+"inner": [
+1312,
+1366
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "ta9b9c29dbc",
+"start": 1312,
+"end": 1359
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+1385,
+1483
+],
+"inner": [
+1386,
+1482
+],
+"tokens": [
+"<span class=\"fb\">",
+"</span>",
+"<span class=\"fb img\">",
+"</span>"
+],
+"runs": [
+{
+"id": "t7b60a99534",
+"start": 1386,
+"end": 1442
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+1560,
+1591
+],
+"inner": [
+1561,
+1590
+],
+"tokens": [],
+"runs": [
+{
+"id": "t2d46c14f1f",
+"start": 1561,
+"end": 1590
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+1609,
+1644
+],
+"inner": [
+1610,
+1643
+],
+"tokens": [],
+"runs": [
+{
+"id": "tb8deb2ac8f",
+"start": 1610,
+"end": 1643
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+1676,
+1912
+],
+"inner": [
+1677,
+1911
+],
+"tokens": [],
+"runs": [
+{
+"id": "t17ad2ebb7c",
+"start": 1677,
+"end": 1911
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+1927,
+2043
+],
+"inner": [
+1928,
+2042
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t131c16ba23",
+"start": 1928,
+"end": 2035
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+2073,
+2113
+],
+"inner": [
+2074,
+2112
+],
+"tokens": [],
+"runs": [
+{
+"id": "te481ab61fb",
+"start": 2074,
+"end": 2112
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+2131,
+2198
+],
+"inner": [
+2132,
+2197
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t033c2dde41",
+"start": 2132,
+"end": 2190
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+2216,
+2248
+],
+"inner": [
+2217,
+2247
+],
+"tokens": [],
+"runs": [
+{
+"id": "tb5547f2629",
+"start": 2217,
+"end": 2247
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+2266,
+2373
+],
+"inner": [
+2267,
+2372
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t12fe401825",
+"start": 2267,
+"end": 2344
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+2450,
+2472
+],
+"inner": [
+2451,
+2471
+],
+"tokens": [],
+"runs": [
+{
+"id": "t36372ab6ae",
+"start": 2451,
+"end": 2471
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+2490,
+2531
+],
+"inner": [
+2491,
+2530
+],
+"tokens": [],
+"runs": [
+{
+"id": "t91da05637b",
+"start": 2491,
+"end": 2530
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+2563,
+2971
+],
+"inner": [
+2564,
+2970
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t83c334261b",
+"start": 2564,
+"end": 2910
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+2986,
+3062
+],
+"inner": [
+2987,
+3061
+],
+"tokens": [],
+"runs": [
+{
+"id": "tf1623b4d4d",
+"start": 2987,
+"end": 3061
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+3092,
+3142
+],
+"inner": [
+3093,
+3141
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "td62a23218f",
+"start": 3093,
+"end": 3134
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+3160,
+3204
+],
+"inner": [
+3161,
+3203
+],
+"tokens": [],
+"runs": [
+{
+"id": "tec448bb736",
+"start": 3161,
+"end": 3203
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+3222,
+3281
+],
+"inner": [
+3223,
+3280
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tcbe38bfef4",
+"start": 3223,
+"end": 3266
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+3299,
+3357
+],
+"inner": [
+3300,
+3356
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "ta0e258e2bb",
+"start": 3300,
+"end": 3349
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+3434,
+3465
+],
+"inner": [
+3435,
+3464
+],
+"tokens": [],
+"runs": [
+{
+"id": "t99fe7f654b",
+"start": 3435,
+"end": 3464
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+3483,
+3524
+],
+"inner": [
+3484,
+3523
+],
+"tokens": [],
+"runs": [
+{
+"id": "t1e0f568eb7",
+"start": 3484,
+"end": 3523
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+3556,
+4124
+],
+"inner": [
+3557,
+4123
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "td290f5e405",
+"start": 3557,
+"end": 4053
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+4139,
+4207
+],
+"inner": [
+4140,
+4206
+],
+"tokens": [],
+"runs": [
+{
+"id": "t3b3791d336",
+"start": 4140,
+"end": 4206
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+4237,
+4276
+],
+"inner": [
+4238,
+4275
+],
+"tokens": [],
+"runs": [
+{
+"id": "t255e4bc03f",
+"start": 4238,
+"end": 4275
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+4294,
+4331
+],
+"inner": [
+4295,
+4330
+],
+"tokens": [],
+"runs": [
+{
+"id": "tf98eb4774d",
+"start": 4295,
+"end": 4330
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+4349,
+4412
+],
+"inner": [
+4350,
+4411
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t16c756c8a9",
+"start": 4350,
+"end": 4404
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+4430,
+4537
+],
+"inner": [
+4431,
+4536
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t67aa016ff1",
+"start": 4431,
+"end": 4501
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+4614,
+4644
+],
+"inner": [
+4615,
+4643
+],
+"tokens": [],
+"runs": [
+{
+"id": "t057e52bb65",
+"start": 4615,
+"end": 4643
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+4662,
+4702
+],
+"inner": [
+4663,
+4701
+],
+"tokens": [],
+"runs": [
+{
+"id": "te0b3193250",
+"start": 4663,
+"end": 4701
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+4734,
+5491
+],
+"inner": [
+4735,
+5490
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t4a8c6e0e2b",
+"start": 4735,
+"end": 5375
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+5506,
+5565
+],
+"inner": [
+5507,
+5564
+],
+"tokens": [],
+"runs": [
+{
+"id": "t9933f7597b",
+"start": 5507,
+"end": 5564
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+5595,
+5691
+],
+"inner": [
+5596,
+5690
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t9f47205666",
+"start": 5596,
+"end": 5662
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+5709,
+5772
+],
+"inner": [
+5710,
+5771
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t169cbf5b1e",
+"start": 5710,
+"end": 5757
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+5790,
+5856
+],
+"inner": [
+5791,
+5855
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t498c3d9f8b",
+"start": 5791,
+"end": 5841
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+5874,
+5979
+],
+"inner": [
+5875,
+5978
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "ta13a761c71",
+"start": 5875,
+"end": 5950
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+6056,
+6090
+],
+"inner": [
+6057,
+6089
+],
+"tokens": [],
+"runs": [
+{
+"id": "t5d35cebf55",
+"start": 6057,
+"end": 6089
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+6108,
+6146
+],
+"inner": [
+6109,
+6145
+],
+"tokens": [],
+"runs": [
+{
+"id": "t0247c7db18",
+"start": 6109,
+"end": 6145
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+6178,
+6685
+],
+"inner": [
+6179,
+6684
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t2279ada7cc",
+"start": 6179,
+"end": 6624
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+6700,
+6755
+],
+"inner": [
+6701,
+6754
+],
+"tokens": [],
+"runs": [
+{
+"id": "t22a2c7d5ce",
+"start": 6701,
+"end": 6754
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+6785,
+6826
+],
+"inner": [
+6786,
+6825
+],
+"tokens": [],
+"runs": [
+{
+"id": "t053152ba49",
+"start": 6786,
+"end": 6825
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+6844,
+6883
+],
+"inner": [
+6845,
+6882
+],
+"tokens": [],
+"runs": [
+{
+"id": "tf2e5b8f28a",
+"start": 6845,
+"end": 6882
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+6901,
+6943
+],
+"inner": [
+6902,
+6942
+],
+"tokens": [],
+"runs": [
+{
+"id": "tc41c453549",
+"start": 6902,
+"end": 6942
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+6961,
+7065
+],
+"inner": [
+6962,
+7064
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t2b62cb52e3",
+"start": 6962,
+"end": 7036
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+7094,
+7098
+],
+"inner": [
+7095,
+7097
+],
+"tokens": [],
+"runs": [
+{
+"id": "tdb1c89e0f6",
+"start": 7095,
+"end": 7097
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+7198,
+7202
+],
+"inner": [
+7199,
+7201
+],
+"tokens": [],
+"runs": [
+{
+"id": "t21b8fa6dd8",
+"start": 7199,
+"end": 7201
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+7224,
+7228
+],
+"inner": [
+7225,
+7227
+],
+"tokens": [],
+"runs": [
+{
+"id": "tb271e42796",
+"start": 7225,
+"end": 7227
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+7255,
+7259
+],
+"inner": [
+7256,
+7258
+],
+"tokens": [],
+"runs": [
+{
+"id": "ta41f90108b",
+"start": 7256,
+"end": 7258
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+7285,
+7289
+],
+"inner": [
+7286,
+7288
+],
+"tokens": [],
+"runs": [
+{
+"id": "t4282ac1988",
+"start": 7286,
+"end": 7288
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+7310,
+7314
+],
+"inner": [
+7311,
+7313
+],
+"tokens": [],
+"runs": [
+{
+"id": "t9d1c8a70d4",
+"start": 7311,
+"end": 7313
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+7332,
+7351
+],
+"inner": [
+7333,
+7350
+],
+"tokens": [],
+"runs": [
+{
+"id": "tc60a551b0c",
+"start": 7333,
+"end": 7350
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+7363,
+7382
+],
+"inner": [
+7364,
+7381
+],
+"tokens": [],
+"runs": [
+{
+"id": "t8dfc094165",
+"start": 7364,
+"end": 7381
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+7830,
+7880
+],
+"inner": [
+7833,
+7877
+],
+"tokens": [],
+"runs": [
+{
+"id": "t7b4c2099f8",
+"start": 7833,
+"end": 7877
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+7948,
+7976
+],
+"inner": [
+7950,
+7975
+],
+"tokens": [],
+"runs": [
+{
+"id": "tc5e13f5efd",
+"start": 7950,
+"end": 7975
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+8666,
+8712
+],
+"inner": [
+8668,
+8711
+],
+"tokens": [
+"<figcaption>",
+"<span class=\"n\">",
+"{seq}",
+"</span>"
+],
+"runs": [
+{
+"id": "t135b18487a",
+"start": 8668,
+"end": 8683
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+9067,
+9073
+],
+"inner": [
+9068,
+9072
+],
+"tokens": [],
+"runs": [
+{
+"id": "t1fb4b3aa26",
+"start": 9068,
+"end": 9072
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+9083,
+9089
+],
+"inner": [
+9084,
+9088
+],
+"tokens": [],
+"runs": [
+{
+"id": "t4081c8e507",
+"start": 9084,
+"end": 9088
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+9099,
+9105
+],
+"inner": [
+9100,
+9104
+],
+"tokens": [],
+"runs": [
+{
+"id": "t6b51d3f903",
+"start": 9100,
+"end": 9104
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+9114,
+9118
+],
+"inner": [
+9115,
+9117
+],
+"tokens": [],
+"runs": [
+{
+"id": "td17a0f0bae",
+"start": 9115,
+"end": 9117
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+9307,
+9379
+],
+"inner": [
+9310,
+9376
+],
+"tokens": [],
+"runs": [
+{
+"id": "t038a707372",
+"start": 9310,
+"end": 9376
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+9654,
+9718
+],
+"inner": [
+9656,
+9717
+],
+"tokens": [
+"<span class=\"tc2\">",
+"{t[\"nimg\"]}",
+"{len(t[\"steps\"])}",
+"</span>"
+],
+"runs": [
+{
+"id": "td76c9d6408",
+"start": 9656,
+"end": 9676
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+9784,
+9849
+],
+"inner": [
+9786,
+9848
+],
+"tokens": [
+"<span class=\"no\">",
+"{tno:02d}",
+"</span>",
+"<h3>",
+"{esc(t[\"title\"])}",
+"</h3>"
+],
+"runs": [
+{
+"id": "t8fef96a2d7",
+"start": 9786,
+"end": 9807
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+10089,
+10133
+],
+"inner": [
+10091,
+10132
+],
+"tokens": [
+"<b>",
+"</b>",
+"{esc(t[\"path\"])}",
+"</div>"
+],
+"runs": [
+{
+"id": "t977da20e94",
+"start": 10091,
+"end": 10115
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+10276,
+10352
+],
+"inner": [
+10277,
+10351
+],
+"tokens": [
+"<table class=\"tbl vals\">",
+"<thead>",
+"<tr>",
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"</tr>",
+"</thead>"
+],
+"runs": [
+{
+"id": "t5d58da4b51",
+"start": 10277,
+"end": 10312
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+10871,
+10960
+],
+"inner": [
+10873,
+10959
+],
+"tokens": [
+"<p class=\"opcap\">",
+"<span class=\"sub\">",
+"{SEQ.get(s[\"imgs\"][0], \"\")}",
+"</span>",
+"</p>"
+],
+"runs": [
+{
+"id": "t77f36ed2a7",
+"start": 10873,
+"end": 10901
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+11018,
+11048
+],
+"inner": [
+11020,
+11047
+],
+"tokens": [
+"{esc(t[\"title\"])}",
+"{i}"
+],
+"runs": [
+{
+"id": "te7ffda04dc",
+"start": 11020,
+"end": 11033
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/common.py",
+"lit": [
+12760,
+14030
+],
+"inner": [
+12764,
+14027
+],
+"tokens": [
+"<!DOCTYPE html>",
+"<html lang=\"zh-CN\">",
+"<head>",
+"<meta charset=\"utf-8\">",
+"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">",
+"<title>",
+"{esc(title)}",
+"</title>",
+"<meta name=\"description\" content=\"{esc(desc)}\">",
+"<link rel=\"stylesheet\" href=\"assets/style.css\">",
+"<link rel=\"stylesheet\" href=\"assets/s4cn.css\">",
+"</head>",
+"<body>",
+"<header class=\"site\">",
+"<div class=\"nav-wrap\">",
+"<a class=\"brand\" href=\"index.html\">",
+"<span class=\"logo\">",
+"</span>",
+"<span class=\"txt\">",
+"</span>",
+"</a>",
+"<nav class=\"main\">",
+"{nav}",
+"</nav>",
+"</div>",
+"</header>",
+"{hero}",
+"<div class=\"wrap\">",
+"<main class=\"page\">",
+"<article>",
+"{body}",
+"</article>",
+"</main>",
+"</div>",
+"<footer class=\"site\">",
+"<div class=\"inner\">",
+"<div>",
+"<h5>",
+"{SITE_TITLE}",
+"{SITE_SUB}",
+"</h5>",
+"<p>",
+"<code>",
+"</code>",
+"</p>",
+"<div>",
+"<h5>",
+"</h5>",
+"<p>",
+"<b>",
+"</b>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"</p>",
+"</div>",
+"</div>",
+"<div class=\"cols\">",
+"<div>",
+"<h5>",
+"</h5>",
+"{mods_links}",
+"</div>",
+"<div>",
+"<h5>",
+"</h5>",
+"{foot_links}",
+"</div>",
+"</div>",
+"</div>",
+"</footer>",
+"<script src=\"assets/main.js\">",
+"</script>",
+"<script src=\"assets/s4cn.js\">",
+"</script>",
+"</body>",
+"</html>"
+],
+"runs": [
+{
+"id": "t6f454bc18d",
+"start": 12829,
+"end": 12864
+},
+{
+"id": "tb7e15ee042",
+"start": 12979,
+"end": 13073
+},
+{
+"id": "t46fd567f9d",
+"start": 13074,
+"end": 13283
+},
+{
+"id": "t18338ef6ac",
+"start": 13291,
+"end": 13309
+},
+{
+"id": "te9ec0580d1",
+"start": 13323,
+"end": 13341
+}
+],
+"src_md5": "36921c42eb32f1f9dc6a446ef68eb6e0"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+396,
+400
+],
+"inner": [
+397,
+399
+],
+"tokens": [],
+"runs": [
+{
+"id": "t066ae8d7d6",
+"start": 397,
+"end": 399
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+446,
+450
+],
+"inner": [
+447,
+449
+],
+"tokens": [],
+"runs": [
+{
+"id": "tbd13a76c41",
+"start": 447,
+"end": 449
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+976,
+1037
+],
+"inner": [
+978,
+1036
+],
+"tokens": [
+"<tr>",
+"<td>",
+"<a href=\"#{t[\"anchor\"]}\">",
+"{t[\"no\"]:02d}",
+"</a>",
+"</td>"
+],
+"runs": [
+{
+"id": "t04b3f10290",
+"start": 978,
+"end": 999
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+1231,
+1310
+],
+"inner": [
+1232,
+1309
+],
+"tokens": [
+"<div class=\"tblwrap\">",
+"<table class=\"tbl idx\">",
+"<thead>",
+"<tr>",
+"<th>",
+"</th>",
+"<th>",
+"</th>"
+],
+"runs": [
+{
+"id": "ta6d83f0b98",
+"start": 1232,
+"end": 1260
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+1323,
+1393
+],
+"inner": [
+1324,
+1392
+],
+"tokens": [
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"</tr>",
+"</thead>"
+],
+"runs": [
+{
+"id": "td68ff8ac3e",
+"start": 1324,
+"end": 1373
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+1777,
+1781
+],
+"inner": [
+1778,
+1780
+],
+"tokens": [],
+"runs": [
+{
+"id": "tdb1c89e0f6",
+"start": 1778,
+"end": 1780
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+1966,
+1997
+],
+"inner": [
+1967,
+1996
+],
+"tokens": [
+"<a href=\"#guide\">",
+"</a>"
+],
+"runs": [
+{
+"id": "ta0f0039f33",
+"start": 1967,
+"end": 1981
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+2014,
+2042
+],
+"inner": [
+2015,
+2041
+],
+"tokens": [
+"<a href=\"#toc\">",
+"</a>"
+],
+"runs": [
+{
+"id": "t290eb5949d",
+"start": 2015,
+"end": 2028
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+2059,
+2093
+],
+"inner": [
+2060,
+2092
+],
+"tokens": [
+"<a href=\"#steps\">",
+"</a>"
+],
+"runs": [
+{
+"id": "t99ce6594ad",
+"start": 2060,
+"end": 2077
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+2110,
+2151
+],
+"inner": [
+2111,
+2150
+],
+"tokens": [
+"<a href=\"#sources\">",
+"</a>",
+"</div>"
+],
+"runs": [
+{
+"id": "t7bb8b6801f",
+"start": 2111,
+"end": 2130
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+2212,
+2275
+],
+"inner": [
+2214,
+2274
+],
+"tokens": [
+"<div class=\"card\">",
+"<b>",
+"{st[\"tasks\"]}",
+"</b>",
+"<span>",
+"</span>",
+"</div>"
+],
+"runs": [
+{
+"id": "t5ccd89da83",
+"start": 2214,
+"end": 2238
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+2292,
+2357
+],
+"inner": [
+2294,
+2356
+],
+"tokens": [
+"<div class=\"card\">",
+"<b>",
+"{st[\"shots\"]}",
+"</b>",
+"<span>",
+"</span>",
+"</div>"
+],
+"runs": [
+{
+"id": "tf5025dbd76",
+"start": 2294,
+"end": 2320
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+2374,
+2439
+],
+"inner": [
+2376,
+2438
+],
+"tokens": [
+"<div class=\"card\">",
+"<b>",
+"{st[\"steps\"]}",
+"</b>",
+"<span>",
+"</span>",
+"</div>"
+],
+"runs": [
+{
+"id": "t73b2e35861",
+"start": 2376,
+"end": 2402
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+2456,
+2538
+],
+"inner": [
+2458,
+2537
+],
+"tokens": [
+"<div class=\"card\">",
+"<b>",
+"{st[\"back\"]}",
+"{st[\"front\"]}",
+"</b>",
+"<span>",
+"</span>",
+"</div>"
+],
+"runs": [
+{
+"id": "t36a54c49ac",
+"start": 2458,
+"end": 2492
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+2582,
+2612
+],
+"inner": [
+2583,
+2611
+],
+"tokens": [
+"<h2 id=\"guide\">",
+"</h2>"
+],
+"runs": [
+{
+"id": "ta0f0039f33",
+"start": 2583,
+"end": 2597
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+2690,
+2727
+],
+"inner": [
+2691,
+2726
+],
+"tokens": [
+"<div class=\"panel\">",
+"<b>",
+"</b>",
+"<ul>"
+],
+"runs": [
+{
+"id": "tb6b74bf3f2",
+"start": 2691,
+"end": 2708
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+2843,
+2886
+],
+"inner": [
+2844,
+2885
+],
+"tokens": [
+"<p style=\"margin-top:10px\">"
+],
+"runs": [
+{
+"id": "te4fdef803e",
+"start": 2844,
+"end": 2861
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+3055,
+3111
+],
+"inner": [
+3056,
+3110
+],
+"tokens": [
+"<a href=\"tcode.html\">",
+"</a>",
+"</p>"
+],
+"runs": [
+{
+"id": "t5a6e0be506",
+"start": 3056,
+"end": 3090
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+3156,
+3201
+],
+"inner": [
+3158,
+3200
+],
+"tokens": [
+"<h2 id=\"toc\">",
+"{st[\"tasks\"]}",
+"</h2>"
+],
+"runs": [
+{
+"id": "tfd6fdc66d6",
+"start": 3158,
+"end": 3178
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+3219,
+3265
+],
+"inner": [
+3221,
+3264
+],
+"tokens": [
+"<p>",
+"{st[\"paths\"]}"
+],
+"runs": [
+{
+"id": "tdf588a9c7c",
+"start": 3221,
+"end": 3254
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+3282,
+3328
+],
+"inner": [
+3283,
+3327
+],
+"tokens": [
+"<span class=\"fb\">",
+"</span>"
+],
+"runs": [
+{
+"id": "t35215bbac2",
+"start": 3283,
+"end": 3309
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+3345,
+3404
+],
+"inner": [
+3346,
+3403
+],
+"tokens": [
+"<span class=\"fb img\">",
+"</span>"
+],
+"runs": [
+{
+"id": "t84f6ad73af",
+"start": 3346,
+"end": 3381
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+3421,
+3477
+],
+"inner": [
+3422,
+3476
+],
+"tokens": [
+"</p>"
+],
+"runs": [
+{
+"id": "t0600af55fd",
+"start": 3422,
+"end": 3475
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+3529,
+3562
+],
+"inner": [
+3530,
+3561
+],
+"tokens": [
+"<h2 id=\"steps\">",
+"</h2>"
+],
+"runs": [
+{
+"id": "t99ce6594ad",
+"start": 3530,
+"end": 3547
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+3580,
+3627
+],
+"inner": [
+3581,
+3626
+],
+"tokens": [
+"<div class=\"box info\">",
+"<b class=\"t\">",
+"</b>"
+],
+"runs": [
+{
+"id": "t15328e54ca",
+"start": 3581,
+"end": 3596
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+3644,
+3683
+],
+"inner": [
+3645,
+3682
+],
+"tokens": [],
+"runs": [
+{
+"id": "t1ba87d8cea",
+"start": 3645,
+"end": 3682
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+3700,
+3729
+],
+"inner": [
+3701,
+3728
+],
+"tokens": [],
+"runs": [
+{
+"id": "t5b3b57edf9",
+"start": 3701,
+"end": 3728
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+3746,
+3779
+],
+"inner": [
+3747,
+3778
+],
+"tokens": [],
+"runs": [
+{
+"id": "td5584245d0",
+"start": 3747,
+"end": 3778
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+3796,
+3831
+],
+"inner": [
+3797,
+3830
+],
+"tokens": [
+"</div>"
+],
+"runs": [
+{
+"id": "t8b052e5bbb",
+"start": 3797,
+"end": 3827
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+3942,
+3976
+],
+"inner": [
+3943,
+3975
+],
+"tokens": [
+"<h2 id=\"sources\">",
+"</h2>"
+],
+"runs": [
+{
+"id": "t3ede75f1d2",
+"start": 3943,
+"end": 3959
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+3994,
+4044
+],
+"inner": [
+3995,
+4043
+],
+"tokens": [
+"<div class=\"box warn\">",
+"<b class=\"t\">",
+"</b>"
+],
+"runs": [
+{
+"id": "t1eac602fa7",
+"start": 3995,
+"end": 4013
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+4061,
+4113
+],
+"inner": [
+4062,
+4112
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t6fb7256c9f",
+"start": 4062,
+"end": 4105
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+4130,
+4192
+],
+"inner": [
+4131,
+4191
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tbeaa1195cc",
+"start": 4131,
+"end": 4184
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+4209,
+4235
+],
+"inner": [
+4210,
+4234
+],
+"tokens": [
+"</div>"
+],
+"runs": [
+{
+"id": "t145d8301bb",
+"start": 4210,
+"end": 4231
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+4253,
+4303
+],
+"inner": [
+4254,
+4302
+],
+"tokens": [
+"<div class=\"box info\">",
+"<b class=\"t\">",
+"</b>"
+],
+"runs": [
+{
+"id": "t939eb64bc1",
+"start": 4254,
+"end": 4272
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+4320,
+4374
+],
+"inner": [
+4321,
+4373
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t92bb1fe1c8",
+"start": 4321,
+"end": 4366
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+4391,
+4483
+],
+"inner": [
+4392,
+4482
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "td035f77011",
+"start": 4392,
+"end": 4454
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+4500,
+4555
+],
+"inner": [
+4501,
+4554
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t21443699dc",
+"start": 4501,
+"end": 4540
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+4572,
+4620
+],
+"inner": [
+4573,
+4619
+],
+"tokens": [
+"<b>",
+"</b>"
+],
+"runs": [
+{
+"id": "t55811a0bb2",
+"start": 4573,
+"end": 4618
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+4637,
+4706
+],
+"inner": [
+4638,
+4705
+],
+"tokens": [
+"<a href=\"issues.html\">",
+"</a>",
+"</div>"
+],
+"runs": [
+{
+"id": "tcf18315a5a",
+"start": 4638,
+"end": 4682
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+4762,
+4840
+],
+"inner": [
+4764,
+4839
+],
+"tokens": [
+"<a href=\"{prev[\"file\"]}\">",
+"{esc(prev[\"nav\"])}",
+"{esc(prev[\"title\"])}",
+"</a>"
+],
+"runs": [
+{
+"id": "t6fbcd3fd1c",
+"start": 4764,
+"end": 4784
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+4877,
+4952
+],
+"inner": [
+4879,
+4951
+],
+"tokens": [
+"<a href=\"{nxt[\"file\"]}\">",
+"{esc(nxt[\"nav\"])}",
+"{esc(nxt[\"title\"])}",
+"</a>"
+],
+"runs": [
+{
+"id": "t3fac840e77",
+"start": 4879,
+"end": 4899
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+4973,
+5014
+],
+"inner": [
+4974,
+5013
+],
+"tokens": [
+"<a href=\"tasks.html\">",
+"</a>"
+],
+"runs": [
+{
+"id": "t4da80643df",
+"start": 4974,
+"end": 4994
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+5141,
+5166
+],
+"inner": [
+5143,
+5165
+],
+"tokens": [
+"{m[\"title\"]}"
+],
+"runs": [
+{
+"id": "tf4bce2f18e",
+"start": 5143,
+"end": 5156
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+5222,
+5297
+],
+"inner": [
+5224,
+5296
+],
+"tokens": [
+"{m[\"title\"]}",
+"{st[\"tasks\"]}",
+"{st[\"shots\"]}"
+],
+"runs": [
+{
+"id": "tbcf8690dcc",
+"start": 5224,
+"end": 5267
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_module.py",
+"lit": [
+5319,
+5342
+],
+"inner": [
+5321,
+5341
+],
+"tokens": [],
+"runs": [
+{
+"id": "t7fd92eec36",
+"start": 5321,
+"end": 5341
+}
+],
+"src_md5": "86a0a3de0975c2dac23dcae44de974ff"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+1563,
+2540
+],
+"inner": [
+1567,
+2537
+],
+"tokens": [
+"<div class=\"hero\">",
+"<div class=\"hero-inner\">",
+"<div class=\"kicker\">",
+"<code>",
+"</code>",
+"{st['docx_media']}",
+"</div>",
+"<h1>",
+"</h1>",
+"<p class=\"lead\">",
+"<code>",
+"</code>",
+"<b>",
+"{st['modules']}",
+"{st['tasks']}",
+"{st['steps']}",
+"{st['shots']}",
+"</b>",
+"<b>",
+"</b>",
+"<b>",
+"</b>",
+"<b>",
+"</b>",
+"<b>",
+"</b>",
+"</p>",
+"<p class=\"lead\">",
+"<b>",
+"</b>",
+"</p>",
+"<div class=\"toc\">",
+"<a href=\"#what\">",
+"</a>",
+"<a href=\"#scale\">",
+"</a>",
+"<a href=\"#route\">",
+"</a>",
+"<a href=\"#cards\">",
+"</a>",
+"<a href=\"#howto\">",
+"</a>",
+"<a href=\"#tools\">",
+"</a>",
+"<a href=\"#truth\">",
+"</a>",
+"<a href=\"#sisters\">",
+"</a>",
+"</div>",
+"</div>",
+"</div>"
+],
+"runs": [
+{
+"id": "tcfb731bbb0",
+"start": 1574,
+"end": 1652
+},
+{
+"id": "t070acab029",
+"start": 1653,
+"end": 1678
+},
+{
+"id": "t0b06c5cca0",
+"start": 1679,
+"end": 1742
+},
+{
+"id": "tfbbd2ff938",
+"start": 1743,
+"end": 1801
+},
+{
+"id": "t5d3a20ee61",
+"start": 1802,
+"end": 1870
+},
+{
+"id": "t81ca0568a8",
+"start": 1871,
+"end": 1929
+},
+{
+"id": "teea9cf3c6d",
+"start": 1930,
+"end": 1994
+},
+{
+"id": "td566deab80",
+"start": 1995,
+"end": 2064
+},
+{
+"id": "t3729377b67",
+"start": 2072,
+"end": 2093
+},
+{
+"id": "t0267c38b5f",
+"start": 2094,
+"end": 2114
+},
+{
+"id": "td95fc9550a",
+"start": 2115,
+"end": 2134
+},
+{
+"id": "t4465d65a4a",
+"start": 2135,
+"end": 2154
+},
+{
+"id": "t786bd463e8",
+"start": 2155,
+"end": 2176
+},
+{
+"id": "tdc7bbddec7",
+"start": 2177,
+"end": 2206
+},
+{
+"id": "te5f435b7d6",
+"start": 2207,
+"end": 2232
+},
+{
+"id": "ta7b9af441a",
+"start": 2233,
+"end": 2255
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+2559,
+2589
+],
+"inner": [
+2560,
+2588
+],
+"tokens": [
+"<h2 id=\"what\">",
+"</h2>"
+],
+"runs": [
+{
+"id": "t3f47b9c73a",
+"start": 2560,
+"end": 2575
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+2607,
+3206
+],
+"inner": [
+2610,
+3203
+],
+"tokens": [
+"<p>",
+"<b>",
+"</b>",
+"<code>",
+"</code>",
+"</p>",
+"<ul>",
+"<li>",
+"<b>",
+"</b>",
+"{paths}",
+"</li>",
+"<li>",
+"<b>",
+"</b>",
+"{tc}",
+"<a href=\"tcode.html\">",
+"</a>",
+"</li>",
+"<li>",
+"<b>",
+"</b>",
+"<a href=\"tasks.html\">",
+"{tasks}",
+"</a>",
+"</li>",
+"</ul>",
+"<div class=\"box info\">",
+"<b class=\"t\">",
+"</b>",
+"<b>",
+"</b>",
+"</div>"
+],
+"runs": [
+{
+"id": "td755bd5d6c",
+"start": 2610,
+"end": 2669
+},
+{
+"id": "ta5c5d4213e",
+"start": 2670,
+"end": 2726
+},
+{
+"id": "t6fd9480d74",
+"start": 2727,
+"end": 2756
+},
+{
+"id": "t6a6e23196c",
+"start": 2761,
+"end": 2831
+},
+{
+"id": "t9dbc58042d",
+"start": 2832,
+"end": 2912
+},
+{
+"id": "tbf782a01e5",
+"start": 2913,
+"end": 2981
+},
+{
+"id": "tb9b8a4ee19",
+"start": 2987,
+"end": 3006
+},
+{
+"id": "t83ba7c5d18",
+"start": 3007,
+"end": 3071
+},
+{
+"id": "t93e6d26dfa",
+"start": 3072,
+"end": 3121
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+3301,
+3331
+],
+"inner": [
+3302,
+3330
+],
+"tokens": [
+"<h2 id=\"scale\">",
+"</h2>"
+],
+"runs": [
+{
+"id": "t979bd356df",
+"start": 3302,
+"end": 3316
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+3541,
+3545
+],
+"inner": [
+3542,
+3544
+],
+"tokens": [],
+"runs": [
+{
+"id": "t066ae8d7d6",
+"start": 3542,
+"end": 3544
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+3595,
+3599
+],
+"inner": [
+3596,
+3598
+],
+"tokens": [],
+"runs": [
+{
+"id": "tbd13a76c41",
+"start": 3596,
+"end": 3598
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+3802,
+3877
+],
+"inner": [
+3803,
+3876
+],
+"tokens": [
+"<div class=\"tblwrap\">",
+"<table class=\"tbl\">",
+"<thead>",
+"<tr>",
+"<th>",
+"</th>",
+"<th>",
+"</th>"
+],
+"runs": [
+{
+"id": "t504a17f6df",
+"start": 3803,
+"end": 3831
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+3894,
+3965
+],
+"inner": [
+3895,
+3964
+],
+"tokens": [
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"</tr>",
+"</thead>",
+"<tbody>"
+],
+"runs": [
+{
+"id": "tb5d9ddf0bf",
+"start": 3895,
+"end": 3944
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+4016,
+4093
+],
+"inner": [
+4018,
+4092
+],
+"tokens": [
+"</tbody>",
+"<tfoot>",
+"<tr>",
+"<th>",
+"</th>",
+"<th>",
+"{st[\"tasks\"]}",
+"</th>",
+"<th>",
+"{st[\"steps\"]}",
+"</th>"
+],
+"runs": [
+{
+"id": "t74aa182fc1",
+"start": 4018,
+"end": 4054
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+4190,
+4513
+],
+"inner": [
+4194,
+4510
+],
+"tokens": [
+"<div class=\"grid cards\">",
+"<div class=\"card\">",
+"<b>",
+"{st['docx_media']}",
+"</b>",
+"<span>",
+"</span>",
+"</div>",
+"<div class=\"card\">",
+"<b>",
+"{st['kept']}",
+"</b>",
+"<span>",
+"</span>",
+"</div>",
+"<div class=\"card\">",
+"<b>",
+"{st['files']}",
+"</b>",
+"<span>",
+"</span>",
+"</div>",
+"<div class=\"card\">",
+"<b>",
+"{st['size_mb']}",
+"</b>",
+"<span>",
+"</span>",
+"</div>",
+"</div>"
+],
+"runs": [
+{
+"id": "td215c4be8f",
+"start": 4198,
+"end": 4230
+},
+{
+"id": "t8e2f8aa21c",
+"start": 4231,
+"end": 4268
+},
+{
+"id": "t827f92fa87",
+"start": 4269,
+"end": 4307
+},
+{
+"id": "t6c09aad520",
+"start": 4308,
+"end": 4351
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+4531,
+4606
+],
+"inner": [
+4533,
+4605
+],
+"tokens": [
+"<p>",
+"{st[\"docx_media\"]}",
+"{st[\"dropped\"]}"
+],
+"runs": [
+{
+"id": "t20e6e9768d",
+"start": 4533,
+"end": 4578
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+4623,
+4684
+],
+"inner": [
+4625,
+4683
+],
+"tokens": [
+"{st[\"kept\"]}"
+],
+"runs": [
+{
+"id": "t17a2f16855",
+"start": 4625,
+"end": 4674
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+4701,
+4781
+],
+"inner": [
+4702,
+4780
+],
+"tokens": [
+"<b>",
+"</b>",
+"<code>",
+"</code>",
+"</p>"
+],
+"runs": [
+{
+"id": "t6a642becca",
+"start": 4702,
+"end": 4771
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+4800,
+4829
+],
+"inner": [
+4801,
+4828
+],
+"tokens": [
+"<h2 id=\"route\">",
+"</h2>"
+],
+"runs": [
+{
+"id": "t7895ff7e59",
+"start": 4801,
+"end": 4814
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+4847,
+4940
+],
+"inner": [
+4850,
+4937
+],
+"tokens": [
+"<p>",
+"</p>"
+],
+"runs": [
+{
+"id": "tdff9c97aae",
+"start": 4850,
+"end": 4902
+},
+{
+"id": "t2f21e19918",
+"start": 4903,
+"end": 4936
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+4973,
+4994
+],
+"inner": [
+4974,
+4993
+],
+"tokens": [],
+"runs": [
+{
+"id": "t1be31b7c83",
+"start": 4974,
+"end": 4993
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+4996,
+5023
+],
+"inner": [
+4997,
+5022
+],
+"tokens": [],
+"runs": [
+{
+"id": "ta30deb6922",
+"start": 4997,
+"end": 5022
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+5041,
+5078
+],
+"inner": [
+5042,
+5077
+],
+"tokens": [],
+"runs": [
+{
+"id": "tdd28f947de",
+"start": 5042,
+"end": 5077
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+5080,
+5122
+],
+"inner": [
+5081,
+5121
+],
+"tokens": [],
+"runs": [
+{
+"id": "tca612aef80",
+"start": 5081,
+"end": 5121
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+5140,
+5190
+],
+"inner": [
+5141,
+5189
+],
+"tokens": [],
+"runs": [
+{
+"id": "tb985e8cdb0",
+"start": 5141,
+"end": 5189
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+5192,
+5223
+],
+"inner": [
+5193,
+5222
+],
+"tokens": [],
+"runs": [
+{
+"id": "tdc140d1393",
+"start": 5193,
+"end": 5222
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+5241,
+5287
+],
+"inner": [
+5242,
+5286
+],
+"tokens": [],
+"runs": [
+{
+"id": "t0de324f6d9",
+"start": 5242,
+"end": 5286
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+5289,
+5324
+],
+"inner": [
+5290,
+5323
+],
+"tokens": [],
+"runs": [
+{
+"id": "td7130ff40d",
+"start": 5290,
+"end": 5323
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+5342,
+5391
+],
+"inner": [
+5343,
+5390
+],
+"tokens": [],
+"runs": [
+{
+"id": "t4269b2a38f",
+"start": 5343,
+"end": 5390
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+5393,
+5430
+],
+"inner": [
+5394,
+5429
+],
+"tokens": [],
+"runs": [
+{
+"id": "t12de8548d6",
+"start": 5394,
+"end": 5429
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+5448,
+5491
+],
+"inner": [
+5449,
+5490
+],
+"tokens": [],
+"runs": [
+{
+"id": "t7b2f31047b",
+"start": 5449,
+"end": 5490
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+5493,
+5526
+],
+"inner": [
+5494,
+5525
+],
+"tokens": [],
+"runs": [
+{
+"id": "t94acdaa6cd",
+"start": 5494,
+"end": 5525
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+5597,
+5678
+],
+"inner": [
+5599,
+5677
+],
+"tokens": [
+"<div class=\"card\">",
+"<b>",
+"{i + 1}",
+"{esc(mod_of(c)[\"nav\"])}",
+"</b>",
+"<span>",
+"{esc(t1)}",
+"</span>"
+],
+"runs": [
+{
+"id": "ta2b46d7cf4",
+"start": 5599,
+"end": 5624
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+5687,
+5792
+],
+"inner": [
+5689,
+5791
+],
+"tokens": [
+"<span class=\"dim\">",
+"{esc(t2)}",
+"</span>",
+"<a href=\"{mod_of(c)[\"file\"]}\">",
+"{esc(mod_of(c)[\"nav\"])}",
+"</a>",
+"</div>"
+],
+"runs": [
+{
+"id": "t7e8f637e9e",
+"start": 5689,
+"end": 5715
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+5870,
+5899
+],
+"inner": [
+5871,
+5898
+],
+"tokens": [
+"<h2 id=\"cards\">",
+"</h2>"
+],
+"runs": [
+{
+"id": "tcc08bda2b7",
+"start": 5871,
+"end": 5884
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+6324,
+6418
+],
+"inner": [
+6326,
+6417
+],
+"tokens": [
+"<span class=\"dim\">",
+"{len(ts)}",
+"{sum(len(t[\"steps\"]) for t in ts)}",
+"{shots}",
+"</span>"
+],
+"runs": [
+{
+"id": "ta2ff1a4dcc",
+"start": 6326,
+"end": 6357
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+6549,
+6592
+],
+"inner": [
+6551,
+6591
+],
+"tokens": [
+"<a href=\"{m[\"file\"]}\">",
+"</a>",
+"</div>"
+],
+"runs": [
+{
+"id": "tdfbc0bd978",
+"start": 6551,
+"end": 6568
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+6683,
+6714
+],
+"inner": [
+6684,
+6713
+],
+"tokens": [
+"<h2 id=\"howto\">",
+"</h2>"
+],
+"runs": [
+{
+"id": "t278b29ae95",
+"start": 6684,
+"end": 6699
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+6732,
+7554
+],
+"inner": [
+6735,
+7551
+],
+"tokens": [
+"<div class=\"tblwrap\">",
+"<table class=\"tbl\">",
+"<thead>",
+"<tr>",
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"</tr>",
+"</thead>",
+"<tbody>",
+"<tr>",
+"<td>",
+"<span class=\"fb\">",
+"</span>",
+"<span class=\"fb img\">",
+"</span>",
+"</td>",
+"<td>",
+"</td>",
+"</tr>",
+"<tr>",
+"<td>",
+"<b>",
+"</b>",
+"</td>",
+"<td>",
+"<code>",
+"</code>",
+"</td>",
+"</tr>",
+"<tr>",
+"<td>",
+"<span class=\"tc\">",
+"</span>",
+"</td>",
+"<td>",
+"</td>",
+"</tr>",
+"<tr>",
+"<td>",
+"<b>",
+"</b>",
+"</td>",
+"<td>",
+"</td>",
+"</tr>",
+"<tr>",
+"<td>",
+"<b>",
+"</b>",
+"</td>",
+"<td>",
+"</td>",
+"</tr>",
+"<tr>",
+"<td>",
+"<b>",
+"</b>",
+"</td>",
+"<td>",
+"<a href=\"issues.html\">",
+"</a>",
+"</td>",
+"</tr>",
+"<tr>",
+"<td>",
+"</td>",
+"<td>",
+"</td>",
+"</tr>",
+"</tbody>",
+"</table>",
+"</div>"
+],
+"runs": [
+{
+"id": "t7eddf1ba74",
+"start": 6735,
+"end": 6777
+},
+{
+"id": "tfed4203726",
+"start": 6778,
+"end": 6890
+},
+{
+"id": "t88f641740b",
+"start": 6891,
+"end": 6971
+},
+{
+"id": "td1148c9f97",
+"start": 6972,
+"end": 7037
+},
+{
+"id": "tac7927cb3d",
+"start": 7038,
+"end": 7135
+},
+{
+"id": "t9f3a63efd4",
+"start": 7136,
+"end": 7206
+},
+{
+"id": "ta5fcb611f8",
+"start": 7207,
+"end": 7313
+},
+{
+"id": "t070392fb69",
+"start": 7314,
+"end": 7381
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+7573,
+7616
+],
+"inner": [
+7574,
+7615
+],
+"tokens": [
+"<h2 id=\"tools\">",
+"</h2>"
+],
+"runs": [
+{
+"id": "t5880eefa13",
+"start": 7574,
+"end": 7601
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+7634,
+8466
+],
+"inner": [
+7637,
+8463
+],
+"tokens": [
+"<div class=\"grid cards\">",
+"<div class=\"card\">",
+"<b>",
+"</b>",
+"<span>",
+"<a href=\"tasks.html\">",
+"</a>",
+"</span>",
+"</div>",
+"<div class=\"card\">",
+"<b>",
+"</b>",
+"<span>",
+"<a href=\"tcode.html\">",
+"</a>",
+"</span>",
+"</div>",
+"<div class=\"card\">",
+"<b>",
+"</b>",
+"<span>",
+"<a href=\"issues.html\">",
+"</a>",
+"</span>",
+"</div>",
+"<div class=\"card\">",
+"<b>",
+"</b>",
+"<span>",
+"<a href=\"instructor.html\">",
+"</a>",
+"</span>",
+"</div>",
+"<div class=\"card\">",
+"<b>",
+"</b>",
+"<span>",
+"<a href=\"worksheet.html\">",
+"</a>",
+"</span>",
+"</div>",
+"<div class=\"card\">",
+"<b>",
+"</b>",
+"<span>",
+"<a href=\"quiz.html\">",
+"</a>",
+"</span>",
+"</div>",
+"</div>"
+],
+"runs": [
+{
+"id": "tc2f14d9ea4",
+"start": 7641,
+"end": 7725
+},
+{
+"id": "td8db17df30",
+"start": 7726,
+"end": 7814
+},
+{
+"id": "tfb4379396a",
+"start": 7815,
+"end": 7931
+},
+{
+"id": "td2dfe9d683",
+"start": 7932,
+"end": 8010
+},
+{
+"id": "t44e80d34b3",
+"start": 8011,
+"end": 8102
+},
+{
+"id": "tb4df5bfee1",
+"start": 8103,
+"end": 8195
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+8485,
+8520
+],
+"inner": [
+8486,
+8519
+],
+"tokens": [
+"<h2 id=\"truth\">",
+"</h2>"
+],
+"runs": [
+{
+"id": "ta3ba685c45",
+"start": 8486,
+"end": 8505
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+8538,
+9286
+],
+"inner": [
+8541,
+9283
+],
+"tokens": [
+"<div class=\"box ok\">",
+"<b class=\"t\">",
+"</b>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"</div>",
+"<div class=\"box warn\">",
+"<b class=\"t\">",
+"</b>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<b>",
+"</b>",
+"</div>",
+"<div class=\"box info\">",
+"<b class=\"t\">",
+"</b>",
+"</div>"
+],
+"runs": [
+{
+"id": "td76e257e01",
+"start": 8541,
+"end": 8563
+},
+{
+"id": "ta86bac91f4",
+"start": 8564,
+"end": 8622
+},
+{
+"id": "t7282677105",
+"start": 8623,
+"end": 8681
+},
+{
+"id": "tf24069fba7",
+"start": 8682,
+"end": 8700
+},
+{
+"id": "t2b1b91bf4a",
+"start": 8701,
+"end": 8724
+},
+{
+"id": "t52c45cf2eb",
+"start": 8725,
+"end": 8791
+},
+{
+"id": "t013bf81a9e",
+"start": 8792,
+"end": 8881
+},
+{
+"id": "tbd6f6a5186",
+"start": 8882,
+"end": 8940
+},
+{
+"id": "t3c20c18d73",
+"start": 8941,
+"end": 9004
+},
+{
+"id": "t0aa3245b8f",
+"start": 9005,
+"end": 9025
+},
+{
+"id": "t7b0c23c51b",
+"start": 9026,
+"end": 9077
+},
+{
+"id": "t864de095b0",
+"start": 9078,
+"end": 9134
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+9305,
+9339
+],
+"inner": [
+9306,
+9338
+],
+"tokens": [
+"<h2 id=\"sisters\">",
+"</h2>"
+],
+"runs": [
+{
+"id": "t4540b11cad",
+"start": 9306,
+"end": 9322
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+9357,
+9683
+],
+"inner": [
+9360,
+9680
+],
+"tokens": [
+"<p>",
+"<code>",
+"</code>",
+"<b>",
+"</b>",
+"<b>",
+"</b>",
+"</p>",
+"<ul>",
+"<li>",
+"<a href=\"../index.html\">",
+"</a>",
+"</li>",
+"<li>",
+"</li>",
+"</ul>"
+],
+"runs": [
+{
+"id": "t5310d01957",
+"start": 9360,
+"end": 9460
+},
+{
+"id": "td344e4a174",
+"start": 9461,
+"end": 9525
+},
+{
+"id": "tbdcbacafc9",
+"start": 9530,
+"end": 9576
+},
+{
+"id": "t58d9457aae",
+"start": 9577,
+"end": 9640
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+9716,
+9754
+],
+"inner": [
+9717,
+9753
+],
+"tokens": [],
+"runs": [
+{
+"id": "t19cf5026fc",
+"start": 9717,
+"end": 9753
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+9794,
+9855
+],
+"inner": [
+9795,
+9854
+],
+"tokens": [],
+"runs": [
+{
+"id": "tcccf44eeb0",
+"start": 9795,
+"end": 9854
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+9877,
+9930
+],
+"inner": [
+9878,
+9929
+],
+"tokens": [],
+"runs": [
+{
+"id": "t96e7971d86",
+"start": 9878,
+"end": 9929
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+10115,
+10119
+],
+"inner": [
+10116,
+10118
+],
+"tokens": [],
+"runs": [
+{
+"id": "tdb1c89e0f6",
+"start": 10116,
+"end": 10118
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+10129,
+10135
+],
+"inner": [
+10130,
+10134
+],
+"tokens": [],
+"runs": [
+{
+"id": "tb9439c3da1",
+"start": 10130,
+"end": 10134
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+10156,
+10182
+],
+"inner": [
+10157,
+10181
+],
+"tokens": [
+"<h1>",
+"</h1>"
+],
+"runs": [
+{
+"id": "tadb6f77eb9",
+"start": 10157,
+"end": 10178
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+10217,
+10326
+],
+"inner": [
+10220,
+10323
+],
+"tokens": [
+"<p>",
+"<code>",
+"</code>",
+"</p>"
+],
+"runs": [
+{
+"id": "ta98c63e517",
+"start": 10220,
+"end": 10267
+},
+{
+"id": "t5872abd927",
+"start": 10268,
+"end": 10315
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+10341,
+10389
+],
+"inner": [
+10342,
+10388
+],
+"tokens": [
+"<span class=\"chip on\" data-mod=\"all\">",
+"</span>"
+],
+"runs": [
+{
+"id": "t8b871c1435",
+"start": 10342,
+"end": 10350
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+10742,
+10825
+],
+"inner": [
+10744,
+10824
+],
+"tokens": [
+"<p class=\"hitcount\" id=\"hitcount\">",
+"{len(ALL_TASKS)}",
+"{len(ALL_TASKS)}",
+"</p>"
+],
+"runs": [
+{
+"id": "t1980da2376",
+"start": 10744,
+"end": 10766
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+11152,
+11220
+],
+"inner": [
+11154,
+11219
+],
+"tokens": [
+"<td>",
+"<a href=\"{m[\"file\"]}#{t[\"anchor\"]}\">",
+"{t[\"no\"]:02d}",
+"</a>",
+"</td>"
+],
+"runs": [
+{
+"id": "t34eda02892",
+"start": 11154,
+"end": 11172
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+11658,
+11720
+],
+"inner": [
+11659,
+11719
+],
+"tokens": [
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"<th>",
+"</th>"
+],
+"runs": [
+{
+"id": "t9238aec8c1",
+"start": 11659,
+"end": 11704
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+11737,
+11782
+],
+"inner": [
+11738,
+11781
+],
+"tokens": [
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"</tr>",
+"</thead>",
+"<tbody>"
+],
+"runs": [
+{
+"id": "t6ad3032f2f",
+"start": 11738,
+"end": 11764
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+11857,
+11906
+],
+"inner": [
+11859,
+11905
+],
+"tokens": [
+"{len(ALL_TASKS)}"
+],
+"runs": [
+{
+"id": "tfc8fc94144",
+"start": 11859,
+"end": 11892
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+11946,
+12008
+],
+"inner": [
+11948,
+12007
+],
+"tokens": [
+"{len(ALL_TASKS)}"
+],
+"runs": [
+{
+"id": "t0d3988b585",
+"start": 11948,
+"end": 11994
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+12562,
+12566
+],
+"inner": [
+12563,
+12565
+],
+"tokens": [],
+"runs": [
+{
+"id": "tdb1c89e0f6",
+"start": 12563,
+"end": 12565
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+12576,
+12595
+],
+"inner": [
+12577,
+12594
+],
+"tokens": [],
+"runs": [
+{
+"id": "t143dc4cc7d",
+"start": 12577,
+"end": 12594
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+12616,
+12646
+],
+"inner": [
+12617,
+12645
+],
+"tokens": [
+"<h1>",
+"</h1>"
+],
+"runs": [
+{
+"id": "ted7d5f3bf0",
+"start": 12617,
+"end": 12642
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+12664,
+12967
+],
+"inner": [
+12668,
+12964
+],
+"tokens": [
+"<p>",
+"<b>",
+"</b>",
+"{len(tc)}",
+"{stats()['paths']}",
+"</p>",
+"<div class=\"box info\">",
+"<b class=\"t\">",
+"</b>",
+"</div>"
+],
+"runs": [
+{
+"id": "tdd0d2b3b3a",
+"start": 12668,
+"end": 12705
+},
+{
+"id": "t9cb7b6318f",
+"start": 12706,
+"end": 12759
+},
+{
+"id": "t566d9de682",
+"start": 12760,
+"end": 12810
+},
+{
+"id": "t8271a84878",
+"start": 12811,
+"end": 12823
+},
+{
+"id": "t40f77c62df",
+"start": 12824,
+"end": 12889
+},
+{
+"id": "tdf57a98033",
+"start": 12890,
+"end": 12908
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+12985,
+13023
+],
+"inner": [
+12986,
+13022
+],
+"tokens": [
+"<h2 id=\"tcodes\">",
+"</h2>"
+],
+"runs": [
+{
+"id": "tf63132fcb2",
+"start": 12986,
+"end": 13007
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+13316,
+13344
+],
+"inner": [
+13318,
+13343
+],
+"tokens": [
+"{len(rec[\"tasks\"])}"
+],
+"runs": [
+{
+"id": "t995caaf2fc",
+"start": 13318,
+"end": 13327
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+13543,
+13625
+],
+"inner": [
+13544,
+13624
+],
+"tokens": [
+"<div class=\"tblwrap\">",
+"<table class=\"tbl\">",
+"<thead>",
+"<tr>",
+"<th>",
+"</th>",
+"<th>",
+"</th>"
+],
+"runs": [
+{
+"id": "t0b9e95b493",
+"start": 13544,
+"end": 13579
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+13642,
+13698
+],
+"inner": [
+13643,
+13697
+],
+"tokens": [
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"</tr>",
+"</thead>",
+"<tbody>"
+],
+"runs": [
+{
+"id": "te6fa45cc18",
+"start": 13643,
+"end": 13680
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+13776,
+13814
+],
+"inner": [
+13777,
+13813
+],
+"tokens": [
+"<h2 id=\"imgpaths\">",
+"</h2>"
+],
+"runs": [
+{
+"id": "te503b76480",
+"start": 13777,
+"end": 13796
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+13832,
+13916
+],
+"inner": [
+13833,
+13915
+],
+"tokens": [
+"<p>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"&gt;",
+"</code>",
+"</p>"
+],
+"runs": [
+{
+"id": "t7fdacd74e9",
+"start": 13833,
+"end": 13892
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+14130,
+14216
+],
+"inner": [
+14132,
+14215
+],
+"tokens": [
+"<td>",
+"<a href=\"{m[\"file\"]}#{t[\"anchor\"]}\">",
+"{t[\"no\"]:02d}",
+"{esc(t[\"title\"])}",
+"</a>",
+"</td>"
+],
+"runs": [
+{
+"id": "t7c0c12ef50",
+"start": 14132,
+"end": 14154
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+14306,
+14381
+],
+"inner": [
+14307,
+14380
+],
+"tokens": [
+"<div class=\"tblwrap\">",
+"<table class=\"tbl\">",
+"<thead>",
+"<tr>",
+"<th>",
+"</th>",
+"<th>",
+"</th>"
+],
+"runs": [
+{
+"id": "t504a17f6df",
+"start": 14307,
+"end": 14335
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+14398,
+14441
+],
+"inner": [
+14399,
+14440
+],
+"tokens": [
+"<th>",
+"</th>",
+"</tr>",
+"</thead>",
+"<tbody>"
+],
+"runs": [
+{
+"id": "t4779394971",
+"start": 14399,
+"end": 14426
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+14503,
+14557
+],
+"inner": [
+14504,
+14556
+],
+"tokens": [
+"<div class=\"box warn\">",
+"<b class=\"t\">",
+"</b>"
+],
+"runs": [
+{
+"id": "t4529bc85b0",
+"start": 14504,
+"end": 14526
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+14574,
+14617
+],
+"inner": [
+14575,
+14616
+],
+"tokens": [],
+"runs": [
+{
+"id": "tb3c2c5f869",
+"start": 14575,
+"end": 14616
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+14634,
+14696
+],
+"inner": [
+14635,
+14695
+],
+"tokens": [
+"</div>"
+],
+"runs": [
+{
+"id": "tedd0e45616",
+"start": 14635,
+"end": 14692
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+14728,
+14763
+],
+"inner": [
+14729,
+14762
+],
+"tokens": [],
+"runs": [
+{
+"id": "tab9b7f01cc",
+"start": 14729,
+"end": 14762
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+14803,
+14854
+],
+"inner": [
+14804,
+14853
+],
+"tokens": [],
+"runs": [
+{
+"id": "t9e4e88949c",
+"start": 14804,
+"end": 14853
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+14995,
+15107
+],
+"inner": [
+14996,
+15106
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t8493e0ae5c",
+"start": 14996,
+"end": 15078
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+15124,
+15152
+],
+"inner": [
+15125,
+15151
+],
+"tokens": [],
+"runs": [
+{
+"id": "tda0341efd2",
+"start": 15125,
+"end": 15151
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+15167,
+15238
+],
+"inner": [
+15168,
+15237
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "ta5cc907915",
+"start": 15168,
+"end": 15223
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+15252,
+15332
+],
+"inner": [
+15253,
+15331
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t8d4e0f8544",
+"start": 15253,
+"end": 15310
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+15346,
+15410
+],
+"inner": [
+15347,
+15409
+],
+"tokens": [
+"<b>",
+"<code>",
+"</code>",
+"</b>"
+],
+"runs": [
+{
+"id": "t9d6226af7b",
+"start": 15347,
+"end": 15401
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+15439,
+15449
+],
+"inner": [
+15440,
+15448
+],
+"tokens": [],
+"runs": [
+{
+"id": "t7904a62fb6",
+"start": 15440,
+"end": 15448
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+15463,
+15471
+],
+"inner": [
+15464,
+15470
+],
+"tokens": [],
+"runs": [
+{
+"id": "t362ef5d908",
+"start": 15464,
+"end": 15470
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+15485,
+15493
+],
+"inner": [
+15486,
+15492
+],
+"tokens": [],
+"runs": [
+{
+"id": "tc880f2d476",
+"start": 15486,
+"end": 15492
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+15511,
+15596
+],
+"inner": [
+15512,
+15595
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t3864cd862a",
+"start": 15512,
+"end": 15581
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+15613,
+15670
+],
+"inner": [
+15614,
+15669
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t19f665dcbe",
+"start": 15614,
+"end": 15662
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+15685,
+15754
+],
+"inner": [
+15686,
+15753
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t690fd2e47d",
+"start": 15686,
+"end": 15746
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+15768,
+15836
+],
+"inner": [
+15769,
+15835
+],
+"tokens": [
+"<b>",
+"</b>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tefe9fdb1e3",
+"start": 15769,
+"end": 15827
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+15865,
+15872
+],
+"inner": [
+15866,
+15871
+],
+"tokens": [],
+"runs": [
+{
+"id": "t08238b67f5",
+"start": 15866,
+"end": 15871
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+15886,
+15896
+],
+"inner": [
+15887,
+15895
+],
+"tokens": [],
+"runs": [
+{
+"id": "t8ddb222eed",
+"start": 15887,
+"end": 15895
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+15910,
+15923
+],
+"inner": [
+15911,
+15922
+],
+"tokens": [],
+"runs": [
+{
+"id": "tb9822052ce",
+"start": 15911,
+"end": 15922
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+15941,
+15967
+],
+"inner": [
+15942,
+15966
+],
+"tokens": [],
+"runs": [
+{
+"id": "tf48f84af6e",
+"start": 15942,
+"end": 15966
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+15984,
+16027
+],
+"inner": [
+15985,
+16026
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "ta3f8798bdd",
+"start": 15985,
+"end": 16019
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+16042,
+16103
+],
+"inner": [
+16043,
+16102
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "td4a9f574d8",
+"start": 16043,
+"end": 16095
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+16132,
+16145
+],
+"inner": [
+16133,
+16144
+],
+"tokens": [],
+"runs": [
+{
+"id": "tb9822052ce",
+"start": 16133,
+"end": 16144
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+16159,
+16175
+],
+"inner": [
+16160,
+16174
+],
+"tokens": [],
+"runs": [
+{
+"id": "t24bd90ead5",
+"start": 16160,
+"end": 16174
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+16193,
+16250
+],
+"inner": [
+16194,
+16249
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t5bfbfcc4a4",
+"start": 16194,
+"end": 16235
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+16267,
+16300
+],
+"inner": [
+16268,
+16299
+],
+"tokens": [],
+"runs": [
+{
+"id": "tb5a2a225f9",
+"start": 16268,
+"end": 16299
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+16315,
+16426
+],
+"inner": [
+16316,
+16425
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t26be0f2def",
+"start": 16316,
+"end": 16397
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+16454,
+16462
+],
+"inner": [
+16455,
+16461
+],
+"tokens": [],
+"runs": [
+{
+"id": "t6e1c1c68d2",
+"start": 16455,
+"end": 16461
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+16476,
+16486
+],
+"inner": [
+16477,
+16485
+],
+"tokens": [],
+"runs": [
+{
+"id": "t12facf8d52",
+"start": 16477,
+"end": 16485
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+16504,
+16547
+],
+"inner": [
+16505,
+16546
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t606c797231",
+"start": 16505,
+"end": 16539
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+16564,
+16599
+],
+"inner": [
+16565,
+16598
+],
+"tokens": [],
+"runs": [
+{
+"id": "tc319fbf767",
+"start": 16565,
+"end": 16598
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+16614,
+16677
+],
+"inner": [
+16615,
+16676
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t99c2da862d",
+"start": 16615,
+"end": 16669
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+16706,
+16714
+],
+"inner": [
+16707,
+16713
+],
+"tokens": [],
+"runs": [
+{
+"id": "te5ca449876",
+"start": 16707,
+"end": 16713
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+16732,
+16763
+],
+"inner": [
+16733,
+16762
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t9a5f59748b",
+"start": 16733,
+"end": 16755
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+16780,
+16800
+],
+"inner": [
+16781,
+16799
+],
+"tokens": [],
+"runs": [
+{
+"id": "ta22629098c",
+"start": 16781,
+"end": 16799
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+16815,
+16890
+],
+"inner": [
+16816,
+16889
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tca7b29a88b",
+"start": 16816,
+"end": 16875
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+16919,
+16927
+],
+"inner": [
+16920,
+16926
+],
+"tokens": [],
+"runs": [
+{
+"id": "te5ca449876",
+"start": 16920,
+"end": 16926
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+16941,
+16949
+],
+"inner": [
+16942,
+16948
+],
+"tokens": [],
+"runs": [
+{
+"id": "t304ee6fc47",
+"start": 16942,
+"end": 16948
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+16967,
+17018
+],
+"inner": [
+16968,
+17017
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t06d036046d",
+"start": 16968,
+"end": 17010
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+17035,
+17055
+],
+"inner": [
+17036,
+17054
+],
+"tokens": [],
+"runs": [
+{
+"id": "t20c636f515",
+"start": 17036,
+"end": 17054
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+17070,
+17149
+],
+"inner": [
+17071,
+17148
+],
+"tokens": [
+"<code>",
+"</code>",
+"<b>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t73484b9736",
+"start": 17071,
+"end": 17134
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+17163,
+17193
+],
+"inner": [
+17164,
+17192
+],
+"tokens": [
+"<code>",
+"</code>",
+"</b>"
+],
+"runs": [
+{
+"id": "t902895bb1d",
+"start": 17164,
+"end": 17184
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+17222,
+17232
+],
+"inner": [
+17223,
+17231
+],
+"tokens": [],
+"runs": [
+{
+"id": "t174f73dc2c",
+"start": 17223,
+"end": 17231
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+17246,
+17256
+],
+"inner": [
+17247,
+17255
+],
+"tokens": [],
+"runs": [
+{
+"id": "td88122edf0",
+"start": 17247,
+"end": 17255
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+17270,
+17276
+],
+"inner": [
+17271,
+17275
+],
+"tokens": [],
+"runs": [
+{
+"id": "ta943692096",
+"start": 17271,
+"end": 17275
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+17294,
+17316
+],
+"inner": [
+17295,
+17315
+],
+"tokens": [],
+"runs": [
+{
+"id": "tf6c3816855",
+"start": 17295,
+"end": 17315
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+17333,
+17362
+],
+"inner": [
+17334,
+17361
+],
+"tokens": [],
+"runs": [
+{
+"id": "td9079c1ea7",
+"start": 17334,
+"end": 17361
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+17377,
+17455
+],
+"inner": [
+17378,
+17454
+],
+"tokens": [],
+"runs": [
+{
+"id": "t35ee6b75db",
+"start": 17378,
+"end": 17454
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+17484,
+17496
+],
+"inner": [
+17485,
+17495
+],
+"tokens": [],
+"runs": [
+{
+"id": "tc3c1ae0ece",
+"start": 17485,
+"end": 17495
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+17509,
+17519
+],
+"inner": [
+17510,
+17518
+],
+"tokens": [],
+"runs": [
+{
+"id": "tf28f7861c3",
+"start": 17510,
+"end": 17518
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+17532,
+17548
+],
+"inner": [
+17533,
+17547
+],
+"tokens": [],
+"runs": [
+{
+"id": "t166d3fcc83",
+"start": 17533,
+"end": 17547
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+17566,
+17584
+],
+"inner": [
+17567,
+17583
+],
+"tokens": [],
+"runs": [
+{
+"id": "tf0db7b0b6b",
+"start": 17567,
+"end": 17583
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+17601,
+17632
+],
+"inner": [
+17602,
+17631
+],
+"tokens": [],
+"runs": [
+{
+"id": "t988a32b72b",
+"start": 17602,
+"end": 17631
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+17647,
+17719
+],
+"inner": [
+17648,
+17718
+],
+"tokens": [],
+"runs": [
+{
+"id": "t3bda164b5a",
+"start": 17648,
+"end": 17718
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+17748,
+17765
+],
+"inner": [
+17749,
+17764
+],
+"tokens": [],
+"runs": [
+{
+"id": "t80d34bc217",
+"start": 17749,
+"end": 17764
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+17783,
+17815
+],
+"inner": [
+17784,
+17814
+],
+"tokens": [],
+"runs": [
+{
+"id": "tb6d16566b3",
+"start": 17784,
+"end": 17814
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+17832,
+17862
+],
+"inner": [
+17833,
+17861
+],
+"tokens": [],
+"runs": [
+{
+"id": "tf41163ea6d",
+"start": 17833,
+"end": 17861
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+17877,
+17942
+],
+"inner": [
+17878,
+17941
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t0d27e6bfb2",
+"start": 17878,
+"end": 17934
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+17971,
+17980
+],
+"inner": [
+17972,
+17979
+],
+"tokens": [],
+"runs": [
+{
+"id": "t9740835ce7",
+"start": 17972,
+"end": 17979
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+17994,
+18007
+],
+"inner": [
+17995,
+18006
+],
+"tokens": [],
+"runs": [
+{
+"id": "t279b2719dd",
+"start": 17995,
+"end": 18006
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+18021,
+18031
+],
+"inner": [
+18022,
+18030
+],
+"tokens": [],
+"runs": [
+{
+"id": "t02418c4902",
+"start": 18022,
+"end": 18030
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+18056,
+18119
+],
+"inner": [
+18057,
+18118
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tae9b66e364",
+"start": 18057,
+"end": 18111
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+18125,
+18191
+],
+"inner": [
+18126,
+18190
+],
+"tokens": [],
+"runs": [
+{
+"id": "t34f4005005",
+"start": 18126,
+"end": 18190
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+18197,
+18275
+],
+"inner": [
+18198,
+18274
+],
+"tokens": [
+"<b>",
+"</b>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t112a47ae19",
+"start": 18198,
+"end": 18266
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+18281,
+18365
+],
+"inner": [
+18282,
+18364
+],
+"tokens": [
+"<b>",
+"</b>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tc535b9dcd0",
+"start": 18282,
+"end": 18349
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+18371,
+18432
+],
+"inner": [
+18372,
+18431
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t0443140884",
+"start": 18372,
+"end": 18424
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+18438,
+18500
+],
+"inner": [
+18439,
+18499
+],
+"tokens": [],
+"runs": [
+{
+"id": "t44c8d81290",
+"start": 18439,
+"end": 18499
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+18565,
+18569
+],
+"inner": [
+18566,
+18568
+],
+"tokens": [],
+"runs": [
+{
+"id": "tdb1c89e0f6",
+"start": 18566,
+"end": 18568
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+18579,
+18586
+],
+"inner": [
+18580,
+18585
+],
+"tokens": [],
+"runs": [
+{
+"id": "t06e76f8aa2",
+"start": 18580,
+"end": 18585
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+18607,
+18636
+],
+"inner": [
+18608,
+18635
+],
+"tokens": [
+"<h1>",
+"</h1>"
+],
+"runs": [
+{
+"id": "tf956c6eccd",
+"start": 18608,
+"end": 18632
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+18654,
+18779
+],
+"inner": [
+18657,
+18776
+],
+"tokens": [
+"<p>",
+"<code>",
+"</code>",
+"</p>"
+],
+"runs": [
+{
+"id": "t0221f228c0",
+"start": 18657,
+"end": 18699
+},
+{
+"id": "tc3453425c2",
+"start": 18700,
+"end": 18756
+},
+{
+"id": "t3286f69673",
+"start": 18757,
+"end": 18768
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+18797,
+18831
+],
+"inner": [
+18798,
+18830
+],
+"tokens": [
+"<h2 id=\"table\">",
+"</h2>"
+],
+"runs": [
+{
+"id": "t774a0d6f2b",
+"start": 18798,
+"end": 18816
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+18902,
+18905
+],
+"inner": [
+18903,
+18904
+],
+"tokens": [],
+"runs": [
+{
+"id": "tb505660a97",
+"start": 18903,
+"end": 18904
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+18924,
+19015
+],
+"inner": [
+18926,
+19014
+],
+"tokens": [
+"<a href=\"{mod_of(c)[\"file\"]}#t{n:02d}\">",
+"{esc(mod_of(c)[\"nav\"])}",
+"{n:02d}",
+"{esc(lbl)}",
+"</a>"
+],
+"runs": [
+{
+"id": "t23cae90e44",
+"start": 18926,
+"end": 18946
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+19222,
+19301
+],
+"inner": [
+19223,
+19300
+],
+"tokens": [
+"<div class=\"tblwrap\">",
+"<table class=\"tbl\">",
+"<thead>",
+"<tr>",
+"<th>",
+"</th>",
+"<th>",
+"</th>"
+],
+"runs": [
+{
+"id": "t0d3868a1b4",
+"start": 19223,
+"end": 19255
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+19318,
+19381
+],
+"inner": [
+19319,
+19380
+],
+"tokens": [
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"</tr>",
+"</thead>",
+"<tbody>"
+],
+"runs": [
+{
+"id": "td06b7fb8e1",
+"start": 19319,
+"end": 19360
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+19459,
+19510
+],
+"inner": [
+19460,
+19509
+],
+"tokens": [
+"<h2 id=\"precheck\">",
+"</h2>"
+],
+"runs": [
+{
+"id": "ta273763fda",
+"start": 19460,
+"end": 19492
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+19622,
+19657
+],
+"inner": [
+19623,
+19656
+],
+"tokens": [
+"<h2 id=\"notes\">",
+"</h2>"
+],
+"runs": [
+{
+"id": "t81122e4cbe",
+"start": 19623,
+"end": 19642
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+19675,
+19720
+],
+"inner": [
+19676,
+19719
+],
+"tokens": [
+"<p>"
+],
+"runs": [
+{
+"id": "tbe1cfc9cdd",
+"start": 19676,
+"end": 19719
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+19737,
+19764
+],
+"inner": [
+19738,
+19763
+],
+"tokens": [
+"</p>"
+],
+"runs": [
+{
+"id": "t2710741361",
+"start": 19738,
+"end": 19762
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+20053,
+20139
+],
+"inner": [
+20055,
+20138
+],
+"tokens": [
+"<td>",
+"<a href=\"{m[\"file\"]}#{t[\"anchor\"]}\">",
+"{t[\"no\"]:02d}",
+"{esc(t[\"title\"])}",
+"</a>",
+"</td>"
+],
+"runs": [
+{
+"id": "t7c0c12ef50",
+"start": 20055,
+"end": 20077
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+20211,
+20286
+],
+"inner": [
+20212,
+20285
+],
+"tokens": [
+"<div class=\"tblwrap\">",
+"<table class=\"tbl\">",
+"<thead>",
+"<tr>",
+"<th>",
+"</th>",
+"<th>",
+"</th>"
+],
+"runs": [
+{
+"id": "t504a17f6df",
+"start": 20212,
+"end": 20240
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+20303,
+20338
+],
+"inner": [
+20304,
+20337
+],
+"tokens": [
+"<th>",
+"</th>",
+"</tr>",
+"</thead>",
+"<tbody>"
+],
+"runs": [
+{
+"id": "t634e1907a4",
+"start": 20304,
+"end": 20323
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+20404,
+20453
+],
+"inner": [
+20405,
+20452
+],
+"tokens": [
+"<div class=\"box info\">",
+"<b class=\"t\">",
+"</b>"
+],
+"runs": [
+{
+"id": "t7ddaaba741",
+"start": 20405,
+"end": 20422
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+20470,
+20531
+],
+"inner": [
+20471,
+20530
+],
+"tokens": [
+"<a href=\"tasks.html\">",
+"</a>"
+],
+"runs": [
+{
+"id": "tee30a5717e",
+"start": 20471,
+"end": 20511
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+20548,
+20605
+],
+"inner": [
+20549,
+20604
+],
+"tokens": [
+"<a href=\"tcode.html\">",
+"</a>"
+],
+"runs": [
+{
+"id": "t7b3804b6a2",
+"start": 20549,
+"end": 20585
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+20622,
+20685
+],
+"inner": [
+20623,
+20684
+],
+"tokens": [
+"</div>"
+],
+"runs": [
+{
+"id": "tba7b950cd7",
+"start": 20623,
+"end": 20681
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+20718,
+20741
+],
+"inner": [
+20719,
+20740
+],
+"tokens": [],
+"runs": [
+{
+"id": "tec60871838",
+"start": 20719,
+"end": 20740
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_static.py",
+"lit": [
+20781,
+20856
+],
+"inner": [
+20782,
+20855
+],
+"tokens": [],
+"runs": [
+{
+"id": "t46f12fcdb8",
+"start": 20782,
+"end": 20855
+}
+],
+"src_md5": "e8c826d1f83ca28e7066779943c419ea"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+383,
+398
+],
+"inner": [
+384,
+397
+],
+"tokens": [],
+"runs": [
+{
+"id": "tf4f0040ba9",
+"start": 384,
+"end": 397
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+405,
+469
+],
+"inner": [
+406,
+468
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t6bff6f8050",
+"start": 406,
+"end": 461
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+475,
+544
+],
+"inner": [
+476,
+543
+],
+"tokens": [],
+"runs": [
+{
+"id": "t62b5c24809",
+"start": 476,
+"end": 543
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+552,
+583
+],
+"inner": [
+553,
+582
+],
+"tokens": [],
+"runs": [
+{
+"id": "t5a5f2d4628",
+"start": 553,
+"end": 582
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+590,
+642
+],
+"inner": [
+591,
+641
+],
+"tokens": [],
+"runs": [
+{
+"id": "t81379c8b31",
+"start": 591,
+"end": 641
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+648,
+684
+],
+"inner": [
+649,
+683
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t1d54a95fe4",
+"start": 649,
+"end": 676
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+692,
+724
+],
+"inner": [
+693,
+723
+],
+"tokens": [],
+"runs": [
+{
+"id": "tfdc7dc9e2d",
+"start": 693,
+"end": 723
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+731,
+800
+],
+"inner": [
+732,
+799
+],
+"tokens": [],
+"runs": [
+{
+"id": "t0b131333d2",
+"start": 732,
+"end": 799
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+806,
+823
+],
+"inner": [
+807,
+822
+],
+"tokens": [],
+"runs": [
+{
+"id": "tea44b5273d",
+"start": 807,
+"end": 822
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+831,
+859
+],
+"inner": [
+832,
+858
+],
+"tokens": [],
+"runs": [
+{
+"id": "tf8941eb9db",
+"start": 832,
+"end": 858
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+866,
+909
+],
+"inner": [
+867,
+908
+],
+"tokens": [],
+"runs": [
+{
+"id": "t614e366f63",
+"start": 867,
+"end": 908
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+915,
+979
+],
+"inner": [
+916,
+978
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t627eacf04e",
+"start": 916,
+"end": 971
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+987,
+1004
+],
+"inner": [
+988,
+1003
+],
+"tokens": [],
+"runs": [
+{
+"id": "tc596130e4d",
+"start": 988,
+"end": 1003
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+1011,
+1066
+],
+"inner": [
+1012,
+1065
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tc4c6692343",
+"start": 1012,
+"end": 1058
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+1072,
+1132
+],
+"inner": [
+1073,
+1131
+],
+"tokens": [],
+"runs": [
+{
+"id": "t3525c99d71",
+"start": 1073,
+"end": 1131
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+1138,
+1169
+],
+"inner": [
+1139,
+1168
+],
+"tokens": [],
+"runs": [
+{
+"id": "t0a1af0655b",
+"start": 1139,
+"end": 1168
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+1177,
+1195
+],
+"inner": [
+1178,
+1194
+],
+"tokens": [],
+"runs": [
+{
+"id": "t3b7fcc2d1b",
+"start": 1178,
+"end": 1194
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+1202,
+1270
+],
+"inner": [
+1203,
+1269
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t84c49cc7fa",
+"start": 1203,
+"end": 1255
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+1276,
+1348
+],
+"inner": [
+1277,
+1347
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t25560a494a",
+"start": 1277,
+"end": 1326
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+1356,
+1385
+],
+"inner": [
+1357,
+1384
+],
+"tokens": [],
+"runs": [
+{
+"id": "td5963ef82e",
+"start": 1357,
+"end": 1384
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+1392,
+1462
+],
+"inner": [
+1393,
+1461
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "td73f3edfaa",
+"start": 1393,
+"end": 1440
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+1468,
+1536
+],
+"inner": [
+1469,
+1535
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t1888cc4981",
+"start": 1469,
+"end": 1528
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+1542,
+1606
+],
+"inner": [
+1543,
+1605
+],
+"tokens": [
+"<code>",
+"</code>",
+"<b>",
+"</b>"
+],
+"runs": [
+{
+"id": "ta5f30332ee",
+"start": 1543,
+"end": 1597
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+1614,
+1638
+],
+"inner": [
+1615,
+1637
+],
+"tokens": [],
+"runs": [
+{
+"id": "t5ffaf4e125",
+"start": 1615,
+"end": 1637
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+1645,
+1730
+],
+"inner": [
+1646,
+1729
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t117c31cb36",
+"start": 1646,
+"end": 1708
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+1736,
+1819
+],
+"inner": [
+1737,
+1818
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t47cbc14941",
+"start": 1737,
+"end": 1797
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+1825,
+1843
+],
+"inner": [
+1826,
+1842
+],
+"tokens": [],
+"runs": [
+{
+"id": "tc6d4e52049",
+"start": 1826,
+"end": 1842
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+1851,
+1879
+],
+"inner": [
+1852,
+1878
+],
+"tokens": [],
+"runs": [
+{
+"id": "t1c8f0e6673",
+"start": 1852,
+"end": 1878
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+1886,
+1934
+],
+"inner": [
+1887,
+1933
+],
+"tokens": [],
+"runs": [
+{
+"id": "t89ad36eb19",
+"start": 1887,
+"end": 1933
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+1940,
+1983
+],
+"inner": [
+1941,
+1982
+],
+"tokens": [],
+"runs": [
+{
+"id": "t0041cf40dc",
+"start": 1941,
+"end": 1982
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+1991,
+2013
+],
+"inner": [
+1992,
+2012
+],
+"tokens": [],
+"runs": [
+{
+"id": "t7cf52da287",
+"start": 1992,
+"end": 2012
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+2020,
+2110
+],
+"inner": [
+2021,
+2109
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tc297f2a06e",
+"start": 2021,
+"end": 2081
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+2116,
+2177
+],
+"inner": [
+2117,
+2176
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tec56a1a592",
+"start": 2117,
+"end": 2169
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+2185,
+2214
+],
+"inner": [
+2186,
+2213
+],
+"tokens": [],
+"runs": [
+{
+"id": "t8f9bf67236",
+"start": 2186,
+"end": 2213
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+2221,
+2307
+],
+"inner": [
+2222,
+2306
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tda2b8ef9c7",
+"start": 2222,
+"end": 2285
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+2313,
+2400
+],
+"inner": [
+2314,
+2399
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tef791e5899",
+"start": 2314,
+"end": 2378
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+2408,
+2428
+],
+"inner": [
+2409,
+2427
+],
+"tokens": [],
+"runs": [
+{
+"id": "t4e8ec2677f",
+"start": 2409,
+"end": 2427
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+2435,
+2494
+],
+"inner": [
+2436,
+2493
+],
+"tokens": [],
+"runs": [
+{
+"id": "tb61d4865f2",
+"start": 2436,
+"end": 2493
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+2500,
+2562
+],
+"inner": [
+2501,
+2561
+],
+"tokens": [],
+"runs": [
+{
+"id": "tfcf6c6f96c",
+"start": 2501,
+"end": 2561
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+2902,
+2906
+],
+"inner": [
+2903,
+2905
+],
+"tokens": [],
+"runs": [
+{
+"id": "tdb1c89e0f6",
+"start": 2903,
+"end": 2905
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+2916,
+2921
+],
+"inner": [
+2917,
+2920
+],
+"tokens": [],
+"runs": [
+{
+"id": "t355166bc15",
+"start": 2917,
+"end": 2920
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+2942,
+2973
+],
+"inner": [
+2943,
+2972
+],
+"tokens": [
+"<h1>",
+"</h1>"
+],
+"runs": [
+{
+"id": "t5f8f63299e",
+"start": 2943,
+"end": 2969
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+2991,
+3371
+],
+"inner": [
+2995,
+3368
+],
+"tokens": [
+"<p>",
+"<code>",
+"</code>",
+"<b>",
+"{total_tasks}",
+"{total_shots}",
+"</b>",
+"</p>",
+"<div class=\"box info\">",
+"<b class=\"t\">",
+"</b>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<b>",
+"</b>",
+"</div>"
+],
+"runs": [
+{
+"id": "t85c5b87e9b",
+"start": 2995,
+"end": 3036
+},
+{
+"id": "te39abd7ca4",
+"start": 3037,
+"end": 3088
+},
+{
+"id": "tc765ed0f2c",
+"start": 3089,
+"end": 3114
+},
+{
+"id": "t6d5cb71e7c",
+"start": 3115,
+"end": 3181
+},
+{
+"id": "t83b60e7571",
+"start": 3182,
+"end": 3252
+},
+{
+"id": "t57b710cd50",
+"start": 3253,
+"end": 3289
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+3390,
+3435
+],
+"inner": [
+3391,
+3434
+],
+"tokens": [
+"<h2 id=\"plan\">",
+"</h2>"
+],
+"runs": [
+{
+"id": "t674a328404",
+"start": 3391,
+"end": 3421
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+3453,
+3560
+],
+"inner": [
+3456,
+3557
+],
+"tokens": [
+"<p>",
+"<b>",
+"</b>",
+"</p>"
+],
+"runs": [
+{
+"id": "t69234ae967",
+"start": 3456,
+"end": 3504
+},
+{
+"id": "t0821d46c7f",
+"start": 3505,
+"end": 3555
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+3593,
+3612
+],
+"inner": [
+3594,
+3611
+],
+"tokens": [],
+"runs": [
+{
+"id": "t4a7baf8cf8",
+"start": 3594,
+"end": 3611
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+3614,
+3634
+],
+"inner": [
+3615,
+3633
+],
+"tokens": [],
+"runs": [
+{
+"id": "td3be1496d7",
+"start": 3615,
+"end": 3633
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+3645,
+3702
+],
+"inner": [
+3646,
+3701
+],
+"tokens": [],
+"runs": [
+{
+"id": "t794c14a102",
+"start": 3646,
+"end": 3701
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+3712,
+3763
+],
+"inner": [
+3713,
+3762
+],
+"tokens": [],
+"runs": [
+{
+"id": "t1d9d46b72c",
+"start": 3713,
+"end": 3762
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+3784,
+3805
+],
+"inner": [
+3785,
+3804
+],
+"tokens": [],
+"runs": [
+{
+"id": "te940fc2593",
+"start": 3785,
+"end": 3804
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+3807,
+3834
+],
+"inner": [
+3808,
+3833
+],
+"tokens": [],
+"runs": [
+{
+"id": "te73494fd50",
+"start": 3808,
+"end": 3833
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+3845,
+3892
+],
+"inner": [
+3846,
+3891
+],
+"tokens": [],
+"runs": [
+{
+"id": "t72b511deab",
+"start": 3846,
+"end": 3891
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+3902,
+3959
+],
+"inner": [
+3903,
+3958
+],
+"tokens": [],
+"runs": [
+{
+"id": "ta90d55814b",
+"start": 3903,
+"end": 3958
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+3980,
+3989
+],
+"inner": [
+3981,
+3988
+],
+"tokens": [],
+"runs": [
+{
+"id": "t94ba670d56",
+"start": 3981,
+"end": 3988
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+3991,
+4004
+],
+"inner": [
+3992,
+4003
+],
+"tokens": [],
+"runs": [
+{
+"id": "td55e2aba59",
+"start": 3992,
+"end": 4003
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+4015,
+4070
+],
+"inner": [
+4016,
+4069
+],
+"tokens": [],
+"runs": [
+{
+"id": "tbbd51af423",
+"start": 4016,
+"end": 4069
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+4080,
+4134
+],
+"inner": [
+4081,
+4133
+],
+"tokens": [],
+"runs": [
+{
+"id": "t0edee02261",
+"start": 4081,
+"end": 4133
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+4155,
+4164
+],
+"inner": [
+4156,
+4163
+],
+"tokens": [],
+"runs": [
+{
+"id": "t82bc7bc68f",
+"start": 4156,
+"end": 4163
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+4166,
+4179
+],
+"inner": [
+4167,
+4178
+],
+"tokens": [],
+"runs": [
+{
+"id": "t13520b4cd0",
+"start": 4167,
+"end": 4178
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+4190,
+4246
+],
+"inner": [
+4191,
+4245
+],
+"tokens": [],
+"runs": [
+{
+"id": "t214c4a3b66",
+"start": 4191,
+"end": 4245
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+4256,
+4307
+],
+"inner": [
+4257,
+4306
+],
+"tokens": [],
+"runs": [
+{
+"id": "td894aa6c8b",
+"start": 4257,
+"end": 4306
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+4317,
+4355
+],
+"inner": [
+4318,
+4354
+],
+"tokens": [],
+"runs": [
+{
+"id": "tbc9bee0d41",
+"start": 4318,
+"end": 4354
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+4376,
+4396
+],
+"inner": [
+4377,
+4395
+],
+"tokens": [],
+"runs": [
+{
+"id": "t0e87548a58",
+"start": 4377,
+"end": 4395
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+4398,
+4421
+],
+"inner": [
+4399,
+4420
+],
+"tokens": [],
+"runs": [
+{
+"id": "t903474cd1b",
+"start": 4399,
+"end": 4420
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+4432,
+4478
+],
+"inner": [
+4433,
+4477
+],
+"tokens": [],
+"runs": [
+{
+"id": "t3d1f34f6da",
+"start": 4433,
+"end": 4477
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+4488,
+4549
+],
+"inner": [
+4489,
+4548
+],
+"tokens": [],
+"runs": [
+{
+"id": "t9b95841ff1",
+"start": 4489,
+"end": 4548
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+4559,
+4585
+],
+"inner": [
+4560,
+4584
+],
+"tokens": [],
+"runs": [
+{
+"id": "t76a98aff44",
+"start": 4560,
+"end": 4584
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+4610,
+4685
+],
+"inner": [
+4611,
+4684
+],
+"tokens": [
+"<div class=\"tblwrap\">",
+"<table class=\"tbl\">",
+"<thead>",
+"<tr>",
+"<th>",
+"</th>",
+"<th>",
+"</th>"
+],
+"runs": [
+{
+"id": "tee7b7eede2",
+"start": 4611,
+"end": 4639
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+4702,
+4756
+],
+"inner": [
+4703,
+4755
+],
+"tokens": [
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"</tr>",
+"</thead>",
+"<tbody>"
+],
+"runs": [
+{
+"id": "t1d99c07753",
+"start": 4703,
+"end": 4738
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+4965,
+5003
+],
+"inner": [
+4966,
+5002
+],
+"tokens": [
+"<h2 id=\"pick\">",
+"</h2>"
+],
+"runs": [
+{
+"id": "t1da9e3f49b",
+"start": 4966,
+"end": 4989
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+5021,
+5074
+],
+"inner": [
+5022,
+5073
+],
+"tokens": [
+"<p>",
+"</p>"
+],
+"runs": [
+{
+"id": "tc9defc9a56",
+"start": 5022,
+"end": 5072
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+5698,
+5779
+],
+"inner": [
+5700,
+5778
+],
+"tokens": [
+"<li>",
+"<a href=\"{m[\"file\"]}#{t[\"anchor\"]}\">",
+"{t[\"no\"]:02d}",
+"{esc(t[\"title\"])}",
+"</a>"
+],
+"runs": [
+{
+"id": "t0f78e9a9f2",
+"start": 5700,
+"end": 5719
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+5795,
+5862
+],
+"inner": [
+5797,
+5861
+],
+"tokens": [
+"<span class=\"dim\">",
+"<code>",
+"{esc(t[\"path\"][:90])}",
+"</code>",
+"</span>"
+],
+"runs": [
+{
+"id": "t8ece8bd9c9",
+"start": 5797,
+"end": 5817
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+5899,
+5948
+],
+"inner": [
+5901,
+5947
+],
+"tokens": [
+"<span class=\"dim\">",
+"{t[\"nimg\"]}",
+"</span>",
+"</li>"
+],
+"runs": [
+{
+"id": "t6840a5f41e",
+"start": 5901,
+"end": 5918
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+5993,
+6031
+],
+"inner": [
+5994,
+6030
+],
+"tokens": [
+"<h2 id=\"qa\">",
+"</h2>"
+],
+"runs": [
+{
+"id": "tf0702b1495",
+"start": 5994,
+"end": 6019
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+6049,
+6127
+],
+"inner": [
+6050,
+6126
+],
+"tokens": [
+"<div class=\"tblwrap\">",
+"<table class=\"tbl\">",
+"<thead>",
+"<tr>",
+"<th>",
+"</th>",
+"<th>",
+"</th>"
+],
+"runs": [
+{
+"id": "t993ca0d300",
+"start": 6050,
+"end": 6081
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+6144,
+6181
+],
+"inner": [
+6145,
+6180
+],
+"tokens": [
+"<th>",
+"</th>",
+"</tr>",
+"</thead>",
+"<tbody>"
+],
+"runs": [
+{
+"id": "t6bbf62b992",
+"start": 6145,
+"end": 6166
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+6361,
+6395
+],
+"inner": [
+6362,
+6394
+],
+"tokens": [
+"<h2 id=\"grading\">",
+"</h2>"
+],
+"runs": [
+{
+"id": "t68a55bdeec",
+"start": 6362,
+"end": 6378
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+6413,
+7041
+],
+"inner": [
+6416,
+7038
+],
+"tokens": [
+"<div class=\"tblwrap\">",
+"<table class=\"tbl\">",
+"<thead>",
+"<tr>",
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"</tr>",
+"</thead>",
+"<tbody>",
+"<tr>",
+"<td>",
+"<a href=\"quiz.html\">",
+"</a>",
+"</td>",
+"<td>",
+"</td>",
+"<td>",
+"</td>",
+"</tr>",
+"<tr>",
+"<td>",
+"<a href=\"worksheet.html\">",
+"</a>",
+"</td>",
+"<td>",
+"</td>",
+"<td>",
+"</td>",
+"</tr>",
+"<tr>",
+"<td>",
+"<a href=\"issues.html\">",
+"</a>",
+"</td>",
+"<td>",
+"</td>",
+"<td>",
+"</td>",
+"</tr>",
+"<tr>",
+"<td>",
+"</td>",
+"<td>",
+"</td>",
+"<td>",
+"</td>",
+"</tr>",
+"</tbody>",
+"</table>",
+"</div>"
+],
+"runs": [
+{
+"id": "t323f9b0754",
+"start": 6416,
+"end": 6466
+},
+{
+"id": "t37ea747d9c",
+"start": 6467,
+"end": 6555
+},
+{
+"id": "t226ee0d3cd",
+"start": 6556,
+"end": 6671
+},
+{
+"id": "tbbf2d90f9d",
+"start": 6672,
+"end": 6771
+},
+{
+"id": "tbc8a3f816d",
+"start": 6772,
+"end": 6888
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+7059,
+7114
+],
+"inner": [
+7060,
+7113
+],
+"tokens": [
+"<div class=\"box ok\">",
+"<b class=\"t\">",
+"</b>"
+],
+"runs": [
+{
+"id": "t7dbe997824",
+"start": 7060,
+"end": 7085
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+7131,
+7169
+],
+"inner": [
+7132,
+7168
+],
+"tokens": [],
+"runs": [
+{
+"id": "t85bd2fbc28",
+"start": 7132,
+"end": 7168
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+7186,
+7244
+],
+"inner": [
+7187,
+7243
+],
+"tokens": [
+"</div>"
+],
+"runs": [
+{
+"id": "t409fc1bef9",
+"start": 7187,
+"end": 7240
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+7281,
+7302
+],
+"inner": [
+7282,
+7301
+],
+"tokens": [],
+"runs": [
+{
+"id": "t1ba4043052",
+"start": 7282,
+"end": 7301
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+7342,
+7392
+],
+"inner": [
+7343,
+7391
+],
+"tokens": [],
+"runs": [
+{
+"id": "te84b6490e4",
+"start": 7343,
+"end": 7391
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+7573,
+7577
+],
+"inner": [
+7574,
+7576
+],
+"tokens": [],
+"runs": [
+{
+"id": "tdb1c89e0f6",
+"start": 7574,
+"end": 7576
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+7587,
+7597
+],
+"inner": [
+7588,
+7596
+],
+"tokens": [],
+"runs": [
+{
+"id": "t5730496ede",
+"start": 7588,
+"end": 7596
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+7618,
+7645
+],
+"inner": [
+7619,
+7644
+],
+"tokens": [
+"<h1>",
+"</h1>"
+],
+"runs": [
+{
+"id": "tc18e3438cd",
+"start": 7619,
+"end": 7641
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+7663,
+7925
+],
+"inner": [
+7666,
+7922
+],
+"tokens": [
+"<p>",
+"</p>",
+"<div class=\"box info\">",
+"<b class=\"t\">",
+"</b>",
+"<b>",
+"</b>",
+"</div>"
+],
+"runs": [
+{
+"id": "t78b77f64d9",
+"start": 7666,
+"end": 7704
+},
+{
+"id": "tc9feea0420",
+"start": 7705,
+"end": 7764
+},
+{
+"id": "t0b6acc563d",
+"start": 7765,
+"end": 7778
+},
+{
+"id": "t5d4421a8bd",
+"start": 7779,
+"end": 7819
+},
+{
+"id": "td686e62e7e",
+"start": 7820,
+"end": 7887
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+8013,
+8070
+],
+"inner": [
+8014,
+8069
+],
+"tokens": [
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"</tr>",
+"</thead>",
+"<tbody>"
+],
+"runs": [
+{
+"id": "tb043b37251",
+"start": 8014,
+"end": 8049
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+8102,
+8199
+],
+"inner": [
+8104,
+8198
+],
+"tokens": [
+"<tr>",
+"<td>",
+"{esc(m[\"nav\"])}",
+"{esc(m[\"title\"].split(\"（\")[0])}",
+"{len(tasks_of(m[\"code\"]))}",
+"</td>"
+],
+"runs": [
+{
+"id": "tbc2fd8c485",
+"start": 8104,
+"end": 8131
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+8517,
+8560
+],
+"inner": [
+8519,
+8559
+],
+"tokens": [
+"<span class=\"dim\">",
+"{len(mtasks)}"
+],
+"runs": [
+{
+"id": "tc187d4cd0c",
+"start": 8519,
+"end": 8534
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+8581,
+8633
+],
+"inner": [
+8583,
+8632
+],
+"tokens": [
+"{sum(t[\"nimg\"] for t in mtasks)}",
+"</span>",
+"</h2>"
+],
+"runs": [
+{
+"id": "t252584f529",
+"start": 8583,
+"end": 8597
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+9274,
+9358
+],
+"inner": [
+9275,
+9357
+],
+"tokens": [
+"<div class=\"tblwrap\">",
+"<table class=\"tbl ws\">",
+"<thead>",
+"<tr>",
+"<th>",
+"</th>",
+"<th>",
+"</th>"
+],
+"runs": [
+{
+"id": "te2639ceaab",
+"start": 9275,
+"end": 9309
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+9379,
+9433
+],
+"inner": [
+9380,
+9432
+],
+"tokens": [
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"<th>",
+"</th>"
+],
+"runs": [
+{
+"id": "t1dcb257c2f",
+"start": 9380,
+"end": 9423
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+9454,
+9514
+],
+"inner": [
+9455,
+9513
+],
+"tokens": [
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"</tr>",
+"</thead>",
+"<tbody>"
+],
+"runs": [
+{
+"id": "t2338df0599",
+"start": 9455,
+"end": 9493
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+9596,
+9629
+],
+"inner": [
+9597,
+9628
+],
+"tokens": [
+"<h2 id=\"finish\">",
+"</h2>"
+],
+"runs": [
+{
+"id": "t8c90497680",
+"start": 9597,
+"end": 9613
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+9654,
+9706
+],
+"inner": [
+9655,
+9705
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t9ddb59149d",
+"start": 9655,
+"end": 9698
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+9716,
+9754
+],
+"inner": [
+9717,
+9753
+],
+"tokens": [],
+"runs": [
+{
+"id": "t7fb5fc9c9a",
+"start": 9717,
+"end": 9753
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+9764,
+9853
+],
+"inner": [
+9765,
+9852
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t28b621bfc7",
+"start": 9765,
+"end": 9824
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+9863,
+9898
+],
+"inner": [
+9864,
+9897
+],
+"tokens": [],
+"runs": [
+{
+"id": "t0ed28e8622",
+"start": 9864,
+"end": 9897
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+9908,
+9966
+],
+"inner": [
+9909,
+9965
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "taa711dc833",
+"start": 9909,
+"end": 9958
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+9976,
+10025
+],
+"inner": [
+9977,
+10024
+],
+"tokens": [],
+"runs": [
+{
+"id": "t05c0c588b1",
+"start": 9977,
+"end": 10024
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+10035,
+10093
+],
+"inner": [
+10036,
+10092
+],
+"tokens": [],
+"runs": [
+{
+"id": "t3b8023d03a",
+"start": 10036,
+"end": 10092
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+10103,
+10162
+],
+"inner": [
+10104,
+10161
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tf87d065214",
+"start": 10104,
+"end": 10147
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+10172,
+10228
+],
+"inner": [
+10173,
+10227
+],
+"tokens": [],
+"runs": [
+{
+"id": "t15b944ecdc",
+"start": 10173,
+"end": 10227
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+10238,
+10270
+],
+"inner": [
+10239,
+10269
+],
+"tokens": [],
+"runs": [
+{
+"id": "tb3b03904b8",
+"start": 10239,
+"end": 10269
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+10385,
+10763
+],
+"inner": [
+10388,
+10760
+],
+"tokens": [
+"<div class=\"grid cards\">",
+"<div class=\"card\">",
+"<b>",
+"</b>",
+"<span>",
+"</span>",
+"</div>",
+"<div class=\"card\">",
+"<b>",
+"</b>",
+"<span>",
+"</span>",
+"</div>",
+"<div class=\"card\">",
+"<b>",
+"</b>",
+"<span>",
+"</span>",
+"</div>",
+"</div>",
+"<div class=\"tblwrap\">",
+"<table class=\"tbl ws\">",
+"<thead>",
+"<tr>",
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"<th>",
+"</th>",
+"</tr>",
+"</thead>",
+"<tbody>"
+],
+"runs": [
+{
+"id": "t2fe269a11a",
+"start": 10392,
+"end": 10439
+},
+{
+"id": "tb71c6c5d15",
+"start": 10440,
+"end": 10473
+},
+{
+"id": "t0deda396ed",
+"start": 10474,
+"end": 10515
+},
+{
+"id": "t692b7cad9b",
+"start": 10521,
+"end": 10618
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+11000,
+11025
+],
+"inner": [
+11001,
+11024
+],
+"tokens": [],
+"runs": [
+{
+"id": "tcafc885993",
+"start": 11001,
+"end": 11024
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+11065,
+11118
+],
+"inner": [
+11066,
+11117
+],
+"tokens": [],
+"runs": [
+{
+"id": "t9e6acb4718",
+"start": 11066,
+"end": 11117
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+12496,
+12589
+],
+"inner": [
+12498,
+12588
+],
+"tokens": [
+"<a href=\"{mod_of(m[\"code\"])[\"file\"]}#{t[\"anchor\"]}\">",
+"{esc(t[\"title\"])}",
+"</a>"
+],
+"runs": [
+{
+"id": "t8da7d47ff6",
+"start": 12498,
+"end": 12524
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+12615,
+12635
+],
+"inner": [
+12617,
+12634
+],
+"tokens": [],
+"runs": [
+{
+"id": "t6a3e91a9c4",
+"start": 12617,
+"end": 12634
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+12786,
+12830
+],
+"inner": [
+12788,
+12829
+],
+"tokens": [
+"<code>",
+"{esc(correct)}",
+"</code>"
+],
+"runs": [
+{
+"id": "t00fcc5d001",
+"start": 12788,
+"end": 12811
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+12858,
+12923
+],
+"inner": [
+12860,
+12922
+],
+"tokens": [
+"{esc(mod_of(m[\"code\"])[\"nav\"])}",
+"{t[\"nimg\"]}"
+],
+"runs": [
+{
+"id": "t7c6a26da26",
+"start": 12860,
+"end": 12886
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+12951,
+13011
+],
+"inner": [
+12953,
+13010
+],
+"tokens": [
+"<a href=\"tcode.html\">",
+"</a>"
+],
+"runs": [
+{
+"id": "te858e8c23c",
+"start": 12953,
+"end": 12991
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+13090,
+13094
+],
+"inner": [
+13091,
+13093
+],
+"tokens": [],
+"runs": [
+{
+"id": "t424a2ad8f7",
+"start": 13091,
+"end": 13093
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+13100,
+13106
+],
+"inner": [
+13101,
+13105
+],
+"tokens": [],
+"runs": [
+{
+"id": "te750525a6b",
+"start": 13101,
+"end": 13105
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+13110,
+13130
+],
+"inner": [
+13111,
+13129
+],
+"tokens": [],
+"runs": [
+{
+"id": "t6b322900c9",
+"start": 13111,
+"end": 13129
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+13153,
+13184
+],
+"inner": [
+13154,
+13183
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t8ebe1a1117",
+"start": 13154,
+"end": 13176
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+13309,
+13389
+],
+"inner": [
+13310,
+13388
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tb17b05e2b0",
+"start": 13310,
+"end": 13381
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+13415,
+13421
+],
+"inner": [
+13416,
+13420
+],
+"tokens": [],
+"runs": [
+{
+"id": "tcc2f4d018d",
+"start": 13416,
+"end": 13420
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+13425,
+13448
+],
+"inner": [
+13426,
+13447
+],
+"tokens": [],
+"runs": [
+{
+"id": "t4ea424391f",
+"start": 13426,
+"end": 13447
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+13471,
+13480
+],
+"inner": [
+13472,
+13479
+],
+"tokens": [],
+"runs": [
+{
+"id": "tf3799df867",
+"start": 13472,
+"end": 13479
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+13489,
+13497
+],
+"inner": [
+13490,
+13496
+],
+"tokens": [],
+"runs": [
+{
+"id": "t48f5ad72b9",
+"start": 13490,
+"end": 13496
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+13506,
+13519
+],
+"inner": [
+13507,
+13518
+],
+"tokens": [],
+"runs": [
+{
+"id": "td0929bb847",
+"start": 13507,
+"end": 13518
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+13543,
+13558
+],
+"inner": [
+13544,
+13557
+],
+"tokens": [],
+"runs": [
+{
+"id": "t7668e8bd1b",
+"start": 13544,
+"end": 13557
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+13584,
+13647
+],
+"inner": [
+13585,
+13646
+],
+"tokens": [],
+"runs": [
+{
+"id": "tbedf0b4ed7",
+"start": 13585,
+"end": 13646
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+13661,
+13701
+],
+"inner": [
+13662,
+13700
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "td0cc27208f",
+"start": 13662,
+"end": 13693
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+13727,
+13733
+],
+"inner": [
+13728,
+13732
+],
+"tokens": [],
+"runs": [
+{
+"id": "t493570f770",
+"start": 13728,
+"end": 13732
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+13737,
+13765
+],
+"inner": [
+13738,
+13764
+],
+"tokens": [],
+"runs": [
+{
+"id": "t7f6a2f920e",
+"start": 13738,
+"end": 13764
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+13788,
+13802
+],
+"inner": [
+13789,
+13801
+],
+"tokens": [],
+"runs": [
+{
+"id": "tdae950bcad",
+"start": 13789,
+"end": 13801
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+13811,
+13824
+],
+"inner": [
+13812,
+13823
+],
+"tokens": [],
+"runs": [
+{
+"id": "t5552cb9c15",
+"start": 13812,
+"end": 13823
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+13848,
+13858
+],
+"inner": [
+13849,
+13857
+],
+"tokens": [],
+"runs": [
+{
+"id": "t043817e66b",
+"start": 13849,
+"end": 13857
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+13867,
+13878
+],
+"inner": [
+13868,
+13877
+],
+"tokens": [],
+"runs": [
+{
+"id": "tb09f98ee65",
+"start": 13868,
+"end": 13877
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+13904,
+13961
+],
+"inner": [
+13905,
+13960
+],
+"tokens": [],
+"runs": [
+{
+"id": "t7cc6f77d0e",
+"start": 13905,
+"end": 13960
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+13975,
+13998
+],
+"inner": [
+13976,
+13997
+],
+"tokens": [],
+"runs": [
+{
+"id": "tdd29470afc",
+"start": 13976,
+"end": 13997
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14024,
+14031
+],
+"inner": [
+14025,
+14030
+],
+"tokens": [],
+"runs": [
+{
+"id": "tcd0b34119a",
+"start": 14025,
+"end": 14030
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14035,
+14066
+],
+"inner": [
+14036,
+14065
+],
+"tokens": [],
+"runs": [
+{
+"id": "t277ea2676d",
+"start": 14036,
+"end": 14065
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14089,
+14113
+],
+"inner": [
+14090,
+14112
+],
+"tokens": [],
+"runs": [
+{
+"id": "t3b8f3962e9",
+"start": 14090,
+"end": 14112
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14137,
+14148
+],
+"inner": [
+14138,
+14147
+],
+"tokens": [],
+"runs": [
+{
+"id": "t36bc4a7c56",
+"start": 14138,
+"end": 14147
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14157,
+14173
+],
+"inner": [
+14158,
+14172
+],
+"tokens": [],
+"runs": [
+{
+"id": "t38490a8a66",
+"start": 14158,
+"end": 14172
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14197,
+14205
+],
+"inner": [
+14198,
+14204
+],
+"tokens": [],
+"runs": [
+{
+"id": "t5bdc52ab19",
+"start": 14198,
+"end": 14204
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14231,
+14279
+],
+"inner": [
+14232,
+14278
+],
+"tokens": [],
+"runs": [
+{
+"id": "t212d8bf83f",
+"start": 14232,
+"end": 14278
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14293,
+14322
+],
+"inner": [
+14294,
+14321
+],
+"tokens": [],
+"runs": [
+{
+"id": "t2f2a6d96ec",
+"start": 14294,
+"end": 14321
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14348,
+14354
+],
+"inner": [
+14349,
+14353
+],
+"tokens": [],
+"runs": [
+{
+"id": "t933d9ff080",
+"start": 14349,
+"end": 14353
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14358,
+14389
+],
+"inner": [
+14359,
+14388
+],
+"tokens": [],
+"runs": [
+{
+"id": "te3f20c8247",
+"start": 14359,
+"end": 14388
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14412,
+14433
+],
+"inner": [
+14413,
+14432
+],
+"tokens": [],
+"runs": [
+{
+"id": "t2ea983b717",
+"start": 14413,
+"end": 14432
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14442,
+14448
+],
+"inner": [
+14443,
+14447
+],
+"tokens": [],
+"runs": [
+{
+"id": "t932459ad1c",
+"start": 14443,
+"end": 14447
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14472,
+14477
+],
+"inner": [
+14473,
+14476
+],
+"tokens": [],
+"runs": [
+{
+"id": "t76672d499e",
+"start": 14473,
+"end": 14476
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14486,
+14496
+],
+"inner": [
+14487,
+14495
+],
+"tokens": [],
+"runs": [
+{
+"id": "t976f58b5ce",
+"start": 14487,
+"end": 14495
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14522,
+14581
+],
+"inner": [
+14523,
+14580
+],
+"tokens": [],
+"runs": [
+{
+"id": "tcb8daa65b7",
+"start": 14523,
+"end": 14580
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14595,
+14643
+],
+"inner": [
+14596,
+14642
+],
+"tokens": [],
+"runs": [
+{
+"id": "tbabed99bcb",
+"start": 14596,
+"end": 14642
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14669,
+14678
+],
+"inner": [
+14670,
+14677
+],
+"tokens": [],
+"runs": [
+{
+"id": "t94f261b6af",
+"start": 14670,
+"end": 14677
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14682,
+14737
+],
+"inner": [
+14683,
+14736
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tc474a5ad0f",
+"start": 14683,
+"end": 14729
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14760,
+14802
+],
+"inner": [
+14761,
+14801
+],
+"tokens": [],
+"runs": [
+{
+"id": "t40efbd40ed",
+"start": 14761,
+"end": 14801
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14826,
+14835
+],
+"inner": [
+14827,
+14834
+],
+"tokens": [],
+"runs": [
+{
+"id": "t5311fac93d",
+"start": 14827,
+"end": 14834
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14844,
+14852
+],
+"inner": [
+14845,
+14851
+],
+"tokens": [],
+"runs": [
+{
+"id": "t2c27e8a250",
+"start": 14845,
+"end": 14851
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14861,
+14868
+],
+"inner": [
+14862,
+14867
+],
+"tokens": [],
+"runs": [
+{
+"id": "t7e0f2e2022",
+"start": 14862,
+"end": 14867
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14894,
+14959
+],
+"inner": [
+14895,
+14958
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tecdd55adfd",
+"start": 14895,
+"end": 14951
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14985,
+14991
+],
+"inner": [
+14986,
+14990
+],
+"tokens": [],
+"runs": [
+{
+"id": "tf4c15b64bd",
+"start": 14986,
+"end": 14990
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+14995,
+15021
+],
+"inner": [
+14996,
+15020
+],
+"tokens": [],
+"runs": [
+{
+"id": "tb4fc5a45b6",
+"start": 14996,
+"end": 15020
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+15182,
+15260
+],
+"inner": [
+15183,
+15259
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t2b7c24943a",
+"start": 15183,
+"end": 15252
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+15274,
+15330
+],
+"inner": [
+15275,
+15329
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t5f90f7ebff",
+"start": 15275,
+"end": 15315
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+15356,
+15361
+],
+"inner": [
+15357,
+15360
+],
+"tokens": [],
+"runs": [
+{
+"id": "ta3d97d9bb8",
+"start": 15357,
+"end": 15360
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+15365,
+15386
+],
+"inner": [
+15366,
+15385
+],
+"tokens": [],
+"runs": [
+{
+"id": "te7332da326",
+"start": 15366,
+"end": 15385
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+15409,
+15535
+],
+"inner": [
+15410,
+15534
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t3f04bd8fea",
+"start": 15410,
+"end": 15499
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+15559,
+15584
+],
+"inner": [
+15560,
+15583
+],
+"tokens": [],
+"runs": [
+{
+"id": "te5cf346bc4",
+"start": 15560,
+"end": 15583
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+15608,
+15633
+],
+"inner": [
+15609,
+15632
+],
+"tokens": [],
+"runs": [
+{
+"id": "td93212c91d",
+"start": 15609,
+"end": 15632
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+15657,
+15682
+],
+"inner": [
+15658,
+15681
+],
+"tokens": [],
+"runs": [
+{
+"id": "t69915ab5f3",
+"start": 15658,
+"end": 15681
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+15708,
+15768
+],
+"inner": [
+15709,
+15767
+],
+"tokens": [],
+"runs": [
+{
+"id": "t37680e79c3",
+"start": 15709,
+"end": 15767
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+15803,
+15822
+],
+"inner": [
+15804,
+15821
+],
+"tokens": [],
+"runs": [
+{
+"id": "t7b641fa53f",
+"start": 15804,
+"end": 15821
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+15845,
+15902
+],
+"inner": [
+15846,
+15901
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tf1bbbd397f",
+"start": 15846,
+"end": 15887
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+16028,
+16107
+],
+"inner": [
+16029,
+16106
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tb75758d68b",
+"start": 16029,
+"end": 16099
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+16121,
+16207
+],
+"inner": [
+16122,
+16206
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t304cc4d0b7",
+"start": 16122,
+"end": 16185
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+16233,
+16239
+],
+"inner": [
+16234,
+16238
+],
+"tokens": [],
+"runs": [
+{
+"id": "td04fb32fd6",
+"start": 16234,
+"end": 16238
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+16243,
+16272
+],
+"inner": [
+16244,
+16271
+],
+"tokens": [],
+"runs": [
+{
+"id": "t26eae6c9f7",
+"start": 16244,
+"end": 16271
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+16634,
+16736
+],
+"inner": [
+16635,
+16735
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tfca6d608b0",
+"start": 16635,
+"end": 16714
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+16750,
+16799
+],
+"inner": [
+16751,
+16798
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t7931f1a6dc",
+"start": 16751,
+"end": 16791
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+16825,
+16829
+],
+"inner": [
+16826,
+16828
+],
+"tokens": [],
+"runs": [
+{
+"id": "t21b8fa6dd8",
+"start": 16826,
+"end": 16828
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+16833,
+16887
+],
+"inner": [
+16834,
+16886
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t83a3e01b27",
+"start": 16834,
+"end": 16879
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+16910,
+16979
+],
+"inner": [
+16911,
+16978
+],
+"tokens": [
+"<code>",
+"</code>",
+"<b>",
+"<code>",
+"</code>",
+"</b>"
+],
+"runs": [
+{
+"id": "t082e2dde53",
+"start": 16911,
+"end": 16963
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+17003,
+17012
+],
+"inner": [
+17004,
+17011
+],
+"tokens": [],
+"runs": [
+{
+"id": "t468717e1fe",
+"start": 17004,
+"end": 17011
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+17021,
+17032
+],
+"inner": [
+17022,
+17031
+],
+"tokens": [],
+"runs": [
+{
+"id": "t0b474784ae",
+"start": 17022,
+"end": 17031
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+17041,
+17048
+],
+"inner": [
+17042,
+17047
+],
+"tokens": [],
+"runs": [
+{
+"id": "t7678914d83",
+"start": 17042,
+"end": 17047
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+17074,
+17131
+],
+"inner": [
+17075,
+17130
+],
+"tokens": [],
+"runs": [
+{
+"id": "tc8841e255a",
+"start": 17075,
+"end": 17130
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+17145,
+17191
+],
+"inner": [
+17146,
+17190
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t47f9cdb83a",
+"start": 17146,
+"end": 17183
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+17217,
+17223
+],
+"inner": [
+17218,
+17222
+],
+"tokens": [],
+"runs": [
+{
+"id": "td5b5e9bba7",
+"start": 17218,
+"end": 17222
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+17227,
+17246
+],
+"inner": [
+17228,
+17245
+],
+"tokens": [],
+"runs": [
+{
+"id": "t08ee5033b5",
+"start": 17228,
+"end": 17245
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+17269,
+17368
+],
+"inner": [
+17270,
+17367
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t9740241954",
+"start": 17270,
+"end": 17339
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+17392,
+17416
+],
+"inner": [
+17393,
+17415
+],
+"tokens": [],
+"runs": [
+{
+"id": "t0f80ec2710",
+"start": 17393,
+"end": 17415
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+17440,
+17464
+],
+"inner": [
+17441,
+17463
+],
+"tokens": [],
+"runs": [
+{
+"id": "t8786f3260a",
+"start": 17441,
+"end": 17463
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+17488,
+17512
+],
+"inner": [
+17489,
+17511
+],
+"tokens": [],
+"runs": [
+{
+"id": "te706f2748e",
+"start": 17489,
+"end": 17511
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+17538,
+17615
+],
+"inner": [
+17539,
+17614
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "taa3da632d4",
+"start": 17539,
+"end": 17600
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+17629,
+17727
+],
+"inner": [
+17630,
+17726
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tc2dc423233",
+"start": 17630,
+"end": 17698
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+17753,
+17760
+],
+"inner": [
+17754,
+17759
+],
+"tokens": [],
+"runs": [
+{
+"id": "tb0da26136b",
+"start": 17754,
+"end": 17759
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+17764,
+17795
+],
+"inner": [
+17765,
+17794
+],
+"tokens": [],
+"runs": [
+{
+"id": "t98be46c921",
+"start": 17765,
+"end": 17794
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+17818,
+17841
+],
+"inner": [
+17819,
+17840
+],
+"tokens": [],
+"runs": [
+{
+"id": "t2cab9a625d",
+"start": 17819,
+"end": 17840
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+17850,
+17856
+],
+"inner": [
+17851,
+17855
+],
+"tokens": [],
+"runs": [
+{
+"id": "t57fadf55ed",
+"start": 17851,
+"end": 17855
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+17880,
+17907
+],
+"inner": [
+17881,
+17906
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "td284c6d100",
+"start": 17881,
+"end": 17899
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+17916,
+17942
+],
+"inner": [
+17917,
+17941
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t0d4e695352",
+"start": 17917,
+"end": 17934
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+17968,
+18030
+],
+"inner": [
+17969,
+18029
+],
+"tokens": [],
+"runs": [
+{
+"id": "t3a64901386",
+"start": 17969,
+"end": 18029
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+18044,
+18075
+],
+"inner": [
+18045,
+18074
+],
+"tokens": [],
+"runs": [
+{
+"id": "tc55fdb6bf5",
+"start": 18045,
+"end": 18074
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+18101,
+18107
+],
+"inner": [
+18102,
+18106
+],
+"tokens": [],
+"runs": [
+{
+"id": "t529217eae8",
+"start": 18102,
+"end": 18106
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+18111,
+18131
+],
+"inner": [
+18112,
+18130
+],
+"tokens": [],
+"runs": [
+{
+"id": "t434ff96eeb",
+"start": 18112,
+"end": 18130
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+18154,
+18187
+],
+"inner": [
+18155,
+18186
+],
+"tokens": [],
+"runs": [
+{
+"id": "t1d3dd738d4",
+"start": 18155,
+"end": 18186
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+18211,
+18234
+],
+"inner": [
+18212,
+18233
+],
+"tokens": [],
+"runs": [
+{
+"id": "td87251d1e5",
+"start": 18212,
+"end": 18233
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+18258,
+18273
+],
+"inner": [
+18259,
+18272
+],
+"tokens": [],
+"runs": [
+{
+"id": "t696f8f5b0e",
+"start": 18259,
+"end": 18272
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+18297,
+18312
+],
+"inner": [
+18298,
+18311
+],
+"tokens": [],
+"runs": [
+{
+"id": "t621ee8179e",
+"start": 18298,
+"end": 18311
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+18338,
+18412
+],
+"inner": [
+18339,
+18411
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t584ec40971",
+"start": 18339,
+"end": 18397
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+18426,
+18463
+],
+"inner": [
+18427,
+18462
+],
+"tokens": [],
+"runs": [
+{
+"id": "ta12e9889b2",
+"start": 18427,
+"end": 18462
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+18489,
+18495
+],
+"inner": [
+18490,
+18494
+],
+"tokens": [],
+"runs": [
+{
+"id": "t4dc6a8089e",
+"start": 18490,
+"end": 18494
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+18499,
+18521
+],
+"inner": [
+18500,
+18520
+],
+"tokens": [],
+"runs": [
+{
+"id": "t3c30669240",
+"start": 18500,
+"end": 18520
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+18683,
+18734
+],
+"inner": [
+18684,
+18733
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tfd504a1308",
+"start": 18684,
+"end": 18726
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+18748,
+18826
+],
+"inner": [
+18749,
+18825
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tebe3105922",
+"start": 18749,
+"end": 18804
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+18852,
+18858
+],
+"inner": [
+18853,
+18857
+],
+"tokens": [],
+"runs": [
+{
+"id": "tf9eed8c1e3",
+"start": 18853,
+"end": 18857
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+18862,
+18879
+],
+"inner": [
+18863,
+18878
+],
+"tokens": [],
+"runs": [
+{
+"id": "td534271f94",
+"start": 18863,
+"end": 18878
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+18902,
+18921
+],
+"inner": [
+18903,
+18920
+],
+"tokens": [],
+"runs": [
+{
+"id": "t4bf463f461",
+"start": 18903,
+"end": 18920
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+18930,
+18948
+],
+"inner": [
+18931,
+18947
+],
+"tokens": [],
+"runs": [
+{
+"id": "t6fa77b7623",
+"start": 18931,
+"end": 18947
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+18972,
+18988
+],
+"inner": [
+18973,
+18987
+],
+"tokens": [],
+"runs": [
+{
+"id": "t1072a163f1",
+"start": 18973,
+"end": 18987
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+18997,
+19018
+],
+"inner": [
+18998,
+19017
+],
+"tokens": [],
+"runs": [
+{
+"id": "ta65a7df42a",
+"start": 18998,
+"end": 19017
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+19044,
+19096
+],
+"inner": [
+19045,
+19095
+],
+"tokens": [],
+"runs": [
+{
+"id": "t83f70683ad",
+"start": 19045,
+"end": 19095
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+19110,
+19133
+],
+"inner": [
+19111,
+19132
+],
+"tokens": [],
+"runs": [
+{
+"id": "t8687a4feef",
+"start": 19111,
+"end": 19132
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+19159,
+19165
+],
+"inner": [
+19160,
+19164
+],
+"tokens": [],
+"runs": [
+{
+"id": "ta0909735ba",
+"start": 19160,
+"end": 19164
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+19169,
+19205
+],
+"inner": [
+19170,
+19204
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "te917438b57",
+"start": 19170,
+"end": 19197
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+19228,
+19233
+],
+"inner": [
+19229,
+19232
+],
+"tokens": [],
+"runs": [
+{
+"id": "t3e4e2978e9",
+"start": 19229,
+"end": 19232
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+19242,
+19247
+],
+"inner": [
+19243,
+19246
+],
+"tokens": [],
+"runs": [
+{
+"id": "t59813c8770",
+"start": 19243,
+"end": 19246
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+19256,
+19261
+],
+"inner": [
+19257,
+19260
+],
+"tokens": [],
+"runs": [
+{
+"id": "td8246c331d",
+"start": 19257,
+"end": 19260
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+19270,
+19275
+],
+"inner": [
+19271,
+19274
+],
+"tokens": [],
+"runs": [
+{
+"id": "t957c4c1124",
+"start": 19271,
+"end": 19274
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+19301,
+19398
+],
+"inner": [
+19302,
+19397
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t894a24d814",
+"start": 19302,
+"end": 19369
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+19424,
+19429
+],
+"inner": [
+19425,
+19428
+],
+"tokens": [],
+"runs": [
+{
+"id": "t9dca6a718f",
+"start": 19425,
+"end": 19428
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+19433,
+19460
+],
+"inner": [
+19434,
+19459
+],
+"tokens": [],
+"runs": [
+{
+"id": "tfcdda9e94f",
+"start": 19434,
+"end": 19459
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+19483,
+19582
+],
+"inner": [
+19484,
+19581
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "taa519d97a9",
+"start": 19484,
+"end": 19553
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+19606,
+19627
+],
+"inner": [
+19607,
+19626
+],
+"tokens": [],
+"runs": [
+{
+"id": "t9479bf7f6b",
+"start": 19607,
+"end": 19626
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+19651,
+19672
+],
+"inner": [
+19652,
+19671
+],
+"tokens": [],
+"runs": [
+{
+"id": "t35720a572e",
+"start": 19652,
+"end": 19671
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+19696,
+19717
+],
+"inner": [
+19697,
+19716
+],
+"tokens": [],
+"runs": [
+{
+"id": "t9b0b1eee6f",
+"start": 19697,
+"end": 19716
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+19743,
+19821
+],
+"inner": [
+19744,
+19820
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tb643855cfc",
+"start": 19744,
+"end": 19806
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+19835,
+19888
+],
+"inner": [
+19836,
+19887
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t6a9149dc5c",
+"start": 19836,
+"end": 19873
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+19914,
+19918
+],
+"inner": [
+19915,
+19917
+],
+"tokens": [],
+"runs": [
+{
+"id": "t21b8fa6dd8",
+"start": 19915,
+"end": 19917
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+19922,
+19974
+],
+"inner": [
+19923,
+19973
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tcf60cd01fb",
+"start": 19923,
+"end": 19966
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+19997,
+20011
+],
+"inner": [
+19998,
+20010
+],
+"tokens": [],
+"runs": [
+{
+"id": "t955ab466f4",
+"start": 19998,
+"end": 20010
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+20020,
+20047
+],
+"inner": [
+20021,
+20046
+],
+"tokens": [
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "tc67900dae3",
+"start": 20021,
+"end": 20039
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+20071,
+20081
+],
+"inner": [
+20072,
+20080
+],
+"tokens": [],
+"runs": [
+{
+"id": "t2f2f211704",
+"start": 20072,
+"end": 20080
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+20090,
+20099
+],
+"inner": [
+20091,
+20098
+],
+"tokens": [],
+"runs": [
+{
+"id": "tb3add6d3f5",
+"start": 20091,
+"end": 20098
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+20125,
+20180
+],
+"inner": [
+20126,
+20179
+],
+"tokens": [],
+"runs": [
+{
+"id": "t3790b86c2a",
+"start": 20126,
+"end": 20179
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+20194,
+20269
+],
+"inner": [
+20195,
+20268
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "ta46de8ee24",
+"start": 20195,
+"end": 20254
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+20285,
+20289
+],
+"inner": [
+20286,
+20288
+],
+"tokens": [],
+"runs": [
+{
+"id": "t88e7de9fe5",
+"start": 20286,
+"end": 20288
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+20295,
+20301
+],
+"inner": [
+20296,
+20300
+],
+"tokens": [],
+"runs": [
+{
+"id": "t1f231cdb54",
+"start": 20296,
+"end": 20300
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+20305,
+20392
+],
+"inner": [
+20306,
+20391
+],
+"tokens": [
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"<code>",
+"</code>"
+],
+"runs": [
+{
+"id": "t4c06d34432",
+"start": 20306,
+"end": 20370
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+20415,
+20449
+],
+"inner": [
+20416,
+20448
+],
+"tokens": [],
+"runs": [
+{
+"id": "t340ce66bdf",
+"start": 20416,
+"end": 20448
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+20473,
+20492
+],
+"inner": [
+20474,
+20491
+],
+"tokens": [],
+"runs": [
+{
+"id": "t776e6a1319",
+"start": 20474,
+"end": 20491
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+20516,
+20530
+],
+"inner": [
+20517,
+20529
+],
+"tokens": [],
+"runs": [
+{
+"id": "t9b7942fb82",
+"start": 20517,
+"end": 20529
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+20554,
+20569
+],
+"inner": [
+20555,
+20568
+],
+"tokens": [],
+"runs": [
+{
+"id": "t77981d84ff",
+"start": 20555,
+"end": 20568
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+20595,
+20637
+],
+"inner": [
+20596,
+20636
+],
+"tokens": [],
+"runs": [
+{
+"id": "t30d38f54ad",
+"start": 20596,
+"end": 20636
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+20651,
+20700
+],
+"inner": [
+20652,
+20699
+],
+"tokens": [],
+"runs": [
+{
+"id": "t50cdc91f00",
+"start": 20652,
+"end": 20699
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+20883,
+20887
+],
+"inner": [
+20884,
+20886
+],
+"tokens": [],
+"runs": [
+{
+"id": "tdb1c89e0f6",
+"start": 20884,
+"end": 20886
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+20897,
+20901
+],
+"inner": [
+20898,
+20900
+],
+"tokens": [],
+"runs": [
+{
+"id": "t9d1c8a70d4",
+"start": 20898,
+"end": 20900
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+20922,
+20954
+],
+"inner": [
+20923,
+20953
+],
+"tokens": [
+"<h1>",
+"</h1>"
+],
+"runs": [
+{
+"id": "taba4be45dd",
+"start": 20923,
+"end": 20950
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+20972,
+21263
+],
+"inner": [
+20976,
+21260
+],
+"tokens": [
+"<p>",
+"<code>",
+"</code>",
+"</p>",
+"<div class=\"box info\">",
+"<b class=\"t\">",
+"</b>",
+"</div>"
+],
+"runs": [
+{
+"id": "tfaf5319bd1",
+"start": 20976,
+"end": 21049
+},
+{
+"id": "tbd59898cc4",
+"start": 21050,
+"end": 21100
+},
+{
+"id": "t36bc334bf0",
+"start": 21101,
+"end": 21137
+},
+{
+"id": "td9c0eb49b1",
+"start": 21138,
+"end": 21149
+},
+{
+"id": "t21f92ae407",
+"start": 21150,
+"end": 21219
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+21699,
+22228
+],
+"inner": [
+21702,
+22225
+],
+"tokens": [
+"<h2 id=\"checklist\">",
+"</h2>",
+"<ul class=\"check\">",
+"<li>",
+"<code>",
+"</code>",
+"</li>",
+"<li>",
+"<code>",
+"</code>",
+"</li>",
+"<li>",
+"</li>",
+"<li>",
+"<code>",
+"</code>",
+"</li>",
+"<li>",
+"<code>",
+"</code>",
+"<code>",
+"</code>",
+"</li>",
+"<li>",
+"</li>",
+"</ul>",
+"<div class=\"box ok\">",
+"<b class=\"t\">",
+"</b>",
+"<b>",
+"</b>",
+"</div>"
+],
+"runs": [
+{
+"id": "tc72f530357",
+"start": 21702,
+"end": 21725
+},
+{
+"id": "t734a5805f6",
+"start": 21730,
+"end": 21777
+},
+{
+"id": "tf3030e268b",
+"start": 21778,
+"end": 21824
+},
+{
+"id": "t3ed0e6b0d3",
+"start": 21825,
+"end": 21871
+},
+{
+"id": "t1fe137df95",
+"start": 21872,
+"end": 21927
+},
+{
+"id": "t75025546fa",
+"start": 21928,
+"end": 21993
+},
+{
+"id": "te2202db918",
+"start": 21994,
+"end": 22043
+},
+{
+"id": "tc3d0b561ed",
+"start": 22049,
+"end": 22127
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+22259,
+22284
+],
+"inner": [
+22260,
+22283
+],
+"tokens": [],
+"runs": [
+{
+"id": "t4159fca654",
+"start": 22260,
+"end": 22283
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/sitegen/pg_teach.py",
+"lit": [
+22324,
+22389
+],
+"inner": [
+22325,
+22388
+],
+"tokens": [],
+"runs": [
+{
+"id": "t13993f7a35",
+"start": 22325,
+"end": 22388
+}
+],
+"src_md5": "76011c5b5d3d1d5740951fa682aa4efc"
+},
+{
+"file": "tools/build_pages.py",
+"lit": [
+47,
+366
+],
+"inner": [
+50,
+363
+],
+"tokens": [],
+"runs": [
+{
+"id": "t1bab478c79",
+"start": 50,
+"end": 114
+}
+],
+"src_md5": "2cc88508b8187a9b6927ea405e60f475"
+},
+{
+"file": "tools/build_pages.py",
+"lit": [
+864,
+948
+],
+"inner": [
+866,
+947
+],
+"tokens": [
+"{fname:20s}",
+"{len(html_text) / 1024:8.1f}",
+"{len(html_text.splitlines()):6d}"
+],
+"runs": [
+{
+"id": "t0769281f6a",
+"start": 866,
+"end": 885
+}
+],
+"src_md5": "2cc88508b8187a9b6927ea405e60f475"
+},
+{
+"file": "tools/build_pages.py",
+"lit": [
+2174,
+2216
+],
+"inner": [
+2175,
+2215
+],
+"tokens": [],
+"runs": [
+{
+"id": "t1c542b94a1",
+"start": 2175,
+"end": 2215
+}
+],
+"src_md5": "2cc88508b8187a9b6927ea405e60f475"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+47,
+431
+],
+"inner": [
+50,
+428
+],
+"tokens": [],
+"runs": [
+{
+"id": "tad6a35a2a1",
+"start": 50,
+"end": 119
+},
+{
+"id": "t6ada949b83",
+"start": 121,
+"end": 175
+},
+{
+"id": "t78a8496762",
+"start": 176,
+"end": 223
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+1179,
+1185
+],
+"inner": [
+1180,
+1184
+],
+"tokens": [],
+"runs": [
+{
+"id": "t971f54e2a4",
+"start": 1180,
+"end": 1184
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+2811,
+2817
+],
+"inner": [
+2812,
+2816
+],
+"tokens": [],
+"runs": [
+{
+"id": "teadc314f4e",
+"start": 2812,
+"end": 2816
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+2832,
+2875
+],
+"inner": [
+2833,
+2874
+],
+"tokens": [],
+"runs": [
+{
+"id": "t429390e368",
+"start": 2833,
+"end": 2874
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+2903,
+2972
+],
+"inner": [
+2904,
+2971
+],
+"tokens": [],
+"runs": [
+{
+"id": "t16066d5c34",
+"start": 2904,
+"end": 2971
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+2986,
+3035
+],
+"inner": [
+2987,
+3034
+],
+"tokens": [],
+"runs": [
+{
+"id": "t6066f41cba",
+"start": 2987,
+"end": 3034
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+3074,
+3140
+],
+"inner": [
+3075,
+3139
+],
+"tokens": [],
+"runs": [
+{
+"id": "td3dd820a93",
+"start": 3075,
+"end": 3139
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+3256,
+3341
+],
+"inner": [
+3257,
+3340
+],
+"tokens": [],
+"runs": [
+{
+"id": "t1b7035353b",
+"start": 3257,
+"end": 3340
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+3355,
+3407
+],
+"inner": [
+3356,
+3406
+],
+"tokens": [],
+"runs": [
+{
+"id": "t3dbdabd583",
+"start": 3356,
+"end": 3406
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+3413,
+3468
+],
+"inner": [
+3414,
+3467
+],
+"tokens": [],
+"runs": [
+{
+"id": "t7c6d197965",
+"start": 3414,
+"end": 3467
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+3474,
+3552
+],
+"inner": [
+3475,
+3551
+],
+"tokens": [],
+"runs": [
+{
+"id": "ta5182b6eb6",
+"start": 3475,
+"end": 3551
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+3558,
+3613
+],
+"inner": [
+3559,
+3612
+],
+"tokens": [],
+"runs": [
+{
+"id": "t0cf82077d0",
+"start": 3559,
+"end": 3612
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+3619,
+3675
+],
+"inner": [
+3620,
+3674
+],
+"tokens": [],
+"runs": [
+{
+"id": "tda5f2c41d6",
+"start": 3620,
+"end": 3674
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+3689,
+3697
+],
+"inner": [
+3690,
+3696
+],
+"tokens": [],
+"runs": [
+{
+"id": "tc2b8655b22",
+"start": 3690,
+"end": 3696
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+3703,
+3744
+],
+"inner": [
+3704,
+3743
+],
+"tokens": [],
+"runs": [
+{
+"id": "t6d6c1eb371",
+"start": 3704,
+"end": 3743
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+3750,
+3816
+],
+"inner": [
+3751,
+3815
+],
+"tokens": [],
+"runs": [
+{
+"id": "t8afb7dcbe7",
+"start": 3751,
+"end": 3815
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+3822,
+3874
+],
+"inner": [
+3823,
+3873
+],
+"tokens": [],
+"runs": [
+{
+"id": "tea33f4d1df",
+"start": 3823,
+"end": 3873
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+3880,
+3916
+],
+"inner": [
+3881,
+3915
+],
+"tokens": [],
+"runs": [
+{
+"id": "tebd6090f5f",
+"start": 3881,
+"end": 3915
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+3922,
+3956
+],
+"inner": [
+3923,
+3955
+],
+"tokens": [],
+"runs": [
+{
+"id": "t37eaff11cf",
+"start": 3923,
+"end": 3955
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+3962,
+4008
+],
+"inner": [
+3963,
+4007
+],
+"tokens": [],
+"runs": [
+{
+"id": "t3b9d44aeb3",
+"start": 3963,
+"end": 4007
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+4014,
+4064
+],
+"inner": [
+4015,
+4063
+],
+"tokens": [],
+"runs": [
+{
+"id": "t30a64c9a24",
+"start": 4015,
+"end": 4063
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+4070,
+4121
+],
+"inner": [
+4071,
+4120
+],
+"tokens": [],
+"runs": [
+{
+"id": "t8270688dcf",
+"start": 4071,
+"end": 4120
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+4265,
+4273
+],
+"inner": [
+4266,
+4272
+],
+"tokens": [],
+"runs": [
+{
+"id": "t50ad17bb20",
+"start": 4266,
+"end": 4272
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+4286,
+4290
+],
+"inner": [
+4287,
+4289
+],
+"tokens": [],
+"runs": [
+{
+"id": "tfac54c3430",
+"start": 4287,
+"end": 4289
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+4298,
+4303
+],
+"inner": [
+4299,
+4302
+],
+"tokens": [],
+"runs": [
+{
+"id": "t37c48e2417",
+"start": 4299,
+"end": 4302
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+4311,
+4316
+],
+"inner": [
+4312,
+4315
+],
+"tokens": [],
+"runs": [
+{
+"id": "tb0677bc827",
+"start": 4312,
+"end": 4315
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+4323,
+4328
+],
+"inner": [
+4324,
+4327
+],
+"tokens": [],
+"runs": [
+{
+"id": "t71aa876d6f",
+"start": 4324,
+"end": 4327
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+4335,
+4340
+],
+"inner": [
+4336,
+4339
+],
+"tokens": [],
+"runs": [
+{
+"id": "tae013cbd80",
+"start": 4336,
+"end": 4339
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+4357,
+4364
+],
+"inner": [
+4358,
+4363
+],
+"tokens": [],
+"runs": [
+{
+"id": "t09f2d8bc8e",
+"start": 4358,
+"end": 4363
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+4372,
+4383
+],
+"inner": [
+4373,
+4382
+],
+"tokens": [],
+"runs": [
+{
+"id": "t4e3a0aa9b0",
+"start": 4373,
+"end": 4382
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+4391,
+4397
+],
+"inner": [
+4392,
+4396
+],
+"tokens": [],
+"runs": [
+{
+"id": "t029ac8c9f1",
+"start": 4392,
+"end": 4396
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+4842,
+4846
+],
+"inner": [
+4843,
+4845
+],
+"tokens": [],
+"runs": [
+{
+"id": "t066ae8d7d6",
+"start": 4843,
+"end": 4845
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+4881,
+4885
+],
+"inner": [
+4882,
+4884
+],
+"tokens": [],
+"runs": [
+{
+"id": "tbd13a76c41",
+"start": 4882,
+"end": 4884
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+4905,
+4908
+],
+"inner": [
+4906,
+4907
+],
+"tokens": [],
+"runs": [
+{
+"id": "tb505660a97",
+"start": 4906,
+"end": 4907
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+4980,
+4984
+],
+"inner": [
+4981,
+4983
+],
+"tokens": [],
+"runs": [
+{
+"id": "t450efd2fce",
+"start": 4981,
+"end": 4983
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+4986,
+4992
+],
+"inner": [
+4987,
+4991
+],
+"tokens": [],
+"runs": [
+{
+"id": "tecbbd32dc8",
+"start": 4987,
+"end": 4991
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+5179,
+5202
+],
+"inner": [
+5180,
+5201
+],
+"tokens": [],
+"runs": [
+{
+"id": "tc9d6b6fb26",
+"start": 5180,
+"end": 5201
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+5330,
+5338
+],
+"inner": [
+5331,
+5337
+],
+"tokens": [],
+"runs": [
+{
+"id": "tc166e1c4ae",
+"start": 5331,
+"end": 5337
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+5351,
+5355
+],
+"inner": [
+5352,
+5354
+],
+"tokens": [],
+"runs": [
+{
+"id": "tfac54c3430",
+"start": 5352,
+"end": 5354
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+5363,
+5367
+],
+"inner": [
+5364,
+5366
+],
+"tokens": [],
+"runs": [
+{
+"id": "tfaaadc447b",
+"start": 5364,
+"end": 5366
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+5374,
+5378
+],
+"inner": [
+5375,
+5377
+],
+"tokens": [],
+"runs": [
+{
+"id": "t0e46d8d6b7",
+"start": 5375,
+"end": 5377
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+5386,
+5391
+],
+"inner": [
+5387,
+5390
+],
+"tokens": [],
+"runs": [
+{
+"id": "tab3e7f031b",
+"start": 5387,
+"end": 5390
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+5424,
+5438
+],
+"inner": [
+5425,
+5437
+],
+"tokens": [],
+"runs": [
+{
+"id": "t7f3762d6c3",
+"start": 5425,
+"end": 5437
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+5446,
+5450
+],
+"inner": [
+5447,
+5449
+],
+"tokens": [],
+"runs": [
+{
+"id": "t239e76f147",
+"start": 5447,
+"end": 5449
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+5457,
+5462
+],
+"inner": [
+5458,
+5461
+],
+"tokens": [],
+"runs": [
+{
+"id": "t71aa876d6f",
+"start": 5458,
+"end": 5461
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+5469,
+5475
+],
+"inner": [
+5470,
+5474
+],
+"tokens": [],
+"runs": [
+{
+"id": "t25b9d6b0ee",
+"start": 5470,
+"end": 5474
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+5724,
+5733
+],
+"inner": [
+5725,
+5732
+],
+"tokens": [],
+"runs": [
+{
+"id": "t9509d76997",
+"start": 5725,
+"end": 5732
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+6012,
+6020
+],
+"inner": [
+6013,
+6019
+],
+"tokens": [],
+"runs": [
+{
+"id": "tfa168c7b5f",
+"start": 6013,
+"end": 6019
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+6033,
+6038
+],
+"inner": [
+6034,
+6037
+],
+"tokens": [],
+"runs": [
+{
+"id": "t0908750fee",
+"start": 6034,
+"end": 6037
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+6045,
+6049
+],
+"inner": [
+6046,
+6048
+],
+"tokens": [],
+"runs": [
+{
+"id": "tfac54c3430",
+"start": 6046,
+"end": 6048
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+6057,
+6061
+],
+"inner": [
+6058,
+6060
+],
+"tokens": [],
+"runs": [
+{
+"id": "tfaaadc447b",
+"start": 6058,
+"end": 6060
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+6068,
+6072
+],
+"inner": [
+6069,
+6071
+],
+"tokens": [],
+"runs": [
+{
+"id": "t0e46d8d6b7",
+"start": 6069,
+"end": 6071
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+6080,
+6085
+],
+"inner": [
+6081,
+6084
+],
+"tokens": [],
+"runs": [
+{
+"id": "tbd23e23c41",
+"start": 6081,
+"end": 6084
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+6102,
+6110
+],
+"inner": [
+6103,
+6109
+],
+"tokens": [],
+"runs": [
+{
+"id": "t586b123ace",
+"start": 6103,
+"end": 6109
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+6118,
+6121
+],
+"inner": [
+6119,
+6120
+],
+"tokens": [],
+"runs": [
+{
+"id": "tea5a1c756c",
+"start": 6119,
+"end": 6120
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+6128,
+6131
+],
+"inner": [
+6129,
+6130
+],
+"tokens": [],
+"runs": [
+{
+"id": "t4296d7d293",
+"start": 6129,
+"end": 6130
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+6149,
+6155
+],
+"inner": [
+6150,
+6154
+],
+"tokens": [],
+"runs": [
+{
+"id": "t58cdd9eca3",
+"start": 6150,
+"end": 6154
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+6352,
+6361
+],
+"inner": [
+6353,
+6360
+],
+"tokens": [],
+"runs": [
+{
+"id": "t9509d76997",
+"start": 6353,
+"end": 6360
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+6672,
+6684
+],
+"inner": [
+6673,
+6683
+],
+"tokens": [],
+"runs": [
+{
+"id": "t49ee0a1e0a",
+"start": 6673,
+"end": 6683
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+6713,
+6720
+],
+"inner": [
+6714,
+6719
+],
+"tokens": [],
+"runs": [
+{
+"id": "tc275794357",
+"start": 6714,
+"end": 6719
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+6728,
+6732
+],
+"inner": [
+6729,
+6731
+],
+"tokens": [],
+"runs": [
+{
+"id": "tfac54c3430",
+"start": 6729,
+"end": 6731
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+6740,
+6746
+],
+"inner": [
+6741,
+6745
+],
+"tokens": [],
+"runs": [
+{
+"id": "t00982f2405",
+"start": 6741,
+"end": 6745
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+6893,
+6915
+],
+"inner": [
+6894,
+6914
+],
+"tokens": [],
+"runs": [
+{
+"id": "tac45c2e6b5",
+"start": 6894,
+"end": 6914
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+7156,
+7166
+],
+"inner": [
+7157,
+7165
+],
+"tokens": [],
+"runs": [
+{
+"id": "ta087c12458",
+"start": 7157,
+"end": 7165
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+7390,
+7401
+],
+"inner": [
+7391,
+7400
+],
+"tokens": [],
+"runs": [
+{
+"id": "t0980ef9a08",
+"start": 7391,
+"end": 7400
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+7414,
+7418
+],
+"inner": [
+7415,
+7417
+],
+"tokens": [],
+"runs": [
+{
+"id": "tfac54c3430",
+"start": 7415,
+"end": 7417
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+7426,
+7430
+],
+"inner": [
+7427,
+7429
+],
+"tokens": [],
+"runs": [
+{
+"id": "tfaaadc447b",
+"start": 7427,
+"end": 7429
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+7437,
+7441
+],
+"inner": [
+7438,
+7440
+],
+"tokens": [],
+"runs": [
+{
+"id": "t0e46d8d6b7",
+"start": 7438,
+"end": 7440
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+7449,
+7463
+],
+"inner": [
+7450,
+7462
+],
+"tokens": [],
+"runs": [
+{
+"id": "t7f3762d6c3",
+"start": 7450,
+"end": 7462
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+7643,
+7652
+],
+"inner": [
+7644,
+7651
+],
+"tokens": [],
+"runs": [
+{
+"id": "t9509d76997",
+"start": 7644,
+"end": 7651
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+7822,
+7831
+],
+"inner": [
+7823,
+7830
+],
+"tokens": [],
+"runs": [
+{
+"id": "t69cc8b4afc",
+"start": 7823,
+"end": 7830
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+7854,
+7863
+],
+"inner": [
+7855,
+7862
+],
+"tokens": [],
+"runs": [
+{
+"id": "t65252b2f2f",
+"start": 7855,
+"end": 7862
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+7871,
+7875
+],
+"inner": [
+7872,
+7874
+],
+"tokens": [],
+"runs": [
+{
+"id": "t41dfb0bf61",
+"start": 7872,
+"end": 7874
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+7883,
+7893
+],
+"inner": [
+7884,
+7892
+],
+"tokens": [],
+"runs": [
+{
+"id": "t7f9d82c0e9",
+"start": 7884,
+"end": 7892
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+7901,
+7907
+],
+"inner": [
+7902,
+7906
+],
+"tokens": [],
+"runs": [
+{
+"id": "te0691f4a9a",
+"start": 7902,
+"end": 7906
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+7977,
+8002
+],
+"inner": [
+7978,
+8001
+],
+"tokens": [],
+"runs": [
+{
+"id": "t5dcc820557",
+"start": 7978,
+"end": 8001
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+8366,
+8391
+],
+"inner": [
+8367,
+8390
+],
+"tokens": [],
+"runs": [
+{
+"id": "tef5b0826bd",
+"start": 8367,
+"end": 8390
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+8831,
+8840
+],
+"inner": [
+8832,
+8839
+],
+"tokens": [],
+"runs": [
+{
+"id": "t6690d03514",
+"start": 8832,
+"end": 8839
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+8853,
+8857
+],
+"inner": [
+8854,
+8856
+],
+"tokens": [],
+"runs": [
+{
+"id": "td316330b74",
+"start": 8854,
+"end": 8856
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+8865,
+8869
+],
+"inner": [
+8866,
+8868
+],
+"tokens": [],
+"runs": [
+{
+"id": "tfaaadc447b",
+"start": 8866,
+"end": 8868
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+8876,
+8880
+],
+"inner": [
+8877,
+8879
+],
+"tokens": [],
+"runs": [
+{
+"id": "t0e46d8d6b7",
+"start": 8877,
+"end": 8879
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+8888,
+8901
+],
+"inner": [
+8889,
+8900
+],
+"tokens": [],
+"runs": [
+{
+"id": "t5a03f820c5",
+"start": 8889,
+"end": 8900
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+8919,
+8924
+],
+"inner": [
+8920,
+8923
+],
+"tokens": [],
+"runs": [
+{
+"id": "tae013cbd80",
+"start": 8920,
+"end": 8923
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+8931,
+8937
+],
+"inner": [
+8932,
+8936
+],
+"tokens": [],
+"runs": [
+{
+"id": "t2c228a2f40",
+"start": 8932,
+"end": 8936
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+8945,
+8960
+],
+"inner": [
+8946,
+8959
+],
+"tokens": [],
+"runs": [
+{
+"id": "te07c2840bc",
+"start": 8946,
+"end": 8959
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+8968,
+8974
+],
+"inner": [
+8969,
+8973
+],
+"tokens": [],
+"runs": [
+{
+"id": "t25b9d6b0ee",
+"start": 8969,
+"end": 8973
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+9373,
+9394
+],
+"inner": [
+9374,
+9393
+],
+"tokens": [],
+"runs": [
+{
+"id": "taae8bd89de",
+"start": 9374,
+"end": 9393
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+9437,
+9446
+],
+"inner": [
+9438,
+9445
+],
+"tokens": [],
+"runs": [
+{
+"id": "t9509d76997",
+"start": 9438,
+"end": 9445
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+9841,
+9850
+],
+"inner": [
+9842,
+9849
+],
+"tokens": [],
+"runs": [
+{
+"id": "tdf3e6bf39a",
+"start": 9842,
+"end": 9849
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+9863,
+9867
+],
+"inner": [
+9864,
+9866
+],
+"tokens": [],
+"runs": [
+{
+"id": "tfac54c3430",
+"start": 9864,
+"end": 9866
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+9875,
+9880
+],
+"inner": [
+9876,
+9879
+],
+"tokens": [],
+"runs": [
+{
+"id": "tb0677bc827",
+"start": 9876,
+"end": 9879
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+9887,
+9893
+],
+"inner": [
+9888,
+9892
+],
+"tokens": [],
+"runs": [
+{
+"id": "t3d56e7ddcb",
+"start": 9888,
+"end": 9892
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+9900,
+9907
+],
+"inner": [
+9901,
+9906
+],
+"tokens": [],
+"runs": [
+{
+"id": "t2b97bfe69f",
+"start": 9901,
+"end": 9906
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+9914,
+9920
+],
+"inner": [
+9915,
+9919
+],
+"tokens": [],
+"runs": [
+{
+"id": "t11499b49d4",
+"start": 9915,
+"end": 9919
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+9937,
+9941
+],
+"inner": [
+9938,
+9940
+],
+"tokens": [],
+"runs": [
+{
+"id": "t6874c97317",
+"start": 9938,
+"end": 9940
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+9948,
+9953
+],
+"inner": [
+9949,
+9952
+],
+"tokens": [],
+"runs": [
+{
+"id": "t1724cf75f2",
+"start": 9949,
+"end": 9952
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+9961,
+9966
+],
+"inner": [
+9962,
+9965
+],
+"tokens": [],
+"runs": [
+{
+"id": "tae013cbd80",
+"start": 9962,
+"end": 9965
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+9973,
+9982
+],
+"inner": [
+9974,
+9981
+],
+"tokens": [],
+"runs": [
+{
+"id": "t411029c62b",
+"start": 9974,
+"end": 9981
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+10369,
+10404
+],
+"inner": [
+10370,
+10403
+],
+"tokens": [],
+"runs": [
+{
+"id": "t7d9249e6cd",
+"start": 10370,
+"end": 10403
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+10483,
+10518
+],
+"inner": [
+10484,
+10517
+],
+"tokens": [],
+"runs": [
+{
+"id": "t2de9c3b3cd",
+"start": 10484,
+"end": 10517
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+10597,
+10632
+],
+"inner": [
+10598,
+10631
+],
+"tokens": [],
+"runs": [
+{
+"id": "t777577988d",
+"start": 10598,
+"end": 10631
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+10711,
+10745
+],
+"inner": [
+10712,
+10744
+],
+"tokens": [],
+"runs": [
+{
+"id": "t88f00ba8f5",
+"start": 10712,
+"end": 10744
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+11347,
+11351
+],
+"inner": [
+11348,
+11350
+],
+"tokens": [],
+"runs": [
+{
+"id": "t450efd2fce",
+"start": 11348,
+"end": 11350
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+11787,
+11830
+],
+"inner": [
+11788,
+11829
+],
+"tokens": [],
+"runs": [
+{
+"id": "t3364419f1c",
+"start": 11788,
+"end": 11829
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+11866,
+11895
+],
+"inner": [
+11867,
+11894
+],
+"tokens": [],
+"runs": [
+{
+"id": "tce430c5690",
+"start": 11867,
+"end": 11894
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/make_jp_xlsx.py",
+"lit": [
+12014,
+12035
+],
+"inner": [
+12015,
+12034
+],
+"tokens": [],
+"runs": [
+{
+"id": "t650b211726",
+"start": 12015,
+"end": 12034
+}
+],
+"src_md5": "5558078a15644bb82c820f95eeec9463"
+},
+{
+"file": "tools/verify_site_jp.py",
+"lit": [
+47,
+744
+],
+"inner": [
+50,
+741
+],
+"tokens": [
+"<img src>",
+"<a href>",
+"<nav class=\"main\">",
+"</article>",
+"<td>"
+],
+"runs": [
+{
+"id": "t74dde1cafd",
+"start": 50,
+"end": 122
+}
+],
+"src_md5": "be93ffe33cdd690b5ce09bf1f4f438f6"
+},
+{
+"file": "tools/verify_site_jp.py",
+"lit": [
+6986,
+7046
+],
+"inner": [
+6988,
+7045
+],
+"tokens": [
+"{n_q}"
+],
+"runs": [
+{
+"id": "t1f0a60536c",
+"start": 6988,
+"end": 7043
+}
+],
+"src_md5": "be93ffe33cdd690b5ce09bf1f4f438f6"
+},
+{
+"file": "assets/s4jp.js",
+"lit": [
+1786,
+1809
+],
+"inner": [
+1787,
+1808
+],
+"tokens": [
+"<span class=\"dim\">"
+],
+"runs": [
+{
+"id": "t9e59aae2a4",
+"start": 1787,
+"end": 1793
+}
+],
+"src_md5": "bebe46d235bbc9a6609577784369174c"
+},
+{
+"file": "assets/s4jp.js",
+"lit": [
+1836,
+1894
+],
+"inner": [
+1837,
+1893
+],
+"tokens": [
+"<button class=\"zoombtn\" data-close=\"1\">",
+"</button>"
+],
+"runs": [
+{
+"id": "t48efd4c820",
+"start": 1837,
+"end": 1851
+}
+],
+"src_md5": "bebe46d235bbc9a6609577784369174c"
+},
+{
+"file": "assets/s4jp.js",
+"lit": [
+4163,
+4168
+],
+"inner": [
+4164,
+4167
+],
+"tokens": [],
+"runs": [
+{
+"id": "ta1a93bdb58",
+"start": 4164,
+"end": 4167
+}
+],
+"src_md5": "bebe46d235bbc9a6609577784369174c"
+},
+{
+"file": "assets/s4jp.js",
+"lit": [
+4197,
+4203
+],
+"inner": [
+4198,
+4202
+],
+"tokens": [],
+"runs": [
+{
+"id": "t189f802cc9",
+"start": 4198,
+"end": 4202
+}
+],
+"src_md5": "bebe46d235bbc9a6609577784369174c"
+},
+{
+"file": "assets/s4jp.js",
+"lit": [
+4956,
+4990
+],
+"inner": [
+4957,
+4989
+],
+"tokens": [
+"<span class=\"dim\">",
+"</span>"
+],
+"runs": [
+{
+"id": "t3de0027dc4",
+"start": 4957,
+"end": 4970
+}
+],
+"src_md5": "bebe46d235bbc9a6609577784369174c"
+},
+{
+"file": "assets/s4jp.js",
+"lit": [
+5153,
+5210
+],
+"inner": [
+5154,
+5209
+],
+"tokens": [
+"<span class=\"dim\">",
+"</span>"
+],
+"runs": [
+{
+"id": "tba980df68d",
+"start": 5154,
+"end": 5190
+}
+],
+"src_md5": "bebe46d235bbc9a6609577784369174c"
+},
+{
+"file": "assets/s4jp.js",
+"lit": [
+6694,
+6702
+],
+"inner": [
+6695,
+6701
+],
+"tokens": [],
+"runs": [
+{
+"id": "t06d18a08da",
+"start": 6695,
+"end": 6701
+}
+],
+"src_md5": "bebe46d235bbc9a6609577784369174c"
+},
+{
+"file": "assets/main.js",
+"lit": [
+585,
+592
+],
+"inner": [
+586,
+591
+],
+"tokens": [],
+"runs": [
+{
+"id": "te9868cc5a7",
+"start": 586,
+"end": 591
+}
+],
+"src_md5": "57e085d27b22f38bf9d278907c486a34"
+},
+{
+"file": "assets/main.js",
+"lit": [
+4249,
+4778
+],
+"inner": [
+4250,
+4777
+],
+"tokens": [
+"{\n      if (kw.indexOf(w) < 0) return false;\n      if (i + w.length < n && /[A-Za-z0-9_]/.test(code[i + w.length])) return false;\n      if (i > 0 && /[A-Za-z0-9_]/.test(code[i - 1])) return false;\n      return true;\n    }",
+"{ cm = openers[k]; break; }"
+],
+"runs": [
+{
+"id": "tfc8557e8c6",
+"start": 4340,
+"end": 4354
+}
+],
+"src_md5": "57e085d27b22f38bf9d278907c486a34"
+},
+{
+"file": "assets/main.js",
+"lit": [
+4899,
+5006
+],
+"inner": [
+4900,
+5005
+],
+"tokens": [],
+"runs": [
+{
+"id": "t18628f29cd",
+"start": 4972,
+"end": 4987
+}
+],
+"src_md5": "57e085d27b22f38bf9d278907c486a34"
+},
+{
+"file": "assets/main.js",
+"lit": [
+5031,
+8385
+],
+"inner": [
+5032,
+8384
+],
+"tokens": [
+"{ j2 += 2; continue; }",
+"{ j2++; break; }",
+"<xxx ...>",
+"<[^>",
+"{\n              return span(\"a\", name) + span(\"o\", eq) + span(\"s\", val);\n            }",
+"{ pretty = tag; }",
+"{\n              var nameM = /^<\\/?([A-Za-z0-9_:.-]+)/.exec(tag);\n              pretty = \"&lt;/\" + span(\"t\", nameM[1]) + \"&gt;\";\n            }",
+"{\n              var nameM2 = /^<\\/?([A-Za-z0-9_:.-]+)/.exec(tag);\n              pretty = \"&lt;\" + span(\"t\", nameM2[1]) + pretty.slice(nameM2[1].length + 1, -1) + \"&gt;\";\n              /* 简化: 上面整块替换不可靠时退回原样 */\n              if (pretty.indexOf(\"&lt;\") !== 0) pretty = esc(tag);\n            }",
+"&lt;",
+"&gt;",
+"{ out += span(\"an\", m2[0]); i += m2[0].length; continue; }",
+"{ out += span(\"n\", m3[0]); i += m3[0].length; continue; }",
+"{ out += span(\"k\", w); }",
+"{ out += esc(w); }",
+"< pres.length; i++) {\n      var el = pres[i];\n      var lang = /lang-([a-z0-9]+)/.exec(el.className);\n      if (!lang) continue;\n      var raw = el.textContent;\n      if (lang[1] === \"text\") continue;\n      el.innerHTML = highlight(raw, lang[1]);\n    }\n\n    /* 返回顶部 */\n    var tt = document.createElement(\"button\");\n    tt.className = \"to-top\";\n    tt.setAttribute(\"aria-label\", \"返回顶部\");\n    tt.innerHTML = \"↑\";\n    document.body.appendChild(tt);\n    tt.addEventListener(\"click\", function () { window.scrollTo({ top: 0, behavior: \"smooth\" }); });\n    window.addEventListener(\"scroll\", function () {\n      if (window.scrollY >"
+],
+"runs": [
+{
+"id": "tf0e363835f",
+"start": 5317,
+"end": 5340
+},
+{
+"id": "t52839fa52f",
+"start": 5971,
+"end": 5995
+},
+{
+"id": "t9752e7a087",
+"start": 6145,
+"end": 6159
+},
+{
+"id": "tea7bc6a91c",
+"start": 6335,
+"end": 6350
+},
+{
+"id": "tec2c31ab5d",
+"start": 6602,
+"end": 6627
+},
+{
+"id": "t33e3794802",
+"start": 6929,
+"end": 6943
+}
+],
+"src_md5": "57e085d27b22f38bf9d278907c486a34"
+},
+{
+"file": "assets/quiz.js",
+"lit": [
+511,
+532
+],
+"inner": [
+512,
+531
+],
+"tokens": [
+"<b class=\"t\">",
+"</b>"
+],
+"runs": [
+{
+"id": "tcd9b09deaa",
+"start": 512,
+"end": 520
+}
+],
+"src_md5": "7263553c3eabc8bc56461101f20b7e78"
+},
+{
+"file": "assets/quiz.js",
+"lit": [
+618,
+677
+],
+"inner": [
+619,
+676
+],
+"tokens": [
+"<p id=\"quiz-text\" style=\"margin:4px 0 0\">",
+"</p>"
+],
+"runs": [
+{
+"id": "t2434db52b9",
+"start": 619,
+"end": 637
+}
+],
+"src_md5": "7263553c3eabc8bc56461101f20b7e78"
+},
+{
+"file": "assets/quiz.js",
+"lit": [
+1480,
+1496
+],
+"inner": [
+1481,
+1495
+],
+"tokens": [],
+"runs": [
+{
+"id": "tb6893c37e5",
+"start": 1481,
+"end": 1495
+}
+],
+"src_md5": "7263553c3eabc8bc56461101f20b7e78"
+},
+{
+"file": "assets/quiz.js",
+"lit": [
+1525,
+1541
+],
+"inner": [
+1526,
+1540
+],
+"tokens": [],
+"runs": [
+{
+"id": "t4a32200662",
+"start": 1526,
+"end": 1540
+}
+],
+"src_md5": "7263553c3eabc8bc56461101f20b7e78"
+},
+{
+"file": "assets/quiz.js",
+"lit": [
+1570,
+1586
+],
+"inner": [
+1571,
+1585
+],
+"tokens": [],
+"runs": [
+{
+"id": "t67ca16523e",
+"start": 1571,
+"end": 1585
+}
+],
+"src_md5": "7263553c3eabc8bc56461101f20b7e78"
+},
+{
+"file": "assets/quiz.js",
+"lit": [
+1589,
+1618
+],
+"inner": [
+1590,
+1617
+],
+"tokens": [],
+"runs": [
+{
+"id": "t00b2344f4f",
+"start": 1590,
+"end": 1617
+}
+],
+"src_md5": "7263553c3eabc8bc56461101f20b7e78"
+},
+{
+"file": "assets/quiz.js",
+"lit": [
+1646,
+1651
+],
+"inner": [
+1647,
+1650
+],
+"tokens": [],
+"runs": [
+{
+"id": "t672f26d725",
+"start": 1647,
+"end": 1650
+}
+],
+"src_md5": "7263553c3eabc8bc56461101f20b7e78"
+},
+{
+"file": "assets/quiz.js",
+"lit": [
+1683,
+1691
+],
+"inner": [
+1684,
+1690
+],
+"tokens": [],
+"runs": [
+{
+"id": "td8097f0f55",
+"start": 1684,
+"end": 1690
+}
+],
+"src_md5": "7263553c3eabc8bc56461101f20b7e78"
+},
+{
+"file": "assets/quiz.js",
+"lit": [
+1704,
+1713
+],
+"inner": [
+1705,
+1712
+],
+"tokens": [],
+"runs": [
+{
+"id": "tcdb63fdee1",
+"start": 1705,
+"end": 1712
+}
+],
+"src_md5": "7263553c3eabc8bc56461101f20b7e78"
+},
+{
+"file": "assets/quiz.js",
+"lit": [
+3227,
+3235
+],
+"inner": [
+3228,
+3234
+],
+"tokens": [],
+"runs": [
+{
+"id": "tfd87b688bf",
+"start": 3228,
+"end": 3234
+}
+],
+"src_md5": "7263553c3eabc8bc56461101f20b7e78"
+}
+]

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>练习② 伝票の変更と再決定 · SAP SD 受注処理（Sales Order Processing）实战训练站</title>
+<meta name="description" content="练习② 伝票の変更と再決定：SAP SD 受注処理の実機練習（動画 Unit 14 準拠）。入力値・手順・期待結果・つまずき・検証（証拠の取り方）・验收清单つき。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/sd.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">SD</span><span class="txt">受注処理 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①受注登録</a>
+      <a class="active" href="handson-2.html">②伝票変更</a>
+      <a href="handson-3.html">③情報照会</a>
+      <a href="handson-4.html">④出荷と請求</a>
+      <a href="handson-5.html">⑤ツールと故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 练习② 伝票の変更と再決定</div>
+<main class="page"><article>
+
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。录像里的画面同样可能与你的版本不同。若要换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 一键替换。</div><h1>练习② 伝票の変更と再決定（<code>VA02</code>）</h1>
+<div class="box info"><b class="t">本练习完成什么</b>
+動画の後半（<code>32:52</code>〜<code>51:22</code>）の主题です。<b>① 変更の 3 方式（明細一括・複数伝票・一覧から）</b>、<b>② プラント変更</b>、<b>③ 得意先変更と再決定（Redetermined／Unchanged）</b>、<b>④ ブロックの 3 階層</b>を、実際の受注で確かめます。<b>「得意先を変えたのに価格が古いまま」を自分で再現して説明できる</b>のがゴールです。</div>
+<div class="toc">
+  <a href="#s1">2-1 変更の 3 方式を押さえる</a>
+  <a href="#s2">2-2 プラント変更（Change Plant）</a>
+  <a href="#s3">2-3 得意先変更と再決定（Redetermined / Unchanged）</a>
+  <a href="#s4">2-4 ブロックの 3 階層を設定・解除する</a>
+  <a href="#s5">2-5 証拠を取る（変更前後の比較）</a>
+  <a href="#s6">2-6 验收（完成基准）</a>
+</div>
+<h2 id="s1">2-1 変更の 3 方式を押さえる（動画の Overview: Changing of sales documents）</h2>
+<p>動画のスライドは「明細の一括変更」「複数伝票の一括変更」「文書一覧からの変更」の 3 つを示します。
+まず<b>自分の受注でどの方式が使えるか</b>を確認します。</p>
+<table class="tbl wide">
+<tr><th>方式</th><th>動画の例</th><th>本站での練習</th></tr>
+<tr><td><b>明細の一括変更</b></td><td>Item 10 / 20 の Plant を <code>1200</code> → <code>2000</code> に同時変更</td><td><code>VA02</code> → 明細概況で<b>複数明細を選択</b> → 一括変更（または <code>VA02</code> のメニュー「編集 → 一括変更」）</td></tr>
+<tr><td><b>複数伝票の一括変更</b></td><td>複数受注の Plant 列をまとめて変更</td><td><code>VA05</code>（受注一覧）で対象を絞り、一括変更機能を使う（環境により <code>MASS</code> を使用）</td></tr>
+<tr><td><b>文書一覧からの変更</b></td><td>受注リスト → 変更</td><td><code>VA05</code> で受注を検索 → 行を選択して変更、または <code>V.02</code> で不完全な受注を拾って直す</td></tr>
+</table>
+<ol class="steps">
+  <li><code>VA02</code> で练习①の受注番号を開く。<b>ヘッダと明細の構造</b>（Sales / Item overview / Item detail タブ）を確認する。</li>
+  <li><b>明細 10 と 20（両方ある場合）を選択</b>し、メニューから<b>一括変更</b>を開く。<b>どの項目が一括変更できるか</b>を一覧する（プラント・納入日・数量など）。</li>
+  <li><code>VA05</code> を起動し、得意先 <code>1000</code> で<b>自分の受注を検索</b>する（＝文書一覧からの変更の入口）。</li>
+  <li><code>V.02</code> を実行し、<b>不完全な受注の一覧</b>に自分の受注が出るか確認する（PO 番号などを空にして保存した場合）。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① 明細の一括変更で選べる項目の一覧を<b>自分の環境で</b>言える。<br>② <code>VA05</code> で自分の受注が検索できる（＝一覧経由の変更が可能）。<br>③ <code>V.02</code> の使い方（不完全な受注を拾って直す）を説明できる。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>既に後続伝票（出荷・請求）がある受注</b>は、一括変更できない項目があります（業務でも同じ。练习④以降で作った受注は触らない）。<br>② <code>VA05</code> の検索条件が広すぎると大量ヒットします。<b>得意先・期間・伝票タイプ</b>で絞ってください。</div>
+<div class="task"><b class="t">練習課題</b>「明細の一括変更」と「複数伝票の一括変更」の<b>使いどころの違い</b>を、それぞれ 1 行で書いてください（例：同じ受注の中か、複数の受注か）。</div>
+<figure class="gui"><img src="assets/gui/handson-2_s01_1.svg" alt="VA02 の明細概況（All items）。明細 10 の T-ATA30（10 PC）と明細 20 の T-ATA29（1 PC）が、出荷プラント 1200 で 2 行並んでいる。" loading="lazy"><figcaption><b class="t">VA02 の明細概況（All items）。変更の 3 方式のうち①「1 つの伝票内で複数明細を一括変更」の入口</b><span class="tx">VA02</span><span class="scr">Change Standard Order: Overview</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 明細概況（All items）で Plnt を上書きすれば、明細 10 と 20 を同時に変更できる。動画のスライドが示す「1 伝票内の一括変更（Concurrent change to several items）」がこれ</li><li><b>2</b> 複数の伝票をまたぐなら VA05（受注一覧、環境により MASS）、文書一覧からなら VA05 と V.02（不完全な受注）。1 伝票内の一括変更とは入口が違う</li></ol><p class="gui-tip">自システムでの確認：VA02 → 明細概況で Plnt を直接上書きできるか、メニュー「編集 → 一括変更」にどんな項目（プラント・納入日・数量など）が出るかを確認。② 複数伝票は VA05、③ 文書一覧は VA05 と V.02 で。</p></figure>
+
+<h2 id="s2">2-2 プラント変更（Change Plant）—— 動画 <code>38:00</code> 付近</h2>
+<p><b>入力値</b></p>
+<pre class="vals">対象：练习①で作った受注の明細（品目 T-ATA30）
+変更前：出荷プラント 1200（品目マスタ 販売組織1 の値）
+変更後：プラント 1000（動画のダイアログでは 1000 Dresden が選ばれています）
+確認したい連鎖：
+  出荷プラント 1200 → 1000 に変えると
+    → 出荷ポイント（Shipping point）が再決定される
+    → 出荷タイプ（Delivery type）の決定に影響する
+    → 在庫確認（ATP）の参照先プラントが変わる</pre>
+<ol class="steps">
+  <li><code>VA02</code> で受注を開き、明細の<b>出荷プラント</b>欄をダブルクリック（または F4）して<b>プラント変更ダイアログ</b>を出す（動画の「Change Plant」画面と同じ）。</li>
+  <li><b>プラントを <code>1000</code> に変更</b>する。</li>
+  <li>変更後、<b>出荷ポイント／出荷タブの値が変わったか</b>を確認する（動画はこの連鎖を見せています）。</li>
+  <li><b>保存する前に</b>、変更前後の値をメモする。</li>
+  <li>保存し、<code>VA03</code> → 明細 → <b>出荷タブ</b>および <code>SE16N</code> で <code>VBAP-WERKS</code> の変化を確認する。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① 明細の出荷プラントが変更され、<b>出荷タブの出荷ポイントも追随</b>している。<br>② <code>VBAP-WERKS</code> が新しいプラントになっている。<br>③ 与力価格が変わった場合、その理由（プラント依存の条件があるか）を説明できる。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>プラントが存在しない／販売組織に割り当てられていない</b> → F4 に出ません（組織構造の割当を確認）。<br>② 在庫が無いプラントに変えると、<b>ATP の結果が不足</b>になります（C13）。<br>③ 出荷プラントは<b>3 つの主データから自動提案される値</b>です。手で変えた後に品目を入れ直すと、<b>元の値に戻る</b>ことがあります（提案の優先順位を思い出すこと）。</div>
+<div class="task"><b class="t">練習課題</b>プラントを <code>1200</code> → <code>1000</code> に変えたとき、<b>「自動で変わった項目」と「変わらなかった項目」</b>をそれぞれ 2 つ以上挙げ、理由を書いてください。</div>
+<figure class="gui"><img src="assets/gui/handson-2_s02_1.svg" alt="VA02 の受注画面に Change Plant ダイアログが重なった状態。ダイアログには Plant 1000 Dresden、背後に得意先 T-S62130、納入希望日 12.06.2007、正味価額 4,598.00 EUR、支払条件 ZB01 が見えている。" loading="lazy"><figcaption><b class="t">VA02 の「Change Plant」ダイアログと受注ヘッダ（動画 38:00 付近）。プラントを変えると出荷ポイントが追随する</b><span class="tx">VA02</span><span class="scr">Change Plant</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> Plant を 1200 → 1000 に変えると、出荷ポイント・出荷タイプの決定・ATP の参照プラントが連鎖で再決定される。動画はこの連鎖をそのまま見せている</li><li><b>2</b> Plant 以外の欄は受注ヘッダ（Sold-to / Ship-to / 納入希望日 / 正味価額 / 支払条件）。プラントを変えた後にここが動くかどうかが 2-3 の再決定の観察対象になる</li></ol><p class="gui-tip">自システムでの確認：明細の出荷プラント欄をダブルクリック／F4 で「Change Plant」ダイアログが出るか、変更後に出荷タブの出荷ポイントが追随したかを VA02 → VA03 で確認。VBAP-WERKS は SE16N（練習 2-5）で。</p></figure>
+
+<h2 id="s3">2-3 得意先変更と再決定（Changes to the Sold-to Party）—— 動画 <code>48:01</code>〜</h2>
+<p><b>本站で最も重要な観察</b>です。動画のスライドは、得意先を変えたときに
+<b>何が再決定され、何がそのまま残るか</b>を 2 列で示しています。</p>
+<div class="two-col">
+<div class="panel"><h4>再決定される（Redetermined）</h4><ul><li>得意先マスタ（住所など）</li><li>客先品目情報レコード</li><li>テキスト</li><li>無償品（Free goods）</li><li><b>与力価格（Prices）</b></li><li>出力（Output）</li><li><b>出荷プラントと出荷ポイント</b></li></ul></div>
+<div class="panel"><h4>変わらない（Unchanged）</h4><ul><li><b>販売エリア</b></li><li>販売事務所と販売グループ</li><li>可用性と製品割当（Availability / Product allocation）</li><li>バッチ（Batches）</li></ul></div>
+</div>
+<pre class="vals">練習の進め方（動画の流れに沿う）：
+
+  1) VA02 で受注を開く
+  2) メニューから「得意先変更（Customer Change）」を選ぶ
+     動画のダイアログ「Customer Change: Initial Screen」：
+       得意先 / 会社コード / 出荷プラント / 販売エリア（All sales areas / Customer's sales areas…）
+  3) 得意先を別のものに変更する（例：1000 → T-S62130 など、自システムにある得意先）
+  4) 変更後に「何が変わったか」を、下の 7 項目（再決定側）と 4 項目（不変側）で確認する
+  5) 動画では、この流れから XD02（得意先マスタ）へ飛び、
+     販売エリアデータの「パートナー機能」と「Delivery and payment terms」を確認している
+
+  注意：後続伝票（出荷・請求）があると「No changes（何も変更されない）」になります。
+        练习②では必ず『後続伝票の無い受注』で試してください。</pre>
+<ol class="steps">
+  <li>後続伝票の無い受注（练习①で作ったもの）を <code>VA02</code> で開く。</li>
+  <li>メニューから<b>得意先変更</b>を選び、動画と同じ<b>初期画面（Customer Change: Initial Screen）</b>を出す。</li>
+  <li><b>変更前の状態を記録</b>する（与力価格・与力日付・出荷プラント・支払条件・納入日程行・住所）。</li>
+  <li>得意先を変更して Enter。プロンプトが出たら従う（<b>再決定の実行</b>）。</li>
+  <li>動画ではこのあと <b>「Information: New pricing carried out.」</b>に相当するメッセージが出て、<b>与力価格が自動で組み直され、インコタームズも新しい得意先の値（動画は <code>CIF Berlin</code>）に変わります</b>。<b>このメッセージが出たかどうかを必ず記録</b>してください（＝与力の再決定が走った証拠）。</li>
+  <li><b>変更後の状態を記録</b>し、7 項目（再決定側）と 4 項目（不変側）のどちらが動いたかを分類する。</li>
+  <li>動画と同じく <b><code>XD02</code> で得意先マスタの販売エリアデータ</b>を開き、パートナー機能（<code>SP</code>／<code>BP</code>）と支払条件・インコタームズを確認する。</li>
+  <li>保存するか、練習として<b>戻る</b>か選ぶ（保存する場合は、後続の练习に影響しないことを確認してから）。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① <b>与力価格・出荷プラント・出力が再決定</b>された。<br>② <b>販売エリアと販売事務所・販売グループは変わらなかった</b>（＝動画スライドの Unchanged と一致）。<br>③ 後続伝票のある受注で得意先を変えると<b>何も変更されない</b>ことを、<b>実際に試して確認</b>した（またはその理由を説明できる）。<br>④ <code>XD02</code> の得意先マスタと受注の値を対応づけられた。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>得意先を変えたのに価格が古い</b> → 与力は再決定されますが、<b>明細に手で入れた値（手動条件）は残る</b>ことがあります。条件画面で「手動」表示を確認。<br>② <b>変わらないものを期待してしまう</b>（販売エリアを変えたい）→ 販売エリアを変えるには<b>別の手段</b>が必要（受注での販売エリア変更）。動画の Unchanged 列が答えです。<br>③ <b>後続伝票ありで「何も起きない」</b> → 動画スライドの注記どおりの<b>仕様</b>（不具合ではない）。</div>
+<div class="task"><b class="t">練習課題</b>得意先変更の<b>前後比較表</b>（値・項目・再決定されたか）を作り、動画の 2 列（Redetermined／Unchanged）と<b>自分の結果を突き合わせて</b>、一致・不一致とその理由を書いてください。</div>
+<figure class="gui"><img src="assets/gui/handson-2_s03_1.svg" alt="VA02 の受注画面に Customer Change: Initial Screen ダイアログが開いた状態。得意先 1000 Becker Berlin、会社コード 1000、販売組織 1000、流通チャネル 10、出荷プラント 1200、部門 00 が入っている。" loading="lazy"><figcaption><b class="t">「Customer Change: Initial Screen」ダイアログ。得意先変更の入口（販売エリアと出荷プラントを指定する）</b><span class="tx">VA02</span><span class="scr">Customer Change: Initial Screen</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> どの販売エリアの得意先マスタを見て変えるかをここで決める。「Customer&#x27;s sales areas...」はその得意先が持つ販売エリアだけに絞り、「All sales areas...」は全販売エリアを出す</li><li><b>2</b> 販売エリアの 3 項目は受注から初期値で入る。ただし動画では空のままで、得意先マスタ側（XD02）へ飛んでいる点に注意</li></ol><p class="gui-tip">自システムでの確認：VA02 で受注を開き、得意先変更のメニュー位置（環境により「Sales document → Customer change」等）と、このダイアログの 2 ボタン（All sales areas...／Customer&#x27;s sales areas...）の違いを実際に開いて確認。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-2_s03_2.svg" alt="XD02 の Change Customer: Sales Area Data 画面。Partner functions タブが選ばれ、SP Sold-to party 1000 Becker Berlin、BP Bill-to party 1000 Becker Berlin、PY Payer 1050 Becker AG、SE Sales employee 1714 Olaf Hansen、Incoterms FOB（本站の練習値。動画の実機は CIF Berlin）、Terms of payment ZB01 が表示されている。" loading="lazy"><figcaption><b class="t">XD02 の販売エリアデータ「Partner functions」タブ（SP / BP と Delivery and payment terms）</b><span class="tx">XD02</span><span class="scr">Change Customer: Sales Area Data</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> SP＝受注先、BP＝請求先。得意先を替えると、この役割に誰を入れるかが得意先マスタから再決定される（＝動画スライドの Redetermined 列）</li><li><b>2</b> Incoterms と Terms of payment は受注の値の出どころ。ここを直すと次の受注から変わるが、既存受注は得意先変更をしないと追随しない</li></ol><p class="gui-tip">自システムでの確認：XD02 → 得意先 1000 → 販売エリアデータで、自分の販売エリア（1000 / 10 / 00）のパートナー機能・支払条件・インコタームズを開き、受注（VA03）の値と突き合わせる。</p></figure>
+
+<h2 id="s4">2-4 ブロックの 3 階層を設定・解除する（動画の Blocks スライド）</h2>
+<p><b>設定箇所（動画のスライドと同じ 3 階層）</b></p>
+<table class="tbl wide">
+<tr><th>階層</th><th>設定するブロック</th><th>画面の場所</th><th>効果</th></tr>
+<tr><td>ヘッダ</td><td>納入ブロック（Delivery block）／請求ブロック（Billing block）</td><td><code>VA02</code> ヘッダ → Sales タブ</td><td>伝票全体が出荷／請求されなくなる</td></tr>
+<tr><td>明細</td><td>請求ブロック</td><td><code>VA02</code> 明細詳細 → 請求タブ</td><td>その明細だけ請求対象から外れる</td></tr>
+<tr><td>納入日程行</td><td>納入ブロック</td><td><code>VA02</code> 明細 → 納入日程行</td><td>その納入日だけ出荷されない（部分的な保留）</td></tr>
+</table>
+<ol class="steps">
+  <li><code>VA02</code> で受注を開き、<b>納入ブロック</b>を 1 つ選ぶ（F4 で一覧が出ます）。動画のスライドにある <b>Header → Delivery block</b> の実践です。</li>
+  <li>明細を開き、<b>請求ブロック</b>を設定する（Item → Billing block）。</li>
+  <li>納入日程行に<b>納入ブロック</b>を設定する（Schedule line → Delivery block）。</li>
+  <li><code>VA03</code> で受注を開き、<b>3 階層のブロックがどこに見えるか</b>を確認する。</li>
+  <li><b>解除</b>して元の状態に戻し、解除後にブロックが消えることを確認する。</li>
+  <li>（発展）動画スライドの <b>“Defining blocks in Customizing”</b> を確かめる：<code>VOV8</code> で伝票タイプに<b>納入ブロックを既定値として入れる</b>と、そのタイプで作る受注に最初からブロックが付きます（<b>練習⑤の発展①</b>）。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① 3 階層それぞれのブロックを<b>設定して解除</b>できた。<br>② 「<b>なぜこの受注は出荷できないのか</b>」を 3 階層を上から見て答えられる（①手で付けた ②Customizing 由来 ③チェック由来）。<br>③ 一覧でブロック付きを拾える（<code>V.23</code> 請求ブロック・<code>VA14L</code> 納入ブロック。環境により異なるので T-code は F4／メニューで確認）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>ブロックを付けたまま忘れる</b> → 出荷・請求が止まります。练习後は<b>必ず解除</b>。<br>② 与信ブロックのように<b>システムが付けるブロック</b>は、手で消せません（与信解除の処理が必要）。<b>ブロックの由来を先に確認</b>するのが鉄則。</div>
+<div class="task"><b class="t">練習課題</b>3 階層のブロックを全部付けた受注を作り、<b>出荷伝票が作れるか／作れないか</b>を（できれば）実際に試してください。作れなかった場合は<b>どのブロックが原因か</b>を切り分けます。</div>
+<figure class="gui"><img src="assets/gui/handson-2_s04_1.svg" alt="ブロックの 3 階層を示す一覧。ヘッダに Delivery block と Billing block、明細 10 に Billing block、納入日程行に Delivery block があり、それぞれ設定場所と効果が並んでいる。" loading="lazy"><figcaption><b class="t">ブロックの 3 階層（ヘッダ／明細／納入日程行）。設定場所と効果の対応（動画の Blocks スライド）</b><span class="tx">VA02</span><span class="scr">Blocks in the Sales Document</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> ヘッダの Delivery block / Billing block は伝票全体を止める。止まった受注を見たら、まずヘッダ → 明細 → 納入日程行の順に上から確認するのが切り分けの定石</li><li><b>2</b> 同じブロックでも階層ごとに設定場所が違う。明細は請求タブ、納入日程行は明細の納入日程行から設定する（手で付けたか Customizing 由来かも見分ける）</li></ol><p class="gui-tip">自システムでの確認：VA02 のヘッダ Sales タブ（Delivery block / Billing block）、明細の請求タブ（Billing block）、明細の納入日程行（Delivery block）を実際に開いて F4 の理由一覧を見る。Customizing は動画スライドの “Defining blocks in Customizing”（伝票タイプに既定ブロックを持たせる）。</p></figure>
+
+<h2 id="s5">2-5 証拠を取る（変更前後の比較とテーブル）</h2>
+<ol class="steps">
+  <li>変更前後で <code>VA03</code> のヘッダ・明細・納入日程行・条件を<b>スクリーンショットまたはメモで記録</b>する。</li>
+  <li><code>SE16N</code> で <code>VBAP</code>（明細：<code>WERKS</code>・<code>PSTYV</code>・<code>KWMENG</code>）と <code>VBEP</code>（納入日程行）を確認する。</li>
+  <li><code>VBPA</code> で<b>パートナー</b>が変更後にどうなったか（失敗した得意先の役割がどう扱われたか）を確認する。</li>
+  <li><b>変更履歴</b>を見る：<code>VA03</code> の環境メニューから<b>変更履歴</b>（受注のヘッダ／明細の変更履歴）を開き、いつ何が変わったかを確認する。</li>
+  <li>（任意）<code>SE16N</code> で <code>CDHDR</code>／<code>CDPOS</code> を伝票番号で絞り、テーブルレベルの変更履歴を確認する（環境により記録の有無が異なります）。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① 変更前後の<b>値の差分</b>を表で示せる。<br>② <code>VBAP</code>／<code>VBEP</code>／<code>VBPA</code> の変化を画面で指せる。<br>③ 変更履歴（または <code>CDHDR</code>／<code>CDPOS</code>）で<b>変更の事実</b>を示せる。</div>
+<figure class="gui"><img src="assets/gui/handson-2_s05_1.svg" alt="SE16N の Data Browser でテーブル VBAP を照会した結果。伝票 0000001234 の明細 10（T-ATA30、数量 10）と明細 20（T-ATA29、数量 1）が、変更後の出荷プラント WERKS 1000 で表示されている。" loading="lazy"><figcaption><b class="t">SE16N で VBAP（受注明細）を照会し、変更後の出荷プラント WERKS を確認する</b><span class="tx">SE16N</span><span class="scr">Data Browser: Table VBAP</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> VBAP-WERKS がプラント変更の物的証拠。VA03 の出荷タブ（出荷ポイント）と突き合わせて、値が 1 本の線で説明できるようにする</li><li><b>2</b> 納入日程行は VBEP、パートナーは VBPA。同じ伝票番号で照会すると「どこまで連鎖したか」を表で示せる（変更の事実は VA03 の変更履歴でも）</li></ol><p class="gui-tip">自システムでの確認：SE16N にテーブル VBAP を入れて伝票番号で絞る（自分の受注番号に読み替え。ここでは例として 0000001234）。VBEP・VBPA も同じ伝票番号で。変更履歴は VA03 の環境メニュー、または CDHDR / CDPOS で確認。</p></figure>
+
+<h2 id="s6">2-6 验收（完成基准）</h2>
+<ul class="check">
+  <li>変更の <b>3 方式</b>（明細一括・複数伝票・文書一覧）を言い分けられる</li>
+  <li><code>VA02</code> で<b>複数明細の一括変更</b>ができる（プラント・納入日など）</li>
+  <li><b>Change Plant</b> でプラントを変更し、<b>出荷ポイント／出荷タブも追随</b>することを確認した</li>
+  <li><b>得意先変更</b>を実行し、<b>再決定される 7 項目／変わらない 4 項目</b>を実測で示せた</li>
+  <li><code>XD02</code> で得意先マスタの販売エリアデータ（パートナー機能・支払条件）を確認した</li>
+  <li><b>ブロックの 3 階層</b>（ヘッダ・明細・納入日程行）を設定し、解除した</li>
+  <li>「なぜこの受注は出荷できないか」を<b>3 通り（手動／Customizing／チェック）</b>で切り分けられる</li>
+  <li>後続伝票がある受注で<b>得意先を変えても何も変わらない</b>ことを確認（または理由を説明）した</li>
+  <li><code>SE16N</code> で <code>VBAP</code>／<code>VBEP</code>／<code>VBPA</code> の変更を確認した</li>
+  <li>変更履歴（<code>VA03</code> の機能、または <code>CDHDR</code>／<code>CDPOS</code>）で変更の事実を示せた</li>
+  <li>つまずいた点を<b>「症状 → 根因 → 証拠 → 処置 → 再発防止」</b>で 1 件以上記録した</li>
+</ul>
+<div class="box ok"><b class="t">次の一歩</b>
+→ <a href="handson-3.html">练习③ 販売情報システム（<code>VC/2</code> Sales Summary）</a>（動画が最も長く扱う照会機能と、その Customizing を再現します）</div>
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP SD 受注処理（Sales Order Processing）实战训练站</h5><p>動画「录像45 Sales order processing.mp4」の実演を自分の環境で再現するための练习。各手順に「自系统での確認方法」つき。</p><div><h5>下一步</h5><p><a href="handson-5.html">练习⑤ ツール・発展・故障対応</a> まで通したら、<a href="quiz.html">能力测试</a> で確認します。</p></div></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 受注登録（VA01）</a><br><a href="handson-2.html">② 与力価格と ATP</a><br><a href="handson-3.html">③ 特殊取引</a><br><a href="handson-4.html">④ 出荷と請求</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="worksheet.html">学员版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/quiz.js"></script>
+</body>
+</html>

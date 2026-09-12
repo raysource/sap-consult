@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAP 开发 · SAP BTP 开发者训练站</title>
+<meta name="description" content="ABAP RESTful Application Programming Model：CDS+BDEF+行为实现+服务暴露全套样例">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">SAP</span><span class="txt">SAP BTP 开发者训练站</span></a>
+    <nav class="main"><a href="index.html">首页</a><a href="isuite.html">Integration Suite</a><a href="iflow.html">iFlow 实战</a><a class="active" href="rap.html">RAP</a><a href="cap.html">CAP</a><a href="fiori.html">Fiori / UI5</a><a href="dev-course.html">全流程课件</a><a href="samples.html">示例工程</a></nav>
+  </div>
+</header>
+<div class="hero"><div class="hero-inner"><div class="kicker">ABAP Cloud 编程模型</div><h1>RAP：把业务对象建模成服务</h1><p class="lead">CDS 视图 → 行为定义 → 行为实现 → 投影暴露，四步讲完一个现代 ABAP Fiori 应用的诞生。</p></div></div><main class="page"><div class="wrap"><article><div class="toc"><a href="#what">RAP 是什么</a><a href="#objects">开发对象地图</a><a href="#demo">演示: 三步建 Fiori 应用</a><a href="#impl">行为与校验实现</a><a href="#eml">EML 速写</a><a href="#terms">概念对照表</a><a href="#next">下一步</a></div><h2 id="what">RAP 是什么</h2><p><b>ABAP RESTful Application Programming Model (RAP)</b> 是 ABAP Cloud / S/4HANA 扩展栈的官方编程模型：把业务建模成 <b>Business Object (BO)</b>，框架自动为你处理持久化、事务、授权、草稿、ETag，再以 <b>OData V4</b> 暴露给 Fiori。对比老式 <code>SE80 对话编程 + RFC + Gateway</code>，RAP 的样板代码少一个数量级。</p><div class="flow"><span class="node0">CDS 数据模型</span><span class="arrow">→</span><span class="node0">行为定义 BDEF</span><span class="arrow">→</span><span class="node0">行为实现 ABAP 类</span><span class="arrow">→</span><span class="node0">投影 + 服务定义</span><span class="arrow">→</span><span class="node0">服务绑定 (OData V4)</span><span class="arrow">→</span><span class="node0">Fiori elements</span></div><h2 id="objects">一张图认清 6 类开发对象</h2><table class="tbl"><tr><th>对象(ADT 里的类型)</th><th>作用</th></tr>
+<tr><td><b>DDIC 表</b>(如 ztrainingproduct)</td><td>持久化存储(BDEF 的 persistent table)</td></tr>
+<tr><td><b>CDS 视图实体</b>(ZI_...)</td><td>接口视图: 定义 BO 的字段与关联、语义注解、访问控制</td></tr>
+<tr><td><b>行为定义</b>(BDEF)</td><td>声明 BO 的“行为面”: 允许哪些操作/动作/校验/确定、是否 draft</td></tr>
+<tr><td><b>行为实现类</b>(zbp_... / 局部类)</td><td>写动作、校验、确定的 ABAP 实现(EML 与 RAP 回调)</td></tr>
+<tr><td><b>投影视图 + 服务定义</b></td><td>为每个消费方“裁剪”BO：只暴露该角色能看的字段/行为</td></tr>
+<tr><td><b>服务绑定 + IAM 业务角色</b></td><td>把服务定义绑成 OData V4(UI) 端点并授权</td></tr>
+</table><div class="box info"><b class="t">提示 · 命名约定（云/Steampunk 通用）</b><ul><li>接口视图/行为对象: <code>ZI_*</code>；投影/消费视图: <code>ZC_*</code>；行为实现: <code>zbp_zi_*</code></li><li>表用 <code>z</code> 前缀；全部小写(新语法)；ADT 里用向导生成比手写稳</li></ul></div><h2 id="demo">演示：一个“培训产品”BO（managed，带草稿）</h2><h3>① 接口视图（数据模型）</h3><pre class="hl"><div class="code-head"><span class="lang">ABAP</span><button class="copy-btn" type="button">复制</button></div><code class="lang-abap">@AccessControl.authorizationCheck: #CHECK
+@EndUserText.label: &#x27;Training Product&#x27;
+define root view entity ZI_TrainingProduct
+  as select from ztrainingproduct
+{
+  key uuid      as Uuid,        // 语义键/技术键(建议 UUID)
+      productid as ProductId,
+      name      as Name,
+      category  as Category,
+      price     as Price,
+      currency  as Currency,
+      stock     as Stock,
+      onsale    as OnSale,
+      @Semantics.systemDateTime.createdAt: true
+      createdat as CreatedAt
+}</code></pre><h3>② 行为定义 BDEF（managed + draft + 动作/校验/确定）</h3><pre class="hl"><div class="code-head"><span class="lang">ABAP</span><button class="copy-btn" type="button">复制</button></div><code class="lang-abap">managed implementation in class zbp_zi_trainingproduct unique;
+strict ( 2 );
+
+define behavior for ZI_TrainingProduct alias Product
+persistent table ztrainingproduct
+lock master
+authorization master ( instance )
+etag master LastChangedAt
+{
+  create; update; delete;
+
+  field ( readonly ) CreatedAt CreatedBy;   // 框架维护字段
+  field ( mandatory ) Name Price;           // 必填
+
+  action ( features : instance ) SetOnSale result [1] $self;   // 自定义动作
+  validation validatePrice on save { field price; }            // 保存前校验
+  determination setDefaults on modify { field category; }      // 创建时自动填充
+
+  draft action Activate; Edit; Resume; Discard;                // draft 生命周期
+}</code></pre><p>BDEF 一行 <code>managed</code>，等于替你写好了 CREATE/UPDATE/DELETE 的数据库操作与事务——这是 RAP 相比 ABAP 传统编程最大的节省。</p><h3>③ 行为实现（动作 / 校验）</h3><pre class="hl"><div class="code-head"><span class="lang">ABAP</span><button class="copy-btn" type="button">复制</button></div><code class="lang-abap">CLASS zcl_btp_tp_actions DEFINITION PUBLIC FINAL CREATE PUBLIC.
+  PUBLIC SECTION.
+    INTERFACES if_abap_behv.
+ENDCLASS.
+
+CLASS zcl_btp_tp_actions IMPLEMENTATION.
+  METHOD if_abap_behv~setonsale.
+    MODIFY ENTITIES OF zi_trainingproduct          &quot; 自动套用事务与授权
+      ENTITY product
+        UPDATE FIELDS ( onsale )
+        WITH VALUE #( FOR key IN keys ( %tky  = key-%tky
+                                        onsale = abap_true ) )
+      FAILED failed
+      REPORTED reported.
+  ENDMETHOD.
+
+  METHOD if_abap_behv~validateprice.
+    READ ENTITIES OF zi_trainingproduct IN LOCAL MODE
+      ENTITY product FIELDS ( price currency )
+        WITH CORRESPONDING #( keys )
+      RESULT DATA(products).
+
+    LOOP AT products INTO DATA(product).
+      IF product-price &lt;= 0.
+        APPEND VALUE #( %tky = product-%tky ) TO failed-product;
+        APPEND VALUE #( %tky = product-%tky
+                        %msg = new_message_with_text(
+                                 severity = if_abap_behv_message=&gt;severity-error
+                                 text     = &#x27;价格必须大于 0&#x27; ) ) TO reported-product.
+      ENDIF.
+    ENDLOOP.
+  ENDMETHOD.
+ENDCLASS.</code></pre><p>（行为实现类在 ADT 里从 BDEF 右键 <b>Generate Behavior Implementation</b> 生成骨架，方法签名由框架决定，上方为示意结构。）</p><h2 id="impl">投影 + 服务暴露（每个前端一套视图）</h2><pre class="hl"><div class="code-head"><span class="lang">ABAP</span><button class="copy-btn" type="button">复制</button></div><code class="lang-abap">// 消费投影: 只留 UI 需要的字段, 并写 UI 注解(elements 直接消费)
+@AccessControl.authorizationCheck: #CHECK
+@UI: { headerInfo: { typeName: &#x27;产品&#x27;, typeNamePlural: &#x27;产品&#x27;,
+                     title: { value: &#x27;Name&#x27; } } }
+define root view entity ZC_TrainingProduct
+  provider contract transactional_query
+  as projection on ZI_TrainingProduct
+{
+  key Uuid   as Uuid,
+      Name   as Name,
+      @UI.lineItem: [ { position: 10, label: &#x27;单价&#x27; } ]
+      Price  as Price,
+      @UI.lineItem: [ { position: 20, label: &#x27;库存&#x27; } ]
+      Stock  as Stock
+}
+
+// 服务定义: 只暴露这一个投影
+define service ZUI_TRAININGPRODUCT_S {
+  expose ZC_TrainingProduct as TrainingProduct;
+}</code></pre><p>最后在 ADT：右键服务定义 → <b>New Service Binding</b> → 类型 <code>OData V4</code>、绑定类型 <code>UI</code> → 生成 URL。在 Fiori 里用 <code>/sap/opu/odata4/.../TrainingProduct</code> 即可被 Fiori elements List Report 直接消费。</p><h2 id="eml">EML 速写（在任意 ABAP 里操作 BO）</h2><pre class="hl"><div class="code-head"><span class="lang">ABAP</span><button class="copy-btn" type="button">复制</button></div><code class="lang-abap">&quot; 读
+READ ENTITIES OF zi_trainingproduct
+  ENTITY product FIELDS ( name price )
+  WITH VALUE #( ( uuid = &#x27;...&#x27; ) )
+  RESULT DATA(products).
+
+&quot; 改(动作/字段混合, 自动触发校验与确定)
+MODIFY ENTITIES OF zi_trainingproduct
+  ENTITY product
+    UPDATE FIELDS ( price ) WITH VALUE #( ( %tky = products[ 1 ]-%tky
+                                            price = 999 ) )
+  FAILED failed REPORTED reported.
+
+&quot; 动作
+MODIFY ENTITIES OF zi_trainingproduct
+  ENTITY product
+    EXECUTE setonsale WITH VALUE #( ( %tky = products[ 1 ]-%tky ) ).</code></pre><h2 id="terms">概念对照：RAP ↔ CAP（方便两栈同学互译）</h2><table class="tbl"><tr><th>维度</th><th>RAP (ABAP 云)</th><th>CAP (Node/Java)</th></tr>
+<tr><td>数据模型</td><td>CDS 视图实体 + DDIC 表</td><td>CDS 实体(自动建表)</td></tr>
+<tr><td>行为声明</td><td>BDEF(managed/unmanaged)</td><td>服务定义 + 注解(如 @odata.draft.enabled)</td></tr>
+<tr><td>自定义逻辑</td><td>行为实现类(EML)</td><td>事件处理器 (js/@On Java)</td></tr>
+<tr><td>多消费方裁剪</td><td>投影视图 + 服务定义</td><td>服务投影 (projection on)</td></tr>
+<tr><td>授权</td><td>IAM 角色 + @AccessControl</td><td>@requires / @restrict</td></tr>
+<tr><td>运行位置</td><td>S/4HANA 或 ABAP 云 Steampunk</td><td>BTP Cloud Foundry/Kyma</td></tr>
+</table><h2 id="next">下一步</h2><div class="grid cards"><div class="card"><h3><a href="cap.html">CAP：开源侧的“同类产品”</a></h3><p>模型驱动、双运行时(Node/Java)，有可本地跑的完整工程。</p><div class="tags"><span class="tag ">CAP</span></div></div><div class="card"><h3><a href="fiori.html">Fiori elements 消费</a></h3><p>注解如何变成 List Report，以及 elements 模板用法。</p><div class="tags"><span class="tag ">UI5</span></div></div><div class="card"><h3><a href="samples.html">示例工程</a></h3><p>可直接运行的工程与测试数据。</p><div class="tags"><span class="tag ">下载</span></div></div></div></article></div></main>
+<footer class="site">
+  <div class="inner">
+    <div>
+      <h5>SAP BTP 开发者训练站</h5>
+      <p>面向培训/自学的中文资料站 · 代码与数据见 “示例工程” 页<br>
+      内容基于公开官方文档整理，非 SAP 官方交付物，请以 help.sap.com / cap.cloud.sap 为准。</p>
+      <p>© <span data-year>2026</span> 学习用途</p>
+    </div>
+    <div class="cols">
+      <div><h5>官方文档</h5><ul style="margin:0;padding-left:18px"><li><a href="https://help.sap.com/docs/btp" target="_blank" rel="noopener">SAP BTP 帮助中心 ↗</a></li><li><a href="https://help.sap.com/docs/integration-suite" target="_blank" rel="noopener">Integration Suite ↗</a></li><li><a href="https://help.sap.com/docs/cloud-integration" target="_blank" rel="noopener">Cloud Integration ↗</a></li><li><a href="https://cap.cloud.sap/docs/" target="_blank" rel="noopener">CAP (capire) ↗</a></li><li><a href="https://sapui5.hana.ondemand.com/" target="_blank" rel="noopener">SAPUI5 ↗</a></li><li><a href="https://help.sap.com/docs/btp/sap-abap-development-user-guide" target="_blank" rel="noopener">ABAP 开发用户指南 ↗</a></li></ul></div>
+    </div>
+  </div>
+</footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

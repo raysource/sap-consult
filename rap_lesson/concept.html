@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念与架构 · RAP 专项训练站</title>
+<meta name="description" content="RAP（ABAP RESTful Application Programming Model）概念、BO 分层架构、Managed/Unmanaged、Draft、VDM 命名与 OData V4 关系。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">RAP</span><span class="txt">RAP 专项训练站</span></a>
+    <nav class="main">
+      <a href="index.html">首页</a>
+      <a class="active" href="concept.html">概念与架构</a>
+      <a href="project.html">完整项目</a>
+      <a href="handson-1.html">手顺① 数据模型</a>
+      <a href="handson-2.html">手顺② CDS 视图</a>
+      <a href="handson-3.html">手顺③ RAP 行为</a>
+      <a href="handson-4.html">手顺④ 服务与 Fiori</a>
+      <a href="code.html">项目代码</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">首页</a> / 概念与架构</div>
+<main class="page"><article>
+
+<h1>RAP 概念与架构</h1>
+<p>RAP = <b>R</b>estful <b>A</b>BAP <b>P</b>rogramming Model（S/4HANA 与 BTP ABAP 环境的新开发范式）。一句话概括：<b>“基于 CDS 数据模型 + 独立的行为层（BO），自动向 OData V4 / Fiori Elements 提供服务”</b>。WBS 2.3 中给过一条主线：</p>
+
+<div class="flow">
+  <div class="node">Table<br><small>DB 表</small></div><div class="arrow">→</div>
+  <div class="node">Interface CDS<br><small>ZI_ / ZR_（BO视图）</small></div><div class="arrow">→</div>
+  <div class="node">Projection CDS<br><small>ZC_</small></div><div class="arrow">→</div>
+  <div class="node">Behavior<br><small>BDEF + BIL</small></div><div class="arrow">→</div>
+  <div class="node">Service Def.<br><small>ZSD_</small></div><div class="arrow">→</div>
+  <div class="node">Service Binding<br><small>OData V4</small></div><div class="arrow">→</div>
+  <div class="node">Fiori Elements<br><small>List Report</small></div>
+</div>
+<div class="box info"><b class="t">与 WBS 其他章节的关系</b>
+Excel 中 Phase 2 的 OData V2（SEGW）是旧方式；RAP 生成 OData V4 后 SEGW 不再是主路径（WBS 2.1 备注「RAP習得後は不要だが構造理解に有効」）。本站直接走 RAP V4 路线。</div>
+
+<h2 id="layers">1. RAP 的分层（对照 Excel Sheet「RAP Layer」）</h2>
+<p>WBS 附带的「RAP Layer」表把每层的“类型 / 对象”对应关系写得很清楚，本站的实训对象也照此命名：</p>
+<table class="tbl">
+<tr><th>层（Layer）</th><th>类型</th><th>对象（本站示例）</th><th>作用</th></tr>
+<tr><td>数据模型层<br>Data Model</td><td>DB Table / CDS</td><td>z_po_hdr / z_po_itm / z_vendor_txt</td><td>持久化 + 语义模型（无行为）</td></tr>
+<tr><td>BO 层（Interface）</td><td>Root View Entity（CDS）</td><td>ZR_ZPOHEADER（root）/ ZR_ZPOITEM</td><td>定义业务对象结构、关联、Composition 树；可附加注解</td></tr>
+<tr><td>行为层<br>Behavior</td><td>Behavior Definition + Implementation</td><td>BDEF: ZR_ZPOHEADER / 池: zbp_zr_zpoheader</td><td>CRUD、Draft、Action、Validation、Determination、锁、权限</td></tr>
+<tr><td>消费层<br>Consumption</td><td>Projection View</td><td>ZC_ZPOHEADER / ZC_ZPOITEM</td><td>按服务/UI 裁剪字段、加 UI 注解、值帮助</td></tr>
+<tr><td>服务层<br>Service</td><td>Service Definition / Binding</td><td>ZSD_ZPURCHASEORDER<br>ZUI_ZPURCHASEORDER_O4</td><td>定义与发布 OData V4（UI 或 API）</td></tr>
+<tr><td>UI 层</td><td>Fiori Elements</td><td>List Report / Object Page</td><td>由注解驱动的界面（无需手工 UI5 编码）</td></tr>
+</table>
+
+<div class="box ok"><b class="t">本站命名速记（对照 WBS 1.4 VDM）</b>
+I = Interface（接口/BO 视图，可带行为）；C = Consumption（消费/投影，供 UI 与 OData）；P = Private（私有，可选）。本站遵循 WBS 示例前缀：BO 层用 <code>ZR_</code>、消费层用 <code>ZC_</code>、表用 <code>z_</code>。请勿直接在标准表 EKKO/EKPO 上建 RAP——先用自定义 Z 表练手（WBS 3.1 备注）。</div>
+
+<h2 id="bo">2. 什么是 Business Object（BO）</h2>
+<p>在 RAP 中，BO 是“数据模型 + 行为”的打包单元：</p>
+<ul>
+  <li><b>Root Entity</b>：一棵树的根（如采购订单头）。可 <code>create/update/delete</code>。</li>
+  <li><b>Child Entity</b>：通过 <b>Composition</b> 挂在根下（如订单明细），随根同生共死（级联操作）。</li>
+  <li><b>Association</b>：与其他实体的关联（如订单头 → 供应商主数据），只读导航或跨 BO 引用。</li>
+</ul>
+<div class="box warn"><b class="t">Composition vs Association（能力测试必考）</b>
+Composition = 包含关系（整体-部分，子不能脱离父独立存在，父删除子级联删除）；Association = 引用关系（两个独立对象互相引用，可 to-one / to-many）。WBS 1.2 例子：Z_PO 头 → 明细用 Composition，头 → 供应商用 Association。</div>
+
+<h2 id="managed">3. Managed / Unmanaged（实现类型）</h2>
+<table class="tbl">
+<tr><th></th><th>Managed（本站采用）</th><th>Unmanaged</th></tr>
+<tr><td>CRUD / 保存</td><td>框架自动处理（无需写 SQL）</td><td>开发者自己实现（可调用 BAPI/FM）</td></tr>
+<tr><td>实现工作量</td><td>小，声明式为主</td><td>大，全部方法手写</td></tr>
+<tr><td>适用</td><td>新建 Z 应用、绿地开发</td><td>重用旧逻辑（BAPI/自开发表）的棕地场景</td></tr>
+<tr><td>本站</td><td>ZR_ZPOHEADER（managed + draft）</td><td>仅概念讲解</td></tr>
+</table>
+
+<h2 id="draft">4. Draft（草稿）机制</h2>
+<ul>
+  <li>BDEF 中启用 draft 后，<b>保存 = 存草稿</b>，点击 Activate 才写入正式表；框架自动创建草稿表（ZR_ZPOHEADER_D 等）。</li>
+  <li>Draft 提供：编辑锁（Edit → 独占锁）、多会话草稿、<code>draft action</code>（Edit/Activate/Discard/Resume）。</li>
+  <li>WBS 3.5：<code>draft enabled</code> 一行即可；草稿表由 ADT 自动生成（ZDRAFT…或实体名_D）。</li>
+</ul>
+<div class="box info"><b class="t">为什么用 Draft？</b>
+Fiori 端用户期望“输入到一半可以离开、下次继续”，并且校验失败不丢数据。RAP 的 draft 与 OData V4 的 draft 语义自动打通，UI 无需额外编码。</div>
+
+<h2 id="bdef">5. BDEF / BIL / EML 三兄弟</h2>
+<table class="tbl">
+<tr><th>对象</th><th>全称</th><th>干什么</th><th>后缀/扩展</th></tr>
+<tr><td>BDEF</td><td>Behavior Definition</td><td>声明行为：CRUD、draft、action、validation、determination、编号、锁、权限、字段控制</td><td><code>.behavior</code>（CDS 同名的行为定义）</td></tr>
+<tr><td>BIL</td><td>Behavior Implementation</td><td>ABAP 类（behavior pool）实现 BDEF 中声明的方法：本地 handler/saver 类</td><td>如 <code>zbp_zr_zpoheader</code></td></tr>
+<tr><td>EML</td><td>Entity Manipulation Language</td><td>ABAP 代码里用 <code>MODIFY / READ ENTITIES</code> 操作 BO（可当作“RAP 版 SQL”）</td><td>ABAP 语句，非独立对象</td></tr>
+</table>
+<pre class="hl"><div class="code-head"><span class="lang">概念示例 · EML 外观</span><button class="copy-btn" type="button">复制</button></div><code class="lang-abap">" 用 EML 创建一个订单头（含子项）
+MODIFY ENTITIES OF zr_zpoheader
+  ENTITY zr_zpoheader
+  CREATE FIELDS ( po_num po_date vendor_code status )
+  WITH VALUE #( ( %cid = 'H1' po_num = '4500000001'
+                  po_date = cl_abap_context_info=>get_system_date( )
+                  vendor_code = '0000000001' status = 'NEW' ) )
+  ENTITY zr_zpoitem
+  CREATE BY \_items FIELDS ( item_num matnr qty unit net_price currency )
+  WITH VALUE #( ( %cid_ref = 'H1' %cid = 'I1' item_num = '0010'
+                  matnr = 'MAT-100' qty = 5 unit = 'EA'
+                  net_price = '100.00' currency = 'JPY' ) )
+  MAPPED DATA(mapped)
+  FAILED DATA(failed)
+  REPORTED DATA(reported).
+</code></pre>
+
+<h2 id="vocab">6. 术语速查（中/日/英，对照 WBS）</h2>
+<table class="tbl">
+<tr><th>中文</th><th>日文（WBS 用語）</th><th>英文/对象</th></tr>
+<tr><td>行为定义</td><td>振る舞い定義</td><td>Behavior Definition (BDEF)</td></tr>
+<tr><td>行为实现</td><td>実装クラス（ビヘイビアプール）</td><td>Behavior Implementation (BIL)</td></tr>
+<tr><td>草稿</td><td>下書き</td><td>Draft</td></tr>
+<tr><td>校验</td><td>検証（Validation）</td><td>Validation（保存时触发）</td></tr>
+<tr><td>派生/默认值</td><td>導出（Determination）</td><td>Determination（modify 时触发）</td></tr>
+<tr><td>动作</td><td>アクション</td><td>Action（如「確定订单」→ CONFIRMED）</td></tr>
+<tr><td>投影视图</td><td>射影ビュー</td><td>Projection View (ZC_)</td></tr>
+<tr><td>服务绑定</td><td>サービスバインディング</td><td>Service Binding（OData V4 UI/API）</td></tr>
+<tr><td>ADT</td><td>Eclipse 上の開発環境</td><td>ABAP Development Tools</td></tr>
+</table>
+
+<div class="box info"><b class="t">下一步</b>
+概念就位后，从 <a href="handson-1.html">手顺① 数据模型准备</a> 开始动手。所有代码可在 <a href="code.html">项目代码</a> 页一键复制。</div>
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div>
+    <h5>RAP 专项训练站</h5>
+    <p>基于《SAP_S4HANA_BTP-学習WBS.xlsx》整理。</p>
+  </div>
+  <div class="cols">
+    <div><h5>内容</h5><a href="project.html">完整项目</a><br><a href="code.html">项目代码</a><br><a href="quiz.html">能力测试</a></div>
+    <div><h5>手顺</h5><a href="handson-1.html">① 数据模型</a><br><a href="handson-2.html">② CDS 视图</a><br><a href="handson-3.html">③ RAP 行为</a><br><a href="handson-4.html">④ 服务与 Fiori</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

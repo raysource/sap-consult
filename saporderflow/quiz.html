@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>能力测试 · SAP 受注形態の横断比較</title>
+<meta name="description" content="受注形態の横断テスト 20 題：形態判別 / 主数据 / T-code / 故障 / VC。点击判分 + 解说，合格线 75%（15/20）。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/cmp.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">CMP</span><span class="txt">受注形態 横断比較</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="compare.html">横断比较</a>
+      <a href="scenario-eq.html">E vs Q 对照</a>
+      <a href="vc.html">VC 概観</a>
+      <a href="instructor.html">讲师版</a>
+      <a class="active" href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 能力测试</div>
+<main class="page"><article>
+
+<h1>能力测试（20 题）</h1>
+<div class="box info"><b class="t">用法</b>每题点击一个选项即判分并显示解说。<b>合格判定：正确率 ≥75%（15/20）</b>。
+間違えた分野（形態判別 / 主数据 / T-code / 故障 / VC）で、対応ページに戻って読み直してください。</div>
+
+<h2>一、形態判別（1〜5）</h2>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">判別</span></div>
+  <h4>1. 得意先の工場に据え付ける特注ライン。設計・据付・検収があり、着手金 30%＋検収後 70% の分割請求。どの形態？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. MTS（見込生産）</div>
+    <div class="opt" data-key="B">B. ETO（受注設計生産）</div>
+    <div class="opt" data-key="C">C. ATO（受注組立）</div>
+    <div class="opt" data-key="D">D. VC（バリアント設定）</div>
+  </div>
+  <div class="explain">据付・検収・分割請求＝案件として原価/収益を管理する必要があるため <b>ETO</b>（Q＝プロジェクト在庫＋WBS、請求計画 30/70、月末は進捗→結果分析→決済）。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">判別</span></div>
+  <h4>2. 見込みで在庫を持ち、受注したら在庫から引当てて出荷する。どの形態？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. MTS（見込生産）</div>
+    <div class="opt" data-key="B">B. MTO（受注生産）</div>
+    <div class="opt" data-key="C">C. ETO（受注設計生産）</div>
+    <div class="opt" data-key="D">D. VC（バリアント設定）</div>
+  </div>
+  <div class="explain">PIR（<code>MD61</code>）で計画し、自由在庫で持ち、受注は引当てのみ＝<b>MTS</b>。MTO/ETO は受注が計画の起点です。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">判別</span></div>
+  <h4>3. 得意先が受注時に容量と色と材質を選び、受注直後に組み立てて納める。必要な仕組みは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 品目をバリエーション分だけ登録する</div>
+    <div class="opt" data-key="B">B. MTO のままでよい（選択値は備考欄に書く）</div>
+    <div class="opt" data-key="C">C. VC（KMAT・特徴/クラス・設定プロファイル）＋ ATO（戦略 82）</div>
+    <div class="opt" data-key="D">D. ETO にすれば自動的に選択できる</div>
+  </div>
+  <div class="explain">選択値を BOM・工程・価格へ反映するには VC（<code>KMAT</code>、品目カテゴリグループ <code>0002</code>、特徴 <code>CT04</code>、クラス <code>CL02</code>、設定プロファイル <code>CU41</code>/<code>PMEVC</code>）。受注即組立なら戦略 <code>82</code>（ATO）。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">判別</span></div>
+  <h4>4. 「受注生産だから受注在庫（E）」という理解はどこが不正確？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 受注生産は在庫を持てないので不正確</div>
+    <div class="opt" data-key="B">B. 受注生産は必ずプロジェクト在庫（Q）なので不正確</div>
+    <div class="opt" data-key="C">C. 受注生産は自由在庫を使うので不正確</div>
+    <div class="opt" data-key="D">D. 案件単位で原価/収益を管理する受注生産（ETO）は <b>Q（プロジェクト在庫）</b> を使うため、E と決めつけるのは不正確</div>
+  </div>
+  <div class="explain">受注起点でも、案件管理をするなら Q（WBS 帰属）、しないなら E（受注明細帰属）。判断は「受注の前に作るか」「案件単位で管理するか」の 2 問で決まります。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">判別</span></div>
+  <h4>5. 戦略グループ <code>82</code>（組立処理）の説明として正しいのは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. VC 専用の戦略で、VC でないと使えない</div>
+    <div class="opt" data-key="B">B. 受注保存と同時に製造指図を生成（1:1、BOM 必須）。所要量タイプ <code>KMFA</code>・所要量クラス <code>201</code>・指図タイプ <code>PP04</code></div>
+    <div class="opt" data-key="C">C. MRP を実行しない戦略</div>
+    <div class="opt" data-key="D">D. プロジェクト在庫を使う戦略</div>
+  </div>
+  <div class="explain">SAP Help「Special Settings for Production Orders」が標準設定を明記：戦略 82 → <code>KMFA</code> / <code>201</code> / <code>PP04</code>、静的手法（指図と受注 1:1）。VC の有無に関係なく使えます。</div>
+</div>
+
+<h2>二、主数据（6〜9）</h2>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">主数据</span></div>
+  <h4>6. MTO（E）と ETO（Q）に<b>共通</b>して必要な品目マスタ設定は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. MRP タイプ <code>ND</code></div>
+    <div class="opt" data-key="B">B. 品目カテゴリグループ <code>0002</code></div>
+    <div class="opt" data-key="C">C. MRP4「個別/包括所要量」＝ 個別所要量のみ</div>
+    <div class="opt" data-key="D">D. ロットサイズ <code>EX</code>（これは必須）</div>
+  </div>
+  <div class="explain">個別所要量品目になるための<b>共通の土台が MRP4 個別所要量</b>。MRP タイプ <code>ND</code> は手配が生まれないので不可、<code>0002</code> は VC 系、ロットサイズは手配量の話で必須ではありません。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">主数据</span></div>
+  <h4>7. ETO で WBS を割り当てるために確認するものは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 出荷タイプが LF であること</div>
+    <div class="opt" data-key="B">B. 請求タイプが F2 であること</div>
+    <div class="opt" data-key="C">C. 品目グループが設定されていること</div>
+    <div class="opt" data-key="D">D. その明細カテゴリが WBS 割当を許可していること（Cloud は <code>CBAO</code> などの交付済みのみ）</div>
+  </div>
+  <div class="explain">WBS を割り当てられる明細カテゴリは限定されています（SAP Help（Cloud）の例：<code>CBAO</code>＝マイルストーン請求計画）。On-Premise は <code>VOV7</code> と実機で実測します。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">主数据</span></div>
+  <h4>8. VC（バリアント設定）の品目に必要な設定の組合せは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 品目タイプ <code>KMAT</code>・品目カテゴリグループ <code>0002</code>・設定可能インジケータ・設定プロファイル・戦略グループ <code>25</code>（MTO+VC の場合）</div>
+    <div class="opt" data-key="B">B. 品目タイプ <code>FERT</code>・品目カテゴリグループ <code>0001</code>・戦略グループ <code>20</code></div>
+    <div class="opt" data-key="C">C. 品目タイプ <code>HALB</code>・ロットサイズ <code>EX</code>・MRP タイプ <code>ND</code></div>
+    <div class="opt" data-key="D">D. 品目タイプ <code>DIEN</code>・納入日程行カテゴリ <code>CP</code></div>
+  </div>
+  <div class="explain">一般的な必須セットは 品目タイプ <code>KMAT</code>／品目カテゴリグループ <code>0002</code>（SET 処理は <code>0004</code>）／設定可能インジケータ／特徴・クラス・設定プロファイル。MTO+VC なら戦略 25（<code>KEK</code> → <code>046</code>）。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">主数据</span></div>
+  <h4>9. 在庫区分とテーブルの組合せで正しいのは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. E ＝ <code>MSPR</code>、Q ＝ <code>MSKA</code></div>
+    <div class="opt" data-key="B">B. E ＝ <code>MSKU</code>、Q ＝ <code>MSKA</code></div>
+    <div class="opt" data-key="C">C. E ＝ <code>MSKA</code>、Q ＝ <code>MSPR</code>、預託 V/W ＝ <code>MSKU</code></div>
+    <div class="opt" data-key="D">D. どちらも <code>MARD</code> に入る</div>
+  </div>
+  <div class="explain">SAP Help「Stock Tables and Stock Types」：<code>MSKA</code>＝Sales Order Stock(E)、<code>MSPR</code>＝Project Stock(Q)、<code>MSKU</code>＝Special Stocks with Customer(V,W)。自由在庫は <code>MARD</code> 系です。</div>
+</div>
+
+<h2>三、T-code（10〜13）</h2>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">T-code</span></div>
+  <h4>10. プロジェクト（WBS）を作るのは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. <code>CN21</code></div>
+    <div class="opt" data-key="B">B. <code>CJ20N</code></div>
+    <div class="opt" data-key="C">C. <code>CJ30</code></div>
+    <div class="opt" data-key="D">D. <code>MD51</code></div>
+  </div>
+  <div class="explain"><code>CJ20N</code>＝プロジェクトビルダ（プロジェクト定義と WBS）。<code>CN21</code>＝ネットワーク、<code>CJ30</code>＝元予算、<code>MD51</code>＝プロジェクト MRP です。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">T-code</span></div>
+  <h4>11. ETO の月末処理（進捗→結果分析→WIP 照会）の組合せは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. <code>KKS1</code> → <code>KO88</code> → <code>KKAX</code></div>
+    <div class="opt" data-key="B">B. <code>CO88</code> → <code>KKA2</code> → <code>CJ8G</code></div>
+    <div class="opt" data-key="C">C. <code>MD51</code> → <code>CJ88</code> → <code>CJI3</code></div>
+    <div class="opt" data-key="D">D. <code>CNE1</code>/<code>CNE2</code>（進捗）→ <code>KKA2</code>/<code>KKAJ</code>（結果分析）→ <code>KKAX</code>（WIP 照会）</div>
+  </div>
+  <div class="explain">進捗の決定は <code>CNE1</code>（個別）/<code>CNE2</code>（一括）、結果分析は <code>KKA2</code>（個別）/<code>KKAJ</code>（一括）、WIP 照会は <code>KKAX</code>。<code>KKS1</code> は指図の差異計算（MTO 側）、<code>KO88</code>/<code>CJ88</code> は決済です。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">T-code</span></div>
+  <h4>12. VC のモデリング関連で正しい組合せは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 特徴 <code>CT04</code>・クラス <code>CL02</code>・設定プロファイル <code>CU41</code>（S/4HANA は <code>PMEVC</code>）・シミュレーション <code>CU50</code></div>
+    <div class="opt" data-key="B">B. 特徴 <code>MM01</code>・クラス <code>VOV7</code>・プロファイル <code>CJ20N</code></div>
+    <div class="opt" data-key="C">C. <code>CS01</code> で特徴を作る</div>
+    <div class="opt" data-key="D">D. <code>CU41</code> は請求計画の設定である</div>
+  </div>
+  <div class="explain"><code>CT04</code>（特徴）/ <code>CL02</code>（クラス）/ <code>CU41</code>（設定プロファイル。S/4HANA の AVC では <code>PMEVC</code>）/ <code>CU50</code>（シミュレーション）。依存関係は <code>CU01</code>〜<code>CU03</code> です。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">T-code</span></div>
+  <h4>13. 受注単位／プロジェクト単位の MRP 実行は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. <code>MD04</code>／<code>MD05</code></div>
+    <div class="opt" data-key="B">B. <code>MD61</code>／<code>MD62</code></div>
+    <div class="opt" data-key="C">C. <code>MD50</code>（受注 MRP）／<code>MD51</code>（プロジェクト MRP）。全体は <code>MD01N</code></div>
+    <div class="opt" data-key="D">D. <code>CO40</code>／<code>CO41</code></div>
+  </div>
+  <div class="explain"><code>MD04</code> は在庫/所要量リスト（照会）、<code>MD61</code> は PIR 登録、<code>CO40/CO41</code> は計画手配の変換です。</div>
+</div>
+
+<h2>四、故障・症状（14〜17）</h2>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">故障</span></div>
+  <h4>14. 計画手配の勘定設定が空で、在庫区分も空だった。最初に疑うのは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 出荷タイプと請求タイプの設定</div>
+    <div class="opt" data-key="B">B. 「個別需要として成立していない」＝ 受注明細の帰属（特別在庫 E / WBS）＋ 品目 MRP4 ＋ 戦略グループ</div>
+    <div class="opt" data-key="C">C. 価格条件レコードの有効期間</div>
+    <div class="opt" data-key="D">D. 与信限度額</div>
+  </div>
+  <div class="explain">勘定設定と在庫区分が空＝システムが「誰のための手配か」を知らない状態。MTO なら明細カテゴリの特別在庫 E、ETO なら受注明細の WBS と評価付プロジェクト在庫、共通で MRP4 個別所要量・戦略グループを確認します。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">故障</span></div>
+  <h4>15. 101 入庫が自由在庫に入ってしまった。ETO でまず確認する 2 つは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 出荷ポイントと与信</div>
+    <div class="opt" data-key="B">B. ロットサイズと MRP コントローラ</div>
+    <div class="opt" data-key="C">C. 指図の勘定設定（WBS）と、プロジェクト定義の評価付プロジェクト在庫フラグ</div>
+    <div class="opt" data-key="D">D. 請求計画の日付と金額</div>
+  </div>
+  <div class="explain">ETO では「指図の勘定設定＝WBS」と「評価付プロジェクト在庫＝ON」が最優先のチェックポイント。そのうえで品目 MRP4 と戦略グループ（Q 系）を確認します。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">故障</span></div>
+  <h4>16. 請求で「billing plan に従って請求できません」エラーが出た。確認することは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 請求計画の日付・金額と、明細カテゴリの請求関連（請求計画の許可）」</div>
+    <div class="opt" data-key="B">B. 在庫区分が E か Q か</div>
+    <div class="opt" data-key="C">C. 与信限度額</div>
+    <div class="opt" data-key="D">D. プロジェクトの予算</div>
+  </div>
+  <div class="explain">請求計画は「いつ・いくら請求してよいか」の一覧です。そこに無い日付/金額で請求するとエラーになります（SAP KBA 2763512 が典型例）。明細カテゴリの請求関連（請求計画の許可）も併せて確認します。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">故障</span></div>
+  <h4>17. CJI3 に収益が出ない（ETO）。最有力の原因は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. プロジェクト在庫が評価されていない</div>
+    <div class="opt" data-key="B">B. 決済を実行していない</div>
+    <div class="opt" data-key="C">C. 結果分析キーが未設定</div>
+    <div class="opt" data-key="D">D. 受注明細が指す WBS が<b>請求要素</b>になっていない（または受注明細に WBS が入っていない）</div>
+  </div>
+  <div class="explain"><b>収益は請求要素にだけ立ちます</b>。まず <code>CJ20N</code> の WBS フラグ（請求要素）と <code>VA03</code> 明細の WBS を突き合わせるのが最短です。B/C は「WIP や認識収益が出ない」の原因で、請求額そのものの収益とは別です。</div>
+</div>
+
+<h2>五、VC（18〜20）</h2>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">VC</span></div>
+  <h4>18. VC について正しい理解は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. VC は生産形態の一つで、VC にすると自動的に受注生産になる</div>
+    <div class="opt" data-key="B">B. VC は「1 品目で無数のバリエーションを表現する」構成エンジンで、在庫区分や計画戦略は別途決める</div>
+    <div class="opt" data-key="C">C. VC を使うと在庫は持てないので必ずプロジェクト在庫になる</div>
+    <div class="opt" data-key="D">D. VC は S/4HANA では廃止され、AVC に完全移行した</div>
+  </div>
+  <div class="explain">VC は構成エンジンです。MTO なら戦略 25（<code>KEK</code> → <code>046</code>）、ATO なら戦略 82、ETO なら WBS と組み合わせます。S/4HANA では AVC（<code>PMEVC</code>）が現行ですが、従来のツールチェーンも併存します。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">VC</span></div>
+  <h4>19. 設定した値が BOM の構成品目に反映されない。最初に見るのは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 条件タイプと計算手続</div>
+    <div class="opt" data-key="B">B. 出荷タイプとルート</div>
+    <div class="opt" data-key="C">C. 依存関係（選択条件・前提条件）と <code>CU50</code> のシミュレーション、スーパー BOM の設定</div>
+    <div class="opt" data-key="D">D. 与信限度額</div>
+  </div>
+  <div class="explain">BOM の構成品目の選択は<b>選択条件（Selection condition）</b>などの依存関係が制御します。<code>CU50</code> で設定を試し、<code>CS03</code> でスーパー BOM、<code>CU03</code> で依存関係を確認するのが定石です。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">VC</span></div>
+  <h4>20. 変種価格（設定による加算）が反映されないとき、確認するものは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 条件タイプ <code>VA00</code> と計算手続、特徴の追加データ（テーブル <code>SDCOM</code>／項目 <code>VKOND</code>）、条件レコード</div>
+    <div class="opt" data-key="B">B. 明細カテゴリの特別在庫</div>
+    <div class="opt" data-key="C">C. 戦略グループと所要量クラス</div>
+    <div class="opt" data-key="D">D. プロジェクト在庫の評価フラグ</div>
+  </div>
+  <div class="explain">変種価格は「特徴の値」を条件レコードのキーとして加算します。条件タイプ <code>VA00</code> と計算手続への組み込み、そして特徴側の追加データ（<code>SDCOM</code>/<code>VKOND</code>）の設定を確認します。</div>
+</div>
+
+<h2>修了チェック（対比講義の到達点）</h2>
+<div class="box ok"><b class="t">✓ 到達チェック</b>
+<ul class="check">
+  <li>5 形態（MTS / MTO / ETO / ATO / VC）を、<b>計画起点・库存区分・成本対象・請求方式</b>の 4 点で言い分けられる。</li>
+  <li>E の 4 点セットと Q の 4 点セットを、資料を見ずに言える。</li>
+  <li>在庫テーブル <code>MARD</code>（自由）/ <code>MSKA</code>（E）/ <code>MSPR</code>（Q）を即答できる。</li>
+  <li>戦略グループ 20 / 25 / 82 / E2 と所要量タイプ（<code>KE</code>/<code>KEK</code>/<code>KMFA</code>/<code>E21</code>）を対応付けられる。</li>
+  <li>「<code>CJI3</code> に収益が出ない」「入庫が自由在庫に入る」の原因を 2 分で切り分けられる。</li>
+  <li>20 題で 75% 以上（15/20）。</li>
+</ul></div>
+
+<div class="box info"><b class="t">次の一歩</b>
+実機は <span class="mono">../sapmto/</span>（MTO：E）と <span class="mono">../sapeto/</span>（ETO：Q）で。復習は <a href="compare.html">横断比较</a>／<a href="scenario-eq.html">E vs Q 对照</a>／<a href="vc.html">VC 概観</a>。</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>受注形態 横断比較</h5><p>能力测试 20 題：形態判別 / 主数据 / T-code / 故障 / VC。合格線 75%。</p></div>
+  <div class="cols">
+    <div><h5>本サイト</h5><a href="index.html">总览</a><br><a href="compare.html">横断比较</a><br><a href="scenario-eq.html">E vs Q 对照</a><br><a href="vc.html">VC 概観</a><br><a href="instructor.html">讲师版</a></div>
+    <div><h5>実機の手顺</h5><span class="mono">../sapmto/index.html</span>（MTO）<br><span class="mono">../sapeto/index.html</span>（ETO）</div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/quiz.js"></script>
+</body>
+</html>

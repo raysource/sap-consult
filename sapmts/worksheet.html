@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学员版 ワークシート（記入用） · SAP S/4HANA 見込生産（MTS）实战训练站</title>
+<meta name="description" content="MTS 实训の受講者用ワークシート：配置 C0〜C16 の確認記入欄、練習①〜⑤ の伝票番号・数値記入欄（20 項目）、MD04/MB52 の読解、故障記録（症状→根因→証跡→処置→再発防止）、用語 10 語、質問メモと修了判定。印刷して使う記入用ページ。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/mts.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MTS</span><span class="txt">見込生産 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①预测</a>
+      <a href="handson-2.html">②MRP</a>
+      <a href="handson-3.html">③制造入库</a>
+      <a href="handson-4.html">④出货</a>
+      <a href="handson-5.html">⑤月末</a>
+      <a href="instructor.html">讲师版</a>
+      <a class="active" href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 学员版 ワークシート（記入用）</div>
+<main class="page"><article>
+
+<h1>学员版 ワークシート（記入用）</h1>
+<div class="box info"><b class="t">使い方</b>
+① このページを<b>印刷</b>するか、ブラウザで開いたまま埋めていきます（印刷時はナビやボタンが自動的に消えます）。<br>
+② 記入するのは「<b>自分のシステムで実際に見た値・伝票番号・表の行</b>」です。資料の丸写しは不可（それが理解の証跡になります）。<br>
+③ 各シートは <a href="config.html">配置手顺</a> / <a href="handson-1.html">練習①</a>〜<a href="handson-5.html">練習⑤</a> を進めながら埋めます。<br>
+④ 最後に <a href="quiz.html">能力测试</a>（28 題・75% 以上）とこのシートの全欄記入で修了です。</div>
+
+<h2>シート A：配置の確認記入（C0〜C16）</h2>
+<p class="mini">「自分の環境での値」には実際の値（または「標準どおり」「差異あり：〜」）を書きます。差異があった場合は必ず理由も。</p>
+<table class="tbl wide fill">
+<tr><th>STEP</th><th>何を見るか</th><th>自分の環境での値（記入）</th><th>OK/NG</th><th>気づき・差異の理由</th></tr>
+<tr><td>C0</td><td><code>VA01</code> で 1000/10/00 が選べる／得意先 1000 の販売エリアと出荷先／番号範囲</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C1</td><td>部品 RM01 / RM02 の品目タイプ・MRPタイプ・手配タイプ・初期在庫（<code>MMBE</code>）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C2</td><td><b>品目 ZMTS-FG01</b>：販売組織2 品目カテゴリグループ／MRP1 タイプ・ロットサイズ・手配タイプ／MRP2 安全在庫／MRP3 戦略グループ・消費モード・消費期間・在庫確認／<b>MRP4 個別/包括所要量</b></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C3</td><td>BOM の構成（<code>CS03</code>）／作業区（<code>CR03</code>）／工程 0010（<code>CA03</code>）と有効日</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C4</td><td>標準価格（<code>MM03</code> 会計1・<code>MBEW-STPRS</code>）／価格管理／<code>CK13N</code> の部品費・作業費・間接費／<code>KP26</code> のレート</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C5</td><td>条件レコード PR00（<code>VK13</code>）：金額・有効期間／品目カテゴリグループ</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C6</td><td><code>VOV7</code>：<code>TAN</code> の明細カテゴリ／<b>特別在庫欄（空か）</b>／納入日程行許可</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C7</td><td><code>VOV4</code>：標準行（<code>OR</code> + <code>0001</code> + 空 + 空 → <code>TAN</code>）と自分の追加行</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C8</td><td><code>VOV6</code>：<code>CP</code> の所要量転送・在庫確認・移動タイプ・所要量タイプ</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C9</td><td><code>VOV5</code>：<code>TAN</code> + <code>PD</code> → 納入日程行カテゴリ（<code>CP</code> か否か。「MRPタイプ空」の行の有無も）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C10</td><td><code>OVZG</code>：<code>100</code>/<code>030</code>/<code>050</code> の個別在庫・消費フラグ／<code>040</code>（MTO）との違い</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C11</td><td><code>OPPS</code>/<code>OVZH</code>：戦略 40 の独立所要量タイプ／得意先所要量タイプとその所要量クラス</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C12</td><td><code>OPPT</code>：戦略 10 / 11 / 30 / 40 / 70 の説明文（自分のシステムの日本語/英語表記）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C13</td><td>品目 MRP3 の在庫確認（チェックルール）／<code>OVZ9</code> のスコープ（在庫・入庫予定・出庫予定）／<code>CO09</code> の可用量</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C14</td><td><code>MD01N</code> の処理キー／<code>OMDU</code> のパラメータ／指図タイプ <code>PP01</code>（<code>OPJH</code>・<code>OPL8</code>）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C15</td><td>出荷タイプ <code>LF</code>・請求タイプ <code>F2</code>／<code>VTFL</code>／<code>OBYC</code>（<code>BSX</code>/<code>GBB</code>）／棚卸 <code>MI01</code></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C16</td><td>Cloud の場合：スコープアイテム（<code>BJ5</code> 等）・SSCUI の提供範囲・新規作成できないオブジェクト 3 つ</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+
+<h2>シート B：練習①〜⑤ の記録（伝票番号と数値を埋める）</h2>
+<table class="tbl wide fill">
+<tr><th>#</th><th>項目</th><th>記入欄</th><th>確認方法</th></tr>
+<tr><td>1</td><td>PIR の版・期間・数量（<code>MD61</code>）</td><td>&nbsp;</td><td><code>MD61</code>／<code>MD73</code>／<code>PBED</code></td></tr>
+<tr><td>2</td><td><code>MD04</code> の PIR 行（数量・受注番号の有無）</td><td>&nbsp;</td><td><code>MD04</code></td></tr>
+<tr><td>3</td><td>MRP 実行の処理キーと実行日時（<code>MD01N</code>）</td><td>&nbsp;</td><td><code>MD01N</code> の実行ログ</td></tr>
+<tr><td>4</td><td>計画手配番号／数量／納入日／在庫区分</td><td>&nbsp;</td><td><code>MD04</code> → 計画手配の明細／<code>PLAF</code></td></tr>
+<tr><td>5</td><td>純所要量の検算（総所要量 − 入庫予定 + 安全在庫 = ?）</td><td>&nbsp;</td><td><code>MD04</code> の各行</td></tr>
+<tr><td>6</td><td>部品の従属所要量（RM01 ／ RM02）</td><td>&nbsp;</td><td><code>MD04</code>（部品）</td></tr>
+<tr><td>7</td><td>製造指図番号／指図タイプ／初期状態</td><td>&nbsp;</td><td><code>CO40</code>/<code>CO41</code> のメッセージ／<code>CO03</code></td></tr>
+<tr><td>8</td><td>指図の受注明細参照（<code>AFPO-KDAUF/KDPOS</code>）— 期待 = 空</td><td>&nbsp;</td><td><code>CO03</code>／<code>SE16N: AFPO</code></td></tr>
+<tr><td>9</td><td>部品予約数量（RM01 ／ RM02）と引当</td><td>&nbsp;</td><td><code>CO03</code> 構成品目／<code>RESB</code></td></tr>
+<tr><td>10</td><td>261 出庫の物料伝票番号／出庫後の部品在庫</td><td>&nbsp;</td><td><code>MIGO</code> のメッセージ／<code>MMBE</code>／<code>MATDOC</code></td></tr>
+<tr><td>11</td><td><code>CO11N</code> の歩留数量・作業時間／指図状態</td><td>&nbsp;</td><td><code>CO11N</code>／<code>CO03</code>／<code>AFRU</code></td></tr>
+<tr><td>12</td><td>101 入庫の物料伝票番号／入庫数量</td><td>&nbsp;</td><td><code>MIGO</code> のメッセージ</td></tr>
+<tr><td>13</td><td><b>自由在庫（非制限利用）の数量と 特別在庫の有無</b></td><td>&nbsp;</td><td><code>MMBE</code>／<code>MB52</code>／<code>MARD</code>（特在 = <code>MSKA</code> は 0）</td></tr>
+<tr><td>14</td><td>受注番号／明細カテゴリ／納入日程行カテゴリ</td><td>&nbsp;</td><td><code>VA01</code>／<code>VA03</code>／<code>VBAP</code>/<code>VBEP</code></td></tr>
+<tr><td>15</td><td>納入日程行の所要量転送・在庫確認・所要量タイプ</td><td>&nbsp;</td><td><code>VA03</code> 納入日程行／<code>VBEP</code></td></tr>
+<tr><td>16</td><td>ATP：受注前後の利用可能数量（<code>CO09</code>）と確認済数量</td><td>&nbsp;</td><td><code>CO09</code>／<code>VA03</code></td></tr>
+<tr><td>17</td><td><b>PIR の消費済数量</b>と <code>PBED</code> の数量（不変であること）</td><td>&nbsp;</td><td><code>MD04</code>／<code>SE16N: PBED</code></td></tr>
+<tr><td>18</td><td>出荷伝票番号／引当数量と在庫区分</td><td>&nbsp;</td><td><code>VL01N</code>／<code>VL03N</code></td></tr>
+<tr><td>19</td><td>PGI 後の自由在庫と移動タイプ（601）</td><td>&nbsp;</td><td><code>MMBE</code>／<code>MATDOC</code></td></tr>
+<tr><td>20</td><td>請求伝票番号／金額（税別・税込）</td><td>&nbsp;</td><td><code>VF01</code>／<code>VF03</code></td></tr>
+<tr><td>21</td><td>会計伝票番号（101 入庫・601 出庫・請求）と借方/貸方</td><td>&nbsp;</td><td><code>FB03</code></td></tr>
+<tr><td>22</td><td>伝票フローに並んだ伝票（順に列挙）</td><td>&nbsp;</td><td><code>VA03</code> → 環境 → 伝票フロー</td></tr>
+<tr><td>23</td><td>差異計算の結果（<code>KKS2</code>：目標・実際・差異、カテゴリ別）</td><td>&nbsp;</td><td><code>KKS2</code>／<code>CO03</code></td></tr>
+<tr><td>24</td><td>決済の結果（<code>KO88</code>：会計伝票番号と金額）</td><td>&nbsp;</td><td><code>KO88</code> のログ／<code>FB03</code></td></tr>
+</table>
+
+<h2>シート C：MD04 / MB52 の読解（自分の目で見た数字で）</h2>
+<table class="tbl wide fill">
+<tr><th>MD04 の行</th><th>数量（記入）</th><th>この行が意味すること（自分の言葉で記入）</th><th>どこから来たか（表・T-code）</th></tr>
+<tr><td>自由在庫（利用可能）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>計画独立所要量（PIR）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>得意先所要量（受注）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>計画手配</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>製造指図</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>利用可能数量</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+<table class="tbl wide fill">
+<tr><th>MB52 の列</th><th>数量（記入）</th><th>なぜここに数字が入るのか（記入）</th></tr>
+<tr><td>非制限利用在庫</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>特別在庫（得意先別）</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>品質検査在庫／ブロック在庫</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>棚卸中在庫（あれば）</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+<div class="task"><b class="t">問い</b>この中で、<b>「SD 側の設定（所要量転送・在庫確認）が効いている」証拠</b>はどの行？ <b>「PP 側の設定（MRP・指図）が効いている」証拠</b>はどれ？ <b>「見込生産である（MTS）ことの証拠」</b>はどれ？—— 3 つを線で結んで説明できるように。</div>
+
+<h2>シート D：故障記録（遭遇したものを 3 件まで）</h2>
+<table class="tbl wide fill">
+<tr><th>#</th><th>症状（どう見えたか）</th><th>根因</th><th>証跡（T-code / 画面・表の行）</th><th>対処</th><th>再発防止</th></tr>
+<tr><td>1</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>2</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>3</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+<div class="box warn"><b class="t">書き方のルール</b>
+「なんとなく直った」は記録しません。<b>症状 → 根因 → 証跡 → 対処 → 再発防止</b> の 5 点で書く（障害票・要件定義と同じ書式）。<br>
+証跡は必ず <b>T-code + 見た画面/表</b>（例：<span class="mono">SE16N: VBEP-BEDSD = 空 → 所要量転送 OFF</span>／<span class="mono">MM03 MRP4 の個別/包括所要量 = 1 → 受注在庫 E に入った</span>）。</div>
+
+<h2>シート E：用語を自分の言葉で（10 語）</h2>
+<table class="tbl wide fill">
+<tr><th>用語</th><th>自分の言葉での説明（記入）</th></tr>
+<tr><td>計画独立所要量（PIR）と版 00</td><td>&nbsp;</td></tr>
+<tr><td>消費（消費）と消減（消減）の違い</td><td>&nbsp;</td></tr>
+<tr><td>戦略グループ 10 / 11 / 40 の違い</td><td>&nbsp;</td></tr>
+<tr><td>自由在庫（MARD）と受注在庫（MSKA・特在 E）</td><td>&nbsp;</td></tr>
+<tr><td>MRP4「個別/包括所要量」が空である意味</td><td>&nbsp;</td></tr>
+<tr><td>純所要量の算式（総所要量 − 入庫予定 + 安全在庫）</td><td>&nbsp;</td></tr>
+<tr><td>計画手配と製造指図の違い</td><td>&nbsp;</td></tr>
+<tr><td>所要量転送と在庫確認（納入日程行カテゴリ）</td><td>&nbsp;</td></tr>
+<tr><td>標準原価による在庫評価と差異</td><td>&nbsp;</td></tr>
+<tr><td>差異計算（KKS1/KKS2）と決済（KO88/CO88）の違い</td><td>&nbsp;</td></tr>
+</table>
+
+<h2>シート F：質問メモ・講師への確認事項</h2>
+<table class="tbl wide fill">
+<tr><th>#</th><th>質問・確認したいこと（記入）</th><th>回答（講師記入）</th></tr>
+<tr><td>1</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>2</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>3</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>4</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>5</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+
+<h2>修了判定（自分でチェック）</h2>
+<div class="box ok"><b class="t">✓ 修了チェック</b>
+<ul class="check">
+  <li>シート A（配置 C0〜C16）の全行に、自分の環境での値が記入されている。</li>
+  <li>シート B の伝票番号・数値が 24 項すべて埋まっている（PIR ／ 計画手配 ／ 指図 ／ 261 ／ CO11N ／ 101 ／ 受注 ／ ATP ／ 消費 ／ 出荷 ／ PGI ／ 請求 ／ 差異 ／ 決済）。</li>
+  <li>シート C で「SD 側・PP 側・MTS である証拠」の 3 つを説明できる。</li>
+  <li>シート D に故障を 1 件以上、5 点セットで記録した。</li>
+  <li>シート E の 10 語を、資料を見ずに説明できる。</li>
+  <li><a href="quiz.html">能力测试</a>で 75% 以上（21/28）を取った。</li>
+  <li>発展課題（<a href="handson-5.html#develop">练习⑤ 5-8</a>）を 2 つ以上実行した。</li>
+</ul></div>
+
+<div class="box info"><b class="t">参照</b>
+迷ったら <a href="config.html">配置手顺</a>（C 番号）／<a href="handson-1.html">練習①</a>〜<a href="handson-5.html">練習⑤</a>／<a href="handson-5.html#trouble">故障対照表</a>／<a href="instructor.html">讲师版</a>（解答）。</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP 見込生産（MTS）实战训练站</h5><p>学员版ワークシート：配置記入・練習記録（24 項）・MD04/MB52 読解・故障記録・用語の言語化・修了判定。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 需要予測とPIR</a><br><a href="handson-2.html">② MRP と計画手配</a><br><a href="handson-3.html">③ 製造と入庫</a><br><a href="handson-4.html">④ 受注・出荷・請求</a><br><a href="handson-5.html">⑤ 月末と発展</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

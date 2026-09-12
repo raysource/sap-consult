@@ -1,0 +1,148 @@
+{
+  "config.html": {
+    "c13": [
+      {
+        "tx": "MM03 / OVZ2 / VOV6",
+        "title": "Display Material T-ATA30",
+        "kind": "form",
+        "tabs": ["Basic Data 1", "Sales Org. 1", "MRP 1", "MRP 2", "MRP 3", "MRP 4"],
+        "active_tab": 4,
+        "section": "MRP 3  -  Availability check",
+        "fields": [
+          ["Material", "T-ATA30", true],
+          ["Plant", "1200", true],
+          ["Strategy group", ""],
+          ["Availability check", "02  Individual requirements"]
+        ],
+        "note": "在庫確認は 伝票タイプ（OVZ2）＞納入日程行カテゴリ（VOV6）＞品目マスタ MRP3 の 3 階層。ここは最下位＝既定値で、上位が上書きする",
+        "status": ["info", "Display material T-ATA30 plant 1200 (MRP 3 view)"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["品目マスタの在庫確認は 3 階層の最下位。伝票タイプや納入日程行カテゴリ側が OFF なら ATP は走らない", 350, 209, "最下位の層"],
+          ["所要量タイプが空の明細（動画の TAN）は ATP の対象外。「在庫があるのに警告が出ない」の答え", 950, 263, "TAN は対象外"]
+        ],
+        "caption": "C13 在庫確認（ATP）の最下位層：品目マスタ MRP3 の在庫確認",
+        "tip": "自システムでの確認：MM03 で 品目 × プラント の MRP3 を開き、在庫確認の値を書き出す。伝票タイプ側は OVZ2、納入日程行カテゴリ側は VOV6、引ける数量は CO09、所要量の流れは MD04 で確認する。",
+        "aria": "MM03 の品目マスタ MRP3 ビュー。品目 T-ATA30・プラント 1200・在庫確認 02 が表示されている。"
+      }
+    ],
+    "c14": [
+      {
+        "tx": "OVA2",
+        "title": "Incompleteness Procedure: Overview",
+        "kind": "tree",
+        "tree": {
+          "title": "Incompleteness Procedure: Groups and Fields",
+          "rows": [
+            ["Incompleteness procedure assigned to order type OR", 0, "TVUV"],
+            ["Sales - Header", 1, "TVUVG"],
+            ["BSTNK - Customer PO number", 2, "TVUVF"],
+            ["Sales - Item", 1, "TVUVG"],
+            ["POSEX - PO item", 2, "TVUVF"],
+            ["Sales - Sched. Line", 1, "TVUVG"],
+            ["Partner", 1, "TVUVG"]
+          ],
+          "selected": 2
+        },
+        "note": "グループ名・項目・Warning 欄の値は環境により異なる。ここでは 手順（TVUV）→ グループ（TVUVG）→ 項目（TVUVF）の 3 階層を見る",
+        "status": ["info", "Display incompleteness procedure for order type OR (no changes made)"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["動画の「Enter PO number」はこの 1 項目。手順 → グループ → 項目の 3 階層で必須が決まる", 350, 199, "PO 番号の項目"],
+          ["項目ごとの Warning にチェックが無ければエラー（保存不可）。運用は警告にして V.02 で管理するのが現実的", 950, 251, "Warning 欄"]
+        ],
+        "caption": "C14 不完全性手順（OVA2）：手順 → グループ → 項目の 3 階層",
+        "tip": "自システムでの確認：OVA2 で伝票タイプ OR に割り当てられた手順を開き、グループごとに項目（VBAP-POSEX など）を書き出す。割当先は 伝票タイプ（VOV8）・明細カテゴリ（VUP2）・納入日程行カテゴリ（VUE2）の 3 か所。",
+        "aria": "OVA2 の不完全性手順。伝票タイプ OR の手順と、Sales - Header / Item / Sched. Line のグループ、PO 番号系の項目が表示されている。"
+      },
+      {
+        "tx": "V.02",
+        "title": "List of Incomplete Sales Orders",
+        "kind": "table",
+        "table": {
+          "title": "Incomplete Sales Orders (V.02)",
+          "columns": ["Sales Doc.", "Item", "Sold-to party", "Status", "Net value"],
+          "widths": [1.3, 0.7, 1.5, 1.2, 1.3],
+          "rows": [
+            ["0000001234", "000010", "1000 / Becker Berlin", "Incomplete", "22,990.00 EUR"],
+            ["0000001234", "000020", "1000 / Becker Berlin", "Incomplete", "22,990.00 EUR"]
+          ],
+          "selected": 0
+        },
+        "note": "動画の環境では PO 番号が必須。不完全なまま保存した受注がここに残り、欠落項目は VA03 の不完全性ログで確認する（VBUV / VBUK）",
+        "status": ["info", "Incomplete sales orders: 1 document / 2 items found"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["わざと不完全なまま保存した受注がここに出る。出ないときは不完全性手順が伝票タイプ・明細カテゴリに未割当", 350, 176, "不完全な受注"],
+          ["どの項目が欠けているかは VBUV（不完全性ログ）と VA03 の不完全性ログで見る。VBUK は伝票ヘッダの状態", 950, 254, "VBUV / VBUK"]
+        ],
+        "caption": "C14 不完全な受注の一覧（V.02）：不完全なまま保存した受注をここで管理する",
+        "tip": "自システムでの確認：伝票タイプの不完全性手順（VOV8）を外すと V.02 に出なくなる。SE16N で VBUV（不完全性ログ）・VBUK・VBUP（伝票／明細ステータス）も見ておく。",
+        "aria": "V.02 の不完全な受注一覧。受注 0000001234 の明細 10 と 20 が不完全として表示されている。"
+      }
+    ],
+    "c15": [
+      {
+        "tx": "VTLA / VTFL",
+        "title": "Copying Control: Sales Document to Delivery Document",
+        "kind": "form",
+        "tabs": ["Header", "Item", "Schedule line"],
+        "active_tab": 1,
+        "section": "Copy control  -  OR -> LF  (Item level)",
+        "fields": [
+          ["Source Document Type", "OR", true],
+          ["Target Document Type", "LF", true],
+          ["Pricing Type", "Redetermine pricing"],
+          ["Copy Quantity", "X"],
+          ["Complete Reference", "X"],
+          ["Update Document Flow", "X"]
+        ],
+        "note": "ルーチン番号（Copying requirements / Data transfer routine）と Pricing type の記号は環境で異なる。ここでは「何を引き継ぎ、何を再決定するか」を確認する",
+        "status": ["info", "Copying control sales document type OR to delivery type LF is active"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["価格を「コピー」するか「再決定」するかがこの設定。Redetermine なら参照元の古い価格は引き継がれない", 350, 263, "与力の再決定"],
+          ["受注 → 出荷のコピー管理は VTLA（出荷 → 請求は VTFL）。OR → LF の行が無いと出荷が作れない", 950, 209, "OR → LF が有効"]
+        ],
+        "caption": "C15 コピー管理（受注 → 出荷）：何を引き継ぎ、何を再決定するか",
+        "tip": "自システムでの確認：手顺ページは VTFL を「受注 → 出荷」と書いていますが、その T-code は VTLA です（VTFL は 出荷 → 請求）。VTFA（受注 → 請求）と合わせ、支払条件 ZB01・インコタームズ FOB がどこで決まるかを VA01 の参照コピーで追う。",
+        "aria": "コピー管理の明細レベル画面。源泉伝票タイプ OR からターゲット伝票タイプ LF への設定で、価格は再決定、数量コピーと伝票フロー更新が有効になっている。"
+      }
+    ],
+    "c16": [
+      {
+        "tx": "VL03N",
+        "title": "Display Outbound Delivery 80007832",
+        "kind": "split",
+        "split_ratio": 0.5,
+        "section": "Delivery header",
+        "fields": [
+          ["Delivery", "80007832", true],
+          ["Ship-to party", "1000  Becker Berlin", true],
+          ["Document Date", "22.11.2000"],
+          ["Planned GI Date", "21.11.2000"],
+          ["Actual GI Date", "23.11.2000"]
+        ],
+        "table": {
+          "columns": ["Item", "Material", "Delivery Qty", "ItCa", "Plant"],
+          "widths": [0.7, 1.2, 1.4, 0.8, 1.2],
+          "rows": [
+            ["000010", "P-102", "26 PC", "TAN", "1200"],
+            ["000020", "P-104", "39 PC", "TAN", "1200"]
+          ],
+          "selected": null
+        },
+        "note": "動画はこの照会まで。作成は VL01N → VL02N（ピッキング → PGI）、請求は VF01、在庫と会計への転記は OBYC が決める",
+        "status": ["info", "Display outbound delivery 80007832 (item overview)"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["実出庫日 23.11.2000 が入ると在庫が減り、売上原価が計上される（OBYC）。計画 21.11.2000 との差が遅延の記録", 350, 291, "実出庫日"],
+          ["明細の ItCa は TAN。想定と違うときは明細カテゴリ決定（VOV4 の 4 キー）を疑う", 350, 463, "ItCa"]
+        ],
+        "caption": "C16 出荷伝票 80007832 の照会（動画と同じ値で確認する）",
+        "tip": "自システムでの確認：VA03 の伝票フローで 受注 → 出荷 80007832 → 請求 が 1 本に繋がること。PGI 後に在庫が減ることを MB51／MM03 で、VC/2 で Open Sales Order／Delivery Value が動くことも見る。",
+        "aria": "VL03N の出荷伝票照会。出荷伝票 80007832・出荷先 1000・文書日付 22.11.2000・計画出庫 21.11.2000・実出庫 23.11.2000、明細は P-102 26 PC と P-104 39 PC（ItCa TAN）。"
+      }
+    ]
+  }
+}

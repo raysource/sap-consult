@@ -1,0 +1,392 @@
+[
+  {
+    "ID": "P-1001",
+    "name": "SAP 培训笔记本电脑 (ThinkPad X1)",
+    "description": "16G/512G 企业办公本",
+    "price": 8999.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-ELEC",
+      "name": "电子设备"
+    },
+    "stock": 32,
+    "reorderLevel": 10,
+    "isActive": true,
+    "stockValue": 287968.0
+  },
+  {
+    "ID": "P-1002",
+    "name": "27 寸 4K 显示器",
+    "description": "IPS 广色域, USB-C 反向供电",
+    "price": 2599.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-ELEC",
+      "name": "电子设备"
+    },
+    "stock": 18,
+    "reorderLevel": 5,
+    "isActive": true,
+    "stockValue": 46782.0
+  },
+  {
+    "ID": "P-1003",
+    "name": "无线机械键盘",
+    "description": "青轴, 蓝牙 5.0 双模",
+    "price": 459.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-ACC",
+      "name": "配件外设"
+    },
+    "stock": 120,
+    "reorderLevel": 20,
+    "isActive": true,
+    "stockValue": 55080.0
+  },
+  {
+    "ID": "P-1004",
+    "name": "人体工学椅",
+    "description": "全网布, 4D 扶手",
+    "price": 1899.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-FURN",
+      "name": "办公家具"
+    },
+    "stock": 9,
+    "reorderLevel": 5,
+    "isActive": true,
+    "stockValue": 17091.0
+  },
+  {
+    "ID": "P-1005",
+    "name": "升降办公桌",
+    "description": "140x70, 双电机",
+    "price": 3299.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-FURN",
+      "name": "办公家具"
+    },
+    "stock": 6,
+    "reorderLevel": 5,
+    "isActive": true,
+    "stockValue": 19794.0
+  },
+  {
+    "ID": "P-1006",
+    "name": "企业级无线 AP",
+    "description": "Wi-Fi 6E, 支持 128 终端",
+    "price": 1299.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-NET",
+      "name": "网络设备"
+    },
+    "stock": 25,
+    "reorderLevel": 8,
+    "isActive": true,
+    "stockValue": 32475.0
+  },
+  {
+    "ID": "P-1007",
+    "name": "千兆企业交换机",
+    "description": "24 口 PoE+, 网管型",
+    "price": 2380.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-NET",
+      "name": "网络设备"
+    },
+    "stock": 14,
+    "reorderLevel": 5,
+    "isActive": true,
+    "stockValue": 33320.0
+  },
+  {
+    "ID": "P-1008",
+    "name": "USB-C 扩展坞",
+    "description": "双 4K@60Hz, 千兆网口",
+    "price": 699.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-ACC",
+      "name": "配件外设"
+    },
+    "stock": 60,
+    "reorderLevel": 15,
+    "isActive": true,
+    "stockValue": 41940.0
+  },
+  {
+    "ID": "P-1009",
+    "name": "会议全向麦",
+    "description": "拾音半径 5 米, USB/蓝牙",
+    "price": 1599.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-ELEC",
+      "name": "电子设备"
+    },
+    "stock": 11,
+    "reorderLevel": 5,
+    "isActive": true,
+    "stockValue": 17589.0
+  },
+  {
+    "ID": "P-1010",
+    "name": "NAS 网络存储",
+    "description": "4 盘位, 支持 RAID5",
+    "price": 4599.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-NET",
+      "name": "网络设备"
+    },
+    "stock": 4,
+    "reorderLevel": 3,
+    "isActive": true,
+    "stockValue": 18396.0
+  },
+  {
+    "ID": "P-1011",
+    "name": "移动工作站 (P16)",
+    "description": "64G/2T, RTX 专业显卡",
+    "price": 21999.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-ELEC",
+      "name": "电子设备"
+    },
+    "stock": 7,
+    "reorderLevel": 3,
+    "isActive": true,
+    "stockValue": 153993.0
+  },
+  {
+    "ID": "P-1012",
+    "name": "便携投影仪",
+    "description": "1080P, 3000 流明",
+    "price": 3199.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-ELEC",
+      "name": "电子设备"
+    },
+    "stock": 5,
+    "reorderLevel": 3,
+    "isActive": true,
+    "stockValue": 15995.0
+  },
+  {
+    "ID": "P-1013",
+    "name": "防蓝光护眼灯",
+    "description": "色温可调, 自动感应",
+    "price": 349.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-FURN",
+      "name": "办公家具"
+    },
+    "stock": 88,
+    "reorderLevel": 20,
+    "isActive": true,
+    "stockValue": 30712.0
+  },
+  {
+    "ID": "P-1014",
+    "name": "白板套装 (磁性)",
+    "description": "90x150cm, 含支架",
+    "price": 899.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-FURN",
+      "name": "办公家具"
+    },
+    "stock": 22,
+    "reorderLevel": 8,
+    "isActive": true,
+    "stockValue": 19778.0
+  },
+  {
+    "ID": "P-1015",
+    "name": "视频会议终端",
+    "description": "一体机, 4K 摄像头",
+    "price": 6499.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-ELEC",
+      "name": "电子设备"
+    },
+    "stock": 3,
+    "reorderLevel": 2,
+    "isActive": true,
+    "stockValue": 19497.0
+  },
+  {
+    "ID": "P-1016",
+    "name": "USB 摄像头 4K",
+    "description": "自动对焦, 隐私盖",
+    "price": 799.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-ACC",
+      "name": "配件外设"
+    },
+    "stock": 34,
+    "reorderLevel": 10,
+    "isActive": true,
+    "stockValue": 27166.0
+  },
+  {
+    "ID": "P-1017",
+    "name": "企业固态硬盘 1TB",
+    "description": "NVMe, 加密型号",
+    "price": 1299.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-NET",
+      "name": "网络设备"
+    },
+    "stock": 41,
+    "reorderLevel": 10,
+    "isActive": true,
+    "stockValue": 53259.0
+  },
+  {
+    "ID": "P-1018",
+    "name": "网络配线架 24口",
+    "description": "六类非屏蔽",
+    "price": 219.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-NET",
+      "name": "网络设备"
+    },
+    "stock": 17,
+    "reorderLevel": 6,
+    "isActive": true,
+    "stockValue": 3723.0
+  },
+  {
+    "ID": "P-1019",
+    "name": "显示器支架臂",
+    "description": "气弹簧, 双屏可扩展",
+    "price": 429.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-FURN",
+      "name": "办公家具"
+    },
+    "stock": 55,
+    "reorderLevel": 12,
+    "isActive": true,
+    "stockValue": 23595.0
+  },
+  {
+    "ID": "P-1020",
+    "name": "会议预约屏",
+    "description": "10.1 寸触控, PoE 供电",
+    "price": 1899.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-ELEC",
+      "name": "电子设备"
+    },
+    "stock": 12,
+    "reorderLevel": 4,
+    "isActive": true,
+    "stockValue": 22788.0
+  },
+  {
+    "ID": "P-1021",
+    "name": "培训白板笔套装",
+    "description": "可擦, 12 支装",
+    "price": 59.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-ACC",
+      "name": "配件外设"
+    },
+    "stock": 200,
+    "reorderLevel": 40,
+    "isActive": true,
+    "stockValue": 11800.0
+  },
+  {
+    "ID": "P-1022",
+    "name": "UPS 不间断电源",
+    "description": "1500VA, 纯正弦波",
+    "price": 1799.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-NET",
+      "name": "网络设备"
+    },
+    "stock": 8,
+    "reorderLevel": 3,
+    "isActive": true,
+    "stockValue": 14392.0
+  },
+  {
+    "ID": "P-1023",
+    "name": "无线投屏器",
+    "description": "4K, HDMI 即插即用",
+    "price": 899.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-ACC",
+      "name": "配件外设"
+    },
+    "stock": 26,
+    "reorderLevel": 6,
+    "isActive": true,
+    "stockValue": 23374.0
+  },
+  {
+    "ID": "P-1024",
+    "name": "培训室音响套装",
+    "description": "2.1 声道, 含麦克风",
+    "price": 3599.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-ELEC",
+      "name": "电子设备"
+    },
+    "stock": 6,
+    "reorderLevel": 3,
+    "isActive": true,
+    "stockValue": 21594.0
+  },
+  {
+    "ID": "P-1025",
+    "name": "桌面收纳套件",
+    "description": "理线盒/集线槽",
+    "price": 129.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-FURN",
+      "name": "办公家具"
+    },
+    "stock": 150,
+    "reorderLevel": 30,
+    "isActive": true,
+    "stockValue": 19350.0
+  },
+  {
+    "ID": "P-1026",
+    "name": "签字板 (电子)",
+    "description": "用于培训签到",
+    "price": 749.0,
+    "currency": "CNY",
+    "category": {
+      "ID": "C-ACC",
+      "name": "配件外设"
+    },
+    "stock": 19,
+    "reorderLevel": 5,
+    "isActive": true,
+    "stockValue": 14231.0
+  }
+]

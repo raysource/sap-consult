@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAP BTP Integration Suite · SAP BTP 开发者训练站</title>
+<meta name="description" content="Integration Suite 全景：CPI/API Management/Event Mesh 服务地图与核心概念">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">SAP</span><span class="txt">SAP BTP 开发者训练站</span></a>
+    <nav class="main"><a href="index.html">首页</a><a class="active" href="isuite.html">Integration Suite</a><a href="iflow.html">iFlow 实战</a><a href="rap.html">RAP</a><a href="cap.html">CAP</a><a href="fiori.html">Fiori / UI5</a><a href="dev-course.html">全流程课件</a><a href="samples.html">示例工程</a></nav>
+  </div>
+</header>
+<div class="hero"><div class="hero-inner"><div class="kicker">平台全景</div><h1>SAP BTP Integration Suite</h1><p class="lead">认识套件全家福：谁是核心、谁管 API、谁做事件；再落到“我该先学哪条”。</p></div></div><main class="page"><div class="wrap"><article><h2 id="what">Integration Suite 是什么</h2><p>SAP BTP Integration Suite（前身 SAP Cloud Platform Integration 与 API 产品线的整合）是 SAP 的<b>集成平台即服务 (iPaaS)</b>。它不是单个工具，而是围绕“把 SAP 与 SAP / 非 SAP 系统连起来”的一组云服务。对开发者，最重要的一条主线是：<b>Cloud Integration（CPI）里画的每一条 iFlow，本质是一条消息处理管线</b>。</p><div class="flow"><span class="node0">应用/系统 A</span><span class="arrow">→</span><span class="node">协议适配器</span><span class="arrow">→</span><span class="node">消息管线 (iFlow)</span><span class="arrow">→</span><span class="node">协议适配器</span><span class="arrow">→</span><span class="node0">目标系统 B</span></div><p>与本地 PI/PO 的最大区别：<b>免运维、多租户、纯 Web 设计器</b>，集成内容以“包(Package)”为单位做 CI/CD。</p><h2 id="services">套件里的服务（先认识名字，别急着全学）</h2><table class="tbl"><tr><th>服务</th><th>一句话</th><th>什么时候用</th></tr>
+<tr><td><b>Cloud Integration (CPI)</b></td><td>iFlow 的设计与运行环境，套件的心脏</td><td>文件/API/事件类点对点集成、编排、转换</td></tr>
+<tr><td><b>API Management</b></td><td>给 API 加代理、限流、密钥、分析</td><td>把后端(含 CPI 自己)包装成受管 API 对外发布</td></tr>
+<tr><td><b>Event Mesh</b></td><td>云上消息总线(兼容 CloudEvents / AMQP)</td><td>系统间异步解耦、事件驱动架构</td></tr>
+<tr><td><b>Open Connectors</b></td><td>200+ SaaS 的连接器(Stripe/Salesforce/…)</td><td>快速对接第三方 SaaS，少写代码</td></tr>
+<tr><td><b>Trading Partner Management</b></td><td>B2B 伙伴与文档协议管理</td><td>EDI(如 X12/EDIFACT) 场景</td></tr>
+<tr><td><b>Integration Advisor</b></td><td>基于 AI/语义的接口与映射推荐</td><td>从遗留接口资产生成映射，省建模时间</td></tr>
+</table><h2 id="deploy">落地形态：一套平台，两种“运行图”</h2><p>从部署视角，租户里同时存在两类东西：</p><table class="tbl"><tr><th>名称</th><th>是什么</th><th>开发者关心什么</th></tr>
+<tr><td><b>Cloud Integration runtime</b></td><td>CPI 自己的运行节点</td><td>iFlow 部署/监控(MPL)、证书与安全物料(Keystore)、连接测试</td></tr>
+<tr><td><b>BTP 子账户/空间</b></td><td>云平台本身(CF/Kyma)</td><td>业务应用(CAP/Java/Node)跑在这里，通过 Destination 连回 CPI 或后端</td></tr>
+</table><div class="box warn"><b class="t">注意 · 试用版提醒</b><p>BTP 试用版(Trial)可免费开通 Integration Suite。试用租户通常<b>无法直接访问公网目标系统</b>（需要配置 <code>Cloud Connector</code> 或允许列表），本站 iFlow 样例以公开 OData 为演示目标，如被网络策略拦截，按手册提示改用租户可达的端点即可。</p></div><h2 id="concepts">必须提前搞懂的四组概念</h2><table class="tbl"><tr><th>概念</th><th>说明</th></tr>
+<tr><td>包 / 工件</td><td>Package 是版本化容器；Artifact = 一条 iFlow、脚本集、值映射等。导出/导入、CI/CD 都以包为单位</td></tr>
+<tr><td>适配器 (Adapter)</td><td>Sender/Receiver 与外部世界的“插头”：HTTPS、SFTP、OData、SOAP、Mail、ProcessDirect、JMS…</td></tr>
+<tr><td>集成流 (iFlow)</td><td>处理管线的可视化编排：一个发件方 + 若干步骤 + 一个/多个收件方</td></tr>
+<tr><td>消息上下文</td><td>一次处理中流动的 body + header + property；<b>header 会出站、property 不出站</b>（详见 iFlow 页）</td></tr>
+</table><h2 id="next">下一步：去 iFlow 实战页</h2><div class="grid cards"><div class="card"><h3><a href="iflow.html">iFlow 实战：第一条低库存预警流</a></h3><p>15 分钟手工建模手册 + Groovy 脚本 + 样例载荷，照抄即可在租户里跑通。</p><div class="tags"><span class="tag ">实战</span></div></div><div class="card"><h3><a href="samples.html">示例工程与测试数据</a></h3><p>4 组工程可直接浏览/运行；测试数据覆盖产品/客户/订单与 iFlow 载荷。</p><div class="tags"><span class="tag ">下载</span><span class="tag ">数据</span></div></div></div></article></div></main>
+<footer class="site">
+  <div class="inner">
+    <div>
+      <h5>SAP BTP 开发者训练站</h5>
+      <p>面向培训/自学的中文资料站 · 代码与数据见 “示例工程” 页<br>
+      内容基于公开官方文档整理，非 SAP 官方交付物，请以 help.sap.com / cap.cloud.sap 为准。</p>
+      <p>© <span data-year>2026</span> 学习用途</p>
+    </div>
+    <div class="cols">
+      <div><h5>官方文档</h5><ul style="margin:0;padding-left:18px"><li><a href="https://help.sap.com/docs/btp" target="_blank" rel="noopener">SAP BTP 帮助中心 ↗</a></li><li><a href="https://help.sap.com/docs/integration-suite" target="_blank" rel="noopener">Integration Suite ↗</a></li><li><a href="https://help.sap.com/docs/cloud-integration" target="_blank" rel="noopener">Cloud Integration ↗</a></li><li><a href="https://cap.cloud.sap/docs/" target="_blank" rel="noopener">CAP (capire) ↗</a></li><li><a href="https://sapui5.hana.ondemand.com/" target="_blank" rel="noopener">SAPUI5 ↗</a></li><li><a href="https://help.sap.com/docs/btp/sap-abap-development-user-guide" target="_blank" rel="noopener">ABAP 开发用户指南 ↗</a></li></ul></div>
+    </div>
+  </div>
+</footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

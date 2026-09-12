@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>讲师版 · SAP SD 受注処理（Sales Order Processing）实战训练站</title>
+<meta name="description" content="SAP SD 受注処理トレーニングの指導案：時間割、板書用の決定链図、発展課題の解答例、症例判別 8 問の答え、必出 Q&amp;A 12 問、採点基準（75% 合格）。動画 Unit 14 準拠。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/sd.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">SD</span><span class="txt">受注処理 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①受注登録</a>
+      <a href="handson-2.html">②伝票変更</a>
+      <a href="handson-3.html">③情報照会</a>
+      <a href="handson-4.html">④出荷と請求</a>
+      <a href="handson-5.html">⑤ツールと故障</a>
+      <a class="active" href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 讲师版</div>
+<main class="page"><article>
+
+<h1>讲师版 —— 指導案・解答・採点基準</h1>
+<div class="box warn"><b class="t">この頁は講師用です（受講者は読まないでください）</b>
+受講者に渡す前に <b><a href="worksheet.html">学员版（記入用）</a></b> と <b><a href="quiz.html">能力测试（28 題）</a></b> を印刷してください。本頁には<b>発展課題の解答例・症例判別の答え・必出 Q&A</b> が載っています。</div>
+<h2 id="design">1. 全体設計（この站で到達させたい 2 点）</h2>
+<p>動画（SAP Education <b>Unit 14: Sales Order Processing</b>）の到達目標は 2 つだけです。
+本站はその 2 点を、<b>自分の環境で再現できる形</b>に分解しました。</p>
+<table class="tbl wide">
+<tr><th>動画の目標</th><th>本站での分解</th><th>到達判定（受講者の言動）</th></tr>
+<tr><td><b>① 伝票データの出所を言える</b>（material master・customer master・Customizing）</td><td>概念 1〜6 節 ＋ 练习①の「値の出所表」＋ 练习⑤の故障切り分け 4 画面</td><td>受注の任意の項目について「値・出所テーブル・決まった理由」を 3 つセットで言える</td></tr>
+<tr><td><b>② ツールとヘルプを使える</b>（tools and help）</td><td>练习⑤ の <code>SU3</code>／F1／与力分析／<code>VA05</code>／<code>V.02</code>／<code>SE16N</code></td><td>初見の異常に対して、自力で 3 つ以上の画面を開いて切り分けを進められる</td></tr>
+</table>
+<h2 id="schedule">2. 時間割（推奨 2 日間）</h2>
+<table class="tbl wide">
+<tr><th>時間</th><th>内容</th><th>使う頁</th><th>講師の作業</th></tr>
+<tr><td>Day1 09:00–09:30</td><td>オリエン：動画の位置づけとゴール</td><td>総覧</td><td>動画 <code>00:00</code>〜<code>06:45</code> を再生（概念スライド）</td></tr>
+<tr><td>Day1 09:30–11:00</td><td>概念 1〜6 節＋板書（決定链）</td><td>概念与设计</td><td><b>決定链を黒板に書き、受講者に写させる</b></td></tr>
+<tr><td>Day1 11:00–12:00</td><td>環境確認（C0）と前提の穴埋め</td><td>配置手顺 C0</td><td>受講者ごとの得意先・品目を確定させる（ここが遅れると以降が全部止まる）</td></tr>
+<tr><td>Day1 13:00–15:00</td><td>练习① 受注登録（VA01）</td><td>练习①</td><td>動画 <code>06:48</code>〜<code>21:35</code> を流しながら、受講者の画面を巡回</td></tr>
+<tr><td>Day1 15:00–16:30</td><td>概念 7〜13 節（変更・ブロック・チェック・SIS）</td><td>概念与设计</td><td>動画 <code>32:52</code>〜<code>51:22</code> を抜粋再生</td></tr>
+<tr><td>Day1 16:30–17:30</td><td>练习② 伝票の変更と再決定</td><td>练习②</td><td><b>「変わる／変わらない」を必ず口頭で確認</b></td></tr>
+<tr><td>Day2 09:00–10:30</td><td>练习③ Sales Summary（<code>VC/2</code>）</td><td>练习③</td><td>動画 <code>22:45</code>〜<code>32:29</code> の Customizing 4 画面を一緒に開く</td></tr>
+<tr><td>Day2 10:30–12:00</td><td>配置手顺 C1〜C5（動画の Customizing）</td><td>配置手顺</td><td><code>VOV8</code>／<code>OVT0</code>／<code>OVS9</code>／SIS レポートビューを実演</td></tr>
+<tr><td>Day2 13:00–14:30</td><td>配置手顺 C6〜C16（決定テーブルと優先順位）</td><td>配置手顺</td><td>決定テーブルは<b>1 行ずつ追加</b>して効果を見せる</td></tr>
+<tr><td>Day2 14:30–16:00</td><td>练习④ 出荷と請求</td><td>练习④</td><td>PGI の前後を必ず記録させる（取消が難しいため）</td></tr>
+<tr><td>Day2 16:00–17:00</td><td>练习⑤ 発展＋故障対照表</td><td>练习⑤</td><td><b>症状だけ見せて答えを言わせない</b></td></tr>
+<tr><td>Day2 17:00–17:45</td><td>能力测试（28 題）＋振り返り</td><td>能力测试</td><td>75% 未満は該当節へ戻す</td></tr>
+</table>
+<h2 id="board">3. 板書用の図（そのまま写す）</h2>
+<p>黒板／ホワイトボードに書く図は <b>2 枚だけ</b>に絞ります。これ以上書くと受講者が写しきれません。</p>
+<h3>板書 1：受注伝票の決定链</h3>
+<pre class="vals">受注タイプ OR ─┐
+品目カテゴリグループ ─┼→ 明細カテゴリ TAN ─┬→（与力関連）→ 価格決定手順 → 条件 PR00 → Net value
+品目使用目的 ─┘                          └→ 納入日程行カテゴリ → 所要量タイプ → 在庫確認(ATP)
+
+得意先 1000 → 販売エリア 1000/10/00 → パートナー SP/SH/BP/PY ─┬→ 支払条件 ZB01（Payer）
+                                                          └→ インコタームズ FOB
+
+出荷プラント ← ① 客先品目情報(VD51) ＞ ② 得意先マスタ出荷先(XD02) ＞ ③ 品目マスタ販売組織1(MM02)
+             └→ 出荷ポイント → 出荷タイプ（VL01N）</pre>
+<h3>板書 2：データの出所 4 分類（異常時の探索順）</h3>
+<pre class="vals">① 主データ（得意先/品目/条件）  → XD03 / MM03 / VK13
+② 既存伝票（先行受注・参照コピー） → VA03 / 伝票フロー
+③ Customizing（伝票タイプ・決定テーブル） → VOV8 / VOV4 / VOV5 / OVA2
+④ ハードコード（ABAP/拡張）        → ①②③が正しいときだけ疑う
+
+≪切り分けの順序≫ ①受注を見る → ②主データを見る → ③設定を見る → ④拡張を疑う</pre>
+<h2 id="answers">4. 発展課題の解答例（练习⑤）</h2>
+<table class="tbl wide">
+<tr><th>課題</th><th>解答の要点</th><th>よくある誤答</th></tr>
+<tr><td>発展① 伝票タイプにブロックを仕込む</td><td><code>VOV8</code> の <code>ZOR1</code> に納入ブロックを設定 → そのタイプで作る受注は<b>最初からブロック付き</b>。設定を戻しても<b>既存受注はブロックのまま</b>（伝票に焼き付く）</td><td>「設定を戻せば既存受注も解除される」→ ✗（新規受注のみに効く）</td></tr>
+<tr><td>発展② 出荷プラントの優先順位</td><td><code>MM02</code>（販売組織1）→ <code>XD02</code>（出荷先）→ <code>VD51</code>（客先品目情報）の順に値を入れ、<b>後から入れた上位が勝つ</b>。上位を空にすると下位に戻る</td><td>「品目マスタを直せば必ず反映される」→ ✗（上位があると負ける）</td></tr>
+<tr><td>発展③ Sales Summary のビュー自作</td><td>① でビュー <code>Z01</code> を定義 → ② で情報ブロックを 3〜5 個割当 → ③ で自分を <code>Z01</code> に割当 → <code>VC/2</code> の View に出る</td><td>①だけ作って②を忘れる → ビューは出るが<b>中身が空</b></td></tr>
+<tr><td>発展④ 不完全性の必須項目追加</td><td><code>OVA2</code> で手順に項目追加 → <code>VUA2</code> で<b>警告</b>にすると保存はでき、<code>V.02</code> に載る。項目を埋めると一覧から消える</td><td>「エラーにしないと意味がない」→ ✗（業務では警告＋一覧管理が一般的）</td></tr>
+</table>
+<h2 id="cases">5. 症例判別（8 問）—— 症状だけを見せて答えさせる</h2>
+<p>受講者に<b>症状だけ</b>を読み上げ、① 根因 ② 証拠の取り方 ③ 処置 を答えさせます。<b>答えを先に言わないこと。</b></p>
+<table class="tbl wide">
+<tr><th>#</th><th>症状</th><th>答え（根因／証拠／処置）</th></tr>
+<tr><td>1</td><td>受注の Net value が 0.00 EUR</td><td>条件レコードが無い or 有効期間外 or 与力日付ずれ → <code>VA03</code> 条件画面＋<code>VK13</code> → <code>VK11</code> で正しいキー・期間で登録</td></tr>
+<tr><td>2</td><td>明細の出荷プラントが空</td><td>3 か所すべてに値が無い → <code>VD53</code>／<code>XD03</code>／<code>MM03</code> → どこに入れるか決めて保守</td></tr>
+<tr><td>3</td><td>品目マスタを直したのに出荷プラントが変わらない</td><td>上位（客先品目情報 or 得意先マスタ）に値がある → <code>KNMT</code>／<code>KNVV</code>／<code>VBAP-WERKS</code> を並べる → 上位を修正</td></tr>
+<tr><td>4</td><td>明細カテゴリが <code>TAN</code> にならない</td><td>決定テーブル（<code>VOV4</code>）の 4 キー不一致／品目カテゴリグループ違い → <code>MM03</code>（販売組織2）＋<code>VOV4</code> → 行を整備</td></tr>
+<tr><td>5</td><td>保存時に「PO Number を入力してください」</td><td>不完全性手順の必須項目（動画の環境で発生）→ <code>OVA2</code>／<code>V.02</code> → 埋める or 警告に変更</td></tr>
+<tr><td>6</td><td>受注は保存できたが出荷できない</td><td>納入／請求／与信ブロックのどれか → <code>VA03</code> ヘッダ 3 ブロック＋与信ステータス → 由来を特定して解除</td></tr>
+<tr><td>7</td><td>得意先を変えたのに価格が古い</td><td>再決定されない項目 or 手動条件 or 後続伝票ありで無変更 → 条件画面（手動表示）＋伝票フロー → 入れ直す／後続伝票を処理</td></tr>
+<tr><td>8</td><td><code>VC/2</code> に情報ビューが出ない</td><td>「Report Views for a User」に未割当 or ビュー未定義 → <code>VC/2</code> の View＋SPRO → C5 の ①③ を整備</td></tr>
+</table>
+<h2 id="qa">6. 必出 Q&A（12 問）</h2>
+<table class="tbl wide">
+<tr><th>質問</th><th>答え</th></tr>
+<tr><td>伝票データの源泉 4 つは？</td><td>主データ／既存伝票／Customizing／ハードコード（ABAP）</td></tr>
+<tr><td>販売エリアは何から導出される？</td><td>得意先マスタ（販売エリアビュー）。複数あれば選択ダイアログ「Sales area for customer」</td></tr>
+<tr><td>出荷プラントの優先順位は？</td><td>① 客先品目情報（<code>VD51</code>）→ ② 得意先マスタの出荷先（<code>XD02</code> 出荷タブ）→ ③ 品目マスタ 販売組織1（<code>MM02</code>）</td></tr>
+<tr><td>明細カテゴリの 4 つのキーは？</td><td>販売伝票タイプ × 品目カテゴリグループ × 品目使用目的 × 高レベル明細カテゴリ</td></tr>
+<tr><td><code>TAN</code> は在庫を持つ？</td><td>持たない（所要量タイプが空＝所要量を作らない）。受注在庫 E とは別（戦略グループ・所要量クラスの設計）</td></tr>
+<tr><td>支払条件と与信を決めるパートナーは？</td><td><b>Payer</b>。納入先住所と出荷プラントは Ship-to 側</td></tr>
+<tr><td>得意先変更で再決定されるものは？</td><td>得意先マスタ・客先品目情報・テキスト・無償品・<b>与力価格</b>・出力・<b>出荷プラントと出荷ポイント</b></td></tr>
+<tr><td>得意先変更で変わらないものは？</td><td>販売エリア・販売事務所／販売グループ・可用性／製品割当・バッチ</td></tr>
+<tr><td>後続伝票がある受注で得意先を変えると？</td><td><b>何も変更されない</b>（ステータス関連の先行／後続伝票がある場合の仕様）</td></tr>
+<tr><td>ブロックの 3 階層は？</td><td>ヘッダ（納入／請求）・明細（請求）・納入日程行（納入）。由来は ①手動 ②Customizing ③チェック（与信）</td></tr>
+<tr><td>Sales Summary の画面はどこで決まる？</td><td>SIS の Customizing 4 画面（Report Views／Views for an Evaluation／Report Views for a User／Last Documents for a Customer）</td></tr>
+<tr><td>不完全性の設定と一覧は？</td><td>定義 <code>OVA2</code>（挙動 <code>VUA2</code>、適用 <code>VUP2</code>／<code>VUE2</code>）、一覧 <code>V.02</code>／<code>V.00</code></td></tr>
+</table>
+<h2 id="grading">7. 採点基準と合否</h2>
+<table class="tbl wide">
+<tr><th>項目</th><th>配点</th><th>合格ライン</th><th>見方</th></tr>
+<tr><td>能力测试（28 題）</td><td>100</td><td><b>75%（21 問）以上</b></td><td>概念 10／設定 7／実務 6／故障 5 の配分。故障問題を落とした場合は該当節を再実習</td></tr>
+<tr><td>练习①〜④ の验收清单</td><td>必須</td><td><b>全項目 ✓</b></td><td>特に「値の出所表」と「変更前後比較表」は<b>実物の画面で確認させる</b></td></tr>
+<tr><td>练习⑤ の故障対照表</td><td>必須</td><td><b>2 件以上の再現記録</b></td><td>「症状 → 根因 → 証拠 → 処置 → 再発防止」が書けているか。証拠が画面名・T-code で具体的か</td></tr>
+<tr><td>発展課題 4 本</td><td>加点</td><td>2 本以上</td><td>①〜④ のうち 2 本できれば実務即応レベル</td></tr>
+</table>
+<div class="box danger"><b class="t">指導上の禁止事項</b>
+① <b>標準の <code>OR</code>／<code>TAN</code> を直接書き換えさせない</b>（<code>Z</code> コピーで練習させる）。<br>② <b>後続伝票がある受注で変更練習をさせない</b>（意図しない差異や実データ汚染の原因）。<br>③ <b>PGI を実施させたら必ず記録させる</b>（取消には専用処理が必要）。<br>④ 故障問題で<b>答えを先に言わない</b>（症状 → 自力で証拠、の順を守らせる）。</div>
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP SD 受注処理（Sales Order Processing）实战训练站</h5><p>講師用：この站の指導案・解答・採点基準。受講者には学员版・能力测试を配布してください。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 受注登録（VA01）</a><br><a href="handson-2.html">② 与力価格と ATP</a><br><a href="handson-3.html">③ 特殊取引</a><br><a href="handson-4.html">④ 出荷と請求</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="worksheet.html">学员版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/quiz.js"></script>
+</body>
+</html>

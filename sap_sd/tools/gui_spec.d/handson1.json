@@ -1,0 +1,58 @@
+{
+  "handson-1.html": {
+    "1-1 VA01 初期画面": [
+      {
+        "tx": "VA01",
+        "title": "Create Sales Order: Initial Screen",
+        "kind": "form",
+        "section": "Create with Reference / Sales",
+        "fields": [
+          ["Order Type", "OR", true],
+          ["Sales Organization", "1000", true],
+          ["Distribution Channel", "10", true],
+          ["Division", "00", true],
+          ["Sold-to party", "1000", true],
+          ["PO Number", "dddd", true],
+          ["Sales Office", ""],
+          ["Sales Group", ""]
+        ],
+        "note": "動画 08:37 付近と同じ初期画面。受注タイプ OR を入れるだけで「Standard Order」が補完される",
+        "status": ["success", "得意先 1000 の販売エリア 1000 / 10 / 00 を設定しました"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["受注タイプ OR ＝ Standard Order。伝票タイプが明細カテゴリ決定・価格決定手順・不完全性手順を決める起点", 350, 157],
+          ["得意先は複数の販売エリアを持ち得る。Enter 後に選択ダイアログが出るのはそのため", 950, 267, "2"]
+        ],
+        "caption": "VA01 の初期画面（受注タイプ OR と販売エリア・得意先を入力する）",
+        "tip": "自システムでの確認：VA01 初期画面の F4 に自分の販売組織が出るか（出ない＝組織構造の割当未了）。得意先の販売エリアは XD03、PO 番号が必須かは V.02 で確認。",
+        "aria": "VA01 の初期画面。受注タイプ OR、販売組織 1000、流通チャネル 10、部門 00、得意先 1000、PO 番号 dddd を入力した状態。"
+      },
+      {
+        "tx": "VA01",
+        "title": "Sales area for customer",
+        "kind": "table",
+        "table": {
+          "title": "得意先 1000 が持ち得る販売エリア",
+          "columns": ["SOrg", "DC", "Dv", "Description"],
+          "widths": [0.8, 0.6, 0.6, 2.4],
+          "rows": [
+            ["1000", "10", "00", "Final customer DE"],
+            ["1000", "01", "01", "Direct sales DE"],
+            ["1000", "10", "A1", "Vehicles DE"]
+          ],
+          "selected": 0,
+          "footer": "動画 09:02 付近と同じ選択ダイアログ。ここで選んだ販売エリアが受注全体の基準になる"
+        },
+        "status": ["info", "販売エリアを選択してください（3 件）"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["ここに出るのは得意先マスタ（KNVV）に登録済みの販売エリアだけ", 350, 209],
+          ["選んだ販売エリアが、以降の与力条件・出荷条件・パートナー・出力の基準になる", 950, 235, "2"]
+        ],
+        "caption": "「Sales area for customer」ダイアログ（得意先が複数の販売エリアを持つ場合）",
+        "tip": "自システムでの確認：XD03 の販売エリアビューで、その得意先が持つ販売エリアを確認する。",
+        "aria": "得意先 1000 が持つ販売エリアの選択ダイアログ。1000/10/00 の行が選択されている。"
+      }
+    ]
+  }
+}

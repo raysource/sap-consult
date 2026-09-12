@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>总览 · SAP 受注形態の横断比較（MTS / MTO / ETO / ATO / VC）</title>
+<meta name="description" content="SAP S/4HANA の受注形態（見込生産 MTS / 受注生産 MTO / 受注設計生産 ETO / 受注組立 ATO / バリアント設定 VC）を横断比較する講義サイト。比較マトリクス、E（受注在庫）と Q（プロジェクト在庫）の対比実習、VC 概観、能力テスト。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/cmp.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">CMP</span><span class="txt">受注形態 横断比較</span></a>
+    <nav class="main">
+      <a class="active" href="index.html">总览</a>
+      <a href="compare.html">横断比较</a>
+      <a href="scenario-eq.html">E vs Q 对照</a>
+      <a href="vc.html">VC 概観</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero"><div class="hero-inner">
+  <div class="kicker">SAP S/4HANA · 講義用 · 姉妹サイト sapmto（MTO）／sapeto（ETO）の上位レイヤー</div>
+  <h1>受注形態の横断比較（MTS / MTO / ETO / ATO / VC）</h1>
+  <p class="lead">「どの生産形態を選ぶか」で、後工程の<b>库存区分・所要量タイプ・成本对象・请求方式・収益認識</b>がすべて連鎖して決まります。
+  本站把 5 种形态放在一张表上横向比，再用 <b>「同一业务分别用 E（受注在庫）和 Q（プロジェクト在庫）跑一遍」</b> 的对照实习把差异钉死，最后给出 <b>VC（バリアント設定）</b> 的概观与选型判断。
+  配置与操作手顺不重复写——那部分在 <span class="mono">../sapmto/</span>（MTO）与 <span class="mono">../sapeto/</span>（ETO）两站。</p>
+  <div class="toc">
+    <a href="#map">1. 五种形态的地图</a>
+    <a href="#choose">2. 选型判断（用什么问题问业务）</a>
+    <a href="#links">3. 与两个实训站的关系</a>
+    <a href="#how">4. 授课方案</a>
+    <a href="#caveat">5. 关于标准值的立场</a>
+  </div>
+</div></div>
+
+<div class="wrap">
+<main class="page"><article>
+
+<h2 id="map">1. 五种形态的地图（先在脑子里画这张图）</h2>
+<table class="tbl wide">
+<tr><th>形态</th><th>一句话</th><th>计划起点</th><th>库存区分</th><th>典型的な品目マスタ設定</th></tr>
+<tr><td>見込生産（MTS）</td><td>先做后卖，按预测备库存</td><td>計画独立所要量（PIR, <code>MD61</code>）</td><td>自由在庫</td><td>戦略グループ 10 / 11 / 30 / 40 等、MRP4 は空</td></tr>
+<tr><td>受注生産（MTO）</td><td>按订单造，做完就发</td><td>受注</td><td><b>E ＝ 受注在庫</b>（受注明細）</td><td>戦略グループ 20、<b>MRP4 個別所要量</b></td></tr>
+<tr><td><b>受注設計生産（ETO）</b></td><td>按项目设计、制造、核算</td><td>受注＋<b>プロジェクト（WBS）</b></td><td><b>Q ＝ プロジェクト在庫</b>（WBS）</td><td>戦略グループ（Cloud E2）、MRP4 個別所要量、評価付プロジェクト在庫</td></tr>
+<tr><td>受注組立（ATO）</td><td>部件备库，受注瞬间建指图</td><td>受注（保存と同時に指図）</td><td>E（または自由在庫＋指図）</td><td>戦略グループ 82（組立処理）、所要量クラス 201、指図タイプ PP04</td></tr>
+<tr><td>バリアント設定（VC）</td><td>一个 KMAT ＋ 客户选择值 → 无限变体</td><td>受注（設定値つき）</td><td>E 或 Q（VC 単体では形态を決めない）</td><td>品目タイプ <code>KMAT</code>、品目カテゴリグループ <code>0002</code>（/ <code>0004</code>）、戦略グループ 25（MTO+VC）</td></tr>
+</table>
+<div class="box ok"><b class="t">三句话总结</b>
+① <b>计划起点</b>决定「需求从哪来」（PIR / 受注 / 受注＋プロジェクト）。<br>
+② <b>库存区分</b>决定「东西归谁」（自由 / E / Q）——这是后续所有差异的根源（数量表 <code>MSKA</code>・<code>MSPR</code>、出荷の引当、评价の有無）。<br>
+③ <b>成本与请求</b>决定「钱怎么算、怎么收」（指図 / WBS；出荷ベース / 請求計画・出来高）。<b>VC 与 ATO 是「怎么造」的维度，可以和上面任一种组合</b>（VC+E、VC+Q、VC+ATO）。</div>
+
+<h2 id="choose">2. 选型判断：拿这 6 个问题问业务（现场最有用的部分）</h2>
+<ol class="steps">
+  <li><b>是先造还是先卖？</b>——先造 → MTS；接了单才动 → 继续问。</li>
+  <li><b>这张单要按项目核算成本/收入吗？</b>（有设计费、据付、验收、分期收款）——要 → <b>ETO</b>（WBS；将来可能要用 PS/EPPM）。</li>
+  <li><b>库存只能给一张受注明细，还是只能给一个项目？</b>——受注明細 → E；WBS → Q。</li>
+  <li><b>客户在受注时选规格（颜色/容量/口径…）吗？</b>——选 → <b>VC</b>（KMAT ＋ 特徴/クラス/設定プロファイル）。选完还要立刻建指图 → VC＋ATO（組立処理）。</li>
+  <li><b>制造多久？要提前备料/提前组装吗？</b>——受注即组装 → 戦略 82（ATO）；按 MRP 排产 → 戦略 20/25。</li>
+  <li><b>收入什么时候确认？</b>——交货时 → 出荷ベース請求；按进度/里程碑 → 請求計画・出来高＋結果分析（ETO で多い）。</li>
+</ol>
+<div class="box warn"><b class="t">現場で最も誤解される 3 点</b>
+① 「受注生産 = 受注在庫（E）」→ 不一定，按项目核算就是 Q。<br>
+② 「VC は生産形態」→ VC 只是「怎么描述与选配产品」的机制，<b>库存区分与计划战略另配</b>（戦略 25 + 品目カテゴリグループ 0002 が一般的）。<br>
+③ 「戦略グループ 82 は VC 用」→ 82 是组立处理（1:1 建指图），与 VC 无关的项目也能用。</div>
+
+<h2 id="links">3. 与两个实训站的关系（本站怎么用）</h2>
+<table class="tbl wide">
+<tr><th>本站页面</th><th>内容</th><th>与之配套的实训站</th></tr>
+<tr><td><a href="compare.html">横断比较</a></td><td>计划起点 / 库存区分 / 需求单位 / 成本对象 / 请求方式 / 主数据 / T-code / 典型故障 的 9 维度矩阵；<br>所要量タイプ・所要量クラス・戦略グループ・在庫テーブルの早见表</td><td>机制对照用（講義・要件定義の合意形成に）</td></tr>
+<tr><td><a href="scenario-eq.html">E vs Q 对照</a></td><td><b>同一张特注订单</b>分别用 MTO（E）和 ETO（Q）跑一遍的 STEP 对照，含期末的会计/报表差异</td><td><span class="mono">../sapmto/</span>（MTO 全手顺）<br><span class="mono">../sapeto/</span>（ETO 全手顺）</td></tr>
+<tr><td><a href="vc.html">VC 概観</a></td><td>KMAT・特徴/クラス・設定プロファイル・依存関係・VC 価格・戦略 25/KEK/046、LO-VC と AVC、故障の典型</td><td>VC のフル実習は別教材（本站は「知っておくべき地図」まで）</td></tr>
+<tr><td><a href="quiz.html">能力测试</a></td><td>20 题横断测试（形态判別 / 主数据 / T-code / 故障 / 选型）</td><td>両站のテストと併用</td></tr>
+<tr><td><a href="instructor.html">讲师版</a></td><td>対比講義の時間割（90 分 / 180 分）、討論テーマ、採点観点、必出質問</td><td>研修のファシリテーション用</td></tr>
+</table>
+<div class="box info"><b class="t">推奨の学習順</b>
+① 本站（90 分）で地図と差異を理解 → ② <span class="mono">../sapmto/</span> で E を実機で作る → ③ <span class="mono">../sapeto/</span> で Q を実機で作る → ④ 本站の <a href="scenario-eq.html">E vs Q 对照</a> で並べて説明する（＝説明できるようになれば卒業）。</div>
+
+<h2 id="how">4. 授课方案（讲师用の時間割は <a href="instructor.html">讲师版</a> に詳細）</h2>
+<table class="tbl wide">
+<tr><th>方案</th><th>時間</th><th>内容</th></tr>
+<tr><td>讲義のみ</td><td>90 分</td><td>地図（30）→ 横断比較（30）→ 选型演習（15）→ テスト（15）</td></tr>
+<tr><td>講義＋対比実習</td><td>4〜5 時間</td><td>地図・比較（60）→ MTO を最小手順で実機（90）→ ETO を最小手順で実機（120）→ E vs Q 对照表を埋める（60）</td></tr>
+<tr><td>2 日（フル）</td><td>2 日</td><td>sapmto 站の練習①〜④ ＋ sapeto 站の練習①〜④ ＋ 本站的对比例题与讨论（各站の詳細時間割に従う）</td></tr>
+</table>
+
+<h2 id="caveat">5. 关于标准值的立场</h2>
+<div class="box warn"><b class="t">本站の前提</b>
+比较表里写的是「標準の通常情況」（S/4HANA On-Premise 2020〜2024 基準）。<b>ETO/VC の標準値は環境差が特に大きい</b>ため、具体値（戦略グループ、WBS を割り当てられる明細カテゴリ、VC の設定プロファイルの作り方）は
+各实训站の「自システムでの確認手顺」で実測してください。本站の目的は<b>「選型と説明」</b>であり、「値を暗記する」ことではありません。</div>
+
+<h2>6. 出典（要約）</h2>
+<ul>
+  <li>SAP Help（S/4HANA On-Premise）<i>Special Settings for Production Orders</i>：戦略 82 ＝ 組立処理（所要量タイプ <code>KMFA</code> / 所要量クラス <code>201</code> / 指図タイプ <code>PP04</code>、1:1）。</li>
+  <li>SAP Help <i>Stock Tables and Stock Types</i>：<code>MSKA</code>＝受注在庫(E)、<b><code>MSPR</code>＝プロジェクト在庫(Q)</b>、<code>MSKU</code>＝預託在庫(V/W)。</li>
+  <li>SAP Help（Cloud）<i>受注設計生産 (ETO)</i>／<i>Make-to-Order (MTO)</i>：個別所要量品目、評価付販売伝票在庫（所要量クラス <code>046</code>・評価 M）。</li>
+  <li>SAP Help <i>Advanced Variant Configuration</i>／SAP PRESS <i>What Is SAP AVC and How Does It Compare to LO-VC</i>：S/4HANA の AVC（<code>PMEVC</code>）と従来 LO-VC の関係。</li>
+  <li>外部解説：varconf（MTO with VC / VC 依存関係 / VC 価格）、SAP Community（VC 品目マスタの必須設定：品目タイプ KMAT・品目カテゴリグループ 0002/0004・戦略グループ 25・MRP タイプ PD・個別/包括所要量）。</li>
+  <li>SAP Community / SAP Learning：VC と受注 BOM、Cloud の VC スコープアイテム（<code>IYT</code>＝MTO+VC、<code>7DM</code>＝アドバンスド社内販売+MTO+VC）。</li>
+</ul>
+
+<div class="box info"><b class="t">下一步</b>
+→ <a href="compare.html">横断比较</a>／→ <a href="scenario-eq.html">E vs Q 对照実習</a>／→ <a href="vc.html">VC 概観</a></div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>受注形態 横断比較（MTS / MTO / ETO / ATO / VC）</h5><p>講義用の比較サイト。実機の手顺は <span class="mono">../sapmto/</span>（MTO）と <span class="mono">../sapeto/</span>（ETO）を参照。<br>内容为教学整理，标准值请以自系统为准。</p></div>
+  <div class="cols">
+    <div><h5>本サイト</h5><a href="compare.html">横断比较</a><br><a href="scenario-eq.html">E vs Q 对照</a><br><a href="vc.html">VC 概観</a><br><a href="instructor.html">讲师版</a><br><a href="quiz.html">能力测试</a></div>
+    <div><h5>実機の手顺</h5><span class="mono">../sapmto/index.html</span>（MTO：E・受注在庫）<br><span class="mono">../sapeto/index.html</span>（ETO：Q・プロジェクト在庫）</div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

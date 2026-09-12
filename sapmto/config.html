@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>练习配置手顺 · SAP S/4HANA SD 受注生産（MTO）实战训练站</title>
+<meta name="description" content="SD 受注生産（MTO）的练习配置手顺 C0〜C17：品目マスタ、明細カテゴリグループ、明細カテゴリ（VOV7/VOV4）、納入日程行カテゴリ（VOV6/VOV5）、所要量クラス／所要量タイプ（OVZG/OVZI）、計画方針グループ（OPPJ/OPPS）、在庫確認、出荷・請求・自動転記，含输入值、确认方法与 Public Cloud 差异对照。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/mto.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MTO</span><span class="txt">SD 受注生産 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a class="active" href="config.html">配置手顺</a>
+      <a href="handson-1.html">①受注</a>
+      <a href="handson-2.html">②MRP</a>
+      <a href="handson-3.html">③出入库</a>
+      <a href="handson-4.html">④出货</a>
+      <a href="handson-5.html">⑤发展</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 练习配置手顺</div>
+<main class="page"><article>
+
+<h1>练习配置手顺（C0〜C17）</h1>
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。若是想换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 即可一键替换。</div>
+
+<div class="box info"><b class="t">本页怎么用</b>
+每个 STEP 都是「<b>目的 → IMG 路径 / 事务码 → 输入值 → 操作手顺 → 自系统中的确认 → 注意事项 → 练习课题</b>」的固定结构。<br>
+① <b>先确认再新增</b>：和本教程一样的配置通常已经存在，先学会「怎么看到它、怎么读它」，再动手建练习用的 Z 对象；<br>
+② 练习用对象命名约定：<code>Z001</code>（明細カテゴリグループ）<code>ZTAK</code>（明細カテゴリ）<code>ZCP</code>（納入日程行カテゴリ）<code>Z040</code>（所要量クラス，仅在需要时）；<br>
+③ 所有配置改动都记入你的 <b>カスタマイジング依頼</b>，便于练习后回滚；<br>
+④ 标准值随环境不同 —— 每个 STEP 的「确认」栏就是让你在自系统里核对它的方法。
+先读完 <a href="concept.html#chain">概念页的决定链</a> 再动手，效率会高很多。</div>
+
+<div class="toc">
+  <a href="#c0">C0 前提确认</a>
+  <a href="#c1">C1 部品品目</a>
+  <a href="#c2">C2 完成品品目（核心）</a>
+  <a href="#c3">C3 BOM・作業区・作業手順</a>
+  <a href="#c4">C4 価格条件</a>
+  <a href="#c5">C5 明細カテゴリグループ</a>
+  <a href="#c6">C6 明細カテゴリ（VOV7）</a>
+  <a href="#c7">C7 明細カテゴリの割当（VOV4）</a>
+  <a href="#c8">C8 納入日程行カテゴリ（VOV6）</a>
+  <a href="#c9">C9 納入日程行カテゴリの割当（VOV5）</a>
+  <a href="#c10">C10 所要量クラス（OVZG）</a>
+  <a href="#c11">C11 所要量タイプとその決定（OVZG/OVZI）</a>
+  <a href="#c12">C12 計画方針グループ（OPPJ/OPPS）</a>
+  <a href="#c13">C13 在庫確認（ATP）</a>
+  <a href="#c14">C14 MRPタイプ他（PP 側）</a>
+  <a href="#c15">C15 出荷・請求の前提</a>
+  <a href="#c16">C16 自動転記（OBYC）</a>
+  <a href="#cloud">C17 Public Cloud 差异对照</a>
+  <a href="#done">配置完了チェックリスト</a>
+</div>
+
+<h2 id="prep">配置前的准备</h2>
+<p>配置作业会在你的练习系统留下自定义对象。请先确认三件事：<b>①</b> 有可写入的カスタマイジング依頼；<b>②</b> 你的用户能进入 SPRO（<code>SPRO</code> → 「カスタマイジング」→「IMG」）；
+<b>③</b> 练习用的贩卖组织/工厂/得意先/品目编号范围可用。以下每步都会用到 SPRO 的搜索框——<b>直接用事务码跳转比逐层点菜单快</b>，两者都写在手顺里。</p>
+<figure class="gui"><img src="assets/gui/config_prep_1.svg" alt="SPRO の IMG 初期画面。カスタマイジング依頼・販売組織・番号範囲を確認する。" loading="lazy"><figcaption><b class="t">配置前的准备：SPRO（IMG）と前提 3 点</b><span class="tx">SPRO</span><span class="scr">カスタマイジング（IMG）の前提確認</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 依頼を指定しないと保存できない（未指定なら最初に作る）</li><li><b>2</b> ① 依頼 ② SPRO 権限 ③ 番号範囲 —— この 3 点だけ先に確認</li></ol><p class="gui-tip">手顺の中の SPRO パスは日本語表記です。環境によってノード名が違う場合があるため、T-code を直接入力するのが速く確実です。</p></figure>
+
+
+
+
+
+
+
+<div class="steph" id="c0"><span class="no">C0</span><h3>前提与环境确认</h3><span class="tc">VA01・BP/XD03・MMNR・VN01</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>避免「练习跑到一半才发现基础组织构造或主数据缺失」。</dd>
+</dl>
+<p><b>输入值 / 确认对象</b></p>
+<pre class="vals">販売組織 1000 / 販売チャネル 10 / 部門 00   （販売エリア）
+プラント 1000 / 出荷プラント 1000
+得意先 1000（受注先・出荷先を兼ねる。得意先マスタに 販売エリアビュー + 出荷先あり）
+品目タイプ FERT（完成品）/ ROH・HAWA（部品）の品目番号範囲が「内部採番」or 有効な外部番号
+受注 / 出荷 / 請求 / 製造指図 の 番号範囲に空きがある</pre>
+<ol class="steps">
+  <li><b>贩卖区域</b>：<code>VA01</code> → 初期画面で 販売組織 <code>1000</code> / 販売チャネル <code>10</code> / 部門 <code>00</code> が選べること（选不到 → 组织构造分配未做）。按「受注伝票」进入后不必保存，返回即可。</li>
+  <li><b>得意先</b>：<code>BP</code>（S/4HANA 的业务合作伙伴）或 <code>XD03</code> → 得意先 <code>1000</code>：确认「販売エリア」ビュー（販売組織/チャネル/部門）与「出荷先（船積先）」已建，得意先グループ・支払条件有值。</li>
+  <li><b>品目番号範囲</b>：<code>MMNR</code>（品目マスタの番号範囲）确认 <code>FERT</code> 的区间可用；<code>VN01</code> 确认受注明細范围可用。</li>
+  <li><b>权限</b>：能否执行 <code>SPRO</code>、<code>MM01</code>、<code>VA01</code>、<code>MIGO</code>、<code>CO01/CO08</code>、<code>VL01N</code>、<code>VF01</code>。做不到的事务码提前记录，练习时改用「照着手顺读结果」的方式。</li>
+</ol>
+<div class="box warn"><b class="t">确认（自系统）</b>
+<code>VA01</code> 能进入输入画面并看到 販売エリア = 1000/10/00，即前提基本满足。<b>不要</b>在 C0 阶段就保存受注；真正的受注在 <a href="handson-1.html">练习①</a> 做。</div>
+<figure class="gui"><img src="assets/gui/config_s02_1.svg" alt="VA01 の初期画面。販売伝票タイプ OR と販売組織 1000・販売チャネル 10・部門 00 の販売エリアを入力する。" loading="lazy"><figcaption><b class="t">C0 前提確認：販売エリア（1000/10/00）が選べること</b><span class="tx">VA01</span><span class="scr">受注伝票の登録：初期画面</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 販売エリアはここで選べる必要がある。選べない＝組織構造の割当が未完了で、以降の全練習が止まります</li><li><b>2</b> 受注日は納期計算の起点。練習では今日を使う（納期は +30 日）</li></ol><p class="gui-tip">配置前の準備：SPRO（カスタマイジング）が開けること、カスタマイジング依頼に書き込めることを先に確認します。自システムでの確認：MMNR（品目番号範囲）・VN01（受注明細番号範囲）に空きがあること。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s02_2.svg" alt="XD03 の得意先照会。得意先 1000 の会社コードと販売組織 1000・販売チャネル 10・部門 00 のビューを開く。" loading="lazy"><figcaption><b class="t">C0 前提確認：得意先 1000 の販売エリアビューと出荷先</b><span class="tx">XD03</span><span class="scr">得意先マスタ 照会</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 販売エリアビューが無いと VA01 で得意先を入力した瞬間にエラーになります</li><li><b>2</b> 出荷先（船積先）が未登録だと VL01N が出荷伝票を作れません（未指定なら受注先が使われる）</li></ol><p class="gui-tip">自システムでの確認：BP（S/4HANA では業務パートナ）でも同じ得意先を表示できます。練習① までの前提は「VA01 が初期画面まで進めること」だけです。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c1"><span class="no">C1</span><h3>部品品目（ZMTO-RM01 / ZMTO-RM02）</h3><span class="tc">MM01 / MM02</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>让完成品有可出库的部品（BOM 组件）。本教程为了让流程聚焦在受注生産，<b>用初期库存充足部品需求</b>（部品不跑采购），购买流程留作发展课题。</dd>
+</dl>
+<p><b>输入值</b></p>
+<table class="tbl wide">
+<tr><th>项目</th><th>ZMTO-RM01（板材）</th><th>ZMTO-RM02（紧固件）</th><th>视图</th></tr>
+<tr><td>品目タイプ / 単位</td><td><code>ROH</code> / PC</td><td><code>HAWA</code> / PC</td><td>基本データ1</td></tr>
+<tr><td>品目グループ</td><td>任意（例 001）</td><td>任意</td><td>基本データ1</td></tr>
+<tr><td>購買グループ / 調達タイプ</td><td>001 / 外部調達</td><td>001 / 外部調達</td><td>購買</td></tr>
+<tr><td>MRPタイプ / ロットサイズ / 手配タイプ</td><td><code>PD</code> / <code>EX</code> / <code>F</code></td><td><code>PD</code> / <code>EX</code> / <code>F</code></td><td>MRP1</td></tr>
+<tr><td>評価クラス / 価格管理</td><td>（例）3000 / <code>S</code></td><td>（例）3000 / <code>S</code></td><td>会計1</td></tr>
+<tr><td>初期在庫（練習用）</td><td><code>100</code> PC（移動タイプ 561 で入庫）</td><td><code>500</code> PC（561）</td><td><code>MIGO</code>/<code>MB1C</code></td></tr>
+</table>
+<ol class="steps">
+  <li><code>MM01</code> → 品目 <code>ZMTO-RM01</code> → 産業コード（例 <code>M</code>）→ 品目タイプ <code>ROH</code> → ビュー选择：<b>基本データ1・2 / 購買 / MRP1〜4 / 会計1 / 原価計算1 / プラント在庫 / 保管場所</b> → プラント <code>1000</code>、保管場所（例 <code>0001</code>）。</li>
+  <li>各视图按上表输入，<b>戦略グループは空（見込生産品と同じ扱いで構わない）</b>、MRP4 の 個別/包括所要量 も空のままで OK（部品は受注在庫にしない）。</li>
+  <li>保存 → 同様に <code>ZMTO-RM02</code> を登録。</li>
+  <li>初期库存：<code>MIGO</code>（または <code>MB1C</code>）→ 移動タイプ <code>561</code>（初期在庫投入）→ 品目/プラント/保管場所/数量を入力 → 転記。练习环境也允许用 <code>MBST</code> 做测试用途的取消，出错时不必慌。</li>
+</ol>
+<div class="box info"><b class="t">确认（自系统）</b>
+<code>MMBE</code> → 品目 <code>ZMTO-RM01</code> / プラント <code>1000</code>：非限制使用（自由在庫）100 PC。<code>MB52</code> 也能看到这一行。</div>
+<div class="task"><b class="t">练习课题</b>为什么部品不设受注生産？——（答）部品是共用材，按 MTS 备库更经济；MTO 只要求「完成品」按单生产。若部品也要按单，才需要在 BOM 组件上设特别库存/个数（发展课题）。</div>
+<figure class="gui"><img src="assets/gui/config_s03_1.svg" alt="MM01 の初期画面。部品 ZMTO-RM01 を品目タイプ ROH・プラント 1000・保管場所 0001 で登録する。" loading="lazy"><figcaption><b class="t">C1 部品品目：品目タイプ ROH / プラント 1000 で登録を開始</b><span class="tx">MM01</span><span class="scr">品目マスタ 登録：初期画面（部品 ZMTO-RM01）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 部品は ROH（原材料）。完成品の FERT と分けておくと番号範囲と所要量の扱いが整理できます</li><li><b>2</b> 部品は受注在庫にしない：戦略グループ・個別/包括所要量は空のままで OK（見込生産品と同じ扱い）</li></ol><p class="gui-tip">自システムでの確認：ZMTO-RM02 は HAWA（商品）で登録します。ビューは 基本データ1・2 / 購買 / MRP1〜4 / 会計1 / 原価計算1 / プラント在庫 / 保管場所。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s03_2.svg" alt="MB1C の初期在庫投入画面。移動タイプ 561 で部品 ZMTO-RM01 を 100 PC 投入する。" loading="lazy"><figcaption><b class="t">C1 部品の初期在庫：ZMTO-RM01 100 PC（RM02 は 500 PC）</b><span class="tx">MB1C</span><span class="scr">初期在庫投入（移動タイプ 561）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 561 は「初期在庫投入」専用。受注在庫 E ではなく自由在庫（プラント在庫）に入ります</li><li><b>2</b> 部品在庫は 261（指図への出庫）で減ります。練習③ で 100 → 80 PC になります</li></ol><p class="gui-tip">自システムでの確認：MIGO では操作「その他の入庫」＋移動タイプ 561 でも同じことができます。投入後は MMBE / MB52 で 100 PC を確認してください。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c2"><span class="no">C2</span><h3>完成品品目 ZMTO-FG01（本教程最关键的一张主数据）</h3><span class="tc">MM01 / MM02 / MM03</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>三个视图决定 MTO 的成立：<b>MRP3 の戦略グループ <code>20</code></b>（→ 所要量タイプ・所要量クラス）、<b>MRP4 の 個別/包括所要量 = 個別所要量のみ</b>（→ 受注在庫 E）、<b>販売組織2 の 品目カテゴリグループ</b>（→ 明細カテゴリ決定）。</dd>
+</dl>
+<p><b>输入值（品目 ZMTO-FG01 / FERT / PC）</b></p>
+<table class="tbl wide">
+<tr><th>视图</th><th>项目</th><th>值</th><th>为什么</th></tr>
+<tr><td>基本データ1</td><td>品目グループ / 単位</td><td>001 / PC</td><td>—</td></tr>
+<tr><td>販売組織1</td><td>販売組織 / 販売チャネル / 部門</td><td>1000 / 10 / 00</td><td>受注可能な販売エリア</td></tr>
+<tr><td><b>販売組織2</b></td><td><b>品目カテゴリグループ</b></td><td><code>0001</code>（NORM）</td><td>VOV4 の決定キー。练习⑤ で <code>Z001</code> に切り替えて ZTAK を決定させます</td></tr>
+<tr><td>販売組織2</td><td>品目統計グループ / 税区分 / 数量単位</td><td>1 / （例）MWST 0% or 10% / PC</td><td>価格・請求に必要</td></tr>
+<tr><td><b>MRP1</b></td><td><b>MRPタイプ / MRPコントローラ / ロットサイズ</b></td><td><code>PD</code> / 001 / <code>EX</code></td><td>MRP 対象 ＋ 受注数量単位で計画手配を作る</td></tr>
+<tr><td>MRP1</td><td><b>手配タイプ / 特殊調達タイプ</b></td><td><code>E</code>（内製）/ 空</td><td>内製＝製造指図。空にすると計画手配が生成されません</td></tr>
+<tr><td>MRP1</td><td>バックフラッシュ</td><td>（練習用）<code>1</code> or 空</td><td>ON にすると CO11N で部品が自動出庫（练习③ 的选项）</td></tr>
+<tr><td>MRP2</td><td>伝票タイプ（指図タイプ）</td><td><code>PP01</code></td><td>製造指図タイプ</td></tr>
+<tr><td>MRP2</td><td>入庫処理時間 / 安全在庫</td><td>0 / 0</td><td>简化纳期计算（教学用）</td></tr>
+<tr><td><b>MRP3</b></td><td><b>戦略グループ / 在庫確認</b></td><td><code>20</code> / <code>02</code></td><td>受注生産（組立指図なし）＋ 個別所要量ベースの ATP</td></tr>
+<tr><td><b>MRP4</b></td><td><b>個別/包括所要量</b></td><td><code>1</code>（個別所要量のみ）</td><td><b>受注在庫 E を成立させる必須項目</b></td></tr>
+<tr><td>会計1</td><td>評価クラス / 価格管理</td><td>（例）7920 / <code>S</code></td><td>受注在庫が評価される場合の金額の出どころ</td></tr>
+<tr><td>原価計算1</td><td>原価計算ロットサイズ / 原価計算バリアント</td><td>（例）<code>EX</code> / 标准 PP 用</td><td>指図の標準原価（差异计算的基准）</td></tr>
+</table>
+<ol class="steps">
+  <li><code>MM01</code> → <code>ZMTO-FG01</code> / 産業コード <code>M</code> / 品目タイプ <code>FERT</code> → 视图全选（基本1・2 / 購買（空でも可）/ MRP1〜4 / 会計1 / 原価計算1 / プラント在庫 / 販売組織1・2）。</li>
+  <li>按上表逐视图输入。碰到「項目が見つからない」 → 该视图未选或字段被隐藏，检查视图选择与字段状态（<code>OMS9</code> 等）。</li>
+  <li>保存 → <code>MM03</code> 复查三个核心字段：<b>販売組織2 品目カテゴリグループ / MRP3 戦略グループ / MRP4 個別・包括所要量</b>。</li>
+</ol>
+
+
+<div class="box info"><b class="t">确认（自系统）</b>
+① <code>MM03</code> → MRP4：個別/包括所要量 = 1（個別所要量のみ）。<br>
+② <code>MM03</code> → MRP3：戦略グループ = 20。用 <code>OPPJ</code> 打开戦略グループ 20，确认它指向的<b>所要量タイプ</b>（通常 <code>KE</code>）与 計画方針（受注生産）。<br>
+③ <code>OPPS</code> 显示計画方針 <code>20</code>，里面能看到所要量タイプ的分配。<br>
+若你系统里的 20 定义与本文不同（例如指向不同所要量タイプ），<b>以你系统的为准</b>，并在练习中记录差异——这正是本教程强调的「以机制为准」。</div>
+<div class="box warn"><b class="t">常见搭配错误</b>
+① MRPタイプ留空或 <code>ND</code> → MRP 不生成计划手配；② 手配タイプ空 → 同上；③ MRP4 個別/包括所要量 空 → 需求成立但<b>入不了受注在庫</b>；④ 戦略グループ空 → 走 <code>OVZI</code> 的兜底决定（明細カテゴリ + MRPタイプ），受注在庫往往不成立。</div>
+<figure class="gui"><img src="assets/gui/config_s04_1.svg" alt="MM01 の初期画面。完成品 ZMTO-FG01 を品目タイプ FERT・プラント 1000 で登録する。" loading="lazy"><figcaption><b class="t">C2 完成品：品目タイプ FERT / プラント 1000 で登録を開始</b><span class="tx">MM01</span><span class="scr">品目マスタ 登録：初期画面（完成品 ZMTO-FG01）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> FERT 以外だと受注在庫の対象になりません。MTO の完成品はここが起点</li><li><b>2</b> ビューは 基本1・2 / 購買 / MRP1〜4 / 会計1 / 原価計算1 / プラント在庫 / 販売組織1・2 を選択</li></ol><p class="gui-tip">自システムでの確認：品目タイプ FERT に受注在庫の可否が設定されているかはカスタマイジング（品目タイプ）で確認します。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s04_2.svg" alt="MM02 の MRP3 ビュー。完成品 ZMTO-FG01 に戦略グループ 20・在庫確認 02 を設定する。" loading="lazy"><figcaption><b class="t">C2 完成品の MRP3：戦略グループ 20 → 所要量タイプ KE の入口</b><span class="tx">MM02</span><span class="scr">品目マスタ 変更：MRP 3 ビュー（戦略グループ 20）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 戦略グループ 20 が MTO の入口。ここから所要量タイプ KE（＝所要量クラス 040）が決まります</li><li><b>2</b> 在庫確認 02 は個別所要量ベースの ATP（受注在庫と自分の入庫だけで回答）</li></ol><p class="gui-tip">自システムでの確認：OVZG で 020 → KE → 040 の対応を確認できます（C10/C11）。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s04_3.svg" alt="MM02 の MRP4 ビュー。個別/包括所要量に 1（個別所要量のみ）を設定する。" loading="lazy"><figcaption><b class="t">C2 完成品の MRP4：個別/包括所要量 1（個別所要量のみ）＝受注在庫 E の必須項目</b><span class="tx">MM02</span><span class="scr">品目マスタ 変更：MRP 4 ビュー（個別/包括所要量 = 1）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> ここが 1 でないと計画手配が自由在庫（プラント在庫）で生成され、MTO が崩れます</li><li><b>2</b> 空（包括所要量）のままにすると受注在庫 E は成立しません</li></ol><p class="gui-tip">自システムでの確認：MM03 で 販売組織2 の品目カテゴリグループ（0001 → 練習⑤ で Z001）と合わせて3点セットで見直してください。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c3"><span class="no">C3</span><h3>BOM・作業区・作業手順（PP 主数据）</h3><span class="tc">CS01・CR01・CA01</span></div>
+<p><b>输入值</b></p>
+<pre class="vals">BOM（CS01）          : 親品目 ZMTO-FG01 / プラント 1000 / 用途 1（生産）
+                       明細 0010  ZMTO-RM01  数量 2 PC
+                       明細 0020  ZMTO-RM02  数量 8 PC
+作業区（CR01）        : ZMTO_WC01「組立作業区」（プラント 1000 / 原価センタ 任意 / 能力 8H/日）
+作業手順（CA01）      : 品目 ZMTO-FG01 / プラント 1000 → 工程 0010「組立」/
+                       作業区 ZMTO_WC01 / 標準時間 1 H / 数量単位 PC</pre>
+<ol class="steps">
+  <li><code>CS01</code>：親品目 <code>ZMTO-FG01</code>、プラント <code>1000</code>、BOM 用途 <code>1</code>、有効日 = 今日 → 明細 2 行输入部品与数量 → 保存（会要求番号，通常内部採番）。</li>
+  <li><code>CR01</code>：作業区 <code>ZMTO_WC01</code> → プラント <code>1000</code> → 基本データ（作業区カテゴリ 0001）→ 能力（Cap. 8H）→ 保存。</li>
+  <li><code>CA01</code>：品目 <code>ZMTO-FG01</code> / プラント <code>1000</code> → 工程 0010、作業区 <code>ZMTO_WC01</code>、作業内容「組立」、標準時間 1H → 保存。</li>
+  <li>确认：<code>CS03</code>（BOM 表示）、<code>CA03</code>（手順表示）能正常打开。</li>
+</ol>
+<div class="box info"><b class="t">为什么需要</b>
+MRP 生成计划手配时，会按 BOM 展开部品需求（→ 指图的部品预约 RESB）；生产订单会按作业手順/作业区计算工序与标准工时（→ 差异的计算基础）。
+没有 BOM，生产订单能建但没有部品需求；没有作业手順，标准工时与差异就没有基准。<b>教学上允许简化，但请明白简化了什么。</b></div>
+<figure class="gui"><img src="assets/gui/config_s05_1.svg" alt="CS01 の初期画面。親品目 ZMTO-FG01・プラント 1000・BOM 用途 1 で BOM を登録する。" loading="lazy"><figcaption><b class="t">C3 BOM 登録：親品目 ZMTO-FG01・用途 1（生産）</b><span class="tx">CS01</span><span class="scr">BOM 登録：初期画面（親品目 ZMTO-FG01 / プラント 1000）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> MRP は BOM を展開して部品の計画手配・予約を作ります。BOM が無いと部品需要が出ません</li><li><b>2</b> 手配タイプ E（内製）でも、作業手順が無いと標準時間と差異の基準がありません</li></ol><p class="gui-tip">自システムでの確認：作業区は CR01（例 ZMTO_WC01 / プラント 1000・能力 8H）、作業手順は CA01（品目 ZMTO-FG01 → 工程 0010「組立」/ 作業区 ZMTO_WC01 / 標準時間 1H）。CS03・CA03 で表示確認。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s05_2.svg" alt="CS01 の BOM 明細一覧。部品 ZMTO-RM01 を 2 PC、ZMTO-RM02 を 8 PC 登録した状態。" loading="lazy"><figcaption><b class="t">C3 BOM 明細：ZMTO-RM01 × 2 PC、ZMTO-RM02 × 8 PC</b><span class="tx">CS01</span><span class="scr">BOM 変更：明細（用途 1）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 部品数量は受注数量に比例。誤ると CO03 の構成品目と 261 出庫数量がずれます</li></ol><p class="gui-tip">自システムでの確認：CS03 で BOM、CA03 で作業手順を表示できます。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c4"><span class="no">C4</span><h3>価格条件（让练习④ 的请求有金额）</h3><span class="tc">V/06・V/08・VK11</span></div>
+<p><b>输入值</b></p>
+<pre class="vals">条件タイプ（V/06）  : PR00（標準の価格条件タイプ。確認のみ）
+計算手続（V/08）    : 標準の受注用計算手続を使用（確認のみ）
+条件レコード（VK11）: 条件タイプ PR00 / 販売組織 1000 / 販売チャネル 10 / 得意先 1000
+                      品目 ZMTO-FG01 / 金額 12,000 JPY / 1 PC / 有効期間 今日〜+1年</pre>
+<ol class="steps">
+  <li><code>VK11</code> → 条件タイプ <code>PR00</code> → 得意先（または品目）レベルを选择 → 上表の値を输入 → 保存。</li>
+  <li>确认：<code>VK13</code>（条件レコードの照会）→ 得意先 <code>1000</code> / 品目 <code>ZMTO-FG01</code> で 12,000 JPY が見えること。</li>
+</ol>
+<div class="box warn"><b class="t">别省这一步</b>
+受注保存时价格条件不会因此报错（价格 0 也能保存），但到了 <a href="handson-4.html">练习④</a> 请求金额为 0 时，排查成本远高于现在建条件记录。会计汇率/税区分（販売組織2 の税区分 <code>MWST</code>）也建议一并确认。</div>
+<figure class="gui"><img src="assets/gui/config_s06_1.svg" alt="VK11 の条件レコード登録画面。条件タイプ PR00 で得意先 1000・品目 ZMTO-FG01 に 12,000 JPY / 1 PC を登録する。" loading="lazy"><figcaption><b class="t">C4 価格条件：PR00 / 得意先 1000 / 品目 ZMTO-FG01 / 12,000 JPY</b><span class="tx">VK11</span><span class="scr">条件レコードの登録</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> この条件レコードが無いと練習④ の請求金額が 0 になります（受注は保存できてしまうので後で困る）</li><li><b>2</b> 得意先レベルで登録すると、どの受注でも同じ値を引けます</li></ol><p class="gui-tip">自システムでの確認：条件タイプの計算手続は V/08、条件タイプ自体の定義は V/06 です。税区分は 販売組織2（MM02）の設定に従います。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s06_2.svg" alt="VK13 の条件レコード照会一覧。PR00 / 得意先 1000 / 品目 ZMTO-FG01 の 12,000 JPY が表示されている。" loading="lazy"><figcaption><b class="t">C4 確認：VK13 で 12,000 JPY が見えること</b><span class="tx">VK13</span><span class="scr">条件レコード 照会</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 見えないときは有効期間と販売エリアの指定を確認してください</li></ol><p class="gui-tip">自システムでの確認：税区分（例 MWST 10%）は MM02 の販売組織2 で決まります。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c5"><span class="no">C5</span><h3>明細カテゴリグループの確認と追加</h3><span class="tc">SPRO（IMG）</span></div>
+<dl class="kv">
+  <dt>IMG 路径（日本語）</dt>
+  <dd><b>販売管理 &gt; 販売伝票 &gt; 販売伝票明細 &gt; 定義: 明細カテゴリグループ</b></dd>
+  <dt>目的</dt>
+  <dd>明細カテゴリ決定 4 键中的 1 键（来自品目マスタ 販売組織2 的字段）。这里定义的是「组」，本身的字段只有 キー + 説明。</dd>
+</dl>
+<ol class="steps">
+  <li>进入上述 IMG 节点（或 SPRO 搜索框输入「明細カテゴリグループ」）。</li>
+  <li>先<b>看现状</b>：记录标准里已有的键（通常可见 <code>0001</code> 标准、<code>0002</code>、<code>0004</code>，以及 <code>NORM</code>/<code>DIEN</code>/<code>LEIS</code>/<code>ERLA</code>/<code>LUMF</code> 这类的文字键）。<b>你系统里到底有哪些，以这一屏为准。</b></li>
+  <li>新增一行：キー <code>Z001</code>、説明「受注生産品（練習用）」。保存到你的カスタマイジング依頼。</li>
+</ol>
+<div class="box info"><b class="t">背景知识（避免踩坑）</b>
+标准里常见的组：<code>NORM</code>（标准品）、<code>DIEN</code>（サービス）、<code>LEIS</code>（納入関連サービス）、<code>ERLA</code>（設定可能製品ヘッダ）、<code>LUMF</code>（設定可能製品の構成品目）。
+<b>SAP 并没有一个专门叫「受注生産」的标准组</b>；普通 MTO 用 <code>0001/NORM</code> 也能实现（受注在庫 E 由 MRP3/MRP4 与所要量クラス决定）。
+要靠明細カテゴリ来区分受注生産明细时，通常就是像我们这样<b>自建一个组</b>。</div>
+<figure class="gui"><img src="assets/gui/config_s07_1.svg" alt="IMG のツリーメニュー。販売管理 &gt; 販売伝票 &gt; 販売伝票明細 配下の「定義: 明細カテゴリグループ」を開いた状態。" loading="lazy"><figcaption><b class="t">C5 IMG パス：販売管理 &gt; 販売伝票 &gt; 販売伝票明細 &gt; 定義: 明細カテゴリグループ</b><span class="tx">SPRO</span><span class="scr">カスタマイジング：IMG</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 明細カテゴリ決定の 4 键の 1 つ（品目マスタ 販売組織2 の品目カテゴリグループ）がここで定義されます</li></ol><p class="gui-tip">自システムでの確認：カスタマイジング依頼（変更要求）に書き込めないと保存時にエラーになります。依頼番号は先に決めておきましょう。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s07_2.svg" alt="明細カテゴリグループの定義一覧。標準のキー（0001/NORM など）と、練習用に追加した Z001 が並ぶ。" loading="lazy"><figcaption><b class="t">C5 明細カテゴリグループ：標準キーを確認し、Z001 を追加</b><span class="tx">SPRO</span><span class="scr">明細カテゴリグループの定義</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> Z001 は練習⑤ で明細カテゴリ ZTAK を決定させるためのキー。品目マスタ 販売組織2 の値をこれに切り替えて使います</li><li><b>2</b> 表示される標準キーは環境で異なります。まず現状を記録してください</li></ol><p class="gui-tip">自システムでの確認：この画面に並ぶキーは環境ごとに違います（標準は 0001/NORM 系）。表の名前（TV*）は SE16N で調べられます。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c6"><span class="no">C6</span><h3>明細カテゴリ的确认与新增 ZTAK</h3><span class="tc">VOV7</span></div>
+<dl class="kv">
+  <dt>IMG 路径</dt>
+  <dd>販売管理 &gt; 販売伝票 &gt; 販売伝票明細 &gt; <b>定義: 明細カテゴリ</b>（事务码 <code>VOV7</code>）</dd>
+  <dt>目的</dt>
+  <dd>决定「这一行明细」的行为：是否定价、是否允许纳期行、是否请求相关、<b>特別在庫区分（E）</b> 等。</dd>
+</dl>
+<ol class="steps">
+  <li><code>VOV7</code> → 输入 <code>TAN</code> → 「詳細」：<b>先读标准</b>。确认以下项目（字段名可能因版本不同，用 F1 看帮助）：<br>
+      ・品目タイプ = 標準品目　・価格設定 = <code>X</code>（標準）　・納入日程行許可 = ON　・請求関連 = ON　・<b>特別在庫 = 空</b>（标准 TAN 不带特在区分）。</li>
+  <li>回退到一览 → 光标放在 <code>TAN</code> → 「<b>コピー（Copy as…）</b>」→ 新キー <code>ZTAK</code>、说明「受注生産明細（練習用）」。</li>
+  <li>在 <code>ZTAK</code> 中按下列值修改并保存：</li>
+</ol>
+<pre class="vals">品目タイプ            : 標準品目（Material と同じ）
+価格設定              : X（標準の価格設定を実施）
+納入日程行許可        : ✓（必须。OFF にすると納期行が作られず MRP に需要が届かない）
+請求関連              : ✓
+特別在庫（SOBKZ）     : E  ← 本练习的核心：明細が受注在庫に紐づく
+購買関連 / 構造範囲   : 空 / 空（BOM 参照は使わない）
+明細テキスト決定手続  : 任意（例 0001）
+完了ルール            : 空</pre>
+<div class="box info"><b class="t">确认（自系统）</b>
+① <code>VOV7</code> → <code>ZTAK</code> → 詳細 を再表示：特別在庫 = <code>E</code> になっている；<br>
+② <code>SE16N</code> 里可以核对底层表 <code>TVAP</code>（明細カテゴリ）的 <code>SOBKZ</code> 字段是否为 E（TVAP 确实有 SOBKZ「Special Stock Indicator」字段）；<br>
+③ 标准 <code>TAK</code> 是否在你系统里存在？——很多系统没有。<b>SAP Note 2708455 明确说「TAK 不是 SAP 标准定义」</b>，所以本文用自建 <code>ZTAK</code>，避免依赖不存在的标准对象。</div>
+<div class="box warn"><b class="t">术语提醒</b>
+日文「特別在庫」/ 中文「特殊库存」在明細カテゴリ画面里控制的是 <b>VBAP-SOBKZ</b>（受注明細的特别库存区分）。
+受注在庫的「数量」本身落在 <code>MSKA</code>（特别库存数量表），「需求」落在 <code>VBBE</code>。</div>
+<figure class="gui"><img src="assets/gui/config_s08_1.svg" alt="VOV7 の明細カテゴリ一覧。標準 TAN と、コピーして作成した ZTAK が並んでいる。" loading="lazy"><figcaption><b class="t">C6 明細カテゴリ：標準 TAN をコピーして ZTAK を作る</b><span class="tx">VOV7</span><span class="scr">明細カテゴリの定義：一覧</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> コピー元は標準 TAN。ZTAK はここから作ると他の項目を壊しません</li></ol><p class="gui-tip">自システムでの確認：表 TVAP（明細カテゴリ）の SOBKZ フィールドが特別在庫区分です。SE16N で ZTAK を検索して E を確認できます。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s08_2.svg" alt="VOV7 の ZTAK 詳細画面。納入日程行許可と請求関連を ON、特別在庫に E を設定した状態。" loading="lazy"><figcaption><b class="t">C6 ZTAK 詳細：納入日程行許可 ON・請求関連 ON・特別在庫 E</b><span class="tx">VOV7</span><span class="scr">明細カテゴリの定義：ZTAK 詳細（特別在庫 E）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 特別在庫 E ＝ この明細の在庫が受注在庫（得意先在庫）になる、という宣言です</li><li><b>2</b> 納入日程行許可を OFF にすると納期行が作られず、MRP に需要が届きません</li></ol><p class="gui-tip">自システムでの確認：SE16N → TVAP で SOBKZ = E を確認。日中は「特別在庫」、英語では Special Stock Indicator です。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c7"><span class="no">C7</span><h3>明細カテゴリの割当（4 键决定）</h3><span class="tc">VOV4</span></div>
+<dl class="kv">
+  <dt>IMG 路径</dt>
+  <dd>販売管理 &gt; 販売伝票 &gt; 販売伝票明細 &gt; <b>明細カテゴリの割当</b>（<code>VOV4</code>）</dd>
+  <dt>决定キー（4 键）</dt>
+  <dd>① 販売伝票タイプ（<code>OR</code>）② 品目カテゴリグループ（品目マスタ 販売組織2 = <code>Z001</code>）③ 用途（明細用途，本例 空）④ 上位明細の明細カテゴリ（本例 空）</dd>
+</dl>
+<ol class="steps">
+  <li><code>VOV4</code> → 进入后先<b>读标准</b>：你会看到类似 <span class="mono">OR + NORM + （空）+（空） → TAN</span> 这样的行。理解「4 个字段都是键，空值也参与匹配」。</li>
+  <li>「新規エントリ（New Entries）」→ 输入：<br>
+     ・販売伝票タイプ <code>OR</code>　② 品目カテゴリグループ <code>Z001</code>　③ 用途 空　④ 上位明細 空 → 明細カテゴリ 自动提案 = <code>ZTAK</code>。</li>
+  <li>同一行的「手動選択可能な明細カテゴリ（代替明細カテゴリ）」栏里，把 <code>TAN</code> 也加上（练习时便于手动切换比较）。</li>
+  <li>保存。</li>
+</ol>
+<div class="box info"><b class="t">确认（自系统）</b>
+① <code>VOV4</code> 中能看到新行；② <b>实测才是硬道理</b>：把品目 <code>ZMTO-FG01</code> 的品目カテゴリグループ在 <code>MM02</code> 改成 <code>Z001</code> → 新建一张受注，明细的明細カテゴリ应自动变成 <code>ZTAK</code>（见 <a href="handson-5.html">练习⑤ 课题</a>）；
+③ 若要退回标准做法，把品目改回 <code>0001</code> 即可（标准 <code>OR + NORM → TAN</code> 仍有效）。</div>
+<figure class="gui"><img src="assets/gui/config_s09_1.svg" alt="VOV4 の明細カテゴリ割当表。標準の OR + NORM → TAN の行と、追加した OR + Z001 → ZTAK の行が並ぶ。" loading="lazy"><figcaption><b class="t">C7 VOV4：OR + Z001 → 明細カテゴリ ZTAK を決定</b><span class="tx">VOV4</span><span class="scr">明細カテゴリの割当（4 键決定）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 品目マスタ 販売組織2 の品目カテゴリグループが Z001 の品目だけが ZTAK を引きます</li><li><b>2</b> 代替明細カテゴリに TAN を入れておくと、練習中に手で切り替えて比較できます</li></ol><p class="gui-tip">自システムでの確認：標準側の組み合わせ（OR + NORM → TAN など）は環境により異なります。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s09_2.svg" alt="MM02 の販売組織2ビュー。品目カテゴリグループを 0001 から Z001 に変更する画面。" loading="lazy"><figcaption><b class="t">C7 実測の準備：品目 ZMTO-FG01 の品目カテゴリグループを 0001 → Z001 に切り替える</b><span class="tx">MM02</span><span class="scr">品目マスタ 変更：販売組織 2（品目カテゴリグループ）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> ここを Z001 にすると、次に作る受注の明細カテゴリが自動で ZTAK になります（練習⑤ の課題）</li><li><b>2</b> 元に戻すときは 0001 に戻すだけ。標準の OR + NORM → TAN は残っています</li></ol><p class="gui-tip">自システムでの確認：変更は新規明細にのみ効きます。既存受注明細の明細カテゴリは変わりません。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c8"><span class="no">C8</span><h3>納入日程行カテゴリ的确认与新增 ZCP</h3><span class="tc">VOV6</span></div>
+<dl class="kv">
+  <dt>IMG 路径</dt>
+  <dd>販売管理 &gt; 販売伝票 &gt; 販売伝票明細 &gt; <b>定義: 納入日程行カテゴリ</b>（<code>VOV6</code>）</dd>
+  <dt>目的</dt>
+  <dd>纳期行是「受注需求进入 MRP 的入口」：<b>所要量転送</b> 决定 MRP 是否看得到；<b>在庫確認（ATP）</b> 决定纳期确认；移动タイプ/購買発注 相关则决定后续物料动作。</dd>
+</dl>
+<ol class="steps">
+  <li><code>VOV6</code> → 逐一打开 <code>CN</code>、<code>CP</code>，比较这两个标准纳期行类别的项目。把差别记下来（例：<code>CN</code> 偏标准受注（含在庫確認），<code>CP</code> 常被用于「MRP 関連あり・在庫確認なし」的受注纳期）。<b>实际字段值以你系统为准，用 F1 看每个字段的帮助。</b></li>
+  <li>复制 <code>CP</code> → 新键 <code>ZCP</code>、说明「受注生産用納入日程行（練習用）」，按下列要点确认/设置：</li>
+</ol>
+<pre class="vals">所要量転送（BEDSD）      : ON  ← 受注の需要を MRP に渡す（OFF だと MD04 に何も出ない）
+                          ※ 選択肢に「同時に組立指図を開始」がある場合、戦略 82（組立処理）ではそれを選ぶ
+在庫確認（ATPPR）        : OFF（本练习首要目标是 MRP 需求传递）／想同时练 ATP 则 ON
+納入関連（LFREL）        : ✓（出荷対象）
+購買発注関連（EBANF 等） : 空（内製のため。外注/第三社処理の練習時のみ ON）
+移動タイプ（BWART）      : 空（受注在庫の入出庫は指図側で制御）
+所要量タイプ（BDART）    : 空  ← 空にすると「戦略グループ／OVZI」による自動決定が効く</pre>
+<div class="box info"><b class="t">确认（自系统）</b>
+① <code>SE16N</code> → <code>TVEP</code>（納入日程行カテゴリの表）→ 输入 <code>ZCP</code>，看 <code>BEDSD</code> / <code>ATPPR</code> / <code>BDART</code> 的值；<br>
+② 用 <code>VOV6</code> 的 F1 逐一确认字段含义——这比背值更有用（考试与现场都靠它）。</div>
+<div class="box warn"><b class="t">最容易出错的一步</b>
+「所要量転送」被关掉 → 受注保存成功、纳期行也有，但 <b>MD04 里只有受注行、没有需求行、MRP 不动</b>。这是 MTO 练习中最常见的第一个故障，排障流程见 <a href="handson-5.html#trouble">故障对照表</a>。</div>
+<figure class="gui"><img src="assets/gui/config_s10_1.svg" alt="VOV6 の納入日程行カテゴリ一覧。標準の CN・CP と、追加した ZCP が並ぶ。" loading="lazy"><figcaption><b class="t">C8 納入日程行カテゴリ：標準 CN / CP を比較して ZCP を作る</b><span class="tx">VOV6</span><span class="scr">納入日程行カテゴリの定義：一覧</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> ZCP は「所要量転送 ON・在庫確認 OFF」で受け需求を MRP に渡すのが目的です</li></ol><p class="gui-tip">自システムでの確認：表 TVEP（納入日程行カテゴリ）。SE16N で ZCP の BEDSD / ATPPR / BDART を見られます。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s10_2.svg" alt="VOV6 の ZCP 詳細画面。所要量転送を ON、在庫確認を OFF、所要量タイプを空にした状態。" loading="lazy"><figcaption><b class="t">C8 ZCP 詳細：所要量転送 ON・在庫確認 OFF・所要量タイプは空（戦略グループに任せる）</b><span class="tx">VOV6</span><span class="scr">納入日程行カテゴリの定義：ZCP 詳細（所要量転送 ON）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 所要量転送を OFF にすると、受注は保存できても MD04 に需要が出ず MRP が動きません（最頻出のつまずき）</li><li><b>2</b> 所要量タイプを空にすると、戦略グループ 20 からの自動決定が効きます</li></ol><p class="gui-tip">自システムでの確認：SE16N → TVEP で BEDSD（所要量転送）・ATPPR（在庫確認）・BDART（所要量タイプ）の値を確認できます。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c9"><span class="no">C9</span><h3>納入日程行カテゴリの割当（2 键决定）</h3><span class="tc">VOV5</span></div>
+<dl class="kv">
+  <dt>IMG 路径</dt>
+  <dd>販売管理 &gt; 販売伝票 &gt; 販売伝票明細 &gt; <b>納入日程行カテゴリの割当</b>（<code>VOV5</code>）</dd>
+  <dt>决定キー</dt>
+  <dd>① 明細カテゴリ（<code>ZTAK</code>）② MRPタイプ（品目マスタ MRP1 = <code>PD</code>）</dd>
+</dl>
+<ol class="steps">
+  <li><code>VOV5</code> → 先读标准：找到 <code>TAN</code> 的行，看它指向哪个纳期行类别（常见的默认组合会涉及 <code>CN</code>/<code>CP</code>，具体以你系统为准）。</li>
+  <li>新增：明細カテゴリ <code>ZTAK</code> + MRPタイプ <code>PD</code> → 納入日程行カテゴリ <code>ZCP</code>。保存。</li>
+  <li>顺便记录：若同一品目将来改用别的 MRP タイプ（如 <code>VB</code>），需要在 VOV5 里补对应行，否则纳期行会取到默认或空白类别。</li>
+</ol>
+<div class="box info"><b class="t">确认（自系统）</b>
+受注明细保存后，在 <code>VA03</code> → 明細 → 納入日程行 里确认用到的是 <code>ZCP</code>（而不是标准 <code>CN</code>）——这就是 C6/C7/C8/C9 四步配置的成果。</div>
+<figure class="gui"><img src="assets/gui/config_s11_1.svg" alt="VOV5 の納入日程行カテゴリ割当表。明細カテゴリ ZTAK と MRPタイプ PD の組み合わせに ZCP が割り当てられている。" loading="lazy"><figcaption><b class="t">C9 VOV5：明細カテゴリ ZTAK + MRPタイプ PD → 納期行カテゴリ ZCP</b><span class="tx">VOV5</span><span class="scr">納入日程行カテゴリの割当（2 键決定）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 受注明細が ZTAK なら納期行は ZCP になる。この 2 段の決定が C6〜C9 の成果です</li></ol><p class="gui-tip">自システムでの確認：VA03 → 明細 → 納入日程行で、実際に使われた納入日程行カテゴリが ZCP かどうかを確認します。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c10"><span class="no">C10</span><h3>所要量クラス的确认（MTO 的开关面板）</h3><span class="tc">OVZG</span></div>
+<dl class="kv">
+  <dt>IMG 路径</dt>
+  <dd>販売管理 &gt; 基本機能 &gt; 在庫確認と所要量転送 &gt; 所要量転送 &gt; <b>所要量クラスの定義</b>（<code>OVZG</code>）</dd>
+  <dt>目的</dt>
+  <dd>所要量クラス才是真正装开关的地方：所要タイプ（独立/得意先所要量）、<b>個別在庫（E）</b>、MRP への転送、在庫確認、評価区分、原価計算の要否。</dd>
+</dl>
+<ol class="steps">
+  <li><code>OVZG</code> → 显示（或経由 SPRO 进入「所要量クラス」节点）→ 用 F4 或直接输入编号查看 <code>040</code>（受注生産の代表）与 <code>046</code>（評価付販売伝票在庫、S/4HANA Cloud の MTO シナリオで使われる）。</li>
+  <li>逐项读并记录：<br>
+      ・所要タイプ / 計画タイプ（得意先所要量か、独立所要量か）<br>
+      ・<b>個別在庫（特別在庫 E を使うか）</b><br>
+      ・MRP への転送（所要量が MRP に見えるか）<br>
+      ・在庫確認（ATP を起動するか）<br>
+      ・<b>評価区分</b>（評価付 or 評価なし。評価付なら <code>M</code>＝販売伝票参照の個別評価）<br>
+      ・原価計算（<code>B</code>＝自動原価計算/マーキング 等）</li>
+  <li>（可选练习）复制 <code>040</code> → <code>Z040</code>，说明「受注生産（練習用）」，把「個別在庫」与「評価」按你想验证的方向调整后保存；之后在 C11 里让所要量タイプ指向它。</li>
+</ol>
+<div class="box info"><b class="t">确认（自系统）</b>
+① 打开 <code>040</code> 时能否看到「個別在庫」相关项目？这就是受注在庫是否成立的根因之一；<br>
+② 若你的目标是「受注在庫要带金额」，请优先选择带<b>評価区分 M</b> 的所要量クラス（S/4HANA Cloud 的 MTO 用 <code>046</code>）；<br>
+③ 找不到 <code>046</code>？在 <code>OVZG</code> 的列表里用 F4 浏览全部条目——不同版本/激活的解决方案会不一样。</div>
+<div class="box warn"><b class="t">版本差异（重要）</b>
+本教程无法替你断言「你的系统里受注生産用的一定是 040」。标准值会随版本与已激活业务功能变化；<b>能确认的方法、以及确认后该怎么用（例如让品目戦略グループ指向带個別在庫的所要量タイプ）才是要掌握的东西</b>。</div>
+<figure class="gui"><img src="assets/gui/config_s12_1.svg" alt="OVZG の所要量クラス一覧。受注生産の代表 040 と、S/4HANA Cloud の MTO で使われる 046 が並ぶ。" loading="lazy"><figcaption><b class="t">C10 所要量クラス：040（受注生産）と 046（評価付販売伝票在庫）を確認</b><span class="tx">OVZG</span><span class="scr">所要量クラスの定義：一覧</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 所要量クラスが「個別在庫（E）を使うか」「MRP へ転送するか」の実体です</li><li><b>2</b> 受注在庫に金額を持たせるなら 評価区分 M のクラス（Cloud の MTO は 046）</li></ol><p class="gui-tip">自システムでの確認：F4 で全エントリを一覧できます。版本・有効化状況で標準値は変わります。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s12_2.svg" alt="OVZG の所要量クラス 040 詳細画面。個別在庫を使用し、MRP へ転送され、在庫確認が有効な状態。" loading="lazy"><figcaption><b class="t">C10 所要量クラス 040 の属性：個別在庫・MRP 転送・在庫確認・評価区分</b><span class="tx">OVZG</span><span class="scr">所要量クラスの定義：040 詳細</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 個別在庫が「受注在庫 E を使う」の根拠。ここが空だと計画手配が自由在庫に落ちます</li><li><b>2</b> 評価区分が空だと受注在庫に金額が載りません。金額が必要なら 評価区分 M のクラス（Cloud の MTO は 046）を検討します</li></ol><p class="gui-tip">自システムでの確認：受注在庫に金額が欲しい場合は 評価区分 M のクラスを使ってください（Cloud の MTO は 046）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c11"><span class="no">C11</span><h3>所要量タイプ与它的决定顺序</h3><span class="tc">OVZG・OVZI</span></div>
+<dl class="kv">
+  <dt>IMG 路径</dt>
+  <dd>販売管理 &gt; 基本機能 &gt; 在庫確認と所要量転送 &gt; 所要量転送 &gt; <b>所要量タイプの定義</b>（<code>OVZG</code> 同一区域）／
+      <b>明細カテゴリと MRP タイプを使用した所要量タイプの決定</b>（<code>OVZI</code>）</dd>
+  <dt>决定顺序（务必记住）</dt>
+  <dd><b>①</b> 优先看品目マスタの<b>戦略グループ</b>（MTO は <code>20</code> → 所要量タイプ <code>KE</code>）；
+      <b>②</b> 若没有戦略グループ，才用 <code>OVZI</code> 的 <b>明細カテゴリ + MRP タイプ</b> 组合决定。</dd>
+</dl>
+<ol class="steps">
+  <li>打开 <code>KE</code>（受注生産の所要量タイプ）→ 确认它指向的<b>所要量クラス</b>（通常 <code>040</code>）与说明。记录「KE → 040（→ 個別在庫 / 評価の設定）」这一条链。</li>
+  <li>打开 <code>OVZI</code> → 观察标准的决定表：行键是「明細カテゴリ + MRPタイプ」，列里有<b>所要量タイプ</b>与「起点（origin）」类项目（值常见 0/1/2，控制「用这里的所要量タイプ」还是「交给戦略グループ决定」）。</li>
+  <li>找到与 <code>TAN</code> 相关的行，读它指向的所要量タイプ与起点；再找与我们练习相关的行（若 <code>ZTAK</code> 尚未出现在此表中，说明标准路径下它仍会先看戦略グループ——这正是我们要的）。</li>
+  <li>（可选）为 <code>ZTAK</code> 追加一行：明細カテゴリ <code>ZTAK</code> + MRPタイプ <code>PD</code> → 所要量タイプ <code>KE</code>、起点 = 「戦略グループから決定」类。保存。这一行保证即使将来品目没有戦略グループ，也能拿到受注生産用の所要量タイプ。</li>
+</ol>
+<div class="box info"><b class="t">确认（自系统）</b>
+受注保存后，在 <code>VA03</code> 明細詳細 → 納入日程行 的項目里能看到所要量タイプ；再对照 <code>MM03</code> MRP3 の戦略グループ <code>20</code>。两者能串起来（20 → KE）就说明你理解了这一层。<br>
+最直观的验证仍是 <code>MD04</code>：出现「得意先所要量」＝所要量転送成功；其数值与受注数量一致＝所要量タイプ/クラス的传递正确。</div>
+<figure class="gui"><img src="assets/gui/config_s13_1.svg" alt="OVZG の所要量タイプ KE 詳細画面。所要量クラス 040 を参照している。" loading="lazy"><figcaption><b class="t">C11 所要量タイプ KE → 所要量クラス 040 の連鎖</b><span class="tx">OVZG</span><span class="scr">所要量タイプの定義：KE（受注生産）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 戦略グループ 20 → 所要量タイプ KE → 所要量クラス 040 という連鎖が MTO の背骨です</li></ol><p class="gui-tip">自システムでの確認：OVZG の一覧から F4 で所要量タイプを辿れます。KE の値は環境で同じとは限りません。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s13_2.svg" alt="OVZI の所要量タイプ決定表。明細カテゴリと MRPタイプの組み合わせごとに所要量タイプと起点が定義されている。" loading="lazy"><figcaption><b class="t">C11 OVZI：戦略グループが無いときの決定表（ZTAK + PD → KE を追加）</b><span class="tx">OVZI</span><span class="scr">所要量タイプの決定（明細カテゴリ + MRPタイプ）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 起点を「戦略グループから決定」にしておくと、品目に戦略グループがある限りそちらが優先されます</li></ol><p class="gui-tip">自システムでの確認：標準側の行（TAN など）がこの表に無い環境もあります。まず現状の表を読んで記録してください。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c12"><span class="no">C12</span><h3>計画方針グループ／計画方針（20 与 82）</h3><span class="tc">OPPJ・OPPS</span></div>
+<dl class="kv">
+  <dt>IMG 路径</dt>
+  <dd>生産 &gt; 資材所要量計画 &gt; 計画 &gt; 需要管理 &gt; 計画方針 &gt; <b>計画方針の定義</b>（<code>OPPS</code>）／<b>計画方針グループの定義</b>（<code>OPPJ</code>）</dd>
+  <dt>目的</dt>
+  <dd>品目マスタ MRP3 上填的是<b>戦略グループ</b>（可包含多个計画方針），系统据此选出所要量タイプ。MTO 主线用 <code>20</code>；组立处理用 <code>82</code>（练习⑤）。</dd>
+</dl>
+<ol class="steps">
+  <li><code>OPPS</code> → 输入 <code>20</code> → 确认它分配的<b>所要量タイプ</b>（通常 <code>KE</code>）与说明「受注生産（組立指図なし）」。同时确认该方針不使用計画独立所要量（PIR 不参与）。</li>
+  <li><code>OPPJ</code> → 输入 <code>20</code> → 确认它包含的方針（通常就是 20 本身）。</li>
+  <li>查看 <code>OPPS</code> 的 <code>82</code>（組立処理）：标准设定为 所要量タイプ <code>KMFA</code> / 所要量クラス <code>201</code> / 指図タイプ <code>PP04</code>（SAP Help「Special Settings for Production Orders」明确列出）。练习⑤ 会用它做「受注保存 → 指図自动作成」。</li>
+</ol>
+<div class="box info"><b class="t">确认（自系统）</b>
+在 <code>OPPS</code> 用 F4 一览看到 20/25/82 等方針与它们的所要量タイプ对应关系，截图/记录即可（现场要件定义时常被问到「你们用哪个戦略」）。</div>
+<figure class="gui"><img src="assets/gui/config_s14_1.svg" alt="OPPS の計画方針 20 の詳細。所要量タイプ KE が割り当てられている。" loading="lazy"><figcaption><b class="t">C12 計画方針 20：所要量タイプ KE が割り当てられている</b><span class="tx">OPPS</span><span class="scr">計画方針の定義：20（受注生産・組立指図なし）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 品目マスタ MRP3 の戦略グループに 20 を入れると、この方針が選ばれます</li><li><b>2</b> 計画独立所要量（PIR）は使いません。PIR の行が出てきたら設定ミスを疑います</li></ol><p class="gui-tip">自システムでの確認：OPPS で F4 一覧を開き、20 / 25 / 82 などの方針と所要量タイプの対応を記録しておくと現場で役立ちます。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s14_2.svg" alt="OPPS の計画方針 82 の詳細。組立処理用に所要量タイプ KMFA が割り当てられている。" loading="lazy"><figcaption><b class="t">C12 計画方針 82：所要量タイプ KMFA・所要量クラス 201・指図タイプ PP04</b><span class="tx">OPPS</span><span class="scr">計画方針の定義：82（組立処理）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 練習⑤ の発展 1 で使う方針。受注保存と同時に製造指図が作られます</li><li><b>2</b> 1 受注明細 = 1 製造指図が強制されるのが 82 の特徴です</li></ol><p class="gui-tip">自システムでの確認：OPPJ で 計画方針グループ 82 が方針 82 を含むことを確認します。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s14_3.svg" alt="OPPJ の計画方針グループ 20 の詳細。含まれる計画方針として 20 が登録されている。" loading="lazy"><figcaption><b class="t">C12 OPPJ：計画方針グループ 20 が方針 20 を含むこと</b><span class="tx">OPPJ</span><span class="scr">計画方針グループの定義：20</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> MRP3 の「戦略グループ」欄には方針ではなく、このグループを指定します</li></ol><p class="gui-tip">自システムでの確認：OPPJ の一覧で、受注生産用グループの番号が 20 かを確認してください。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c13"><span class="no">C13</span><h3>在庫確認（ATP）</h3><span class="tc">品目マスタ MRP3 + 所要量クラス</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>让受注保存时（或手动）能给出「能否在希望纳期交货」的答复。MTO 的 ATP 基础是<b>個別所要量</b>（自己这张受注的需求 vs 自己这张受注的入库）。</dd>
+</dl>
+<ol class="steps">
+  <li>品目 <code>ZMTO-FG01</code> 的 MRP3「在庫確認」设为 <code>02</code> 一类（個別所要量ベース。具体值用 F4 看帮助文本，选择描述里含「個別所要量」的项）。</li>
+  <li>确认所要量クラス（C10）里在庫確認是激活的（若关闭，纳期行不会做 ATP）。</li>
+  <li>确认检查范围/检查规则（在庫確認グループ/チェックルール的设定），决定「哪些要素参与检查」（例：是否把受注在庫 E 的入库预定、计划手配算作可用量）。</li>
+  <li>实战确认：<code>CO09</code>（在庫確認概要 / ATP 一覧）输入品目 <code>ZMTO-FG01</code> / プラント <code>1000</code>，看可用量与要素明细。</li>
+</ol>
+<div class="box info"><b class="t">确认（自系统）</b>
+受注保存后，纳期行应有「確認済納入日付」。若纳期行为空或提示「在庫確認なし」，回到 MRP3 的在庫確認字段与所要量クラス两处检查。<br>
+注意：本教程的 <code>ZCP</code> 默认关掉了在庫確認（先聚焦 MRP 需求传递）；要练 ATP 时把它打开再测一次，体会两者差别。</div>
+<figure class="gui"><img src="assets/gui/config_s15_1.svg" alt="MM02 の MRP3 ビュー。在庫確認に「02 個別所要量ベース」を設定した状態。" loading="lazy"><figcaption><b class="t">C13 ATP：品目 ZMTO-FG01 の在庫確認を個別所要量ベースにする</b><span class="tx">MM02</span><span class="scr">品目マスタ 変更：MRP 3（在庫確認 02）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 個別所要量ベースなので、自分の受注の入庫だけが自分の受注への回答に使われます</li><li><b>2</b> 値を迷ったら F4 で説明に「個別所要量」を含む項目を選びます</li></ol><p class="gui-tip">自システムでの確認：本教程の ZCP は在庫確認 OFF（MRP 需求传递を優先）。ATP を練習するときは ON に切り替えて比較してください。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s15_2.svg" alt="CO09 の在庫確認概要。受注 0000001234 / 000010 の需求 10 PC と受注在庫 0 PC が要素として並ぶ。" loading="lazy"><figcaption><b class="t">C13 確認：CO09 で受注の需求 10 PC と受注在庫 0 PC が見えること</b><span class="tx">CO09</span><span class="scr">在庫確認概要（ATP）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 受注が出てこないときは在庫確認の対象範囲（チェックルール）を確認します</li></ol><p class="gui-tip">自システムでの確認：ZCP の在庫確認を ON にすると、納期行に確認済納入日付が入るようになります。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c14"><span class="no">C14</span><h3>MRP タイプ・ロットサイズ・指図タイプ（PP 側の確認）</h3><span class="tc">品目マスタ MRP1/MRP2</span></div>
+<pre class="vals">MRPタイプ      : PD（MRP 対象。ND は「計画なし」で受注生産には不適）
+ロットサイズ   : EX（ロット単位＝受注数量単位で手配）
+手配タイプ     : E（内製）  ※ F＝外部調達、X＝両方
+指図タイプ     : PP01（標準の製造指図タイプ）※ 受注明細参照の指図は CO08 / 計画手配の変換で作成
+購買発注タイプ : NB（部品を購買で賄う発展課題でのみ使用）</pre>
+<div class="box info"><b class="t">确认（自系统）</b>
+MRP 実行後に <code>MD04</code> を見て、<b>計画手配が生成され、その「在庫区分」が受注在庫（E）</b>になっているかを確認（指定した受注番号・明細が付いている）。
+ここで自由在庫（プラント在庫）用の計画手配になっていたら、C2 の MRP4 個別/包括所要量 と C10 の所要量クラス（個別在庫）を疑います。</div>
+<figure class="gui"><img src="assets/gui/config_s16_1.svg" alt="MM02 の MRP1 ビュー。MRPタイプ PD・ロットサイズ EX・手配タイプ E（内製）を確認する。" loading="lazy"><figcaption><b class="t">C14 PP 側の確認：PD / EX / E（内製）で計画手配が作られること</b><span class="tx">MM02</span><span class="scr">品目マスタ 変更：MRP 1 ビュー（MRPタイプ・ロットサイズ・手配タイプ）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> ロットサイズ EX は「受注数量単位で手配」。受注 10 PC に対して計画手配も 10 PC になります</li><li><b>2</b> 手配タイプ E（内製）が空だと計画手配が生成されません</li></ol><p class="gui-tip">自システムでの確認：バックフラッシュを ON にすると CO11N の報工で部品が自動出庫されます（練習③ の選択肢）。ON なら 261 の手動出庫は不要です。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s16_2.svg" alt="MM02 の MRP2 ビュー。伝票タイプ（指図タイプ）PP01、入庫処理時間 0、安全在庫 0 を確認する。" loading="lazy"><figcaption><b class="t">C14 指図タイプ PP01 と、納期計算を簡単にする設定</b><span class="tx">MM02</span><span class="scr">品目マスタ 変更：MRP 2 ビュー（指図タイプ PP01）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 指図タイプ PP01 が、計画手配から変換される製造指図の種類になります</li></ol><p class="gui-tip">自システムでの確認：受注明細を参照する指図は CO08 / 計画手配の変換（CO40/CO41）で作られます。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c15"><span class="no">C15</span><h3>出荷・請求の前提（确认即可）</h3><span class="tc">VL01N・VF01・VTFL</span></div>
+<ol class="steps">
+  <li><b>出荷</b>：<code>VL01N</code> 能选择出荷タイプ <code>LF</code>；品目/得意先/プラントから出荷ポイントが決定されること（決定されないと出荷伝票が保存できない）。</li>
+  <li><b>出荷の制御</b>：<code>VL02N</code> 里能完成「ピッキング数量入力 → 出庫確認（PGI）」；PGI 的移動タイプは标准为 <code>601</code>（受注在庫 E からの出庫）。</li>
+  <li><b>請求</b>：<code>VF01</code> 的請求タイプ <code>F2</code> 可用；コピー制御（<code>VTFL</code>，出荷伝票 → 請求伝票）已激活，且请求类型为「伝票（伝票関連請求）」。</li>
+</ol>
+<div class="box info"><b class="t">确认（自系统）</b>
+最省事的做法：先在练习① 建出受注，练习②③ 完成入庫，练习④ 做 <code>VL01N</code> → <code>VL02N</code>（PGI）→ <code>VF01</code>，全程不报错即说明这些「确认」都通过。<b>请按顺序做，不要跳步</b>——出荷前没有受注在庫，PGI 一定会失败。</div>
+<figure class="gui"><img src="assets/gui/config_s17_1.svg" alt="VL01N の初期画面。出荷タイプ LF・出荷先 1000・納入日付範囲を入力する。" loading="lazy"><figcaption><b class="t">C15 出荷の前提：出荷タイプ LF が出荷ポイントを決定できること</b><span class="tx">VL01N</span><span class="scr">出荷伝票の登録：初期画面</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 出荷ポイントが決まらないと出荷伝票は保存できません（前提テストの最初の関門）</li><li><b>2</b> 参照に受注番号を入れると納期行が提案され、受注在庫 E が引き継がれます</li></ol><p class="gui-tip">自システムでの確認：出荷前には受注在庫が入っている必要があります。この順序を飛ばすと PGI が失敗します。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s17_2.svg" alt="VTFL のコピー制御画面。ソース伝票タイプ LF からターゲット伝票タイプ F2 へのコピーが有効。" loading="lazy"><figcaption><b class="t">C15 請求の前提：LF → F2 のコピー制御が有効であること</b><span class="tx">VTFL</span><span class="scr">コピー制御：出荷伝票 → 請求伝票</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> ここが有効でないと VF01 が出荷伝票を参照できず、請求が作れません</li><li><b>2</b> 請求明細カテゴリは「伝票（伝票関連請求）」である必要があります</li></ol><p class="gui-tip">自システムでの確認：VF01 の請求タイプに F2 が表示されることを先に確かめておくと安全です。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="steph" id="c16"><span class="no">C16</span><h3>自動転記（OBYC）与受注在庫的会计</h3><span class="tc">OBYC・FB03</span></div>
+<pre class="vals">受注在庫への入庫（101）  : 在庫勘定（BSX）が借方 → 受注在庫が評価される場合、金額が在庫に載る
+出庫確認（601/PGI）      : 売上原価（消費）→ 勘定は OBYC の GBB（汎用変更）系で決定
+差異（標準 vs 実績）      : 指図決済（KO88/CO88）と差異計算（KKS1 系）で処理
+確認の仕方               : 练习④ で PGI 後の伝票番号から <code>FB03</code> で会計伝票を開き、勘定/金額を見る</pre>
+<ol class="steps">
+  <li><code>OBYC</code> → 查看 <code>BSX</code>（在庫勘定）与 <code>GBB</code>（消費・差異）的现有设定（一般已由项目配好）。<b>看不懂没关系，先确认「有设定」</b>。</li>
+  <li>练习④ 里把 <code>FB03</code> 打开，确认受注在庫的入库/出库都有会计传票，且金额能连上（受注在庫入庫金额 → 出库时的销售成本）。</li>
+</ol>
+<div class="box warn"><b class="t">范围声明</b>
+本教程主目标是打通 SD×PP×MM 的流程，会计侧只做「看得懂、验证得到」的深度。若你的目标是「受注在庫の評価・差異分析」深化，请在 <a href="handson-5.html">练习⑤</a> 之后追加 CO 模块的专题练习。</div>
+<figure class="gui"><img src="assets/gui/config_s18_1.svg" alt="OBYC の自動転記設定一覧。取引キー BSX（在庫勘定）と GBB（消費・差異）が表示されている。" loading="lazy"><figcaption><b class="t">C16 OBYC：受注在庫の入庫（101）と PGI（601）の勘定が決まる場所</b><span class="tx">OBYC</span><span class="scr">自動転記の設定（MM の取引キー）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 受注在庫も評価されれば 101 の入庫時に BSX で在庫勘定へ金額が載ります</li><li><b>2</b> PGI 601 の売上原価は GBB 側で決まります。勘定は環境依存なので FB03 で実際の伝票を見ます</li></ol><p class="gui-tip">自システムでの確認：KO88 / CO88（決済）と KKS1 系（差異計算）。練習④ では FB03 で会計伝票を開いて金額を確認してください。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s18_2.svg" alt="FB03 の会計伝票表示。ヘッダ（伝票番号・会社コード・転記日付）と明細行（勘定・金額）が表示されている。" loading="lazy"><figcaption><b class="t">C16 確認：受注在庫の入庫・出庫が会計伝票に載っていること</b><span class="tx">FB03</span><span class="scr">会計伝票の表示</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 受注在庫が評価されていない（評価区分が空）と、金額が 0 または勘定が出ないことがあります</li></ol><p class="gui-tip">自システムでの確認：判読が難しい場合は範囲声明のとおり「有設定・有伝票」を確認できれば十分です。深化は練習⑤ 以降の CO 課題です。</p></figure>
+
+
+
+
+
+
+<h2 id="cloud">C17 Public Cloud（S/4HANA Cloud Public Edition）差异对照</h2>
+<p>Public Cloud 的核心差别是「<b>你不能做自定义，但 SAP 已经按 スコープアイテム 交付了 MTO 场景</b>」。对照下表落到具体做法：</p>
+<table class="tbl wide">
+<tr><th>本教程的 STEP</th><th>On-Premise（本站主线）</th><th>Public Cloud 的做法 / 限制</th></tr>
+<tr><td>整体配置手段</td><td>SPRO / IMG（传输请求）</td><td><b>Configure Your Solution の SSCUI</b>（自助配置）＋ スコープアイテム 激活。伝票タイプ・明細カテゴリ・所要量クラス などの<b>新規作成はできない</b>（提供された範囲のみ）</td></tr>
+<tr><td>场景交付</td><td>自己配为主</td><td><b>スコープアイテム</b> で交付：<code>BJE</code>（受注生産：完成品販売と最終組立）、<code>IYT</code>（受注生産 + バリアント設定）、<code>1BM</code>（受注生産：半製品計画と組立）、<code>7DM</code>（アドバンスド社内販売 + MTO + VC）。<b>先读 Test Script</b>，它是手上要照做的「手顺」</td></tr>
+<tr><td>C6〜C9（明細カテゴリ・纳期行类别）</td><td><code>VOV7/VOV4/VOV6/VOV5</code> 自由新增</td><td>新規作成は不可（What you see is what you get）。可用的 SSCUI（例：<b>SSCUI 105120「明細カテゴリ別の所要量タイプ決定」</b>）只允许在既有明細カテゴリ上调整映射；SAP 不会为单个租户改动 <code>TAN</code> 的标准映射</td></tr>
+<tr><td>C10〜C11（所要量クラス/タイプ）</td><td><code>OVZG</code> / <code>OVZI</code></td><td>通过 SSCUI 调整可用范围内の设定；MTO 场景下<b>評価付販売伝票在庫（所要量クラス <code>046</code>、評価区分 M）</b>为前提</td></tr>
+<tr><td>C12（計画方針）</td><td><code>OPPJ/OPPS</code></td><td>基本原则不可改；MTO 场景已由 スコープアイテム 交付（战略 <code>20</code> / 组立处理 <code>82</code> 的设定开箱可用）</td></tr>
+<tr><td>C14（MRP 実行）</td><td><code>MD01N</code>（MRP Live）/ <code>MD02</code></td><td><b>MRP Live ベースのアプリ</b>（「Schedule MRP Runs」等）。古典 MRP（<code>MD01</code>/<code>MD02</code>/<code>MD03</code>）は提供されない</td></tr>
+<tr><td>流程练习（练习①〜④）</td><td>GUI 事务码</td><td>Fiori 应用为主，功能对应关系示例：受注の登録＝<code>VA01</code> 相当、在庫/所要量リスト＝<code>MD04</code>、品目入庫の転記＝<code>MIGO</code>、出荷伝票の登録＝<code>VL01N</code>、請求伝票の登録＝<code>VF01</code>。<b>应用名与数量随版本变化，以你的租户为准</b></td></tr>
+<tr><td>练习可用性</td><td>可自由建 Z 对象</td><td>租户里通常不能随意建练习用主数据/传票，需按 Test Script 与培训租户的规则操作</td></tr>
+</table>
+<div class="box warn"><b class="t">Public Cloud 的读法</b>
+在 Public Cloud 上，「配配置」变成「确认已交付的配置 + 用 SSCUI 做允许的调整」。因此本站内容对 Cloud 学员的正确用法是：<b>① 用它理解机制（决定链、所要量クラス、E 特在）；② 用 スコープアイテム BJE/IYT 的 Test Script 做流程练习；③ 表中「限制」栏就是 S/4HANA Cloud 顾问必须能答出来的差异点。</b></div>
+
+<h2 id="done">配置完了チェックリスト（做完打勾，即可进入流程练习）</h2>
+<div class="box ok"><b class="t">配置验收（客观证据）</b>
+<ul class="check">
+  <li>C0 <code>VA01</code> 能进入 販売エリア 1000/10/00；得意先 1000 有販売エリアビュー与出荷先。</li>
+  <li>C1 部品 <code>ZMTO-RM01</code>（100 PC）/ <code>ZMTO-RM02</code>（500 PC）在 <code>MB52</code> 可见非限制使用库存。</li>
+  <li>C2 <code>MM03</code> 完成品：販売組織2 品目カテゴリグループ有值、MRP3 戦略グループ = 20、MRP4 個別/包括所要量 = 個別所要量のみ、MRP1 手配タイプ = E。</li>
+  <li>C3 <code>CS03</code> 能显示 BOM（RM01×2 / RM02×8）；<code>CA03</code> 能显示工程 0010。</li>
+  <li>C4 <code>VK13</code> 能查到 PR00 = 12,000 JPY / PC（得意先 1000 + 品目 ZMTO-FG01）。</li>
+  <li>C5 <code>Z001</code> 已在 明細カテゴリグループ 中（説明可见）。</li>
+  <li>C6 <code>VOV7</code> 中 <code>ZTAK</code> 存在且 特別在庫 = E、価格設定 = X、納入日程行許可 = ON。</li>
+  <li>C7 <code>VOV4</code> 中 <code>OR + Z001 +（空）+（空） → ZTAK</code> 存在。</li>
+  <li>C8 <code>VOV6</code> 中 <code>ZCP</code> 存在且 所要量転送 = ON（<code>TVEP-BEDSD</code> 可用 <code>SE16N</code> 佐证）。</li>
+  <li>C9 <code>VOV5</code> 中 <code>ZTAK + PD → ZCP</code> 存在。</li>
+  <li>C10 能打开所要量クラス <code>040</code>（及 <code>046</code>）并说明「個別在庫 / 評価」两项的差别。</li>
+  <li>C11 能说明所要量タイプ的决定顺序（戦略グループ优先 → <code>OVZI</code> 兜底），并指出 <code>KE → 040</code> 这一条链。</li>
+  <li>C12 <code>OPPS</code> 中 <code>20</code>（受注生産）与 <code>82</code>（組立処理：<code>KMFA</code>/<code>201</code>/<code>PP04</code>）的差别已记录。</li>
+  <li>C13 <code>CO09</code> 能显示 <code>ZMTO-FG01</code> 的可用量与要素。</li>
+  <li>C14 已确认 <code>MD04</code> 中计划手配的「在庫区分」为受注在庫（E）。</li>
+  <li>C15〜C16 出荷タイプ <code>LF</code> / 請求タイプ <code>F2</code> / コピー制御 <code>VTFL</code> / <code>OBYC</code> 的设定「存在且可用」已确认。</li>
+  <li>所有改动都在你的カスタマイジング依頼里，可回滚。</li>
+</ul></div>
+
+
+
+
+
+
+<div class="box info"><b class="t">下一步</b> → <a href="handson-1.html">练习① 受注登録と所要量転送の確認</a>（从此开始做业务）</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SD 受注生産（MTO）实战训练站</h5><p>练习配置手顺 C0〜C17：品目マスタ → SD 三对象 → 所要量クラス/タイプ → 計画方針 → 出荷・請求・転記。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 受注と所要量</a><br><a href="handson-2.html">② MRP と製造指図</a><br><a href="handson-3.html">③ 出庫と入庫</a><br><a href="handson-4.html">④ 出荷と請求</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

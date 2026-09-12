@@ -1,0 +1,403 @@
+{
+ "handson-2.html": {
+  "2-1 変更の 3 方式": [
+   {
+    "tx": "VA02",
+    "title": "Change Standard Order: Overview",
+    "kind": "table",
+    "tabs": [
+     "Sales",
+     "Item overview",
+     "Item detail",
+     "Ordering party",
+     "Procurement",
+     "Shipping"
+    ],
+    "active_tab": 1,
+    "table": {
+     "title": "All items（明細概況 ＝ 明細一括変更の入口）",
+     "columns": [
+      "Item",
+      "Material",
+      "Order quantity",
+      "Plnt"
+     ],
+     "widths": [
+      0.6,
+      1.2,
+      0.9,
+      0.9
+     ],
+     "rows": [
+      [
+       "10",
+       "T-ATA30",
+       "10  PC",
+       "1200"
+      ],
+      [
+       "20",
+       "T-ATA29",
+       "1  PC",
+       "1200"
+      ]
+     ],
+     "selected": 0,
+     "footer": "動画のスライドはこの Plnt を 1200 → 2000 に一括変更（明細 10 と 20 を同時に）。本站の練習は 2-2 で 1200 → 1000 を試す"
+    },
+    "status": [
+     "info",
+     "Sales document 0000001234 is in change mode"
+    ],
+    "status_right": "SAP Training System / 800 / trn03 / OVR",
+    "callouts": [
+     [
+      "明細概況（All items）で Plnt を上書きすれば、明細 10 と 20 を同時に変更できる。動画のスライドが示す「1 伝票内の一括変更（Concurrent change to several items）」がこれ",
+      950,
+      178,
+      "Plnt を一括変更"
+     ],
+     [
+      "複数の伝票をまたぐなら VA05（受注一覧、環境により MASS）、文書一覧からなら VA05 と V.02（不完全な受注）。1 伝票内の一括変更とは入口が違う",
+      350,
+      204,
+      "複数伝票は VA05"
+     ]
+    ],
+    "caption": "VA02 の明細概況（All items）。変更の 3 方式のうち①「1 つの伝票内で複数明細を一括変更」の入口",
+    "tip": "自システムでの確認：VA02 → 明細概況で Plnt を直接上書きできるか、メニュー「編集 → 一括変更」にどんな項目（プラント・納入日・数量など）が出るかを確認。② 複数伝票は VA05、③ 文書一覧は VA05 と V.02 で。",
+    "aria": "VA02 の明細概況（All items）。明細 10 の T-ATA30（10 PC）と明細 20 の T-ATA29（1 PC）が、出荷プラント 1200 で 2 行並んでいる。"
+   }
+  ],
+  "2-2 プラント変更": [
+   {
+    "tx": "VA02",
+    "title": "Change Plant",
+    "kind": "form",
+    "section": "Change Plant（動画のダイアログ）",
+    "fields": [
+     [
+      "Plant",
+      "1000  Dresden",
+      true
+     ],
+     [
+      "Sold-to party",
+      "T-S62130  Teleko Textilien"
+     ],
+     [
+      "Ship-to party",
+      "Teleko Textilien / Hirschstr. 53"
+     ],
+     [
+      "Req. deliv. date",
+      "12.06.2007"
+     ],
+     [
+      "Net value",
+      "4,598.00  EUR"
+     ],
+     [
+      "Payment terms",
+      "ZB01  14 Days 3%, 30/2%"
+     ],
+     [
+      "Pricing date",
+      "02.06.2007"
+     ],
+     [
+      "Total Weight",
+      "41  KG"
+     ]
+    ],
+    "note": "動画は得意先 T-S62130 のデモ受注（12.06.2007 / 4,598.00 EUR）。自分の練習は練習①の受注（得意先 1000・明細 10）で 1200 → 1000 を試す",
+    "status": [
+     "success",
+     "Item 10: plant changed to 1000  Dresden"
+    ],
+    "status_right": "SAP Training System / 800 / trn03 / OVR",
+    "callouts": [
+     [
+      "Plant を 1200 → 1000 に変えると、出荷ポイント・出荷タイプの決定・ATP の参照プラントが連鎖で再決定される。動画はこの連鎖をそのまま見せている",
+      350,
+      164,
+      "変更の起点は Plant"
+     ],
+     [
+      "Plant 以外の欄は受注ヘッダ（Sold-to / Ship-to / 納入希望日 / 正味価額 / 支払条件）。プラントを変えた後にここが動くかどうかが 2-3 の再決定の観察対象になる",
+      950,
+      290,
+      "再決定の確認対象"
+     ]
+    ],
+    "caption": "VA02 の「Change Plant」ダイアログと受注ヘッダ（動画 38:00 付近）。プラントを変えると出荷ポイントが追随する",
+    "tip": "自システムでの確認：明細の出荷プラント欄をダブルクリック／F4 で「Change Plant」ダイアログが出るか、変更後に出荷タブの出荷ポイントが追随したかを VA02 → VA03 で確認。VBAP-WERKS は SE16N（練習 2-5）で。",
+    "aria": "VA02 の受注画面に Change Plant ダイアログが重なった状態。ダイアログには Plant 1000 Dresden、背後に得意先 T-S62130、納入希望日 12.06.2007、正味価額 4,598.00 EUR、支払条件 ZB01 が見えている。"
+   }
+  ],
+  "2-3 得意先変更と再決定": [
+   {
+    "tx": "VA02",
+    "title": "Customer Change: Initial Screen",
+    "kind": "form",
+    "section": "Customer Change（動画は受注画面から起動）",
+    "fields": [
+     [
+      "Customer",
+      "1000  Becker Berlin",
+      true
+     ],
+     [
+      "Company code",
+      "1000"
+     ],
+     [
+      "Sales Organization",
+      "1000"
+     ],
+     [
+      "Distribution Channel",
+      "10"
+     ],
+     [
+      "Deliver.Plant",
+      "1200"
+     ],
+     [
+      "Division",
+      "00"
+     ]
+    ],
+    "note": "動画のダイアログは会社コード・出荷プラント・販売エリアを空のまま得意先 1000 だけで開く。下に「All sales areas...」「Customer's sales areas...」の 2 ボタンがある",
+    "status": [
+     "info",
+     "Customer change: enter company code, delivering plant and sales area"
+    ],
+    "status_right": "SAP Training System / 800 / trn03 / OVR",
+    "callouts": [
+     [
+      "どの販売エリアの得意先マスタを見て変えるかをここで決める。「Customer's sales areas...」はその得意先が持つ販売エリアだけに絞り、「All sales areas...」は全販売エリアを出す",
+      350,
+      164,
+      "販売エリアの絞込"
+     ],
+     [
+      "販売エリアの 3 項目は受注から初期値で入る。ただし動画では空のままで、得意先マスタ側（XD02）へ飛んでいる点に注意",
+      950,
+      236,
+      "受注の販売エリア"
+     ]
+    ],
+    "caption": "「Customer Change: Initial Screen」ダイアログ。得意先変更の入口（販売エリアと出荷プラントを指定する）",
+    "tip": "自システムでの確認：VA02 で受注を開き、得意先変更のメニュー位置（環境により「Sales document → Customer change」等）と、このダイアログの 2 ボタン（All sales areas...／Customer's sales areas...）の違いを実際に開いて確認。",
+    "aria": "VA02 の受注画面に Customer Change: Initial Screen ダイアログが開いた状態。得意先 1000 Becker Berlin、会社コード 1000、販売組織 1000、流通チャネル 10、出荷プラント 1200、部門 00 が入っている。"
+   },
+   {
+    "tx": "XD02",
+    "title": "Change Customer: Sales Area Data",
+    "kind": "form",
+    "tabs": [
+     "Sales",
+     "Shipping",
+     "Billing document",
+     "Partner functions"
+    ],
+    "active_tab": 3,
+    "section": "Partner Functions / Delivery and payment terms",
+    "fields": [
+     [
+      "SP  Sold-to party",
+      "1000  Becker Berlin"
+     ],
+     [
+      "BP  Bill-to party",
+      "1000  Becker Berlin"
+     ],
+     [
+      "PY  Payer",
+      "1050  Becker AG"
+     ],
+     [
+      "SE  Sales employee",
+      "1714  Olaf Hansen"
+     ],
+     [
+      "Incoterms",
+      "FOB"
+     ],
+     [
+      "Terms of payment",
+      "ZB01  14 Days 3%, 30/2%"
+     ],
+     [
+      "Paym.guar.proc.",
+      ""
+     ],
+     [
+      "Credit ctrl area",
+      ""
+     ]
+    ],
+    "note": "動画の XD02 では Paym.guar.proc. と Credit ctrl area は空欄。Incoterms の値は環境により異なる（動画は CIF Berlin、本站の練習は FOB）",
+    "status": [
+     "success",
+     "Customer 1000 saved for sales area 1000 / 10 / 00"
+    ],
+    "status_right": "SAP Training System / 800 / trn03 / OVR",
+    "callouts": [
+     [
+      "SP＝受注先、BP＝請求先。得意先を替えると、この役割に誰を入れるかが得意先マスタから再決定される（＝動画スライドの Redetermined 列）",
+      350,
+      182,
+      "再決定される役割"
+     ],
+     [
+      "Incoterms と Terms of payment は受注の値の出どころ。ここを直すと次の受注から変わるが、既存受注は得意先変更をしないと追随しない",
+      950,
+      290,
+      "値の出どころ"
+     ]
+    ],
+    "caption": "XD02 の販売エリアデータ「Partner functions」タブ（SP / BP と Delivery and payment terms）",
+    "tip": "自システムでの確認：XD02 → 得意先 1000 → 販売エリアデータで、自分の販売エリア（1000 / 10 / 00）のパートナー機能・支払条件・インコタームズを開き、受注（VA03）の値と突き合わせる。",
+    "aria": "XD02 の Change Customer: Sales Area Data 画面。Partner functions タブが選ばれ、SP Sold-to party 1000 Becker Berlin、BP Bill-to party 1000 Becker Berlin、PY Payer 1050 Becker AG、SE Sales employee 1714 Olaf Hansen、Incoterms FOB（本站の練習値。動画の実機は CIF Berlin）、Terms of payment ZB01 が表示されている。"
+   }
+  ],
+  "2-4 ブロックの 3 階層": [
+   {
+    "tx": "VA02",
+    "title": "Blocks in the Sales Document",
+    "kind": "table",
+    "table": {
+     "title": "ブロックの 3 階層（動画の Blocks スライド）",
+     "columns": [
+      "Level",
+      "Field",
+      "Where in VA02",
+      "Effect"
+     ],
+     "widths": [
+      1.6,
+      1.0,
+      1.4,
+      0.7
+     ],
+     "rows": [
+      [
+       "Header",
+       "Delivery block",
+       "Sales tab",
+       "Order not delivered"
+      ],
+      [
+       "Header",
+       "Billing block",
+       "Sales tab",
+       "Order not billed"
+      ],
+      [
+       "Item 10",
+       "Billing block",
+       "Item detail - Billing",
+       "Item not billed"
+      ],
+      [
+       "Schedule line",
+       "Delivery block",
+       "Item - Schedule lines",
+       "One date not shipped"
+      ]
+     ],
+     "selected": 0,
+     "footer": "納入日程行の Delivery block は「その納入日だけ」止める。付けたまま忘れると出荷・請求が止まるので、練習の後は必ず解除する"
+    },
+    "status": [
+     "warning",
+     "Delivery block is set for order 0000001234 (header)"
+    ],
+    "status_right": "SAP Training System / 800 / trn03 / OVR",
+    "callouts": [
+     [
+      "ヘッダの Delivery block / Billing block は伝票全体を止める。止まった受注を見たら、まずヘッダ → 明細 → 納入日程行の順に上から確認するのが切り分けの定石",
+      350,
+      248,
+      "ヘッダは伝票全体"
+     ],
+     [
+      "同じブロックでも階層ごとに設定場所が違う。明細は請求タブ、納入日程行は明細の納入日程行から設定する（手で付けたか Customizing 由来かも見分ける）",
+      950,
+      248,
+      "階層ごとに場所が違う"
+     ]
+    ],
+    "caption": "ブロックの 3 階層（ヘッダ／明細／納入日程行）。設定場所と効果の対応（動画の Blocks スライド）",
+    "tip": "自システムでの確認：VA02 のヘッダ Sales タブ（Delivery block / Billing block）、明細の請求タブ（Billing block）、明細の納入日程行（Delivery block）を実際に開いて F4 の理由一覧を見る。Customizing は動画スライドの “Defining blocks in Customizing”（伝票タイプに既定ブロックを持たせる）。",
+    "aria": "ブロックの 3 階層を示す一覧。ヘッダに Delivery block と Billing block、明細 10 に Billing block、納入日程行に Delivery block があり、それぞれ設定場所と効果が並んでいる。"
+   }
+  ],
+  "2-5 証拠を取る": [
+   {
+    "tx": "SE16N",
+    "title": "Data Browser: Table VBAP",
+    "kind": "table",
+    "table": {
+     "title": "VBAP（受注明細）— 変更後の値を読む",
+     "columns": [
+      "VBELN",
+      "POSNR",
+      "MATNR",
+      "WERKS",
+      "KWMENG"
+     ],
+     "widths": [
+      1.5,
+      0.7,
+      1.0,
+      0.9,
+      0.8
+     ],
+     "rows": [
+      [
+       "0000001234",
+       "000010",
+       "T-ATA30",
+       "1000",
+       "10"
+      ],
+      [
+       "0000001234",
+       "000020",
+       "T-ATA29",
+       "1000",
+       "1"
+      ]
+     ],
+     "selected": 0,
+     "footer": "WERKS が 1200 → 1000 になっていれば変更が効いている。KWMENG は受注数量（VBEP＝納入日程行、VBPA＝パートナー）"
+    },
+    "status": [
+     "info",
+     "VBAP: 2 entries found"
+    ],
+    "status_right": "SAP Training System / 800 / trn03 / OVR",
+    "callouts": [
+     [
+      "VBAP-WERKS がプラント変更の物的証拠。VA03 の出荷タブ（出荷ポイント）と突き合わせて、値が 1 本の線で説明できるようにする",
+      950,
+      248,
+      "WERKS が証拠"
+     ],
+     [
+      "納入日程行は VBEP、パートナーは VBPA。同じ伝票番号で照会すると「どこまで連鎖したか」を表で示せる（変更の事実は VA03 の変更履歴でも）",
+      350,
+      222,
+      "VBEP / VBPA も見る"
+     ]
+    ],
+    "caption": "SE16N で VBAP（受注明細）を照会し、変更後の出荷プラント WERKS を確認する",
+    "tip": "自システムでの確認：SE16N にテーブル VBAP を入れて伝票番号で絞る（自分の受注番号に読み替え。ここでは例として 0000001234）。VBEP・VBPA も同じ伝票番号で。変更履歴は VA03 の環境メニュー、または CDHDR / CDPOS で確認。",
+    "aria": "SE16N の Data Browser でテーブル VBAP を照会した結果。伝票 0000001234 の明細 10（T-ATA30、数量 10）と明細 20（T-ATA29、数量 1）が、変更後の出荷プラント WERKS 1000 で表示されている。"
+   }
+  ]
+ }
+}

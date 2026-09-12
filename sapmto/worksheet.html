@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学员版 ワークシート（記入用） · SAP S/4HANA SD 受注生産（MTO）实战训练站</title>
+<meta name="description" content="MTO 实训の受講者用ワークシート：配置 C0〜C16 の確認記入欄、練習①〜④ の伝票番号・数値記入欄、MD04 読解、故障記録シート、用語の自分の言葉での説明欄。印刷して使う記入用ページ。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/mto.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MTO</span><span class="txt">SD 受注生産 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①受注</a>
+      <a href="handson-2.html">②MRP</a>
+      <a href="handson-3.html">③出入库</a>
+      <a href="handson-4.html">④出货</a>
+      <a href="handson-5.html">⑤发展</a>
+      <a href="instructor.html">讲师版</a>
+      <a class="active" href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 学员版 ワークシート（記入用）</div>
+<main class="page"><article>
+
+<h1>学员版 ワークシート（挖空・記入用）</h1>
+<div class="box info"><b class="t">使い方</b>
+① このページを<b>印刷</b>するか、ブラウザで開いたまま埋めていきます（印刷時はナビやボタンが自動的に消えます）。<br>
+② 記入するのは「<b>自分のシステムで実際に見た値・伝票番号・表の行</b>」です。講義資料の丸写しは不可（それが理解の証跡になります）。<br>
+③ 各シートは <a href="config.html">配置手顺</a> / <a href="handson-1.html">練習①</a> 〜 <a href="handson-4.html">練習④</a> を進めながら埋めます。<br>
+④ 最後に <a href="quiz.html">能力测试</a>（28 題・75% 以上）と、このシートの全欄記入で修了です。</div>
+
+<h2>シート A：配置の確認記入（C0〜C16）</h2>
+<p class="mini">「自分の環境での値」には実際の値（または「標準どおり」「差異あり：〜」）を書きます。差異があった場合は必ず理由も。</p>
+<table class="tbl wide fill">
+<tr><th>STEP</th><th>何を見るか</th><th>自分の環境での値（記入）</th><th>OK/NG</th><th>気づき・差異の理由</th></tr>
+<tr><td>C0</td><td>VA01 で 1000/10/00 が選べる／得意先 1000 の販売エリアと出荷先</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C1</td><td>部品 RM01 / RM02 の在庫（MMBE）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C2</td><td>品目 ZMTO-FG01：販売組織2 品目カテゴリグループ / MRP3 戦略グループ・在庫確認 / MRP4 個別・包括所要量 / MRP1 手配タイプ</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C3</td><td>BOM の構成（CS03）／工程 0010（CA03）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C4</td><td>PR00 条件レコード（VK13）：金額・有効期間</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C5</td><td>明細カテゴリグループの既存キー（一覧）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C6</td><td>VOV7：TAN の項目／ZTAK の 特別在庫・価格設定・納入日程行許可</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C7</td><td>VOV4：標準行（OR + NORM + 空 + 空）と追加行（Z001 → ZTAK）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C8</td><td>VOV6 / TVEP：ZCP の 所要量転送・在庫確認</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C9</td><td>VOV5：ZTAK + PD → ZCP</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C10</td><td>OVZG：使われる所要量クラス／個別在庫・評価の設定</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C11</td><td>OVZG/OVZI：所要量タイプ（KE など）→ 所要量クラス／決定順序</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C12</td><td>OPPS/OPPJ：戦略 20 と 82 の設定</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C13</td><td>CO09：可用量と要素（受注前／受注後）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C14</td><td>MD04：計画手配の在庫区分（受注在庫 E か）</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C15</td><td>VL01N の出荷タイプ・出荷ポイント／VF01・VTFL</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>C16</td><td>OBYC / FB03：受注在庫の入出庫の仕訳</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+
+<h2>シート B：練習①〜④ の記録（伝票番号と数値を埋める）</h2>
+<table class="tbl wide fill">
+<tr><th>項目</th><th>記入欄</th><th>確認方法</th></tr>
+<tr><td>受注番号</td><td>&nbsp;</td><td>VA01 保存時のメッセージ</td></tr>
+<tr><td>明細カテゴリ ／ 納入日程行カテゴリ</td><td>&nbsp;</td><td>VA03 明細詳細・納入日程行</td></tr>
+<tr><td>所要量タイプ ／ 所要量クラス</td><td>&nbsp;</td><td>VA03 納入日程行（/ OVZG）</td></tr>
+<tr><td>受注金額（条件 PR00）</td><td>&nbsp;</td><td>VA03 明細の条件</td></tr>
+<tr><td>MD04：受注直後の得意先所要量</td><td>&nbsp;</td><td>MD04（受注番号付き）</td></tr>
+<tr><td>計画手配番号 ／ 在庫区分</td><td>&nbsp;</td><td>MD04 → 計画手配の明細</td></tr>
+<tr><td>製造指図番号 ／ 指図タイプ</td><td>&nbsp;</td><td>CO08 または CO40 のメッセージ</td></tr>
+<tr><td>指図の受注明細参照（KDAUF/KDPOS）</td><td>&nbsp;</td><td>CO03 ヘッダ / SE16N: AFPO</td></tr>
+<tr><td>部品予約数量（RM01 / RM02）</td><td>&nbsp;</td><td>CO03 構成品目</td></tr>
+<tr><td>261 出庫の物料伝票番号 ／ 出庫後の部品在庫</td><td>&nbsp;</td><td>MIGO のメッセージ / MMBE</td></tr>
+<tr><td>CO11N の歩留数量 ／ 指図状態</td><td>&nbsp;</td><td>CO11N のメッセージ / CO03</td></tr>
+<tr><td>101 入庫の物料伝票番号</td><td>&nbsp;</td><td>MIGO のメッセージ</td></tr>
+<tr><td>受注在庫（E）の数量と受注番号</td><td>&nbsp;</td><td>MMBE / MB52 / SE16N: MSKA</td></tr>
+<tr><td>自由在庫（プラント在庫）の数量</td><td>&nbsp;</td><td>MMBE（0 であること）</td></tr>
+<tr><td>出荷伝票番号 ／ 在庫区分・引当数量</td><td>&nbsp;</td><td>VL01N / VL03N</td></tr>
+<tr><td>出庫確認（PGI）後：受注在庫 / 移動タイプ</td><td>&nbsp;</td><td>MMBE / MATDOC（601）</td></tr>
+<tr><td>請求伝票番号 ／ 金額（税別・税込）</td><td>&nbsp;</td><td>VF01 / VF03</td></tr>
+<tr><td>会計伝票番号（出庫・請求）</td><td>&nbsp;</td><td>FB03（借貸の方向も書く）</td></tr>
+<tr><td>伝票フローに並んだ伝票（順に列挙）</td><td>&nbsp;</td><td>VA03 → 環境 → 伝票フロー</td></tr>
+</table>
+
+<h2>シート C：MD04 の読解（自分の受注を自分の言葉で）</h2>
+<table class="tbl wide fill">
+<tr><th>MD04 の行</th><th>数量（記入）</th><th>この行が意味すること（自分の言葉で記入）</th></tr>
+<tr><td>受注在庫（特別在庫 E・得意先在庫）</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>得意先所要量</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>計画手配</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>製造指図</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>利用可能数量</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+<div class="task"><b class="t">問い</b>この 5 行のうち、<b>「SD 側の設定が効いている」証拠</b>はどの行？ <b>「PP 側の設定が効いている」証拠</b>はどの行？ <b>「個別所要量（受注在庫）が効いている」証拠</b>はどの行？—— 3 つを線で結んで説明できるように。</div>
+
+<h2>シート D：故障記録（遭遇したものを 3 件まで）</h2>
+<table class="tbl wide fill">
+<tr><th>#</th><th>症状（どう見えたか）</th><th>根因</th><th>証跡（T-code / 画面・表の行）</th><th>対処</th><th>再発防止</th></tr>
+<tr><td>1</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>2</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>3</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+<div class="box warn"><b class="t">書き方のルール</b>
+「なんとなく直った」は記録しません。<b>症状 → 根因 → 証跡 → 対処 → 再発防止</b> の 5 点で書く（障害票・要件定義と同じ書式）。
+証跡は必ず <b>T-code + 見た画面/表</b>（例：<span class="mono">SE16N: TVEP-BEDSD = 空 → 所要量転送 OFF</span>）。</div>
+
+<h2>シート E：用語を自分の言葉で（10 語）</h2>
+<table class="tbl wide fill">
+<tr><th>用語</th><th>自分の言葉での説明（記入）</th></tr>
+<tr><td>得意先個別在庫（特在 E・受注在庫）</td><td>&nbsp;</td></tr>
+<tr><td>所要量転送</td><td>&nbsp;</td></tr>
+<tr><td>所要量タイプ ／ 所要量クラス</td><td>&nbsp;</td></tr>
+<tr><td>戦略グループ（20 / 82 の違い）</td><td>&nbsp;</td></tr>
+<tr><td>明細カテゴリの決定（4 キー）</td><td>&nbsp;</td></tr>
+<tr><td>納入日程行カテゴリの決定（2 キー）</td><td>&nbsp;</td></tr>
+<tr><td>個別所要量のみ（MRP4）</td><td>&nbsp;</td></tr>
+<tr><td>計画手配と製造指図の違い</td><td>&nbsp;</td></tr>
+<tr><td>出庫確認（PGI / 601）</td><td>&nbsp;</td></tr>
+<tr><td>差異と決済（KKS1 / KO88）</td><td>&nbsp;</td></tr>
+</table>
+
+<h2>シート F：質問メモ・講師への確認事項</h2>
+<table class="tbl wide fill">
+<tr><th>#</th><th>質問・確認したいこと（記入）</th><th>回答（講師記入）</th></tr>
+<tr><td>1</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>2</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>3</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>4</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>5</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+</table>
+
+<h2>修了判定（自分でチェック）</h2>
+<div class="box ok"><b class="t">✓ 修了チェック</b>
+<ul class="check">
+  <li>シート A（配置 C0〜C16）の全行に、自分の環境での値が記入されている。</li>
+  <li>シート B の伝票番号・数値がすべて埋まっている（受注／計画手配／指図／261／101／出荷／PGI／請求）。</li>
+  <li>シート C で「SD 側・PP 側・個別所要量」の 3 つの証拠行を説明できる。</li>
+  <li>シート D に故障を 1 件以上、5 点セットで記録した。</li>
+  <li>シート E の 10 語を、資料を見ずに説明できる。</li>
+  <li><a href="quiz.html">能力测试</a>で 75% 以上（21/28）を取った。</li>
+</ul></div>
+
+<div class="box info"><b class="t">参照</b>
+迷ったら <a href="config.html">配置手顺</a>（C 番号）／<a href="handson-1.html">練習①</a>〜<a href="handson-4.html">練習④</a>／<a href="handson-5.html#trouble">故障対照表</a>／<a href="instructor.html">讲师版</a>（解答）。</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SD 受注生産（MTO）实战训练站</h5><p>学员版ワークシート：配置記入・練習記録・MD04 読解・故障記録・用語の言語化。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 受注</a><br><a href="handson-2.html">② MRP・指図</a><br><a href="handson-3.html">③ 出入庫</a><br><a href="handson-4.html">④ 出荷・請求</a><br><a href="handson-5.html">⑤ 発展・故障</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

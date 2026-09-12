@@ -1,0 +1,5 @@
+orderNo;lineNo;book_code;bookTitle;quantity;unitPrice;lineTotal
+SO20260903-001;1;B002;ABAP RESTful 程序设计实战;5;96.00;480.00
+SO20260903-001;2;B005;数据建模 CDS 权威指南;8;159.00;1272.00
+SO20260904-001;1;B001;SAP S/4HANA 概览与实施导论;10;128.00;1280.00
+SO20260904-001;2;B003;CAP 模型驱动开发入门;5;144.00;720.00

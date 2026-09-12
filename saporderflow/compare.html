@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>横断比较 · SAP 受注形態の横断比較（MTS / MTO / ETO / ATO / VC）</title>
+<meta name="description" content="受注形態の 9 维度横断比較マトリクス：計画起点・在庫区分・需求量・調達/製造・成本対象・請求方式・収益認識・主数据差异・主要T-code。所要量タイプ/所要量クラス/戦略グループ/在庫テーブルの早見表、E（受注在庫）と Q（プロジェクト在庫）の 4 点セット対比。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/cmp.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">CMP</span><span class="txt">受注形態 横断比較</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a class="active" href="compare.html">横断比较</a>
+      <a href="scenario-eq.html">E vs Q 对照</a>
+      <a href="vc.html">VC 概観</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 横断比较</div>
+<main class="page"><article>
+
+<h1>横断比较マトリクス（9 维度）</h1>
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。若是想换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 即可一键替换。</div>
+
+<div class="box info"><b class="t">読み方</b>
+上から順に読むと「<b>計画起点 → 库存区分 → 需求 → 制造/采购 → 成本 → 收钱</b>」という因果の連鎖が見えます。
+値は S/4HANA On-Premise の「通常情況」です。ETO/VC の具体値は環境差が大きいので、各实训站の確認手顺で実測してください。</div>
+
+<table class="tbl wide">
+<tr><th># 维度</th><th>MTS 見込生産</th><th>MTO 受注生産</th><th>ETO 受注設計生産</th><th>ATO 受注組立</th><th>VC バリアント設定</th></tr>
+<tr><td>1 計画起点</td><td>PIR（<code>MD61</code>）</td><td>受注</td><td>受注 ＋ <b>プロジェクト（WBS）</b></td><td>受注（保存と同時に指図）</td><td>受注 ＋ <b>設定値</b>（VC 単体では起点を決めない）</td></tr>
+<tr><td>2 库存区分</td><td>自由在庫</td><td><b>E 受注在庫</b></td><td><b>Q プロジェクト在庫</b></td><td>E（または自由在庫＋指図）</td><td>E または Q（組合せ次第）</td></tr>
+<tr><td>3 需求の単位</td><td>品目＋プラント（予測）</td><td>受注番号＋明細</td><td><b>WBS 要素（プロジェクト）</b></td><td>受注番号＋明細</td><td>受注明細＋設定値（＋WBS もし ETO と組合せ時）</td></tr>
+<tr><td>4 調達/製造</td><td>MRP → 計画手配 → 指図</td><td>MRP → 計画手配 → 指図</td><td>プロジェクト/受注 MRP（<code>MD51</code>/<code>MD50</code>）→ 指図・ネットワーク・購買</td><td><b>受注保存時に指図を自動生成</b>（戦略 82）</td><td>受注の設定値で BOM/作業手順を選別 → 指図</td></tr>
+<tr><td>5 成本の対象</td><td>品目/指図</td><td>製造指図（受注明細へ決済）</td><td><b>WBS 要素</b>（＋指図）</td><td>製造指図</td><td>指図（＋WBS もし ETO と組合せ時）</td></tr>
+<tr><td>6 請求方式</td><td>出荷ベース（<code>F2</code>）</td><td>出荷ベース（<code>F2</code>）</td><td><b>請求計画・出来高</b>／出荷ベース／RRB（<code>DP90/DP91</code>）</td><td>出荷ベース</td><td>出荷ベース（設定の価格加算を含む）</td></tr>
+<tr><td>7 収益認識</td><td>出荷時点</td><td>出荷時点</td><td><b>進捗→結果分析（<code>KKA2</code>）→WIP（<code>KKAX</code>）→決済</b>。POC/出来高/イベントベース</td><td>出荷時点</td><td>出荷時点（VC 固有ではない）</td></tr>
+<tr><td>8 主数据の分かれ目</td><td>MRP タイプ・PIR</td><td>MRP4 個別所要量＋明細カテゴリの<b>特別在庫 E</b>＋戦略 20</td><td>MRP4 個別所要量＋<b>評価付プロジェクト在庫</b>＋戦略（Cloud <code>E2</code>）＋受注明細の WBS</td><td>戦略 82（所要量クラス 201・指図タイプ PP04）＋BOM</td><td>品目タイプ <code>KMAT</code>＋品目カテゴリグループ <code>0002</code>＋特徴/クラス/設定プロファイル</td></tr>
+<tr><td>9 主要 T-code</td><td><code>MD61</code>・<code>MD01N</code>・<code>CO01</code>・<code>VL01N</code>・<code>VF01</code></td><td><code>VA01</code>・<code>MD04</code>・<code>CO08</code>・<code>VL02N</code>・<code>VF01</code>・<code>MD04/MMBE</code></td><td><code>CJ20N</code>・<code>CJ40/CJ42</code>・<code>CJ30/CJ32</code>・<code>MD51</code>・<code>CJI3</code>・<code>KKA2</code>・<code>CJ88</code></td><td><code>VA01</code>（保存＝指図作成）・<code>COOIS</code></td><td><code>CT04</code>・<code>CL02</code>・<code>CU41</code>/<code>PMEVC</code>・<code>CU50</code>・<code>VA01</code>（構成）</td></tr>
+</table>
+
+<h2>早见表 1：戦略グループ → 所要量タイプ → 所要量クラス</h2>
+<table class="tbl wide">
+<tr><th>戦略グループ</th><th>名称</th><th>所要量タイプ</th><th>所要量クラス</th><th>備考</th></tr>
+<tr><td><code>10</code> / <code>11</code> / <code>30</code> / <code>40</code></td><td>見込生産系</td><td>（独立所要量系）</td><td>—</td><td>PIR を使う。MTO では使わない</td></tr>
+<tr><td><code>20</code></td><td>受注生産（組立指図なし）</td><td><code>KE</code></td><td><code>040</code> 系</td><td>MRP 経由で指図を作る標準的な MTO</td></tr>
+<tr><td><code>25</code></td><td>受注生産（設定可能品目）</td><td><code>KEK</code></td><td><code>046</code></td><td>VC × MTO の組合せで使われる</td></tr>
+<tr><td><code>82</code></td><td><b>組立処理</b>（受注と同時に指図）</td><td><code>KMFA</code></td><td><code>201</code></td><td>指図タイプ <code>PP04</code>・受注と指図は 1:1・BOM 必須</td></tr>
+<tr><td><code>E2</code></td><td><b>受注設計生産</b>（S/4HANA Cloud の ETO）</td><td><code>E21</code></td><td>—</td><td><b>特別在庫 Q</b>。スコープアイテム 6GD の活性後に利用可能（KBA 3623492）</td></tr>
+</table>
+<p class="mini">値は環境で異なります（特に 20/25/82/E2）。<b>確認手顺</b>：品目マスタ MRP3 の戦略グループ → <code>OPPJ</code>/<code>OPPS</code> で中身 → <code>OVZG</code> で所要量クラス（個別在庫・評価区分）を読む。受注側は <code>VA03</code> の納入日程行で所要量タイプを見る。MD04 に需要が出れば所要量転送は成立。</p>
+
+<h2>早见表 2：在庫区分とテーブル（ここを間違えると全部崩れる）</h2>
+<table class="tbl wide">
+<tr><th>区分</th><th>名称</th><th>数量テーブル</th><th>帰属先</th><th>出荷の引当</th></tr>
+<tr><td>（空）</td><td>自由在庫（プラント在庫）</td><td><code>MARD</code> / <code>MCHB</code>（バッチ）</td><td>プラント / 保管場所</td><td>どの受注でも引当可</td></tr>
+<tr><td><b><code>E</code></b></td><td>受注在庫（得意先個別在庫）</td><td><b><code>MSKA</code></b></td><td>受注番号 ＋ 明細</td><td>その受注明細の出荷で引当</td></tr>
+<tr><td><b><code>Q</code></b></td><td>プロジェクト在庫</td><td><b><code>MSPR</code></b></td><td><b>WBS 要素</b></td><td>その WBS を指す出荷で引当</td></tr>
+<tr><td><code>K</code> / <code>O</code> / <code>W</code></td><td>預託（仕入先/外注支給/得意先）</td><td><code>MKOL</code> / <code>MSLB</code> / <code>MSKU</code></td><td>仕入先・外注先・得意先</td><td>（補足：外注・預託の文脈）</td></tr>
+</table>
+
+
+
+
+
+
+
+<p class="mini">確認は <code>MMBE</code>／<code>MB52</code>（画面）＋ <code>SE16N</code>（<code>MSKA</code>/<code>MSPR</code> の <code>SOBKZ</code>）。<b>「画面で見た」だけで終わらせず、表でも確認する</b>のが現場で強い人のやり方です。</p>
+<figure class="gui"><img src="assets/gui/compare_s01_1.svg" alt="MMBE の在庫一覧（MTO 側）。特別在庫に受注在庫 E として受注番号付きで 10 PC がある。" loading="lazy"><figcaption><b class="t">【E】MMBE：受注在庫（特別在庫 E）</b><span class="tx">MMBE</span><span class="scr">在庫一覧　プラント 1000（MTO：受注在庫 E）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 受注番号＋明細で帰属が決まる。ここが空なら受注在庫になっていない</li></ol><p class="gui-tip">自システムでの確認：MMBE の「特別在庫」欄が出ない場合は、表示項目の追加（設定 → 項目）を確認してください。表で直接見るなら SE16N で MSKA。</p></figure>
+<figure class="gui"><img src="assets/gui/compare_s01_2.svg" alt="MMBE の在庫一覧（ETO 側）。特別在庫にプロジェクト在庫 Q として WBS 付きで 1 式がある。" loading="lazy"><figcaption><b class="t">【Q】MMBE：プロジェクト在庫（特別在庫 Q）</b><span class="tx">MMBE</span><span class="scr">在庫一覧　プラント 1000（ETO：プロジェクト在庫 Q）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> WBS で帰属するのが Q。表は MSPR</li></ol><p class="gui-tip">自システムでの確認：プロジェクト在庫はプロジェクト定義の「評価付プロジェクト在庫」と所要量クラス（評価区分 M）が揃って初めて評価されます。SE16N の MSPR で数量を確認できます。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>早见表 3：明細カテゴリグループと業務の結び付き</h2>
+<table class="tbl wide">
+<tr><th>グループ</th><th>用途</th><th>代表的な明細カテゴリ</th><th>どこで効く</th></tr>
+<tr><td><code>0001</code> / <code>NORM</code></td><td>標準的な在庫品（MTS・MTO の完成品）</td><td><code>TAN</code>（標準）</td><td>明細カテゴリ決定（<code>VOV4</code>）の 1 キー</td></tr>
+<tr><td><code>0002</code> / <code>LUMF</code></td><td><b>VC（設定可能品目）</b>および BOM 関連</td><td>—（VC 用の設定が入る）</td><td>VC の受注で BOM 展開・設定入力を行うためのキー</td></tr>
+<tr><td><code>0004</code></td><td>VC の SET 処理など</td><td>—</td><td>同上（バリエーションによる）</td></tr>
+<tr><td><code>ERLA</code></td><td>設定可能製品のヘッダ（親）</td><td>—</td><td>受注 BOM の親側</td></tr>
+<tr><td><code>DIEN</code> / <code>LEIS</code></td><td>サービス品目</td><td>納入不可／納入関連のサービス明細</td><td>サービス契約・請求のみの明細</td></tr>
+</table>
+<p class="mini">標準に「受注生産専用」「受注設計生産専用」のキーはありません（<b>MTO は <code>0001</code> のままで成立</b>し、明細で特別在庫を持たせたい場合は自建）。値の一覧は IMG「定義: 明細カテゴリグループ」と <code>VOV7</code> で実測してください。</p>
+
+<h2>E（受注在庫）と Q（プロジェクト在庫）の 4 点セット対比</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>MTO の受注在庫 E</th><th>ETO のプロジェクト在庫 Q</th></tr>
+<tr><td>①</td><td>品目マスタ <b>MRP4</b>「個別/包括所要量」＝ 個別所要量のみ</td><td>品目マスタ <b>MRP4</b>「個別/包括所要量」＝ 個別所要量のみ（同じ）</td></tr>
+<tr><td>②</td><td>所要量クラスに<b>個別在庫</b>の設定（戦略 20 → <code>KE</code> → <code>040</code> 系）</td><td>所要量クラスに<b>個別在庫＋評価区分 M</b>（戦略 <code>E2</code> → <code>E21</code> など）＋ <b>プロジェクト定義の「評価付プロジェクト在庫」</b></td></tr>
+<tr><td>③</td><td>明細カテゴリの<b>特別在庫 = E</b>（<code>VOV7</code> の <code>TVAP-SOBKZ</code>）</td><td>受注明細への <b>WBS 要素の割当</b>（WBS 割当を許す明細カテゴリ。Cloud 例 <code>CBAO</code>）</td></tr>
+<tr><td>④</td><td>需要は<b>受注番号＋明細</b>に帰属 → 計画手配の在庫区分 = E</td><td>需要は<b>WBS</b> に帰属 → 計画手配の<b>勘定設定 = WBS</b>・在庫区分 = Q</td></tr>
+<tr><td>出荷</td><td>出荷明細の在庫区分 E → PGI <code>601</code></td><td>出荷明細の在庫区分 Q → PGI <code>601</code>（Cloud で不可の既知事象：KBA 3623492）</td></tr>
+<tr><td>収益・原価</td><td>受注明細レベル（請求は出荷ベースが基本）</td><td><b>WBS</b>（請求要素＝収益、勘定設定要素＝原価）＋ 結果分析/決済</td></tr>
+</table>
+<figure class="gui"><img src="assets/gui/compare_s02_1.svg" alt="明細カテゴリ ZTAK の設定画面。特別在庫区分 E が入っている。" loading="lazy"><figcaption><b class="t">【E】明細カテゴリの「特別在庫 E」</b><span class="tx">VOV7 / VOV4</span><span class="scr">明細カテゴリの設定　ZTAK（特別在庫 E）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> ここが E ＝ 受注在庫。空だと自由在庫に入る（取違えの最頻出）</li></ol><p class="gui-tip">自システムでの確認：明細カテゴリの決定は VOV4（販売組織＋流通チャネル＋品目カテゴリグループ＋品目カテゴリグループ）。VA03 の明細で実測できます。</p></figure>
+<figure class="gui"><img src="assets/gui/compare_s02_2.svg" alt="CJ20N の WBS 要素詳細。構造要素・勘定設定要素・請求要素のフラグが入っている。" loading="lazy"><figcaption><b class="t">【Q】WBS の「勘定設定要素 / 請求要素」フラグ</b><span class="tx">CJ20N</span><span class="scr">プロジェクトビルダ　WBS 要素の詳細（Q の前提）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 請求要素でない WBS を明細に割り当てると CJI3 に収益が出ない</li></ol><p class="gui-tip">自システムでの確認：WBS のフラグは CJ20N（または CJ02）の詳細画面。収益認識は結果分析キー（KKA2）と併せて確認します。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>配置を間違えたときの症状（入れ替え・取り違え）</h2>
+<table class="tbl wide">
+<tr><th>やりがちな取り違え</th><th>症状</th><th>直し方（確認の起点）</th></tr>
+<tr><td>ETO なのに E（受注在庫）で組む</td><td>プロジェクト単位の原価・収益が出ない（<code>CJI3</code> に何も出ない）／WBS に成本が集まらない</td><td>受注明細に WBS を割当（<a href="scenario-eq.html">E vs Q 对照</a>・<span class="mono">../sapeto/</span>）</td></tr>
+<tr><td>MTO なのに Q（プロジェクト在庫）を狙う</td><td>プロジェクトが無いので手配の勘定設定が空になり、入庫が自由在庫へ落ちる</td><td>受注明細の特別在庫 E／MRP4／所要量クラス（<span class="mono">../sapmto/</span>）</td></tr>
+<tr><td>VC 品目なのに品目カテゴリグループを <code>0001</code> にする</td><td>受注で構成（設定）を入力できず、可変 BOM が展開されない</td><td>品目タイプ <code>KMAT</code> ＋ 品目カテゴリグループ <code>0002</code>（<a href="vc.html">VC 概観</a>）</td></tr>
+<tr><td>戦略 82 を使うのに BOM や指図タイプを用意しない</td><td>受注保存でエラー、または指図が作られない（組立処理は BOM 必須・1:1）</td><td><code>OPPS</code> で 82 の所要量クラス/指図タイプ、<code>CS03</code> で BOM</td></tr>
+<tr><td>VC の戦略を 20 のままにする</td><td>設定した値が製造に反映されない／所要量タイプが VC 用にならない</td><td>戦略 25（<code>KEK</code> → <code>046</code>）を検討</td></tr>
+</table>
+<figure class="gui"><img src="assets/gui/compare_s03_1.svg" alt="MD04 の在庫・所要量リスト。計画手配の勘定設定と在庫区分が空で、個別需要として成立していない。" loading="lazy"><figcaption><b class="t">症状：計画手配の勘定設定・在庫区分が空</b><span class="tx">MD04</span><span class="scr">在庫/所要量リスト　個別需要が成立していない例</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> MTO なら「明細カテゴリの特別在庫 E」、ETO なら「評価付プロジェクト在庫と受注明細の WBS」を先に疑う</li></ol><p class="gui-tip">切り分けの順序：① 受注明細（明細カテゴリ / WBS）→ ② 品目マスタ MRP4 → ③ 戦略グループ・所要量クラス。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>どれを選ぶか（判断フロー）</h2>
+<div class="flowv">
+  <div class="step"><span class="ico">1</span><div class="body"><b>受注の前に作って在庫する？</b><small>Yes → MTS（PIR と自由在庫）。No → 2 へ</small></div></div>
+  <div class="vline"></div>
+  <div class="step"><span class="ico">2</span><div class="body"><b>案件単位で原価・収益を管理する？（設計費・据付・検収・分割請求がある）</b><small>Yes → ETO（Q＋WBS）。No → 3 へ</small></div></div>
+  <div class="vline"></div>
+  <div class="step"><span class="ico">3</span><div class="body"><b>お客様が受注時に仕様を選ぶ？（色・サイズ・口径…）</b><small>Yes → VC（KMAT・特徴/クラス・設定プロファイル）を基本設定に加える → 4 へ。No → 4 へ</small></div></div>
+  <div class="vline"></div>
+  <div class="step"><span class="ico">4</span><div class="body"><b>受注したらすぐ組み立てたい？（組立リードタイムが短い／在庫部品がある）</b><small>Yes → ATO（戦略 82）。No → MTO（戦略 20 / VC なら 25）</small></div></div>
+</div>
+
+<div class="box ok"><b class="t">演習（15 分）</b>
+次の 5 件を、上のフローで形態に振り分け、それぞれ「库存区分・成本対象・請求方式」を埋めてください。<br>
+① 標準的な工作機械の受注生産（納期 2 か月・分割請求なし）<br>
+② 得意先の工場に据え付ける特注ライン（設計・据付・検収・着手金あり）<br>
+③ 自社ブランドの切削工具（見込みで在庫して出荷）<br>
+④ 得意先が容量・色・材質を選ぶ産業用ポンプ（受注後すぐ組立）<br>
+⑤ 得意先ごとにソフトウェアをカスタマイズして納める案件（受注＋設計）<br>
+<span class="mini">模範解答は <a href="instructor.html">讲师版</a> に。</span></div>
+
+
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>受注形態 横断比較</h5><p>9 维度マトリクス・戦略/所要量タイプ早見・在庫テーブル・E vs Q 4 点セット。</p></div>
+  <div class="cols">
+    <div><h5>本サイト</h5><a href="index.html">总览</a><br><a href="scenario-eq.html">E vs Q 对照</a><br><a href="vc.html">VC 概観</a><br><a href="instructor.html">讲师版</a><br><a href="quiz.html">能力测试</a></div>
+    <div><h5>実機の手顺</h5><span class="mono">../sapmto/index.html</span>（MTO）<br><span class="mono">../sapeto/index.html</span>（ETO）</div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生产计划 PP（Production Planning） · 手顺与实机画面</title>
+<meta name="description" content="生产计划 PP（Production Planning）：51 个任务的手顺、IMG 路径、T-code 与 297 张实机画面截图。内容依据教材文档 S4.docx 整理。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/s4cn.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">S4</span><span class="txt">中文实训站</span></a>
+    <nav class="main">
+      <a href="index.html">首页</a>
+      <a href="prep.html">准备</a>
+      <a href="fi.html">FI</a>
+      <a href="co.html">CO</a>
+      <a href="mm.html">MM</a>
+      <a class="active" href="pp.html">PP</a>
+      <a href="sd.html">SD</a>
+      <a href="tcode.html">T-code</a>
+      <a href="issues.html">排错</a>
+      <a href="tasks.html">索引</a>
+      <a href="instructor.html">讲师</a>
+      <a href="worksheet.html">学员</a>
+      <a href="quiz.html">自测</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page"><article>
+<p class="breadcrumb"><a href="index.html">首页</a> / <span>生产计划 PP（Production Planning）</span></p>
+<h1>生产计划 PP（Production Planning）</h1>
+<p class="kicker">生产计划 · BOM · 工作中心 · 工艺路线 · 成本估算 · 生产订单</p>
+<div class="toc"><a href="#guide">1. 本模块导读</a><a href="#toc">2. 任务目录</a><a href="#steps">3. 手顺（逐个任务）</a><a href="#sources">4. 关于截图与取值</a></div>
+<div class="grid cards"><div class="card"><b>51</b><span>个任务</span></div><div class="card"><b>297</b><span>张实机画面</span></div><div class="card"><b>220</b><span>个手顺步骤</span></div><div class="card"><b>8/17</b><span>后台 / 前台任务</span></div></div>
+<h2 id="guide">1. 本模块导读</h2>
+<p>PP 主线是「主数据 → 计划 → 执行 → 成本」：生产计划参数文件、生产调度员、生产订单参数（排程 / 订单类型 / 确认）→ 物料清单 BOM（<code>CS01</code>，用处清单 <code>CS15</code>）→ 工作中心（负责人、控制码、能力 <code>CR11</code>、工时类别工作中心 <code>CR01</code>）→ 工艺路线（<code>CA01</code>）与工序拆分（<code>CA02</code>）→ 产成品生产计划视图 → 成本核算基础（成本构成结构、估计变式、日期控制、数量结构控制、成本核算变式 <code>PC01</code>）→ 产品成本估算（<code>CK11N</code>）→ 标记价格 / 发布价格（<code>CK24</code>）→ 实际成本核算估价变式与在制品结果分析版本 → 可用性检查（检查组、检查范围、检查规则 <code>PP01</code>/<code>PP02</code>）→ 计划策略组（<code>MM02</code>）与独立需求（<code>MD61</code>）→ MRP 运行（<code>MD02</code>）、MRP 清单 <code>MD05</code>、库存需求清单 <code>MD04</code> → 计划订单转生产订单 → 采购申请转采购订单 → 收货与发票 → 生产订单下达（<code>CO02</code>）/ 发货 / 工单确认（<code>CO11N</code>）/ 收货（<code>MIGO</code>）→ 成本显示（<code>CO03</code>）/ 技术性完成 / 差异结算（<code>KO88</code>）/ 成本报表 → 库存清单与移库。</p>
+<p>教材场景是一台「铸钢泵 170-230」从 BOM、工艺路线、标准成本估算，一路做到生产订单完工、结算和成本分析。</p>
+<div class="panel"><b>本模块重点</b><ul><li>三大主数据：BOM（<code>CS01</code>）、工作中心（<code>CR01</code>/<code>CR11</code>）、工艺路线（<code>CA01</code>）</li><li>标准成本估算与价格更新：<code>CK11N</code> 估算 → <code>CK24</code> 标记 → 发布</li><li>计划策略组与独立需求（<code>MD61</code>）→ MRP（<code>MD02</code>）→ 计划订单转生产订单</li><li>生产订单执行链：下达 <code>CO02</code> → 发货 → 确认 <code>CO11N</code> → 收货 <code>MIGO</code> → 结算 <code>KO88</code></li></ul>
+<p style="margin-top:10px">文档中出现的 T-code：<a class="tag gray" href="tcode.html#CS01">CS01</a> <a class="tag gray" href="tcode.html#CS15">CS15</a> <a class="tag gray" href="tcode.html#CR11">CR11</a> <a class="tag gray" href="tcode.html#CR01">CR01</a> <a class="tag gray" href="tcode.html#KP26">KP26</a> <a class="tag gray" href="tcode.html#CA01">CA01</a> <a class="tag gray" href="tcode.html#CA02">CA02</a> <a class="tag gray" href="tcode.html#PC01">PC01</a> <a class="tag gray" href="tcode.html#CK11N">CK11N</a> <a class="tag gray" href="tcode.html#CK24">CK24</a> <a class="tag gray" href="tcode.html#MM03">MM03</a> <a class="tag gray" href="tcode.html#PP01">PP01</a> <a class="tag gray" href="tcode.html#PP02">PP02</a> <a class="tag gray" href="tcode.html#MM02">MM02</a> <a class="tag gray" href="tcode.html#MD61">MD61</a> <a class="tag gray" href="tcode.html#MD05">MD05</a> <a class="tag gray" href="tcode.html#MD04">MD04</a> <a class="tag gray" href="tcode.html#MD02">MD02</a> <a class="tag gray" href="tcode.html#COOIS">COOIS</a> <a class="tag gray" href="tcode.html#MIGO">MIGO</a> <a class="tag gray" href="tcode.html#MIRO">MIRO</a> <a class="tag gray" href="tcode.html#MRBR">MRBR</a> <a class="tag gray" href="tcode.html#CO02">CO02</a> <a class="tag gray" href="tcode.html#CO11N">CO11N</a> <a class="tag gray" href="tcode.html#CO03">CO03</a> <a class="tag gray" href="tcode.html#KO88">KO88</a>（完整说明见 <a href="tcode.html">T-code / IMG 路径速查</a>）</p>
+</div>
+<h2 id="toc">2. 任务目录（51 个）</h2>
+<p>其中 51 个任务给出了原文档中的 IMG 后台菜单路径；带 <span class="fb">后台</span> 标注的是定制（配置）任务，带 <span class="fb img">前台</span> 标注的是日常业务操作任务；没有标注的任务原文未指明，请按任务名自行判断（一般「定义/维护…参数」＝后台，「创建/输入/显示…凭证、订单、发票」＝前台）。</p>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>序号</th><th>任务</th><th>前后台</th><th>文档中的 T-code</th><th>画面</th><th>手顺步</th></tr></thead><tbody><tr><td><a href="#t01">任务 01</a></td><td><a href="#t01">定义生产计划参数文件</a></td><td>—</td><td>—</td><td>2</td><td>2</td></tr><tr><td><a href="#t02">任务 02</a></td><td><a href="#t02">定义生产调度员</a></td><td>—</td><td>—</td><td>4</td><td>1</td></tr><tr><td><a href="#t03">任务 03</a></td><td><a href="#t03">维护和生产排程相关的生产订单参数</a></td><td>—</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t04">任务 04</a></td><td><a href="#t04">维护和订单类型相关的生产订单参数</a></td><td>—</td><td>—</td><td>4</td><td>3</td></tr><tr><td><a href="#t05">任务 05</a></td><td><a href="#t05">维护和确认相关的生产订单参数</a></td><td>—</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t06">任务 06</a></td><td><a href="#t06">新建物料清单</a></td><td>—</td><td><code>CS01</code></td><td>3</td><td>3</td></tr><tr><td><a href="#t07">任务 07</a></td><td><a href="#t07">显示物料所用处清单</a></td><td>前台</td><td><code>CS15</code></td><td>4</td><td>4</td></tr><tr><td><a href="#t08">任务 08</a></td><td><a href="#t08">定义工作中心负责人</a></td><td>—</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t09">任务 09</a></td><td><a href="#t09">定义工作中心的控制码</a></td><td>—</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t10">任务 10</a></td><td><a href="#t10">新建人工工时能力</a></td><td>—</td><td><code>CR11</code></td><td>5</td><td>2</td></tr><tr><td><a href="#t11">任务 11</a></td><td><a href="#t11">新建机器工时能力</a></td><td>—</td><td><code>CR11</code></td><td>2</td><td>2</td></tr><tr><td><a href="#t12">任务 12</a></td><td><a href="#t12">新建人工工时类别工作中心</a></td><td>—</td><td><code>CR01</code> <code>KP26</code></td><td>22</td><td>15</td></tr><tr><td><a href="#t13">任务 13</a></td><td><a href="#t13">新建机器工时类别工作中心</a></td><td>—</td><td><code>CR01</code></td><td>10</td><td>5</td></tr><tr><td><a href="#t14">任务 14</a></td><td><a href="#t14">新建工艺路线</a></td><td>—</td><td><code>CA01</code></td><td>20</td><td>18</td></tr><tr><td><a href="#t15">任务 15</a></td><td><a href="#t15">拆分工序</a></td><td>—</td><td><code>CA02</code></td><td>6</td><td>4</td></tr><tr><td><a href="#t16">任务 16</a></td><td><a href="#t16">新建产产品的生产计划视图</a></td><td>—</td><td>—</td><td>4</td><td>3</td></tr><tr><td><a href="#t17">任务 17</a></td><td><a href="#t17">定义成本构成结构</a></td><td>后台</td><td>—</td><td>16</td><td>14</td></tr><tr><td><a href="#t18">任务 18</a></td><td><a href="#t18">定义估计变式</a></td><td>后台</td><td>—</td><td>7</td><td>7</td></tr><tr><td><a href="#t19">任务 19</a></td><td><a href="#t19">定义日期控制</a></td><td>—</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t20">任务 20</a></td><td><a href="#t20">定义数量结构控制</a></td><td>后台</td><td><code>PC01</code></td><td>8</td><td>4</td></tr><tr><td><a href="#t21">任务 21</a></td><td><a href="#t21">定义成本核算变式</a></td><td>后台</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t22">任务 22</a></td><td><a href="#t22">新建产品成本估算</a></td><td>前台</td><td><code>CK11N</code></td><td>10</td><td>3</td></tr><tr><td><a href="#t23">任务 23</a></td><td><a href="#t23">标记价格</a></td><td>前台</td><td><code>CK24</code></td><td>12</td><td>4</td></tr><tr><td><a href="#t24">任务 24</a></td><td><a href="#t24">显示产成品的将来计划价格</a></td><td>前台</td><td><code>MM03</code></td><td>6</td><td>3</td></tr><tr><td><a href="#t25">任务 25</a></td><td><a href="#t25">发布价格</a></td><td>—</td><td><code>CK24</code></td><td>2</td><td>2</td></tr><tr><td><a href="#t26">任务 26</a></td><td><a href="#t26">显示产成品已发布的计划价格</a></td><td>—</td><td><code>MM03</code></td><td>8</td><td>4</td></tr><tr><td><a href="#t27">任务 27</a></td><td><a href="#t27">定义实际成本核算的估价变式</a></td><td>后台</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t28">任务 28</a></td><td><a href="#t28">定义在制品结果分析版本</a></td><td>后台</td><td>—</td><td>4</td><td>4</td></tr><tr><td><a href="#t29">任务 29</a></td><td><a href="#t29">定义可用性检查</a></td><td>后台</td><td>—</td><td>2</td><td>1</td></tr><tr><td><a href="#t30">任务 30</a></td><td><a href="#t30">定义可用性检查范围</a></td><td>后台</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t31">任务 31</a></td><td><a href="#t31">定义可用性检查控制</a></td><td>—</td><td><code>PP01</code> <code>PP02</code></td><td>5</td><td>4</td></tr><tr><td><a href="#t32">任务 32</a></td><td><a href="#t32">维护物料主数据的计划策略组</a></td><td>前台</td><td><code>MM02</code></td><td>4</td><td>3</td></tr><tr><td><a href="#t33">任务 33</a></td><td><a href="#t33">创建物料的独立需求计划</a></td><td>—</td><td><code>MD61</code></td><td>5</td><td>5</td></tr><tr><td><a href="#t34">任务 34</a></td><td><a href="#t34">显示MRP 清单</a></td><td>前台</td><td><code>MD05</code></td><td>4</td><td>3</td></tr><tr><td><a href="#t35">任务 35</a></td><td><a href="#t35">显示库存/需求清单</a></td><td>前台</td><td><code>MD04</code></td><td>6</td><td>3</td></tr><tr><td><a href="#t36">任务 36</a></td><td><a href="#t36">运行物料需求计划</a></td><td>—</td><td><code>MD02</code></td><td>14</td><td>9</td></tr><tr><td><a href="#t37">任务 37</a></td><td><a href="#t37">将计划订单转换为生产订单</a></td><td>前台</td><td><code>MD04</code></td><td>4</td><td>4</td></tr><tr><td><a href="#t38">任务 38</a></td><td><a href="#t38">显示生产订单清单</a></td><td>—</td><td><code>COOIS</code></td><td>5</td><td>2</td></tr><tr><td><a href="#t39">任务 39</a></td><td><a href="#t39">将采购申请转换为采购订单</a></td><td>—</td><td><code>MD04</code></td><td>13</td><td>12</td></tr><tr><td><a href="#t40">任务 40</a></td><td><a href="#t40">对采购订单收货</a></td><td>前台</td><td><code>MIGO</code></td><td>2</td><td>2</td></tr><tr><td><a href="#t41">任务 41</a></td><td><a href="#t41">输入采购发票</a></td><td>—</td><td><code>MIRO</code> <code>MRBR</code></td><td>5</td><td>5</td></tr><tr><td><a href="#t42">任务 42</a></td><td><a href="#t42">下达生产订单</a></td><td>前台</td><td><code>CO02</code></td><td>6</td><td>5</td></tr><tr><td><a href="#t43">任务 43</a></td><td><a href="#t43">对生产订单发货</a></td><td>前台</td><td>—</td><td>8</td><td>8</td></tr><tr><td><a href="#t44">任务 44</a></td><td><a href="#t44">工单确认</a></td><td>前台</td><td><code>CO11N</code></td><td>10</td><td>8</td></tr><tr><td><a href="#t45">任务 45</a></td><td><a href="#t45">对生产订单收货</a></td><td>前台</td><td><code>MIGO</code></td><td>2</td><td>2</td></tr><tr><td><a href="#t46">任务 46</a></td><td><a href="#t46">显示生产订单的成本</a></td><td>前台</td><td><code>CO03</code></td><td>5</td><td>1</td></tr><tr><td><a href="#t47">任务 47</a></td><td><a href="#t47">对生产订单技术性完成</a></td><td>前台</td><td><code>CO02</code></td><td>2</td><td>2</td></tr><tr><td><a href="#t48">任务 48</a></td><td><a href="#t48">生产订单差异结算</a></td><td>前台</td><td><code>KO88</code></td><td>2</td><td>2</td></tr><tr><td><a href="#t49">任务 49</a></td><td><a href="#t49">生产订单成本报表显示</a></td><td>—</td><td>—</td><td>2</td><td>1</td></tr><tr><td><a href="#t50">任务 50</a></td><td><a href="#t50">显示库存清单</a></td><td>—</td><td><code>MD04</code></td><td>6</td><td>5</td></tr><tr><td><a href="#t51">任务 51</a></td><td><a href="#t51">存货移库</a></td><td>前台</td><td>—</td><td>2</td><td>2</td></tr></tbody></table></div>
+<h2 id="steps">3. 手顺（逐个任务）</h2>
+<div class="box info"><b class="t">怎么用这一页</b>每个任务按原文档的顺序保留：先读「说明」，再照「IMG 路径」进入配置点，然后按编号步骤（每一步都配原文档的实机画面）逐屏操作。画面里的红色方框/箭头是原文档作者标注的「要填/要选的地方」。点击任意画面可放大（1×/2×/3×，ESC 关闭）。</div>
+<div class="steph" id="t01"><span class="no">任务 01</span><h3>定义生产计划参数文件</h3><span class="tc2">2 画面 / 2 步</span></div>
+<div class="pathline" data-copy="生产 → 商店底价控制 → 主数据 → 定义生产计划参数文件"><b>IMG 路径（后台菜单）</b>生产 → 商店底价控制 → 主数据 → 定义生产计划参数文件</div>
+<ol class="oplist">
+<li>
+<p class="opcap">生产计划 参数文件可以分配给物料（物料主数据中的工作排程屏幕）或者生产计划员<br>（后台配置）。其中分配给物料主数据的生产计划参数文件具有更高的优先级。在创建生产订单时生产计划参数将复制生产订单或流程订单</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t01/01_1_image777.png"><img src="assets/img/pp/t01/01_1_image777.png" alt="定义生产计划参数文件 · 第 1 步：生产计划 参数文件可以分配给物料（物料主数据中的工作排程屏幕）或者生产计划员 （后台配置）。其中分配给物料主数据的生产计划参数文件具有更高的优先级。在创建生产订单时生产计划参数将复制生产订单或流程订单" loading="lazy" width="347" height="468"></a><figcaption><span class="n">画面 770</span><span class="src">image777.png · 347×468</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>点击进入</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 771）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t01/02_1_image778.png"><img src="assets/img/pp/t01/02_1_image778.png" alt="定义生产计划参数文件 · 第 2 步：image778.png" loading="lazy" width="617" height="169"></a><figcaption><span class="n">画面 771</span><span class="src">image778.png · 617×169</span></figcaption></figure>
+<div class="note info"><b class="t">原理说明</b>解释：采用复制的方法，复制 1000 工厂，000001 生产计划参数文件。</div>
+</li>
+</ol>
+<div class="steph" id="t02"><span class="no">任务 02</span><h3>定义生产调度员</h3><span class="tc2">4 画面 / 1 步</span></div>
+<div class="pathline" data-copy="生产 → 商店底价控制 → 主数据 → 定义生产调度员"><b>IMG 路径（后台菜单）</b>生产 → 商店底价控制 → 主数据 → 定义生产调度员</div>
+<ol class="oplist">
+<li>
+<p class="opcap">通过在物料主数据中将生产调度员分配给物料，我们可以定义在生产作业控制中对某种物料的责任归属<br>生产－商店底价控制－主数据－定义生产调度员</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t02/01_1_image783.png"><img src="assets/img/pp/t02/01_1_image783.png" alt="定义生产调度员 · 第 1 步：通过在物料主数据中将生产调度员分配给物料，我们可以定义在生产作业控制中对某种物料的责任归属 生产－商店底价控制－主数据－定义生产调度员" loading="lazy" width="345" height="419"></a><figcaption><span class="n">画面 772</span><span class="src">image785.png · 345×419</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t02/01_2_image784.png"><img src="assets/img/pp/t02/01_2_image784.png" alt="定义生产调度员 · 第 1 步：通过在物料主数据中将生产调度员分配给物料，我们可以定义在生产作业控制中对某种物料的责任归属 生产－商店底价控制－主数据－定义生产调度员" loading="lazy" width="678" height="353"></a><figcaption><span class="n">画面 773</span><span class="src">image786.png · 678×353</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t02/01_1_image783.png"><img src="assets/img/pp/t02/01_1_image783.png" alt="定义生产调度员 · 第 1 步：通过在物料主数据中将生产调度员分配给物料，我们可以定义在生产作业控制中对某种物料的责任归属 生产－商店底价控制－主数据－定义生产调度员" loading="lazy" width="345" height="419"></a><figcaption><span class="n">画面 772</span><span class="src">image785.png · 345×419</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t02/01_2_image784.png"><img src="assets/img/pp/t02/01_2_image784.png" alt="定义生产调度员 · 第 1 步：通过在物料主数据中将生产调度员分配给物料，我们可以定义在生产作业控制中对某种物料的责任归属 生产－商店底价控制－主数据－定义生产调度员" loading="lazy" width="678" height="353"></a><figcaption><span class="n">画面 773</span><span class="src">image786.png · 678×353</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材笔记</b>点击新条目，进入</div>
+<div class="note tip"><b class="t">教材笔记</b>P999 | 999| 生产调度员颐宁 | 000001</div>
+</li>
+</ol>
+<div class="steph" id="t03"><span class="no">任务 03</span><h3>维护和生产排程相关的生产订单参数</h3><span class="tc2">3 画面 / 3 步</span></div>
+<div class="pathline" data-copy="生产 → 商店底价控制 → 工序 → 计划 → 为生产订单定义计划参数"><b>IMG 路径（后台菜单）</b>生产 → 商店底价控制 → 工序 → 计划 → 为生产订单定义计划参数</div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">生产－商店底价控制－工序－计划－为生产订单定义计划参数</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t03/01_1_image787.png"><img src="assets/img/pp/t03/01_1_image787.png" alt="维护和生产排程相关的生产订单参数 · 第 1 步：生产－商店底价控制－工序－计划－为生产订单定义计划参数" loading="lazy" width="440" height="380"></a><figcaption><span class="n">画面 776</span><span class="src">image787.png · 440×380</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">维护的这些参数将影响生产订单排程的各种操作和计算</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t03/02_1_image788.png"><img src="assets/img/pp/t03/02_1_image788.png" alt="维护和生产排程相关的生产订单参数 · 第 2 步：维护的这些参数将影响生产订单排程的各种操作和计算" loading="lazy" width="377" height="593"></a><figcaption><span class="n">画面 777</span><span class="src">image788.png · 377×593</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击新条目</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t03/03_1_image789.png"><img src="assets/img/pp/t03/03_1_image789.png" alt="维护和生产排程相关的生产订单参数 · 第 3 步：点击新条目" loading="lazy" width="600" height="892"></a><figcaption><span class="n">画面 778</span><span class="src">image789.png · 600×892</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t04"><span class="no">任务 04</span><h3>维护和订单类型相关的生产订单参数</h3><span class="tc2">4 画面 / 3 步</span></div>
+<div class="pathline" data-copy="生产 → 商店底价控制 → 主数据 → 订单 → 定义订单类型相关参数"><b>IMG 路径（后台菜单）</b>生产 → 商店底价控制 → 主数据 → 订单 → 定义订单类型相关参数</div>
+<ol class="oplist">
+<li>
+<p class="opcap">维护的这些参数将影响生产订单排程的各种操作和计算</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t04/01_1_image790.png"><img src="assets/img/pp/t04/01_1_image790.png" alt="维护和订单类型相关的生产订单参数 · 第 1 步：维护的这些参数将影响生产订单排程的各种操作和计算" loading="lazy" width="326" height="490"></a><figcaption><span class="n">画面 779</span><span class="src">image790.png · 326×490</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t04/01_2_image791.png"><img src="assets/img/pp/t04/01_2_image791.png" alt="维护和订单类型相关的生产订单参数 · 第 1 步：维护的这些参数将影响生产订单排程的各种操作和计算" loading="lazy" width="505" height="349"></a><figcaption><span class="n">画面 780</span><span class="src">image791.png · 505×349</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击新条目</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t04/02_1_image792.png"><img src="assets/img/pp/t04/02_1_image792.png" alt="维护和订单类型相关的生产订单参数 · 第 2 步：点击新条目" loading="lazy" width="590" height="765"></a><figcaption><span class="n">画面 781</span><span class="src">image792.png · 590×765</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">原书中结果分析码为FERT</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t04/03_1_image793.png"><img src="assets/img/pp/t04/03_1_image793.png" alt="维护和订单类型相关的生产订单参数 · 第 3 步：原书中结果分析码为FERT" loading="lazy" width="618" height="448"></a><figcaption><span class="n">画面 782</span><span class="src">image793.png · 618×448</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t05"><span class="no">任务 05</span><h3>维护和确认相关的生产订单参数</h3><span class="tc2">3 画面 / 3 步</span></div>
+<div class="pathline" data-copy="生产 → 商店底价控制 → 工序 → 确认 → 定义确认参数"><b>IMG 路径（后台菜单）</b>生产 → 商店底价控制 → 工序 → 确认 → 定义确认参数</div>
+<ol class="oplist">
+<li>
+<p class="opcap">确认是生产订单管理中的一项工作，它既可以是针对整个订单的，也可以是针对工序的，它是由负责人员认可或填写订单的产出、时间等信息，并由系统执行检查、倒冲等操作的过程。</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t05/01_1_image794.png"><img src="assets/img/pp/t05/01_1_image794.png" alt="维护和确认相关的生产订单参数 · 第 1 步：确认是生产订单管理中的一项工作，它既可以是针对整个订单的，也可以是针对工序的，它是由负责人员认可或填写订单的产出、时间等信息，并由系统执行检查、倒冲等操作的过程。" loading="lazy" width="417" height="577"></a><figcaption><span class="n">画面 783</span><span class="src">image794.png · 417×577</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 784）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t05/02_1_image795.png"><img src="assets/img/pp/t05/02_1_image795.png" alt="维护和确认相关的生产订单参数 · 第 2 步：image795.png" loading="lazy" width="611" height="511"></a><figcaption><span class="n">画面 784</span><span class="src">image795.png · 611×511</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击新条目</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t05/03_1_image796.png"><img src="assets/img/pp/t05/03_1_image796.png" alt="维护和确认相关的生产订单参数 · 第 3 步：点击新条目" loading="lazy" width="547" height="686"></a><figcaption><span class="n">画面 785</span><span class="src">image796.png · 547×686</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t06"><span class="no">任务 06</span><h3>新建物料清单</h3><span class="tc">CS01</span><span class="tc2">3 画面 / 3 步</span></div>
+<p>R999-100罩壳1PCR999-200飞轮1PCR999-300管轴1PCR999-400支撑架1PCR999-500金属片0.60M2R999-100罩壳1PCR999-200飞轮1PCR999-300管轴1PCR999-400支撑架1PCR999-500金属片0.60M2F999-100 P999 1</p>
+<div class="pathline" data-copy="后勤 → 生产 → 主数据 → 物料清单 → 物料 BOM → CS01 新建"><b>IMG 路径（后台菜单）</b>后勤 → 生产 → 主数据 → 物料清单 → 物料 BOM → CS01 新建</div>
+<div class="note tip"><b class="t">教材笔记</b>物料需求计划 MRP 最主要的基础是 BOM，我们现在来维护一个BOM</div>
+<ol class="oplist">
+<li>
+<p class="opcap">后勤－生产－主数据－物料清单－物料 BOM — CS01 新建</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t06/01_1_image797.png"><img src="assets/img/pp/t06/01_1_image797.png" alt="新建物料清单 · 第 1 步：后勤－生产－主数据－物料清单－物料 BOM — CS01 新建" loading="lazy" width="445" height="424"></a><figcaption><span class="n">画面 786</span><span class="src">image797.png · 445×424</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 787）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t06/02_1_image798.png"><img src="assets/img/pp/t06/02_1_image798.png" alt="新建物料清单 · 第 2 步：image798.png" loading="lazy" width="496" height="342"></a><figcaption><span class="n">画面 787</span><span class="src">image798.png · 496×342</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">项目类别都用L,库存项目<br>录入 上述数据，点击保存即可</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t06/03_1_image799.jpeg"><img src="assets/img/pp/t06/03_1_image799.jpeg" alt="新建物料清单 · 第 3 步：项目类别都用L,库存项目 录入 上述数据，点击保存即可" loading="lazy" width="1215" height="452"></a><figcaption><span class="n">画面 788</span><span class="src">image799.jpeg · 1215×452</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t07"><span class="no">任务 07</span><h3>显示物料所用处清单</h3><span class="fb img">前台</span><span class="tc">CS15</span><span class="tc2">4 画面 / 4 步</span></div>
+<div class="pathline" data-copy="后勤 → 生产 → 主数据 → 物料清单 → 报告 → 调用清单 → 所用处清单 CS15-物料"><b>IMG 路径（后台菜单）</b>后勤 → 生产 → 主数据 → 物料清单 → 报告 → 调用清单 → 所用处清单 CS15-物料</div>
+<div class="note tip"><b class="t">教材笔记</b>BOM 是从生产成品或半成品需要多少组件的角度，有时候我们也是要查询某个材料的用途是什么，它是被用来制造什么产成品或半成品的，这可称为“反查清单”</div>
+<ol class="oplist">
+<li>
+<p class="opcap">后勤－生产－主数据－物料清单－报告－调用清单—所用处清单 CS15-物料</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t07/01_1_image800.png"><img src="assets/img/pp/t07/01_1_image800.png" alt="显示物料所用处清单 · 第 1 步：后勤－生产－主数据－物料清单－报告－调用清单—所用处清单 CS15-物料" loading="lazy" width="445" height="481"></a><figcaption><span class="n">画面 789</span><span class="src">image800.png · 445×481</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 790）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t07/02_1_image801.png"><img src="assets/img/pp/t07/02_1_image801.png" alt="显示物料所用处清单 · 第 2 步：image801.png" loading="lazy" width="482" height="450"></a><figcaption><span class="n">画面 790</span><span class="src">image801.png · 482×450</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击下一屏，如下图所示</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t07/03_1_image802.png"><img src="assets/img/pp/t07/03_1_image802.png" alt="显示物料所用处清单 · 第 3 步：点击下一屏，如下图所示" loading="lazy" width="647" height="516"></a><figcaption><span class="n">画面 791</span><span class="src">image802.png · 647×516</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击 F8 运行，如下</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t07/04_1_image803.png"><img src="assets/img/pp/t07/04_1_image803.png" alt="显示物料所用处清单 · 第 4 步：点击 F8 运行，如下" loading="lazy" width="879" height="217"></a><figcaption><span class="n">画面 792</span><span class="src">image803.png · 879×217</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>这个报告显示了罩壳被用于物料 F999-100 的生产中</div>
+</li>
+</ol>
+<div class="steph" id="t08"><span class="no">任务 08</span><h3>定义工作中心负责人</h3><span class="tc2">3 画面 / 3 步</span></div>
+<div class="pathline" data-copy="生产 → 基本数据 → 工作中心 → 通用数据 → 确定负责人"><b>IMG 路径（后台菜单）</b>生产 → 基本数据 → 工作中心 → 通用数据 → 确定负责人</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 颐宁公司有 “ 物料准备”，“ 切割” 这样一些工作中心，生产产成品 “ 铸钢泵 170-230 ” 需要以一定的次序在这些工作中心执行各道工序，SAP 称之为“工艺路线”。这些我们在之后维护。本步骤中，我们需要为各工作中心在后台定义一些负责人，这些负责人都会分配到工作中心的主数据中。为简化，我们只定义了一个工作中心负责人。<br>生产－基本数据－工作中心－通用数据－确定负责人</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t08/01_1_image804.png"><img src="assets/img/pp/t08/01_1_image804.png" alt="定义工作中心负责人 · 第 1 步：解释：颐宁公司有 “ 物料准备”，“ 切割” 这样一些工作中心，生产产成品 “ 铸钢泵 170-230 ” 需要以一定的次序在这些工作中心执行各道工序，SAP 称之为“工艺路线”。这些我们在之后维护。本步骤中，我们需要为各工作中心在后台定义一些负责人，这些负责人都会分配到工作中心的主数据中。为简化，我们只定义了一个工作" loading="lazy" width="339" height="451"></a><figcaption><span class="n">画面 793</span><span class="src">image804.png · 339×451</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 794）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t08/02_1_image805.png"><img src="assets/img/pp/t08/02_1_image805.png" alt="定义工作中心负责人 · 第 2 步：image805.png" loading="lazy" width="512" height="328"></a><figcaption><span class="n">画面 794</span><span class="src">image805.png · 512×328</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>点击新条目，</div>
+</li>
+<li>
+<p class="opcap">P999 999 颐宁工作中心负责人</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t08/03_1_image806.png"><img src="assets/img/pp/t08/03_1_image806.png" alt="定义工作中心负责人 · 第 3 步：P999 999 颐宁工作中心负责人" loading="lazy" width="670" height="261"></a><figcaption><span class="n">画面 795</span><span class="src">image806.png · 670×261</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t09"><span class="no">任务 09</span><h3>定义工作中心的控制码</h3><span class="tc2">3 画面 / 3 步</span></div>
+<p>点击新条目</p>
+<div class="pathline" data-copy="生产 → 基本数据 → 工作中心 → 工艺路径数据 → 定义控制码"><b>IMG 路径（后台菜单）</b>生产 → 基本数据 → 工作中心 → 工艺路径数据 → 定义控制码</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 这个控制码控制着工艺路线中的某个工序需要执行的业务功能，以及 SAP 如何处理这个工序。比如这个工序是否需要排程、是否需要产生产能需求、是否需要打印公票、是否需要返工工序、是否需要计算成本、是否和如何进行确认、是内部还是外部处理。<br>生产－基本数据－工作中心－工艺路径数据－定义控制码</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t09/01_1_image807.png"><img src="assets/img/pp/t09/01_1_image807.png" alt="定义工作中心的控制码 · 第 1 步：解释：这个控制码控制着工艺路线中的某个工序需要执行的业务功能，以及 SAP 如何处理这个工序。比如这个工序是否需要排程、是否需要产生产能需求、是否需要打印公票、是否需要返工工序、是否需要计算成本、是否和如何进行确认、是内部还是外部处理。 生产－基本数据－工作中心－工艺路径数据－定义控制码" loading="lazy" width="376" height="522"></a><figcaption><span class="n">画面 796</span><span class="src">image807.png · 376×522</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 797）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t09/02_1_image808.png"><img src="assets/img/pp/t09/02_1_image808.png" alt="定义工作中心的控制码 · 第 2 步：image808.png" loading="lazy" width="455" height="446"></a><figcaption><span class="n">画面 797</span><span class="src">image808.png · 455×446</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">控制码 ZKM1 颐宁工作中心控制码调度</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t09/03_1_image809.png"><img src="assets/img/pp/t09/03_1_image809.png" alt="定义工作中心的控制码 · 第 3 步：控制码 ZKM1 颐宁工作中心控制码调度" loading="lazy" width="646" height="499"></a><figcaption><span class="n">画面 798</span><span class="src">image809.png · 646×499</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>确定能力需求 成本</div>
+<div class="note tip"><b class="t">教材笔记</b>确认 2 确认可能但不必需</div>
+</li>
+</ol>
+<div class="steph" id="t10"><span class="no">任务 10</span><h3>新建人工工时能力</h3><span class="tc">CR11</span><span class="tc2">5 画面 / 2 步</span></div>
+<div class="pathline" data-copy="后勤 → 生产 → 主数据 → 工作中心 → 能力 → CR11-创建"><b>IMG 路径（后台菜单）</b>后勤 → 生产 → 主数据 → 工作中心 → 能力 → CR11-创建</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 颐宁公司的各人工工作中心的资源是共享的，它们的生产能力是可以调配使用的，所以我们在这个步骤将统一核算整个工厂的人工工时能力，在后面的步骤中，当新建人工工时类别的工作中心时，我们将通用人工工时能力分配给它们。当然能力也可以定义在工作中心这一层。<br>后勤－生产－主数据－工作中心－能力－CR11-创建</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t10/01_1_image810.png"><img src="assets/img/pp/t10/01_1_image810.png" alt="新建人工工时能力 · 第 1 步：解释：颐宁公司的各人工工作中心的资源是共享的，它们的生产能力是可以调配使用的，所以我们在这个步骤将统一核算整个工厂的人工工时能力，在后面的步骤中，当新建人工工时类别的工作中心时，我们将通用人工工时能力分配给它们。当然能力也可以定义在工作中心这一层。 后勤－生产－主数据－工作中心－能力－CR11-创建" loading="lazy" width="256" height="385"></a><figcaption><span class="n">画面 799</span><span class="src">image812.png · 256×385</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t10/01_2_image811.png"><img src="assets/img/pp/t10/01_2_image811.png" alt="新建人工工时能力 · 第 1 步：解释：颐宁公司的各人工工作中心的资源是共享的，它们的生产能力是可以调配使用的，所以我们在这个步骤将统一核算整个工厂的人工工时能力，在后面的步骤中，当新建人工工时类别的工作中心时，我们将通用人工工时能力分配给它们。当然能力也可以定义在工作中心这一层。 后勤－生产－主数据－工作中心－能力－CR11-创建" loading="lazy" width="465" height="462"></a><figcaption><span class="n">画面 800</span><span class="src">image813.png · 465×462</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t10/01_1_image810.png"><img src="assets/img/pp/t10/01_1_image810.png" alt="新建人工工时能力 · 第 1 步：解释：颐宁公司的各人工工作中心的资源是共享的，它们的生产能力是可以调配使用的，所以我们在这个步骤将统一核算整个工厂的人工工时能力，在后面的步骤中，当新建人工工时类别的工作中心时，我们将通用人工工时能力分配给它们。当然能力也可以定义在工作中心这一层。 后勤－生产－主数据－工作中心－能力－CR11-创建" loading="lazy" width="256" height="385"></a><figcaption><span class="n">画面 799</span><span class="src">image812.png · 256×385</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t10/01_2_image811.png"><img src="assets/img/pp/t10/01_2_image811.png" alt="新建人工工时能力 · 第 1 步：解释：颐宁公司的各人工工作中心的资源是共享的，它们的生产能力是可以调配使用的，所以我们在这个步骤将统一核算整个工厂的人工工时能力，在后面的步骤中，当新建人工工时类别的工作中心时，我们将通用人工工时能力分配给它们。当然能力也可以定义在工作中心这一层。 后勤－生产－主数据－工作中心－能力－CR11-创建" loading="lazy" width="465" height="462"></a><figcaption><span class="n">画面 800</span><span class="src">image813.png · 465×462</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">Labor 只是定义，002 是工时</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t10/02_1_image814.png"><img src="assets/img/pp/t10/02_1_image814.png" alt="新建人工工时能力 · 第 2 步：Labor 只是定义，002 是工时" loading="lazy" width="598" height="665"></a><figcaption><span class="n">画面 803</span><span class="src">image814.png · 598×665</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>单项能力数量，指能分割使用的单项能力有 10 个。比如，如果颐宁公司总是以班组为单位管理的，这里就是班组的数量。如果是以单个工人调配的，那这里就是工人的数量。这里需要和后面工艺路线的定义保持定义上的一致。</div>
+<div class="note tip"><b class="t">教材笔记</b>能力利用 100 指 100%能有效利用。</div>
+<div class="note tip"><b class="t">教材笔记</b>和有限计划有关。指在作有限排程的时候，系统需要将这种能力的可用数量和负载数量考虑进去。只有这里打勾的能力才会在能力可用性检查中被考虑。</div>
+</li>
+</ol>
+<div class="steph" id="t11"><span class="no">任务 11</span><h3>新建机器工时能力</h3><span class="tc">CR11</span><span class="tc2">2 画面 / 2 步</span></div>
+<div class="pathline" data-copy="解释：和人工工时能力类似，颐宁公司的各机器工作中心的资源也是共享的。后勤 → 生产 → 主数据 → 工作中心 → 能力 → CR11-创建"><b>IMG 路径（后台菜单）</b>解释：和人工工时能力类似，颐宁公司的各机器工作中心的资源也是共享的。后勤 → 生产 → 主数据 → 工作中心 → 能力 → CR11-创建</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 和人工工时能力类似，颐宁公司的各机器工作中心的资源也是共享的。后勤－生产－主数据－工作中心－能力－CR11-创建</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t11/01_1_image815.png"><img src="assets/img/pp/t11/01_1_image815.png" alt="新建机器工时能力 · 第 1 步：解释：和人工工时能力类似，颐宁公司的各机器工作中心的资源也是共享的。后勤－生产－主数据－工作中心－能力－CR11-创建" loading="lazy" width="348" height="209"></a><figcaption><span class="n">画面 804</span><span class="src">image815.png · 348×209</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 805）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t11/02_1_image816.png"><img src="assets/img/pp/t11/02_1_image816.png" alt="新建机器工时能力 · 第 2 步：image816.png" loading="lazy" width="593" height="686"></a><figcaption><span class="n">画面 805</span><span class="src">image816.png · 593×686</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t12"><span class="no">任务 12</span><h3>新建人工工时类别工作中心</h3><span class="tc">CR01</span><span class="tc">KP26</span><span class="tc2">22 画面 / 15 步</span></div>
+<div class="pathline" data-copy="后勤 → 生产 → 主数据 → 工作中心 → 工作中心 → CR01-创建"><b>IMG 路径（后台菜单）</b>后勤 → 生产 → 主数据 → 工作中心 → 工作中心 → CR01-创建</div>
+<div class="note info"><b class="t">原理说明</b>解释：颐宁公司有 “ 物料准备”，“ 切割”，“ 装配”，“ 校验和交付” 这样四个以人工工时为主的工作中心。</div>
+<ol class="oplist">
+<li>
+<p class="opcap">后勤－生产－主数据－工作中心－工作中心－CR01-创建</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/01_1_image817.png"><img src="assets/img/pp/t12/01_1_image817.png" alt="新建人工工时类别工作中心 · 第 1 步：后勤－生产－主数据－工作中心－工作中心－CR01-创建" loading="lazy" width="236" height="265"></a><figcaption><span class="n">画面 806</span><span class="src">image817.png · 236×265</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t12/01_2_image818.png"><img src="assets/img/pp/t12/01_2_image818.png" alt="新建人工工时类别工作中心 · 第 1 步：后勤－生产－主数据－工作中心－工作中心－CR01-创建" loading="lazy" width="494" height="452"></a><figcaption><span class="n">画面 807</span><span class="src">image818.png · 494×452</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">回车后如下所示</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/02_1_image819.png"><img src="assets/img/pp/t12/02_1_image819.png" alt="新建人工工时类别工作中心 · 第 2 步：回车后如下所示" loading="lazy" width="584" height="685"></a><figcaption><span class="n">画面 808</span><span class="src">image819.png · 584×685</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t12/02_2_image820.png"><img src="assets/img/pp/t12/02_2_image820.png" alt="新建人工工时类别工作中心 · 第 2 步：回车后如下所示" loading="lazy" width="599" height="511"></a><figcaption><span class="n">画面 809</span><span class="src">image820.png · 599×511</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">将工时选择为必须维护</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/03_1_image821.png"><img src="assets/img/pp/t12/03_1_image821.png" alt="新建人工工时类别工作中心 · 第 3 步：将工时选择为必须维护" loading="lazy" width="570" height="798"></a><figcaption><span class="n">画面 810</span><span class="src">image821.png · 570×798</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>点击默认值</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 811）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/04_1_image822.png"><img src="assets/img/pp/t12/04_1_image822.png" alt="新建人工工时类别工作中心 · 第 4 步：image822.png" loading="lazy" width="628" height="693"></a><figcaption><span class="n">画面 811</span><span class="src">image822.png · 628×693</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">ZKM1 是我们在之前定义的缺省控制码<br>MIN 是指分钟点击调度</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/05_1_image823.png"><img src="assets/img/pp/t12/05_1_image823.png" alt="新建人工工时类别工作中心 · 第 5 步：ZKM1 是我们在之前定义的缺省控制码 MIN 是指分钟点击调度" loading="lazy" width="621" height="683"></a><figcaption><span class="n">画面 812</span><span class="src">image823.png · 621×683</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">点击成本核算</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/06_1_image824.png"><img src="assets/img/pp/t12/06_1_image824.png" alt="新建人工工时类别工作中心 · 第 6 步：点击成本核算" loading="lazy" width="643" height="818"></a><figcaption><span class="n">画面 813</span><span class="src">image824.png · 643×818</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">此处活动类型由于在 CO 模块未完成 KP26，故无法继续接下来定义切割</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/07_1_image825.png"><img src="assets/img/pp/t12/07_1_image825.png" alt="新建人工工时类别工作中心 · 第 7 步：此处活动类型由于在 CO 模块未完成 KP26，故无法继续接下来定义切割" loading="lazy" width="347" height="361"></a><figcaption><span class="n">画面 814</span><span class="src">image825.png · 347×361</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/08_1_image826.png"><img src="assets/img/pp/t12/08_1_image826.png" alt="新建人工工时类别工作中心 · 第 8 步：image826.png" loading="lazy" width="600" height="728"></a><figcaption><span class="n">画面 815</span><span class="src">image826.png · 600×728</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 816）</span></p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t12/09_1_image827.png"><img src="assets/img/pp/t12/09_1_image827.png" alt="新建人工工时类别工作中心 · 第 9 步：image827.png" loading="lazy" width="642" height="677"></a><figcaption><span class="n">画面 816</span><span class="src">image827.png · 642×677</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t12/10_1_image828.png"><img src="assets/img/pp/t12/10_1_image828.png" alt="新建人工工时类别工作中心 · 第 9 步：image828.png" loading="lazy" width="613" height="666"></a><figcaption><span class="n">画面 817</span><span class="src">image828.png · 613×666</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t12/11_1_image829.png"><img src="assets/img/pp/t12/11_1_image829.png" alt="新建人工工时类别工作中心 · 第 9 步：image829.png" loading="lazy" width="620" height="603"></a><figcaption><span class="n">画面 818</span><span class="src">image829.png · 620×603</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/12_1_image830.png"><img src="assets/img/pp/t12/12_1_image830.png" alt="新建人工工时类别工作中心 · 第 10 步：image830.png" loading="lazy" width="357" height="377"></a><figcaption><span class="n">画面 819</span><span class="src">image830.png · 357×377</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t12/12_2_image831.png"><img src="assets/img/pp/t12/12_2_image831.png" alt="新建人工工时类别工作中心 · 第 10 步：image831.png" loading="lazy" width="626" height="639"></a><figcaption><span class="n">画面 820</span><span class="src">image831.png · 626×639</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">9995 装配</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/13_1_image832.png"><img src="assets/img/pp/t12/13_1_image832.png" alt="新建人工工时类别工作中心 · 第 11 步：9995 装配" loading="lazy" width="608" height="597"></a><figcaption><span class="n">画面 821</span><span class="src">image832.png · 608×597</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/14_1_image833.png"><img src="assets/img/pp/t12/14_1_image833.png" alt="新建人工工时类别工作中心 · 第 12 步：image833.png" loading="lazy" width="639" height="693"></a><figcaption><span class="n">画面 822</span><span class="src">image833.png · 639×693</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 823）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/15_1_image834.png"><img src="assets/img/pp/t12/15_1_image834.png" alt="新建人工工时类别工作中心 · 第 13 步：image834.png" loading="lazy" width="591" height="611"></a><figcaption><span class="n">画面 823</span><span class="src">image834.png · 591×611</span></figcaption></figure>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t12/16_1_image835.png"><img src="assets/img/pp/t12/16_1_image835.png" alt="新建人工工时类别工作中心 · 第 14 步：image835.png" loading="lazy" width="610" height="646"></a><figcaption><span class="n">画面 824</span><span class="src">image835.png · 610×646</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t12/16_2_image836.png"><img src="assets/img/pp/t12/16_2_image836.png" alt="新建人工工时类别工作中心 · 第 14 步：image836.png" loading="lazy" width="571" height="605"></a><figcaption><span class="n">画面 825</span><span class="src">image836.png · 571×605</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t12/16_3_image837.png"><img src="assets/img/pp/t12/16_3_image837.png" alt="新建人工工时类别工作中心 · 第 14 步：image837.png" loading="lazy" width="581" height="440"></a><figcaption><span class="n">画面 826</span><span class="src">image837.png · 581×440</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">9996 校验和交付</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/17_1_image838.png"><img src="assets/img/pp/t12/17_1_image838.png" alt="新建人工工时类别工作中心 · 第 15 步：9996 校验和交付" loading="lazy" width="600" height="530"></a><figcaption><span class="n">画面 827</span><span class="src">image838.png · 600×530</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t13"><span class="no">任务 13</span><h3>新建机器工时类别工作中心</h3><span class="tc">CR01</span><span class="tc2">10 画面 / 5 步</span></div>
+<div class="pathline" data-copy="颐宁公司有“油漆”，“ 预装配”这样两个以机器工时为主的工作中心，本步骤中逐个创建后勤 → 生产 → 主数据 → 工作中心 → 工作中心 → CR01-创建"><b>IMG 路径（后台菜单）</b>颐宁公司有“油漆”，“ 预装配”这样两个以机器工时为主的工作中心，本步骤中逐个创建后勤 → 生产 → 主数据 → 工作中心 → 工作中心 → CR01-创建</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 828）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t13/01_1_image839.png"><img src="assets/img/pp/t13/01_1_image839.png" alt="新建机器工时类别工作中心 · 第 1 步：image839.png" loading="lazy" width="466" height="476"></a><figcaption><span class="n">画面 828</span><span class="src">image839.png · 466×476</span></figcaption></figure>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t13/02_1_image840.png"><img src="assets/img/pp/t13/02_1_image840.png" alt="新建机器工时类别工作中心 · 第 2 步：image840.png" loading="lazy" width="580" height="608"></a><figcaption><span class="n">画面 829</span><span class="src">image840.png · 580×608</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t13/02_2_image841.png"><img src="assets/img/pp/t13/02_2_image841.png" alt="新建机器工时类别工作中心 · 第 2 步：image841.png" loading="lazy" width="602" height="666"></a><figcaption><span class="n">画面 830</span><span class="src">image841.png · 602×666</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t13/02_3_image842.png"><img src="assets/img/pp/t13/02_3_image842.png" alt="新建机器工时类别工作中心 · 第 2 步：image842.png" loading="lazy" width="616" height="628"></a><figcaption><span class="n">画面 831</span><span class="src">image842.png · 616×628</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 832）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t13/03_1_image843.png"><img src="assets/img/pp/t13/03_1_image843.png" alt="新建机器工时类别工作中心 · 第 3 步：image843.png" loading="lazy" width="589" height="614"></a><figcaption><span class="n">画面 832</span><span class="src">image843.png · 589×614</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t13/04_1_image844.png"><img src="assets/img/pp/t13/04_1_image844.png" alt="新建机器工时类别工作中心 · 第 3 步：image844.png" loading="lazy" width="361" height="381"></a><figcaption><span class="n">画面 833</span><span class="src">image844.png · 361×381</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>创建预装配工作中心 9994</div>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t13/05_1_image845.png"><img src="assets/img/pp/t13/05_1_image845.png" alt="新建机器工时类别工作中心 · 第 4 步：image845.png" loading="lazy" width="603" height="626"></a><figcaption><span class="n">画面 834</span><span class="src">image845.png · 603×626</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t13/05_2_image846.png"><img src="assets/img/pp/t13/05_2_image846.png" alt="新建机器工时类别工作中心 · 第 4 步：image846.png" loading="lazy" width="602" height="618"></a><figcaption><span class="n">画面 835</span><span class="src">image846.png · 602×618</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t13/05_3_image847.png"><img src="assets/img/pp/t13/05_3_image847.png" alt="新建机器工时类别工作中心 · 第 4 步：image847.png" loading="lazy" width="607" height="686"></a><figcaption><span class="n">画面 836</span><span class="src">image847.png · 607×686</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 837）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t13/06_1_image848.png"><img src="assets/img/pp/t13/06_1_image848.png" alt="新建机器工时类别工作中心 · 第 5 步：image848.png" loading="lazy" width="621" height="628"></a><figcaption><span class="n">画面 837</span><span class="src">image848.png · 621×628</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t14"><span class="no">任务 14</span><h3>新建工艺路线</h3><span class="tc">CA01</span><span class="tc2">20 画面 / 18 步</span></div>
+<div class="pathline" data-copy="后勤 → 生产 → 主数据 → 工艺路线 → 工艺路线 → 标准工艺路线 → CA01-创建"><b>IMG 路径（后台菜单）</b>后勤 → 生产 → 主数据 → 工艺路线 → 工艺路线 → 标准工艺路线 → CA01-创建</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 颐宁公司有 “ 物料准备”，“ 切割”，“ 装配”，“ 校验和交付” 这样四个以人工工时为主的工作中心。</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/01_1_image849.png"><img src="assets/img/pp/t14/01_1_image849.png" alt="新建工艺路线 · 第 1 步：解释：颐宁公司有 “ 物料准备”，“ 切割”，“ 装配”，“ 校验和交付” 这样四个以人工工时为主的工作中心。" loading="lazy" width="270" height="367"></a><figcaption><span class="n">画面 838</span><span class="src">image849.png · 270×367</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t14/01_2_image850.png"><img src="assets/img/pp/t14/01_2_image850.png" alt="新建工艺路线 · 第 1 步：解释：颐宁公司有 “ 物料准备”，“ 切割”，“ 装配”，“ 校验和交付” 这样四个以人工工时为主的工作中心。" loading="lazy" width="630" height="453"></a><figcaption><span class="n">画面 839</span><span class="src">image850.png · 630×453</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 840）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/02_1_image851.png"><img src="assets/img/pp/t14/02_1_image851.png" alt="新建工艺路线 · 第 2 步：image851.png" loading="lazy" width="909" height="830"></a><figcaption><span class="n">画面 840</span><span class="src">image851.png · 909×830</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>00109991P999ZKM1准备罩壳和金属片00209992P999ZKM1切割金属片00309994P999ZKM1预装配00409995P999ZKM1装配00509996P999ZKM1检验和交付00109991P999ZKM1准备罩壳和金属片00209992P999ZKM1切割金属片00309994P999ZKM1预装配00409995P999ZKM1装配00509996P999ZKM1检验和交付状态 4 指可以进行各项业务点击工序</div>
+</li>
+<li>
+<p class="opcap">组计数器：SAP 中工艺路线是通过组编码和组计数器两者来编号的。组计数器可以定义一个产品的多条工艺路线。比如当不同的批量大小时可以用不同的工艺路线。我们这里只维护一条工艺路线。</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/03_1_image852.png"><img src="assets/img/pp/t14/03_1_image852.png" alt="新建工艺路线 · 第 3 步：组计数器：SAP 中工艺路线是通过组编码和组计数器两者来编号的。组计数器可以定义一个产品的多条工艺路线。比如当不同的批量大小时可以用不同的工艺路线。我们这里只维护一条工艺路线。" loading="lazy" width="1183" height="466"></a><figcaption><span class="n">画面 841</span><span class="src">image852.png · 1183×466</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击回车后，或者双击 0010 工序后</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/04_1_image853.png"><img src="assets/img/pp/t14/04_1_image853.png" alt="新建工艺路线 · 第 4 步：点击回车后，或者双击 0010 工序后" loading="lazy" width="644" height="603"></a><figcaption><span class="n">画面 842</span><span class="src">image853.png · 644×603</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>由于前序未将 LAB 与工作中心关联，此处会提示</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 843）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/05_1_image854.png"><img src="assets/img/pp/t14/05_1_image854.png" alt="新建工艺路线 · 第 5 步：image854.png" loading="lazy" width="1341" height="382"></a><figcaption><span class="n">画面 843</span><span class="src">image854.png · 1341×382</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击顺序</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/06_1_image855.png"><img src="assets/img/pp/t14/06_1_image855.png" alt="新建工艺路线 · 第 6 步：点击顺序" loading="lazy" width="1043" height="227"></a><figcaption><span class="n">画面 844</span><span class="src">image855.png · 1043×227</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 845）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/07_1_image856.png"><img src="assets/img/pp/t14/07_1_image856.png" alt="新建工艺路线 · 第 7 步：image856.png" loading="lazy" width="1068" height="341"></a><figcaption><span class="n">画面 845</span><span class="src">image856.png · 1068×341</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> 我们看到现在我们为工艺路线定义了一条“标准顺序”，也就是刚才各道工序。但是在生产“铸钢泵 170-300”的过程中，“ 油漆罩壳”的工序是和上面的切割金属片并行的。下面我们来定义这个并行的顺序。点击新建按钮</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/08_1_image857.png"><img src="assets/img/pp/t14/08_1_image857.png" alt="新建工艺路线 · 第 8 步：解释：我们看到现在我们为工艺路线定义了一条“标准顺序”，也就是刚才各道工序。但是在生产“铸钢泵 170-300”的过程中，“ 油漆罩壳”的工序是和上面的切割金属片并行的。下面我们来定义这个并行的顺序。点击新建按钮" loading="lazy" width="277" height="302"></a><figcaption><span class="n">画面 846</span><span class="src">image857.png · 277×302</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 847）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/09_1_image858.png"><img src="assets/img/pp/t14/09_1_image858.png" alt="新建工艺路线 · 第 9 步：image858.png" loading="lazy" width="711" height="318"></a><figcaption><span class="n">画面 847</span><span class="src">image858.png · 711×318</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">回车后</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/10_1_image859.png"><img src="assets/img/pp/t14/10_1_image859.png" alt="新建工艺路线 · 第 10 步：回车后" loading="lazy" width="732" height="453"></a><figcaption><span class="n">画面 848</span><span class="src">image859.png · 732×453</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">分工序 10 指完成 0010 工序后开始该并行作业<br>返回工序指完成该并行工序后，返回 0030 工序点击序列</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/11_1_image860.png"><img src="assets/img/pp/t14/11_1_image860.png" alt="新建工艺路线 · 第 11 步：分工序 10 指完成 0010 工序后开始该并行作业 返回工序指完成该并行工序后，返回 0030 工序点击序列" loading="lazy" width="1072" height="911"></a><figcaption><span class="n">画面 849</span><span class="src">image860.png · 1072×911</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">0010 9993 P999 ZKM1 油漆罩壳</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/12_1_image861.png"><img src="assets/img/pp/t14/12_1_image861.png" alt="新建工艺路线 · 第 12 步：0010 9993 P999 ZKM1 油漆罩壳" loading="lazy" width="1362" height="452"></a><figcaption><span class="n">画面 850</span><span class="src">image861.png · 1362×452</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">我们看到已经新建了个并行顺序，下面来具体定义该并行顺序选中“顺序 1”行，点击工序<br>双击行项目，工序为0010，或者回车</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/13_1_image862.png"><img src="assets/img/pp/t14/13_1_image862.png" alt="新建工艺路线 · 第 13 步：我们看到已经新建了个并行顺序，下面来具体定义该并行顺序选中“顺序 1”行，点击工序 双击行项目，工序为0010，或者回车" loading="lazy" width="951" height="884"></a><figcaption><span class="n">画面 851</span><span class="src">image862.png · 951×884</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击组件分配</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/14_1_image863.jpeg"><img src="assets/img/pp/t14/14_1_image863.jpeg" alt="新建工艺路线 · 第 14 步：点击组件分配" loading="lazy" width="1217" height="407"></a><figcaption><span class="n">画面 852</span><span class="src">image863.jpeg · 1217×407</span></figcaption></figure>
+<div class="note info"><b class="t">原理说明</b>解释：定义完工序，下面我们来定义各种原料分别在哪个工序投料。这个屏幕是该产品的</div>
+</li>
+<li>
+<p class="opcap">BOM 组件</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/15_1_image864.png"><img src="assets/img/pp/t14/15_1_image864.png" alt="新建工艺路线 · 第 15 步：BOM 组件" loading="lazy" width="943" height="610"></a><figcaption><span class="n">画面 853</span><span class="src">image864.png · 943×610</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> 我们可以直接填入投料的工序，也可以从清单中选择工序点击工序活动清单</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/16_1_image865.png"><img src="assets/img/pp/t14/16_1_image865.png" alt="新建工艺路线 · 第 16 步：解释：我们可以直接填入投料的工序，也可以从清单中选择工序点击工序活动清单" loading="lazy" width="508" height="356"></a><figcaption><span class="n">画面 854</span><span class="src">image865.png · 508×356</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">从屏幕可以看出，工序 20 和工序 10 是平行的。选择工序 10，点击确认</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/17_1_image866.png"><img src="assets/img/pp/t14/17_1_image866.png" alt="新建工艺路线 · 第 17 步：从屏幕可以看出，工序 20 和工序 10 是平行的。选择工序 10，点击确认" loading="lazy" width="880" height="610"></a><figcaption><span class="n">画面 855</span><span class="src">image866.png · 880×610</span></figcaption></figure>
+<div class="note info"><b class="t">原理说明</b>解释：继续物料的分配，最终结果如下，最后点击保存</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 856）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/18_1_image867.png"><img src="assets/img/pp/t14/18_1_image867.png" alt="新建工艺路线 · 第 18 步：image867.png" loading="lazy" width="1179" height="374"></a><figcaption><span class="n">画面 856</span><span class="src">image867.png · 1179×374</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="assets/img/pp/t14/19_1_image868.png"><img src="assets/img/pp/t14/19_1_image868.png" alt="新建工艺路线 · 第 18 步：image868.png" loading="lazy" width="403" height="60"></a><figcaption><span class="n">画面 857</span><span class="src">image868.png · 403×60</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t15"><span class="no">任务 15</span><h3>拆分工序</h3><span class="tc">CA02</span><span class="tc2">6 画面 / 4 步</span></div>
+<p>解释：颐宁公司的人工类产能和机器产能都是由 10 组产能单位构成的。我们需要在产成品的工艺路线中决定，生产订单是在一个产能单位上顺序生产，还是要将生产订单的数量拆分到各产能单位上生产。这个控制参数是在各工序上的，它会影响订单排程的时间。本步骤中，我们将工艺路线中的所有工序都设定为需要按产能单位拆分</p>
+<div class="pathline" data-copy="后勤 → 生产 → 主数据 → 工艺路线 → 工艺路线 → 标准工艺路线 → CA02-更改"><b>IMG 路径（后台菜单）</b>后勤 → 生产 → 主数据 → 工艺路线 → 工艺路线 → 标准工艺路线 → CA02-更改</div>
+<table class="tbl vals"><thead><tr><th>项目</th><th>文档中的取值</th></tr></thead><tbody><tr><td>双击顺序</td><td>1</td></tr><tr><td>双击工序</td><td>0010</td></tr></tbody></table>
+<ol class="oplist">
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t15/01_1_image869.png"><img src="assets/img/pp/t15/01_1_image869.png" alt="拆分工序 · 第 1 步：image869.png" loading="lazy" width="617" height="643"></a><figcaption><span class="n">画面 858</span><span class="src">image869.png · 617×643</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">后勤－生产－主数据－工艺路线－工艺路线—标准工艺路线－CA02-更改<br>点击工序进入如下页面</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t15/02_1_image870.jpeg"><img src="assets/img/pp/t15/02_1_image870.jpeg" alt="拆分工序 · 第 2 步：后勤－生产－主数据－工艺路线－工艺路线—标准工艺路线－CA02-更改 点击工序进入如下页面" loading="lazy" width="1376" height="408"></a><figcaption><span class="n">画面 859</span><span class="src">image870.jpeg · 1376×408</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">双击“工序 0010 ”，进入</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t15/03_1_image871.png"><img src="assets/img/pp/t15/03_1_image871.png" alt="拆分工序 · 第 3 步：双击“工序 0010 ”，进入" loading="lazy" width="1084" height="530"></a><figcaption><span class="n">画面 860</span><span class="src">image871.png · 1084×530</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>在拆分，选择所需分解，点击保存，不过我们还需要更改其他工序点击顺序</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 861）</span></p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t15/04_1_image872.png"><img src="assets/img/pp/t15/04_1_image872.png" alt="拆分工序 · 第 4 步：image872.png" loading="lazy" width="1083" height="428"></a><figcaption><span class="n">画面 861</span><span class="src">image872.png · 1083×428</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t15/05_1_image873.png"><img src="assets/img/pp/t15/05_1_image873.png" alt="拆分工序 · 第 4 步：image873.png" loading="lazy" width="1293" height="860"></a><figcaption><span class="n">画面 862</span><span class="src">image873.png · 1293×860</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t15/06_1_image874.jpeg"><img src="assets/img/pp/t15/06_1_image874.jpeg" alt="拆分工序 · 第 4 步：image874.jpeg" loading="lazy" width="1214" height="797"></a><figcaption><span class="n">画面 863</span><span class="src">image874.jpeg · 1214×797</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材笔记</b>在“所需分解”前的方框打勾，保存</div>
+</li>
+</ol>
+<div class="steph" id="t16"><span class="no">任务 16</span><h3>新建产产品的生产计划视图</h3><span class="tc2">4 画面 / 3 步</span></div>
+<div class="pathline" data-copy="后勤 → 生产 → 主数据 → 物料主数据 → 物料 → 创建（特殊） → MMF1-成品"><b>IMG 路径（后台菜单）</b>后勤 → 生产 → 主数据 → 物料主数据 → 物料 → 创建（特殊） → MMF1-成品</div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">后勤－生产－主数据－物料主数据－物料－创建（特殊）－MMF1-成品</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t16/01_1_image875.png"><img src="assets/img/pp/t16/01_1_image875.png" alt="新建产产品的生产计划视图 · 第 1 步：后勤－生产－主数据－物料主数据－物料－创建（特殊）－MMF1-成品" loading="lazy" width="476" height="285"></a><figcaption><span class="n">画面 864</span><span class="src">image875.png · 476×285</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> MM 中，我们没有维护产成品的生产计划视图。<br>选择工作计划视图</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t16/02_1_image876.png"><img src="assets/img/pp/t16/02_1_image876.png" alt="新建产产品的生产计划视图 · 第 2 步：解释：MM 中，我们没有维护产成品的生产计划视图。 选择工作计划视图" loading="lazy" width="346" height="707"></a><figcaption><span class="n">画面 865</span><span class="src">image876.png · 346×707</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 866）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t16/03_1_image877.png"><img src="assets/img/pp/t16/03_1_image877.png" alt="新建产产品的生产计划视图 · 第 3 步：image877.png" loading="lazy" width="543" height="248"></a><figcaption><span class="n">画面 866</span><span class="src">image877.png · 543×248</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t16/04_1_image878.png"><img src="assets/img/pp/t16/04_1_image878.png" alt="新建产产品的生产计划视图 · 第 3 步：image878.png" loading="lazy" width="772" height="652"></a><figcaption><span class="n">画面 867</span><span class="src">image878.png · 772×652</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t17"><span class="no">任务 17</span><h3>定义成本构成结构</h3><span class="fb">后台</span><span class="tc2">16 画面 / 14 步</span></div>
+<p>选中 Z1，双击左栏的“带有属性的成本组件”。</p>
+<p>解释：</p>
+<p>控制成本份额。可变成本。只有可变成本会在产品成本估算中显示</p>
+<p>选中 Z1 选择有效，然后双击左栏“带有属性的成本组件”</p>
+<div class="pathline" data-copy="控制 → 产品成本控制 → 产品成本计划 → 物料成本核算的基本设置 → 定义成本构成结构"><b>IMG 路径（后台菜单）</b>控制 → 产品成本控制 → 产品成本计划 → 物料成本核算的基本设置 → 定义成本构成结构</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 颐宁公司生产的“铸钢泵 170-230”的 BOM 和工艺路线已经在系统里维护，接下 来我们可以计算该产成品的标准成本了。产品成本是 PP 和 CO 最重要的集成。本步骤我们需要在后台配置和产品成本有关的一个重要参数：“ 成本构成结构”。在成本结构中我们定义颐宁公司的产品成本是如何构成的，各成本构成和成本要素的关系怎样的，并且将成本构成结构分配给工厂</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/01_1_image879.png"><img src="assets/img/pp/t17/01_1_image879.png" alt="定义成本构成结构 · 第 1 步：解释：颐宁公司生产的“铸钢泵 170-230”的 BOM 和工艺路线已经在系统里维护，接下 来我们可以计算该产成品的标准成本了。产品成本是 PP 和 CO 最重要的集成。本步骤我们需要在后台配置和产品成本有关的一个重要参数：“ 成本构成结构”。在成本结构中我们定义颐宁公司的产品成本是如何构成的，各成本构成和成本要素的关" loading="lazy" width="372" height="513"></a><figcaption><span class="n">画面 868</span><span class="src">image879.png · 372×513</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 869）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/02_1_image880.png"><img src="assets/img/pp/t17/02_1_image880.png" alt="定义成本构成结构 · 第 2 步：image880.png" loading="lazy" width="810" height="606"></a><figcaption><span class="n">画面 869</span><span class="src">image880.png · 810×606</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> 该屏幕的左侧是维护“成本构成结构”参数的各层次。现在我们在最上层，因此屏幕的右侧是目前系统中已经有的成本构成结构的清单。我们要定义一个新的成本构成结构。点击新条目</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/03_1_image881.png"><img src="assets/img/pp/t17/03_1_image881.png" alt="定义成本构成结构 · 第 3 步：解释：该屏幕的左侧是维护“成本构成结构”参数的各层次。现在我们在最上层，因此屏幕的右侧是目前系统中已经有的成本构成结构的清单。我们要定义一个新的成本构成结构。点击新条目" loading="lazy" width="832" height="355"></a><figcaption><span class="n">画面 870</span><span class="src">image881.png · 832×355</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">在弹出框中，点击新条目</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/04_1_image882.png"><img src="assets/img/pp/t17/04_1_image882.png" alt="定义成本构成结构 · 第 4 步：在弹出框中，点击新条目" loading="lazy" width="967" height="779"></a><figcaption><span class="n">画面 871</span><span class="src">image882.png · 967×779</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">汇总成本组件。指该成本组件的成本将被汇总到更高一层的产品的该成本组件成本中双击左栏“设置-成本组件-成本要素区间”<br>点击新条目</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/05_1_image883.png"><img src="assets/img/pp/t17/05_1_image883.png" alt="定义成本构成结构 · 第 5 步：汇总成本组件。指该成本组件的成本将被汇总到更高一层的产品的该成本组件成本中双击左栏“设置-成本组件-成本要素区间” 点击新条目" loading="lazy" width="1096" height="216"></a><figcaption><span class="n">画面 872</span><span class="src">image883.png · 1096×216</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">双击左栏“设置-组织-成本构成格式”</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/06_1_image884.png"><img src="assets/img/pp/t17/06_1_image884.png" alt="定义成本构成结构 · 第 6 步：双击左栏“设置-组织-成本构成格式”" loading="lazy" width="1472" height="396"></a><figcaption><span class="n">画面 873</span><span class="src">image884.png · 1472×396</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>++++ ++++ ++++ 01.01.2021 Z1 颐宁成本组件结构</div>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> 我们在这里将我们新建的成本构成结构分配给相关的公司代码，工厂，成本核算变式和一定的有效期<br>按新条目</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/07_1_image885.png"><img src="assets/img/pp/t17/07_1_image885.png" alt="定义成本构成结构 · 第 7 步：解释：我们在这里将我们新建的成本构成结构分配给相关的公司代码，工厂，成本核算变式和一定的有效期 按新条目" loading="lazy" width="1447" height="331"></a><figcaption><span class="n">画面 874</span><span class="src">image885.png · 1447×331</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">我们回到成本构成结构定义的最上层，然后激活该成本构成结构，即勾选有效</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/08_1_image886.png"><img src="assets/img/pp/t17/08_1_image886.png" alt="定义成本构成结构 · 第 8 步：我们回到成本构成结构定义的最上层，然后激活该成本构成结构，即勾选有效" loading="lazy" width="874" height="321"></a><figcaption><span class="n">画面 875</span><span class="src">image886.png · 874×321</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/09_1_image887.png"><img src="assets/img/pp/t17/09_1_image887.png" alt="定义成本构成结构 · 第 9 步：image887.png" loading="lazy" width="1006" height="725"></a><figcaption><span class="n">画面 876</span><span class="src">image887.png · 1006×725</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">解释，我们刚才只定义了该成本构成结构中的一个成本组件，现在我们接着将机器工时，人工工时和准备工时成本分别定义成三个成本组件<br>点击新条目</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/10_1_image888.png"><img src="assets/img/pp/t17/10_1_image888.png" alt="定义成本构成结构 · 第 10 步：解释，我们刚才只定义了该成本构成结构中的一个成本组件，现在我们接着将机器工时，人工工时和准备工时成本分别定义成三个成本组件 点击新条目" loading="lazy" width="1143" height="229"></a><figcaption><span class="n">画面 877</span><span class="src">image888.png · 1143×229</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">双击左栏“成本组件结构”用同样的办法吧 030，040 设置好。</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/11_1_image889.png"><img src="assets/img/pp/t17/11_1_image889.png" alt="定义成本构成结构 · 第 11 步：双击左栏“成本组件结构”用同样的办法吧 030，040 设置好。" loading="lazy" width="1002" height="723"></a><figcaption><span class="n">画面 878</span><span class="src">image889.png · 1002×723</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 879）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/12_1_image890.png"><img src="assets/img/pp/t17/12_1_image890.png" alt="定义成本构成结构 · 第 12 步：image890.png" loading="lazy" width="1111" height="275"></a><figcaption><span class="n">画面 879</span><span class="src">image890.png · 1111×275</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t17/13_1_image891.png"><img src="assets/img/pp/t17/13_1_image891.png" alt="定义成本构成结构 · 第 12 步：image891.png" loading="lazy" width="1036" height="723"></a><figcaption><span class="n">画面 880</span><span class="src">image891.png · 1036×723</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">完成后，点击返回，</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/14_1_image892.png"><img src="assets/img/pp/t17/14_1_image892.png" alt="定义成本构成结构 · 第 13 步：完成后，点击返回，" loading="lazy" width="877" height="320"></a><figcaption><span class="n">画面 881</span><span class="src">image892.png · 877×320</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t17/14_2_image893.png"><img src="assets/img/pp/t17/14_2_image893.png" alt="定义成本构成结构 · 第 13 步：完成后，点击返回，" loading="lazy" width="1114" height="339"></a><figcaption><span class="n">画面 882</span><span class="src">image893.png · 1114×339</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">双击左栏的“成本组件结构”<br>将除 Z1 外的成本结构组件的有效勾都去掉，保存。</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/15_1_image894.png"><img src="assets/img/pp/t17/15_1_image894.png" alt="定义成本构成结构 · 第 14 步：双击左栏的“成本组件结构” 将除 Z1 外的成本结构组件的有效勾都去掉，保存。" loading="lazy" width="904" height="379"></a><figcaption><span class="n">画面 883</span><span class="src">image894.png · 904×379</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t18"><span class="no">任务 18</span><h3>定义估计变式</h3><span class="fb">后台</span><span class="tc2">7 画面 / 7 步</span></div>
+<div class="pathline" data-copy="控制 → 产品成本控制 → 产品成本计划 → 带数量结构的成本估算 → 成本核算变式：组件 → 定义评估变式"><b>IMG 路径（后台菜单）</b>控制 → 产品成本控制 → 产品成本计划 → 带数量结构的成本估算 → 成本核算变式：组件 → 定义评估变式</div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">控制－产品成本控制－产品成本计划－带数量结构的成本估算－成本核算变式：组件－定义评估变式</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t18/01_1_image895.png"><img src="assets/img/pp/t18/01_1_image895.png" alt="定义估计变式 · 第 1 步：控制－产品成本控制－产品成本计划－带数量结构的成本估算－成本核算变式：组件－定义评估变式" loading="lazy" width="433" height="822"></a><figcaption><span class="n">画面 884</span><span class="src">image895.png · 433×822</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> 在产品成本核算中，最重要的参数是“成本核算变式”，我们将在 21 学到。成本核算变式又是由定义成本核算不同方面的较小的参数构成的，其中本步骤是与定义物料、作业、外包、外部加工、间接费用等的估价标准相关的，SAP 称之为评估变式</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t18/02_1_image896.png"><img src="assets/img/pp/t18/02_1_image896.png" alt="定义估计变式 · 第 2 步：解释：在产品成本核算中，最重要的参数是“成本核算变式”，我们将在 21 学到。成本核算变式又是由定义成本核算不同方面的较小的参数构成的，其中本步骤是与定义物料、作业、外包、外部加工、间接费用等的估价标准相关的，SAP 称之为评估变式" loading="lazy" width="320" height="605"></a><figcaption><span class="n">画面 885</span><span class="src">image896.png · 320×605</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> 我们利用系统已经有的估价变式<br>双击“评估变式：001 ”，进入</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t18/03_1_image897.png"><img src="assets/img/pp/t18/03_1_image897.png" alt="定义估计变式 · 第 3 步：解释：我们利用系统已经有的估价变式 双击“评估变式：001 ”，进入" loading="lazy" width="686" height="450"></a><figcaption><span class="n">画面 886</span><span class="src">image897.png · 686×450</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>估价变式。点击返回键。双击 007，设置如下</div>
+</li>
+<li>
+<p class="opcap">估价变式 001 是系统预设的物料计划估价变式。我们将在以后的操作中使用 001 作为物料</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t18/04_1_image898.png"><img src="assets/img/pp/t18/04_1_image898.png" alt="定义估计变式 · 第 4 步：估价变式 001 是系统预设的物料计划估价变式。我们将在以后的操作中使用 001 作为物料" loading="lazy" width="635" height="465"></a><figcaption><span class="n">画面 887</span><span class="src">image898.png · 635×465</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">007 将被用于订单实际成本的计算中。我们也来查看一下它的配置。点击评估变式/工厂</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t18/05_1_image899.png"><img src="assets/img/pp/t18/05_1_image899.png" alt="定义估计变式 · 第 5 步：007 将被用于订单实际成本的计算中。我们也来查看一下它的配置。点击评估变式/工厂" loading="lazy" width="652" height="809"></a><figcaption><span class="n">画面 888</span><span class="src">image899.png · 652×809</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>点击新条目</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 889）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t18/06_1_image900.png"><img src="assets/img/pp/t18/06_1_image900.png" alt="定义估计变式 · 第 6 步：image900.png" loading="lazy" width="531" height="460"></a><figcaption><span class="n">画面 889</span><span class="src">image900.png · 531×460</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击两次返回，然后点击保存</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t18/07_1_image901.png"><img src="assets/img/pp/t18/07_1_image901.png" alt="定义估计变式 · 第 7 步：点击两次返回，然后点击保存" loading="lazy" width="612" height="351"></a><figcaption><span class="n">画面 890</span><span class="src">image901.png · 612×351</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t19"><span class="no">任务 19</span><h3>定义日期控制</h3><span class="tc2">3 画面 / 3 步</span></div>
+<div class="pathline" data-copy="控制 → 产品成本控制 → 产品成本计划 → 带数量结构的成本估算 → 成本核算变式：组件 → 定义日期控制"><b>IMG 路径（后台菜单）</b>控制 → 产品成本控制 → 产品成本计划 → 带数量结构的成本估算 → 成本核算变式：组件 → 定义日期控制</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 日期控制也是成本核算变式中的一个参数。它控制成本核算中和日期相关的内容。后台</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t19/01_1_image902.png"><img src="assets/img/pp/t19/01_1_image902.png" alt="定义日期控制 · 第 1 步：解释：日期控制也是成本核算变式中的一个参数。它控制成本核算中和日期相关的内容。后台" loading="lazy" width="381" height="596"></a><figcaption><span class="n">画面 891</span><span class="src">image902.png · 381×596</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 892）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t19/02_1_image903.png"><img src="assets/img/pp/t19/02_1_image903.png" alt="定义日期控制 · 第 2 步：image903.png" loading="lazy" width="404" height="493"></a><figcaption><span class="n">画面 892</span><span class="src">image903.png · 404×493</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击新条目</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t19/03_1_image904.png"><img src="assets/img/pp/t19/03_1_image904.png" alt="定义日期控制 · 第 3 步：点击新条目" loading="lazy" width="659" height="431"></a><figcaption><span class="n">画面 893</span><span class="src">image904.png · 659×431</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t20"><span class="no">任务 20</span><h3>定义数量结构控制</h3><span class="fb">后台</span><span class="tc">PC01</span><span class="tc2">8 画面 / 4 步</span></div>
+<div class="pathline" data-copy="控制 → 产品成本控制 → 产品成本计划 → 带数量结构的成本估算 → 成本核算变式：组件 → 定义数量结构控制"><b>IMG 路径（后台菜单）</b>控制 → 产品成本控制 → 产品成本计划 → 带数量结构的成本估算 → 成本核算变式：组件 → 定义数量结构控制</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> “ 数量结构控制” 也是成本核算变式中的一个参数，在 SAP 中在和产品成本相关的场<br>合谈到“数量结构”，其实就是指 BOM 和工艺路线，所以数量结构控制主要是控制系统如何选取 BOM 和工艺路线用于成本核算。</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t20/01_1_image905.png"><img src="assets/img/pp/t20/01_1_image905.png" alt="定义数量结构控制 · 第 1 步：解释：“ 数量结构控制” 也是成本核算变式中的一个参数，在 SAP 中在和产品成本相关的场 合谈到“数量结构”，其实就是指 BOM 和工艺路线，所以数量结构控制主要是控制系统如何选取 BOM 和工艺路线用于成本核算。" loading="lazy" width="428" height="541"></a><figcaption><span class="n">画面 894</span><span class="src">image907.png · 428×541</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t20/01_2_image906.png"><img src="assets/img/pp/t20/01_2_image906.png" alt="定义数量结构控制 · 第 1 步：解释：“ 数量结构控制” 也是成本核算变式中的一个参数，在 SAP 中在和产品成本相关的场 合谈到“数量结构”，其实就是指 BOM 和工艺路线，所以数量结构控制主要是控制系统如何选取 BOM 和工艺路线用于成本核算。" loading="lazy" width="572" height="479"></a><figcaption><span class="n">画面 895</span><span class="src">image908.png · 572×479</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t20/01_1_image905.png"><img src="assets/img/pp/t20/01_1_image905.png" alt="定义数量结构控制 · 第 1 步：解释：“ 数量结构控制” 也是成本核算变式中的一个参数，在 SAP 中在和产品成本相关的场 合谈到“数量结构”，其实就是指 BOM 和工艺路线，所以数量结构控制主要是控制系统如何选取 BOM 和工艺路线用于成本核算。" loading="lazy" width="428" height="541"></a><figcaption><span class="n">画面 894</span><span class="src">image907.png · 428×541</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t20/01_2_image906.png"><img src="assets/img/pp/t20/01_2_image906.png" alt="定义数量结构控制 · 第 1 步：解释：“ 数量结构控制” 也是成本核算变式中的一个参数，在 SAP 中在和产品成本相关的场 合谈到“数量结构”，其实就是指 BOM 和工艺路线，所以数量结构控制主要是控制系统如何选取 BOM 和工艺路线用于成本核算。" loading="lazy" width="572" height="479"></a><figcaption><span class="n">画面 895</span><span class="src">image908.png · 572×479</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">双击 PC01 行</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t20/02_1_image909.png"><img src="assets/img/pp/t20/02_1_image909.png" alt="定义数量结构控制 · 第 2 步：双击 PC01 行" loading="lazy" width="740" height="496"></a><figcaption><span class="n">画面 898</span><span class="src">image909.png · 740×496</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>点击 PC01 左边的新建</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 899）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t20/03_1_image910.png"><img src="assets/img/pp/t20/03_1_image910.png" alt="定义数量结构控制 · 第 3 步：image910.png" loading="lazy" width="683" height="787"></a><figcaption><span class="n">画面 899</span><span class="src">image910.png · 683×787</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t20/04_1_image911.png"><img src="assets/img/pp/t20/04_1_image911.png" alt="定义数量结构控制 · 第 3 步：image911.png" loading="lazy" width="728" height="512"></a><figcaption><span class="n">画面 900</span><span class="src">image911.png · 728×512</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>点击新条目</div>
+</li>
+<li>
+<p class="opcap">点击路径</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t20/05_1_image912.jpeg"><img src="assets/img/pp/t20/05_1_image912.jpeg" alt="定义数量结构控制 · 第 4 步：点击路径" loading="lazy" width="858" height="537"></a><figcaption><span class="n">画面 901</span><span class="src">image912.jpeg · 858×537</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>保存</div>
+</li>
+</ol>
+<div class="steph" id="t21"><span class="no">任务 21</span><h3>定义成本核算变式</h3><span class="fb">后台</span><span class="tc2">3 画面 / 3 步</span></div>
+<div class="pathline" data-copy="控制 → 产品成本控制生产 → 产品成本计划 → 带数量结构的成本估算 → 定义成本核算变式"><b>IMG 路径（后台菜单）</b>控制 → 产品成本控制生产 → 产品成本计划 → 带数量结构的成本估算 → 定义成本核算变式</div>
+<ol class="oplist">
+<li>
+<p class="opcap">控制－产品成本控制生产－产品成本计划－带数量结构的成本估算－定义成本核算变式</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t21/01_1_image913.png"><img src="assets/img/pp/t21/01_1_image913.png" alt="定义成本核算变式 · 第 1 步：控制－产品成本控制生产－产品成本计划－带数量结构的成本估算－定义成本核算变式" loading="lazy" width="549" height="615"></a><figcaption><span class="n">画面 902</span><span class="src">image913.png · 549×615</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">复制 PPC1 并修改</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t21/02_1_image914.jpeg"><img src="assets/img/pp/t21/02_1_image914.jpeg" alt="定义成本核算变式 · 第 2 步：复制 PPC1 并修改" loading="lazy" width="662" height="569"></a><figcaption><span class="n">画面 903</span><span class="src">image914.jpeg · 662×569</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">点击更新</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t21/03_1_image915.jpeg"><img src="assets/img/pp/t21/03_1_image915.jpeg" alt="定义成本核算变式 · 第 3 步：点击更新" loading="lazy" width="687" height="575"></a><figcaption><span class="n">画面 904</span><span class="src">image915.jpeg · 687×575</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t22"><span class="no">任务 22</span><h3>新建产品成本估算</h3><span class="fb img">前台</span><span class="tc">CK11N</span><span class="tc2">10 画面 / 3 步</span></div>
+<p>解释：一般企业的“成本核算日期从”为下月初，这里未来进行计算改为操作当日，其余日期保持不变，点击回车键进入</p>
+<div class="pathline" data-copy="会计核算 → 控制 → 产品成本控制 → 产品成本计划 → 物料成本核算 → 带数量结构的成本核算 → CK11N 创建"><b>IMG 路径（后台菜单）</b>会计核算 → 控制 → 产品成本控制 → 产品成本计划 → 物料成本核算 → 带数量结构的成本核算 → CK11N 创建</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 颐宁公司现在要根据产成品“铸钢泵 170-230”的 BOM 和工艺路线来技术更精确的产品成本，来取代原来在物料主数据中的估算的标准成本。<br>会计核算－控制－产品成本控制－产品成本计划－物料成本核算－带数量结构的成本核算－CK11N 创建</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t22/01_1_image916.png"><img src="assets/img/pp/t22/01_1_image916.png" alt="新建产品成本估算 · 第 1 步：解释：颐宁公司现在要根据产成品“铸钢泵 170-230”的 BOM 和工艺路线来技术更精确的产品成本，来取代原来在物料主数据中的估算的标准成本。 会计核算－控制－产品成本控制－产品成本计划－物料成本核算－带数量结构的成本核算－CK11N 创建" loading="lazy" width="476" height="431"></a><figcaption><span class="n">画面 905</span><span class="src">image916.png · 476×431</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t22/01_2_image917.png"><img src="assets/img/pp/t22/01_2_image917.png" alt="新建产品成本估算 · 第 1 步：解释：颐宁公司现在要根据产成品“铸钢泵 170-230”的 BOM 和工艺路线来技术更精确的产品成本，来取代原来在物料主数据中的估算的标准成本。 会计核算－控制－产品成本控制－产品成本计划－物料成本核算－带数量结构的成本核算－CK11N 创建" loading="lazy" width="414" height="558"></a><figcaption><span class="n">画面 906</span><span class="src">image919.png · 414×558</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t22/01_3_image918.jpeg"><img src="assets/img/pp/t22/01_3_image918.jpeg" alt="新建产品成本估算 · 第 1 步：解释：颐宁公司现在要根据产成品“铸钢泵 170-230”的 BOM 和工艺路线来技术更精确的产品成本，来取代原来在物料主数据中的估算的标准成本。 会计核算－控制－产品成本控制－产品成本计划－物料成本核算－带数量结构的成本核算－CK11N 创建" loading="lazy" width="750" height="502"></a><figcaption><span class="n">画面 907</span><span class="src">image920.jpeg · 750×502</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t22/01_2_image917.png"><img src="assets/img/pp/t22/01_2_image917.png" alt="新建产品成本估算 · 第 1 步：解释：颐宁公司现在要根据产成品“铸钢泵 170-230”的 BOM 和工艺路线来技术更精确的产品成本，来取代原来在物料主数据中的估算的标准成本。 会计核算－控制－产品成本控制－产品成本计划－物料成本核算－带数量结构的成本核算－CK11N 创建" loading="lazy" width="414" height="558"></a><figcaption><span class="n">画面 906</span><span class="src">image919.png · 414×558</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t22/01_3_image918.jpeg"><img src="assets/img/pp/t22/01_3_image918.jpeg" alt="新建产品成本估算 · 第 1 步：解释：颐宁公司现在要根据产成品“铸钢泵 170-230”的 BOM 和工艺路线来技术更精确的产品成本，来取代原来在物料主数据中的估算的标准成本。 会计核算－控制－产品成本控制－产品成本计划－物料成本核算－带数量结构的成本核算－CK11N 创建" loading="lazy" width="750" height="502"></a><figcaption><span class="n">画面 907</span><span class="src">image920.jpeg · 750×502</span></figcaption></figure></div>
+<div class="note info"><b class="t">原理说明</b>注意：核对你的成本计算结果是否和屏幕上的一致，并分析这个结果是怎么产生的，同时将这个结果写下来。</div>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> 这就是该产成品的成本核算。屏幕左边是该产品的组件结构，右侧中部是不同视图的成本。我们主要使用的是“制造成本”。右侧下部是按项目明细的成本明细分析，我们可以看到按各道工序成本累加。我们可以通过相关菜单切换到成本构成分析。<br>成本核算批量 10PC 是从产成品主数据的成本视图 1 中传递过来的。点击保存出现</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t22/02_1_image921.jpeg"><img src="assets/img/pp/t22/02_1_image921.jpeg" alt="新建产品成本估算 · 第 2 步：解释：这就是该产成品的成本核算。屏幕左边是该产品的组件结构，右侧中部是不同视图的成本。我们主要使用的是“制造成本”。右侧下部是按项目明细的成本明细分析，我们可以看到按各道工序成本累加。我们可以通过相关菜单切换到成本构成分析。 成本核算批量 10PC 是从产成品主数据的成本视图 1 中传递过来的。点击保存出现" loading="lazy" width="1461" height="665"></a><figcaption><span class="n">画面 910</span><span class="src">image921.jpeg · 1461×665</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 911）</span></p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t22/03_1_image922.png"><img src="assets/img/pp/t22/03_1_image922.png" alt="新建产品成本估算 · 第 3 步：image924.png" loading="lazy" width="337" height="348"></a><figcaption><span class="n">画面 911</span><span class="src">image924.png · 337×348</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="assets/img/pp/t22/03_2_image923.png"><img src="assets/img/pp/t22/03_2_image923.png" alt="新建产品成本估算 · 第 3 步：image925.png" loading="lazy" width="175" height="42"></a><figcaption><span class="n">画面 912</span><span class="src">image925.png · 175×42</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t22/03_1_image922.png"><img src="assets/img/pp/t22/03_1_image922.png" alt="新建产品成本估算 · 第 3 步：image924.png" loading="lazy" width="337" height="348"></a><figcaption><span class="n">画面 911</span><span class="src">image924.png · 337×348</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="assets/img/pp/t22/03_2_image923.png"><img src="assets/img/pp/t22/03_2_image923.png" alt="新建产品成本估算 · 第 3 步：image925.png" loading="lazy" width="175" height="42"></a><figcaption><span class="n">画面 912</span><span class="src">image925.png · 175×42</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t23"><span class="no">任务 23</span><h3>标记价格</h3><span class="fb img">前台</span><span class="tc">CK24</span><span class="tc2">12 画面 / 4 步</span></div>
+<div class="pathline" data-copy="会计核算 → 控制 → 产品成本控制 → 产品成本计划 → 物料成本核算 → CK24-价格更新"><b>IMG 路径（后台菜单）</b>会计核算 → 控制 → 产品成本控制 → 产品成本计划 → 物料成本核算 → CK24-价格更新</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 这个步骤 SAP 称为“标记价格”，我们将把前面一个步骤的产成品价格估算“标记”成物料主数据中的“未来价格”</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t23/01_1_image926.png"><img src="assets/img/pp/t23/01_1_image926.png" alt="标记价格 · 第 1 步：解释：这个步骤 SAP 称为“标记价格”，我们将把前面一个步骤的产成品价格估算“标记”成物料主数据中的“未来价格”" loading="lazy" width="466" height="578"></a><figcaption><span class="n">画面 915</span><span class="src">image926.png · 466×578</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击允许发布</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t23/02_1_image927.png"><img src="assets/img/pp/t23/02_1_image927.png" alt="标记价格 · 第 2 步：点击允许发布" loading="lazy" width="802" height="723"></a><figcaption><span class="n">画面 916</span><span class="src">image929.png · 802×723</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t23/02_2_image928.png"><img src="assets/img/pp/t23/02_2_image928.png" alt="标记价格 · 第 2 步：点击允许发布" loading="lazy" width="854" height="408"></a><figcaption><span class="n">画面 917</span><span class="src">image930.png · 854×408</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t23/02_3_image931.png"><img src="assets/img/pp/t23/02_3_image931.png" alt="标记价格 · 第 2 步：点击允许发布" loading="lazy" width="382" height="280"></a><figcaption><span class="n">画面 918</span><span class="src">image931.png · 382×280</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t23/02_1_image927.png"><img src="assets/img/pp/t23/02_1_image927.png" alt="标记价格 · 第 2 步：点击允许发布" loading="lazy" width="802" height="723"></a><figcaption><span class="n">画面 916</span><span class="src">image929.png · 802×723</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t23/02_2_image928.png"><img src="assets/img/pp/t23/02_2_image928.png" alt="标记价格 · 第 2 步：点击允许发布" loading="lazy" width="854" height="408"></a><figcaption><span class="n">画面 917</span><span class="src">image930.png · 854×408</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">点击保存后出现如下页面</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t23/03_1_image932.png"><img src="assets/img/pp/t23/03_1_image932.png" alt="标记价格 · 第 3 步：点击保存后出现如下页面" loading="lazy" width="850" height="413"></a><figcaption><span class="n">画面 921</span><span class="src">image932.png · 850×413</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> 颐宁公司的账本月被打开，点击退回，点击 F8,如下图，再按返回如下图</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t23/04_1_image933.png"><img src="assets/img/pp/t23/04_1_image933.png" alt="标记价格 · 第 4 步：解释：颐宁公司的账本月被打开，点击退回，点击 F8,如下图，再按返回如下图" loading="lazy" width="987" height="316"></a><figcaption><span class="n">画面 922</span><span class="src">image935.png · 987×316</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="assets/img/pp/t23/04_2_image934.png"><img src="assets/img/pp/t23/04_2_image934.png" alt="标记价格 · 第 4 步：解释：颐宁公司的账本月被打开，点击退回，点击 F8,如下图，再按返回如下图" loading="lazy" width="289" height="33"></a><figcaption><span class="n">画面 923</span><span class="src">image936.png · 289×33</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t23/04_3_image937.png"><img src="assets/img/pp/t23/04_3_image937.png" alt="标记价格 · 第 4 步：解释：颐宁公司的账本月被打开，点击退回，点击 F8,如下图，再按返回如下图" loading="lazy" width="658" height="298"></a><figcaption><span class="n">画面 924</span><span class="src">image937.png · 658×298</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t23/04_1_image933.png"><img src="assets/img/pp/t23/04_1_image933.png" alt="标记价格 · 第 4 步：解释：颐宁公司的账本月被打开，点击退回，点击 F8,如下图，再按返回如下图" loading="lazy" width="987" height="316"></a><figcaption><span class="n">画面 922</span><span class="src">image935.png · 987×316</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="assets/img/pp/t23/04_2_image934.png"><img src="assets/img/pp/t23/04_2_image934.png" alt="标记价格 · 第 4 步：解释：颐宁公司的账本月被打开，点击退回，点击 F8,如下图，再按返回如下图" loading="lazy" width="289" height="33"></a><figcaption><span class="n">画面 923</span><span class="src">image936.png · 289×33</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材笔记</b>此时价格已经更新，</div>
+</li>
+</ol>
+<div class="steph" id="t24"><span class="no">任务 24</span><h3>显示产成品的将来计划价格</h3><span class="fb img">前台</span><span class="tc">MM03</span><span class="tc2">6 画面 / 3 步</span></div>
+<div class="pathline" data-copy="后勤 → 物料管理 → 物料主数据 → 物料 → 显示 → MM03-显示当前"><b>IMG 路径（后台菜单）</b>后勤 → 物料管理 → 物料主数据 → 物料 → 显示 → MM03-显示当前</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 本步骤中，我们将到铸钢泵 170-230 的主数据中去看价格标记的结果新价格将被更新为将来的计划价格。<br>后勤－物料管理－物料主数据－物料－显示－MM03-显示当前</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t24/01_1_image938.png"><img src="assets/img/pp/t24/01_1_image938.png" alt="显示产成品的将来计划价格 · 第 1 步：解释：本步骤中，我们将到铸钢泵 170-230 的主数据中去看价格标记的结果新价格将被更新为将来的计划价格。 后勤－物料管理－物料主数据－物料－显示－MM03-显示当前" loading="lazy" width="627" height="165"></a><figcaption><span class="n">画面 927</span><span class="src">image938.png · 627×165</span></figcaption></figure>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t24/02_1_image939.png"><img src="assets/img/pp/t24/02_1_image939.png" alt="显示产成品的将来计划价格 · 第 2 步：image941.png" loading="lazy" width="697" height="314"></a><figcaption><span class="n">画面 928</span><span class="src">image941.png · 697×314</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t24/02_2_image940.png"><img src="assets/img/pp/t24/02_2_image940.png" alt="显示产成品的将来计划价格 · 第 2 步：image942.png" loading="lazy" width="457" height="688"></a><figcaption><span class="n">画面 929</span><span class="src">image942.png · 457×688</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t24/02_1_image939.png"><img src="assets/img/pp/t24/02_1_image939.png" alt="显示产成品的将来计划价格 · 第 2 步：image941.png" loading="lazy" width="697" height="314"></a><figcaption><span class="n">画面 928</span><span class="src">image941.png · 697×314</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t24/02_2_image940.png"><img src="assets/img/pp/t24/02_2_image940.png" alt="显示产成品的将来计划价格 · 第 2 步：image942.png" loading="lazy" width="457" height="688"></a><figcaption><span class="n">画面 929</span><span class="src">image942.png · 457×688</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">此处应该显示计划价格 2538.66</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t24/03_1_image943.png"><img src="assets/img/pp/t24/03_1_image943.png" alt="显示产成品的将来计划价格 · 第 3 步：此处应该显示计划价格 2538.66" loading="lazy" width="623" height="663"></a><figcaption><span class="n">画面 932</span><span class="src">image943.png · 623×663</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t25"><span class="no">任务 25</span><h3>发布价格</h3><span class="tc">CK24</span><span class="tc2">2 画面 / 2 步</span></div>
+<div class="pathline" data-copy="会计 → 控制 → 产品成本控制 → 产品成本计划 → 物料成本核算 → CK24-价格更新"><b>IMG 路径（后台菜单）</b>会计 → 控制 → 产品成本控制 → 产品成本计划 → 物料成本核算 → CK24-价格更新</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 此步将未来价格发布，这样系统将更新产成品的标准成本。前台<br>会计－控制－产品成本控制－产品成本计划－物料成本核算－CK24-价格更新</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t25/01_1_image944.png"><img src="assets/img/pp/t25/01_1_image944.png" alt="发布价格 · 第 1 步：解释：此步将未来价格发布，这样系统将更新产成品的标准成本。前台 会计－控制－产品成本控制－产品成本计划－物料成本核算－CK24-价格更新" loading="lazy" width="611" height="587"></a><figcaption><span class="n">画面 933</span><span class="src">image944.png · 611×587</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击发布点击 F8</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t25/02_1_image945.png"><img src="assets/img/pp/t25/02_1_image945.png" alt="发布价格 · 第 2 步：点击发布点击 F8" loading="lazy" width="679" height="174"></a><figcaption><span class="n">画面 934</span><span class="src">image945.png · 679×174</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>此页面本来会显示标准价格 3072（本应该是 4440.32 检查）</div>
+<div class="note info"><b class="t">原理说明</b>解释：如果该产成品有库存存在，系统还会自动生产会计凭证。颐宁公司在系统中现在还没有产成品库存，所以只是更新标准价格。</div>
+</li>
+</ol>
+<div class="steph" id="t26"><span class="no">任务 26</span><h3>显示产成品已发布的计划价格</h3><span class="tc">MM03</span><span class="tc2">8 画面 / 4 步</span></div>
+<div class="pathline" data-copy="解释：依然到产成品的物料主数据中去查看刚才价格发布的效果。后勤 → 物料管理 → 物料主数据 → 物料 → 显示 → MM03-显示当前"><b>IMG 路径（后台菜单）</b>解释：依然到产成品的物料主数据中去查看刚才价格发布的效果。后勤 → 物料管理 → 物料主数据 → 物料 → 显示 → MM03-显示当前</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 依然到产成品的物料主数据中去查看刚才价格发布的效果。后勤－物料管理－物料主数据－物料－显示－MM03-显示当前</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t26/01_1_image946.png"><img src="assets/img/pp/t26/01_1_image946.png" alt="显示产成品已发布的计划价格 · 第 1 步：解释：依然到产成品的物料主数据中去查看刚才价格发布的效果。后勤－物料管理－物料主数据－物料－显示－MM03-显示当前" loading="lazy" width="346" height="545"></a><figcaption><span class="n">画面 935</span><span class="src">image948.png · 346×545</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t26/01_2_image947.png"><img src="assets/img/pp/t26/01_2_image947.png" alt="显示产成品已发布的计划价格 · 第 1 步：解释：依然到产成品的物料主数据中去查看刚才价格发布的效果。后勤－物料管理－物料主数据－物料－显示－MM03-显示当前" loading="lazy" width="496" height="130"></a><figcaption><span class="n">画面 936</span><span class="src">image949.png · 496×130</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t26/01_1_image946.png"><img src="assets/img/pp/t26/01_1_image946.png" alt="显示产成品已发布的计划价格 · 第 1 步：解释：依然到产成品的物料主数据中去查看刚才价格发布的效果。后勤－物料管理－物料主数据－物料－显示－MM03-显示当前" loading="lazy" width="346" height="545"></a><figcaption><span class="n">画面 935</span><span class="src">image948.png · 346×545</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t26/01_2_image947.png"><img src="assets/img/pp/t26/01_2_image947.png" alt="显示产成品已发布的计划价格 · 第 1 步：解释：依然到产成品的物料主数据中去查看刚才价格发布的效果。后勤－物料管理－物料主数据－物料－显示－MM03-显示当前" loading="lazy" width="496" height="130"></a><figcaption><span class="n">画面 936</span><span class="src">image949.png · 496×130</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 939）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t26/02_1_image950.png"><img src="assets/img/pp/t26/02_1_image950.png" alt="显示产成品已发布的计划价格 · 第 2 步：image950.png" loading="lazy" width="543" height="275"></a><figcaption><span class="n">画面 939</span><span class="src">image950.png · 543×275</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t26/03_1_image951.png"><img src="assets/img/pp/t26/03_1_image951.png" alt="显示产成品已发布的计划价格 · 第 2 步：image951.png" loading="lazy" width="620" height="635"></a><figcaption><span class="n">画面 940</span><span class="src">image951.png · 620×635</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">应该标准价格会是 4440.32（原因同前步骤）</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t26/04_1_image952.png"><img src="assets/img/pp/t26/04_1_image952.png" alt="显示产成品已发布的计划价格 · 第 3 步：应该标准价格会是 4440.32（原因同前步骤）" loading="lazy" width="618" height="657"></a><figcaption><span class="n">画面 941</span><span class="src">image952.png · 618×657</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>点击当前，可以看到物料成本估算</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 942）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t26/05_1_image953.png"><img src="assets/img/pp/t26/05_1_image953.png" alt="显示产成品已发布的计划价格 · 第 4 步：image953.png" loading="lazy" width="1199" height="898"></a><figcaption><span class="n">画面 942</span><span class="src">image953.png · 1199×898</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t27"><span class="no">任务 27</span><h3>定义实际成本核算的估价变式</h3><span class="fb">后台</span><span class="tc2">3 画面 / 3 步</span></div>
+<div class="pathline" data-copy="控制 → 产成品成本控制 → 成本对象控制 → 按订单划分的产品成本 → 定义订单交货的货物接收评估"><b>IMG 路径（后台菜单）</b>控制 → 产成品成本控制 → 成本对象控制 → 按订单划分的产品成本 → 定义订单交货的货物接收评估</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 前面我们计算并发布了产成品的标准成本，在本步骤中我们将为生产订单的实际成本估算分配估价变式。</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t27/01_1_image954.png"><img src="assets/img/pp/t27/01_1_image954.png" alt="定义实际成本核算的估价变式 · 第 1 步：解释：前面我们计算并发布了产成品的标准成本，在本步骤中我们将为生产订单的实际成本估算分配估价变式。" loading="lazy" width="392" height="523"></a><figcaption><span class="n">画面 943</span><span class="src">image954.png · 392×523</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 944）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t27/02_1_image955.png"><img src="assets/img/pp/t27/02_1_image955.png" alt="定义实际成本核算的估价变式 · 第 2 步：image955.png" loading="lazy" width="712" height="307"></a><figcaption><span class="n">画面 944</span><span class="src">image955.png · 712×307</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">以上是已经分配了生产订单实际成本估价变式的工厂清单，点击新条目</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t27/03_1_image956.png"><img src="assets/img/pp/t27/03_1_image956.png" alt="定义实际成本核算的估价变式 · 第 3 步：以上是已经分配了生产订单实际成本估价变式的工厂清单，点击新条目" loading="lazy" width="631" height="129"></a><figcaption><span class="n">画面 945</span><span class="src">image956.png · 631×129</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t28"><span class="no">任务 28</span><h3>定义在制品结果分析版本</h3><span class="fb">后台</span><span class="tc2">4 画面 / 4 步</span></div>
+<div class="pathline" data-copy="控制 → 产品成本控制 → 成本对象控制 → 按订单划分的产品成本 → 期末结算 → 在产品 → 定义结果分析版本"><b>IMG 路径（后台菜单）</b>控制 → 产品成本控制 → 成本对象控制 → 按订单划分的产品成本 → 期末结算 → 在产品 → 定义结果分析版本</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 在本教程使用的离散式生产模式下，我们按生产订单来管理生产，对于月末未完工的生产订单，系统是将生产订单的实际成本余额转作在制品。同时，我们也可以对在制品进行结果分析来分析到目前位置生产订单的效率，这个概念和 SAP 中项目管理等的结果分析是一致的。在本步骤中我们定义一个简单的在制品结果分析版本。</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t28/01_1_image957.png"><img src="assets/img/pp/t28/01_1_image957.png" alt="定义在制品结果分析版本 · 第 1 步：解释：在本教程使用的离散式生产模式下，我们按生产订单来管理生产，对于月末未完工的生产订单，系统是将生产订单的实际成本余额转作在制品。同时，我们也可以对在制品进行结果分析来分析到目前位置生产订单的效率，这个概念和 SAP 中项目管理等的结果分析是一致的。在本步骤中我们定义一个简单的在制品结果分析版本。" loading="lazy" width="368" height="619"></a><figcaption><span class="n">画面 946</span><span class="src">image957.png · 368×619</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 947）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t28/02_1_image958.png"><img src="assets/img/pp/t28/02_1_image958.png" alt="定义在制品结果分析版本 · 第 2 步：image958.png" loading="lazy" width="475" height="432"></a><figcaption><span class="n">画面 947</span><span class="src">image958.png · 475×432</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击新条目</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t28/03_1_image959.png"><img src="assets/img/pp/t28/03_1_image959.png" alt="定义在制品结果分析版本 · 第 3 步：点击新条目" loading="lazy" width="448" height="446"></a><figcaption><span class="n">画面 948</span><span class="src">image959.png · 448×446</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>选择 C999 进入维护，这里是在产品结果分析的详细屏幕，当中的按钮是可以展开详细维护的。为了简便起见，我们只作简单的维护。</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 949）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t28/04_1_image960.png"><img src="assets/img/pp/t28/04_1_image960.png" alt="定义在制品结果分析版本 · 第 4 步：image960.png" loading="lazy" width="569" height="415"></a><figcaption><span class="n">画面 949</span><span class="src">image960.png · 569×415</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t29"><span class="no">任务 29</span><h3>定义可用性检查</h3><span class="fb">后台</span><span class="tc2">2 画面 / 1 步</span></div>
+<div class="pathline" data-copy="生产 → 商店底价控制 → 工序 → 可用性检查 → 定义检查组"><b>IMG 路径（后台菜单）</b>生产 → 商店底价控制 → 工序 → 可用性检查 → 定义检查组</div>
+<ol class="oplist">
+<li>
+<p class="opcap">生产－商店底价控制－工序－可用性检查－定义检查组</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t29/01_1_image961.png"><img src="assets/img/pp/t29/01_1_image961.png" alt="定义可用性检查 · 第 1 步：生产－商店底价控制－工序－可用性检查－定义检查组" loading="lazy" width="313" height="529"></a><figcaption><span class="n">画面 950</span><span class="src">image961.png · 313×529</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t29/01_2_image962.png"><img src="assets/img/pp/t29/01_2_image962.png" alt="定义可用性检查 · 第 1 步：生产－商店底价控制－工序－可用性检查－定义检查组" loading="lazy" width="791" height="268"></a><figcaption><span class="n">画面 951</span><span class="src">image962.png · 791×268</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>这里我们使用 02，用系统预设的</div>
+</li>
+</ol>
+<div class="steph" id="t30"><span class="no">任务 30</span><h3>定义可用性检查范围</h3><span class="fb">后台</span><span class="tc2">3 画面 / 3 步</span></div>
+<div class="pathline" data-copy="生产 → 商店底价控制 → 工序 → 可用性检查 → 定义检查范围"><b>IMG 路径（后台菜单）</b>生产 → 商店底价控制 → 工序 → 可用性检查 → 定义检查范围</div>
+<ol class="oplist">
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t30/01_1_image963.png"><img src="assets/img/pp/t30/01_1_image963.png" alt="定义可用性检查范围 · 第 1 步：image963.png" loading="lazy" width="350" height="483"></a><figcaption><span class="n">画面 952</span><span class="src">image963.png · 350×483</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> 此步中，我们根据物料主数据中的 “ 可用性检查组” 和生产订单类型中的 “ 检查规则”确定了可用性检查的范围。。<br>生产－商店底价控制－工序－可用性检查－定义检查范围</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t30/02_1_image964.png"><img src="assets/img/pp/t30/02_1_image964.png" alt="定义可用性检查范围 · 第 2 步：解释：此步中，我们根据物料主数据中的 “ 可用性检查组” 和生产订单类型中的 “ 检查规则”确定了可用性检查的范围。。 生产－商店底价控制－工序－可用性检查－定义检查范围" loading="lazy" width="493" height="516"></a><figcaption><span class="n">画面 953</span><span class="src">image964.png · 493×516</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">和本教材相关的组合是“02 检查组”和“PP 检查规则”双击</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t30/03_1_image965.png"><img src="assets/img/pp/t30/03_1_image965.png" alt="定义可用性检查范围 · 第 3 步：和本教材相关的组合是“02 检查组”和“PP 检查规则”双击" loading="lazy" width="673" height="632"></a><figcaption><span class="n">画面 954</span><span class="src">image965.png · 673×632</span></figcaption></figure>
+<div class="note info"><b class="t">原理说明</b>解释：这里定义了哪些库存，哪些向内或向外的物料移动是包含在检查范围内的等等，比如质检库存是包含在可用物料内的，而安全库存是不包含的，等等</div>
+</li>
+</ol>
+<div class="steph" id="t31"><span class="no">任务 31</span><h3>定义可用性检查控制</h3><span class="tc">PP01</span><span class="tc">PP02</span><span class="tc2">5 画面 / 4 步</span></div>
+<div class="pathline" data-copy="生产 → 商店底价控制 → 工序 → 可用性检查 → 定义检查控制"><b>IMG 路径（后台菜单）</b>生产 → 商店底价控制 → 工序 → 可用性检查 → 定义检查控制</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 在颐宁公司对于标准生产订单类型 PP01，我们是否需要在订单创建或下达的时候自动检查物料的可用性、PRT（生产资源和工具）的可用性、产能的可用性，以及检查规则等后台</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t31/01_1_image966.png"><img src="assets/img/pp/t31/01_1_image966.png" alt="定义可用性检查控制 · 第 1 步：解释：在颐宁公司对于标准生产订单类型 PP01，我们是否需要在订单创建或下达的时候自动检查物料的可用性、PRT（生产资源和工具）的可用性、产能的可用性，以及检查规则等后台" loading="lazy" width="387" height="486"></a><figcaption><span class="n">画面 955</span><span class="src">image966.png · 387×486</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t31/01_2_image967.png"><img src="assets/img/pp/t31/01_2_image967.png" alt="定义可用性检查控制 · 第 1 步：解释：在颐宁公司对于标准生产订单类型 PP01，我们是否需要在订单创建或下达的时候自动检查物料的可用性、PRT（生产资源和工具）的可用性、产能的可用性，以及检查规则等后台" loading="lazy" width="595" height="240"></a><figcaption><span class="n">画面 956</span><span class="src">image967.png · 595×240</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">用复制模板 0001 的方式维护颐宁工厂，选中工厂 0001，类型PP01 、PP02两行复制</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t31/02_1_image968.png"><img src="assets/img/pp/t31/02_1_image968.png" alt="定义可用性检查控制 · 第 2 步：用复制模板 0001 的方式维护颐宁工厂，选中工厂 0001，类型PP01 、PP02两行复制" loading="lazy" width="600" height="524"></a><figcaption><span class="n">画面 957</span><span class="src">image968.png · 600×524</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 958）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t31/03_1_image969.png"><img src="assets/img/pp/t31/03_1_image969.png" alt="定义可用性检查控制 · 第 3 步：image969.png" loading="lazy" width="573" height="713"></a><figcaption><span class="n">画面 958</span><span class="src">image969.png · 573×713</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> 我们没有在颐宁工厂的标准生产订单 PP01 创建的时候自动检查三种可用性，但是这并不禁止我们手工出发可用性检查</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t31/04_1_image970.png"><img src="assets/img/pp/t31/04_1_image970.png" alt="定义可用性检查控制 · 第 4 步：解释：我们没有在颐宁工厂的标准生产订单 PP01 创建的时候自动检查三种可用性，但是这并不禁止我们手工出发可用性检查" loading="lazy" width="613" height="335"></a><figcaption><span class="n">画面 959</span><span class="src">image970.png · 613×335</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t32"><span class="no">任务 32</span><h3>维护物料主数据的计划策略组</h3><span class="fb img">前台</span><span class="tc">MM02</span><span class="tc2">4 画面 / 3 步</span></div>
+<div class="pathline" data-copy="后勤 → 生产 → 主数据 → 物料主数据 → 更改 → MM02-立即"><b>IMG 路径（后台菜单）</b>后勤 → 生产 → 主数据 → 物料主数据 → 更改 → MM02-立即</div>
+<div class="note info"><b class="t">原理说明</b>解释：“ 计划策略组” 可以说是销售和分销 SD 以及 PP 最重要的集成参数，它决定了销售和生产在计划上的衔接。这个参数是维护在物料主数据 MRP3 视图中的，SAP 在这个领域展现了强大的灵活性，这既体现在丰富的可选的不同的生产组件层面上维护的。</div>
+<ol class="oplist">
+<li>
+<p class="opcap">后勤－生产－主数据－物料主数据－更改－MM02-立即</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t32/01_1_image971.png"><img src="assets/img/pp/t32/01_1_image971.png" alt="维护物料主数据的计划策略组 · 第 1 步：后勤－生产－主数据－物料主数据－更改－MM02-立即" loading="lazy" width="473" height="174"></a><figcaption><span class="n">画面 960</span><span class="src">image971.png · 473×174</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t32/02_1_image972.png"><img src="assets/img/pp/t32/02_1_image972.png" alt="维护物料主数据的计划策略组 · 第 2 步：image972.png" loading="lazy" width="344" height="300"></a><figcaption><span class="n">画面 961</span><span class="src">image972.png · 344×300</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 962）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t32/03_1_image973.png"><img src="assets/img/pp/t32/03_1_image973.png" alt="维护物料主数据的计划策略组 · 第 3 步：image973.png" loading="lazy" width="543" height="275"></a><figcaption><span class="n">画面 962</span><span class="src">image973.png · 543×275</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t32/04_1_image974.png"><img src="assets/img/pp/t32/04_1_image974.png" alt="维护物料主数据的计划策略组 · 第 3 步：image974.png" loading="lazy" width="659" height="584"></a><figcaption><span class="n">画面 963</span><span class="src">image974.png · 659×584</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>40 首先它是按库存生产的，生产计划的依据是计划部门维护的独立需求计划，但是销售订单对于计划仍然是有影响的，销售订单会消耗独立需求计划。当销售订单消耗完独立需求计划时，多出计划的订单需求将增加生产计划。这种策略在按库存生产（非按单生产的）组装生产中比较多，但是和生产量非常巨大的，同样是按库存生产的日用品又不一样</div>
+<div class="note tip"><b class="t">教材笔记</b>重复同样的方法，维护 T999-100</div>
+</li>
+</ol>
+<div class="steph" id="t33"><span class="no">任务 33</span><h3>创建物料的独立需求计划</h3><span class="tc">MD61</span><span class="tc2">5 画面 / 5 步</span></div>
+<div class="pathline" data-copy="后勤 → 生产 → 生产计划编制 → 需求管理 → 已计划的独立需求 → MD61-创建"><b>IMG 路径（后台菜单）</b>后勤 → 生产 → 生产计划编制 → 需求管理 → 已计划的独立需求 → MD61-创建</div>
+<div class="note info"><b class="t">原理说明</b>解释：本教材中生产计划模块的流程起点是创建产成品和贸易商品的周需求计划，之所以称为独立需求计划是因为这个需求不是像半成品或原材料的需求是来自于上一层产成品的需求的，而半成品和原材料的来自于上层的需求被称之为非独立需求。</div>
+<ol class="oplist">
+<li>
+<p class="opcap">后勤－生产－生产计划编制－需求管理－已计划的独立需求－MD61-创建</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t33/01_1_image975.png"><img src="assets/img/pp/t33/01_1_image975.png" alt="创建物料的独立需求计划 · 第 1 步：后勤－生产－生产计划编制－需求管理－已计划的独立需求－MD61-创建" loading="lazy" width="319" height="433"></a><figcaption><span class="n">画面 964</span><span class="src">image975.png · 319×433</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t33/02_1_image976.png"><img src="assets/img/pp/t33/02_1_image976.png" alt="创建物料的独立需求计划 · 第 2 步：image976.png" loading="lazy" width="503" height="443"></a><figcaption><span class="n">画面 965</span><span class="src">image976.png · 503×443</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> 填写从今天到下月末，创建月的周计划，回车后</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t33/03_1_image977.png"><img src="assets/img/pp/t33/03_1_image977.png" alt="创建物料的独立需求计划 · 第 3 步：解释：填写从今天到下月末，创建月的周计划，回车后" loading="lazy" width="971" height="240"></a><figcaption><span class="n">画面 966</span><span class="src">image977.png · 971×240</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">具体数据可自行输入，保存后再输入 T999-100 的周独立需求计划</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t33/04_1_image978.png"><img src="assets/img/pp/t33/04_1_image978.png" alt="创建物料的独立需求计划 · 第 4 步：具体数据可自行输入，保存后再输入 T999-100 的周独立需求计划" loading="lazy" width="588" height="461"></a><figcaption><span class="n">画面 967</span><span class="src">image978.png · 588×461</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 968）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t33/05_1_image979.png"><img src="assets/img/pp/t33/05_1_image979.png" alt="创建物料的独立需求计划 · 第 5 步：image979.png" loading="lazy" width="1062" height="228"></a><figcaption><span class="n">画面 968</span><span class="src">image979.png · 1062×228</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t34"><span class="no">任务 34</span><h3>显示MRP 清单</h3><span class="fb img">前台</span><span class="tc">MD05</span><span class="tc2">4 画面 / 3 步</span></div>
+<div class="pathline" data-copy="后勤 → 生产 → 物料需求计划 → 评估 → MD05-MRP 清单"><b>IMG 路径（后台菜单）</b>后勤 → 生产 → 物料需求计划 → 评估 → MD05-MRP 清单</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 在运行 MRP 之前，先让我们来显示一下 MRP 清单。现在显示的是上次 MRP 运行的静态数据。<br>后勤－生产－物料需求计划－评估－MD05-MRP 清单</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t34/01_1_image980.png"><img src="assets/img/pp/t34/01_1_image980.png" alt="显示MRP 清单 · 第 1 步：解释：在运行 MRP 之前，先让我们来显示一下 MRP 清单。现在显示的是上次 MRP 运行的静态数据。 后勤－生产－物料需求计划－评估－MD05-MRP 清单" loading="lazy" width="364" height="634"></a><figcaption><span class="n">画面 969</span><span class="src">image980.png · 364×634</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t34/01_2_image981.png"><img src="assets/img/pp/t34/01_2_image981.png" alt="显示MRP 清单 · 第 1 步：解释：在运行 MRP 之前，先让我们来显示一下 MRP 清单。现在显示的是上次 MRP 运行的静态数据。 后勤－生产－物料需求计划－评估－MD05-MRP 清单" loading="lazy" width="463" height="294"></a><figcaption><span class="n">画面 970</span><span class="src">image981.png · 463×294</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 971）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t34/02_1_image982.png"><img src="assets/img/pp/t34/02_1_image982.png" alt="显示MRP 清单 · 第 2 步：image982.png" loading="lazy" width="1221" height="288"></a><figcaption><span class="n">画面 971</span><span class="src">image982.png · 1221×288</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>由于没有运行 MRP，所以独立需求计划的数据没有传递过来，MRP 清单的数据是静态的，必须要到 MRP 运行后才会发生数值的变化。点击回退显示 T999-100 的MRP 清单</div>
+</li>
+<li>
+<p class="opcap">此处显示的上次运行 MRP 后的结果，请注意屏幕上方的时间戳。</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t34/03_1_image983.jpeg"><img src="assets/img/pp/t34/03_1_image983.jpeg" alt="显示MRP 清单 · 第 3 步：此处显示的上次运行 MRP 后的结果，请注意屏幕上方的时间戳。" loading="lazy" width="1222" height="399"></a><figcaption><span class="n">画面 972</span><span class="src">image983.jpeg · 1222×399</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t35"><span class="no">任务 35</span><h3>显示库存/需求清单</h3><span class="fb img">前台</span><span class="tc">MD04</span><span class="tc2">6 画面 / 3 步</span></div>
+<div class="pathline" data-copy="后勤 → 生产 → 物料需求计划 → 评估 → MD04-库存/需求清单"><b>IMG 路径（后台菜单）</b>后勤 → 生产 → 物料需求计划 → 评估 → MD04-库存/需求清单</div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">后勤－生产－物料需求计划－评估－MD04-库存/需求清单</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t35/01_1_image984.png"><img src="assets/img/pp/t35/01_1_image984.png" alt="显示库存/需求清单 · 第 1 步：后勤－生产－物料需求计划－评估－MD04-库存/需求清单" loading="lazy" width="361" height="626"></a><figcaption><span class="n">画面 973</span><span class="src">image986.png · 361×626</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t35/01_2_image985.png"><img src="assets/img/pp/t35/01_2_image985.png" alt="显示库存/需求清单 · 第 1 步：后勤－生产－物料需求计划－评估－MD04-库存/需求清单" loading="lazy" width="410" height="293"></a><figcaption><span class="n">画面 974</span><span class="src">image987.png · 410×293</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t35/01_1_image984.png"><img src="assets/img/pp/t35/01_1_image984.png" alt="显示库存/需求清单 · 第 1 步：后勤－生产－物料需求计划－评估－MD04-库存/需求清单" loading="lazy" width="361" height="626"></a><figcaption><span class="n">画面 973</span><span class="src">image986.png · 361×626</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t35/01_2_image985.png"><img src="assets/img/pp/t35/01_2_image985.png" alt="显示库存/需求清单 · 第 1 步：后勤－生产－物料需求计划－评估－MD04-库存/需求清单" loading="lazy" width="410" height="293"></a><figcaption><span class="n">画面 974</span><span class="src">image987.png · 410×293</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> 作为比较，我们来显示一下“库存/需求清单”。“ 库存/需求清单”是动态的，它显示的是当前某种物料的需求和供给的情况，并且已经将新创建的独立需求显示出来。</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t35/02_1_image988.png"><img src="assets/img/pp/t35/02_1_image988.png" alt="显示库存/需求清单 · 第 2 步：解释：作为比较，我们来显示一下“库存/需求清单”。“ 库存/需求清单”是动态的，它显示的是当前某种物料的需求和供给的情况，并且已经将新创建的独立需求显示出来。" loading="lazy" width="716" height="521"></a><figcaption><span class="n">画面 977</span><span class="src">image988.png · 716×521</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>切换 F999-100</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 978）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t35/03_1_image989.png"><img src="assets/img/pp/t35/03_1_image989.png" alt="显示库存/需求清单 · 第 3 步：image989.png" loading="lazy" width="733" height="752"></a><figcaption><span class="n">画面 978</span><span class="src">image989.png · 733×752</span></figcaption></figure>
+<div class="note info"><b class="t">原理说明</b>注意，这里没有时间戳，库存需求清单中已经将独立需求计划的数据传递了过来。库存需求清单是动态变化的。</div>
+</li>
+</ol>
+<div class="steph" id="t36"><span class="no">任务 36</span><h3>运行物料需求计划</h3><span class="tc">MD02</span><span class="tc2">14 画面 / 9 步</span></div>
+<p>000000000xx库存 xx.xx.2021</p>
+<div class="pathline" data-copy="解释：本步骤将由系统自动按照 BOM 来展开物料需求后勤 → 生产 → 物料需求计划 → 计划 → MD02-单项，多层"><b>IMG 路径（后台菜单）</b>解释：本步骤将由系统自动按照 BOM 来展开物料需求后勤 → 生产 → 物料需求计划 → 计划 → MD02-单项，多层</div>
+<table class="tbl vals"><thead><tr><th>项目</th><th>文档中的取值</th></tr></thead><tbody><tr><td>都修改到了</td><td>15.05.2007</td></tr></tbody></table>
+<ol class="oplist">
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t36/01_1_image990.png"><img src="assets/img/pp/t36/01_1_image990.png" alt="运行物料需求计划 · 第 1 步：image990.png" loading="lazy" width="591" height="611"></a><figcaption><span class="n">画面 979</span><span class="src">image990.png · 591×611</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t36/01_2_image991.png"><img src="assets/img/pp/t36/01_2_image991.png" alt="运行物料需求计划 · 第 1 步：image991.png" loading="lazy" width="388" height="454"></a><figcaption><span class="n">画面 980</span><span class="src">image991.png · 388×454</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> 本步骤将由系统自动按照 BOM 来展开物料需求后勤－生产－物料需求计划－计划－MD02-单项，多层</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t36/02_1_image992.png"><img src="assets/img/pp/t36/02_1_image992.png" alt="运行物料需求计划 · 第 2 步：解释：本步骤将由系统自动按照 BOM 来展开物料需求后勤－生产－物料需求计划－计划－MD02-单项，多层" loading="lazy" width="590" height="695"></a><figcaption><span class="n">画面 981</span><span class="src">image992.png · 590×695</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t36/02_2_image993.png"><img src="assets/img/pp/t36/02_2_image993.png" alt="运行物料需求计划 · 第 2 步：解释：本步骤将由系统自动按照 BOM 来展开物料需求后勤－生产－物料需求计划－计划－MD02-单项，多层" loading="lazy" width="564" height="331"></a><figcaption><span class="n">画面 982</span><span class="src">image993.png · 564×331</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 983）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t36/03_1_image994.png"><img src="assets/img/pp/t36/03_1_image994.png" alt="运行物料需求计划 · 第 3 步：image994.png" loading="lazy" width="875" height="363"></a><figcaption><span class="n">画面 983</span><span class="src">image994.png · 875×363</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">双击 F999-100，进入</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t36/04_1_image995.png"><img src="assets/img/pp/t36/04_1_image995.png" alt="运行物料需求计划 · 第 4 步：双击 F999-100，进入" loading="lazy" width="1087" height="806"></a><figcaption><span class="n">画面 984</span><span class="src">image995.png · 1087×806</span></figcaption></figure>
+<div class="note info"><b class="t">原理说明</b>解释：这是产成品铸钢泵 170-230 MRP 运行的结果，我们可以看到对于每一项独立需求都安排了相应的计划订单。同时针对安全库存的旧的计划订单由于开始时间是在过去被修改到可行的时间</div>
+</li>
+<li>
+<p class="opcap">000000000xx/库存 xx.xx.2021<br>回退，双击物料 R999-100</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t36/05_1_image996.png"><img src="assets/img/pp/t36/05_1_image996.png" alt="运行物料需求计划 · 第 5 步：000000000xx/库存 xx.xx.2021 回退，双击物料 R999-100" loading="lazy" width="852" height="825"></a><figcaption><span class="n">画面 985</span><span class="src">image996.png · 852×825</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>查 看 完 后 ， 在 保 存 前 显 示结 果的 方框 前打 勾， 按回 车键 重新运行 MRP</div>
+</li>
+<li>
+<p class="opcap">我们可以看到，对于原材料来说，生成了许多非独立需求 DepReq，这些非独立需求是针对产成品 F999-100的 ，这些非独立需求的日期考虑了生产提前期。针对这些需求系统生成了新的计划订单，于此同时，原来的采购申请也被修改了日期。<br>18.05.2021 PurRqs 0010000020/00010 14.05.2021</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t36/06_1_image997.png"><img src="assets/img/pp/t36/06_1_image997.png" alt="运行物料需求计划 · 第 6 步：我们可以看到，对于原材料来说，生成了许多非独立需求 DepReq，这些非独立需求是针对产成品 F999-100的 ，这些非独立需求的日期考虑了生产提前期。针对这些需求系统生成了新的计划订单，于此同时，原来的采购申请也被修改了日期。 18.05.2021 PurRqs 0010000020/00010 14.05.202" loading="lazy" width="726" height="234"></a><figcaption><span class="n">画面 986</span><span class="src">image997.png · 726×234</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t36/07_1_image998.png"><img src="assets/img/pp/t36/07_1_image998.png" alt="运行物料需求计划 · 第 7 步：image998.png" loading="lazy" width="574" height="737"></a><figcaption><span class="n">画面 987</span><span class="src">image998.png · 574×737</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">重复上述方法，对 T999-100 运行 MRP</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t36/08_1_image999.png"><img src="assets/img/pp/t36/08_1_image999.png" alt="运行物料需求计划 · 第 8 步：重复上述方法，对 T999-100 运行 MRP" loading="lazy" width="620" height="596"></a><figcaption><span class="n">画面 988</span><span class="src">image1001.png · 620×596</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t36/08_2_image1000.png"><img src="assets/img/pp/t36/08_2_image1000.png" alt="运行物料需求计划 · 第 8 步：重复上述方法，对 T999-100 运行 MRP" loading="lazy" width="564" height="744"></a><figcaption><span class="n">画面 989</span><span class="src">image1002.png · 564×744</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t36/08_1_image999.png"><img src="assets/img/pp/t36/08_1_image999.png" alt="运行物料需求计划 · 第 8 步：重复上述方法，对 T999-100 运行 MRP" loading="lazy" width="620" height="596"></a><figcaption><span class="n">画面 988</span><span class="src">image1001.png · 620×596</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t36/08_2_image1000.png"><img src="assets/img/pp/t36/08_2_image1000.png" alt="运行物料需求计划 · 第 8 步：重复上述方法，对 T999-100 运行 MRP" loading="lazy" width="564" height="744"></a><figcaption><span class="n">画面 989</span><span class="src">image1002.png · 564×744</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 992）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t36/09_1_image1003.png"><img src="assets/img/pp/t36/09_1_image1003.png" alt="运行物料需求计划 · 第 9 步：image1003.png" loading="lazy" width="704" height="238"></a><figcaption><span class="n">画面 992</span><span class="src">image1003.png · 704×238</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t37"><span class="no">任务 37</span><h3>将计划订单转换为生产订单</h3><span class="fb img">前台</span><span class="tc">MD04</span><span class="tc2">4 画面 / 4 步</span></div>
+<p>解释：计划订单中的内容被复制到了屏幕中的生产订单创建中。这时系统根据产成品的工艺路线重新安排了排程计划，确定了完成日期，</p>
+<div class="pathline" data-copy="后勤 → 生产 → 物料需求计划 → 评估 → MD04-库存/需求清单"><b>IMG 路径（后台菜单）</b>后勤 → 生产 → 物料需求计划 → 评估 → MD04-库存/需求清单</div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">后勤－生产－物料需求计划－评估－MD04-库存/需求清单</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t37/01_1_image1004.png"><img src="assets/img/pp/t37/01_1_image1004.png" alt="将计划订单转换为生产订单 · 第 1 步：后勤－生产－物料需求计划－评估－MD04-库存/需求清单" loading="lazy" width="403" height="290"></a><figcaption><span class="n">画面 993</span><span class="src">image1004.png · 403×290</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> MRP 运行有两个主要结果：一个是对产成品生成计划订单，另外一个是对原材料产生采购申请。本步骤中我们将产成品的计划订单转换成正式的生产订单。<br>我们可以在此清单中直接完成转换的操作</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t37/02_1_image1005.png"><img src="assets/img/pp/t37/02_1_image1005.png" alt="将计划订单转换为生产订单 · 第 2 步：解释：MRP 运行有两个主要结果：一个是对产成品生成计划订单，另外一个是对原材料产生采购申请。本步骤中我们将产成品的计划订单转换成正式的生产订单。 我们可以在此清单中直接完成转换的操作" loading="lazy" width="795" height="248"></a><figcaption><span class="n">画面 994</span><span class="src">image1005.png · 795×248</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> 屏幕中显示的是该计划订单的主要信息，在下方的一排按钮可以执行各种转换操作，我们将该计划订单转换成生产订单，点击生产订单键，点后退</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t37/03_1_image1006.png"><img src="assets/img/pp/t37/03_1_image1006.png" alt="将计划订单转换为生产订单 · 第 3 步：解释：屏幕中显示的是该计划订单的主要信息，在下方的一排按钮可以执行各种转换操作，我们将该计划订单转换成生产订单，点击生产订单键，点后退" loading="lazy" width="1055" height="346"></a><figcaption><span class="n">画面 995</span><span class="src">image1006.png · 1055×346</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 996）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t37/04_1_image1007.png"><img src="assets/img/pp/t37/04_1_image1007.png" alt="将计划订单转换为生产订单 · 第 4 步：image1007.png" loading="lazy" width="765" height="676"></a><figcaption><span class="n">画面 996</span><span class="src">image1007.png · 765×676</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>点击保存</div>
+<div class="note tip"><b class="t">教材笔记</b>同样的方法把其他计划订单也转化为生产订单</div>
+</li>
+</ol>
+<div class="steph" id="t38"><span class="no">任务 38</span><h3>显示生产订单清单</h3><span class="tc">COOIS</span><span class="tc2">5 画面 / 2 步</span></div>
+<div class="pathline" data-copy="后勤 → 生产 → 车间现场控制 → 信息系统 → COOIS-订单信息系统"><b>IMG 路径（后台菜单）</b>后勤 → 生产 → 车间现场控制 → 信息系统 → COOIS-订单信息系统</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 这一步我们到信息系统中去查看颐宁公司新的生产订单的清单。前台</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t38/01_1_image1008.png"><img src="assets/img/pp/t38/01_1_image1008.png" alt="显示生产订单清单 · 第 1 步：解释：这一步我们到信息系统中去查看颐宁公司新的生产订单的清单。前台" loading="lazy" width="289" height="439"></a><figcaption><span class="n">画面 997</span><span class="src">image1008.png · 289×439</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 998）</span></p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t38/02_1_image1009.png"><img src="assets/img/pp/t38/02_1_image1009.png" alt="显示生产订单清单 · 第 2 步：image1011.png" loading="lazy" width="832" height="807"></a><figcaption><span class="n">画面 998</span><span class="src">image1011.png · 832×807</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t38/02_2_image1010.png"><img src="assets/img/pp/t38/02_2_image1010.png" alt="显示生产订单清单 · 第 2 步：image1012.png" loading="lazy" width="1180" height="573"></a><figcaption><span class="n">画面 999</span><span class="src">image1012.png · 1180×573</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t38/02_1_image1009.png"><img src="assets/img/pp/t38/02_1_image1009.png" alt="显示生产订单清单 · 第 2 步：image1011.png" loading="lazy" width="832" height="807"></a><figcaption><span class="n">画面 998</span><span class="src">image1011.png · 832×807</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t38/02_2_image1010.png"><img src="assets/img/pp/t38/02_2_image1010.png" alt="显示生产订单清单 · 第 2 步：image1012.png" loading="lazy" width="1180" height="573"></a><figcaption><span class="n">画面 999</span><span class="src">image1012.png · 1180×573</span></figcaption></figure></div>
+<div class="note info"><b class="t">原理说明</b>解释：在这里我们看到了生产订单的清单。清单中是生产订单最主要的一些信息。这个清单并不是一个报表，从这个清单我们可以进行很多操作，比如更改生产订单、显示订单、打印生产订单等等。</div>
+</li>
+</ol>
+<div class="steph" id="t39"><span class="no">任务 39</span><h3>将采购申请转换为采购订单</h3><span class="tc">MD04</span><span class="tc2">13 画面 / 12 步</span></div>
+<p>解释：这是采购订单创建的屏幕，屏幕左侧是我们选中的采购申请号，右侧是采购订单创建的标准屏幕</p>
+<p>输入供应商 10000001 长平铁工厂，采购组织 Y999 公司代码 C999，采购组 PG1</p>
+<p>点击采用按钮，点击保存。</p>
+<p>同样的方法把其他采购申请都转换为采购订单。</p>
+<p>采购申请转换为采购订单，供应商和物料间 的关系参照供应商和物料之间的关系。</p>
+<div class="pathline" data-copy="后勤 → 生产 → 物料需求计划 → 评估 → MD04-库存/需求清单"><b>IMG 路径（后台菜单）</b>后勤 → 生产 → 物料需求计划 → 评估 → MD04-库存/需求清单</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 此步骤将 MRP 生成的对于原材料的采购申请转换为采购订单。前台<br>后勤－生产－物料需求计划－评估－MD04-库存/需求清单</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/01_1_image1013.png"><img src="assets/img/pp/t39/01_1_image1013.png" alt="将采购申请转换为采购订单 · 第 1 步：解释：此步骤将 MRP 生成的对于原材料的采购申请转换为采购订单。前台 后勤－生产－物料需求计划－评估－MD04-库存/需求清单" loading="lazy" width="302" height="625"></a><figcaption><span class="n">画面 1002</span><span class="src">image1013.png · 302×625</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 1003）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/02_1_image1014.png"><img src="assets/img/pp/t39/02_1_image1014.png" alt="将采购申请转换为采购订单 · 第 2 步：image1014.png" loading="lazy" width="418" height="285"></a><figcaption><span class="n">画面 1003</span><span class="src">image1014.png · 418×285</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">我们仍然在库存需求清单中完成采购申请的转换</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/03_1_image1015.png"><img src="assets/img/pp/t39/03_1_image1015.png" alt="将采购申请转换为采购订单 · 第 3 步：我们仍然在库存需求清单中完成采购申请的转换" loading="lazy" width="806" height="603"></a><figcaption><span class="n">画面 1004</span><span class="src">image1015.png · 806×603</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>具体位置如下图：</div>
+</li>
+<li>
+<p class="opcap">可以看到，上步骤转换的生产订单也显示出来了。点击建立订单结构按钮</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/04_1_image1016.png"><img src="assets/img/pp/t39/04_1_image1016.png" alt="将采购申请转换为采购订单 · 第 4 步：可以看到，上步骤转换的生产订单也显示出来了。点击建立订单结构按钮" loading="lazy" width="897" height="317"></a><figcaption><span class="n">画面 1005</span><span class="src">image1016.png · 897×317</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 1006）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/05_1_image1017.png"><img src="assets/img/pp/t39/05_1_image1017.png" alt="将采购申请转换为采购订单 · 第 5 步：image1017.png" loading="lazy" width="1920" height="428"></a><figcaption><span class="n">画面 1006</span><span class="src">image1017.png · 1920×428</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">屏幕左侧出现了针对产成品的第一个生产订单 1000000的组建树，右侧依然是产成品的库存需求清单<br>双击原材料 R999-200，进入</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/06_1_image1018.png"><img src="assets/img/pp/t39/06_1_image1018.png" alt="将采购申请转换为采购订单 · 第 6 步：屏幕左侧出现了针对产成品的第一个生产订单 1000000的组建树，右侧依然是产成品的库存需求清单 双击原材料 R999-200，进入" loading="lazy" width="1552" height="752"></a><figcaption><span class="n">画面 1007</span><span class="src">image1018.png · 1552×752</span></figcaption></figure>
+<div class="note info"><b class="t">原理说明</b>解释：这时，屏幕下侧变成了原材料罩壳的库存需求清单，我们可以看到来自于产成品的非独立需求 DepReq ,随着产成品生产订单的创建转换成了订单预留 OrdRes。现在我们将采购申请转换成采购订单</div>
+</li>
+<li>
+<p class="opcap">双击采购申请 PurRqs 0010000021/00010，进入</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/07_1_image1019.png"><img src="assets/img/pp/t39/07_1_image1019.png" alt="将采购申请转换为采购订单 · 第 7 步：双击采购申请 PurRqs 0010000021/00010，进入" loading="lazy" width="620" height="274"></a><figcaption><span class="n">画面 1008</span><span class="src">image1019.png · 620×274</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击采购订单，进入</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/08_1_image1020.png"><img src="assets/img/pp/t39/08_1_image1020.png" alt="将采购申请转换为采购订单 · 第 8 步：点击采购订单，进入" loading="lazy" width="1504" height="955"></a><figcaption><span class="n">画面 1009</span><span class="src">image1020.png · 1504×955</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>同样通过 MD04 将 R999-200、R999-300、R999-400 和 R999-500 以及贸易商品 T999-100 的</div>
+</li>
+<li>
+<p class="opcap">R999-500 10000000<br>T999-100 20000000 PG2</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/09_1_image1021.jpeg"><img src="assets/img/pp/t39/09_1_image1021.jpeg" alt="将采购申请转换为采购订单 · 第 9 步：R999-500 10000000 T999-100 20000000 PG2" loading="lazy" width="1459" height="816"></a><figcaption><span class="n">画面 1010</span><span class="src">image1021.jpeg · 1459×816</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/10_1_image1022.jpeg"><img src="assets/img/pp/t39/10_1_image1022.jpeg" alt="将采购申请转换为采购订单 · 第 10 步：image1022.jpeg" loading="lazy" width="1428" height="859"></a><figcaption><span class="n">画面 1011</span><span class="src">image1022.jpeg · 1428×859</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t39/10_2_image1023.jpeg"><img src="assets/img/pp/t39/10_2_image1023.jpeg" alt="将采购申请转换为采购订单 · 第 10 步：image1023.jpeg" loading="lazy" width="1441" height="916"></a><figcaption><span class="n">画面 1012</span><span class="src">image1023.jpeg · 1441×916</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/11_1_image1024.jpeg"><img src="assets/img/pp/t39/11_1_image1024.jpeg" alt="将采购申请转换为采购订单 · 第 11 步：image1024.jpeg" loading="lazy" width="1433" height="876"></a><figcaption><span class="n">画面 1013</span><span class="src">image1024.jpeg · 1433×876</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 1014）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/12_1_image1025.jpeg"><img src="assets/img/pp/t39/12_1_image1025.jpeg" alt="将采购申请转换为采购订单 · 第 12 步：image1025.jpeg" loading="lazy" width="1441" height="818"></a><figcaption><span class="n">画面 1014</span><span class="src">image1025.jpeg · 1441×818</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t40"><span class="no">任务 40</span><h3>对采购订单收货</h3><span class="fb img">前台</span><span class="tc">MIGO</span><span class="tc2">2 画面 / 2 步</span></div>
+<div class="pathline" data-copy="后勤 → 物料管理 → 库存管理 → 货物移动 → 收货 → 对采购订单 → 采购订单的 GR（MIGO）"><b>IMG 路径（后台菜单）</b>后勤 → 物料管理 → 库存管理 → 货物移动 → 收货 → 对采购订单 → 采购订单的 GR（MIGO）</div>
+<ol class="oplist">
+<li>
+<p class="opcap">后勤－物料管理－库存管理－货物移动－收货－对采购订单－采购订单的 GR（MIGO）</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t40/01_1_image1026.png"><img src="assets/img/pp/t40/01_1_image1026.png" alt="对采购订单收货 · 第 1 步：后勤－物料管理－库存管理－货物移动－收货－对采购订单－采购订单的 GR（MIGO）" loading="lazy" width="461" height="553"></a><figcaption><span class="n">画面 1015</span><span class="src">image1026.png · 461×553</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 1016）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t40/02_1_image1027.jpeg"><img src="assets/img/pp/t40/02_1_image1027.jpeg" alt="对采购订单收货 · 第 2 步：image1027.jpeg" loading="lazy" width="1369" height="849"></a><figcaption><span class="n">画面 1016</span><span class="src">image1027.jpeg · 1369×849</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>此外对贸易商品库存地点为 0003</div>
+<div class="note tip"><b class="t">教材笔记</b>点击采用，将同一供应商的货物一次收了，记得勾上项目确定，库存地点为0001，采用同样的方法把原材料都收了，</div>
+</li>
+</ol>
+<div class="steph" id="t41"><span class="no">任务 41</span><h3>输入采购发票</h3><span class="tc">MIRO</span><span class="tc">MRBR</span><span class="tc2">5 画面 / 5 步</span></div>
+<div class="pathline" data-copy="后勤 → 物料管理 → 后勤发票校验 → 凭证输入 → MIRO-输入发票"><b>IMG 路径（后台菜单）</b>后勤 → 物料管理 → 后勤发票校验 → 凭证输入 → MIRO-输入发票</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 这一步我们为前面的采购订单输入采购发票，并执行发票校验。前台<br>后勤－物料管理－后勤发票校验－凭证输入－MIRO-输入发票</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t41/01_1_image1028.png"><img src="assets/img/pp/t41/01_1_image1028.png" alt="输入采购发票 · 第 1 步：解释：这一步我们为前面的采购订单输入采购发票，并执行发票校验。前台 后勤－物料管理－后勤发票校验－凭证输入－MIRO-输入发票" loading="lazy" width="228" height="194"></a><figcaption><span class="n">画面 1017</span><span class="src">image1028.png · 228×194</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t41/02_1_image1029.png"><img src="assets/img/pp/t41/02_1_image1029.png" alt="输入采购发票 · 第 2 步：image1029.png" loading="lazy" width="1143" height="935"></a><figcaption><span class="n">画面 1018</span><span class="src">image1029.png · 1143×935</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 1019）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t41/03_1_image1030.png"><img src="assets/img/pp/t41/03_1_image1030.png" alt="输入采购发票 · 第 3 步：image1030.png" loading="lazy" width="957" height="893"></a><figcaption><span class="n">画面 1019</span><span class="src">image1030.png · 957×893</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">重复同样的办法，对所有前面的采购订单进行发票预制运行事务代码 MRBR 下达冻结发票</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t41/04_1_image1031.jpeg"><img src="assets/img/pp/t41/04_1_image1031.jpeg" alt="输入采购发票 · 第 4 步：重复同样的办法，对所有前面的采购订单进行发票预制运行事务代码 MRBR 下达冻结发票" loading="lazy" width="1709" height="311"></a><figcaption><span class="n">画面 1020</span><span class="src">image1031.jpeg · 1709×311</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击批准发票 F9（绿色小旗帜）</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t41/05_1_image1032.png"><img src="assets/img/pp/t41/05_1_image1032.png" alt="输入采购发票 · 第 5 步：点击批准发票 F9（绿色小旗帜）" loading="lazy" width="1709" height="309"></a><figcaption><span class="n">画面 1021</span><span class="src">image1032.png · 1709×309</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t42"><span class="no">任务 42</span><h3>下达生产订单</h3><span class="fb img">前台</span><span class="tc">CO02</span><span class="tc2">6 画面 / 5 步</span></div>
+<div class="pathline" data-copy="后勤 → 生产 → 生产控制 → 订单 → CO02-更改"><b>IMG 路径（后台菜单）</b>后勤 → 生产 → 生产控制 → 订单 → CO02-更改</div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">后勤－生产－生产控制－订单－CO02-更改</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t42/01_1_image1033.png"><img src="assets/img/pp/t42/01_1_image1033.png" alt="下达生产订单 · 第 1 步：后勤－生产－生产控制－订单－CO02-更改" loading="lazy" width="465" height="633"></a><figcaption><span class="n">画面 1022</span><span class="src">image1033.png · 465×633</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> 和内部订单类似生产订单也是采用 “ 状态管理” 的，前面创建的生产订单还不能执行，只有在我们将它下达后，它才能被执行</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t42/02_1_image1034.png"><img src="assets/img/pp/t42/02_1_image1034.png" alt="下达生产订单 · 第 2 步：解释：和内部订单类似生产订单也是采用 “ 状态管理” 的，前面创建的生产订单还不能执行，只有在我们将它下达后，它才能被执行" loading="lazy" width="458" height="309"></a><figcaption><span class="n">画面 1023</span><span class="src">image1034.png · 458×309</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 1024）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t42/03_1_image1035.png"><img src="assets/img/pp/t42/03_1_image1035.png" alt="下达生产订单 · 第 3 步：image1035.png" loading="lazy" width="636" height="682"></a><figcaption><span class="n">画面 1024</span><span class="src">image1035.png · 636×682</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>在收货页，要把收货勾上勾</div>
+</li>
+<li>
+<p class="opcap">点击屏幕上方的状态，行显示了这张生产订单目前的状态，可以点击旁边的 i 按钮查看其状态 点击绿色旗帜下达生产订单，屏幕下方出现提示，下达已执行，点击保存，使用同样的方法下达其他生产订单</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t42/04_1_image1036.png"><img src="assets/img/pp/t42/04_1_image1036.png" alt="下达生产订单 · 第 4 步：点击屏幕上方的状态，行显示了这张生产订单目前的状态，可以点击旁边的 i 按钮查看其状态 点击绿色旗帜下达生产订单，屏幕下方出现提示，下达已执行，点击保存，使用同样的方法下达其他生产订单" loading="lazy" width="597" height="803"></a><figcaption><span class="n">画面 1025</span><span class="src">image1036.png · 597×803</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t42/04_2_image1037.png"><img src="assets/img/pp/t42/04_2_image1037.png" alt="下达生产订单 · 第 4 步：点击屏幕上方的状态，行显示了这张生产订单目前的状态，可以点击旁边的 i 按钮查看其状态 点击绿色旗帜下达生产订单，屏幕下方出现提示，下达已执行，点击保存，使用同样的方法下达其他生产订单" loading="lazy" width="649" height="690"></a><figcaption><span class="n">画面 1026</span><span class="src">image1037.png · 649×690</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 1027）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t42/05_1_image1038.png"><img src="assets/img/pp/t42/05_1_image1038.png" alt="下达生产订单 · 第 5 步：image1038.png" loading="lazy" width="623" height="362"></a><figcaption><span class="n">画面 1027</span><span class="src">image1038.png · 623×362</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t43"><span class="no">任务 43</span><h3>对生产订单发货</h3><span class="fb img">前台</span><span class="tc2">8 画面 / 8 步</span></div>
+<div class="pathline" data-copy="后勤 → 物料管理 → 库存管理 → 货物移动 → MB1A-发货"><b>IMG 路径（后台菜单）</b>后勤 → 物料管理 → 库存管理 → 货物移动 → MB1A-发货</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 产成品铸钢泵 170-230 的生产订单下达后就可以开始生产订单的执行，本步骤我们给生产订单发原材料。<br>后勤－物料管理－库存管理－货物移动－MB1A-发货</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t43/01_1_image1039.png"><img src="assets/img/pp/t43/01_1_image1039.png" alt="对生产订单发货 · 第 1 步：解释：产成品铸钢泵 170-230 的生产订单下达后就可以开始生产订单的执行，本步骤我们给生产订单发原材料。 后勤－物料管理－库存管理－货物移动－MB1A-发货" loading="lazy" width="641" height="447"></a><figcaption><span class="n">画面 1028</span><span class="src">image1039.png · 641×447</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">回车</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t43/02_1_image1040.png"><img src="assets/img/pp/t43/02_1_image1040.png" alt="对生产订单发货 · 第 2 步：回车" loading="lazy" width="764" height="706"></a><figcaption><span class="n">画面 1029</span><span class="src">image1040.png · 764×706</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击到订单，输入生产订单号及工厂</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t43/03_1_image1041.png"><img src="assets/img/pp/t43/03_1_image1041.png" alt="对生产订单发货 · 第 3 步：点击到订单，输入生产订单号及工厂" loading="lazy" width="776" height="356"></a><figcaption><span class="n">画面 1030</span><span class="src">image1041.png · 776×356</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">系统自动将订单中尚未发货的物料复制过来，点击保存</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t43/04_1_image1042.png"><img src="assets/img/pp/t43/04_1_image1042.png" alt="对生产订单发货 · 第 4 步：系统自动将订单中尚未发货的物料复制过来，点击保存" loading="lazy" width="613" height="463"></a><figcaption><span class="n">画面 1031</span><span class="src">image1042.png · 613×463</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击发货菜单---显示</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t43/05_1_image1043.png"><img src="assets/img/pp/t43/05_1_image1043.png" alt="对生产订单发货 · 第 5 步：点击发货菜单---显示" loading="lazy" width="363" height="194"></a><figcaption><span class="n">画面 1032</span><span class="src">image1043.png · 363×194</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">回车后看到</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t43/06_1_image1044.png"><img src="assets/img/pp/t43/06_1_image1044.png" alt="对生产订单发货 · 第 6 步：回车后看到" loading="lazy" width="810" height="544"></a><figcaption><span class="n">画面 1033</span><span class="src">image1044.png · 810×544</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>点击会计凭证</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 1034）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t43/07_1_image1045.png"><img src="assets/img/pp/t43/07_1_image1045.png" alt="对生产订单发货 · 第 7 步：image1045.png" loading="lazy" width="375" height="207"></a><figcaption><span class="n">画面 1034</span><span class="src">image1045.png · 375×207</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">双击会计凭证，如下</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t43/08_1_image1046.png"><img src="assets/img/pp/t43/08_1_image1046.png" alt="对生产订单发货 · 第 8 步：双击会计凭证，如下" loading="lazy" width="738" height="557"></a><figcaption><span class="n">画面 1035</span><span class="src">image1046.png · 738×557</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>退回，重复同样的办法，对其余已经下达的生产订单发货</div>
+</li>
+</ol>
+<div class="steph" id="t44"><span class="no">任务 44</span><h3>工单确认</h3><span class="fb img">前台</span><span class="tc">CO11N</span><span class="tc2">10 画面 / 8 步</span></div>
+<div class="pathline" data-copy="后勤 → 生产 → 生产控制 → 确认 → 回车 → 用于操作 → CO11N-计工单"><b>IMG 路径（后台菜单）</b>后勤 → 生产 → 生产控制 → 确认 → 回车 → 用于操作 → CO11N-计工单</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 本步骤是生产订单的执行过程，对于已经完成的各道工序进行逐个的确认和报工，我们称之为工票确认或计工单。</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t44/01_1_image1047.png"><img src="assets/img/pp/t44/01_1_image1047.png" alt="工单确认 · 第 1 步：解释：本步骤是生产订单的执行过程，对于已经完成的各道工序进行逐个的确认和报工，我们称之为工票确认或计工单。" loading="lazy" width="734" height="769"></a><figcaption><span class="n">画面 1036</span><span class="src">image1047.png · 734×769</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">按回车</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t44/02_1_image1048.png"><img src="assets/img/pp/t44/02_1_image1048.png" alt="工单确认 · 第 2 步：按回车" loading="lazy" width="1104" height="868"></a><figcaption><span class="n">画面 1037</span><span class="src">image1048.png · 1104×868</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">点击货物移动</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t44/03_1_image1049.png"><img src="assets/img/pp/t44/03_1_image1049.png" alt="工单确认 · 第 3 步：点击货物移动" loading="lazy" width="1122" height="847"></a><figcaption><span class="n">画面 1038</span><span class="src">image1049.png · 1122×847</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">点击回车后，如下所示</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t44/04_1_image1050.png"><img src="assets/img/pp/t44/04_1_image1050.png" alt="工单确认 · 第 4 步：点击回车后，如下所示" loading="lazy" width="679" height="748"></a><figcaption><span class="n">画面 1039</span><span class="src">image1050.png · 679×748</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t44/04_2_image1051.png"><img src="assets/img/pp/t44/04_2_image1051.png" alt="工单确认 · 第 4 步：点击回车后，如下所示" loading="lazy" width="698" height="882"></a><figcaption><span class="n">画面 1040</span><span class="src">image1051.png · 698×882</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">这里我们看到产成品尚未完工收获，点击保存按钮，继续对其他工序进行确认，这次我们选择并行的工序，油漆罩壳<br>点击货物移动，单击保存</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t44/05_1_image1052.png"><img src="assets/img/pp/t44/05_1_image1052.png" alt="工单确认 · 第 5 步：这里我们看到产成品尚未完工收获，点击保存按钮，继续对其他工序进行确认，这次我们选择并行的工序，油漆罩壳 点击货物移动，单击保存" loading="lazy" width="734" height="690"></a><figcaption><span class="n">画面 1041</span><span class="src">image1052.png · 734×690</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>重复上述办法，对工序 20、30、40 和 50 进行报工。产成品 F999-100 共有六道工序，分别为 10、20、30、40、50 出对工序已经改动了计划人工工时外，其余都保留系统自动带出的计划值。</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 1042）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t44/06_1_image1053.png"><img src="assets/img/pp/t44/06_1_image1053.png" alt="工单确认 · 第 6 步：image1053.png" loading="lazy" width="661" height="739"></a><figcaption><span class="n">画面 1042</span><span class="src">image1053.png · 661×739</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t44/07_1_image1054.png"><img src="assets/img/pp/t44/07_1_image1054.png" alt="工单确认 · 第 7 步：image1054.png" loading="lazy" width="653" height="663"></a><figcaption><span class="n">画面 1043</span><span class="src">image1054.png · 653×663</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t44/07_2_image1055.png"><img src="assets/img/pp/t44/07_2_image1055.png" alt="工单确认 · 第 7 步：image1055.png" loading="lazy" width="575" height="666"></a><figcaption><span class="n">画面 1044</span><span class="src">image1055.png · 575×666</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 1045）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t44/08_1_image1056.png"><img src="assets/img/pp/t44/08_1_image1056.png" alt="工单确认 · 第 8 步：image1056.png" loading="lazy" width="696" height="656"></a><figcaption><span class="n">画面 1045</span><span class="src">image1056.png · 696×656</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t45"><span class="no">任务 45</span><h3>对生产订单收货</h3><span class="fb img">前台</span><span class="tc">MIGO</span><span class="tc2">2 画面 / 2 步</span></div>
+<div class="pathline" data-copy="后勤 → 物料管理 → 库存管理 → 货物移动 → 收货 → 订单的 GR（MIGO） MIGO_GO"><b>IMG 路径（后台菜单）</b>后勤 → 物料管理 → 库存管理 → 货物移动 → 收货 → 订单的 GR（MIGO） MIGO_GO</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 产品铸钢泵 170-230 的生产经过各道工序的加工后正式完工，本步骤进行订单完工收货</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t45/01_1_image1057.png"><img src="assets/img/pp/t45/01_1_image1057.png" alt="对生产订单收货 · 第 1 步：解释：产品铸钢泵 170-230 的生产经过各道工序的加工后正式完工，本步骤进行订单完工收货" loading="lazy" width="398" height="468"></a><figcaption><span class="n">画面 1046</span><span class="src">image1057.png · 398×468</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 1047）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t45/02_1_image1058.png"><img src="assets/img/pp/t45/02_1_image1058.png" alt="对生产订单收货 · 第 2 步：image1058.png" loading="lazy" width="1411" height="716"></a><figcaption><span class="n">画面 1047</span><span class="src">image1058.png · 1411×716</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>这个屏幕和采购收货类似，只是我们只需要填写的是生产订单(1000013)的编号。（记得在订单上收货页把收货的勾勾上）</div>
+</li>
+</ol>
+<div class="steph" id="t46"><span class="no">任务 46</span><h3>显示生产订单的成本</h3><span class="fb img">前台</span><span class="tc">CO03</span><span class="tc2">5 画面 / 1 步</span></div>
+<div class="pathline" data-copy="后勤 → 生产 → 生产控制 → 订单 → CO03-显示"><b>IMG 路径（后台菜单）</b>后勤 → 生产 → 生产控制 → 订单 → CO03-显示</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 1048）</span></p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t46/01_1_image1059.png"><img src="assets/img/pp/t46/01_1_image1059.png" alt="显示生产订单的成本 · 第 1 步：image1059.png" loading="lazy" width="651" height="676"></a><figcaption><span class="n">画面 1048</span><span class="src">image1059.png · 651×676</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t46/02_1_image1060.png"><img src="assets/img/pp/t46/02_1_image1060.png" alt="显示生产订单的成本 · 第 1 步：image1062.png" loading="lazy" width="701" height="770"></a><figcaption><span class="n">画面 1049</span><span class="src">image1062.png · 701×770</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t46/02_2_image1061.jpeg"><img src="assets/img/pp/t46/02_2_image1061.jpeg" alt="显示生产订单的成本 · 第 1 步：image1063.jpeg" loading="lazy" width="1207" height="512"></a><figcaption><span class="n">画面 1050</span><span class="src">image1063.jpeg · 1207×512</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t46/02_1_image1060.png"><img src="assets/img/pp/t46/02_1_image1060.png" alt="显示生产订单的成本 · 第 1 步：image1062.png" loading="lazy" width="701" height="770"></a><figcaption><span class="n">画面 1049</span><span class="src">image1062.png · 701×770</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t46/02_2_image1061.jpeg"><img src="assets/img/pp/t46/02_2_image1061.jpeg" alt="显示生产订单的成本 · 第 1 步：image1063.jpeg" loading="lazy" width="1207" height="512"></a><figcaption><span class="n">画面 1050</span><span class="src">image1063.jpeg · 1207×512</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t47"><span class="no">任务 47</span><h3>对生产订单技术性完成</h3><span class="fb img">前台</span><span class="tc">CO02</span><span class="tc2">2 画面 / 2 步</span></div>
+<div class="pathline" data-copy="后勤 → 生产 → 生产控制 → 订单 → CO02-更改"><b>IMG 路径（后台菜单）</b>后勤 → 生产 → 生产控制 → 订单 → CO02-更改</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 生产订单有四种系统标准状：创建、下达、技术性完成和关闭。当生产订单和生产相关的各项操作完成后应该将生产订单作技术性完成，但是这时候我们仍然可以做诸如订单结算等特殊的操作，当所有的操作都完成后，我们才将订单关闭。<br>后勤－生产－生产控制－订单－CO02-更改</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t47/01_1_image1064.png"><img src="assets/img/pp/t47/01_1_image1064.png" alt="对生产订单技术性完成 · 第 1 步：解释：生产订单有四种系统标准状：创建、下达、技术性完成和关闭。当生产订单和生产相关的各项操作完成后应该将生产订单作技术性完成，但是这时候我们仍然可以做诸如订单结算等特殊的操作，当所有的操作都完成后，我们才将订单关闭。 后勤－生产－生产控制－订单－CO02-更改" loading="lazy" width="689" height="754"></a><figcaption><span class="n">画面 1053</span><span class="src">image1064.png · 689×754</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>查看状态</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 1054）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t47/02_1_image1065.png"><img src="assets/img/pp/t47/02_1_image1065.png" alt="对生产订单技术性完成 · 第 2 步：image1065.png" loading="lazy" width="629" height="807"></a><figcaption><span class="n">画面 1054</span><span class="src">image1065.png · 629×807</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t48"><span class="no">任务 48</span><h3>生产订单差异结算</h3><span class="fb img">前台</span><span class="tc">KO88</span><span class="tc2">2 画面 / 2 步</span></div>
+<div class="pathline" data-copy="会计 → 控制 → 产品成本控制 → 成本对象控制 → 按订单划分的产品成本 → 期末结算 → 单一功能 → KO88 单个处理"><b>IMG 路径（后台菜单）</b>会计 → 控制 → 产品成本控制 → 成本对象控制 → 按订单划分的产品成本 → 期末结算 → 单一功能 → KO88 单个处理</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 46 的时候我们发现该生产订单的实际成本中有余额，这就意味着投入高过产出，我们称之为生产订单的差异，从会计角度来讲，生产订单差异需要做结算。<br>会计－控制－产品成本控制－成本对象控制－按订单划分的产品成本－期末结算－单一功能－KO88 单个处理</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t48/01_1_image1066.png"><img src="assets/img/pp/t48/01_1_image1066.png" alt="生产订单差异结算 · 第 1 步：解释：46 的时候我们发现该生产订单的实际成本中有余额，这就意味着投入高过产出，我们称之为生产订单的差异，从会计角度来讲，生产订单差异需要做结算。 会计－控制－产品成本控制－成本对象控制－按订单划分的产品成本－期末结算－单一功能－KO88 单个处理" loading="lazy" width="697" height="498"></a><figcaption><span class="n">画面 1055</span><span class="src">image1066.png · 697×498</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 1056）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t48/02_1_image1067.png"><img src="assets/img/pp/t48/02_1_image1067.png" alt="生产订单差异结算 · 第 2 步：image1067.png" loading="lazy" width="910" height="265"></a><figcaption><span class="n">画面 1056</span><span class="src">image1067.png · 910×265</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t49"><span class="no">任务 49</span><h3>生产订单成本报表显示</h3><span class="tc2">2 画面 / 1 步</span></div>
+<div class="pathline" data-copy="会计 → 控制 → 产品成本控制 → 成本对象控制 → 按订单划分的产品成本 → 信息系统 → 按订单的产品成本报表 → 详细的报表 → KKBC_ORD-用于订单"><b>IMG 路径（后台菜单）</b>会计 → 控制 → 产品成本控制 → 成本对象控制 → 按订单划分的产品成本 → 信息系统 → 按订单的产品成本报表 → 详细的报表 → KKBC_ORD-用于订单</div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">会计－控制－产品成本控制－成本对象控制－按订单划分的产品成本－信息系统－按订单的产品成本报表－详细的报表－KKBC_ORD-用于订单</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t49/01_1_image1068.png"><img src="assets/img/pp/t49/01_1_image1068.png" alt="生产订单成本报表显示 · 第 1 步：会计－控制－产品成本控制－成本对象控制－按订单划分的产品成本－信息系统－按订单的产品成本报表－详细的报表－KKBC_ORD-用于订单" loading="lazy" width="546" height="401"></a><figcaption><span class="n">画面 1057</span><span class="src">image1068.png · 546×401</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t49/01_2_image1069.jpeg"><img src="assets/img/pp/t49/01_2_image1069.jpeg" alt="生产订单成本报表显示 · 第 1 步：会计－控制－产品成本控制－成本对象控制－按订单划分的产品成本－信息系统－按订单的产品成本报表－详细的报表－KKBC_ORD-用于订单" loading="lazy" width="1206" height="464"></a><figcaption><span class="n">画面 1058</span><span class="src">image1069.jpeg · 1206×464</span></figcaption></figure>
+<div class="note info"><b class="t">原理说明</b>解释：这一步我们到信息系统中去查看生产订单的成本报表前台</div>
+</li>
+</ol>
+<div class="steph" id="t50"><span class="no">任务 50</span><h3>显示库存清单</h3><span class="tc">MD04</span><span class="tc2">6 画面 / 5 步</span></div>
+<div class="pathline" data-copy="后勤 → 生产 → 物料需求计划 → 评估 → MD04 库存需求清单"><b>IMG 路径（后台菜单）</b>后勤 → 生产 → 物料需求计划 → 评估 → MD04 库存需求清单</div>
+<table class="tbl vals"><thead><tr><th>项目</th><th>文档中的取值</th></tr></thead><tbody><tr><td>双击</td><td>Stock</td></tr></tbody></table>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">后勤－生产－物料需求计划－评估－MD04 库存需求清单</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t50/01_1_image1070.png"><img src="assets/img/pp/t50/01_1_image1070.png" alt="显示库存清单 · 第 1 步：后勤－生产－物料需求计划－评估－MD04 库存需求清单" loading="lazy" width="411" height="276"></a><figcaption><span class="n">画面 1059</span><span class="src">image1070.png · 411×276</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t50/01_2_image1071.png"><img src="assets/img/pp/t50/01_2_image1071.png" alt="显示库存清单 · 第 1 步：后勤－生产－物料需求计划－评估－MD04 库存需求清单" loading="lazy" width="837" height="717"></a><figcaption><span class="n">画面 1060</span><span class="src">image1071.png · 837×717</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> 完成了生产，查看一下库存需求清单，来看看产成品的需求和供给的平衡状态。前台</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t50/02_1_image1072.png"><img src="assets/img/pp/t50/02_1_image1072.png" alt="显示库存清单 · 第 2 步：解释：完成了生产，查看一下库存需求清单，来看看产成品的需求和供给的平衡状态。前台" loading="lazy" width="682" height="552"></a><figcaption><span class="n">画面 1061</span><span class="src">image1072.png · 682×552</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 1062）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t50/03_1_image1073.png"><img src="assets/img/pp/t50/03_1_image1073.png" alt="显示库存清单 · 第 3 步：image1073.png" loading="lazy" width="710" height="377"></a><figcaption><span class="n">画面 1062</span><span class="src">image1073.png · 710×377</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">同样的方法，查看 T999-100</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t50/04_1_image1074.png"><img src="assets/img/pp/t50/04_1_image1074.png" alt="显示库存清单 · 第 4 步：同样的方法，查看 T999-100" loading="lazy" width="733" height="666"></a><figcaption><span class="n">画面 1063</span><span class="src">image1074.png · 733×666</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">T999-100 全在 0003 运输库中</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t50/05_1_image1075.png"><img src="assets/img/pp/t50/05_1_image1075.png" alt="显示库存清单 · 第 5 步：T999-100 全在 0003 运输库中" loading="lazy" width="955" height="451"></a><figcaption><span class="n">画面 1064</span><span class="src">image1075.png · 955×451</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t51"><span class="no">任务 51</span><h3>存货移库</h3><span class="fb img">前台</span><span class="tc2">2 画面 / 2 步</span></div>
+<div class="pathline" data-copy="后勤 → 物料管理 → 库存管理 → 货物移动 → MB1B-转移记账"><b>IMG 路径（后台菜单）</b>后勤 → 物料管理 → 库存管理 → 货物移动 → MB1B-转移记账</div>
+<ol class="oplist">
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t51/01_1_image1076.png"><img src="assets/img/pp/t51/01_1_image1076.png" alt="存货移库 · 第 1 步：image1076.png" loading="lazy" width="655" height="456"></a><figcaption><span class="n">画面 1065</span><span class="src">image1076.png · 655×456</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> PP 的步骤都已经完成，最后我们将部分产成品的库存从生产仓库移存到销售运输仓库，。<br>后勤－物料管理－库存管理－货物移动－MB1B-转移记账</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t51/02_1_image1077.png"><img src="assets/img/pp/t51/02_1_image1077.png" alt="存货移库 · 第 2 步：解释：PP 的步骤都已经完成，最后我们将部分产成品的库存从生产仓库移存到销售运输仓库，。 后勤－物料管理－库存管理－货物移动－MB1B-转移记账" loading="lazy" width="860" height="325"></a><figcaption><span class="n">画面 1066</span><span class="src">image1077.png · 860×325</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>完成后点击保存</div>
+</li>
+</ol>
+<h2 id="sources">4. 关于截图与取值</h2>
+<div class="box warn"><b class="t">画面来自原教材文档</b>本模块的截图全部来自 <code>S4.docx</code> 中作者在真实系统里截取的中文界面画面（原始文件名 <code>imageNNN.png</code> 保留在每张图的图注里，可与 Word 原文逐张对照）。本站没有对这些画面做任何重绘或模拟。</div>
+<div class="box info"><b class="t">取值请以自系统为准</b>文档中的组织结构与主数据编号（公司代码 <code>C999</code>、公司名「颐宁机械有限公司」、工厂 <code>F999</code>、物料 <code>R999-100</code>/<code>T999-100</code>/<code>F999-100</code>、客户 <code>K001</code>/<code>K002</code> 等）都来自原作者的教材环境。照着手顺做时，<b>操作顺序与配置点可以照搬，具体编号/名称请换成你自己系统里的值</b>；遇到与文档不同的提示消息，先看「<a href="issues.html">排错与踩坑</a>」页里原文档记录的同类问题。</div>
+<div class="panel" style="margin-top:22px"><a href="mm.html">← 上一模块：MM 物料管理 MM（Materials Management）</a><br><a href="sd.html">下一模块：SD 销售与分销 SD（Sales and Distribution） →</a><br><a href="tasks.html">全部 222 个任务索引 →</a></div>
+</article></main>
+</div>
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA 中文实训站 — 全模块配置与操作手顺 · 实机画面</h5>
+  <p>内容依据同目录教材文档 <code>S4.docx</code>（425 页 · 6 大模块 · 222 个任务 · 1385 张实机截图）整理。全部页面可离线打开，无外部依赖。</p>
+  <div><h5>关于画面</h5><p>站内所有截图都是<b>原教材文档中的实机画面</b>（中文界面 SAP GUI），不是示意图、也不是模拟生成图；文件名保留原文档编号以便与 Word 原文对照。文档中的示例值（公司代码 <code>C999</code>、工厂 <code>F999</code>、物料 <code>R999-100</code> 等）属于原作者的教材环境，请以自己系统的组织结构与编号范围为准。</p></div></div>
+  <div class="cols">
+    <div><h5>模块</h5>
+      <a href="prep.html">准备 — 准备工作 — 登录系统与进入后台</a><br>
+      <a href="fi.html">FI — 财务会计 FI</a><br>
+      <a href="co.html">CO — 管理会计 CO</a><br>
+      <a href="mm.html">MM — 物料管理 MM</a><br>
+      <a href="pp.html">PP — 生产计划 PP</a><br>
+      <a href="sd.html">SD — 销售与分销 SD</a><br>    </div>
+    <div><h5>全站</h5>
+      <a href="prep.html">准备</a><br>
+      <a href="fi.html">FI</a><br>
+      <a href="co.html">CO</a><br>
+      <a href="mm.html">MM</a><br>
+      <a href="pp.html">PP</a><br>
+      <a href="sd.html">SD</a><br>
+      <a href="tcode.html">T-code</a><br>
+      <a href="issues.html">排错</a><br>
+      <a href="tasks.html">索引</a><br>
+      <a href="instructor.html">讲师</a><br>
+      <a href="worksheet.html">学员</a><br>
+      <a href="quiz.html">自测</a><br>    </div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/s4cn.js"></script>
+</body>
+</html>

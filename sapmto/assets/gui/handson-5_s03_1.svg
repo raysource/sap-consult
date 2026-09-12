@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 760" width="1180" height="760" role="img" aria-label="KKS1 の差異計算画面。指図 1000123 を期間 09 で指定し、差異種別ごとの金額 0.00 JPY が一覧表示されている。">
+<defs><linearGradient id="tb" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#37699b"/><stop offset="100%" stop-color="#21456e"/></linearGradient></defs>
+<rect x="0" y="0" width="1180" height="760" rx="0" fill="#f4f4f2" stroke="none" stroke-width="1"/>
+<rect x="0" y="0" width="1180" height="32" rx="0" fill="url(#tb)" stroke="none" stroke-width="1"/>
+<text x="12" y="21" font-size="13" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#ffffff" text-anchor="start">KKS1   製造指図の差異計算：実行条件と差異結果</text>
+<text x="1114" y="21" font-size="13" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#dce8f5" text-anchor="start">─</text>
+<text x="1136" y="21" font-size="13" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#dce8f5" text-anchor="start">▢</text>
+<text x="1158" y="21" font-size="13" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#dce8f5" text-anchor="start">✕</text>
+<rect x="0" y="32" width="1180" height="24" rx="0" fill="#e9e9e9" stroke="none" stroke-width="1"/>
+<line x1="0" y1="56" x2="1180" y2="56" stroke="#8f9aa6" stroke-width="1"/>
+<text x="12" y="48" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#333a42" text-anchor="start">メニュー</text>
+<text x="78" y="48" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#333a42" text-anchor="start">編集</text>
+<text x="118" y="48" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#333a42" text-anchor="start">お気に入り</text>
+<text x="197" y="48" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#333a42" text-anchor="start">ジャンプ</text>
+<text x="263" y="48" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#333a42" text-anchor="start">システム</text>
+<text x="329" y="48" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#333a42" text-anchor="start">ヘルプ</text>
+<text x="1166" y="48" font-size="12" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#5b6b7c" text-anchor="end">取引コード: KKS1</text>
+<rect x="0" y="56" width="1180" height="28" rx="0" fill="#e9e9e9" stroke="none" stroke-width="1"/>
+<line x1="0" y1="84" x2="1180" y2="84" stroke="#8f9aa6" stroke-width="1"/>
+<rect x="10" y="59" width="24" height="22" rx="3" fill="#fdfdfd" stroke="#c3ccd6" stroke-width="1"/><text x="22" y="75" font-size="13" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#3c5a78" text-anchor="middle">↩</text><text x="22" y="93" font-size="8" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#6b7a8d" text-anchor="middle">Enter</text>
+<rect x="40" y="59" width="24" height="22" rx="3" fill="#fdfdfd" stroke="#c3ccd6" stroke-width="1"/><text x="52" y="75" font-size="13" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#3c5a78" text-anchor="middle">F8</text><text x="52" y="93" font-size="8" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#6b7a8d" text-anchor="middle">実行</text>
+<rect x="70" y="59" width="24" height="22" rx="3" fill="#fdfdfd" stroke="#c3ccd6" stroke-width="1"/><text x="82" y="75" font-size="13" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#3c5a78" text-anchor="middle">⇦</text><text x="82" y="93" font-size="8" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#6b7a8d" text-anchor="middle">戻る</text>
+<rect x="100" y="59" width="24" height="22" rx="3" fill="#fdfdfd" stroke="#c3ccd6" stroke-width="1"/><text x="112" y="75" font-size="13" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#3c5a78" text-anchor="middle">✖</text><text x="112" y="93" font-size="8" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#6b7a8d" text-anchor="middle">取消</text>
+<line x1="0" y1="110" x2="1180" y2="110" stroke="#bdbdbd" stroke-width="1"/>
+<rect x="0" y="110" width="1180" height="616" rx="0" fill="#f4f4f2" stroke="none" stroke-width="1"/>
+<text x="26" y="132" font-size="13" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#0a4f9e" text-anchor="start">実行条件（指図と期間）</text>
+<text x="26" y="166" font-size="12.5" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#38424e" text-anchor="start">指図</text>
+<rect x="26" y="172" width="304.70000000000005" height="22" rx="2" fill="#ffffff" stroke="#8f9aa6" stroke-width="1"/>
+<text x="32" y="187" font-size="12.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">1000123</text>
+<rect x="335.70000000000005" y="178" width="10" height="10" rx="1" fill="#ffffff" stroke="#8f9aa6" stroke-width="1"/>
+<text x="336.70000000000005" y="187" font-size="10" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#2e7d32" text-anchor="start">✓</text>
+<text x="580" y="166" font-size="12.5" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#38424e" text-anchor="start">品目コード</text>
+<rect x="580" y="172" width="304.70000000000005" height="22" rx="2" fill="#ffffff" stroke="#8f9aa6" stroke-width="1"/>
+<text x="586" y="187" font-size="12.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">ZMTO-FG01</text>
+<text x="26" y="220" font-size="12.5" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#38424e" text-anchor="start">転記期間</text>
+<rect x="26" y="226" width="304.70000000000005" height="22" rx="2" fill="#ffffff" stroke="#8f9aa6" stroke-width="1"/>
+<text x="32" y="241" font-size="12.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">09</text>
+<text x="580" y="220" font-size="12.5" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#38424e" text-anchor="start">会計年度</text>
+<rect x="580" y="226" width="304.70000000000005" height="22" rx="2" fill="#ffffff" stroke="#8f9aa6" stroke-width="1"/>
+<text x="586" y="241" font-size="12.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">2026</text>
+<text x="26" y="274" font-size="12.5" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#38424e" text-anchor="start">テスト実行</text>
+<rect x="26" y="280" width="304.70000000000005" height="22" rx="2" fill="#ffffff" stroke="#8f9aa6" stroke-width="1"/>
+<text x="32" y="295" font-size="12.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">（空＝本番計算）</text>
+<text x="26" y="330" font-size="11.5" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#6b7a8d" text-anchor="start" font-style="italic">差異が 0.00 なら指図は標準原価どおり。差が出たら原因を種類で切り分け、KO88 で決済します。</text>
+<rect x="22" y="395" width="1136" height="24" rx="0" fill="#b7c7dd" stroke="#8f9aa6" stroke-width="1"/>
+<rect x="22" y="395" width="34" height="24" rx="0" fill="#a9bad0" stroke="#8f9aa6" stroke-width="1"/>
+<text x="39" y="412" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#1d2d3e" text-anchor="middle"></text>
+<text x="62" y="412" font-size="12" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#17263a" text-anchor="start">差異種別</text>
+<line x1="56" y1="395" x2="56" y2="722" stroke="#c3ccd6" stroke-width="1"/>
+<text x="354.36734693877554" y="412" font-size="12" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#17263a" text-anchor="start">金額</text>
+<line x1="348.36734693877554" y1="395" x2="348.36734693877554" y2="722" stroke="#c3ccd6" stroke-width="1"/>
+<text x="579.265306122449" y="412" font-size="12" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#17263a" text-anchor="start">読み方</text>
+<line x1="573.265306122449" y1="395" x2="573.265306122449" y2="722" stroke="#c3ccd6" stroke-width="1"/>
+<rect x="22" y="419" width="1136" height="26" rx="0" fill="#fff3a6" stroke="#d7dee6" stroke-width="1"/>
+<text x="39" y="436.68" font-size="11.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#6b7a8d" text-anchor="middle">1</text>
+<text x="62" y="436.68" font-size="12" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#5c4b00" text-anchor="start">数量差異</text>
+<text x="354.36734693877554" y="436.68" font-size="12" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#5c4b00" text-anchor="start">0.00 JPY</text>
+<text x="579.265306122449" y="436.68" font-size="12" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#5c4b00" text-anchor="start">投入した部品量・工数が標準どおり</text>
+<rect x="22" y="445" width="1136" height="26" rx="0" fill="#f3f6fa" stroke="#d7dee6" stroke-width="1"/>
+<text x="39" y="462.68" font-size="11.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#6b7a8d" text-anchor="middle">2</text>
+<text x="62" y="462.68" font-size="12" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">価格差異</text>
+<text x="354.36734693877554" y="462.68" font-size="12" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">0.00 JPY</text>
+<text x="579.265306122449" y="462.68" font-size="12" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">部品の評価額が標準どおり</text>
+<rect x="22" y="471" width="1136" height="26" rx="0" fill="#ffffff" stroke="#d7dee6" stroke-width="1"/>
+<text x="39" y="488.68" font-size="11.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#6b7a8d" text-anchor="middle">3</text>
+<text x="62" y="488.68" font-size="12" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">ロットサイズ差異</text>
+<text x="354.36734693877554" y="488.68" font-size="12" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">0.00 JPY</text>
+<text x="579.265306122449" y="488.68" font-size="12" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">ロットサイズ（EX）が標準どおり</text>
+<rect x="22" y="497" width="1136" height="26" rx="0" fill="#f3f6fa" stroke="#d7dee6" stroke-width="1"/>
+<text x="39" y="514.68" font-size="11.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#6b7a8d" text-anchor="middle">4</text>
+<text x="62" y="514.68" font-size="12" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">残差異</text>
+<text x="354.36734693877554" y="514.68" font-size="12" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">0.00 JPY</text>
+<text x="579.265306122449" y="514.68" font-size="12" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">上記に分類できない差</text>
+<text x="22" y="541" font-size="11.5" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#6b7a8d" text-anchor="start" font-style="italic">差異種別の名称と金額は環境の原価設定により異なります（ここは「種類で原因を切り分ける」ことだけ覚えれば十分）</text>
+<rect x="0" y="726" width="1180" height="34" rx="0" fill="#eef1f4" stroke="none" stroke-width="1"/>
+<line x1="0" y1="726" x2="1180" y2="726" stroke="#bdbdbd" stroke-width="1"/>
+<text x="14" y="748" font-size="14" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#2e7d32" text-anchor="start">✓</text>
+<text x="34" y="748" font-size="12.5" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#2e7d32" text-anchor="start">指図 1000123 の差異計算が終了しました</text>
+<line x1="880" y1="730" x2="880" y2="756" stroke="#bdbdbd" stroke-width="1"/>
+<text x="890" y="748" font-size="11.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#5b6b7c" text-anchor="start">S4H / 100 / TRAIN-01</text>
+<circle cx="900" cy="220" r="13" fill="#ffffff" stroke="#d32f2f" stroke-width="2"/>
+<text x="900" y="225" font-size="13" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#d32f2f" text-anchor="middle">1</text>
+<line x1="914" y1="220" x2="979" y2="220" stroke="#d32f2f" stroke-width="1.5" stroke-dasharray="4 3"/>
+<rect x="920" y="190" width="103.5" height="24" rx="4" fill="#fff5f5" stroke="#d32f2f" stroke-width="1"/>
+<text x="928" y="207" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#b71c1c" text-anchor="start">まず差異を計算</text>
+<circle cx="620" cy="600" r="13" fill="#ffffff" stroke="#d32f2f" stroke-width="2"/>
+<text x="620" y="605" font-size="13" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#d32f2f" text-anchor="middle">2</text>
+<line x1="634" y1="600" x2="720" y2="600" stroke="#d32f2f" stroke-width="1.5" stroke-dasharray="4 3"/>
+<rect x="640" y="570" width="141.0" height="24" rx="4" fill="#fff5f5" stroke="#d32f2f" stroke-width="1"/>
+<text x="648" y="587" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#b71c1c" text-anchor="start">テスト実行は OFF</text>
+</svg>

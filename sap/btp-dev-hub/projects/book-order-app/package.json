@@ -1,0 +1,35 @@
+{
+  "name": "sap-training-bookorder",
+  "version": "1.0.0",
+  "description": "图书受注管理 CAP 示例: 受注登録 / 承認 / 却下 / 差戻し / 変更(状态机) + CSV 种子",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@sap/cds": "^8",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^1",
+    "@sap/cds-dk": "^9"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "cds run",
+    "watch": "cds watch",
+    "deploy": "cds deploy --to sqlite:db.sqlite"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "sqlite",
+        "credentials": {
+          "url": "db.sqlite"
+        }
+      }
+    }
+  },
+  "allowScripts": {
+    "better-sqlite3": true
+  }
+}

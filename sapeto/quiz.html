@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>能力测试 · SAP S/4HANA 受注設計生産（ETO）实战训练站</title>
+<meta name="description" content="ETO 能力测试：28 题（概念 / 配置 / 流程 / 故障）点击判分 + 解说，＋实机验收清单。合格线 75%（21/28）且验收全项。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/eto.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">ETO</span><span class="txt">受注設計生産 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①项目</a>
+      <a href="handson-2.html">②计划·MRP</a>
+      <a href="handson-3.html">③执行·入库</a>
+      <a href="handson-4.html">④出荷·请求</a>
+      <a href="handson-5.html">⑤发展·故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a class="active" href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 能力测试</div>
+<main class="page"><article>
+
+<h1>能力测试（28 题 + 实机验收）</h1>
+<div class="box info"><b class="t">用法</b>
+每题点击一个选项即判分并显示解说。<b>合格判定：正确率 ≥75%（21/28）＋ 实机验收清单全部勾上</b>。
+60〜74% 请回对应页面重读；&lt;60% 请从 <a href="concept.html">概念与设计</a> 重来。<br>
+解说里的标准值是「通常情况」——要能说出「怎么在系统里验证」，比背下来重要。</div>
+
+<h2>一、概念（1〜10）</h2>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">E と Q</span></div>
+  <h4>1. ETO（受注設計生産）で使う在庫の区分は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. E（受注在庫。受注番号＋明細に紐づく）</div>
+    <div class="opt" data-key="B">B. K（預託在庫）</div>
+    <div class="opt" data-key="C">C. Q（プロジェクト在庫。WBS 要素に紐づく）</div>
+    <div class="opt" data-key="D">D. W（得意先預託）</div>
+  </div>
+  <div class="explain">ETO は在庫・原価・収益を<b>プロジェクト（WBS）</b>単位で管理するため、特別在庫区分 <b>Q＝プロジェクト在庫</b>を使います。E は受注明細単位（MTO）、K＝預託、W＝得意先預託です。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">テーブル</span></div>
+  <h4>2. プロジェクト在庫（Q）の数量が入るテーブルは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. <code>MSKA</code></div>
+    <div class="opt" data-key="B">B. <code>MSPR</code></div>
+    <div class="opt" data-key="C">C. <code>MSKU</code></div>
+    <div class="opt" data-key="D">D. <code>MSSA</code></div>
+  </div>
+  <div class="explain"><code>MSKA</code>＝受注在庫(E)、<b><code>MSPR</code>＝プロジェクト在庫(Q)</b>、<code>MSKU</code>＝得意先預託(V/W)。SAP Help「Stock Tables and Stock Types」に一覧があります。<code>SE16N</code> で <code>SOBKZ</code> を見れば一目で分かります。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">Q の成立条件</span></div>
+  <h4>3. プロジェクト在庫 Q を成立させる 4 点セットに<b>含まれない</b>ものは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. プロジェクト定義の「評価付プロジェクト在庫」</div>
+    <div class="opt" data-key="B">B. 品目マスタ MRP4「個別/包括所要量」＝ 個別所要量のみ</div>
+    <div class="opt" data-key="C">C. 品目マスタ MRP3 の戦略グループ（評価区分 M を持つ所要量クラスを指す）</div>
+    <div class="opt" data-key="D">D. 品目マスタ MRP1 のロットサイズを「EX」にすること</div>
+  </div>
+  <div class="explain">4 点セットは ① 評価付プロジェクト在庫 ② MRP4 個別所要量 ③ MRP3 戦略グループ（→所要量クラス） ④ 受注明細への WBS 割当。
+ロットサイズ（EX など）は手配の量を決めるだけなので、Q の成立条件ではありません（実務上は EX が便利なだけ）。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">個別所要量品目</span></div>
+  <h4>4. 「個別所要量品目（individual requirements material）」とは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 品目マスタに品目カテゴリグループ 0002 を持つ品目</div>
+    <div class="opt" data-key="B">B. WBS 要素を参照して製造され、需要・在庫が個別に管理される品目（ETO の完成品）</div>
+    <div class="opt" data-key="C">C. 計画独立所要量（PIR）で計画する品目</div>
+    <div class="opt" data-key="D">D. ロットサイズが EX の品目</div>
+  </div>
+  <div class="explain">SAP Help（Cloud, 受注設計生産）は「ETO などのプロジェクト関連の生産環境では、品目は WBS 要素を参照して製造される。このような品目は個別所要量品目とも呼ばれる」と説明しています。PIR で計画するのは見込生産品です。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">WBS の役割</span></div>
+  <h4>5. 「請求要素（billing element）」として使う WBS の役割は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 予算を持つだけの要素</div>
+    <div class="opt" data-key="B">B. 指図や発注の勘定設定に使う要素</div>
+    <div class="opt" data-key="C">C. 受注明細を割り当てて<b>収益を計上する</b>要素</div>
+    <div class="opt" data-key="D">D. 階層を表すだけの構造要素</div>
+  </div>
+  <div class="explain">請求要素は「収益を計画・計上できる」WBS。受注明細を請求要素に割り当て、請求（<code>VF01</code>）するとその WBS に収益が集まります。原価は勘定設定要素（<code>.2</code> など）に集まります。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">請求方式</span></div>
+  <h4>6. ETO で長期案件の分割請求に使うのは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 出荷ベースの請求だけ</div>
+    <div class="opt" data-key="B">B. 前受金しか使えない</div>
+    <div class="opt" data-key="C">C. 買掛金の計上</div>
+    <div class="opt" data-key="D">D. 請求計画（日付／出来高）や資源関連請求（RRB）</div>
+  </div>
+  <div class="explain">ETO は「金額×いつ請求するか」を契約で決めます。請求計画（日付ベース／出来高＝マイルストーン）、資源関連請求（<code>DP90/DP91</code>）などが選択肢。受注明細の明細カテゴリに請求計画の許可が必要です。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">評価</span></div>
+  <h4>7. プロジェクト在庫に金額（評価）を持たせるには？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. プロジェクト定義の「評価付プロジェクト在庫」を設定し、所要量クラスに評価区分（M）を持たせ、品目会計ビューを整える</div>
+    <div class="opt" data-key="B">B. 品目マスタの価格管理を移動平均価格（V）にする</div>
+    <div class="opt" data-key="C">C. 明細カテゴリの特別在庫を E にする</div>
+    <div class="opt" data-key="D">D. 出荷タイプを LF にする</div>
+  </div>
+  <div class="explain">評価付プロジェクト在庫は、① プロジェクト定義の フラグ、② 品目 MRP4 個別所要量、③ 戦略グループ経由の所要量クラス（評価区分 M＝販売伝票/プロジェクト参照の別評価）、④ 会計ビューの評価クラスの組合せで成立します。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">月末処理</span></div>
+  <h4>8. ETO の月末処理の正しい順序は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 決済 → 進捗 → 結果分析</div>
+    <div class="opt" data-key="B">B. 進捗 → 結果分析（WIP/収益の計算）→ 決済</div>
+    <div class="opt" data-key="C">C. 請求 → 決済 → 進捗</div>
+    <div class="opt" data-key="D">D. 予算入力 → 決済 → 進捗</div>
+  </div>
+  <div class="explain">進捗（<code>CNE1/CNE2</code>）→ 結果分析（<code>KKA2/KKAJ</code>）で WIP と認識収益を計算（<code>KKAX</code> で照会）→ 決済（指図 <code>KO88</code> / 受注 <code>VA88</code> / WBS <code>CJ88</code>）で FI へ、という順序です。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">Cloud</span></div>
+  <h4>9. SAP S/4HANA Cloud Public Edition の ETO スコープアイテムと戦略グループは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. スコープアイテム BJE / 戦略グループ 20</div>
+    <div class="opt" data-key="B">B. スコープアイテム IYT / 戦略グループ 25</div>
+    <div class="opt" data-key="C">C. スコープアイテム 6GD / 戦略グループ E2（所要量タイプ E21＝特別在庫 Q）</div>
+    <div class="opt" data-key="D">D. スコープアイテム 1BM / 戦略グループ 82</div>
+  </div>
+  <div class="explain">Cloud の ETO は <b>6GD（Engineer Products and Systems – Project with Production）</b>で交付され、Master Data 手順に「Strategy Group: E2」と記載があります。<b>E2 は 6GD 活性後に利用可能</b>（SAP KBA 3623492）。BJE は MTO＋最終組立、IYT は MTO＋VC です。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">概念</span><span class="tag">決済対象</span></div>
+  <h4>10. 決済トランザクションの組合せで正しいのは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 製造指図 <code>KO88</code> ／ 得意先受注 <code>VA88</code> ／ WBS <code>CJ88</code>（一括 <code>CJ8G</code>）</div>
+    <div class="opt" data-key="B">B. 製造指図 <code>CJ88</code> ／ 得意先受注 <code>KO88</code> ／ WBS <code>VA88</code></div>
+    <div class="opt" data-key="C">C. すべて <code>KKA2</code> で行う</div>
+    <div class="opt" data-key="D">D. すべて <code>VF01</code> で行う</div>
+  </div>
+  <div class="explain">SAP Help「S/4HANA information for Cost Object Controlling」に、指図の決済 <code>CO88</code>、受注の決済 <code>VA88</code> などが整理されています。WBS は <code>CJ88</code>（個別）/<code>CJ8G</code>（一括）。<code>KKA2</code> は結果分析、<code>VF01</code> は請求です。</div>
+</div>
+
+<h2>二、配置（11〜19）</h2>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">配置</span><span class="tag">PS プロファイル</span></div>
+  <h4>11. プロジェクトプロファイルを作成/確認するトランザクションは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. <code>OPPJ</code></div>
+    <div class="opt" data-key="B">B. <code>OPSA</code></div>
+    <div class="opt" data-key="C">C. <code>CJ20N</code></div>
+    <div class="opt" data-key="D">D. <code>OVZG</code></div>
+  </div>
+  <div class="explain">プロジェクトプロファイルは <code>OPSA</code>（IMG：Project System &gt; Structures &gt; Operative Structures &gt; Work Breakdown Structure &gt; Create Project Profile）。
+番号範囲・予算プロファイル・決済パラメータ・ステータスなど PS の制御がここに集まります。<code>CJ20N</code> はプロジェクトの登録画面です。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">配置</span><span class="tag">品目マスタ</span></div>
+  <h4>12. 「個別/包括所要量」を設定するのはどのビュー？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. MRP1</div>
+    <div class="opt" data-key="B">B. MRP2</div>
+    <div class="opt" data-key="C">C. MRP3</div>
+    <div class="opt" data-key="D">D. MRP4</div>
+  </div>
+  <div class="explain">MRP4 の「個別/包括所要量」＝個別所要量のみ が、個別所要量品目（＝プロジェクト在庫 Q の前提）を作ります。MRP3 は戦略グループと在庫確認、MRP1 は MRP タイプ・ロットサイズ・手配タイプです。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">配置</span><span class="tag">戦略グループ</span></div>
+  <h4>13. 戦略グループを設定するビューと、その先を確認する手顺は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. MRP4 → <code>OVZI</code> で所要量タイプを確認</div>
+    <div class="opt" data-key="B">B. 販売組織2 → <code>VOV4</code> で確認</div>
+    <div class="opt" data-key="C">C. MRP3 → <code>OPPJ</code>/<code>OPPS</code> で戦略の中身 → <code>OVZG</code> で所要量クラス（評価区分・個別在庫）を確認</div>
+    <div class="opt" data-key="D">D. 会計1 → <code>OBYC</code> で確認</div>
+  </div>
+  <div class="explain">戦略グループは品目マスタ MRP3。そこから 計画方針グループ（<code>OPPJ</code>）→ 計画方針（<code>OPPS</code>）→ 所要量タイプ → 所要量クラス（<code>OVZG</code>）と辿り、<b>評価区分 M と個別在庫</b>を確認するのが ETO の要点です。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">配置</span><span class="tag">予算</span></div>
+  <h4>14. 予算関連のトランザクションの説明で正しいのは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. <code>CJ30</code>＝元予算の変更、<code>CJ32</code>＝予算の解放、<code>CJ31</code>＝元予算の照会、<code>CJBV</code>＝可用性管理の活性化</div>
+    <div class="opt" data-key="B">B. <code>CJ30</code>＝予算照会、<code>CJ32</code>＝予算振替、<code>CJBV</code>＝予算の取消</div>
+    <div class="opt" data-key="C">C. <code>CJ30</code>＝決済、<code>CJ31</code>＝結果分析</div>
+    <div class="opt" data-key="D">D. 予算は <code>VF01</code> で投入する</div>
+  </div>
+  <div class="explain"><code>CJ30</code>（元予算の変更）/ <code>CJ31</code>（照会）/ <code>CJ32</code>（予算の解放）/ <code>CJBV</code>（可用性管理の活性化）/ <code>CJ34</code>（予算振替）/ <code>CJ37</code>（予算補足）です。予算は「統制と予実比較」のためのもので、計画（<code>CJ40/CJ42</code>）とは別物です。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">配置</span><span class="tag">ネットワーク</span></div>
+  <h4>15. ネットワーク／活動の確認・進捗に関するトランザクションで正しいのは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. <code>CN21</code>＝活動確認、<code>CN25</code>＝ネットワーク登録</div>
+    <div class="opt" data-key="B">B. <code>CN21</code>＝ネットワーク登録、<code>CN25</code>＝活動確認（個別）、<code>CN27</code>＝一括確認、<code>CN29</code>＝確認の取消、<code>CNE1/CNE2</code>＝進捗の決定</div>
+    <div class="opt" data-key="C">C. 進捗は <code>CO11N</code> で入れる</div>
+    <div class="opt" data-key="D">D. <code>CN21</code>＝決済</div>
+  </div>
+  <div class="explain"><code>CN21/CN22/CN23</code>＝ネットワークの登録/変更/照会、<code>CN25/CN27/CN28/CN29</code>＝活動確認（個別/一括/照会/取消）、<code>CNE1/CNE2</code>＝進捗の決定（個別/一括）。製造指図の実績は <code>CO11N</code> です。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">配置</span><span class="tag">受注明細と WBS</span></div>
+  <h4>16. 受注明細に WBS 要素を割り当てるために確認すべきことは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 出荷タイプが LF であること</div>
+    <div class="opt" data-key="B">B. 請求タイプが F2 であること</div>
+    <div class="opt" data-key="C">C. 品目マスタのロットサイズが EX であること</div>
+    <div class="opt" data-key="D">D. その明細カテゴリが WBS の割当を許可していること（<code>VOV7</code>。Cloud は <code>CBAO</code> など交付済みの明細カテゴリのみ）</div>
+  </div>
+  <div class="explain">WBS を割り当てられる明細カテゴリは限定されています。SAP Help（Cloud）は例として <code>CBAO</code>（マイルストーン請求計画）を挙げています。On-Premise は <code>VOV7</code> で確認し、必要ならコピーして作成します（実測が基本）。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">配置</span><span class="tag">プロジェクト定義</span></div>
+  <h4>17. 「評価付プロジェクト在庫」を設定する場所は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 品目マスタの会計ビュー</div>
+    <div class="opt" data-key="B">B. 明細カテゴリ（<code>VOV7</code>）</div>
+    <div class="opt" data-key="C">C. プロジェクト定義（<code>CJ20N</code>）の「プロジェクト在庫」セクション</div>
+    <div class="opt" data-key="D">D. 荷動きの転記画面（<code>MIGO</code>）</div>
+  </div>
+  <div class="explain">SAP Help「Valuated Project Stock: Scenario」が「プロジェクト作成時、プロジェクト定義の プロジェクト在庫 セクションで評価付プロジェクト在庫インジケータを設定する」と明記しています。品目側では MRP4 の個別所要量が必要です。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">配置</span><span class="tag">Public Cloud</span></div>
+  <h4>18. Public Cloud の ETO（6GD）で<b>できない</b>ことは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. WBS に受注明細を割り当てる</div>
+    <div class="opt" data-key="B">B. 明細カテゴリやプロジェクトプロファイルを自由に新規作成する</div>
+    <div class="opt" data-key="C">C. プロジェクト在庫から出荷する</div>
+    <div class="opt" data-key="D">D. マイルストーン請求計画を使う</div>
+  </div>
+  <div class="explain">Cloud は「What you see is what you get」。明細カテゴリの新規作成はできず、交付済みのもの（<code>CBAO</code> 等）から選びます。プロファイル類も SSCUI の範囲のみ。代わりに 6GD の Test Script が業務手顺として提供されます。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">配置</span><span class="tag">MRP 実行入口</span></div>
+  <h4>19. 受注単位／プロジェクト単位の MRP 実行トランザクションは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 受注 MRP＝<code>MD50</code>、プロジェクト MRP＝<code>MD51</code>、全体＝<code>MD01N</code></div>
+    <div class="opt" data-key="B">B. 受注 MRP＝<code>MD04</code>、プロジェクト MRP＝<code>MD05</code></div>
+    <div class="opt" data-key="C">C. すべて <code>MD02</code> で行う</div>
+    <div class="opt" data-key="D">D. PS では MRP を実行できない</div>
+  </div>
+  <div class="explain"><code>MD50</code>＝受注単位の MRP、<code>MD51</code>＝プロジェクト単位の MRP。<code>MD01N</code> は MRP Live（プラント全体）で、MRP リストは作られず結果は <code>MD04</code> で確認します。<code>MD04</code> は在庫/所要量リスト（照会）です。</div>
+</div>
+
+<h2>三、流程（20〜26）</h2>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">流程</span><span class="tag">練習①の順序</span></div>
+  <h4>20. 練習① の正しい順序は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 受注 → プロジェクト作成 → 予算 → 計画</div>
+    <div class="opt" data-key="B">B. プロジェクト（WBS・評価付在庫）→ ネットワーク → 計画（CJ40/CJ42）→ 予算（CJ30/CJ32）→ 受注（明細に WBS）→ 請求計画</div>
+    <div class="opt" data-key="C">C. 予算 → 受注 → プロジェクト作成</div>
+    <div class="opt" data-key="D">D. 受注 → 請求計画 → プロジェクト作成 → 予算</div>
+  </div>
+  <div class="explain">受注明細に WBS を入れる必要があるため、<b>プロジェクトが先</b>です。請求計画は受注後（<code>VA02</code>）に登録します。予算は計画の後に投入すると予実の流れが追いやすい、という順序です。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">流程</span><span class="tag">計画手配</span></div>
+  <h4>21. MRP 後の計画手配で確認すべき最重要点は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 数量だけ</div>
+    <div class="opt" data-key="B">B. 品目コードだけ</div>
+    <div class="opt" data-key="C">C. <b>勘定設定が WBS</b> であることと、<b>在庫区分がプロジェクト在庫 Q</b> であること</div>
+    <div class="opt" data-key="D">D. 伝票タイプの番号範囲</div>
+  </div>
+  <div class="explain">計画手配の「勘定設定 = WBS」と「在庫区分 = Q」が ETO 成立の証拠です。ここが空/自由在庫なら、① 受注明細の WBS、② MRP4 個別所要量、③ 戦略グループ、④ 評価付フラグ の 4 点を疑います。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">流程</span><span class="tag">入庫</span></div>
+  <h4>22. 完成品の 101 入庫先は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. プロジェクト在庫（特別在庫 Q）＋ WBS（指図の勘定設定）</div>
+    <div class="opt" data-key="B">B. 自由在庫（プラント在庫）</div>
+    <div class="opt" data-key="C">C. 受注在庫（E）＋受注番号</div>
+    <div class="opt" data-key="D">D. 預託在庫（K）</div>
+  </div>
+  <div class="explain">ETO では受注明細→WBS→指図の勘定設定という連鎖があるため、101 は<b>プロジェクト在庫 Q</b> に入ります。入庫画面で「特別在庫 Q」「WBS」が自動表示されているかを必ず確認します（自由在庫に入ったら <code>MBST</code> で取消して原因を直す）。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">流程</span><span class="tag">出荷</span></div>
+  <h4>23. 出荷（VL01N）と出庫確認（PGI）について正しいのは？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 出荷明細の在庫区分は常に自由在庫</div>
+    <div class="opt" data-key="B">B. PGI の移動タイプは 261</div>
+    <div class="opt" data-key="C">C. PGI はプロジェクト在庫を増やす</div>
+    <div class="opt" data-key="D">D. 出荷明細の在庫区分は Q（＋WBS）で、PGI（601）によりプロジェクト在庫が減る</div>
+  </div>
+  <div class="explain">出荷明細は受注明細→WBS を通じてプロジェクト在庫 Q を向きます。PGI は移動タイプ <code>601</code> で Q から出庫し、在庫が減ります（261 は指図への部品出庫、101 は入庫）。</div>
+</div>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">流程</span><span class="tag">CJI3</span></div>
+  <h4>24. 請求後、CJI3（実績）で期待される表示は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 収益も原価も同じ WBS に出る</div>
+    <div class="opt" data-key="B">B. <b>収益は請求要素</b>（<code>.1</code> など）、<b>原価は勘定設定要素</b>（<code>.2</code> など）に出る</div>
+    <div class="opt" data-key="C">C. 収益はネットワーク、原価は受注に出る</div>
+    <div class="opt" data-key="D">D. CJI3 には金額は出ない</div>
+  </div>
+  <div class="explain">請求は受注明細が指す<b>請求要素</b>に収益を、指図・発注の勘定設定である<b>勘定設定要素</b>に原価を集めます。CJI3 に出ないときは、この 2 つの役割の取り違えを最初に疑います。</div>
+</div>
+
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">流程</span><span class="tag">決済前後</span></div>
+  <h4>25. 決済（KO88 / CJ88）を実行すると何が変わる？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 受注金額が変わる</div>
+    <div class="opt" data-key="B">B. プロジェクト在庫の数量が変わる</div>
+    <div class="opt" data-key="C">C. 指図や WBS に集まっていた原価・収益が決済受信者（損益勘定など）へ流れ、CJI3 の表示が変わる</div>
+    <div class="opt" data-key="D">D. 請求伝票が自動で作られる</div>
+  </div>
+  <div class="explain">決済は「集めた金額をどこへ渡すか」を実行します（決済ルール <code>CJB1/CJB2</code> が必要）。数量は変わりません。決済前後で <code>CJI3</code> と <code>CJIC</code>（決済明細）を見比べるのが一番の理解の近道です。</div>
+</div>
+
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">流程</span><span class="tag">取り消し</span></div>
+  <h4>26. 請求まで完了した案件を巻き戻す順序は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 請求 <code>VF11</code> → PGI <code>VL09</code> → 入庫取消（<code>MIGO</code>/<code>MBST</code>）→ 確認取消（<code>CO13</code>/<code>CN29</code>）</div>
+    <div class="opt" data-key="B">B. 指図を削除すれば後続は自動で消える</div>
+    <div class="opt" data-key="C">C. PGI 取消 → 請求取消 → 入庫取消</div>
+    <div class="opt" data-key="D">D. プロジェクトを削除するだけでよい</div>
+  </div>
+  <div class="explain">取消は<b>逆順</b>：請求（<code>VF11</code>）→ PGI（<code>VL09</code>）→ 入庫取消 → 実績取消（<code>CO13</code>、ネットワークなら <code>CN29</code>）。指図やプロジェクトを削除しても後続伝票は消えません。</div>
+</div>
+
+<h2>四、故障（27〜28）</h2>
+
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">故障</span><span class="tag">WBS が入らない</span></div>
+  <h4>27. 受注明細に WBS 要素を入力できない。第一嫌疑は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 得意先マスタの与信限度</div>
+    <div class="opt" data-key="B">B. その明細カテゴリが WBS の割当を許可していない（<code>VOV7</code>／Cloud は交付済みの明細カテゴリのみ）</div>
+    <div class="opt" data-key="C">C. 出荷ポイントが決まっていない</div>
+    <div class="opt" data-key="D">D. 品目のロットサイズが EX でない</div>
+  </div>
+  <div class="explain">WBS 割当の可否は明細カテゴリ側の設定です。<code>VOV7</code> で確認し、必要ならコピーして ZETO 明細カテゴリを作成（<code>VOV4</code> に決定キー追加）。Cloud では新規作成できないため、<code>CBAO</code> などの交付済み明細カテゴリを選びます。</div>
+</div>
+
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">故障</span><span class="tag">自由在庫に入る</span></div>
+  <h4>28. 101 入庫が自由在庫に入ってしまった。確認すべき 4 点は？</h4>
+  <div class="opts">
+    <div class="opt" data-key="A">A. 出荷タイプ・請求タイプ・与信・税区分</div>
+    <div class="opt" data-key="B">B. ロットサイズ・MRP コントローラ・購買グループ・品目グループ</div>
+    <div class="opt" data-key="C">C. 予算プロファイル・決済ルール・結果分析キー</div>
+    <div class="opt" data-key="D">D. ① 指図の勘定設定（WBS）② プロジェクト定義の評価付プロジェクト在庫 ③ 品目 MRP4 個別所要量 ④ 戦略グループ（Q 系の所要量タイプ）</div>
+  </div>
+  <div class="explain">「自由在庫に入った」＝システムが個別需要として扱っていない、ということ。Q の 4 点セット（評価付フラグ・MRP4・戦略グループ・WBS 割当）を順に確認します。<code>MBST</code> で取消 → 修正 → 再入庫の順で直します。</div>
+</div>
+
+<h2>实机验收清单（合格必须全勾）</h2>
+<div class="box ok"><b class="t">✓ 総合验收（証跡つきで説明できること）</b>
+<ul class="check">
+  <li><b>PS 主数据</b>：<code>CJ20N</code> のプロジェクト定義（評価付プロジェクト在庫 ON）・WBS 3 件（<code>.1</code> 請求要素 / <code>.2</code> 勘定設定要素）・ネットワーク activity（<code>CN23</code>）。</li>
+  <li><b>計画と予算</b>：<code>CJ40</code>/<code>CJ42</code> の計画値（<code>CJI4</code>）と <code>CJ30</code>→<code>CJ32</code>→<code>CJ31</code> の予算。</li>
+  <li><b>SD×PS 接続</b>：<code>VA03</code> 明細の WBS 要素・所要量タイプ（Q 系）・請求計画（30%/70%）。</li>
+  <li><b>MRP と指図</b>：<code>MD04</code> の計画手配（勘定設定 = WBS・在庫区分 = Q）、<code>CO03</code> の勘定設定と部品予約。</li>
+  <li><b>在庫</b>：261/101 の伝票番号 ＋ <code>MMBE</code> のプロジェクト在庫 1 式（自由在庫 0）＋ <code>SE16N: MSPR</code>（<code>SOBKZ = Q</code>）。</li>
+  <li><b>販売</b>：出荷伝票（在庫区分 Q）＋ PGI 後の Q 在庫 0 ＋ 請求伝票（請求計画のどの行かも）。</li>
+  <li><b>CO</b>：<code>CJI3</code> で WBS <code>.1</code> に収益・<code>.2</code> に原価が出ている画面、決済前後の変化。</li>
+  <li><b>故障</b>：この実習中に発生した問題を 1 件以上、症状／根因／証跡 T-code で記述した。</li>
+</ul></div>
+<div class="box info"><b class="t">合格判定</b>
+選択問題 <b>≥75%（21/28）</b>＋ 上記の実機验收が<b>全項目</b>証跡つきで説明できること。両方満たしたら、ETO 场景已经是可以讲给别人听的水平。
+下一步建议：与 MTO 站（<span class="mono">../sapmto/</span>）做对比讲授（E 与 Q、受注在庫与プロジェクト在庫），或走向 VC 付き ETO / 収益認識の深化。</div>
+
+<div class="box info"><b class="t">回头复习</b>
+<a href="concept.html">概念与设计</a>／<a href="config.html">配置手顺</a>／<a href="handson-5.html#trouble">故障対照表 18 項</a>。</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>受注設計生産（ETO）实战训练站</h5><p>能力测试：28 题 + 实机验收清单。合格线 75% 且验收全项。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 項目と受注</a><br><a href="handson-2.html">② 計画・MRP</a><br><a href="handson-3.html">③ 実行・入庫</a><br><a href="handson-4.html">④ 出荷・請求</a><br><a href="handson-5.html">⑤ 発展・故障</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="worksheet.html">学员版</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/quiz.js"></script>
+</body>
+</html>

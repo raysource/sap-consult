@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自習テスト 30 問 · S/4HANA 日本語実習サイト</title>
+<meta name="description" content="S/4HANA 日本語実習サイトの自習テスト：30 問の自動採点テストで、T-code、IMG 設定のパス、組織構造、自動記帳、生産と販売の流れ、トラブルシューティングを網羅しています。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/s4jp.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">S4</span><span class="txt">日本語実習サイト</span></a>
+    <nav class="main">
+      <a href="index.html">ホーム</a>
+      <a href="prep.html">準備</a>
+      <a href="fi.html">FI</a>
+      <a href="co.html">CO</a>
+      <a href="mm.html">MM</a>
+      <a href="pp.html">PP</a>
+      <a href="sd.html">SD</a>
+      <a href="tcode.html">T-code</a>
+      <a href="glossary.html">用語</a>
+      <a href="issues.html">トラブルシューティング</a>
+      <a href="tasks.html">索引</a>
+      <a href="instructor.html">講師</a>
+      <a href="worksheet.html">受講者</a>
+      <a class="active" href="quiz.html">自習テスト</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page"><article>
+<p class="breadcrumb"><a href="index.html">ホーム</a> / <span>自習テスト</span></p>
+<h1>自習テスト 30 問（自動採点、75% で合格）</h1>
+<p>最初の 12 問は教材ドキュメント <code>S4.docx</code> の「タスク ↔ T-code」の実際の対応から出題しています（問題番号内のタスク名をクリックすると、そのタスクの手順と画面を確認できます）、
+後半の 18 問は、組織構造、項目コントロール、自動記帳、配賦／按分、生産と販売のチェーン、そして原教材ドキュメントに記録されたトラブル対応を扱います。
+選択肢をクリックするとすぐに採点して解説を表示します。1 問につき解答は 1 回だけで、「すべてやり直す」で最初からやり直せます。</p>
+<div class="box info"><b class="t">採点</b>
+30 問：75%（23 問）で合格、90%（27 問）以上で優秀です。間違えた問題は該当モジュールの手順ページに戻ってやり直し、「トラブルシューティングと注意点」ページでエラー時の対処を確認してください。</div>
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">CO</span><span class="tag">T-code</span></div>
+  <h4>1. 教材ドキュメント《S4.docx》では、「<a href="co.html#t06">二次原価要素を作成</a>」このステップで出てくるのはどの T-code ですか？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>MD61</code></div><div class="opt" data-key="B"><code>VA21</code></div><div class="opt" data-key="C"><code>KA06</code></div><div class="opt" data-key="D"><code>KA01</code></div></div>
+  <div class="explain">原教材ドキュメントでは、このタスクの本文に <code>KA06</code> が登場します（このタスクの所属モジュール：CO、実機画面は計 9 枚）。残りの 3 項目は他のモジュールのタスクに登場するので、<a href="tcode.html">T-code 早見表</a> から逆引きできます。</div>
+</div>
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">PP</span><span class="tag">T-code</span></div>
+  <h4>2. 教材ドキュメント《S4.docx》では、「<a href="pp.html#t25">価格をリリース</a>」このステップで出てくるのはどの T-code ですか？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>CS15</code></div><div class="opt" data-key="B"><code>MRBR</code></div><div class="opt" data-key="C"><code>KO04</code></div><div class="opt" data-key="D"><code>CK24</code></div></div>
+  <div class="explain">原教材ドキュメントでは、このタスクの本文に <code>CK24</code> が登場します（このタスクの所属モジュール：PP、実機画面は計 2 枚）。残りの 3 項目は他のモジュールのタスクに登場するので、<a href="tcode.html">T-code 早見表</a> から逆引きできます。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">CO</span><span class="tag">T-code</span></div>
+  <h4>3. 教材ドキュメント《S4.docx》では、「<a href="co.html#t05">一次原価要素を新規作成</a>」このステップで出てくるのはどの T-code ですか？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>ME51N</code></div><div class="opt" data-key="B"><code>KA01</code></div><div class="opt" data-key="C"><code>OBYC</code></div><div class="opt" data-key="D"><code>CK24</code></div></div>
+  <div class="explain">原教材ドキュメントでは、このタスクの本文に <code>KA01</code> が登場します（このタスクの所属モジュール：CO、実機画面は計 30 枚）。残りの 3 項目は他のモジュールのタスクに登場するので、<a href="tcode.html">T-code 早見表</a> から逆引きできます。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">PP</span><span class="tag">T-code</span></div>
+  <h4>4. 教材ドキュメント《S4.docx》では、「<a href="pp.html#t23">価格のマーク</a>」このステップで出てくるのはどの T-code ですか？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>CK24</code></div><div class="opt" data-key="B"><code>FS10N</code></div><div class="opt" data-key="C"><code>MCTA</code></div><div class="opt" data-key="D"><code>MD61</code></div></div>
+  <div class="explain">原教材ドキュメントでは、このタスクの本文に <code>CK24</code> が登場します（このタスクの所属モジュール：PP、実機画面は計 12 枚）。残りの 3 項目は他のモジュールのタスクに登場するので、<a href="tcode.html">T-code 早見表</a> から逆引きできます。</div>
+</div>
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">CO</span><span class="tag">T-code</span></div>
+  <h4>5. 教材ドキュメント《S4.docx》では、「<a href="co.html#t19">統計キー数値の数量を入力</a>」このステップで出てくるのはどの T-code ですか？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>VA05</code></div><div class="opt" data-key="B"><code>VF02</code></div><div class="opt" data-key="C"><code>KB31N</code></div><div class="opt" data-key="D"><code>CR01</code></div></div>
+  <div class="explain">原教材ドキュメントでは、このタスクの本文に <code>KB31N</code> が登場します（このタスクの所属モジュール：CO、実機画面は計 3 枚）。残りの 3 項目は他のモジュールのタスクに登場するので、<a href="tcode.html">T-code 早見表</a> から逆引きできます。</div>
+</div>
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">CO</span><span class="tag">T-code</span></div>
+  <h4>6. 教材ドキュメント《S4.docx》では、「<a href="co.html#t18">統計キー数値を新規作成</a>」このステップで出てくるのはどの T-code ですか？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>ME21N</code></div><div class="opt" data-key="B"><code>VL01N</code></div><div class="opt" data-key="C"><code>KK01</code></div><div class="opt" data-key="D"><code>MD02</code></div></div>
+  <div class="explain">原教材ドキュメントでは、このタスクの本文に <code>KK01</code> が登場します（このタスクの所属モジュール：CO、実機画面は計 5 枚）。残りの 3 項目は他のモジュールのタスクに登場するので、<a href="tcode.html">T-code 早見表</a> から逆引きできます。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">FI</span><span class="tag">T-code</span></div>
+  <h4>7. 教材ドキュメント《S4.docx》では、「<a href="fi.html#t20">総勘定元帳勘定の伝票を入力</a>」このステップで出てくるのはどの T-code ですか？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>FD10N</code></div><div class="opt" data-key="B"><code>FB50</code></div><div class="opt" data-key="C"><code>KK01</code></div><div class="opt" data-key="D"><code>KA01</code></div></div>
+  <div class="explain">原教材ドキュメントでは、このタスクの本文に <code>FB50</code> が登場します（このタスクの所属モジュール：FI、実機画面は計 4 枚）。残りの 3 項目は他のモジュールのタスクに登場するので、<a href="tcode.html">T-code 早見表</a> から逆引きできます。</div>
+</div>
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">MM</span><span class="tag">T-code</span></div>
+  <h4>8. 教材ドキュメント《S4.docx》では、「<a href="mm.html#t25">品目マスタレコード一覧を照会</a>」このステップで出てくるのはどの T-code ですか？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>PP01</code></div><div class="opt" data-key="B"><code>CO03</code></div><div class="opt" data-key="C"><code>MD02</code></div><div class="opt" data-key="D"><code>MM60</code></div></div>
+  <div class="explain">原教材ドキュメントでは、このタスクの本文に <code>MM60</code> が登場します（このタスクの所属モジュール：MM、実機画面は計 3 枚）。残りの 3 項目は他のモジュールのタスクに登場するので、<a href="tcode.html">T-code 早見表</a> から逆引きできます。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">PP</span><span class="tag">T-code</span></div>
+  <h4>9. 教材ドキュメント《S4.docx》では、「<a href="pp.html#t41">購買請求書を入力する</a>」このステップで出てくるのはどの T-code ですか？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>FD01</code></div><div class="opt" data-key="B"><code>MIRO</code></div><div class="opt" data-key="C"><code>PP01</code></div><div class="opt" data-key="D"><code>KK01</code></div></div>
+  <div class="explain">原教材ドキュメントでは、このタスクの本文に <code>MIRO</code> が登場します（このタスクの所属モジュール：PP、実機画面は計 5 枚）。残りの 3 項目は他のモジュールのタスクに登場するので、<a href="tcode.html">T-code 早見表</a> から逆引きできます。</div>
+</div>
+<div class="quiz-q" data-answer="C">
+  <div class="q-meta"><span class="tag gray">MM</span><span class="tag">T-code</span></div>
+  <h4>10. 教材ドキュメント《S4.docx》では、「<a href="mm.html#t26">仕入先購買データを登録</a>」このステップで出てくるのはどの T-code ですか？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>CR01</code></div><div class="opt" data-key="B"><code>MD02</code></div><div class="opt" data-key="C"><code>MK01</code></div><div class="opt" data-key="D"><code>FB03</code></div></div>
+  <div class="explain">原教材ドキュメントでは、このタスクの本文に <code>MK01</code> が登場します（このタスクの所属モジュール：MM、実機画面は計 8 枚）。残りの 3 項目は他のモジュールのタスクに登場するので、<a href="tcode.html">T-code 早見表</a> から逆引きできます。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">PP</span><span class="tag">T-code</span></div>
+  <h4>11. 教材ドキュメント《S4.docx》では、「<a href="pp.html#t06">部品表（BOM）を新規作成</a>」このステップで出てくるのはどの T-code ですか？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>MD03</code></div><div class="opt" data-key="B"><code>CS01</code></div><div class="opt" data-key="C"><code>FB50</code></div><div class="opt" data-key="D"><code>CO11N</code></div></div>
+  <div class="explain">原教材ドキュメントでは、このタスクの本文に <code>CS01</code> が登場します（このタスクの所属モジュール：PP、実機画面は計 3 枚）。残りの 3 項目は他のモジュールのタスクに登場するので、<a href="tcode.html">T-code 早見表</a> から逆引きできます。</div>
+</div>
+<div class="quiz-q" data-answer="D">
+  <div class="q-meta"><span class="tag gray">PP</span><span class="tag">T-code</span></div>
+  <h4>12. 教材ドキュメント《S4.docx》では、「<a href="pp.html#t46">製造指図の原価を照会</a>」このステップで出てくるのはどの T-code ですか？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>MK01</code></div><div class="opt" data-key="B"><code>FD10N</code></div><div class="opt" data-key="C"><code>FB60</code></div><div class="opt" data-key="D"><code>CO03</code></div></div>
+  <div class="explain">原教材ドキュメントでは、このタスクの本文に <code>CO03</code> が登場します（このタスクの所属モジュール：PP、実機画面は計 5 枚）。残りの 3 項目は他のモジュールのタスクに登場するので、<a href="tcode.html">T-code 早見表</a> から逆引きできます。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">準備</span><span class="tag">IMG 設定の入口</span></div>
+  <h4>13. 教材で「IMG 設定」に入るための入口は何ですか？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>SPRO</code>（SAP リファレンス IMG）</div><div class="opt" data-key="B"><code>SE38</code></div><div class="opt" data-key="C"><code>SM30</code></div><div class="opt" data-key="D"><code>SU01</code></div></div>
+  <div class="explain">原教材ドキュメント：「トランザクションコード欄に <code>spro</code> を入力し、IMG 設定画面へ進みます」。SE38/SU01 は ABAP エディタとユーザメンテナンス、SM30 はテーブルメンテナンスです。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+  <div class="q-meta"><span class="tag gray">FI</span><span class="tag">組織構造</span></div>
+  <h4>14. 教材で最初の「会社の登録」はどのタスクで行いますか？</h4>
+  <div class="opts"><div class="opt" data-key="A">勘定科目表を登録する</div><div class="opt" data-key="B">会社コードを登録する</div><div class="opt" data-key="C">会社コードのグローバルパラメータをメンテナンスする</div><div class="opt" data-key="D">会社コードの項目ステータスバリアントを定義する</div></div>
+  <div class="explain">FI タスク 01「会社コードの登録」、IMG パスは「エンタープライズ構造 → 定義 → 財務会計 → 会社コードの編集/コピー/削除/チェック」、教材で登録するのは会社コード <code>C999</code>「頤寧機械有限公司」です。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">FI</span><span class="tag">項目制御</span></div>
+  <h4>15. 伝票画面である項目に入力できるかどうかは、次のうちどの 2 つの設定で決まりますか？</h4>
+  <div class="opts"><div class="opt" data-key="A">勘定グループ + 項目ステータスバリアント</div><div class="opt" data-key="B">転記期間 + 伝票タイプ</div><div class="opt" data-key="C">許容範囲グループ + 税コード</div><div class="opt" data-key="D">評価クラス + 更新グループ</div></div>
+  <div class="explain">FI タスク 06「勘定グループと入力コントロールの定義」とタスク 07「項目ステータスバリアントの定義」は一組です。勘定グループによって、どの項目ステータスバリアントを選ぶかが決まり、バリアントの各項目は、必須／任意／非表示に設定できます。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">FI</span><span class="tag">勘定マスタ</span></div>
+  <h4>16. 《S4.docx》で「材料購買勘定」はなぜ「1 件ずつ消し込む」必要があるのですか？</h4>
+  <div class="opts"><div class="opt" data-key="A">入庫と請求書受領の間をつなぐ過渡勘定です（GR/IR）</div><div class="opt" data-key="B">これは得意先の調整勘定です</div><div class="opt" data-key="C">これは損益区分の勘定であり、年次決算では必ずゼロにする必要があります</div><div class="opt" data-key="D">これは銀行勘定です</div></div>
+  <div class="explain">原教材ドキュメントの説明：入庫時は在庫を借方・材料購買を貸方に記帳し、請求書受領時は材料購買を借方・買掛金を貸方に記帳するため、両者がこの勘定で相殺され、そのため 1 件ずつ消し込む必要があります。いわゆる GR/IR の過渡勘定です。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">FI</span><span class="tag">転記期間</span></div>
+  <h4>17. 「クローズ済みの会計期間では伝票を変更できません」——これはどの仕組みですか？</h4>
+  <div class="opts"><div class="opt" data-key="A">転記期間バリアントと期間のオープン／クローズ（転記期間の設定）</div><div class="opt" data-key="B">伝票のアーカイブ</div><div class="opt" data-key="C">許容範囲グループ</div><div class="opt" data-key="D">勘定グループの入力制御</div></div>
+  <div class="explain">原教材ドキュメント：「これは伝票のオープン／クローズのスイッチです。すでにクローズした転記期間では、伝票を変更できません。複数の会社コードの期間のオープンとクローズをまとめて制御できます。」対応するタスクは 16〜18（バリアントの定義 → 会社コードへの割当 → 転記期間の設定。最後のステップは業務処理での操作です）。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">MM</span><span class="tag">評価と自動記帳</span></div>
+  <h4>18. 「エントリ <code>A999 BSX CN01</code> に対して勘定を決定できません」とエラーが出ます。原教材ドキュメントが示す対処法は？</h4>
+  <div class="opts"><div class="opt" data-key="A">登録済みの購買発注を削除し、品目の会計ビュー 1 の評価クラスを修正する（当期／前期／前年度のすべてを変更）</div><div class="opt" data-key="B">会社コードを再作成する</div><div class="opt" data-key="C">得意先勘定グループを変更する</div><div class="opt" data-key="D">為替レートを変更する</div></div>
+  <div class="explain">原教材ドキュメントにはこの対応が明記されており、品目の登録時に評価クラスを一度で正しく設定することを推奨しています。<code>BSX</code> は自動記帳における在庫勘定のトランザクションキーです。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">MM</span><span class="tag">自動記帳</span></div>
+  <h4>19. 自動記帳（勘定決定）はどの T-code でメンテナンスしますか？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>OBYC</code></div><div class="opt" data-key="B"><code>FS00</code></div><div class="opt" data-key="C"><code>MMSC</code></div><div class="opt" data-key="D"><code>MPR1</code></div></div>
+  <div class="explain">原教材ドキュメントの随所で <code>OBYC</code> が示されています（タスク 28「品目管理の自動記帳のメンテナンス」。原文にも「T-CODE OBYC で、次のようにメンテナンスします」とあります）。<code>FS00</code> は総勘定元帳勘定のメンテナンス、<code>MMSC</code> は保管場所マスタに使用します。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">MM</span><span class="tag">購買チェーン</span></div>
+  <h4>20. 購買から請求書照合までの主な流れで、正しい順序はどれですか？</h4>
+  <div class="opts"><div class="opt" data-key="A">購買依頼 <code>ME51N</code> → 購買発注 <code>ME21N</code> → 入庫 <code>MIGO</code> → 請求書照合 <code>MIRO</code> → ブロック請求書の解除 <code>MRBR</code></div><div class="opt" data-key="B">購買発注 → 購買依頼 → 請求書照合 → 入庫</div><div class="opt" data-key="C">入庫 → 購買依頼 → 購買発注 → 請求書照合</div><div class="opt" data-key="D">請求書照合 → 入庫 → 購買発注 → 購買依頼</div></div>
+  <div class="explain">これは MM タスク 36〜40 の順序であり、当サイトの「タスク索引」で番号順に並べた順序でもあります。ブロック請求書は解除の後でなければ買掛金に計上されません。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">MM</span><span class="tag">MRP</span></div>
+  <h4>21. 教材で資材所要量計画を実行するときは何を使いますか？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>MD03</code> 単一階層計画（MM モジュール）/ <code>MD02</code>（PP モジュール）</div><div class="opt" data-key="B"><code>MB1C</code></div><div class="opt" data-key="C"><code>MMBE</code></div><div class="opt" data-key="D"><code>COOIS</code></div></div>
+  <div class="explain">原教材ドキュメントの MM タスク 34 の説明：「BOM は生産計画モジュールでメンテナンスするまでは展開できないため、現時点では BOM 展開ができず、単層計画になります」→ <code>MD03</code>。PP モジュールでは BOM を登録した後に <code>MD02</code> を使います。在庫/所要量一覧は <code>MD04</code>、在庫概要は <code>MMBE</code>。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">PP</span><span class="tag">標準原価</span></div>
+  <h4>22. 標準原価見積の「見積 → マーク → リリース」はそれぞれ何を使いますか？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>CK11N</code> → <code>CK24</code> → <code>CK24</code></div><div class="opt" data-key="B"><code>CK24</code> → <code>CK11N</code> → <code>MM03</code></div><div class="opt" data-key="C"><code>KP26</code> → <code>CK11N</code> → <code>CK40N</code></div><div class="opt" data-key="D"><code>MM02</code> → <code>CK11N</code> → <code>CK24</code></div></div>
+  <div class="explain">PP タスク 22（製品原価見積の新規作成 <code>CK11N</code>）→ タスク 23（価格のマーク <code>CK24</code>）→ タスク 25（価格のリリース <code>CK24</code>）；<code>MM03</code> は照会のみです（タスク 24/26 では将来／リリース済みの計画価格を確認）。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">PP</span><span class="tag">トラブルシューティング</span></div>
+  <h4>23. 原価見積で「内部作業 <code>LAB 1001</code> の価格を決定できません」とエラーが出ます。原教材ドキュメントではどう対処している？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>CK11N</code> で価格をメンテナンスし、<b>CK11N を終了してから <code>CK24</code> を再実行します</b></div><div class="opt" data-key="B">品目マスタを再作成する</div><div class="opt" data-key="C">工順を削除してやり直す</div><div class="opt" data-key="D">会社コードを変更する</div></div>
+  <div class="explain">原教材の原文：「CK11N で、次のように価格をメンテナンスすればよい」「CK11N を終了し、その後 CK24 を再実行する」。作業価格そのものは <code>KP26</code> でメンテナンスします（タスク 12 で作業の出力価格を設定）。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">PP</span><span class="tag">製造指図</span></div>
+  <h4>24. 製造指図を指図発行した後、決済までの正しい順序はどれですか？</h4>
+  <div class="opts"><div class="opt" data-key="A">指図発行 <code>CO02</code> → 出庫 → 確認 <code>CO11N</code> → 入庫 <code>MIGO</code> → 差異決済 <code>KO88</code></div><div class="opt" data-key="B">確認 → 指図発行 → 決済 → 入庫 → 出庫</div><div class="opt" data-key="C">入庫 → 出庫 → 指図発行 → 確認 → 決済</div><div class="opt" data-key="D">決済 → 入庫 → 確認 → 出庫 → 指図発行</div></div>
+  <div class="explain">PP タスク 42〜48 の順序：<code>CO02</code> で指図発行 → 製造指図への出庫 → <code>CO11N</code> で指図確認 → <code>MIGO</code> 入庫 → <code>CO03</code> 原価を確認 → <code>CO02</code> 技術的完了 → <code>KO88</code> 差異決済。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">CO</span><span class="tag">配賦と按分</span></div>
+  <h4>25. 教材の「管理部の賃料を各原価センタの占有面積で配賦する」では、どの方式を使っていますか？</h4>
+  <div class="opts"><div class="opt" data-key="A">配賦サイクル（統計キー数値の実績値で追跡ファクタを決める）</div><div class="opt" data-key="B">按分サイクル</div><div class="opt" data-key="C">原価センタの再転記 <code>KB61</code></div><div class="opt" data-key="D">作業タイプの価格 <code>KP26</code></div></div>
+  <div class="explain">CO タスク 20「配賦サイクルの定義」（原教材ドキュメント：受信側の追跡ファクタ = 物件賃料の面積統計キー数値の実際統計値）→ タスク 21「配賦」。電気料金はタスク 23「按分サイクルの定義」とタスク 24「按分」で処理します。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">CO</span><span class="tag">原価要素</span></div>
+  <h4>26. 一次原価要素と二次原価要素の違いは何ですか？</h4>
+  <div class="opts"><div class="opt" data-key="A">一次は財務会計の勘定に対応し、二次は CO 内部（按分・決済など）だけで流れます</div><div class="opt" data-key="B">一次は原価センタにのみ使用でき、二次は内部指図にのみ使用できます</div><div class="opt" data-key="C">一次は収益区分、二次は費用区分です</div><div class="opt" data-key="D">両者に違いはなく、呼び方だけが異なります</div></div>
+  <div class="explain">教材タスク 05「一次原価要素の登録」（<code>KA01</code>）とタスク 06「二次原価要素の登録」（<code>KA06</code>）：二次原価要素は FI 伝票を生成せず、CO 内部の按分／決済などの再配賦に使います。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">CO</span><span class="tag">内部指図</span></div>
+  <h4>27. 内部指図の費用を集計し終えた後、何で決済しますか？</h4>
+  <div class="opts"><div class="opt" data-key="A"><code>KO88</code></div><div class="opt" data-key="B"><code>FB50</code></div><div class="opt" data-key="C"><code>KK01</code></div><div class="opt" data-key="D"><code>KB31N</code></div></div>
+  <div class="explain">CO タスク 33「内部指図の決済」＝<code>KO88</code>（PP の差異決済も同じ）；<code>KK01</code> で統計キー数値を登録し、<code>KB31N</code> で統計キー数値の数量を入力、<code>FB50</code> で総勘定元帳伝票を入力します。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">SD</span><span class="tag">販売エリア</span></div>
+  <h4>28. 「販売エリア」はどの 3 つの要素で構成されますか？</h4>
+  <div class="opts"><div class="opt" data-key="A">販売組織 + 流通チャネル + 製品部門</div><div class="opt" data-key="B">販売組織 + プラント + 保管場所</div><div class="opt" data-key="C">得意先 + 品目 + 価格決定手順</div><div class="opt" data-key="D">会社コード + 購買組織 + 販売事務所</div></div>
+  <div class="explain">SD タスク 01〜07 の順序は、まずこの 3 つの要素（販売組織／流通チャネル／製品部門）を登録し、次に「販売エリアの設定」を行うというものです。受注、価格設定、納入、税の決定は、いずれも販売エリアで特定します。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">SD</span><span class="tag">パートナ</span></div>
+  <h4>29. 原教材ドキュメントの表では、<code>BP</code> はどのパートナ機能に対応しますか？</h4>
+  <div class="opts"><div class="opt" data-key="A">請求先</div><div class="opt" data-key="B">受注先</div><div class="opt" data-key="C">支払先</div><div class="opt" data-key="D">納入先</div></div>
+  <div class="explain">原教材ドキュメントのタスク 33 の表には次のように示されています：<code>SP</code> 受注先、<code>BP</code> 請求先、<code>PY</code> 支払先、<code>SH</code> 納入先。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+  <div class="q-meta"><span class="tag gray">SD</span><span class="tag">販売チェーン</span></div>
+  <h4>30. 見積から請求書の転記までの、正しい T-code の順序はどれですか？</h4>
+  <div class="opts"><div class="opt" data-key="A">見積 <code>VA21</code> → 受注伝票 → 納入 <code>VL01N</code> → 請求書 <code>VF01</code> → 転記 <code>VF02</code></div><div class="opt" data-key="B">受注伝票 → 見積 → 請求書 → 納入</div><div class="opt" data-key="C">納入 → 見積 → 受注伝票 → 請求書</div><div class="opt" data-key="D">見積 → 納入 → 受注伝票 → 請求書</div></div>
+  <div class="explain">SD タスク 40〜44：<code>VA21</code> で見積を登録 → 見積を参照して受注伝票を登録 → <code>VL01N</code> で出荷伝票（外向納入）を登録 → <code>VF01</code> で請求書を登録 → <code>VF02</code> で財務会計へ転記。</div>
+</div>
+<h2 id="checklist">実機での受入確認リスト（自習テストの後に 1 項目ずつチェック）</h2>
+<ul class="check">
+<li>自分のシステムで <code>SPRO</code> から IMG 設定を開き、本教材で扱う任意の設定ポイントを見つけられる。</li>
+<li><code>FS00</code> で総勘定元帳勘定を登録し、「税分類」の 3 つの記号の意味を説明できる。</li>
+<li>購買チェーンと販売チェーンについてそれぞれ 5 つの T-code を挙げ、各ステップで生じる伝票／書類を説明できる。</li>
+<li>品目の「評価クラス」と自動記帳 <code>OBYC</code> の関係、および評価クラスを誤ったときのリカバリ手順を説明できる。</li>
+<li><code>CK11N</code>/<code>CK24</code> を使って見積もり・マーク・リリースを実行でき、「マーク」と「リリース」の違いを説明できます。</li>
+<li>教材に出てくる 10 件のエラー現象について、「現象 → 原因 → 対処 T-code」を説明できる。</li>
+</ul>
+<div class="box ok"><b class="t">合格判定</b>自習テストの正答率 ≥75% <b>かつ</b> 実機チェックリスト 6 項目すべてにチェック = 本教材の設定と操作を独力で再現できる能力を備えていると判断します。</div>
+</article></main>
+</div>
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA 日本語実習サイト — 全モジュールの設定と操作手順 · 実機画面</h5>
+  <p>内容は同ディレクトリの教材ドキュメント <code>S4.docx</code>（425 ページ · 6 大モジュール · 222 タスク · 1385 枚の実機スクリーンショット）に基づいて整理しています。すべてのページはオフラインで開くことができ、外部依存はありません。</p>
+  <div><h5>画面について</h5><p>サイト内のすべてのスクリーンショットは<b>原教材ドキュメントの実機画面</b>（中国語インターフェースの SAP GUI）であり、イメージ図やシミュレーションによる生成画像ではありません。ファイル名は原教材ドキュメントの番号をそのまま保持しており、Word の原文と対照できます。ドキュメント内のサンプル値（会社コード <code>C999</code>、プラント <code>F999</code>、品目 <code>R999-100</code> など）は原作者の教材環境のものですので、ご自身のシステムの組織構造と番号範囲に合わせて読み替えてください。</p></div></div>
+  <div class="cols">
+    <div><h5>モジュール</h5>
+      <a href="prep.html">準備 — 準備作業 — システムへのログオンと IMG 設定への移動</a><br>
+      <a href="fi.html">FI — 財務会計 FI</a><br>
+      <a href="co.html">CO — 管理会計 CO</a><br>
+      <a href="mm.html">MM — 品目管理 MM</a><br>
+      <a href="pp.html">PP — 生産計画 PP</a><br>
+      <a href="sd.html">SD — 販売管理 SD</a><br>    </div>
+    <div><h5>サイト全体</h5>
+      <a href="prep.html">準備</a><br>
+      <a href="fi.html">FI</a><br>
+      <a href="co.html">CO</a><br>
+      <a href="mm.html">MM</a><br>
+      <a href="pp.html">PP</a><br>
+      <a href="sd.html">SD</a><br>
+      <a href="tcode.html">T-code</a><br>
+      <a href="glossary.html">用語</a><br>
+      <a href="issues.html">トラブルシューティング</a><br>
+      <a href="tasks.html">索引</a><br>
+      <a href="instructor.html">講師</a><br>
+      <a href="worksheet.html">受講者</a><br>
+      <a href="quiz.html">自習テスト</a><br>    </div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/s4jp.js"></script>
+</body>
+</html>

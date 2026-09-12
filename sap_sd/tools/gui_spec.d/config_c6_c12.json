@@ -1,0 +1,317 @@
+{
+  "config.html": {
+    "c6": [
+      {
+        "tx": "VA03",
+        "title": "Display Sales Order: Overview",
+        "kind": "table",
+        "table": {
+          "title": "納入日程行（明細 10 / 品目 T-ATA30 / 明細カテゴリ TAN）",
+          "columns": ["Sched.line", "Sched.line cat.", "Date", "Order qty"],
+          "widths": [1.2, 1.6, 1.2, 1.2],
+          "rows": [
+            ["1", "CP", "09.06.2007", "10"]
+          ],
+          "selected": 0,
+          "footer": "明細 → 納入日程行は 1 件。カテゴリ CP は在庫確認（ATP）と所要量転送が有効な標準カテゴリ（値は環境により異なる）"
+        },
+        "note": "動画のデモ（2007 年頃の R/3）は明細 TAN の標準カテゴリ。自分の環境では納入日程行の実値と列名を必ず読む",
+        "status": ["info", "Display of sales document: schedule lines for item 10"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["納入日程行カテゴリ CP は「在庫確認（ATP）＋所要量転送」が有効な標準カテゴリ。ここが空／別カテゴリだと MD04 に所要量が出ない", 350, 184, "カテゴリが肝"],
+          ["日付は納入日程行の日付。受注の Req.deliv.date 09.06.2007 がここに落ちる", 950, 210, "ここが納入日"]
+        ],
+        "caption": "VA03 で受注を開き、明細 10 の納入日程行を展開してカテゴリを読む",
+        "tip": "自システムでの確認：VA03 → 明細 → 納入日程行を表示し、Sched.line cat. の列を読む（表示方法と列名は環境により異なる）。",
+        "aria": "VA03 の受注明細 10 の納入日程行一覧。納入日程行カテゴリ CP、日付 09.06.2007、数量 10。"
+      },
+      {
+        "tx": "VOV6",
+        "title": "Change View \"Schedule line categories\": Details",
+        "kind": "form",
+        "section": "Schedule line category CP (item cat. TAN × MRP type PD)",
+        "fields": [
+          ["Sched.line cat.", "CP", true],
+          ["Movement type", "601"],
+          ["Requirement type", "KE"],
+          ["Availability check", "X"]
+        ],
+        "note": "所要量タイプが空だと所要量が MRP に渡らない（MD04 に出ない）。欄の名称・有無はリリースにより異なる",
+        "status": ["info", "Display view: schedule line categories, detail"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["所要量タイプ（Requirement type）が入っているから品目所要量が MRP に渡る。空だと何も出ない（エラーではなく仕様）", 350, 214, "所要量タイプが鍵"],
+          ["在庫確認は 伝票タイプ → 納入日程行カテゴリ → 品目マスタ の 3 階層。上位が下位を上書きする（C13）", 950, 214, "在庫確認の 1 階層"]
+        ],
+        "caption": "VOV6 で納入日程行カテゴリの中身（所要量タイプ・在庫確認）を読む",
+        "tip": "自システムでの確認：VOV6 で自分の環境のカテゴリを開く。移動タイプ 601 は「受注出庫」を示すが、値は環境により異なる。",
+        "aria": "VOV6 の納入日程行カテゴリ CP の詳細画面。移動タイプ 601、所要量タイプ KE、在庫確認が有効。"
+      }
+    ],
+    "c7": [
+      {
+        "tx": "VOV4",
+        "title": "Change View \"Item categories\": Overview",
+        "kind": "table",
+        "table": {
+          "title": "伝票タイプに許可された明細カテゴリ（割当）",
+          "columns": ["Sales Doc. Type", "Item cat.", "Description"],
+          "widths": [1.6, 1.2, 2.2],
+          "rows": [
+            ["OR", "TAN", "*Standard item"],
+            ["OR", "TANN", ""],
+            ["OR", "TAX", ""],
+            ["ZOR1", "ZTAN", ""]
+          ],
+          "selected": 0,
+          "footer": "割当は「その伝票タイプで使ってよい明細カテゴリ」の許可リスト。自動でどれになるか（決定）は C8 の決定テーブルで別に決まる"
+        },
+        "note": "練習用に ZOR1 × ZTAN を 1 行追加した状態。標準の OR の割当は削らずに Z 伝票タイプで練習する",
+        "status": ["success", "Data was saved"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["ここは「使ってよい明細カテゴリ」の割当（許可）リスト。決定テーブル（C8）とは別の仕組み", 350, 184, "許可リスト"],
+          ["追加した ZOR1 × ZTAN の行。VA01 では新規受注でだけ効く（既存受注の明細カテゴリは不変）", 950, 236, "新規受注で確認"]
+        ],
+        "caption": "VOV4 で伝票タイプ OR に許可されている明細カテゴリの一覧を確認する",
+        "tip": "自システムでの確認：VOV4 の割当ビューで OR の行を読み、練習では ZOR1 × ZTAN を追加してから VA01 で ZOR1 の受注を作る。画面の呼称は環境により異なる。",
+        "aria": "VOV4 の明細カテゴリ割当一覧。伝票タイプ OR に TAN・TANN・TAX、ZOR1 に ZTAN が許可されている。"
+      }
+    ],
+    "c8": [
+      {
+        "tx": "MM03",
+        "title": "Display Material T-ATA30 (Sales Org. 2)",
+        "kind": "form",
+        "section": "Sales Org. 2 — Item category group",
+        "fields": [
+          ["Material", "T-ATA30", true],
+          ["Sales Org.", "1000"],
+          ["Item category group", "NORM", true],
+          ["Distr. Channel", "10"]
+        ],
+        "note": "品目カテゴリグループは明細カテゴリ決定テーブルの 2 つ目のキー。値は環境により異なる（動画のデモ品目は標準のグループ）",
+        "status": ["info", "Display material T-ATA30: view \"Sales Org. 2\""],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["決定テーブルの 2 つ目のキー。OR × NORM × 空 × 空 → TAN の行を VOV4 で探しにいく", 350, 214, "2 つ目のキー"],
+          ["ここを別の値にした品目で受注を作ると明細カテゴリが変わる。変えたら必ず新規受注で確認する（既存受注は不変）", 950, 214, "変更は新規受注で"]
+        ],
+        "caption": "MM03 の販売組織 2 ビューで品目カテゴリグループを読む",
+        "tip": "自システムでの確認：MM03 → 品目 → 販売組織 2 → Item category group。ビューの呼称は環境により異なる。",
+        "aria": "MM03 の品目 T-ATA30 販売組織 2 ビュー。品目カテゴリグループ NORM、販売組織 1000、流通チャネル 10。"
+      },
+      {
+        "tx": "VOV4",
+        "title": "Change View \"Item category determination\": Overview",
+        "kind": "table",
+        "table": {
+          "title": "明細カテゴリ決定テーブル（キーは 4 つ）",
+          "columns": ["Sales Doc. Type", "ItemCatGrp", "Usage", "HLevItCat", "Item cat."],
+          "widths": [1.5, 1.3, 0.8, 1.2, 1.0],
+          "rows": [
+            ["OR", "NORM", "", "", "TAN"],
+            ["ZOR1", "NORM", "", "", "ZTAN"]
+          ],
+          "selected": 0,
+          "footer": "キー 4 つ：伝票タイプ × 品目カテゴリグループ × 品目使用目的 × 高レベル明細カテゴリ → 明細カテゴリ。動画のデモは OR × NORM × 空 × 空 → TAN"
+        },
+        "note": "使用目的（Usage）と高レベル明細カテゴリが意図せず入るのは、参照コピーした受注や BOM 品目で起こりやすい（VA03 の明細詳細で確認）",
+        "status": ["success", "Data was saved"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["1 つでもキーが合わないと行に当たらず、エラーまたは別カテゴリへフォールバックする。必ずキー 4 つを読む", 350, 184, "キーは 4 つ"],
+          ["練習で追加した ZOR1 × NORM × 空 × 空 → ZTAN の行。新規受注でだけ効く", 950, 210, "追加行はこちら"]
+        ],
+        "caption": "VOV4 の明細カテゴリ決定テーブルで OR × NORM × 空 × 空 → TAN の行を探す",
+        "tip": "自システムでの確認：VA03 の明細カテゴリと、VOV4 の決定テーブルの結果が一致するかを見る。既存受注は伝票タイプを変えても明細カテゴリが変わらない。",
+        "aria": "VOV4 の明細カテゴリ決定テーブル。OR × NORM × 空 × 空 → TAN、ZOR1 × NORM × 空 × 空 → ZTAN の 2 行。"
+      }
+    ],
+    "c9": [
+      {
+        "tx": "VOV5",
+        "title": "Change View \"Schedule line categories\": Overview",
+        "kind": "table",
+        "table": {
+          "title": "納入日程行カテゴリの決定（明細カテゴリ × MRP タイプ）",
+          "columns": ["Item cat.", "MRP type", "Sched.line cat.", "Description"],
+          "widths": [1.0, 1.0, 1.5, 1.9],
+          "rows": [
+            ["TAN", "PD", "CP", ""],
+            ["ZTAN", "PD", "CP", ""]
+          ],
+          "selected": 0,
+          "footer": "キーは 明細カテゴリ × MRP タイプ（品目マスタ MRP 1 ビュー）。PD ＝ 所要量計画あり → CP（ATP あり・所要量転送あり）"
+        },
+        "note": "画面・キーの呼称は環境により異なる（所要量タイプと説明される場合あり）。VOV5 に実際に出ている列名を読むのが確実",
+        "status": ["info", "Display view: schedule line categories (determination)"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["キーは「明細カテゴリ × MRP タイプ」。MRP 3 ビューの戦略グループ由来の所要量タイプと混同しやすい", 350, 184, "キーは 2 つ"],
+          ["MRP タイプが空、または行が無いと決定に至らず、在庫確認も所要量も走らない（エラーではなく仕様）", 950, 210, "空なら決定しない"]
+        ],
+        "caption": "VOV5 の決定テーブルで明細カテゴリ × MRP タイプの組み合わせを確認する",
+        "tip": "自システムでの確認：VA03 → VOV5 → VOV6 の順にたどり、同じカテゴリに行き着くことを確かめる。決定したカテゴリの在庫確認は VOV6 で読む。",
+        "aria": "VOV5 の納入日程行カテゴリ決定テーブル。明細カテゴリ TAN × MRP タイプ PD で納入日程行カテゴリ CP、ZTAN も CP。"
+      }
+    ],
+    "c10": [
+      {
+        "tx": "VD53",
+        "title": "Display Customer-Material Info Record",
+        "kind": "form",
+        "section": "Customer 1000 × Material T-ATA30 (1000 / 10)",
+        "fields": [
+          ["Customer", "1000", true],
+          ["Material", "T-ATA30", true],
+          ["Sales Org.", "1000"],
+          ["Distr. Channel", "10"],
+          ["Cust. material", ""],
+          ["Deliver.Plant", "1200"]
+        ],
+        "note": "客先品目情報の出荷プラントは優先順位 1 位。動画のスライドは C1 × M1 × PC-100 → 1400、実機の値は環境により異なる",
+        "status": ["info", "Customer-material info record displayed (customer 1000 / material T-ATA30)"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["客先品目情報は 得意先 × 品目 × 販売エリア の組み合わせで持つ。登録は VD51、照会は VD53", 350, 160, "優先順位 1 位"],
+          ["ここに入ると得意先マスタ・品目マスタの出荷プラントより強く効く。上位が優先される", 950, 214, "最優先の源泉"]
+        ],
+        "caption": "VD53 で客先品目情報（優先順位 1 位）の出荷プラントを読む",
+        "tip": "自システムでの確認：VD53 で得意先 × 品目 × 販売エリアを入れて出荷プラントを読む。値が空なら下位（得意先マスタ → 品目マスタ）が提案される。",
+        "aria": "VD53 の客先品目情報。得意先 1000、品目 T-ATA30、販売組織 1000、流通チャネル 10、出荷プラント 1200。"
+      },
+      {
+        "tx": "VA03",
+        "title": "Display Sales Order: Item Data",
+        "kind": "form",
+        "section": "Item 10 — Sales A",
+        "fields": [
+          ["Material", "T-ATA30"],
+          ["Order Quantity", "10"],
+          ["Item category", "TAN"],
+          ["Sales unit", "PC"],
+          ["Deliver.Plant", "1200"],
+          ["Req.deliv.date", "09.06.2007"]
+        ],
+        "note": "Deliver.Plant が受注明細の出荷プラント（VBAP-WERKS）。どの源泉が効いたかをここで確認する",
+        "status": ["info", "Item 10 displayed: Deliver.Plant 1200"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["受注明細の出荷プラント。SE16N で VBAP を見れば「どの源泉が効いたか」を証拠として示せる", 350, 274, "VBAP-WERKS"],
+          ["品目マスタを直しても変わらないときは、上位 2 つ（客先品目情報・得意先マスタ）に値が入っている証拠", 950, 274, "3 か所を見る"]
+        ],
+        "caption": "VA03 の明細 10 で Deliver.Plant に入った値を確認する",
+        "tip": "自システムでの確認：XD03 の出荷タブ、MM03 の販売組織 1、VD53 の 3 か所を書き出してから VA01 で明細を投入する。想定外のプラントは ABAP 拡張（SAP Note 2787562）を疑う。",
+        "aria": "VA03 の受注明細 10。品目 T-ATA30、数量 10、明細カテゴリ TAN、出荷プラント 1200、要求納入日 09.06.2007。"
+      }
+    ],
+    "c11": [
+      {
+        "tx": "XD03",
+        "title": "Display Customer 1000: Sales Area 1000 / 10 / 00",
+        "kind": "form",
+        "section": "Sales Area Data 1000 / 10 / 00",
+        "fields": [
+          ["Sold-to party", "1000", true],
+          ["Name 1", "Becker Berlin"],
+          ["Terms of payment", "ZB01"],
+          ["Incoterms", "FOB"],
+          ["Cust.pric.proc.", "1"],
+          ["Sales Office", ""]
+        ],
+        "note": "空欄は自システムの値を確認。支払条件 ZB01（14 Days 3% / 30 Days 2%）と Incoterms FOB はそのまま受注ヘッダに提案される",
+        "status": ["info", "Display customer 1000: sales area 1000 / 10 / 00"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["Incoterms FOB。納入条件は受注ヘッダに提案され、出荷・請求まで引き継がれる", 950, 214, "Incoterms も提案"],
+          ["Cust.pric.proc. は与力価格決定の 3 つ目のキー（OVKK）。ここが変わると価格決定手順が変わる", 350, 266, "OVKK のキー"]
+        ],
+        "caption": "XD03 の販売エリアデータで支払条件・インコタームズ・得意先価格決定手順を確認する（動画 51:22 付近の画面）",
+        "tip": "自システムでの確認：XD03 → 得意先 1000 → 販売エリア 1000/10/00 → Sales / Shipping タブ。与信管理エリアと支払保証手続も同じ画面で読める。",
+        "aria": "XD03 の得意先 1000 販売エリアデータ。支払条件 ZB01、Incoterms FOB、得意先価格決定手順 1。"
+      },
+      {
+        "tx": "XD03",
+        "title": "Display Customer 1000: Partner Functions",
+        "kind": "table",
+        "table": {
+          "title": "得意先 1000 / 販売エリア 1000 / 10 / 00 のパートナー機能",
+          "columns": ["Partn.func.", "Partner", "Description"],
+          "widths": [1.2, 1.0, 2.2],
+          "rows": [
+            ["SP", "1000", "Sold-to party"],
+            ["BP", "1000", "Bill-to party"],
+            ["PY", "1000", "Payer"],
+            ["SH", "1000", "Ship-to party"]
+          ],
+          "selected": 0,
+          "footer": "得意先マスタ（KNVP）のパートナー機能。受注（VBPA）ではここから SP／SH／BP／PY が自動提案される"
+        },
+        "note": "パートナーが出ない場合は、この表が未保守か、勘定グループ／伝票タイプのパートナー決定手順（OVT0）の設定漏れ",
+        "status": ["info", "Partner functions of customer 1000 (sales area 1000 / 10 / 00)"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["SP／SH／BP／PY はここから受注へ自動提案される（KNVP → VBPA の対応で確認）", 350, 184, "提案の源泉"],
+          ["出荷先を変えると与力価格・出荷プラントは再決定、販売エリアと販売事務所は不変", 950, 210, "再決定の範囲"]
+        ],
+        "caption": "XD03 のパートナー機能タブで SP／BP／PY／SH の登録を確認する",
+        "tip": "自システムでの確認：VA01 で新規受注を作り、パートナーが自動提案されるかを見る。SE16N で KNVP と VBPA を並べると対応が読める。",
+        "aria": "XD03 のパートナー機能一覧。SP・BP・PY・SH がすべて得意先 1000 で登録されている。"
+      }
+    ],
+    "c12": [
+      {
+        "tx": "VA03",
+        "title": "Display Sales Order: Item Conditions",
+        "kind": "table",
+        "table": {
+          "title": "明細 10 の条件（与力分析）",
+          "columns": ["Cntr", "Condition type", "Description", "Amount", "Crcy"],
+          "widths": [0.5, 1.5, 1.8, 1.2, 0.6],
+          "rows": [
+            ["1", "PR00", "Price", "22,990.00", "EUR"]
+          ],
+          "selected": 0,
+          "footer": "Net value 22,990.00 EUR はここに並ぶ条件の合計（明細 10 PC）。条件が期間外・未登録なら空になり Net value は 0 になる"
+        },
+        "note": "決定される条件タイプと金額は環境により異なる。自分の受注の条件画面で実値を読むのが確実",
+        "status": ["info", "Conditions displayed for item 10 (Net value 22,990.00 EUR)"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["PR00 が Net value 22,990.00 EUR の本体。ここが空なら受注ではなく条件レコードの問題", 350, 184, "Net value の本体"],
+          ["与力日付 02.06.2007 が条件レコードの有効期間に入っているかを必ず確認する", 950, 184, "与力日付と期間"]
+        ],
+        "caption": "VA03 の条件画面（与力分析）で Net value 22,990.00 EUR の内訳を読む",
+        "tip": "自システムでの確認：明細の条件画面で条件タイプと金額を書き出し、VK13 の条件レコードの有効期間と突き合わせる。",
+        "aria": "VA03 の明細 10 の条件画面。条件タイプ PR00（Price）で金額 22,990.00 EUR。"
+      },
+      {
+        "tx": "VK13",
+        "title": "Display Condition Record",
+        "kind": "form",
+        "section": "Condition Type PR00 (1000 / 10 / T-ATA30)",
+        "fields": [
+          ["Cond. type", "PR00", true],
+          ["Sales Org.", "1000"],
+          ["Material", "T-ATA30"],
+          ["Distr. Channel", "10"],
+          ["Amount", "2,299.00"],
+          ["Per", "1 PC"],
+          ["Currency", "EUR"]
+        ],
+        "note": "1 PC あたり 2,299.00 EUR（Net value 22,990.00 ÷ 10 PC）。金額と有効期間の実値は環境により異なる",
+        "status": ["info", "Condition record for condition type PR00 displayed"],
+        "status_right": "SAP Training System / 800 / trn03 / OVR",
+        "callouts": [
+          ["条件レコードは 得意先 × 品目 × 有効期間 の組み合わせ。与力日付がこの期間に入るかで金額が決まる", 350, 214, "期間が肝"],
+          ["手順（OVKK）→ 条件タイプ（V/06）→ 条件レコード（VK13）の 3 段。どの条件タイプを探すかは手順が決める", 950, 160, "手順が決める"]
+        ],
+        "caption": "VK13 で条件タイプ PR00 の条件レコードを照会し、有効期間と金額を確認する",
+        "tip": "自システムでの確認：VK13 で PR00 を照会し、有効期間に与力日付 02.06.2007 が入るかを見る。手順は VOV8 の伝票タイプ OR → OVKK で確認する。",
+        "aria": "VK13 の条件レコード照会画面。条件タイプ PR00、販売組織 1000、流通チャネル 10、品目 T-ATA30、金額 2,299.00 EUR / 1 PC、通貨 EUR。"
+      }
+    ]
+  }
+}

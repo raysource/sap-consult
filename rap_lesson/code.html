@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>项目代码 · RAP 专项训练站</title>
+<meta name="description" content="统合迷你项目 ZPURORDER_APP 的完整代码：DDL 表、CDS（BO/投影）、BDEF、BIL、EML 测试程序、DCL。全部可复制。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">RAP</span><span class="txt">RAP 专项训练站</span></a>
+    <nav class="main">
+      <a href="index.html">首页</a>
+      <a href="concept.html">概念与架构</a>
+      <a href="project.html">完整项目</a>
+      <a href="handson-1.html">手顺① 数据模型</a>
+      <a href="handson-2.html">手顺② CDS 视图</a>
+      <a href="handson-3.html">手顺③ RAP 行为</a>
+      <a href="handson-4.html">手顺④ 服务与 Fiori</a>
+      <a class="active" href="code.html">项目代码</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">首页</a> / 项目代码</div>
+<main class="page"><article>
+
+<h1>项目代码（ZPURORDER_APP 全量）</h1>
+<div class="box info"><b class="t">说明</b>
+本页为统合迷你项目「Z 购买订单管理应用」在 ADT 中创建的完整对象清单。代码顺序与手顺①②③④一致；每段代码带复制按钮。以下代码基于 S/4HANA（ABAP 7.55+ / 2021+ 或 BTP ABAP 环境）的 RAP 语法整理，请以实际系统 ADT 校验为准。</div>
+
+<h2>对象清单（Package: Z_WBS_DEV / 或 ZPURORDER_APP）</h2>
+<div class="file-tree"><span class="dir">Z_WBS_DEV</span>
+├── <span class="dir">数据字典</span>
+│   ├── z_po_hdr       (表：采购订单头)
+│   ├── z_po_itm       (表：采购订单明细)
+│   └── z_vendor_txt   (表：供应商主数据)
+├── <span class="dir">CDS</span>
+│   ├── ZR_ZPOHEADER   (root BO 视图, draft 対象)
+│   ├── ZR_ZPOITEM     (明细 BO 视图)
+│   ├── ZR_VENDOR_TXT  (供应商主数据视图)
+│   ├── ZC_ZPOHEADER   (消费投影 + UI 注解)
+│   └── ZC_ZPOITEM     (明细消费投影)
+├── <span class="dir">行为</span>
+│   ├── ZR_ZPOHEADER   (BDEF: managed + draft)
+│   └── zbp_zr_zpoheader (BIL: 行为实现池)
+├── <span class="dir">服务</span>
+│   ├── ZSD_ZPURCHASEORDER    (Service Definition)
+│   └── ZUI_ZPURCHASEORDER_O4 (Service Binding: OData V4 UI)
+├── <span class="dir">番号/权限</span>
+│   ├── ZNPO            (SNRO 番号范围)
+│   └── DCL / 授权对象 (可选)
+└── ZRAP_EML_DEMO       (测试程序)</div>
+
+<h2 id="tables">1. 表定义（SE11 字段清单，供建表对照）</h2>
+<table class="tbl">
+<tr><th>z_po_hdr</th><th>键</th><th>类型</th><th>z_po_itm</th><th>键</th><th>类型</th><th>z_vendor_txt</th><th>键</th><th>类型</th></tr>
+<tr><td>mandt</td><td>✓</td><td>CLNT3</td><td>mandt</td><td>✓</td><td>CLNT3</td><td>mandt</td><td>✓</td><td>CLNT3</td></tr>
+<tr><td>po_num</td><td>✓</td><td>CHAR11</td><td>po_num</td><td>✓</td><td>CHAR11</td><td>vendor_code</td><td>✓</td><td>CHAR10</td></tr>
+<tr><td>po_date</td><td></td><td>DATS8</td><td>item_num</td><td>✓</td><td>NUMC4</td><td>vendor_name</td><td></td><td>CHAR80</td></tr>
+<tr><td>vendor_code</td><td></td><td>CHAR10</td><td>matnr</td><td></td><td>CHAR40</td><td>country</td><td></td><td>CHAR3</td></tr>
+<tr><td>status</td><td></td><td>CHAR10</td><td>qty</td><td></td><td>QUAN15.3</td><td colspan="3"></td></tr>
+<tr><td>created_by</td><td></td><td>CHAR12</td><td>unit</td><td></td><td>UNIT3</td><td colspan="3"></td></tr>
+<tr><td>zz_memo</td><td></td><td>CHAR100</td><td>net_price</td><td></td><td>CURR15.2</td><td colspan="3"></td></tr>
+<tr><td colspan="3"></td><td>currency</td><td></td><td>CUKY5</td><td colspan="3"></td></tr>
+</table>
+<div class="box warn"><b class="t">建表要点</b>
+① 自定义字段全部 Z/ZZ 开头（数据元素建议 zpo_po_num 等统一前缀）；② 该模型为 RAP 教程精简版——没有 etag 时间戳与管理字段，创建人 created_by 由 Determination 填充。③ po_num 为 CHAR 11（容纳 Z+10 位编号）；若你希望用标准 EKKO 风格（CHAR 10 纯数字），把 ZNPO 长度改为 10 并删掉代码里的 Z 前缀拼接即可。</div>
+
+<h2 id="cds">2. CDS 视图</h2>
+<h3>ZR_ZPOHEADER（root BO 视图）</h3>
+<pre class="hl"><div class="code-head"><span class="lang">cds</span><button class="copy-btn" type="button">复制</button></div><code class="lang-cds">@EndUserText.label: '采购订单头 BO Root View'
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@Metadata.allowExtensions: true
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+define root view entity ZR_ZPOHEADER
+  as select from z_po_hdr
+  composition [0..*] of ZR_ZPOITEM as _Items
+  association [0..1] to ZR_VENDOR_TXT as _Vendor
+    on $projection.VendorCode = _Vendor.VendorCode
+{
+  key po_num       as PoNum,
+      po_date      as PoDate,
+      vendor_code  as VendorCode,
+      status       as Status,
+      created_by   as CreatedBy,
+      zz_memo      as ZzMemo,
+      _Vendor
+}
+</code></pre>
+
+<h3>ZR_ZPOITEM（明细）</h3>
+<pre class="hl"><div class="code-head"><span class="lang">cds</span><button class="copy-btn" type="button">复制</button></div><code class="lang-cds">@EndUserText.label: '采购订单明细 BO View'
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@Metadata.allowExtensions: true
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+define view entity ZR_ZPOITEM
+  as select from z_po_itm
+{
+  key po_num     as PoNum,
+  key item_num   as ItemNum,
+      matnr      as Matnr,
+      qty        as Qty,
+      unit       as Unit,
+      net_price  as NetPrice,
+      currency   as Currency
+}
+</code></pre>
+
+<h3>ZR_VENDOR_TXT（供应商主数据）</h3>
+<pre class="hl"><div class="code-head"><span class="lang">cds</span><button class="copy-btn" type="button">复制</button></div><code class="lang-cds">@EndUserText.label: '供应商主数据视图'
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+define view entity ZR_VENDOR_TXT
+  as select from z_vendor_txt
+{
+  key vendor_code as VendorCode,
+      vendor_name as VendorName,
+      country     as Country
+}
+</code></pre>
+
+<h2 id="bdef">3. Behavior Definition（managed + draft + 权限/锁）</h2>
+<pre class="hl"><div class="code-head"><span class="lang">abap · BDEF ZR_ZPOHEADER</span><button class="copy-btn" type="button">复制</button></div><code class="lang-abap">managed implementation in class zbp_zr_zpoheader unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZR_ZPOHEADER alias ZpoHeader
+persistent table z_po_hdr
+lock master
+authorization master ( instance )
+early numbering
+{
+  create;
+  update;
+  delete;
+
+  field ( readonly : update ) CreatedBy;   " 创建人：仅创建时由 Determination 填充，之后只读
+  field ( readonly ) PoNum;                 " 主键：仅编号方法可填，客户端始终只读
+
+  mapping for z_po_hdr corresponding
+  {
+    PoNum      = po_num;
+    PoDate     = po_date;
+    VendorCode = vendor_code;
+    Status     = status;
+    CreatedBy  = created_by;
+    ZzMemo     = zz_memo;
+  }
+
+  determination setDefaultValues on modify { create; }
+  validation validateVendor on save { create; update; }
+
+  action ConfirmOrder result [1] self;
+
+  association _Items { create; with draft; }
+}
+
+define behavior for ZR_ZPOITEM alias ZpoItem
+persistent table z_po_itm
+{
+  create;
+  update;
+  delete;
+
+  field ( readonly ) PoNum;
+  field ( mandatory ) Matnr, Qty, NetPrice;
+
+  validation validateItemAmount on save { create; update; }
+
+  mapping for z_po_itm corresponding
+  {
+    PoNum    = po_num;
+    ItemNum  = item_num;
+    Matnr    = matnr;
+    Qty      = qty;
+    Unit     = unit;
+    NetPrice = net_price;
+    Currency = currency;
+  }
+}
+</code></pre>
+<div class="box warn"><b class="t">child 实体为何没有 lock / authorization 行？</b>
+子实体通过 Composition 挂在根下：锁与权限由根实体（lock master / authorization master）统一管理，开发期无需在子实体上重复声明。若你的 BDEF 需要按子实体自身做行级权限，可再加 <code>lock dependent by _ZpoHeader</code> 等声明——这要求 ZR_ZPOITEM 里先定义回指父实体的 association（代码页有补丁示例）。</div>
+<pre class="hl"><div class="code-head"><span class="lang">cds · ZR_ZPOITEM 补丁（反向关联，供 lock dependent 使用）</span><button class="copy-btn" type="button">复制</button></div><code class="lang-cds">@EndUserText.label: '采购订单明细 BO View（含父关联）'
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@Metadata.allowExtensions: true
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+define view entity ZR_ZPOITEM
+  as select from z_po_itm
+  association [1..1] to ZR_ZPOHEADER as _ZpoHeader
+    on $projection.PoNum = _ZpoHeader.PoNum
+{
+  key po_num     as PoNum,
+  key item_num   as ItemNum,
+      matnr      as Matnr,
+      qty        as Qty,
+      unit       as Unit,
+      net_price  as NetPrice,
+      currency   as Currency,
+      _ZpoHeader
+}
+</code></pre>
+
+<h2 id="bil">4. Behavior Implementation（zbp_zr_zpoheader）</h2>
+<pre class="hl"><div class="code-head"><span class="lang">abap · 全局类（行为池骨架）</span><button class="copy-btn" type="button">复制</button></div><code class="lang-abap">CLASS zbp_zr_zpoheader DEFINITION PUBLIC ABSTRACT FINAL
+  FOR BEHAVIOR OF zr_zpoheader.
+ENDCLASS.
+
+CLASS zbp_zr_zpoheader IMPLEMENTATION.
+ENDCLASS.
+</code></pre>
+
+<h3>4.1 LHC_ZPOHEADER（根实体 handler）</h3>
+<pre class="hl"><div class="code-head"><span class="lang">abap · 本地类 LHC_ZPOHEADER（核心方法）</span><button class="copy-btn" type="button">复制</button></div><code class="lang-abap">CLASS lhc_zpoheader DEFINITION INHERITING FROM cl_abap_behavior_handler.
+  PRIVATE SECTION.
+    " --- 编号 ---
+    METHODS earlynumbering_create FOR NUMBERING
+      IMPORTING entities FOR CREATE zr_zpoheader.
+
+    " --- 默认值 ---
+    METHODS setdefaultvalues FOR DETERMINE ON MODIFY
+      IMPORTING keys FOR zr_zpoheader.
+
+    " --- 校验 ---
+    METHODS validatevendor FOR VALIDATE ON SAVE
+      IMPORTING keys FOR zr_zpoheader.
+
+    " --- 动作：確定订单 ---
+    METHODS confirmorder FOR MODIFY
+      IMPORTING keys FOR ACTION zr_zpoheader~confirmorder
+                RESULT result.
+ENDCLASS.
+
+CLASS lhc_zpoheader IMPLEMENTATION.
+
+  METHOD earlynumbering_create.
+    DATA: lv_number TYPE n LENGTH 10,
+          lv_po_num TYPE z_po_hdr-po_num.
+
+    LOOP AT entities INTO DATA(ls_entity).
+      " 跳过已有主键的（防重入）
+      IF ls_entity-po_num IS NOT INITIAL.
+        APPEND VALUE #( %cid = ls_entity-%cid %key = ls_entity-%key
+                        %is_draft = ls_entity-%is_draft po_num = ls_entity-po_num )
+               TO mapped-zr_zpoheader.
+        CONTINUE.
+      ENDIF.
+
+      CALL FUNCTION 'NUMBER_GET_NEXT'
+        EXPORTING
+          nr_range_nr = '01'
+          object      = 'ZNPO'
+        IMPORTING
+          number      = lv_number.
+
+      CONCATENATE 'Z' lv_number INTO lv_po_num.
+      APPEND VALUE #( %cid = ls_entity-%cid %key = ls_entity-%key
+                      %is_draft = ls_entity-%is_draft po_num = lv_po_num )
+             TO mapped-zr_zpoheader.
+    ENDLOOP.
+  ENDMETHOD.
+
+  METHOD setdefaultvalues.
+    READ ENTITIES OF zr_zpoheader IN LOCAL MODE
+      ENTITY zr_zpoheader
+      FIELDS ( po_num po_date vendor_code status created_by )
+      WITH CORRESPONDING #( keys )
+      RESULT DATA(lt_headers).
+
+    DATA(lv_date) = cl_abap_context_info=>get_system_date( ).
+    DATA(lv_user) = cl_abap_context_info=>get_user_abap_64( ).
+
+    MODIFY ENTITIES OF zr_zpoheader IN LOCAL MODE
+      ENTITY zr_zpoheader
+      UPDATE FIELDS ( po_date created_by status )
+      WITH VALUE #( FOR ls_hdr IN lt_headers (
+          %tky = ls_hdr-%tky
+          po_date = COND #( WHEN ls_hdr-po_date IS INITIAL
+                            THEN lv_date ELSE ls_hdr-po_date )
+          created_by = COND #( WHEN ls_hdr-created_by IS INITIAL
+                               THEN lv_user ELSE ls_hdr-created_by )
+          status = COND #( WHEN ls_hdr-status IS INITIAL
+                           THEN 'NEW' ELSE ls_hdr-status ) ) )
+      REPORTED DATA(lt_rep)
+      FAILED DATA(lt_fail).
+  ENDMETHOD.
+
+  METHOD validatevendor.
+    READ ENTITIES OF zr_zpoheader IN LOCAL MODE
+      ENTITY zr_zpoheader
+      FIELDS ( vendor_code )
+      WITH CORRESPONDING #( keys )
+      RESULT DATA(lt_headers).
+
+    DATA: lv_exists TYPE abap_bool.
+    LOOP AT lt_headers INTO DATA(ls_hdr).
+      CLEAR lv_exists.
+      SELECT SINGLE @abap_true FROM z_vendor_txt
+        WHERE vendor_code = @ls_hdr-vendor_code INTO @lv_exists.
+
+      IF lv_exists <> abap_true.
+        APPEND VALUE #( %tky = ls_hdr-%tky ) TO failed-zr_zpoheader.
+        APPEND VALUE #( %tky = ls_hdr-%tky
+                        %state_area = 'VALIDATE_VENDOR'
+                        %msg = new_message_with_text(
+                          severity = if_abap_behv_message=>severity-error
+                          text = |供应商 { ls_hdr-vendor_code } 不存在| ) )
+               TO reported-zr_zpoheader.
+      ENDIF.
+    ENDLOOP.
+  ENDMETHOD.
+
+  METHOD confirmorder.
+    READ ENTITIES OF zr_zpoheader IN LOCAL MODE
+      ENTITY zr_zpoheader
+      FIELDS ( status )
+      WITH CORRESPONDING #( keys )
+      RESULT DATA(lt_headers).
+
+    LOOP AT lt_headers INTO DATA(ls_hdr) WHERE status <> 'NEW'.
+      APPEND VALUE #( %tky = ls_hdr-%tky ) TO failed-zr_zpoheader.
+      APPEND VALUE #( %tky = ls_hdr-%tky
+                      %state_area = 'CONFIRM_ORDER'
+                      %msg = new_message_with_text(
+                        severity = if_abap_behv_message=>severity-error
+                        text = |只有 NEW 状态的订单可以确定| ) )
+             TO reported-zr_zpoheader.
+    ENDLOOP.
+
+    MODIFY ENTITIES OF zr_zpoheader IN LOCAL MODE
+      ENTITY zr_zpoheader
+      UPDATE FIELDS ( status )
+      WITH VALUE #( FOR ls IN lt_headers WHERE ( status = 'NEW' )
+                    ( %tky = ls-%tky status = 'CONFIRMED' ) )
+      FAILED DATA(lt_mod_fail)
+      REPORTED DATA(lt_mod_rep).
+
+    READ ENTITIES OF zr_zpoheader IN LOCAL MODE
+      ENTITY zr_zpoheader
+      ALL FIELDS WITH CORRESPONDING #( keys )
+      RESULT DATA(lt_final).
+
+    result = VALUE #( FOR ls_final IN lt_final
+                      ( %tky = ls_final-%tky %param = ls_final ) ).
+  ENDMETHOD.
+ENDCLASS.
+</code></pre>
+
+<h3>4.2 LHC_ZPOITEM（子实体 handler）</h3>
+<pre class="hl"><div class="code-head"><span class="lang">abap · 本地类 LHC_ZPOITEM（明细校验）</span><button class="copy-btn" type="button">复制</button></div><code class="lang-abap">CLASS lhc_zpoitem DEFINITION INHERITING FROM cl_abap_behavior_handler.
+  PRIVATE SECTION.
+    METHODS validateitemamount FOR VALIDATE ON SAVE
+      IMPORTING keys FOR zr_zpoitem.
+ENDCLASS.
+
+CLASS lhc_zpoitem IMPLEMENTATION.
+  METHOD validateitemamount.
+    READ ENTITIES OF zr_zpoheader IN LOCAL MODE
+      ENTITY zr_zpoitem
+      FIELDS ( net_price qty )
+      WITH CORRESPONDING #( keys )
+      RESULT DATA(lt_items).
+
+    LOOP AT lt_items INTO DATA(ls_item)
+         WHERE net_price &lt;= 0 OR qty &lt;= 0.
+      APPEND VALUE #( %tky = ls_item-%tky ) TO failed-zr_zpoitem.
+      APPEND VALUE #( %tky = ls_item-%tky
+                      %state_area = 'VALIDATE_ITEM_AMOUNT'
+                      %msg = new_message_with_text(
+                        severity = if_abap_behv_message=>severity-error
+                        text = |行项目金额与数量必须大于 0| ) )
+             TO reported-zr_zpoitem.
+    ENDLOOP.
+  ENDMETHOD.
+ENDCLASS.
+</code></pre>
+
+<h3>4.3 实例权限（可选，WBS 3.8）</h3>
+<pre class="hl"><div class="code-head"><span class="lang">abap · get_instance_features / get_instance_authorizations（示意）</span><button class="copy-btn" type="button">复制</button></div><code class="lang-abap">" BDEF 中如写 authorization master ( instance )，
+" 则 LHC 需实现 get_instance_authorizations：
+METHODS get_instance_authorizations FOR INSTANCE AUTHORIZATION
+  IMPORTING keys REQUEST requested_authorizations FOR zr_zpoheader
+  RESULT result.
+
+METHOD get_instance_authorizations.
+  " 示意：读订单头后按状态/组织做授权判断
+  READ ENTITIES OF zr_zpoheader IN LOCAL MODE
+    ENTITY zr_zpoheader
+    FIELDS ( status )
+    WITH CORRESPONDING #( keys )
+    RESULT DATA(lt_headers).
+
+  result = VALUE #( FOR ls IN lt_headers
+      ( %tky = ls-%tky
+        %action-ConfirmOrder = COND #( WHEN ls-status = 'NEW'
+            THEN if_abap_behv=>auth-allowed
+            ELSE if_abap_behv=>auth-unauthorized ) ) ).
+ENDMETHOD.
+</code></pre>
+
+<h2 id="proj">5. 消费投影（ZC_，UI 注解完整版）</h2>
+<pre class="hl"><div class="code-head"><span class="lang">cds · ZC_ZPOHEADER（含 Action 按钮注解）</span><button class="copy-btn" type="button">复制</button></div><code class="lang-cds">@EndUserText.label: '采购订单消费投影'
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@Metadata.ignorePropagatedAnnotations: true
+@UI: {
+  headerInfo: {
+    typeName: '采购订单',
+    typeNamePlural: '采购订单',
+    title: { type: #FOR_KEY, value: 'PoNum' }
+  },
+  presentationVariant: [ { sortOrder: [ { by: 'PoDate', direction: #DESC } ] } ]
+}
+@Search.searchable: true
+define root view entity ZC_ZPOHEADER
+  provider contract transactional_query
+  as projection on ZR_ZPOHEADER
+{
+  @UI: {
+    lineItem:       [ { position: 10, label: '订单号' } ],
+    selectionField: [ { position: 10 } ],
+    identification: [ { position: 10 } ]
+  }
+  @Search.defaultSearchElement: true
+  key PoNum,
+
+  @UI: {
+    lineItem:       [ { position: 20, label: '采购日期' } ],
+    selectionField: [ { position: 20 } ],
+    identification: [ { position: 20 } ]
+  }
+  PoDate,
+
+  @UI: {
+    lineItem:       [ { position: 30, label: '供应商' } ],
+    selectionField: [ { position: 30 } ],
+    identification: [ { position: 30 } ]
+  }
+  @Consumption.valueHelpDefinition: [ { entity: { name: 'ZR_VENDOR_TXT', element: 'VendorCode' } } ]
+  VendorCode,
+
+  @UI: {
+    lineItem:       [ { position: 40, label: '状态' } ],
+    selectionField: [ { position: 40 } ],
+    identification: [ { position: 40 } ]
+  }
+  Status,
+
+  @UI: { lineItem: [ { position: 50, label: '备注' } ] }
+  ZzMemo,
+
+  @UI.hidden: true
+  CreatedBy
+}
+</code></pre>
+<div class="box warn"><b class="t">Action 按钮注解放哪里？</b>
+按钮不能在投影里“无中生有”一个字段。做法是把 <code>@UI.lineItem</code> / <code>@UI.identification</code> 中的 <code>type: #FOR_ACTION, dataAction: 'ConfirmOrder'</code> 挂到某个已有字段上（如 Status 字段的 lineItem 数组里再加一项），或用 Metadata Extension / 注解模型器生成。例如在 Status 字段注解中追加：<br>
+<code>@UI.lineItem: [ { position: 41, type: #FOR_ACTION, dataAction: 'ConfirmOrder', label: '确定' } ]</code><br>
+（列表列按钮也可放在 Object Page 头部按钮区，属 Fiori 课程范围。能力测试会考察这个知识点。）</div>
+
+<h2 id="svc">6. Service Definition</h2>
+<pre class="hl"><div class="code-head"><span class="lang">cds · ZSD_ZPURCHASEORDER</span><button class="copy-btn" type="button">复制</button></div><code class="lang-cds">@EndUserText.label: '采购订单 RAP 服务'
+define service ZSD_ZPURCHASEORDER {
+  expose ZC_ZPOHEADER as ZpoHeader;
+  expose ZC_ZPOITEM   as ZpoItem;
+  expose ZR_VENDOR_TXT as VendorTxt;
+}
+</code></pre>
+
+<h2 id="dcl">7. Access Control（DCL，可选）</h2>
+<pre class="hl"><div class="code-head"><span class="lang">cds · DCL 角色示例（如启用 #CHECK 需给角色授权）</span><button class="copy-btn" type="button">复制</button></div><code class="lang-cds">@EndUserText.label: '采购订单访问控制'
+@MappingRole: true
+define role ZR_ZPOHEADER {
+  grant
+    select
+  on
+    ZR_ZPOHEADER
+  where
+    ( vendor_code )
+    = aspect pfcg_auth( ZPURCHASE_AUTH, VENDOR_CODE, ACTVT = '03' );
+
+  grant select on ZR_ZPOITEM;
+  grant select on ZR_VENDOR_TXT;
+}
+</code></pre>
+
+<h2 id="eml">8. EML 测试程序（ZRAP_EML_DEMO）</h2>
+<pre class="hl"><div class="code-head"><span class="lang">abap · 端到端 EML 测试</span><button class="copy-btn" type="button">复制</button></div><code class="lang-abap">REPORT zrap_eml_demo.
+
+" 1) 创建订单（早编号自动发号）＋ 2 行明细
+MODIFY ENTITIES OF zr_zpoheader
+  ENTITY zr_zpoheader
+  CREATE FIELDS ( po_date vendor_code status zz_memo )
+  WITH VALUE #( ( %cid = 'H1'
+                  po_date = cl_abap_context_info=>get_system_date( )
+                  vendor_code = '0000000001'
+                  status = 'NEW'
+                  zz_memo = 'EML 测试订单' ) )
+  ENTITY zr_zpoitem
+  CREATE BY \_items FIELDS ( item_num matnr qty unit net_price currency )
+  WITH VALUE #( ( %cid_ref = 'H1' %cid = 'I1'
+                  item_num = '0010' matnr = 'MAT-100'
+                  qty = 10 unit = 'EA' net_price = '1000.00' currency = 'JPY' )
+                ( %cid_ref = 'H1' %cid = 'I2'
+                  item_num = '0020' matnr = 'MAT-200'
+                  qty = 5  unit = 'EA' net_price = '2500.00' currency = 'JPY' ) )
+  MAPPED DATA(lt_mapped)
+  FAILED DATA(lt_failed)
+  REPORTED DATA(lt_reported).
+
+IF lt_failed IS NOT INITIAL.
+  LOOP AT lt_reported INTO DATA(ls_rep).
+    WRITE: / ls_rep-%msg->get_text( ).
+  ENDLOOP.
+  RETURN.
+ENDIF.
+
+" 读取自动生成的订单号
+READ ENTITIES OF zr_zpoheader
+  ENTITY zr_zpoheader
+  ALL FIELDS WITH VALUE #( ( %cid = 'H1' ) )
+  RESULT DATA(lt_headers).
+
+DATA(lv_po_num) = lt_headers[ 1 ]-po_num.
+WRITE: / '创建成功 PO:', lv_po_num.
+
+" 2) 确定订单（Action）—— 需先 Activate（draft）
+"    注：draft 环境下先执行 "MODIFY ... draft action Activate"，此处简化为对激活实体的 action 调用示意
+MODIFY ENTITIES OF zr_zpoheader
+  ENTITY zr_zpoheader
+  EXECUTE confirmorder
+  WITH VALUE #( ( %key-po_num = lv_po_num ) )
+  RESULT DATA(lt_action)
+  FAILED DATA(lt_fail2)
+  REPORTED DATA(lt_rep2).
+
+IF lt_fail2 IS NOT INITIAL.
+  LOOP AT lt_rep2 INTO DATA(ls_rep2).
+    WRITE: / 'Action 失败:', ls_rep2-%msg->get_text( ).
+  ENDLOOP.
+ELSE.
+  WRITE: / '订单已确定:',
+         lt_action[ 1 ]-%param-status.
+ENDIF.
+
+" 3) 读取最终状态
+READ ENTITIES OF zr_zpoheader
+  ENTITY zr_zpoheader
+  FIELDS ( status )
+  WITH VALUE #( ( %key-po_num = lv_po_num ) )
+  RESULT DATA(lt_read).
+WRITE: / '最终状态 =', lt_read[ 1 ]-status.
+</code></pre>
+<div class="box warn"><b class="t">EML 与 draft 的关系</b>
+启用 draft 后，普通 MODIFY 创建的是草稿；直接对激活 BO 执行 action/read 需要先 Activate（draft action）。上述 EML 是教学示例，若报 “entity is not active / draft required”，请参考 draft action 语法（<code>MODIFY ENTITIES ... ENTITY zr_zpoheader EXECUTE activate ...</code>）或先在 Fiori Preview 里操作。</div>
+
+<h2>9. 番号范围（SNRO ZNPO）设置</h2>
+<table class="tbl">
+<tr><th>项目</th><th>值</th></tr>
+<tr><td>对象名</td><td>ZNPO</td></tr>
+<tr><td>编号长度</td><td>10（与 po_num 配合 Z 前缀 → CHAR 11）</td></tr>
+<tr><td>间隔 01</td><td>0000000001 〜 9999999999</td></tr>
+<tr><td>警告百分比</td><td>80%（可选）</td></tr>
+</table>
+
+<div class="box ok"><b class="t">代码与手顺对应关系</b>
+代码顺序 = 手顺①(表) → 手顺②(CDS) → 手顺③(BDEF/BIL) → 手顺④(投影/服务/UI)。做完 4 篇手顺后，用本页代码整体校验一遍；再到 <a href="quiz.html">能力测试</a> 检查理解。</div>
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>RAP 专项训练站</h5><p>基于《SAP_S4HANA_BTP-学習WBS.xlsx》整理。</p></div>
+  <div class="cols">
+    <div><h5>手顺</h5><a href="handson-1.html">① 数据模型</a><br><a href="handson-2.html">② CDS 视图</a><br><a href="handson-3.html">③ RAP 行为</a><br><a href="handson-4.html">④ 服务与 Fiori</a></div>
+    <div><h5>其他</h5><a href="concept.html">概念与架构</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

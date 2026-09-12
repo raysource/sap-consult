@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生産計画 PP（Production Planning） · 手順と実機画面</title>
+<meta name="description" content="生産計画 PP（Production Planning）：51 件のタスクの手順、IMG パス、T-code と 297 枚の実機画面スクリーンショット。内容は教材ドキュメント S4.docx をもとに整理しています。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/s4jp.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">S4</span><span class="txt">日本語実習サイト</span></a>
+    <nav class="main">
+      <a href="index.html">ホーム</a>
+      <a href="prep.html">準備</a>
+      <a href="fi.html">FI</a>
+      <a href="co.html">CO</a>
+      <a href="mm.html">MM</a>
+      <a class="active" href="pp.html">PP</a>
+      <a href="sd.html">SD</a>
+      <a href="tcode.html">T-code</a>
+      <a href="glossary.html">用語</a>
+      <a href="issues.html">トラブルシューティング</a>
+      <a href="tasks.html">索引</a>
+      <a href="instructor.html">講師</a>
+      <a href="worksheet.html">受講者</a>
+      <a href="quiz.html">自習テスト</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page"><article>
+<p class="breadcrumb"><a href="index.html">ホーム</a> / <span>生産計画 PP（Production Planning）</span></p>
+<h1>生産計画 PP（Production Planning）</h1>
+<p class="kicker">生産計画 · BOM · 作業区 · 工順 · 原価見積 · 製造指図</p>
+<div class="toc"><a href="#guide">1. 本モジュールのガイド</a><a href="#toc">2. タスク一覧</a><a href="#steps">3. 手順（タスクごと）</a><a href="#sources">4. スクリーンショットと設定値について</a></div>
+<div class="grid cards"><div class="card"><b>51</b><span>タスク</span></div><div class="card"><b>297</b><span>実機画面</span></div><div class="card"><b>220</b><span>手順ステップ</span></div><div class="card"><b>8/17</b><span>IMG/業務のタスク</span></div></div>
+<h2 id="guide">1. 本モジュールのガイド</h2>
+<p>PP のメインラインは「マスタデータ → 計画 → 実行 → 原価」です：生産計画パラメータファイル、生産スケジューラ、製造指図パラメータ（スケジューリング / 指図タイプ / 確認）→ 部品表（BOM）（<code>CS01</code>、使用箇所一覧 <code>CS15</code>）→ 作業区（責任者、制御コード、能力 <code>CR11</code>、作業時間タイプの作業区 <code>CR01</code>）→ 工順（<code>CA01</code>）と工程分割（<code>CA02</code>）→ 完成品の生産計画ビュー → 原価計算の基礎（原価構成構造、見積バリアント、日付制御、数量構造制御、原価計算バリアント <code>PC01</code>）→ 製品原価見積（<code>CK11N</code>）→ 価格のマーク / 価格のリリース（<code>CK24</code>）→ 実績原価計算の評価バリアントと仕掛品結果分析バージョン → 所要量チェック（チェックグループ、チェック範囲、チェックルール <code>PP01</code>/<code>PP02</code>）→ 計画戦略グループ（<code>MM02</code>）と独立所要量（<code>MD61</code>）→ MRP 実行（<code>MD02</code>）、MRP 一覧 <code>MD05</code>、在庫所要量一覧 <code>MD04</code> → 計画手配から製造指図へ → 購買依頼から購買発注へ → 入庫と請求書 → 製造指図の指図発行（<code>CO02</code>）/ 出庫 / 指図確認（<code>CO11N</code>）/ 入庫（<code>MIGO</code>）→ 原価照会（<code>CO03</code>）/ 技術的完了 / 差異決済（<code>KO88</code>）/ 原価レポート → 在庫一覧と在庫転送。</p>
+<p>教材のシナリオは、「鋳鋼ポンプ 170-230」1 台について、BOM、工順、標準原価見積から製造指図の完了、決済、原価分析までを一通り行うものです。</p>
+<div class="panel"><b>このモジュールのポイント</b><ul><li>3 大マスタデータ：BOM（<code>CS01</code>）、作業区（<code>CR01</code>/<code>CR11</code>）、工順（<code>CA01</code>）</li><li>標準原価見積と価格更新：<code>CK11N</code> で見積 → <code>CK24</code> でマーク → リリース</li><li>計画戦略グループと独立所要量（<code>MD61</code>）→ MRP（<code>MD02</code>）→ 計画手配から製造指図への変換</li><li>製造指図の実行チェーン：指図発行 <code>CO02</code> → 出庫 → 確認 <code>CO11N</code> → 入庫 <code>MIGO</code> → 決済 <code>KO88</code></li></ul>
+<p style="margin-top:10px">ドキュメントに出てくる T-code：<a class="tag gray" href="tcode.html#CS01">CS01</a> <a class="tag gray" href="tcode.html#CS15">CS15</a> <a class="tag gray" href="tcode.html#CR11">CR11</a> <a class="tag gray" href="tcode.html#CR01">CR01</a> <a class="tag gray" href="tcode.html#KP26">KP26</a> <a class="tag gray" href="tcode.html#CA01">CA01</a> <a class="tag gray" href="tcode.html#CA02">CA02</a> <a class="tag gray" href="tcode.html#PC01">PC01</a> <a class="tag gray" href="tcode.html#CK11N">CK11N</a> <a class="tag gray" href="tcode.html#CK24">CK24</a> <a class="tag gray" href="tcode.html#MM03">MM03</a> <a class="tag gray" href="tcode.html#PP01">PP01</a> <a class="tag gray" href="tcode.html#PP02">PP02</a> <a class="tag gray" href="tcode.html#MM02">MM02</a> <a class="tag gray" href="tcode.html#MD61">MD61</a> <a class="tag gray" href="tcode.html#MD05">MD05</a> <a class="tag gray" href="tcode.html#MD04">MD04</a> <a class="tag gray" href="tcode.html#MD02">MD02</a> <a class="tag gray" href="tcode.html#COOIS">COOIS</a> <a class="tag gray" href="tcode.html#MIGO">MIGO</a> <a class="tag gray" href="tcode.html#MIRO">MIRO</a> <a class="tag gray" href="tcode.html#MRBR">MRBR</a> <a class="tag gray" href="tcode.html#CO02">CO02</a> <a class="tag gray" href="tcode.html#CO11N">CO11N</a> <a class="tag gray" href="tcode.html#CO03">CO03</a> <a class="tag gray" href="tcode.html#KO88">KO88</a>（詳細は <a href="tcode.html">T-code / IMG パス早見表</a> を参照）</p>
+</div>
+<h2 id="toc">2. タスク目次（51 件）</h2>
+<p>そのうち 51 件のタスクで、原教材ドキュメントの IMG 設定メニューパスが示されています；<span class="fb">IMG 設定</span> のマークが付いているのはカスタマイジング（設定）タスク、<span class="fb img">業務処理</span> と付いているのは日常業務の操作タスクです。表示がないタスクは原文でも明示されておらず、タスク名からご自身で判断してください（一般に「～の定義／～パラメータのメンテナンス」＝ IMG 設定、「伝票・指図・請求書の登録／入力／照会」＝業務処理）。</p>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>No.</th><th>タスク</th><th>IMG/業務</th><th>ドキュメント内の T-code</th><th>画面</th><th>手順ステップ</th></tr></thead><tbody><tr><td><a href="#t01">タスク 01</a></td><td><a href="#t01">生産計画パラメータファイルを定義</a></td><td>—</td><td>—</td><td>2</td><td>2</td></tr><tr><td><a href="#t02">タスク 02</a></td><td><a href="#t02">生産スケジューラを定義</a></td><td>—</td><td>—</td><td>4</td><td>1</td></tr><tr><td><a href="#t03">タスク 03</a></td><td><a href="#t03">生産スケジューリングに関連する製造指図パラメータをメンテナンスします</a></td><td>—</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t04">タスク 04</a></td><td><a href="#t04">指図タイプに関連する製造指図パラメータをメンテナンスします</a></td><td>—</td><td>—</td><td>4</td><td>3</td></tr><tr><td><a href="#t05">タスク 05</a></td><td><a href="#t05">確認に関連する製造指図パラメータをメンテナンスします</a></td><td>—</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t06">タスク 06</a></td><td><a href="#t06">部品表（BOM）を新規作成</a></td><td>—</td><td><code>CS01</code></td><td>3</td><td>3</td></tr><tr><td><a href="#t07">タスク 07</a></td><td><a href="#t07">品目の使用先一覧を照会</a></td><td>業務処理（トランザクション）</td><td><code>CS15</code></td><td>4</td><td>4</td></tr><tr><td><a href="#t08">タスク 08</a></td><td><a href="#t08">作業区の責任者を定義</a></td><td>—</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t09">タスク 09</a></td><td><a href="#t09">作業区の制御コードを定義</a></td><td>—</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t10">タスク 10</a></td><td><a href="#t10">人工工数の能力を新規作成</a></td><td>—</td><td><code>CR11</code></td><td>5</td><td>2</td></tr><tr><td><a href="#t11">タスク 11</a></td><td><a href="#t11">機械工数の能力を新規作成</a></td><td>—</td><td><code>CR11</code></td><td>2</td><td>2</td></tr><tr><td><a href="#t12">タスク 12</a></td><td><a href="#t12">人工工数タイプの作業区を新規作成</a></td><td>—</td><td><code>CR01</code> <code>KP26</code></td><td>22</td><td>15</td></tr><tr><td><a href="#t13">タスク 13</a></td><td><a href="#t13">機械工数タイプの作業区を新規作成</a></td><td>—</td><td><code>CR01</code></td><td>10</td><td>5</td></tr><tr><td><a href="#t14">タスク 14</a></td><td><a href="#t14">工順を新規作成</a></td><td>—</td><td><code>CA01</code></td><td>20</td><td>18</td></tr><tr><td><a href="#t15">タスク 15</a></td><td><a href="#t15">工程分割</a></td><td>—</td><td><code>CA02</code></td><td>6</td><td>4</td></tr><tr><td><a href="#t16">タスク 16</a></td><td><a href="#t16">完成品の生産計画ビューを新規作成</a></td><td>—</td><td>—</td><td>4</td><td>3</td></tr><tr><td><a href="#t17">タスク 17</a></td><td><a href="#t17">原価構成構造を定義</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>16</td><td>14</td></tr><tr><td><a href="#t18">タスク 18</a></td><td><a href="#t18">評価バリアントを定義</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>7</td><td>7</td></tr><tr><td><a href="#t19">タスク 19</a></td><td><a href="#t19">日付制御を定義</a></td><td>—</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t20">タスク 20</a></td><td><a href="#t20">数量構成の制御を定義</a></td><td>IMG設定（カスタマイズ）</td><td><code>PC01</code></td><td>8</td><td>4</td></tr><tr><td><a href="#t21">タスク 21</a></td><td><a href="#t21">原価計算バリアントを定義</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t22">タスク 22</a></td><td><a href="#t22">製品原価見積を新規登録する</a></td><td>業務処理（トランザクション）</td><td><code>CK11N</code></td><td>10</td><td>3</td></tr><tr><td><a href="#t23">タスク 23</a></td><td><a href="#t23">価格のマーク</a></td><td>業務処理（トランザクション）</td><td><code>CK24</code></td><td>12</td><td>4</td></tr><tr><td><a href="#t24">タスク 24</a></td><td><a href="#t24">完成品の将来計画価格を照会</a></td><td>業務処理（トランザクション）</td><td><code>MM03</code></td><td>6</td><td>3</td></tr><tr><td><a href="#t25">タスク 25</a></td><td><a href="#t25">価格をリリース</a></td><td>—</td><td><code>CK24</code></td><td>2</td><td>2</td></tr><tr><td><a href="#t26">タスク 26</a></td><td><a href="#t26">完成品（FERT）のリリース済み計画価格を表示します</a></td><td>—</td><td><code>MM03</code></td><td>8</td><td>4</td></tr><tr><td><a href="#t27">タスク 27</a></td><td><a href="#t27">実績原価計算の評価バリアントを定義</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t28">タスク 28</a></td><td><a href="#t28">仕掛品結果分析バージョンを定義</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>4</td><td>4</td></tr><tr><td><a href="#t29">タスク 29</a></td><td><a href="#t29">所要量チェックを定義</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>2</td><td>1</td></tr><tr><td><a href="#t30">タスク 30</a></td><td><a href="#t30">所要量チェックの範囲を定義</a></td><td>IMG設定（カスタマイズ）</td><td>—</td><td>3</td><td>3</td></tr><tr><td><a href="#t31">タスク 31</a></td><td><a href="#t31">所要量チェックの制御を定義</a></td><td>—</td><td><code>PP01</code> <code>PP02</code></td><td>5</td><td>4</td></tr><tr><td><a href="#t32">タスク 32</a></td><td><a href="#t32">品目マスタの計画戦略グループをメンテナンスします</a></td><td>業務処理（トランザクション）</td><td><code>MM02</code></td><td>4</td><td>3</td></tr><tr><td><a href="#t33">タスク 33</a></td><td><a href="#t33">品目の独立所要量計画を登録</a></td><td>—</td><td><code>MD61</code></td><td>5</td><td>5</td></tr><tr><td><a href="#t34">タスク 34</a></td><td><a href="#t34">MRP 一覧を照会</a></td><td>業務処理（トランザクション）</td><td><code>MD05</code></td><td>4</td><td>3</td></tr><tr><td><a href="#t35">タスク 35</a></td><td><a href="#t35">在庫／所要量一覧を照会</a></td><td>業務処理（トランザクション）</td><td><code>MD04</code></td><td>6</td><td>3</td></tr><tr><td><a href="#t36">タスク 36</a></td><td><a href="#t36">資材所要量計画を実行</a></td><td>—</td><td><code>MD02</code></td><td>14</td><td>9</td></tr><tr><td><a href="#t37">タスク 37</a></td><td><a href="#t37">計画手配を製造指図に変換</a></td><td>業務処理（トランザクション）</td><td><code>MD04</code></td><td>4</td><td>4</td></tr><tr><td><a href="#t38">タスク 38</a></td><td><a href="#t38">製造指図一覧を照会</a></td><td>—</td><td><code>COOIS</code></td><td>5</td><td>2</td></tr><tr><td><a href="#t39">タスク 39</a></td><td><a href="#t39">購買依頼を購買発注に変換</a></td><td>—</td><td><code>MD04</code></td><td>13</td><td>12</td></tr><tr><td><a href="#t40">タスク 40</a></td><td><a href="#t40">購買発注に対して入庫</a></td><td>業務処理（トランザクション）</td><td><code>MIGO</code></td><td>2</td><td>2</td></tr><tr><td><a href="#t41">タスク 41</a></td><td><a href="#t41">購買請求書を入力する</a></td><td>—</td><td><code>MIRO</code> <code>MRBR</code></td><td>5</td><td>5</td></tr><tr><td><a href="#t42">タスク 42</a></td><td><a href="#t42">製造指図を指図発行</a></td><td>業務処理（トランザクション）</td><td><code>CO02</code></td><td>6</td><td>5</td></tr><tr><td><a href="#t43">タスク 43</a></td><td><a href="#t43">製造指図に対して出庫</a></td><td>業務処理（トランザクション）</td><td>—</td><td>8</td><td>8</td></tr><tr><td><a href="#t44">タスク 44</a></td><td><a href="#t44">指図確認</a></td><td>業務処理（トランザクション）</td><td><code>CO11N</code></td><td>10</td><td>8</td></tr><tr><td><a href="#t45">タスク 45</a></td><td><a href="#t45">製造指図に対して入庫</a></td><td>業務処理（トランザクション）</td><td><code>MIGO</code></td><td>2</td><td>2</td></tr><tr><td><a href="#t46">タスク 46</a></td><td><a href="#t46">製造指図の原価を照会</a></td><td>業務処理（トランザクション）</td><td><code>CO03</code></td><td>5</td><td>1</td></tr><tr><td><a href="#t47">タスク 47</a></td><td><a href="#t47">製造指図を技術的完了にする</a></td><td>業務処理（トランザクション）</td><td><code>CO02</code></td><td>2</td><td>2</td></tr><tr><td><a href="#t48">タスク 48</a></td><td><a href="#t48">製造指図の差異決済</a></td><td>業務処理（トランザクション）</td><td><code>KO88</code></td><td>2</td><td>2</td></tr><tr><td><a href="#t49">タスク 49</a></td><td><a href="#t49">製造指図原価レポートの照会</a></td><td>—</td><td>—</td><td>2</td><td>1</td></tr><tr><td><a href="#t50">タスク 50</a></td><td><a href="#t50">在庫一覧を照会</a></td><td>—</td><td><code>MD04</code></td><td>6</td><td>5</td></tr><tr><td><a href="#t51">タスク 51</a></td><td><a href="#t51">棚卸資産の在庫転送</a></td><td>業務処理（トランザクション）</td><td>—</td><td>2</td><td>2</td></tr></tbody></table></div>
+<h2 id="steps">3. 手順（タスクごと）</h2>
+<div class="box info"><b class="t">このページの使い方</b>各タスクは原教材ドキュメントの順序どおりに掲載しています。まず「説明」を読み、次に「IMG パス」に従って設定ポイントへ進み、その後は番号付きのステップに沿って（各ステップに原教材ドキュメントの実機画面が付いています）、画面ごとに操作していきます。画面の赤い四角や矢印は、原教材ドキュメントの著者が「入力・選択すべき箇所」として付けたものです。画面をクリックすると拡大できます（1×/2×/3×、ESC で閉じる）。</div>
+<div class="steph" id="t01"><span class="no">タスク 01</span><h3>生産計画パラメータファイルを定義</h3><span class="tc2">2 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义生产计划参数文件<br></div></details>
+<div class="pathline" data-copy="生産 → ショップフロアコントロール → マスタデータ → 生産計画パラメータファイルの定義"><b>IMG パス（IMG 設定メニュー）</b>生産 → ショップフロアコントロール → マスタデータ → 生産計画パラメータファイルの定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>生产 → 商店底价控制 → 主数据 → 定义生产计划参数文件</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">生産計画パラメータファイルは、品目（品目マスタの作業計画画面）または生産計画担当者に割り当てることができます<br>（IMG 設定）。そのうち品目マスタに割り当てられた生産計画パラメータファイルは、より高い優先順位を持ちます。製造指図の登録時に、生産計画パラメータが製造指図またはプロセス指図にコピーされます</p>
+<details class="orig"><summary>原文</summary><div class="zh">生产计划 参数文件可以分配给物料（物料主数据中的工作排程屏幕）或者生产计划员<br>（后台配置）。其中分配给物料主数据的生产计划参数文件具有更高的优先级。在创建生产订单时生产计划参数将复制生产订单或流程订单</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t01/01_1_image777.png"><img src="assets/img/pp/t01/01_1_image777.png" alt="生産計画パラメータファイルを定義 · ステップ 1：生産計画パラメータファイルは、品目（品目マスタの作業計画画面）または生産計画担当者に割り当てることができます （IMG 設定）。そのうち品目マスタに割り当てられた生産計画パラメータファイルは、より高い優先順位を持ちます。製造指図の登録時に、生産計画パラメータが製造指図またはプロセス指図にコピーされます" loading="lazy" width="347" height="468"></a><figcaption><span class="n">画面 770</span><span class="src">image777.png · 347×468</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>クリックして進む</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 771）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t01/02_1_image778.png"><img src="assets/img/pp/t01/02_1_image778.png" alt="生産計画パラメータファイルを定義 · ステップ 2：image778.png" loading="lazy" width="617" height="169"></a><figcaption><span class="n">画面 771</span><span class="src">image778.png · 617×169</span></figcaption></figure>
+<div class="note info"><b class="t">原理の説明</b>解説：コピーする方法を採用し、プラント 1000、生産計画パラメータファイル 000001 をコピーします。</div>
+</li>
+</ol>
+<div class="steph" id="t02"><span class="no">タスク 02</span><h3>生産スケジューラを定義</h3><span class="tc2">4 画面 / 1 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义生产调度员<br></div></details>
+<div class="pathline" data-copy="生産 → ショップフロアコントロール → マスタデータ → 生産スケジューラの定義"><b>IMG パス（IMG 設定メニュー）</b>生産 → ショップフロアコントロール → マスタデータ → 生産スケジューラの定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>生产 → 商店底价控制 → 主数据 → 定义生产调度员</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">品目マスタで生産スケジューラを品目に割り当てることで、生産作業管理において特定の品目に対する責任の所在を定義できます<br>生産－ショップフロアコントロール－マスタデータ－生産スケジューラの定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">通过在物料主数据中将生产调度员分配给物料，我们可以定义在生产作业控制中对某种物料的责任归属<br>生产－商店底价控制－主数据－定义生产调度员</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t02/01_1_image783.png"><img src="assets/img/pp/t02/01_1_image783.png" alt="生産スケジューラを定義 · ステップ 1：品目マスタで生産スケジューラを品目に割り当てることで、生産作業管理において特定の品目に対する責任の所在を定義できます 生産－ショップフロアコントロール－マスタデータ－生産スケジューラの定義" loading="lazy" width="345" height="419"></a><figcaption><span class="n">画面 772</span><span class="src">image785.png · 345×419</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t02/01_2_image784.png"><img src="assets/img/pp/t02/01_2_image784.png" alt="生産スケジューラを定義 · ステップ 1：品目マスタで生産スケジューラを品目に割り当てることで、生産作業管理において特定の品目に対する責任の所在を定義できます 生産－ショップフロアコントロール－マスタデータ－生産スケジューラの定義" loading="lazy" width="678" height="353"></a><figcaption><span class="n">画面 773</span><span class="src">image786.png · 678×353</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t02/01_1_image783.png"><img src="assets/img/pp/t02/01_1_image783.png" alt="生産スケジューラを定義 · ステップ 1：品目マスタで生産スケジューラを品目に割り当てることで、生産作業管理において特定の品目に対する責任の所在を定義できます 生産－ショップフロアコントロール－マスタデータ－生産スケジューラの定義" loading="lazy" width="345" height="419"></a><figcaption><span class="n">画面 772</span><span class="src">image785.png · 345×419</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t02/01_2_image784.png"><img src="assets/img/pp/t02/01_2_image784.png" alt="生産スケジューラを定義 · ステップ 1：品目マスタで生産スケジューラを品目に割り当てることで、生産作業管理において特定の品目に対する責任の所在を定義できます 生産－ショップフロアコントロール－マスタデータ－生産スケジューラの定義" loading="lazy" width="678" height="353"></a><figcaption><span class="n">画面 773</span><span class="src">image786.png · 678×353</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材ノート</b>「新規エントリ」をクリックして進む</div>
+<div class="note tip"><b class="t">教材ノート</b>P999 | 999| 生産スケジューラ頤寧 | 000001</div>
+</li>
+</ol>
+<div class="steph" id="t03"><span class="no">タスク 03</span><h3>生産スケジューリングに関連する製造指図パラメータをメンテナンスします</h3><span class="tc2">3 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】维护和生产排程相关的生产订单参数<br></div></details>
+<div class="pathline" data-copy="生産 → ショップフロアコントロール → 工程 → 計画 → 製造指図の計画パラメータの定義"><b>IMG パス（IMG 設定メニュー）</b>生産 → ショップフロアコントロール → 工程 → 計画 → 製造指図の計画パラメータの定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>生产 → 商店底价控制 → 工序 → 计划 → 为生产订单定义计划参数</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">生産－ショップフロアコントロール－工程－計画－製造指図の計画パラメータの定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">生产－商店底价控制－工序－计划－为生产订单定义计划参数</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t03/01_1_image787.png"><img src="assets/img/pp/t03/01_1_image787.png" alt="生産スケジューリングに関連する製造指図パラメータをメンテナンスします · ステップ 1：生産－ショップフロアコントロール－工程－計画－製造指図の計画パラメータの定義" loading="lazy" width="440" height="380"></a><figcaption><span class="n">画面 776</span><span class="src">image787.png · 440×380</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">ここでメンテナンスするパラメータは、製造指図のスケジューリングの各種操作と計算に影響します</p>
+<details class="orig"><summary>原文</summary><div class="zh">维护的这些参数将影响生产订单排程的各种操作和计算</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t03/02_1_image788.png"><img src="assets/img/pp/t03/02_1_image788.png" alt="生産スケジューリングに関連する製造指図パラメータをメンテナンスします · ステップ 2：ここでメンテナンスするパラメータは、製造指図のスケジューリングの各種操作と計算に影響します" loading="lazy" width="377" height="593"></a><figcaption><span class="n">画面 777</span><span class="src">image788.png · 377×593</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「新規エントリ」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t03/03_1_image789.png"><img src="assets/img/pp/t03/03_1_image789.png" alt="生産スケジューリングに関連する製造指図パラメータをメンテナンスします · ステップ 3：「新規エントリ」をクリック" loading="lazy" width="600" height="892"></a><figcaption><span class="n">画面 778</span><span class="src">image789.png · 600×892</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t04"><span class="no">タスク 04</span><h3>指図タイプに関連する製造指図パラメータをメンテナンスします</h3><span class="tc2">4 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】维护和订单类型相关的生产订单参数<br></div></details>
+<div class="pathline" data-copy="生産 → ショップフロアコントロール → マスタデータ → 指図 → 指図タイプ関連パラメータの定義"><b>IMG パス（IMG 設定メニュー）</b>生産 → ショップフロアコントロール → マスタデータ → 指図 → 指図タイプ関連パラメータの定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>生产 → 商店底价控制 → 主数据 → 订单 → 定义订单类型相关参数</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">ここでメンテナンスするパラメータは、製造指図のスケジューリングの各種操作と計算に影響します</p>
+<details class="orig"><summary>原文</summary><div class="zh">维护的这些参数将影响生产订单排程的各种操作和计算</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t04/01_1_image790.png"><img src="assets/img/pp/t04/01_1_image790.png" alt="指図タイプに関連する製造指図パラメータをメンテナンスします · ステップ 1：ここでメンテナンスするパラメータは、製造指図のスケジューリングの各種操作と計算に影響します" loading="lazy" width="326" height="490"></a><figcaption><span class="n">画面 779</span><span class="src">image790.png · 326×490</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t04/01_2_image791.png"><img src="assets/img/pp/t04/01_2_image791.png" alt="指図タイプに関連する製造指図パラメータをメンテナンスします · ステップ 1：ここでメンテナンスするパラメータは、製造指図のスケジューリングの各種操作と計算に影響します" loading="lazy" width="505" height="349"></a><figcaption><span class="n">画面 780</span><span class="src">image791.png · 505×349</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「新規エントリ」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t04/02_1_image792.png"><img src="assets/img/pp/t04/02_1_image792.png" alt="指図タイプに関連する製造指図パラメータをメンテナンスします · ステップ 2：「新規エントリ」をクリック" loading="lazy" width="590" height="765"></a><figcaption><span class="n">画面 781</span><span class="src">image792.png · 590×765</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">原教材では結果分析コードは FERT</p>
+<details class="orig"><summary>原文</summary><div class="zh">原书中结果分析码为FERT</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t04/03_1_image793.png"><img src="assets/img/pp/t04/03_1_image793.png" alt="指図タイプに関連する製造指図パラメータをメンテナンスします · ステップ 3：原教材では結果分析コードは FERT" loading="lazy" width="618" height="448"></a><figcaption><span class="n">画面 782</span><span class="src">image793.png · 618×448</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t05"><span class="no">タスク 05</span><h3>確認に関連する製造指図パラメータをメンテナンスします</h3><span class="tc2">3 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】维护和确认相关的生产订单参数<br></div></details>
+<div class="pathline" data-copy="生産 → ショップフロアコントロール → 工程 → 確認 → 確認パラメータの定義"><b>IMG パス（IMG 設定メニュー）</b>生産 → ショップフロアコントロール → 工程 → 確認 → 確認パラメータの定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>生产 → 商店底价控制 → 工序 → 确认 → 定义确认参数</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">確認はショップフロアコントロールにおける作業の 1 つで、指図全体に対して行う場合も、工程に対して行う場合もあります。責任者が指図の産出量や時間などの情報を承認または入力し、システムがチェックやバックフラッシュなどを実行するプロセスです。</p>
+<details class="orig"><summary>原文</summary><div class="zh">确认是生产订单管理中的一项工作，它既可以是针对整个订单的，也可以是针对工序的，它是由负责人员认可或填写订单的产出、时间等信息，并由系统执行检查、倒冲等操作的过程。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t05/01_1_image794.png"><img src="assets/img/pp/t05/01_1_image794.png" alt="確認に関連する製造指図パラメータをメンテナンスします · ステップ 1：確認はショップフロアコントロールにおける作業の 1 つで、指図全体に対して行う場合も、工程に対して行う場合もあります。責任者が指図の産出量や時間などの情報を承認または入力し、システムがチェックやバックフラッシュなどを実行するプロセスです。" loading="lazy" width="417" height="577"></a><figcaption><span class="n">画面 783</span><span class="src">image794.png · 417×577</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 784）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t05/02_1_image795.png"><img src="assets/img/pp/t05/02_1_image795.png" alt="確認に関連する製造指図パラメータをメンテナンスします · ステップ 2：image795.png" loading="lazy" width="611" height="511"></a><figcaption><span class="n">画面 784</span><span class="src">image795.png · 611×511</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「新規エントリ」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t05/03_1_image796.png"><img src="assets/img/pp/t05/03_1_image796.png" alt="確認に関連する製造指図パラメータをメンテナンスします · ステップ 3：「新規エントリ」をクリック" loading="lazy" width="547" height="686"></a><figcaption><span class="n">画面 785</span><span class="src">image796.png · 547×686</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t06"><span class="no">タスク 06</span><h3>部品表（BOM）を新規作成</h3><span class="tc">CS01</span><span class="tc2">3 画面 / 3 ステップ</span></div>
+<p>R999-100カバー1PCR999-200フライホイール1PCR999-300管軸1PCR999-400支持フレーム1PCR999-500金属片0.60M2R999-100カバー1PCR999-200フライホイール1PCR999-300管軸1PCR999-400支持フレーム1PCR999-500金属片0.60M2F999-100 P999 1</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建物料清单<br>R999-100罩壳1PCR999-200飞轮1PCR999-300管轴1PCR999-400支撑架1PCR999-500金属片0.60M2R999-100罩壳1PCR999-200飞轮1PCR999-300管轴1PCR999-400支撑架1PCR999-500金属片0.60M2F999-100 P999 1</div></details>
+<div class="pathline" data-copy="ロジスティクス → 生産 → マスタデータ → 部品表（BOM） → 品目 BOM → CS01 新規登録"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 生産 → マスタデータ → 部品表（BOM） → 品目 BOM → CS01 新規登録</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 生产 → 主数据 → 物料清单 → 物料 BOM → CS01 新建</code></div>
+<div class="note tip"><b class="t">教材ノート</b>資材所要量計画（MRP）の最も主要な基礎は部品表（BOM）です。ここで BOM を 1 つメンテナンスします</div>
+<ol class="oplist">
+<li>
+<p class="opcap">ロジスティクス－生産－マスタデータ－部品表（BOM）－品目 BOM — CS01 新規登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">后勤－生产－主数据－物料清单－物料 BOM — CS01 新建</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t06/01_1_image797.png"><img src="assets/img/pp/t06/01_1_image797.png" alt="部品表（BOM）を新規作成 · ステップ 1：ロジスティクス－生産－マスタデータ－部品表（BOM）－品目 BOM — CS01 新規登録" loading="lazy" width="445" height="424"></a><figcaption><span class="n">画面 786</span><span class="src">image797.png · 445×424</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 787）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t06/02_1_image798.png"><img src="assets/img/pp/t06/02_1_image798.png" alt="部品表（BOM）を新規作成 · ステップ 2：image798.png" loading="lazy" width="496" height="342"></a><figcaption><span class="n">画面 787</span><span class="src">image798.png · 496×342</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">明細カテゴリはすべて L（在庫項目）を使用<br>上記のデータを入力し、「保存」をクリックすれば完了です</p>
+<details class="orig"><summary>原文</summary><div class="zh">项目类别都用L,库存项目<br>录入 上述数据，点击保存即可</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t06/03_1_image799.jpeg"><img src="assets/img/pp/t06/03_1_image799.jpeg" alt="部品表（BOM）を新規作成 · ステップ 3：明細カテゴリはすべて L（在庫項目）を使用 上記のデータを入力し、「保存」をクリックすれば完了です" loading="lazy" width="1215" height="452"></a><figcaption><span class="n">画面 788</span><span class="src">image799.jpeg · 1215×452</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t07"><span class="no">タスク 07</span><h3>品目の使用先一覧を照会</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">CS15</span><span class="tc2">4 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】显示物料所用处清单<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 生産 → マスタデータ → 部品表（BOM） → レポート → 一覧の呼出 → 使用先一覧 CS15-品目"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 生産 → マスタデータ → 部品表（BOM） → レポート → 一覧の呼出 → 使用先一覧 CS15-品目</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 生产 → 主数据 → 物料清单 → 报告 → 调用清单 → 所用处清单 CS15-物料</code></div>
+<div class="note tip"><b class="t">教材ノート</b>BOM は、完成品や半製品を生産するのに構成品目がどれだけ必要かという観点のものです。一方で、ある部材の用途は何か、どの完成品や半製品の製造に使われるのかを照会したい場合もあり、これを「逆引き一覧」と呼びます。</div>
+<ol class="oplist">
+<li>
+<p class="opcap">ロジスティクス－生産－マスタデータ－部品表（BOM）－レポート－一覧の呼び出し—使用箇所一覧 CS15-品目</p>
+<details class="orig"><summary>原文</summary><div class="zh">后勤－生产－主数据－物料清单－报告－调用清单—所用处清单 CS15-物料</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t07/01_1_image800.png"><img src="assets/img/pp/t07/01_1_image800.png" alt="品目の使用先一覧を照会 · ステップ 1：ロジスティクス－生産－マスタデータ－部品表（BOM）－レポート－一覧の呼び出し—使用箇所一覧 CS15-品目" loading="lazy" width="445" height="481"></a><figcaption><span class="n">画面 789</span><span class="src">image800.png · 445×481</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 790）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t07/02_1_image801.png"><img src="assets/img/pp/t07/02_1_image801.png" alt="品目の使用先一覧を照会 · ステップ 2：image801.png" loading="lazy" width="482" height="450"></a><figcaption><span class="n">画面 790</span><span class="src">image801.png · 482×450</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「次画面」をクリックすると、下図のとおり</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击下一屏，如下图所示</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t07/03_1_image802.png"><img src="assets/img/pp/t07/03_1_image802.png" alt="品目の使用先一覧を照会 · ステップ 3：「次画面」をクリックすると、下図のとおり" loading="lazy" width="647" height="516"></a><figcaption><span class="n">画面 791</span><span class="src">image802.png · 647×516</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">F8 をクリックして実行すると、次のとおり</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击 F8 运行，如下</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t07/04_1_image803.png"><img src="assets/img/pp/t07/04_1_image803.png" alt="品目の使用先一覧を照会 · ステップ 4：F8 をクリックして実行すると、次のとおり" loading="lazy" width="879" height="217"></a><figcaption><span class="n">画面 792</span><span class="src">image803.png · 879×217</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>このレポートは、カバーが品目 F999-100 の生産に使用されていることを示しています</div>
+</li>
+</ol>
+<div class="steph" id="t08"><span class="no">タスク 08</span><h3>作業区の責任者を定義</h3><span class="tc2">3 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义工作中心负责人<br></div></details>
+<div class="pathline" data-copy="生産 → 基本データ → 作業区 → 一般データ → 責任者の決定"><b>IMG パス（IMG 設定メニュー）</b>生産 → 基本データ → 作業区 → 一般データ → 責任者の決定</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>生产 → 基本数据 → 工作中心 → 通用数据 → 确定负责人</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 頤寧公司には「材料準備」「切断」といった作業区があります。完成品「鋳鋼ポンプ 170-230」を生産するには、これらの作業区で一定の順序に従って各工程を実行する必要があり、SAP ではこれを「工順」と呼びます。これらは後でメンテナンスします。本ステップでは、各作業区に対して IMG 設定で責任者を定義する必要があり、これらの責任者は作業区のマスタデータに配賦されます。簡略化のため、作業区の責任者は 1 人だけ定義しています。<br>生産－基本データ－作業区－一般データ－責任者の決定</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：颐宁公司有 “ 物料准备”，“ 切割” 这样一些工作中心，生产产成品 “ 铸钢泵 170-230 ” 需要以一定的次序在这些工作中心执行各道工序，SAP 称之为“工艺路线”。这些我们在之后维护。本步骤中，我们需要为各工作中心在后台定义一些负责人，这些负责人都会分配到工作中心的主数据中。为简化，我们只定义了一个工作中心负责人。<br>生产－基本数据－工作中心－通用数据－确定负责人</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t08/01_1_image804.png"><img src="assets/img/pp/t08/01_1_image804.png" alt="作業区の責任者を定義 · ステップ 1：解説：頤寧公司には「材料準備」「切断」といった作業区があります。完成品「鋳鋼ポンプ 170-230」を生産するには、これらの作業区で一定の順序に従って各工程を実行する必要があり、SAP ではこれを「工順」と呼びます。これらは後でメンテナンスします。本ステップでは、各作業区に対して IMG 設定で責任者を定義する必要があ" loading="lazy" width="339" height="451"></a><figcaption><span class="n">画面 793</span><span class="src">image804.png · 339×451</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 794）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t08/02_1_image805.png"><img src="assets/img/pp/t08/02_1_image805.png" alt="作業区の責任者を定義 · ステップ 2：image805.png" loading="lazy" width="512" height="328"></a><figcaption><span class="n">画面 794</span><span class="src">image805.png · 512×328</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>「新規エントリ」をクリックし、</div>
+</li>
+<li>
+<p class="opcap">P999 999 頤寧作業区 責任者</p>
+<details class="orig"><summary>原文</summary><div class="zh">P999 999 颐宁工作中心负责人</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t08/03_1_image806.png"><img src="assets/img/pp/t08/03_1_image806.png" alt="作業区の責任者を定義 · ステップ 3：P999 999 頤寧作業区 責任者" loading="lazy" width="670" height="261"></a><figcaption><span class="n">画面 795</span><span class="src">image806.png · 670×261</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t09"><span class="no">タスク 09</span><h3>作業区の制御コードを定義</h3><span class="tc2">3 画面 / 3 ステップ</span></div>
+<p>「新規エントリ」をクリック</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义工作中心的控制码<br>点击新条目</div></details>
+<div class="pathline" data-copy="生産 → 基本データ → 作業区 → 工順データ → 制御コードの定義"><b>IMG パス（IMG 設定メニュー）</b>生産 → 基本データ → 作業区 → 工順データ → 制御コードの定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>生产 → 基本数据 → 工作中心 → 工艺路径数据 → 定义控制码</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> この制御コードは、工順の特定の工程で実行する必要がある業務機能、および SAP がその工程をどのように処理するかを制御します。たとえば、この工程でスケジューリングが必要か、能力所要量を生成する必要があるか、作業票を印刷する必要があるか、手戻り工程が必要か、原価計算が必要か、確認が必要かまたその方法はどうか、内製処理か外注処理かなどを制御します。<br>生産－基本データ－作業区－工順データ－制御コードの定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：这个控制码控制着工艺路线中的某个工序需要执行的业务功能，以及 SAP 如何处理这个工序。比如这个工序是否需要排程、是否需要产生产能需求、是否需要打印公票、是否需要返工工序、是否需要计算成本、是否和如何进行确认、是内部还是外部处理。<br>生产－基本数据－工作中心－工艺路径数据－定义控制码</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t09/01_1_image807.png"><img src="assets/img/pp/t09/01_1_image807.png" alt="作業区の制御コードを定義 · ステップ 1：解説：この制御コードは、工順の特定の工程で実行する必要がある業務機能、および SAP がその工程をどのように処理するかを制御します。たとえば、この工程でスケジューリングが必要か、能力所要量を生成する必要があるか、作業票を印刷する必要があるか、手戻り工程が必要か、原価計算が必要か、確認が必要かまたその方法はどうか、内製処" loading="lazy" width="376" height="522"></a><figcaption><span class="n">画面 796</span><span class="src">image807.png · 376×522</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 797）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t09/02_1_image808.png"><img src="assets/img/pp/t09/02_1_image808.png" alt="作業区の制御コードを定義 · ステップ 2：image808.png" loading="lazy" width="455" height="446"></a><figcaption><span class="n">画面 797</span><span class="src">image808.png · 455×446</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">制御コード ZKM1 頤寧作業区の制御コード（スケジューリング）</p>
+<details class="orig"><summary>原文</summary><div class="zh">控制码 ZKM1 颐宁工作中心控制码调度</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t09/03_1_image809.png"><img src="assets/img/pp/t09/03_1_image809.png" alt="作業区の制御コードを定義 · ステップ 3：制御コード ZKM1 頤寧作業区の制御コード（スケジューリング）" loading="lazy" width="646" height="499"></a><figcaption><span class="n">画面 798</span><span class="src">image809.png · 646×499</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>能力所要量の確定 原価</div>
+<div class="note tip"><b class="t">教材ノート</b>確認 2 確認は可能ですが必須ではありません</div>
+</li>
+</ol>
+<div class="steph" id="t10"><span class="no">タスク 10</span><h3>人工工数の能力を新規作成</h3><span class="tc">CR11</span><span class="tc2">5 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建人工工时能力<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 生産 → マスタデータ → 作業区 → 能力 → CR11-登録"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 生産 → マスタデータ → 作業区 → 能力 → CR11-登録</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 生产 → 主数据 → 工作中心 → 能力 → CR11-创建</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 頤寧公司の各人工作業区のリソースは共有されており、それらの生産能力は割り当てて使用できます。そのため、このステップでは工場全体の人工工数能力を一括して計算し、後続のステップで人工工数カテゴリの作業区を新規登録する際に、汎用の人工工数能力をそれらに配賦します。もちろん、能力を作業区のレベルで定義することもできます。<br>ロジスティクス－生産－マスタデータ－作業区－能力－CR11-登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：颐宁公司的各人工工作中心的资源是共享的，它们的生产能力是可以调配使用的，所以我们在这个步骤将统一核算整个工厂的人工工时能力，在后面的步骤中，当新建人工工时类别的工作中心时，我们将通用人工工时能力分配给它们。当然能力也可以定义在工作中心这一层。<br>后勤－生产－主数据－工作中心－能力－CR11-创建</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t10/01_1_image810.png"><img src="assets/img/pp/t10/01_1_image810.png" alt="人工工数の能力を新規作成 · ステップ 1：解説：頤寧公司の各人工作業区のリソースは共有されており、それらの生産能力は割り当てて使用できます。そのため、このステップでは工場全体の人工工数能力を一括して計算し、後続のステップで人工工数カテゴリの作業区を新規登録する際に、汎用の人工工数能力をそれらに配賦します。もちろん、能力を作業区のレベルで定義することもできます。" loading="lazy" width="256" height="385"></a><figcaption><span class="n">画面 799</span><span class="src">image812.png · 256×385</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t10/01_2_image811.png"><img src="assets/img/pp/t10/01_2_image811.png" alt="人工工数の能力を新規作成 · ステップ 1：解説：頤寧公司の各人工作業区のリソースは共有されており、それらの生産能力は割り当てて使用できます。そのため、このステップでは工場全体の人工工数能力を一括して計算し、後続のステップで人工工数カテゴリの作業区を新規登録する際に、汎用の人工工数能力をそれらに配賦します。もちろん、能力を作業区のレベルで定義することもできます。" loading="lazy" width="465" height="462"></a><figcaption><span class="n">画面 800</span><span class="src">image813.png · 465×462</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t10/01_1_image810.png"><img src="assets/img/pp/t10/01_1_image810.png" alt="人工工数の能力を新規作成 · ステップ 1：解説：頤寧公司の各人工作業区のリソースは共有されており、それらの生産能力は割り当てて使用できます。そのため、このステップでは工場全体の人工工数能力を一括して計算し、後続のステップで人工工数カテゴリの作業区を新規登録する際に、汎用の人工工数能力をそれらに配賦します。もちろん、能力を作業区のレベルで定義することもできます。" loading="lazy" width="256" height="385"></a><figcaption><span class="n">画面 799</span><span class="src">image812.png · 256×385</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t10/01_2_image811.png"><img src="assets/img/pp/t10/01_2_image811.png" alt="人工工数の能力を新規作成 · ステップ 1：解説：頤寧公司の各人工作業区のリソースは共有されており、それらの生産能力は割り当てて使用できます。そのため、このステップでは工場全体の人工工数能力を一括して計算し、後続のステップで人工工数カテゴリの作業区を新規登録する際に、汎用の人工工数能力をそれらに配賦します。もちろん、能力を作業区のレベルで定義することもできます。" loading="lazy" width="465" height="462"></a><figcaption><span class="n">画面 800</span><span class="src">image813.png · 465×462</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">Labor は定義のみで、002 が工数です</p>
+<details class="orig"><summary>原文</summary><div class="zh">Labor 只是定义，002 是工时</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t10/02_1_image814.png"><img src="assets/img/pp/t10/02_1_image814.png" alt="人工工数の能力を新規作成 · ステップ 2：Labor は定義のみで、002 が工数です" loading="lazy" width="598" height="665"></a><figcaption><span class="n">画面 803</span><span class="src">image814.png · 598×665</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>単一能力数量は、分割して使用できる単一能力が 10 個あることを指します。たとえば、頤寧公司が常に班単位で管理している場合は、ここは班の数になります。個々の作業者単位で割り当てる場合は、ここは作業者の数になります。ここは、後述の工順の定義と定義上一致させておく必要があります。</div>
+<div class="note tip"><b class="t">教材ノート</b>能力利用 100 は、100% 有効に活用できることを表します。</div>
+<div class="note tip"><b class="t">教材ノート</b>有限計画に関係します。有限スケジューリングを行う際に、システムはこの能力の使用可能量と負荷量を考慮する必要があります。ここにチェックを入れた能力だけが、能力可用性チェックで考慮されます。</div>
+</li>
+</ol>
+<div class="steph" id="t11"><span class="no">タスク 11</span><h3>機械工数の能力を新規作成</h3><span class="tc">CR11</span><span class="tc2">2 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建机器工时能力<br></div></details>
+<div class="pathline" data-copy="解説：人工工数の能力と同様に、頤寧公司の各機械作業区のリソースも共有されています。ロジスティクス → 生産 → マスタデータ → 作業区 → 能力 → CR11-登録"><b>IMG パス（IMG 設定メニュー）</b>解説：人工工数の能力と同様に、頤寧公司の各機械作業区のリソースも共有されています。ロジスティクス → 生産 → マスタデータ → 作業区 → 能力 → CR11-登録</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>解释：和人工工时能力类似，颐宁公司的各机器工作中心的资源也是共享的。后勤 → 生产 → 主数据 → 工作中心 → 能力 → CR11-创建</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 人工工数の能力と同様に、頤寧公司の各機械作業区のリソースも共有されています。ロジスティクス－生産－マスタデータ－作業区－能力－CR11-登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：和人工工时能力类似，颐宁公司的各机器工作中心的资源也是共享的。后勤－生产－主数据－工作中心－能力－CR11-创建</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t11/01_1_image815.png"><img src="assets/img/pp/t11/01_1_image815.png" alt="機械工数の能力を新規作成 · ステップ 1：解説：人工工数の能力と同様に、頤寧公司の各機械作業区のリソースも共有されています。ロジスティクス－生産－マスタデータ－作業区－能力－CR11-登録" loading="lazy" width="348" height="209"></a><figcaption><span class="n">画面 804</span><span class="src">image815.png · 348×209</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 805）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t11/02_1_image816.png"><img src="assets/img/pp/t11/02_1_image816.png" alt="機械工数の能力を新規作成 · ステップ 2：image816.png" loading="lazy" width="593" height="686"></a><figcaption><span class="n">画面 805</span><span class="src">image816.png · 593×686</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t12"><span class="no">タスク 12</span><h3>人工工数タイプの作業区を新規作成</h3><span class="tc">CR01</span><span class="tc">KP26</span><span class="tc2">22 画面 / 15 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建人工工时类别工作中心<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 生産 → マスタデータ → 作業区 → 作業区 → CR01-登録"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 生産 → マスタデータ → 作業区 → 作業区 → CR01-登録</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 生产 → 主数据 → 工作中心 → 工作中心 → CR01-创建</code></div>
+<div class="note info"><b class="t">原理の説明</b>解説：頤寧公司には「品目準備」「切断」「組立」「検査と受渡」という、人工工数を主とする 4 つの作業区があります。</div>
+<ol class="oplist">
+<li>
+<p class="opcap">ロジスティクス－生産－マスタデータ－作業区－作業区－CR01-登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">后勤－生产－主数据－工作中心－工作中心－CR01-创建</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/01_1_image817.png"><img src="assets/img/pp/t12/01_1_image817.png" alt="人工工数タイプの作業区を新規作成 · ステップ 1：ロジスティクス－生産－マスタデータ－作業区－作業区－CR01-登録" loading="lazy" width="236" height="265"></a><figcaption><span class="n">画面 806</span><span class="src">image817.png · 236×265</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t12/01_2_image818.png"><img src="assets/img/pp/t12/01_2_image818.png" alt="人工工数タイプの作業区を新規作成 · ステップ 1：ロジスティクス－生産－マスタデータ－作業区－作業区－CR01-登録" loading="lazy" width="494" height="452"></a><figcaption><span class="n">画面 807</span><span class="src">image818.png · 494×452</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">Enter 後は次のとおり</p>
+<details class="orig"><summary>原文</summary><div class="zh">回车后如下所示</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/02_1_image819.png"><img src="assets/img/pp/t12/02_1_image819.png" alt="人工工数タイプの作業区を新規作成 · ステップ 2：Enter 後は次のとおり" loading="lazy" width="584" height="685"></a><figcaption><span class="n">画面 808</span><span class="src">image819.png · 584×685</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t12/02_2_image820.png"><img src="assets/img/pp/t12/02_2_image820.png" alt="人工工数タイプの作業区を新規作成 · ステップ 2：Enter 後は次のとおり" loading="lazy" width="599" height="511"></a><figcaption><span class="n">画面 809</span><span class="src">image820.png · 599×511</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">工数を「必須メンテナンス」に選択</p>
+<details class="orig"><summary>原文</summary><div class="zh">将工时选择为必须维护</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/03_1_image821.png"><img src="assets/img/pp/t12/03_1_image821.png" alt="人工工数タイプの作業区を新規作成 · ステップ 3：工数を「必須メンテナンス」に選択" loading="lazy" width="570" height="798"></a><figcaption><span class="n">画面 810</span><span class="src">image821.png · 570×798</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>「デフォルト値」をクリック</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 811）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/04_1_image822.png"><img src="assets/img/pp/t12/04_1_image822.png" alt="人工工数タイプの作業区を新規作成 · ステップ 4：image822.png" loading="lazy" width="628" height="693"></a><figcaption><span class="n">画面 811</span><span class="src">image822.png · 628×693</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">ZKM1 は以前に定義したデフォルト制御コードです<br>MIN は分を指す。「スケジューリング」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">ZKM1 是我们在之前定义的缺省控制码<br>MIN 是指分钟点击调度</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/05_1_image823.png"><img src="assets/img/pp/t12/05_1_image823.png" alt="人工工数タイプの作業区を新規作成 · ステップ 5：ZKM1 は以前に定義したデフォルト制御コードです MIN は分を指す。「スケジューリング」をクリック" loading="lazy" width="621" height="683"></a><figcaption><span class="n">画面 812</span><span class="src">image823.png · 621×683</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">「原価計算」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击成本核算</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/06_1_image824.png"><img src="assets/img/pp/t12/06_1_image824.png" alt="人工工数タイプの作業区を新規作成 · ステップ 6：「原価計算」をクリック" loading="lazy" width="643" height="818"></a><figcaption><span class="n">画面 813</span><span class="src">image824.png · 643×818</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">ここでは、CO モジュールで KP26 が完了していないため、作業タイプの分割の定義に進むことができません</p>
+<details class="orig"><summary>原文</summary><div class="zh">此处活动类型由于在 CO 模块未完成 KP26，故无法继续接下来定义切割</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/07_1_image825.png"><img src="assets/img/pp/t12/07_1_image825.png" alt="人工工数タイプの作業区を新規作成 · ステップ 7：ここでは、CO モジュールで KP26 が完了していないため、作業タイプの分割の定義に進むことができません" loading="lazy" width="347" height="361"></a><figcaption><span class="n">画面 814</span><span class="src">image825.png · 347×361</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/08_1_image826.png"><img src="assets/img/pp/t12/08_1_image826.png" alt="人工工数タイプの作業区を新規作成 · ステップ 8：image826.png" loading="lazy" width="600" height="728"></a><figcaption><span class="n">画面 815</span><span class="src">image826.png · 600×728</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 816）</span></p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t12/09_1_image827.png"><img src="assets/img/pp/t12/09_1_image827.png" alt="人工工数タイプの作業区を新規作成 · ステップ 9：image827.png" loading="lazy" width="642" height="677"></a><figcaption><span class="n">画面 816</span><span class="src">image827.png · 642×677</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t12/10_1_image828.png"><img src="assets/img/pp/t12/10_1_image828.png" alt="人工工数タイプの作業区を新規作成 · ステップ 9：image828.png" loading="lazy" width="613" height="666"></a><figcaption><span class="n">画面 817</span><span class="src">image828.png · 613×666</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t12/11_1_image829.png"><img src="assets/img/pp/t12/11_1_image829.png" alt="人工工数タイプの作業区を新規作成 · ステップ 9：image829.png" loading="lazy" width="620" height="603"></a><figcaption><span class="n">画面 818</span><span class="src">image829.png · 620×603</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/12_1_image830.png"><img src="assets/img/pp/t12/12_1_image830.png" alt="人工工数タイプの作業区を新規作成 · ステップ 10：image830.png" loading="lazy" width="357" height="377"></a><figcaption><span class="n">画面 819</span><span class="src">image830.png · 357×377</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t12/12_2_image831.png"><img src="assets/img/pp/t12/12_2_image831.png" alt="人工工数タイプの作業区を新規作成 · ステップ 10：image831.png" loading="lazy" width="626" height="639"></a><figcaption><span class="n">画面 820</span><span class="src">image831.png · 626×639</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">9995 組立</p>
+<details class="orig"><summary>原文</summary><div class="zh">9995 装配</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/13_1_image832.png"><img src="assets/img/pp/t12/13_1_image832.png" alt="人工工数タイプの作業区を新規作成 · ステップ 11：9995 組立" loading="lazy" width="608" height="597"></a><figcaption><span class="n">画面 821</span><span class="src">image832.png · 608×597</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/14_1_image833.png"><img src="assets/img/pp/t12/14_1_image833.png" alt="人工工数タイプの作業区を新規作成 · ステップ 12：image833.png" loading="lazy" width="639" height="693"></a><figcaption><span class="n">画面 822</span><span class="src">image833.png · 639×693</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 823）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/15_1_image834.png"><img src="assets/img/pp/t12/15_1_image834.png" alt="人工工数タイプの作業区を新規作成 · ステップ 13：image834.png" loading="lazy" width="591" height="611"></a><figcaption><span class="n">画面 823</span><span class="src">image834.png · 591×611</span></figcaption></figure>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t12/16_1_image835.png"><img src="assets/img/pp/t12/16_1_image835.png" alt="人工工数タイプの作業区を新規作成 · ステップ 14：image835.png" loading="lazy" width="610" height="646"></a><figcaption><span class="n">画面 824</span><span class="src">image835.png · 610×646</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t12/16_2_image836.png"><img src="assets/img/pp/t12/16_2_image836.png" alt="人工工数タイプの作業区を新規作成 · ステップ 14：image836.png" loading="lazy" width="571" height="605"></a><figcaption><span class="n">画面 825</span><span class="src">image836.png · 571×605</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t12/16_3_image837.png"><img src="assets/img/pp/t12/16_3_image837.png" alt="人工工数タイプの作業区を新規作成 · ステップ 14：image837.png" loading="lazy" width="581" height="440"></a><figcaption><span class="n">画面 826</span><span class="src">image837.png · 581×440</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">9996 検査と引渡</p>
+<details class="orig"><summary>原文</summary><div class="zh">9996 校验和交付</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t12/17_1_image838.png"><img src="assets/img/pp/t12/17_1_image838.png" alt="人工工数タイプの作業区を新規作成 · ステップ 15：9996 検査と引渡" loading="lazy" width="600" height="530"></a><figcaption><span class="n">画面 827</span><span class="src">image838.png · 600×530</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t13"><span class="no">タスク 13</span><h3>機械工数タイプの作業区を新規作成</h3><span class="tc">CR01</span><span class="tc2">10 画面 / 5 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建机器工时类别工作中心<br></div></details>
+<div class="pathline" data-copy="頤寧公司には「塗装」「予備組立」という、機械工数が主体の作業区が 2 つあります。本ステップでは 1 つずつ登録します。ロジスティクス → 生産 → マスタデータ → 作業区 → 作業区 → CR01-登録"><b>IMG パス（IMG 設定メニュー）</b>頤寧公司には「塗装」「予備組立」という、機械工数が主体の作業区が 2 つあります。本ステップでは 1 つずつ登録します。ロジスティクス → 生産 → マスタデータ → 作業区 → 作業区 → CR01-登録</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>颐宁公司有“油漆”，“ 预装配”这样两个以机器工时为主的工作中心，本步骤中逐个创建后勤 → 生产 → 主数据 → 工作中心 → 工作中心 → CR01-创建</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 828）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t13/01_1_image839.png"><img src="assets/img/pp/t13/01_1_image839.png" alt="機械工数タイプの作業区を新規作成 · ステップ 1：image839.png" loading="lazy" width="466" height="476"></a><figcaption><span class="n">画面 828</span><span class="src">image839.png · 466×476</span></figcaption></figure>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t13/02_1_image840.png"><img src="assets/img/pp/t13/02_1_image840.png" alt="機械工数タイプの作業区を新規作成 · ステップ 2：image840.png" loading="lazy" width="580" height="608"></a><figcaption><span class="n">画面 829</span><span class="src">image840.png · 580×608</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t13/02_2_image841.png"><img src="assets/img/pp/t13/02_2_image841.png" alt="機械工数タイプの作業区を新規作成 · ステップ 2：image841.png" loading="lazy" width="602" height="666"></a><figcaption><span class="n">画面 830</span><span class="src">image841.png · 602×666</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t13/02_3_image842.png"><img src="assets/img/pp/t13/02_3_image842.png" alt="機械工数タイプの作業区を新規作成 · ステップ 2：image842.png" loading="lazy" width="616" height="628"></a><figcaption><span class="n">画面 831</span><span class="src">image842.png · 616×628</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 832）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t13/03_1_image843.png"><img src="assets/img/pp/t13/03_1_image843.png" alt="機械工数タイプの作業区を新規作成 · ステップ 3：image843.png" loading="lazy" width="589" height="614"></a><figcaption><span class="n">画面 832</span><span class="src">image843.png · 589×614</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t13/04_1_image844.png"><img src="assets/img/pp/t13/04_1_image844.png" alt="機械工数タイプの作業区を新規作成 · ステップ 3：image844.png" loading="lazy" width="361" height="381"></a><figcaption><span class="n">画面 833</span><span class="src">image844.png · 361×381</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>予備組立作業区 9994 を登録</div>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t13/05_1_image845.png"><img src="assets/img/pp/t13/05_1_image845.png" alt="機械工数タイプの作業区を新規作成 · ステップ 4：image845.png" loading="lazy" width="603" height="626"></a><figcaption><span class="n">画面 834</span><span class="src">image845.png · 603×626</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t13/05_2_image846.png"><img src="assets/img/pp/t13/05_2_image846.png" alt="機械工数タイプの作業区を新規作成 · ステップ 4：image846.png" loading="lazy" width="602" height="618"></a><figcaption><span class="n">画面 835</span><span class="src">image846.png · 602×618</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t13/05_3_image847.png"><img src="assets/img/pp/t13/05_3_image847.png" alt="機械工数タイプの作業区を新規作成 · ステップ 4：image847.png" loading="lazy" width="607" height="686"></a><figcaption><span class="n">画面 836</span><span class="src">image847.png · 607×686</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 837）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t13/06_1_image848.png"><img src="assets/img/pp/t13/06_1_image848.png" alt="機械工数タイプの作業区を新規作成 · ステップ 5：image848.png" loading="lazy" width="621" height="628"></a><figcaption><span class="n">画面 837</span><span class="src">image848.png · 621×628</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t14"><span class="no">タスク 14</span><h3>工順を新規作成</h3><span class="tc">CA01</span><span class="tc2">20 画面 / 18 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建工艺路线<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 生産 → マスタデータ → 工順 → 工順 → 標準工順 → CA01-登録"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 生産 → マスタデータ → 工順 → 工順 → 標準工順 → CA01-登録</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 生产 → 主数据 → 工艺路线 → 工艺路线 → 标准工艺路线 → CA01-创建</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 頤寧公司には「品目準備」「切断」「組立」「検査と受渡」という、人工工数を主とする 4 つの作業区があります。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：颐宁公司有 “ 物料准备”，“ 切割”，“ 装配”，“ 校验和交付” 这样四个以人工工时为主的工作中心。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/01_1_image849.png"><img src="assets/img/pp/t14/01_1_image849.png" alt="工順を新規作成 · ステップ 1：解説：頤寧公司には「品目準備」「切断」「組立」「検査と受渡」という、人工工数を主とする 4 つの作業区があります。" loading="lazy" width="270" height="367"></a><figcaption><span class="n">画面 838</span><span class="src">image849.png · 270×367</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t14/01_2_image850.png"><img src="assets/img/pp/t14/01_2_image850.png" alt="工順を新規作成 · ステップ 1：解説：頤寧公司には「品目準備」「切断」「組立」「検査と受渡」という、人工工数を主とする 4 つの作業区があります。" loading="lazy" width="630" height="453"></a><figcaption><span class="n">画面 839</span><span class="src">image850.png · 630×453</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 840）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/02_1_image851.png"><img src="assets/img/pp/t14/02_1_image851.png" alt="工順を新規作成 · ステップ 2：image851.png" loading="lazy" width="909" height="830"></a><figcaption><span class="n">画面 840</span><span class="src">image851.png · 909×830</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>00109991P999ZKM1カバーと金属片の準備00209992P999ZKM1金属片の切断00309994P999ZKM1予備組立00409995P999ZKM1組立00509996P999ZKM1検査と引渡00109991P999ZKM1カバーと金属片の準備00209992P999ZKM1金属片の切断00309994P999ZKM1予備組立00409995P999ZKM1組立00509996P999ZKM1検査と引渡ステータス 4 は各種業務を実行できることを示します。工程をクリック</div>
+</li>
+<li>
+<p class="opcap">グループカウンタ：SAP では、工順はグループコードとグループカウンタの両方で採番されます。グループカウンタにより、1 つの製品に複数の工順を定義できます。たとえばロットサイズが異なる場合に別々の工順を使えます。ここでは工順を 1 つだけメンテナンスします。</p>
+<details class="orig"><summary>原文</summary><div class="zh">组计数器：SAP 中工艺路线是通过组编码和组计数器两者来编号的。组计数器可以定义一个产品的多条工艺路线。比如当不同的批量大小时可以用不同的工艺路线。我们这里只维护一条工艺路线。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/03_1_image852.png"><img src="assets/img/pp/t14/03_1_image852.png" alt="工順を新規作成 · ステップ 3：グループカウンタ：SAP では、工順はグループコードとグループカウンタの両方で採番されます。グループカウンタにより、1 つの製品に複数の工順を定義できます。たとえばロットサイズが異なる場合に別々の工順を使えます。ここでは工順を 1 つだけメンテナンスします。" loading="lazy" width="1183" height="466"></a><figcaption><span class="n">画面 841</span><span class="src">image852.png · 1183×466</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">Enter を押すか、工程 0010 をダブルクリックすると</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击回车后，或者双击 0010 工序后</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/04_1_image853.png"><img src="assets/img/pp/t14/04_1_image853.png" alt="工順を新規作成 · ステップ 4：Enter を押すか、工程 0010 をダブルクリックすると" loading="lazy" width="644" height="603"></a><figcaption><span class="n">画面 842</span><span class="src">image853.png · 644×603</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>前の手順で LAB を作業区に関連付けていないため、ここでメッセージが表示されます</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 843）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/05_1_image854.png"><img src="assets/img/pp/t14/05_1_image854.png" alt="工順を新規作成 · ステップ 5：image854.png" loading="lazy" width="1341" height="382"></a><figcaption><span class="n">画面 843</span><span class="src">image854.png · 1341×382</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「順序」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击顺序</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/06_1_image855.png"><img src="assets/img/pp/t14/06_1_image855.png" alt="工順を新規作成 · ステップ 6：「順序」をクリック" loading="lazy" width="1043" height="227"></a><figcaption><span class="n">画面 844</span><span class="src">image855.png · 1043×227</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 845）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/07_1_image856.png"><img src="assets/img/pp/t14/07_1_image856.png" alt="工順を新規作成 · ステップ 7：image856.png" loading="lazy" width="1068" height="341"></a><figcaption><span class="n">画面 845</span><span class="src">image856.png · 1068×341</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> ここで工順に対して 1 つの「標準順序」、すなわち先ほどの各工程を定義したことがわかります。しかし「鋳鋼ポンプ 170-300」の生産では、「塗装カバー」の工程は上記の金属板の切断と並行しています。次にこの並行する順序を定義します。「新規」ボタンをクリックします。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：我们看到现在我们为工艺路线定义了一条“标准顺序”，也就是刚才各道工序。但是在生产“铸钢泵 170-300”的过程中，“ 油漆罩壳”的工序是和上面的切割金属片并行的。下面我们来定义这个并行的顺序。点击新建按钮</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/08_1_image857.png"><img src="assets/img/pp/t14/08_1_image857.png" alt="工順を新規作成 · ステップ 8：解説：ここで工順に対して 1 つの「標準順序」、すなわち先ほどの各工程を定義したことがわかります。しかし「鋳鋼ポンプ 170-300」の生産では、「塗装カバー」の工程は上記の金属板の切断と並行しています。次にこの並行する順序を定義します。「新規」ボタンをクリックします。" loading="lazy" width="277" height="302"></a><figcaption><span class="n">画面 846</span><span class="src">image857.png · 277×302</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 847）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/09_1_image858.png"><img src="assets/img/pp/t14/09_1_image858.png" alt="工順を新規作成 · ステップ 9：image858.png" loading="lazy" width="711" height="318"></a><figcaption><span class="n">画面 847</span><span class="src">image858.png · 711×318</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">Enter 後</p>
+<details class="orig"><summary>原文</summary><div class="zh">回车后</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/10_1_image859.png"><img src="assets/img/pp/t14/10_1_image859.png" alt="工順を新規作成 · ステップ 10：Enter 後" loading="lazy" width="732" height="453"></a><figcaption><span class="n">画面 848</span><span class="src">image859.png · 732×453</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">工程分割 10 とは、0010 工程の完了後にこの並行作業を開始することを指します<br>戻り工程とは、この並行工程を完了した後に 0030 工程へ戻ってシーケンスをクリックすることを指します</p>
+<details class="orig"><summary>原文</summary><div class="zh">分工序 10 指完成 0010 工序后开始该并行作业<br>返回工序指完成该并行工序后，返回 0030 工序点击序列</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/11_1_image860.png"><img src="assets/img/pp/t14/11_1_image860.png" alt="工順を新規作成 · ステップ 11：工程分割 10 とは、0010 工程の完了後にこの並行作業を開始することを指します 戻り工程とは、この並行工程を完了した後に 0030 工程へ戻ってシーケンスをクリックすることを指します" loading="lazy" width="1072" height="911"></a><figcaption><span class="n">画面 849</span><span class="src">image860.png · 1072×911</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">0010 9993 P999 ZKM1 塗装カバー</p>
+<details class="orig"><summary>原文</summary><div class="zh">0010 9993 P999 ZKM1 油漆罩壳</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/12_1_image861.png"><img src="assets/img/pp/t14/12_1_image861.png" alt="工順を新規作成 · ステップ 12：0010 9993 P999 ZKM1 塗装カバー" loading="lazy" width="1362" height="452"></a><figcaption><span class="n">画面 850</span><span class="src">image861.png · 1362×452</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">新しい並行順序が登録されていることがわかります。次に、この並行順序を具体的に定義します。「順序 1」の行を選択し、「工程」をクリックします<br>明細行をダブルクリックすると工程 0010 になります。または Enter を押します</p>
+<details class="orig"><summary>原文</summary><div class="zh">我们看到已经新建了个并行顺序，下面来具体定义该并行顺序选中“顺序 1”行，点击工序<br>双击行项目，工序为0010，或者回车</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/13_1_image862.png"><img src="assets/img/pp/t14/13_1_image862.png" alt="工順を新規作成 · ステップ 13：新しい並行順序が登録されていることがわかります。次に、この並行順序を具体的に定義します。「順序 1」の行を選択し、「工程」をクリックします 明細行をダブルクリックすると工程 0010 になります。または Enter を押します" loading="lazy" width="951" height="884"></a><figcaption><span class="n">画面 851</span><span class="src">image862.png · 951×884</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「構成品目の割当」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击组件分配</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/14_1_image863.jpeg"><img src="assets/img/pp/t14/14_1_image863.jpeg" alt="工順を新規作成 · ステップ 14：「構成品目の割当」をクリック" loading="lazy" width="1217" height="407"></a><figcaption><span class="n">画面 852</span><span class="src">image863.jpeg · 1217×407</span></figcaption></figure>
+<div class="note info"><b class="t">原理の説明</b>解説：工程を定義したので、次に各種原材料をどの工程で投入するかを定義します。この画面は当該製品の…</div>
+</li>
+<li>
+<p class="opcap">BOM 構成品目</p>
+<details class="orig"><summary>原文</summary><div class="zh">BOM 组件</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/15_1_image864.png"><img src="assets/img/pp/t14/15_1_image864.png" alt="工順を新規作成 · ステップ 15：BOM 構成品目" loading="lazy" width="943" height="610"></a><figcaption><span class="n">画面 853</span><span class="src">image864.png · 943×610</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 投入する工程を直接入力することも、一覧から工程を選択することもできます。「工程活動一覧」をクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：我们可以直接填入投料的工序，也可以从清单中选择工序点击工序活动清单</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/16_1_image865.png"><img src="assets/img/pp/t14/16_1_image865.png" alt="工順を新規作成 · ステップ 16：解説：投入する工程を直接入力することも、一覧から工程を選択することもできます。「工程活動一覧」をクリックします" loading="lazy" width="508" height="356"></a><figcaption><span class="n">画面 854</span><span class="src">image865.png · 508×356</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">画面から分かるように、工程 20 と工程 10 は並行しています。工程 10 を選択し、「確認」をクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">从屏幕可以看出，工序 20 和工序 10 是平行的。选择工序 10，点击确认</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/17_1_image866.png"><img src="assets/img/pp/t14/17_1_image866.png" alt="工順を新規作成 · ステップ 17：画面から分かるように、工程 20 と工程 10 は並行しています。工程 10 を選択し、「確認」をクリックします" loading="lazy" width="880" height="610"></a><figcaption><span class="n">画面 855</span><span class="src">image866.png · 880×610</span></figcaption></figure>
+<div class="note info"><b class="t">原理の説明</b>解説：引き続き品目の配賦を行います。最終結果は次のとおりで、最後に「保存」をクリックします</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 856）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t14/18_1_image867.png"><img src="assets/img/pp/t14/18_1_image867.png" alt="工順を新規作成 · ステップ 18：image867.png" loading="lazy" width="1179" height="374"></a><figcaption><span class="n">画面 856</span><span class="src">image867.png · 1179×374</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="assets/img/pp/t14/19_1_image868.png"><img src="assets/img/pp/t14/19_1_image868.png" alt="工順を新規作成 · ステップ 18：image868.png" loading="lazy" width="403" height="60"></a><figcaption><span class="n">画面 857</span><span class="src">image868.png · 403×60</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t15"><span class="no">タスク 15</span><h3>工程分割</h3><span class="tc">CA02</span><span class="tc2">6 画面 / 4 ステップ</span></div>
+<p>解説：頤寧公司の人工能力と機械能力は、いずれも 10 の能力単位で構成されています。完成品の工順で、製造指図を 1 つの能力単位で順に生産するのか、製造指図の数量を各能力単位に分割して生産するのかを決定する必要があります。この制御パラメータは各工程にあり、指図の日程計画の時間に影響します。本ステップでは、工順のすべての工程を能力単位で分割する必要があるように設定します。</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】拆分工序<br>解释：颐宁公司的人工类产能和机器产能都是由 10 组产能单位构成的。我们需要在产成品的工艺路线中决定，生产订单是在一个产能单位上顺序生产，还是要将生产订单的数量拆分到各产能单位上生产。这个控制参数是在各工序上的，它会影响订单排程的时间。本步骤中，我们将工艺路线中的所有工序都设定为需要按产能单位拆分</div></details>
+<div class="pathline" data-copy="ロジスティクス → 生産 → マスタデータ → 工順 → 工順 → 標準工順 → CA02-変更"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 生産 → マスタデータ → 工順 → 工順 → 標準工順 → CA02-変更</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 生产 → 主数据 → 工艺路线 → 工艺路线 → 标准工艺路线 → CA02-更改</code></div>
+<table class="tbl vals"><thead><tr><th>項目（日本語）</th><th>画面の中国語</th><th>教材の設定値</th></tr></thead><tbody><tr><td>「順序」をダブルクリック</td><td><code>双击顺序</code></td><td>1</td></tr><tr><td>「工程」をダブルクリック</td><td><code>双击工序</code></td><td>0010</td></tr></tbody></table>
+<ol class="oplist">
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t15/01_1_image869.png"><img src="assets/img/pp/t15/01_1_image869.png" alt="工程分割 · ステップ 1：image869.png" loading="lazy" width="617" height="643"></a><figcaption><span class="n">画面 858</span><span class="src">image869.png · 617×643</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">ロジスティクス－生産－マスタデータ－工順－工順—標準工順－CA02-変更<br>「工程」をクリックすると次の画面へ進む</p>
+<details class="orig"><summary>原文</summary><div class="zh">后勤－生产－主数据－工艺路线－工艺路线—标准工艺路线－CA02-更改<br>点击工序进入如下页面</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t15/02_1_image870.jpeg"><img src="assets/img/pp/t15/02_1_image870.jpeg" alt="工程分割 · ステップ 2：ロジスティクス－生産－マスタデータ－工順－工順—標準工順－CA02-変更 「工程」をクリックすると次の画面へ進む" loading="lazy" width="1376" height="408"></a><figcaption><span class="n">画面 859</span><span class="src">image870.jpeg · 1376×408</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「工程 0010」をダブルクリックして進みます</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击“工序 0010 ”，进入</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t15/03_1_image871.png"><img src="assets/img/pp/t15/03_1_image871.png" alt="工程分割 · ステップ 3：「工程 0010」をダブルクリックして進みます" loading="lazy" width="1084" height="530"></a><figcaption><span class="n">画面 860</span><span class="src">image871.png · 1084×530</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>分割で必要な分解を選択して「保存」をクリックします。ただし、他の工程の順序も変更する必要があります</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 861）</span></p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t15/04_1_image872.png"><img src="assets/img/pp/t15/04_1_image872.png" alt="工程分割 · ステップ 4：image872.png" loading="lazy" width="1083" height="428"></a><figcaption><span class="n">画面 861</span><span class="src">image872.png · 1083×428</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t15/05_1_image873.png"><img src="assets/img/pp/t15/05_1_image873.png" alt="工程分割 · ステップ 4：image873.png" loading="lazy" width="1293" height="860"></a><figcaption><span class="n">画面 862</span><span class="src">image873.png · 1293×860</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t15/06_1_image874.jpeg"><img src="assets/img/pp/t15/06_1_image874.jpeg" alt="工程分割 · ステップ 4：image874.jpeg" loading="lazy" width="1214" height="797"></a><figcaption><span class="n">画面 863</span><span class="src">image874.jpeg · 1214×797</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材ノート</b>「所要分解」の前のチェックボックスにチェックを入れ、保存します</div>
+</li>
+</ol>
+<div class="steph" id="t16"><span class="no">タスク 16</span><h3>完成品の生産計画ビューを新規作成</h3><span class="tc2">4 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建产产品的生产计划视图<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 生産 → マスタデータ → 品目マスタ → 品目 → 登録（特殊） → MMF1-完成品"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 生産 → マスタデータ → 品目マスタ → 品目 → 登録（特殊） → MMF1-完成品</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 生产 → 主数据 → 物料主数据 → 物料 → 创建（特殊） → MMF1-成品</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">ロジスティクス－生産－マスタデータ－品目マスタ－品目－登録（特殊）－MMF1-完成品</p>
+<details class="orig"><summary>原文</summary><div class="zh">后勤－生产－主数据－物料主数据－物料－创建（特殊）－MMF1-成品</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t16/01_1_image875.png"><img src="assets/img/pp/t16/01_1_image875.png" alt="完成品の生産計画ビューを新規作成 · ステップ 1：ロジスティクス－生産－マスタデータ－品目マスタ－品目－登録（特殊）－MMF1-完成品" loading="lazy" width="476" height="285"></a><figcaption><span class="n">画面 864</span><span class="src">image875.png · 476×285</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> MM では、完成品（FERT）の生産計画ビューをメンテナンスしていません。<br>作業計画ビューを選択</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：MM 中，我们没有维护产成品的生产计划视图。<br>选择工作计划视图</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t16/02_1_image876.png"><img src="assets/img/pp/t16/02_1_image876.png" alt="完成品の生産計画ビューを新規作成 · ステップ 2：解説：MM では、完成品（FERT）の生産計画ビューをメンテナンスしていません。 作業計画ビューを選択" loading="lazy" width="346" height="707"></a><figcaption><span class="n">画面 865</span><span class="src">image876.png · 346×707</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 866）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t16/03_1_image877.png"><img src="assets/img/pp/t16/03_1_image877.png" alt="完成品の生産計画ビューを新規作成 · ステップ 3：image877.png" loading="lazy" width="543" height="248"></a><figcaption><span class="n">画面 866</span><span class="src">image877.png · 543×248</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t16/04_1_image878.png"><img src="assets/img/pp/t16/04_1_image878.png" alt="完成品の生産計画ビューを新規作成 · ステップ 3：image878.png" loading="lazy" width="772" height="652"></a><figcaption><span class="n">画面 867</span><span class="src">image878.png · 772×652</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t17"><span class="no">タスク 17</span><h3>原価構成構造を定義</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">16 画面 / 14 ステップ</span></div>
+<p>Z1 を選択し、左側の欄の「属性付き原価コンポーネント」をダブルクリックします。</p>
+<p>解説：</p>
+<p>原価シェアを管理します。変動費。変動費のみが製品原価見積に表示されます</p>
+<p>Z1 を選択して有効を選択し、左側の「属性付き原価コンポーネント」をダブルクリックします</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义成本构成结构<br>选中 Z1，双击左栏的“带有属性的成本组件”。<br>解释：<br>控制成本份额。可变成本。只有可变成本会在产品成本估算中显示<br>选中 Z1 选择有效，然后双击左栏“带有属性的成本组件”</div></details>
+<div class="pathline" data-copy="管理会計 → 製品原価管理 → 製品原価計画 → 品目原価計算の基本設定 → 原価構成構造の定義"><b>IMG パス（IMG 設定メニュー）</b>管理会計 → 製品原価管理 → 製品原価計画 → 品目原価計算の基本設定 → 原価構成構造の定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>控制 → 产品成本控制 → 产品成本计划 → 物料成本核算的基本设置 → 定义成本构成结构</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 頤寧公司が生産する「鋳鋼ポンプ 170-230」の BOM と工順はすでにシステムにメンテナンスされています。次に、この完成品の標準原価を計算できます。製品原価は PP と CO の最も重要な統合点です。本ステップでは、IMG 設定で製品原価に関連する重要なパラメータ「原価構成構造」を設定する必要があります。原価構成では、頤寧公司の製品原価がどのように構成されるか、各原価構成と原価要素の関係がどのようになっているかを定義し、さらに原価構成構造をプラントに配賦します。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：颐宁公司生产的“铸钢泵 170-230”的 BOM 和工艺路线已经在系统里维护，接下 来我们可以计算该产成品的标准成本了。产品成本是 PP 和 CO 最重要的集成。本步骤我们需要在后台配置和产品成本有关的一个重要参数：“ 成本构成结构”。在成本结构中我们定义颐宁公司的产品成本是如何构成的，各成本构成和成本要素的关系怎样的，并且将成本构成结构分配给工厂</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/01_1_image879.png"><img src="assets/img/pp/t17/01_1_image879.png" alt="原価構成構造を定義 · ステップ 1：解説：頤寧公司が生産する「鋳鋼ポンプ 170-230」の BOM と工順はすでにシステムにメンテナンスされています。次に、この完成品の標準原価を計算できます。製品原価は PP と CO の最も重要な統合点です。本ステップでは、IMG 設定で製品原価に関連する重要なパラメータ「原価構成構造」を設定する必要があります。原価" loading="lazy" width="372" height="513"></a><figcaption><span class="n">画面 868</span><span class="src">image879.png · 372×513</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 869）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/02_1_image880.png"><img src="assets/img/pp/t17/02_1_image880.png" alt="原価構成構造を定義 · ステップ 2：image880.png" loading="lazy" width="810" height="606"></a><figcaption><span class="n">画面 869</span><span class="src">image880.png · 810×606</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> この画面の左側は「原価コンポーネント構造」パラメータの各階層をメンテナンスする領域です。現在は最上位にいるため、画面の右側にはシステムに既に存在する原価コンポーネント構造の一覧が表示されています。新しい原価コンポーネント構造を定義します。「新規エントリ」をクリックします。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：该屏幕的左侧是维护“成本构成结构”参数的各层次。现在我们在最上层，因此屏幕的右侧是目前系统中已经有的成本构成结构的清单。我们要定义一个新的成本构成结构。点击新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/03_1_image881.png"><img src="assets/img/pp/t17/03_1_image881.png" alt="原価構成構造を定義 · ステップ 3：解説：この画面の左側は「原価コンポーネント構造」パラメータの各階層をメンテナンスする領域です。現在は最上位にいるため、画面の右側にはシステムに既に存在する原価コンポーネント構造の一覧が表示されています。新しい原価コンポーネント構造を定義します。「新規エントリ」をクリックします。" loading="lazy" width="832" height="355"></a><figcaption><span class="n">画面 870</span><span class="src">image881.png · 832×355</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">ポップアップ内で「新規エントリ」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">在弹出框中，点击新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/04_1_image882.png"><img src="assets/img/pp/t17/04_1_image882.png" alt="原価構成構造を定義 · ステップ 4：ポップアップ内で「新規エントリ」をクリック" loading="lazy" width="967" height="779"></a><figcaption><span class="n">画面 871</span><span class="src">image882.png · 967×779</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">原価コンポーネントの集約。この原価コンポーネントの原価が、より上位の製品の同じ原価コンポーネントの原価に集約されることを指します。左欄の「設定-原価コンポーネント-原価要素範囲」をダブルクリック<br>「新規エントリ」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">汇总成本组件。指该成本组件的成本将被汇总到更高一层的产品的该成本组件成本中双击左栏“设置-成本组件-成本要素区间”<br>点击新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/05_1_image883.png"><img src="assets/img/pp/t17/05_1_image883.png" alt="原価構成構造を定義 · ステップ 5：原価コンポーネントの集約。この原価コンポーネントの原価が、より上位の製品の同じ原価コンポーネントの原価に集約されることを指します。左欄の「設定-原価コンポーネント-原価要素範囲」をダブルクリック 「新規エントリ」をクリック" loading="lazy" width="1096" height="216"></a><figcaption><span class="n">画面 872</span><span class="src">image883.png · 1096×216</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">左側の欄の「設定-組織-原価コンポーネントレイアウト」をダブルクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击左栏“设置-组织-成本构成格式”</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/06_1_image884.png"><img src="assets/img/pp/t17/06_1_image884.png" alt="原価構成構造を定義 · ステップ 6：左側の欄の「設定-組織-原価コンポーネントレイアウト」をダブルクリックします" loading="lazy" width="1472" height="396"></a><figcaption><span class="n">画面 873</span><span class="src">image884.png · 1472×396</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>++++ ++++ ++++ 01.01.2021 Z1 頤寧原価コンポーネント構造</div>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> ここでは、新しく登録した原価構成構造を、該当する会社コード、プラント、原価計算バリアントおよび一定の有効期間に割り当てます<br>「新規エントリ」を押す</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：我们在这里将我们新建的成本构成结构分配给相关的公司代码，工厂，成本核算变式和一定的有效期<br>按新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/07_1_image885.png"><img src="assets/img/pp/t17/07_1_image885.png" alt="原価構成構造を定義 · ステップ 7：解説：ここでは、新しく登録した原価構成構造を、該当する会社コード、プラント、原価計算バリアントおよび一定の有効期間に割り当てます 「新規エントリ」を押す" loading="lazy" width="1447" height="331"></a><figcaption><span class="n">画面 874</span><span class="src">image885.png · 1447×331</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">原価コンポーネント構造の定義の最上位に戻り、この原価コンポーネント構造を有効化します。つまり「有効」にチェックを入れます</p>
+<details class="orig"><summary>原文</summary><div class="zh">我们回到成本构成结构定义的最上层，然后激活该成本构成结构，即勾选有效</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/08_1_image886.png"><img src="assets/img/pp/t17/08_1_image886.png" alt="原価構成構造を定義 · ステップ 8：原価コンポーネント構造の定義の最上位に戻り、この原価コンポーネント構造を有効化します。つまり「有効」にチェックを入れます" loading="lazy" width="874" height="321"></a><figcaption><span class="n">画面 875</span><span class="src">image886.png · 874×321</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/09_1_image887.png"><img src="assets/img/pp/t17/09_1_image887.png" alt="原価構成構造を定義 · ステップ 9：image887.png" loading="lazy" width="1006" height="725"></a><figcaption><span class="n">画面 876</span><span class="src">image887.png · 1006×725</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 先ほどはこの原価構成構造の中の 1 つの原価コンポーネントだけを定義しました。続けて、機械工数、人工工数、準備工数の原価をそれぞれ 3 つの原価コンポーネントとして定義します。<br>「新規エントリ」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释，我们刚才只定义了该成本构成结构中的一个成本组件，现在我们接着将机器工时，人工工时和准备工时成本分别定义成三个成本组件<br>点击新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/10_1_image888.png"><img src="assets/img/pp/t17/10_1_image888.png" alt="原価構成構造を定義 · ステップ 10：解説：先ほどはこの原価構成構造の中の 1 つの原価コンポーネントだけを定義しました。続けて、機械工数、人工工数、準備工数の原価をそれぞれ 3 つの原価コンポーネントとして定義します。 「新規エントリ」をクリック" loading="lazy" width="1143" height="229"></a><figcaption><span class="n">画面 877</span><span class="src">image888.png · 1143×229</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">左側の「原価コンポーネント構造」をダブルクリックし、同じ方法で 030、040 を設定します。</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击左栏“成本组件结构”用同样的办法吧 030，040 设置好。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/11_1_image889.png"><img src="assets/img/pp/t17/11_1_image889.png" alt="原価構成構造を定義 · ステップ 11：左側の「原価コンポーネント構造」をダブルクリックし、同じ方法で 030、040 を設定します。" loading="lazy" width="1002" height="723"></a><figcaption><span class="n">画面 878</span><span class="src">image889.png · 1002×723</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 879）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/12_1_image890.png"><img src="assets/img/pp/t17/12_1_image890.png" alt="原価構成構造を定義 · ステップ 12：image890.png" loading="lazy" width="1111" height="275"></a><figcaption><span class="n">画面 879</span><span class="src">image890.png · 1111×275</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t17/13_1_image891.png"><img src="assets/img/pp/t17/13_1_image891.png" alt="原価構成構造を定義 · ステップ 12：image891.png" loading="lazy" width="1036" height="723"></a><figcaption><span class="n">画面 880</span><span class="src">image891.png · 1036×723</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">完了後、「戻る」をクリックし、</p>
+<details class="orig"><summary>原文</summary><div class="zh">完成后，点击返回，</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/14_1_image892.png"><img src="assets/img/pp/t17/14_1_image892.png" alt="原価構成構造を定義 · ステップ 13：完了後、「戻る」をクリックし、" loading="lazy" width="877" height="320"></a><figcaption><span class="n">画面 881</span><span class="src">image892.png · 877×320</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t17/14_2_image893.png"><img src="assets/img/pp/t17/14_2_image893.png" alt="原価構成構造を定義 · ステップ 13：完了後、「戻る」をクリックし、" loading="lazy" width="1114" height="339"></a><figcaption><span class="n">画面 882</span><span class="src">image893.png · 1114×339</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">左側の欄の「原価コンポーネント構造」をダブルクリックします<br>Z1 以外の原価コンポーネントの有効チェックをすべて外して保存します。</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击左栏的“成本组件结构”<br>将除 Z1 外的成本结构组件的有效勾都去掉，保存。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t17/15_1_image894.png"><img src="assets/img/pp/t17/15_1_image894.png" alt="原価構成構造を定義 · ステップ 14：左側の欄の「原価コンポーネント構造」をダブルクリックします Z1 以外の原価コンポーネントの有効チェックをすべて外して保存します。" loading="lazy" width="904" height="379"></a><figcaption><span class="n">画面 883</span><span class="src">image894.png · 904×379</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t18"><span class="no">タスク 18</span><h3>評価バリアントを定義</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">7 画面 / 7 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义估计变式<br></div></details>
+<div class="pathline" data-copy="管理会計 → 製品原価管理 → 製品原価計画 → 数量構成付き原価見積 → 原価計算バリアント：コンポーネント → 評価バリアントの定義"><b>IMG パス（IMG 設定メニュー）</b>管理会計 → 製品原価管理 → 製品原価計画 → 数量構成付き原価見積 → 原価計算バリアント：コンポーネント → 評価バリアントの定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>控制 → 产品成本控制 → 产品成本计划 → 带数量结构的成本估算 → 成本核算变式：组件 → 定义评估变式</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">管理会計－製品原価管理－製品原価計画－数量構成付き原価見積－原価計算バリアント：コンポーネント－評価バリアントの定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">控制－产品成本控制－产品成本计划－带数量结构的成本估算－成本核算变式：组件－定义评估变式</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t18/01_1_image895.png"><img src="assets/img/pp/t18/01_1_image895.png" alt="評価バリアントを定義 · ステップ 1：管理会計－製品原価管理－製品原価計画－数量構成付き原価見積－原価計算バリアント：コンポーネント－評価バリアントの定義" loading="lazy" width="433" height="822"></a><figcaption><span class="n">画面 884</span><span class="src">image895.png · 433×822</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 製品原価計算で最も重要なパラメータは「原価計算バリアント」で、これは 21 で学びます。原価計算バリアントは、原価計算のさまざまな側面を定義するより小さなパラメータから構成されており、そのうち本ステップは、品目、作業、外注、外部加工、間接費などの評価基準の定義に関するもので、SAP ではこれを評価バリアントと呼びます。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：在产品成本核算中，最重要的参数是“成本核算变式”，我们将在 21 学到。成本核算变式又是由定义成本核算不同方面的较小的参数构成的，其中本步骤是与定义物料、作业、外包、外部加工、间接费用等的估价标准相关的，SAP 称之为评估变式</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t18/02_1_image896.png"><img src="assets/img/pp/t18/02_1_image896.png" alt="評価バリアントを定義 · ステップ 2：解説：製品原価計算で最も重要なパラメータは「原価計算バリアント」で、これは 21 で学びます。原価計算バリアントは、原価計算のさまざまな側面を定義するより小さなパラメータから構成されており、そのうち本ステップは、品目、作業、外注、外部加工、間接費などの評価基準の定義に関するもので、SAP ではこれを評価バリアントと呼び" loading="lazy" width="320" height="605"></a><figcaption><span class="n">画面 885</span><span class="src">image896.png · 320×605</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> システムにすでにある評価バリアントを利用します<br>「評価バリアント：001」をダブルクリックして進みます</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：我们利用系统已经有的估价变式<br>双击“评估变式：001 ”，进入</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t18/03_1_image897.png"><img src="assets/img/pp/t18/03_1_image897.png" alt="評価バリアントを定義 · ステップ 3：解説：システムにすでにある評価バリアントを利用します 「評価バリアント：001」をダブルクリックして進みます" loading="lazy" width="686" height="450"></a><figcaption><span class="n">画面 886</span><span class="src">image897.png · 686×450</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>評価バリアント。「戻る」をクリックします。007 をダブルクリックし、次のように設定します</div>
+</li>
+<li>
+<p class="opcap">評価バリアント 001 はシステムにあらかじめ用意された品目計画の評価バリアントです。今後の操作では 001 を品目として使用します</p>
+<details class="orig"><summary>原文</summary><div class="zh">估价变式 001 是系统预设的物料计划估价变式。我们将在以后的操作中使用 001 作为物料</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t18/04_1_image898.png"><img src="assets/img/pp/t18/04_1_image898.png" alt="評価バリアントを定義 · ステップ 4：評価バリアント 001 はシステムにあらかじめ用意された品目計画の評価バリアントです。今後の操作では 001 を品目として使用します" loading="lazy" width="635" height="465"></a><figcaption><span class="n">画面 887</span><span class="src">image898.png · 635×465</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">007 は指図の実績原価の計算で使用されます。ここでその設定も確認してみます。「評価バリアント/プラント」をクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">007 将被用于订单实际成本的计算中。我们也来查看一下它的配置。点击评估变式/工厂</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t18/05_1_image899.png"><img src="assets/img/pp/t18/05_1_image899.png" alt="評価バリアントを定義 · ステップ 5：007 は指図の実績原価の計算で使用されます。ここでその設定も確認してみます。「評価バリアント/プラント」をクリックします" loading="lazy" width="652" height="809"></a><figcaption><span class="n">画面 888</span><span class="src">image899.png · 652×809</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>「新規エントリ」をクリック</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 889）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t18/06_1_image900.png"><img src="assets/img/pp/t18/06_1_image900.png" alt="評価バリアントを定義 · ステップ 6：image900.png" loading="lazy" width="531" height="460"></a><figcaption><span class="n">画面 889</span><span class="src">image900.png · 531×460</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「戻る」を 2 回クリックし、その後「保存」をクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击两次返回，然后点击保存</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t18/07_1_image901.png"><img src="assets/img/pp/t18/07_1_image901.png" alt="評価バリアントを定義 · ステップ 7：「戻る」を 2 回クリックし、その後「保存」をクリックします" loading="lazy" width="612" height="351"></a><figcaption><span class="n">画面 890</span><span class="src">image901.png · 612×351</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t19"><span class="no">タスク 19</span><h3>日付制御を定義</h3><span class="tc2">3 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义日期控制<br></div></details>
+<div class="pathline" data-copy="管理会計 → 製品原価管理 → 製品原価計画 → 数量構成付き原価見積 → 原価計算バリアント：コンポーネント → 日付制御の定義"><b>IMG パス（IMG 設定メニュー）</b>管理会計 → 製品原価管理 → 製品原価計画 → 数量構成付き原価見積 → 原価計算バリアント：コンポーネント → 日付制御の定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>控制 → 产品成本控制 → 产品成本计划 → 带数量结构的成本估算 → 成本核算变式：组件 → 定义日期控制</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 日付管理も原価計算バリアントの中のパラメータの一つです。原価計算において日付に関連する内容を管理します。IMG 設定</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：日期控制也是成本核算变式中的一个参数。它控制成本核算中和日期相关的内容。后台</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t19/01_1_image902.png"><img src="assets/img/pp/t19/01_1_image902.png" alt="日付制御を定義 · ステップ 1：解説：日付管理も原価計算バリアントの中のパラメータの一つです。原価計算において日付に関連する内容を管理します。IMG 設定" loading="lazy" width="381" height="596"></a><figcaption><span class="n">画面 891</span><span class="src">image902.png · 381×596</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 892）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t19/02_1_image903.png"><img src="assets/img/pp/t19/02_1_image903.png" alt="日付制御を定義 · ステップ 2：image903.png" loading="lazy" width="404" height="493"></a><figcaption><span class="n">画面 892</span><span class="src">image903.png · 404×493</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「新規エントリ」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t19/03_1_image904.png"><img src="assets/img/pp/t19/03_1_image904.png" alt="日付制御を定義 · ステップ 3：「新規エントリ」をクリック" loading="lazy" width="659" height="431"></a><figcaption><span class="n">画面 893</span><span class="src">image904.png · 659×431</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t20"><span class="no">タスク 20</span><h3>数量構成の制御を定義</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc">PC01</span><span class="tc2">8 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义数量结构控制<br></div></details>
+<div class="pathline" data-copy="管理会計 → 製品原価管理 → 製品原価計画 → 数量構成付き原価見積 → 原価計算バリアント：コンポーネント → 数量構成制御の定義"><b>IMG パス（IMG 設定メニュー）</b>管理会計 → 製品原価管理 → 製品原価計画 → 数量構成付き原価見積 → 原価計算バリアント：コンポーネント → 数量構成制御の定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>控制 → 产品成本控制 → 产品成本计划 → 带数量结构的成本估算 → 成本核算变式：组件 → 定义数量结构控制</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 「数量構成管理」も原価計算バリアントの中のパラメータの一つです。SAP では、製品原価に関連する場<br>「数量構成」と言えば、実際には BOM と工順を指します。したがって数量構成制御は、主に原価計算で BOM と工順をどのように選択するかを制御するものです。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：“ 数量结构控制” 也是成本核算变式中的一个参数，在 SAP 中在和产品成本相关的场<br>合谈到“数量结构”，其实就是指 BOM 和工艺路线，所以数量结构控制主要是控制系统如何选取 BOM 和工艺路线用于成本核算。</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t20/01_1_image905.png"><img src="assets/img/pp/t20/01_1_image905.png" alt="数量構成の制御を定義 · ステップ 1：解説：「数量構成管理」も原価計算バリアントの中のパラメータの一つです。SAP では、製品原価に関連する場 「数量構成」と言えば、実際には BOM と工順を指します。したがって数量構成制御は、主に原価計算で BOM と工順をどのように選択するかを制御するものです。" loading="lazy" width="428" height="541"></a><figcaption><span class="n">画面 894</span><span class="src">image907.png · 428×541</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t20/01_2_image906.png"><img src="assets/img/pp/t20/01_2_image906.png" alt="数量構成の制御を定義 · ステップ 1：解説：「数量構成管理」も原価計算バリアントの中のパラメータの一つです。SAP では、製品原価に関連する場 「数量構成」と言えば、実際には BOM と工順を指します。したがって数量構成制御は、主に原価計算で BOM と工順をどのように選択するかを制御するものです。" loading="lazy" width="572" height="479"></a><figcaption><span class="n">画面 895</span><span class="src">image908.png · 572×479</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t20/01_1_image905.png"><img src="assets/img/pp/t20/01_1_image905.png" alt="数量構成の制御を定義 · ステップ 1：解説：「数量構成管理」も原価計算バリアントの中のパラメータの一つです。SAP では、製品原価に関連する場 「数量構成」と言えば、実際には BOM と工順を指します。したがって数量構成制御は、主に原価計算で BOM と工順をどのように選択するかを制御するものです。" loading="lazy" width="428" height="541"></a><figcaption><span class="n">画面 894</span><span class="src">image907.png · 428×541</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t20/01_2_image906.png"><img src="assets/img/pp/t20/01_2_image906.png" alt="数量構成の制御を定義 · ステップ 1：解説：「数量構成管理」も原価計算バリアントの中のパラメータの一つです。SAP では、製品原価に関連する場 「数量構成」と言えば、実際には BOM と工順を指します。したがって数量構成制御は、主に原価計算で BOM と工順をどのように選択するかを制御するものです。" loading="lazy" width="572" height="479"></a><figcaption><span class="n">画面 895</span><span class="src">image908.png · 572×479</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">PC01 の行をダブルクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击 PC01 行</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t20/02_1_image909.png"><img src="assets/img/pp/t20/02_1_image909.png" alt="数量構成の制御を定義 · ステップ 2：PC01 の行をダブルクリック" loading="lazy" width="740" height="496"></a><figcaption><span class="n">画面 898</span><span class="src">image909.png · 740×496</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>PC01 の左側の「新規作成」をクリック</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 899）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t20/03_1_image910.png"><img src="assets/img/pp/t20/03_1_image910.png" alt="数量構成の制御を定義 · ステップ 3：image910.png" loading="lazy" width="683" height="787"></a><figcaption><span class="n">画面 899</span><span class="src">image910.png · 683×787</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t20/04_1_image911.png"><img src="assets/img/pp/t20/04_1_image911.png" alt="数量構成の制御を定義 · ステップ 3：image911.png" loading="lazy" width="728" height="512"></a><figcaption><span class="n">画面 900</span><span class="src">image911.png · 728×512</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>「新規エントリ」をクリック</div>
+</li>
+<li>
+<p class="opcap">「パス」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击路径</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t20/05_1_image912.jpeg"><img src="assets/img/pp/t20/05_1_image912.jpeg" alt="数量構成の制御を定義 · ステップ 4：「パス」をクリック" loading="lazy" width="858" height="537"></a><figcaption><span class="n">画面 901</span><span class="src">image912.jpeg · 858×537</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>保存</div>
+</li>
+</ol>
+<div class="steph" id="t21"><span class="no">タスク 21</span><h3>原価計算バリアントを定義</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">3 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义成本核算变式<br></div></details>
+<div class="pathline" data-copy="管理会計 → 製品原価管理（生産） → 製品原価計画 → 数量構成付き原価見積 → 原価計算バリアントの定義"><b>IMG パス（IMG 設定メニュー）</b>管理会計 → 製品原価管理（生産） → 製品原価計画 → 数量構成付き原価見積 → 原価計算バリアントの定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>控制 → 产品成本控制生产 → 产品成本计划 → 带数量结构的成本估算 → 定义成本核算变式</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">管理会計－製品原価管理（生産）－製品原価計画－数量構成付き原価見積－原価計算バリアントの定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">控制－产品成本控制生产－产品成本计划－带数量结构的成本估算－定义成本核算变式</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t21/01_1_image913.png"><img src="assets/img/pp/t21/01_1_image913.png" alt="原価計算バリアントを定義 · ステップ 1：管理会計－製品原価管理（生産）－製品原価計画－数量構成付き原価見積－原価計算バリアントの定義" loading="lazy" width="549" height="615"></a><figcaption><span class="n">画面 902</span><span class="src">image913.png · 549×615</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">PPC1 をコピーして変更</p>
+<details class="orig"><summary>原文</summary><div class="zh">复制 PPC1 并修改</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t21/02_1_image914.jpeg"><img src="assets/img/pp/t21/02_1_image914.jpeg" alt="原価計算バリアントを定義 · ステップ 2：PPC1 をコピーして変更" loading="lazy" width="662" height="569"></a><figcaption><span class="n">画面 903</span><span class="src">image914.jpeg · 662×569</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">「更新」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击更新</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t21/03_1_image915.jpeg"><img src="assets/img/pp/t21/03_1_image915.jpeg" alt="原価計算バリアントを定義 · ステップ 3：「更新」をクリック" loading="lazy" width="687" height="575"></a><figcaption><span class="n">画面 904</span><span class="src">image915.jpeg · 687×575</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t22"><span class="no">タスク 22</span><h3>製品原価見積を新規登録する</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">CK11N</span><span class="tc2">10 画面 / 3 ステップ</span></div>
+<p>解説：一般企業の「原価計算日付自」は翌月初ですが、ここでは計算を行うため操作当日に変更します。その他の日付は変更せず、Enter キーを押して進みます</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】新建产品成本估算<br>解释：一般企业的“成本核算日期从”为下月初，这里未来进行计算改为操作当日，其余日期保持不变，点击回车键进入</div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 製品原価管理 → 製品原価計画 → 品目原価計算 → 数量構成付き原価計算 → CK11N 登録"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 製品原価管理 → 製品原価計画 → 品目原価計算 → 数量構成付き原価計算 → CK11N 登録</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计核算 → 控制 → 产品成本控制 → 产品成本计划 → 物料成本核算 → 带数量结构的成本核算 → CK11N 创建</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 頤寧公司はここで、完成品「鋳鋼ポンプ 170-230」の BOM と工順に基づいてより正確な製品原価を計算し、従来の品目マスタの見積標準原価に置き換えます。<br>会計－管理会計－製品原価管理－製品原価計画－品目原価計算－数量構成付き原価計算－CK11N 登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：颐宁公司现在要根据产成品“铸钢泵 170-230”的 BOM 和工艺路线来技术更精确的产品成本，来取代原来在物料主数据中的估算的标准成本。<br>会计核算－控制－产品成本控制－产品成本计划－物料成本核算－带数量结构的成本核算－CK11N 创建</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t22/01_1_image916.png"><img src="assets/img/pp/t22/01_1_image916.png" alt="製品原価見積を新規登録する · ステップ 1：解説：頤寧公司はここで、完成品「鋳鋼ポンプ 170-230」の BOM と工順に基づいてより正確な製品原価を計算し、従来の品目マスタの見積標準原価に置き換えます。 会計－管理会計－製品原価管理－製品原価計画－品目原価計算－数量構成付き原価計算－CK11N 登録" loading="lazy" width="476" height="431"></a><figcaption><span class="n">画面 905</span><span class="src">image916.png · 476×431</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t22/01_2_image917.png"><img src="assets/img/pp/t22/01_2_image917.png" alt="製品原価見積を新規登録する · ステップ 1：解説：頤寧公司はここで、完成品「鋳鋼ポンプ 170-230」の BOM と工順に基づいてより正確な製品原価を計算し、従来の品目マスタの見積標準原価に置き換えます。 会計－管理会計－製品原価管理－製品原価計画－品目原価計算－数量構成付き原価計算－CK11N 登録" loading="lazy" width="414" height="558"></a><figcaption><span class="n">画面 906</span><span class="src">image919.png · 414×558</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t22/01_3_image918.jpeg"><img src="assets/img/pp/t22/01_3_image918.jpeg" alt="製品原価見積を新規登録する · ステップ 1：解説：頤寧公司はここで、完成品「鋳鋼ポンプ 170-230」の BOM と工順に基づいてより正確な製品原価を計算し、従来の品目マスタの見積標準原価に置き換えます。 会計－管理会計－製品原価管理－製品原価計画－品目原価計算－数量構成付き原価計算－CK11N 登録" loading="lazy" width="750" height="502"></a><figcaption><span class="n">画面 907</span><span class="src">image920.jpeg · 750×502</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t22/01_2_image917.png"><img src="assets/img/pp/t22/01_2_image917.png" alt="製品原価見積を新規登録する · ステップ 1：解説：頤寧公司はここで、完成品「鋳鋼ポンプ 170-230」の BOM と工順に基づいてより正確な製品原価を計算し、従来の品目マスタの見積標準原価に置き換えます。 会計－管理会計－製品原価管理－製品原価計画－品目原価計算－数量構成付き原価計算－CK11N 登録" loading="lazy" width="414" height="558"></a><figcaption><span class="n">画面 906</span><span class="src">image919.png · 414×558</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t22/01_3_image918.jpeg"><img src="assets/img/pp/t22/01_3_image918.jpeg" alt="製品原価見積を新規登録する · ステップ 1：解説：頤寧公司はここで、完成品「鋳鋼ポンプ 170-230」の BOM と工順に基づいてより正確な製品原価を計算し、従来の品目マスタの見積標準原価に置き換えます。 会計－管理会計－製品原価管理－製品原価計画－品目原価計算－数量構成付き原価計算－CK11N 登録" loading="lazy" width="750" height="502"></a><figcaption><span class="n">画面 907</span><span class="src">image920.jpeg · 750×502</span></figcaption></figure></div>
+<div class="note info"><b class="t">原理の説明</b>注意：算出した原価計算結果が画面と一致するか確認し、その結果がどのように生じたかを分析し、あわせて結果を書き留めてください。</div>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> これがこの完成品の原価計算です。画面の左側はその製品の構成品目構造、右側の中部はビューごとの原価です。私たちが主に使用するのは「製造原価」です。右側の下部は明細ごとの原価明細分析で、各工程の原価が累加されていることがわかります。関連するメニューから原価構成分析に切り替えることができます。<br>原価計算ロット 10PC は完成品マスタの原価ビュー 1 から引き継がれています。「保存」をクリックすると表示されます</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：这就是该产成品的成本核算。屏幕左边是该产品的组件结构，右侧中部是不同视图的成本。我们主要使用的是“制造成本”。右侧下部是按项目明细的成本明细分析，我们可以看到按各道工序成本累加。我们可以通过相关菜单切换到成本构成分析。<br>成本核算批量 10PC 是从产成品主数据的成本视图 1 中传递过来的。点击保存出现</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t22/02_1_image921.jpeg"><img src="assets/img/pp/t22/02_1_image921.jpeg" alt="製品原価見積を新規登録する · ステップ 2：解説：これがこの完成品の原価計算です。画面の左側はその製品の構成品目構造、右側の中部はビューごとの原価です。私たちが主に使用するのは「製造原価」です。右側の下部は明細ごとの原価明細分析で、各工程の原価が累加されていることがわかります。関連するメニューから原価構成分析に切り替えることができます。 原価計算ロット 10PC" loading="lazy" width="1461" height="665"></a><figcaption><span class="n">画面 910</span><span class="src">image921.jpeg · 1461×665</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 911）</span></p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t22/03_1_image922.png"><img src="assets/img/pp/t22/03_1_image922.png" alt="製品原価見積を新規登録する · ステップ 3：image924.png" loading="lazy" width="337" height="348"></a><figcaption><span class="n">画面 911</span><span class="src">image924.png · 337×348</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="assets/img/pp/t22/03_2_image923.png"><img src="assets/img/pp/t22/03_2_image923.png" alt="製品原価見積を新規登録する · ステップ 3：image925.png" loading="lazy" width="175" height="42"></a><figcaption><span class="n">画面 912</span><span class="src">image925.png · 175×42</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t22/03_1_image922.png"><img src="assets/img/pp/t22/03_1_image922.png" alt="製品原価見積を新規登録する · ステップ 3：image924.png" loading="lazy" width="337" height="348"></a><figcaption><span class="n">画面 911</span><span class="src">image924.png · 337×348</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="assets/img/pp/t22/03_2_image923.png"><img src="assets/img/pp/t22/03_2_image923.png" alt="製品原価見積を新規登録する · ステップ 3：image925.png" loading="lazy" width="175" height="42"></a><figcaption><span class="n">画面 912</span><span class="src">image925.png · 175×42</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t23"><span class="no">タスク 23</span><h3>価格のマーク</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">CK24</span><span class="tc2">12 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】标记价格<br></div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 製品原価管理 → 製品原価計画 → 品目原価計算 → CK24-価格更新"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 製品原価管理 → 製品原価計画 → 品目原価計算 → CK24-価格更新</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计核算 → 控制 → 产品成本控制 → 产品成本计划 → 物料成本核算 → CK24-价格更新</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> このステップは SAP では「価格のマーク」と呼ばれます。前のステップの完成品の価格見積を、品目マスタの「将来価格」としてマークします</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：这个步骤 SAP 称为“标记价格”，我们将把前面一个步骤的产成品价格估算“标记”成物料主数据中的“未来价格”</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t23/01_1_image926.png"><img src="assets/img/pp/t23/01_1_image926.png" alt="価格のマーク · ステップ 1：解説：このステップは SAP では「価格のマーク」と呼ばれます。前のステップの完成品の価格見積を、品目マスタの「将来価格」としてマークします" loading="lazy" width="466" height="578"></a><figcaption><span class="n">画面 915</span><span class="src">image926.png · 466×578</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「リリース許可」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击允许发布</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t23/02_1_image927.png"><img src="assets/img/pp/t23/02_1_image927.png" alt="価格のマーク · ステップ 2：「リリース許可」をクリック" loading="lazy" width="802" height="723"></a><figcaption><span class="n">画面 916</span><span class="src">image929.png · 802×723</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t23/02_2_image928.png"><img src="assets/img/pp/t23/02_2_image928.png" alt="価格のマーク · ステップ 2：「リリース許可」をクリック" loading="lazy" width="854" height="408"></a><figcaption><span class="n">画面 917</span><span class="src">image930.png · 854×408</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t23/02_3_image931.png"><img src="assets/img/pp/t23/02_3_image931.png" alt="価格のマーク · ステップ 2：「リリース許可」をクリック" loading="lazy" width="382" height="280"></a><figcaption><span class="n">画面 918</span><span class="src">image931.png · 382×280</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t23/02_1_image927.png"><img src="assets/img/pp/t23/02_1_image927.png" alt="価格のマーク · ステップ 2：「リリース許可」をクリック" loading="lazy" width="802" height="723"></a><figcaption><span class="n">画面 916</span><span class="src">image929.png · 802×723</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t23/02_2_image928.png"><img src="assets/img/pp/t23/02_2_image928.png" alt="価格のマーク · ステップ 2：「リリース許可」をクリック" loading="lazy" width="854" height="408"></a><figcaption><span class="n">画面 917</span><span class="src">image930.png · 854×408</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">「保存」をクリックすると次の画面が表示される</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击保存后出现如下页面</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t23/03_1_image932.png"><img src="assets/img/pp/t23/03_1_image932.png" alt="価格のマーク · ステップ 3：「保存」をクリックすると次の画面が表示される" loading="lazy" width="850" height="413"></a><figcaption><span class="n">画面 921</span><span class="src">image932.png · 850×413</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 頤寧公司の当月の会計期間が開かれました。「戻る」をクリックし、F8 を押すと下図のようになります。さらに「戻る」を押すと下図のようになります</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：颐宁公司的账本月被打开，点击退回，点击 F8,如下图，再按返回如下图</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t23/04_1_image933.png"><img src="assets/img/pp/t23/04_1_image933.png" alt="価格のマーク · ステップ 4：解説：頤寧公司の当月の会計期間が開かれました。「戻る」をクリックし、F8 を押すと下図のようになります。さらに「戻る」を押すと下図のようになります" loading="lazy" width="987" height="316"></a><figcaption><span class="n">画面 922</span><span class="src">image935.png · 987×316</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="assets/img/pp/t23/04_2_image934.png"><img src="assets/img/pp/t23/04_2_image934.png" alt="価格のマーク · ステップ 4：解説：頤寧公司の当月の会計期間が開かれました。「戻る」をクリックし、F8 を押すと下図のようになります。さらに「戻る」を押すと下図のようになります" loading="lazy" width="289" height="33"></a><figcaption><span class="n">画面 923</span><span class="src">image936.png · 289×33</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t23/04_3_image937.png"><img src="assets/img/pp/t23/04_3_image937.png" alt="価格のマーク · ステップ 4：解説：頤寧公司の当月の会計期間が開かれました。「戻る」をクリックし、F8 を押すと下図のようになります。さらに「戻る」を押すと下図のようになります" loading="lazy" width="658" height="298"></a><figcaption><span class="n">画面 924</span><span class="src">image937.png · 658×298</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t23/04_1_image933.png"><img src="assets/img/pp/t23/04_1_image933.png" alt="価格のマーク · ステップ 4：解説：頤寧公司の当月の会計期間が開かれました。「戻る」をクリックし、F8 を押すと下図のようになります。さらに「戻る」を押すと下図のようになります" loading="lazy" width="987" height="316"></a><figcaption><span class="n">画面 922</span><span class="src">image935.png · 987×316</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="assets/img/pp/t23/04_2_image934.png"><img src="assets/img/pp/t23/04_2_image934.png" alt="価格のマーク · ステップ 4：解説：頤寧公司の当月の会計期間が開かれました。「戻る」をクリックし、F8 を押すと下図のようになります。さらに「戻る」を押すと下図のようになります" loading="lazy" width="289" height="33"></a><figcaption><span class="n">画面 923</span><span class="src">image936.png · 289×33</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材ノート</b>この時点で価格が更新されています。</div>
+</li>
+</ol>
+<div class="steph" id="t24"><span class="no">タスク 24</span><h3>完成品の将来計画価格を照会</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">MM03</span><span class="tc2">6 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】显示产成品的将来计划价格<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 品目管理 → 品目マスタ → 品目 → 照会 → MM03-現在の照会"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 品目管理 → 品目マスタ → 品目 → 照会 → MM03-現在の照会</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 物料管理 → 物料主数据 → 物料 → 显示 → MM03-显示当前</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 本ステップでは、鋳鋼ポンプ 170-230 のマスタデータで価格のマークの結果を確認します。新しい価格は将来の計画価格として更新されます。<br>ロジスティクス－品目管理－品目マスタ－品目－照会－MM03-現在の照会</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：本步骤中，我们将到铸钢泵 170-230 的主数据中去看价格标记的结果新价格将被更新为将来的计划价格。<br>后勤－物料管理－物料主数据－物料－显示－MM03-显示当前</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t24/01_1_image938.png"><img src="assets/img/pp/t24/01_1_image938.png" alt="完成品の将来計画価格を照会 · ステップ 1：解説：本ステップでは、鋳鋼ポンプ 170-230 のマスタデータで価格のマークの結果を確認します。新しい価格は将来の計画価格として更新されます。 ロジスティクス－品目管理－品目マスタ－品目－照会－MM03-現在の照会" loading="lazy" width="627" height="165"></a><figcaption><span class="n">画面 927</span><span class="src">image938.png · 627×165</span></figcaption></figure>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t24/02_1_image939.png"><img src="assets/img/pp/t24/02_1_image939.png" alt="完成品の将来計画価格を照会 · ステップ 2：image941.png" loading="lazy" width="697" height="314"></a><figcaption><span class="n">画面 928</span><span class="src">image941.png · 697×314</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t24/02_2_image940.png"><img src="assets/img/pp/t24/02_2_image940.png" alt="完成品の将来計画価格を照会 · ステップ 2：image942.png" loading="lazy" width="457" height="688"></a><figcaption><span class="n">画面 929</span><span class="src">image942.png · 457×688</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t24/02_1_image939.png"><img src="assets/img/pp/t24/02_1_image939.png" alt="完成品の将来計画価格を照会 · ステップ 2：image941.png" loading="lazy" width="697" height="314"></a><figcaption><span class="n">画面 928</span><span class="src">image941.png · 697×314</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t24/02_2_image940.png"><img src="assets/img/pp/t24/02_2_image940.png" alt="完成品の将来計画価格を照会 · ステップ 2：image942.png" loading="lazy" width="457" height="688"></a><figcaption><span class="n">画面 929</span><span class="src">image942.png · 457×688</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">ここには計画価格 2538.66 が表示されるはずです</p>
+<details class="orig"><summary>原文</summary><div class="zh">此处应该显示计划价格 2538.66</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t24/03_1_image943.png"><img src="assets/img/pp/t24/03_1_image943.png" alt="完成品の将来計画価格を照会 · ステップ 3：ここには計画価格 2538.66 が表示されるはずです" loading="lazy" width="623" height="663"></a><figcaption><span class="n">画面 932</span><span class="src">image943.png · 623×663</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t25"><span class="no">タスク 25</span><h3>価格をリリース</h3><span class="tc">CK24</span><span class="tc2">2 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】发布价格<br></div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 製品原価管理 → 製品原価計画 → 品目原価計算 → CK24-価格更新"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 製品原価管理 → 製品原価計画 → 品目原価計算 → CK24-価格更新</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 控制 → 产品成本控制 → 产品成本计划 → 物料成本核算 → CK24-价格更新</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> このステップで将来価格をリリースします。これによりシステムが完成品の標準原価を更新します。業務処理<br>会計－管理会計－製品原価管理－製品原価計画－品目原価計算－CK24-価格更新</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：此步将未来价格发布，这样系统将更新产成品的标准成本。前台<br>会计－控制－产品成本控制－产品成本计划－物料成本核算－CK24-价格更新</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t25/01_1_image944.png"><img src="assets/img/pp/t25/01_1_image944.png" alt="価格をリリース · ステップ 1：解説：このステップで将来価格をリリースします。これによりシステムが完成品の標準原価を更新します。業務処理 会計－管理会計－製品原価管理－製品原価計画－品目原価計算－CK24-価格更新" loading="lazy" width="611" height="587"></a><figcaption><span class="n">画面 933</span><span class="src">image944.png · 611×587</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「リリース」をクリックし、F8 をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击发布点击 F8</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t25/02_1_image945.png"><img src="assets/img/pp/t25/02_1_image945.png" alt="価格をリリース · ステップ 2：「リリース」をクリックし、F8 をクリック" loading="lazy" width="679" height="174"></a><figcaption><span class="n">画面 934</span><span class="src">image945.png · 679×174</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>この画面には本来、標準価格 3072 が表示されるはずです（本来は 4440.32 であるはずなので確認してください）</div>
+<div class="note info"><b class="t">原理の説明</b>解説：この完成品に在庫があれば、システムは会計伝票も自動的に生成します。頤寧公司は現在システム上に完成品在庫がないため、標準価格のみを更新します。</div>
+</li>
+</ol>
+<div class="steph" id="t26"><span class="no">タスク 26</span><h3>完成品（FERT）のリリース済み計画価格を表示します</h3><span class="tc">MM03</span><span class="tc2">8 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】显示产成品已发布的计划价格<br></div></details>
+<div class="pathline" data-copy="解説：先ほどの価格リリースの効果を確認するため、完成品の品目マスタを照会します。ロジスティクス → 品目管理 → 品目マスタ → 品目 → 照会 → MM03-現在の照会"><b>IMG パス（IMG 設定メニュー）</b>解説：先ほどの価格リリースの効果を確認するため、完成品の品目マスタを照会します。ロジスティクス → 品目管理 → 品目マスタ → 品目 → 照会 → MM03-現在の照会</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>解释：依然到产成品的物料主数据中去查看刚才价格发布的效果。后勤 → 物料管理 → 物料主数据 → 物料 → 显示 → MM03-显示当前</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 引き続き完成品の品目マスタで、先ほどの価格リリースの結果を確認します。ロジスティクス－品目管理－品目マスタ－品目－照会－MM03-現在の照会</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：依然到产成品的物料主数据中去查看刚才价格发布的效果。后勤－物料管理－物料主数据－物料－显示－MM03-显示当前</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t26/01_1_image946.png"><img src="assets/img/pp/t26/01_1_image946.png" alt="完成品（FERT）のリリース済み計画価格を表示します · ステップ 1：解説：引き続き完成品の品目マスタで、先ほどの価格リリースの結果を確認します。ロジスティクス－品目管理－品目マスタ－品目－照会－MM03-現在の照会" loading="lazy" width="346" height="545"></a><figcaption><span class="n">画面 935</span><span class="src">image948.png · 346×545</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t26/01_2_image947.png"><img src="assets/img/pp/t26/01_2_image947.png" alt="完成品（FERT）のリリース済み計画価格を表示します · ステップ 1：解説：引き続き完成品の品目マスタで、先ほどの価格リリースの結果を確認します。ロジスティクス－品目管理－品目マスタ－品目－照会－MM03-現在の照会" loading="lazy" width="496" height="130"></a><figcaption><span class="n">画面 936</span><span class="src">image949.png · 496×130</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t26/01_1_image946.png"><img src="assets/img/pp/t26/01_1_image946.png" alt="完成品（FERT）のリリース済み計画価格を表示します · ステップ 1：解説：引き続き完成品の品目マスタで、先ほどの価格リリースの結果を確認します。ロジスティクス－品目管理－品目マスタ－品目－照会－MM03-現在の照会" loading="lazy" width="346" height="545"></a><figcaption><span class="n">画面 935</span><span class="src">image948.png · 346×545</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t26/01_2_image947.png"><img src="assets/img/pp/t26/01_2_image947.png" alt="完成品（FERT）のリリース済み計画価格を表示します · ステップ 1：解説：引き続き完成品の品目マスタで、先ほどの価格リリースの結果を確認します。ロジスティクス－品目管理－品目マスタ－品目－照会－MM03-現在の照会" loading="lazy" width="496" height="130"></a><figcaption><span class="n">画面 936</span><span class="src">image949.png · 496×130</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 939）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t26/02_1_image950.png"><img src="assets/img/pp/t26/02_1_image950.png" alt="完成品（FERT）のリリース済み計画価格を表示します · ステップ 2：image950.png" loading="lazy" width="543" height="275"></a><figcaption><span class="n">画面 939</span><span class="src">image950.png · 543×275</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t26/03_1_image951.png"><img src="assets/img/pp/t26/03_1_image951.png" alt="完成品（FERT）のリリース済み計画価格を表示します · ステップ 2：image951.png" loading="lazy" width="620" height="635"></a><figcaption><span class="n">画面 940</span><span class="src">image951.png · 620×635</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">標準価格は 4440.32 になるはずです（理由は前のステップと同じ）</p>
+<details class="orig"><summary>原文</summary><div class="zh">应该标准价格会是 4440.32（原因同前步骤）</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t26/04_1_image952.png"><img src="assets/img/pp/t26/04_1_image952.png" alt="完成品（FERT）のリリース済み計画価格を表示します · ステップ 3：標準価格は 4440.32 になるはずです（理由は前のステップと同じ）" loading="lazy" width="618" height="657"></a><figcaption><span class="n">画面 941</span><span class="src">image952.png · 618×657</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>「現行」をクリックすると、品目原価見積を確認できます</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 942）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t26/05_1_image953.png"><img src="assets/img/pp/t26/05_1_image953.png" alt="完成品（FERT）のリリース済み計画価格を表示します · ステップ 4：image953.png" loading="lazy" width="1199" height="898"></a><figcaption><span class="n">画面 942</span><span class="src">image953.png · 1199×898</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t27"><span class="no">タスク 27</span><h3>実績原価計算の評価バリアントを定義</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">3 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义实际成本核算的估价变式<br></div></details>
+<div class="pathline" data-copy="管理会計 → 製品原価管理 → 原価対象管理 → 受注別製品原価 → 受注納入の入庫評価の定義"><b>IMG パス（IMG 設定メニュー）</b>管理会計 → 製品原価管理 → 原価対象管理 → 受注別製品原価 → 受注納入の入庫評価の定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>控制 → 产成品成本控制 → 成本对象控制 → 按订单划分的产品成本 → 定义订单交货的货物接收评估</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 前の手順で完成品の標準原価を計算してリリースしました。本ステップでは、製造指図の実績原価見積に評価バリアントを割り当てます。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：前面我们计算并发布了产成品的标准成本，在本步骤中我们将为生产订单的实际成本估算分配估价变式。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t27/01_1_image954.png"><img src="assets/img/pp/t27/01_1_image954.png" alt="実績原価計算の評価バリアントを定義 · ステップ 1：解説：前の手順で完成品の標準原価を計算してリリースしました。本ステップでは、製造指図の実績原価見積に評価バリアントを割り当てます。" loading="lazy" width="392" height="523"></a><figcaption><span class="n">画面 943</span><span class="src">image954.png · 392×523</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 944）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t27/02_1_image955.png"><img src="assets/img/pp/t27/02_1_image955.png" alt="実績原価計算の評価バリアントを定義 · ステップ 2：image955.png" loading="lazy" width="712" height="307"></a><figcaption><span class="n">画面 944</span><span class="src">image955.png · 712×307</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">以上が、製造指図の実績原価評価バリアントを配賦済みのプラント一覧です。「新規エントリ」をクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">以上是已经分配了生产订单实际成本估价变式的工厂清单，点击新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t27/03_1_image956.png"><img src="assets/img/pp/t27/03_1_image956.png" alt="実績原価計算の評価バリアントを定義 · ステップ 3：以上が、製造指図の実績原価評価バリアントを配賦済みのプラント一覧です。「新規エントリ」をクリックします" loading="lazy" width="631" height="129"></a><figcaption><span class="n">画面 945</span><span class="src">image956.png · 631×129</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t28"><span class="no">タスク 28</span><h3>仕掛品結果分析バージョンを定義</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">4 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义在制品结果分析版本<br></div></details>
+<div class="pathline" data-copy="管理会計 → 製品原価管理 → 原価対象管理 → 受注別製品原価 → 期末決算 → 仕掛品 → 結果分析バリアントの定義"><b>IMG パス（IMG 設定メニュー）</b>管理会計 → 製品原価管理 → 原価対象管理 → 受注別製品原価 → 期末決算 → 仕掛品 → 結果分析バリアントの定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>控制 → 产品成本控制 → 成本对象控制 → 按订单划分的产品成本 → 期末结算 → 在产品 → 定义结果分析版本</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 本チュートリアルで使用する離散型生産のモードでは、製造指図によって生産を管理します。月末に未完成の製造指図について、システムは製造指図の実績原価残高を仕掛品へ振り替えます。同時に、仕掛品に対して結果分析を行い、現時点までの製造指図の効率を分析することもできます。この考え方は SAP のプロジェクト管理などにおける結果分析と同じです。本ステップでは、簡単な仕掛品の結果分析バージョンを 1 つ定義します。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：在本教程使用的离散式生产模式下，我们按生产订单来管理生产，对于月末未完工的生产订单，系统是将生产订单的实际成本余额转作在制品。同时，我们也可以对在制品进行结果分析来分析到目前位置生产订单的效率，这个概念和 SAP 中项目管理等的结果分析是一致的。在本步骤中我们定义一个简单的在制品结果分析版本。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t28/01_1_image957.png"><img src="assets/img/pp/t28/01_1_image957.png" alt="仕掛品結果分析バージョンを定義 · ステップ 1：解説：本チュートリアルで使用する離散型生産のモードでは、製造指図によって生産を管理します。月末に未完成の製造指図について、システムは製造指図の実績原価残高を仕掛品へ振り替えます。同時に、仕掛品に対して結果分析を行い、現時点までの製造指図の効率を分析することもできます。この考え方は SAP のプロジェクト管理などにおける" loading="lazy" width="368" height="619"></a><figcaption><span class="n">画面 946</span><span class="src">image957.png · 368×619</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 947）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t28/02_1_image958.png"><img src="assets/img/pp/t28/02_1_image958.png" alt="仕掛品結果分析バージョンを定義 · ステップ 2：image958.png" loading="lazy" width="475" height="432"></a><figcaption><span class="n">画面 947</span><span class="src">image958.png · 475×432</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「新規エントリ」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击新条目</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t28/03_1_image959.png"><img src="assets/img/pp/t28/03_1_image959.png" alt="仕掛品結果分析バージョンを定義 · ステップ 3：「新規エントリ」をクリック" loading="lazy" width="448" height="446"></a><figcaption><span class="n">画面 948</span><span class="src">image959.png · 448×446</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>C999 を選択してメンテナンスに入ります。ここは仕掛品の結果分析の詳細画面で、ボタンから詳細メンテナンスを展開できます。簡略化のため、簡単なメンテナンスのみ行います。</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 949）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t28/04_1_image960.png"><img src="assets/img/pp/t28/04_1_image960.png" alt="仕掛品結果分析バージョンを定義 · ステップ 4：image960.png" loading="lazy" width="569" height="415"></a><figcaption><span class="n">画面 949</span><span class="src">image960.png · 569×415</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t29"><span class="no">タスク 29</span><h3>所要量チェックを定義</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">2 画面 / 1 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义可用性检查<br></div></details>
+<div class="pathline" data-copy="生産 → ショップフロアコントロール → 工程 → 所要量チェック → チェックグループの定義"><b>IMG パス（IMG 設定メニュー）</b>生産 → ショップフロアコントロール → 工程 → 所要量チェック → チェックグループの定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>生产 → 商店底价控制 → 工序 → 可用性检查 → 定义检查组</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">生産－ショップフロアコントロール－工程－所要量チェック－チェックグループの定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">生产－商店底价控制－工序－可用性检查－定义检查组</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t29/01_1_image961.png"><img src="assets/img/pp/t29/01_1_image961.png" alt="所要量チェックを定義 · ステップ 1：生産－ショップフロアコントロール－工程－所要量チェック－チェックグループの定義" loading="lazy" width="313" height="529"></a><figcaption><span class="n">画面 950</span><span class="src">image961.png · 313×529</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t29/01_2_image962.png"><img src="assets/img/pp/t29/01_2_image962.png" alt="所要量チェックを定義 · ステップ 1：生産－ショップフロアコントロール－工程－所要量チェック－チェックグループの定義" loading="lazy" width="791" height="268"></a><figcaption><span class="n">画面 951</span><span class="src">image962.png · 791×268</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>ここでは、システムに用意されている 02 を使用します</div>
+</li>
+</ol>
+<div class="steph" id="t30"><span class="no">タスク 30</span><h3>所要量チェックの範囲を定義</h3><span class="fb">IMG設定（カスタマイズ）</span><span class="tc2">3 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义可用性检查范围<br></div></details>
+<div class="pathline" data-copy="生産 → ショップフロアコントロール → 工程 → 所要量チェック → チェック範囲の定義"><b>IMG パス（IMG 設定メニュー）</b>生産 → ショップフロアコントロール → 工程 → 所要量チェック → チェック範囲の定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>生产 → 商店底价控制 → 工序 → 可用性检查 → 定义检查范围</code></div>
+<ol class="oplist">
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t30/01_1_image963.png"><img src="assets/img/pp/t30/01_1_image963.png" alt="所要量チェックの範囲を定義 · ステップ 1：image963.png" loading="lazy" width="350" height="483"></a><figcaption><span class="n">画面 952</span><span class="src">image963.png · 350×483</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> このステップでは、品目マスタの「所要量チェックグループ」と製造指図タイプの「チェックルール」に基づいて、所要量チェックの範囲を決定しました。<br>生産－ショップフロアコントロール－工程－所要量チェック－チェック範囲の定義</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：此步中，我们根据物料主数据中的 “ 可用性检查组” 和生产订单类型中的 “ 检查规则”确定了可用性检查的范围。。<br>生产－商店底价控制－工序－可用性检查－定义检查范围</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t30/02_1_image964.png"><img src="assets/img/pp/t30/02_1_image964.png" alt="所要量チェックの範囲を定義 · ステップ 2：解説：このステップでは、品目マスタの「所要量チェックグループ」と製造指図タイプの「チェックルール」に基づいて、所要量チェックの範囲を決定しました。 生産－ショップフロアコントロール－工程－所要量チェック－チェック範囲の定義" loading="lazy" width="493" height="516"></a><figcaption><span class="n">画面 953</span><span class="src">image964.png · 493×516</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">本教材に関係する組み合わせは「02 チェックグループ」と「PP チェック規則」です。ダブルクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">和本教材相关的组合是“02 检查组”和“PP 检查规则”双击</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t30/03_1_image965.png"><img src="assets/img/pp/t30/03_1_image965.png" alt="所要量チェックの範囲を定義 · ステップ 3：本教材に関係する組み合わせは「02 チェックグループ」と「PP チェック規則」です。ダブルクリックします" loading="lazy" width="673" height="632"></a><figcaption><span class="n">画面 954</span><span class="src">image965.png · 673×632</span></figcaption></figure>
+<div class="note info"><b class="t">原理の説明</b>解説：ここでは、どの在庫や、どのような内向き・外向きの品目移動がチェック範囲に含まれるかなどを定義します。たとえば、品質検査在庫は使用可能な品目に含まれますが、安全在庫は含まれません。</div>
+</li>
+</ol>
+<div class="steph" id="t31"><span class="no">タスク 31</span><h3>所要量チェックの制御を定義</h3><span class="tc">PP01</span><span class="tc">PP02</span><span class="tc2">5 画面 / 4 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】定义可用性检查控制<br></div></details>
+<div class="pathline" data-copy="生産 → ショップフロアコントロール → 工程 → 所要量チェック → チェック制御の定義"><b>IMG パス（IMG 設定メニュー）</b>生産 → ショップフロアコントロール → 工程 → 所要量チェック → チェック制御の定義</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>生产 → 商店底价控制 → 工序 → 可用性检查 → 定义检查控制</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 頤寧公司の標準製造指図タイプ PP01 について、指図の登録時や指図発行時に、品目の可用性、PRT（生産資源・ツール）の可用性、能力の可用性、およびチェック規則などを自動チェックするかどうかを IMG 設定で定義します。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：在颐宁公司对于标准生产订单类型 PP01，我们是否需要在订单创建或下达的时候自动检查物料的可用性、PRT（生产资源和工具）的可用性、产能的可用性，以及检查规则等后台</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t31/01_1_image966.png"><img src="assets/img/pp/t31/01_1_image966.png" alt="所要量チェックの制御を定義 · ステップ 1：解説：頤寧公司の標準製造指図タイプ PP01 について、指図の登録時や指図発行時に、品目の可用性、PRT（生産資源・ツール）の可用性、能力の可用性、およびチェック規則などを自動チェックするかどうかを IMG 設定で定義します。" loading="lazy" width="387" height="486"></a><figcaption><span class="n">画面 955</span><span class="src">image966.png · 387×486</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t31/01_2_image967.png"><img src="assets/img/pp/t31/01_2_image967.png" alt="所要量チェックの制御を定義 · ステップ 1：解説：頤寧公司の標準製造指図タイプ PP01 について、指図の登録時や指図発行時に、品目の可用性、PRT（生産資源・ツール）の可用性、能力の可用性、およびチェック規則などを自動チェックするかどうかを IMG 設定で定義します。" loading="lazy" width="595" height="240"></a><figcaption><span class="n">画面 956</span><span class="src">image967.png · 595×240</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">コピーテンプレート 0001 の方式で頤寧プラントをメンテナンスします。プラント 0001 を選択し、タイプ PP01、PP02 の 2 行をコピーします</p>
+<details class="orig"><summary>原文</summary><div class="zh">用复制模板 0001 的方式维护颐宁工厂，选中工厂 0001，类型PP01 、PP02两行复制</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t31/02_1_image968.png"><img src="assets/img/pp/t31/02_1_image968.png" alt="所要量チェックの制御を定義 · ステップ 2：コピーテンプレート 0001 の方式で頤寧プラントをメンテナンスします。プラント 0001 を選択し、タイプ PP01、PP02 の 2 行をコピーします" loading="lazy" width="600" height="524"></a><figcaption><span class="n">画面 957</span><span class="src">image968.png · 600×524</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 958）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t31/03_1_image969.png"><img src="assets/img/pp/t31/03_1_image969.png" alt="所要量チェックの制御を定義 · ステップ 3：image969.png" loading="lazy" width="573" height="713"></a><figcaption><span class="n">画面 958</span><span class="src">image969.png · 573×713</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 頤寧プラントの標準製造指図 PP01 の登録時に 3 種類の所要量チェックを自動実行するようにはしていませんが、手動で所要量チェックを実行することは禁止されていません</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：我们没有在颐宁工厂的标准生产订单 PP01 创建的时候自动检查三种可用性，但是这并不禁止我们手工出发可用性检查</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t31/04_1_image970.png"><img src="assets/img/pp/t31/04_1_image970.png" alt="所要量チェックの制御を定義 · ステップ 4：解説：頤寧プラントの標準製造指図 PP01 の登録時に 3 種類の所要量チェックを自動実行するようにはしていませんが、手動で所要量チェックを実行することは禁止されていません" loading="lazy" width="613" height="335"></a><figcaption><span class="n">画面 959</span><span class="src">image970.png · 613×335</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t32"><span class="no">タスク 32</span><h3>品目マスタの計画戦略グループをメンテナンスします</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">MM02</span><span class="tc2">4 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】维护物料主数据的计划策略组<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 生産 → マスタデータ → 品目マスタ → 変更 → MM02-即時"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 生産 → マスタデータ → 品目マスタ → 変更 → MM02-即時</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 生产 → 主数据 → 物料主数据 → 更改 → MM02-立即</code></div>
+<div class="note info"><b class="t">原理の説明</b>解説：「計画戦略グループ」は、販売管理（SD）および PP で最も重要な統合パラメータと言え、販売と生産の計画上のつながりを決定します。このパラメータは品目マスタの MRP3 ビューでメンテナンスされ、SAP はこの領域で強力な柔軟性を示しており、それは豊富な選択肢のあるさまざまな生産構成品目のレベルでメンテナンスされる点にも表れています。</div>
+<ol class="oplist">
+<li>
+<p class="opcap">ロジスティクス－生産－マスタデータ－品目マスタ－変更－MM02-即時</p>
+<details class="orig"><summary>原文</summary><div class="zh">后勤－生产－主数据－物料主数据－更改－MM02-立即</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t32/01_1_image971.png"><img src="assets/img/pp/t32/01_1_image971.png" alt="品目マスタの計画戦略グループをメンテナンスします · ステップ 1：ロジスティクス－生産－マスタデータ－品目マスタ－変更－MM02-即時" loading="lazy" width="473" height="174"></a><figcaption><span class="n">画面 960</span><span class="src">image971.png · 473×174</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t32/02_1_image972.png"><img src="assets/img/pp/t32/02_1_image972.png" alt="品目マスタの計画戦略グループをメンテナンスします · ステップ 2：image972.png" loading="lazy" width="344" height="300"></a><figcaption><span class="n">画面 961</span><span class="src">image972.png · 344×300</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 962）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t32/03_1_image973.png"><img src="assets/img/pp/t32/03_1_image973.png" alt="品目マスタの計画戦略グループをメンテナンスします · ステップ 3：image973.png" loading="lazy" width="543" height="275"></a><figcaption><span class="n">画面 962</span><span class="src">image973.png · 543×275</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t32/04_1_image974.png"><img src="assets/img/pp/t32/04_1_image974.png" alt="品目マスタの計画戦略グループをメンテナンスします · ステップ 3：image974.png" loading="lazy" width="659" height="584"></a><figcaption><span class="n">画面 963</span><span class="src">image974.png · 659×584</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>40 まずこれは在庫生産であり、生産計画の根拠は計画部門がメンテナンスする独立所要量計画ですが、受注伝票は計画に対して依然として影響を持ち、受注伝票は独立所要量計画を消費します。受注伝票が独立所要量計画を使い切ると、計画を超えた伝票所要量は生産計画を増加させます。この戦略は在庫生産（受注生産ではない）の組立生産で多く見られますが、生産量が非常に大きく、同じく在庫生産である日用品とはまた異なります。</div>
+<div class="note tip"><b class="t">教材ノート</b>同じ方法を繰り返し、T999-100 をメンテナンスします</div>
+</li>
+</ol>
+<div class="steph" id="t33"><span class="no">タスク 33</span><h3>品目の独立所要量計画を登録</h3><span class="tc">MD61</span><span class="tc2">5 画面 / 5 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】创建物料的独立需求计划<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 生産 → 生産計画 → 所要量管理 → 計画独立所要量 → MD61-登録"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 生産 → 生産計画 → 所要量管理 → 計画独立所要量 → MD61-登録</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 生产 → 生产计划编制 → 需求管理 → 已计划的独立需求 → MD61-创建</code></div>
+<div class="note info"><b class="t">原理の説明</b>解説：本教材では、生産計画（PP）モジュールのプロセスの起点は完成品と商品の週次所要量計画の登録です。これを独立所要量計画と呼ぶのは、この所要量が、半製品や原材料の所要量のように上位層の完成品の所要量から生じるものではないためです。一方、半製品や原材料の上位層から生じる所要量は非独立所要量と呼ばれます。</div>
+<ol class="oplist">
+<li>
+<p class="opcap">ロジスティクス－生産－生産計画－所要量管理－計画独立所要量－MD61-登録</p>
+<details class="orig"><summary>原文</summary><div class="zh">后勤－生产－生产计划编制－需求管理－已计划的独立需求－MD61-创建</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t33/01_1_image975.png"><img src="assets/img/pp/t33/01_1_image975.png" alt="品目の独立所要量計画を登録 · ステップ 1：ロジスティクス－生産－生産計画－所要量管理－計画独立所要量－MD61-登録" loading="lazy" width="319" height="433"></a><figcaption><span class="n">画面 964</span><span class="src">image975.png · 319×433</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t33/02_1_image976.png"><img src="assets/img/pp/t33/02_1_image976.png" alt="品目の独立所要量計画を登録 · ステップ 2：image976.png" loading="lazy" width="503" height="443"></a><figcaption><span class="n">画面 965</span><span class="src">image976.png · 503×443</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 今日から来月末までを入力して月の週計画を作成し、Enter を押すと</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：填写从今天到下月末，创建月的周计划，回车后</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t33/03_1_image977.png"><img src="assets/img/pp/t33/03_1_image977.png" alt="品目の独立所要量計画を登録 · ステップ 3：解説：今日から来月末までを入力して月の週計画を作成し、Enter を押すと" loading="lazy" width="971" height="240"></a><figcaption><span class="n">画面 966</span><span class="src">image977.png · 971×240</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">具体的なデータは各自で入力してかまいません。保存した後、T999-100 の週次独立所要量計画を入力します</p>
+<details class="orig"><summary>原文</summary><div class="zh">具体数据可自行输入，保存后再输入 T999-100 的周独立需求计划</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t33/04_1_image978.png"><img src="assets/img/pp/t33/04_1_image978.png" alt="品目の独立所要量計画を登録 · ステップ 4：具体的なデータは各自で入力してかまいません。保存した後、T999-100 の週次独立所要量計画を入力します" loading="lazy" width="588" height="461"></a><figcaption><span class="n">画面 967</span><span class="src">image978.png · 588×461</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 968）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t33/05_1_image979.png"><img src="assets/img/pp/t33/05_1_image979.png" alt="品目の独立所要量計画を登録 · ステップ 5：image979.png" loading="lazy" width="1062" height="228"></a><figcaption><span class="n">画面 968</span><span class="src">image979.png · 1062×228</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t34"><span class="no">タスク 34</span><h3>MRP 一覧を照会</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">MD05</span><span class="tc2">4 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】显示MRP 清单<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 生産 → 資材所要量計画 → 評価 → MD05-MRP 一覧"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 生産 → 資材所要量計画 → 評価 → MD05-MRP 一覧</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 生产 → 物料需求计划 → 评估 → MD05-MRP 清单</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> MRP を実行する前に、まず MRP 一覧を表示してみます。現在表示されているのは、前回 MRP 実行の静的データです。<br>ロジスティクス－生産－資材所要量計画－評価－MD05-MRP 一覧</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：在运行 MRP 之前，先让我们来显示一下 MRP 清单。现在显示的是上次 MRP 运行的静态数据。<br>后勤－生产－物料需求计划－评估－MD05-MRP 清单</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t34/01_1_image980.png"><img src="assets/img/pp/t34/01_1_image980.png" alt="MRP 一覧を照会 · ステップ 1：解説：MRP を実行する前に、まず MRP 一覧を表示してみます。現在表示されているのは、前回 MRP 実行の静的データです。 ロジスティクス－生産－資材所要量計画－評価－MD05-MRP 一覧" loading="lazy" width="364" height="634"></a><figcaption><span class="n">画面 969</span><span class="src">image980.png · 364×634</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t34/01_2_image981.png"><img src="assets/img/pp/t34/01_2_image981.png" alt="MRP 一覧を照会 · ステップ 1：解説：MRP を実行する前に、まず MRP 一覧を表示してみます。現在表示されているのは、前回 MRP 実行の静的データです。 ロジスティクス－生産－資材所要量計画－評価－MD05-MRP 一覧" loading="lazy" width="463" height="294"></a><figcaption><span class="n">画面 970</span><span class="src">image981.png · 463×294</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 971）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t34/02_1_image982.png"><img src="assets/img/pp/t34/02_1_image982.png" alt="MRP 一覧を照会 · ステップ 2：image982.png" loading="lazy" width="1221" height="288"></a><figcaption><span class="n">画面 971</span><span class="src">image982.png · 1221×288</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>MRP を実行していないため独立所要量計画のデータが反映されておらず、MRP 一覧のデータは静的で、MRP を実行した後に初めて数値が変化します。戻るをクリックして T999-100 の MRP 一覧を表示します。</div>
+</li>
+<li>
+<p class="opcap">ここには前回 MRP を実行した後の結果が表示されています。画面上部のタイムスタンプに注意してください。</p>
+<details class="orig"><summary>原文</summary><div class="zh">此处显示的上次运行 MRP 后的结果，请注意屏幕上方的时间戳。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t34/03_1_image983.jpeg"><img src="assets/img/pp/t34/03_1_image983.jpeg" alt="MRP 一覧を照会 · ステップ 3：ここには前回 MRP を実行した後の結果が表示されています。画面上部のタイムスタンプに注意してください。" loading="lazy" width="1222" height="399"></a><figcaption><span class="n">画面 972</span><span class="src">image983.jpeg · 1222×399</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t35"><span class="no">タスク 35</span><h3>在庫／所要量一覧を照会</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">MD04</span><span class="tc2">6 画面 / 3 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】显示库存/需求清单<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 生産 → 資材所要量計画 → 評価 → MD04-在庫/所要量一覧"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 生産 → 資材所要量計画 → 評価 → MD04-在庫/所要量一覧</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 生产 → 物料需求计划 → 评估 → MD04-库存/需求清单</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">ロジスティクス－生産－資材所要量計画－評価－MD04-在庫/所要量一覧</p>
+<details class="orig"><summary>原文</summary><div class="zh">后勤－生产－物料需求计划－评估－MD04-库存/需求清单</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t35/01_1_image984.png"><img src="assets/img/pp/t35/01_1_image984.png" alt="在庫／所要量一覧を照会 · ステップ 1：ロジスティクス－生産－資材所要量計画－評価－MD04-在庫/所要量一覧" loading="lazy" width="361" height="626"></a><figcaption><span class="n">画面 973</span><span class="src">image986.png · 361×626</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t35/01_2_image985.png"><img src="assets/img/pp/t35/01_2_image985.png" alt="在庫／所要量一覧を照会 · ステップ 1：ロジスティクス－生産－資材所要量計画－評価－MD04-在庫/所要量一覧" loading="lazy" width="410" height="293"></a><figcaption><span class="n">画面 974</span><span class="src">image987.png · 410×293</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t35/01_1_image984.png"><img src="assets/img/pp/t35/01_1_image984.png" alt="在庫／所要量一覧を照会 · ステップ 1：ロジスティクス－生産－資材所要量計画－評価－MD04-在庫/所要量一覧" loading="lazy" width="361" height="626"></a><figcaption><span class="n">画面 973</span><span class="src">image986.png · 361×626</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t35/01_2_image985.png"><img src="assets/img/pp/t35/01_2_image985.png" alt="在庫／所要量一覧を照会 · ステップ 1：ロジスティクス－生産－資材所要量計画－評価－MD04-在庫/所要量一覧" loading="lazy" width="410" height="293"></a><figcaption><span class="n">画面 974</span><span class="src">image987.png · 410×293</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 比較のため、「在庫／所要量一覧」を表示します。「在庫／所要量一覧」は動的で、現在の特定品目の需要と供給の状況を表示し、新しく登録した独立所要量も表示されています。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：作为比较，我们来显示一下“库存/需求清单”。“ 库存/需求清单”是动态的，它显示的是当前某种物料的需求和供给的情况，并且已经将新创建的独立需求显示出来。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t35/02_1_image988.png"><img src="assets/img/pp/t35/02_1_image988.png" alt="在庫／所要量一覧を照会 · ステップ 2：解説：比較のため、「在庫／所要量一覧」を表示します。「在庫／所要量一覧」は動的で、現在の特定品目の需要と供給の状況を表示し、新しく登録した独立所要量も表示されています。" loading="lazy" width="716" height="521"></a><figcaption><span class="n">画面 977</span><span class="src">image988.png · 716×521</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>F999-100 に切り替え</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 978）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t35/03_1_image989.png"><img src="assets/img/pp/t35/03_1_image989.png" alt="在庫／所要量一覧を照会 · ステップ 3：image989.png" loading="lazy" width="733" height="752"></a><figcaption><span class="n">画面 978</span><span class="src">image989.png · 733×752</span></figcaption></figure>
+<div class="note info"><b class="t">原理の説明</b>注意：ここにはタイムスタンプがありません。在庫所要量一覧には独立所要量計画のデータがすでに引き継がれています。在庫所要量一覧は動的に変化します。</div>
+</li>
+</ol>
+<div class="steph" id="t36"><span class="no">タスク 36</span><h3>資材所要量計画を実行</h3><span class="tc">MD02</span><span class="tc2">14 画面 / 9 ステップ</span></div>
+<p>000000000xx在庫 xx.xx.2021</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】运行物料需求计划<br>000000000xx库存 xx.xx.2021</div></details>
+<div class="pathline" data-copy="解説：本ステップでは、システムが BOM に従って品目所要量を自動的に展開します ロジスティクス → 生産 → 資材所要量計画 → 計画 → MD02-単品、多階層"><b>IMG パス（IMG 設定メニュー）</b>解説：本ステップでは、システムが BOM に従って品目所要量を自動的に展開します ロジスティクス → 生産 → 資材所要量計画 → 計画 → MD02-単品、多階層</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>解释：本步骤将由系统自动按照 BOM 来展开物料需求后勤 → 生产 → 物料需求计划 → 计划 → MD02-单项，多层</code></div>
+<table class="tbl vals"><thead><tr><th>項目（日本語）</th><th>画面の中国語</th><th>教材の設定値</th></tr></thead><tbody><tr><td>すべて変更しました</td><td><code>都修改到了</code></td><td>15.05.2007</td></tr></tbody></table>
+<ol class="oplist">
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t36/01_1_image990.png"><img src="assets/img/pp/t36/01_1_image990.png" alt="資材所要量計画を実行 · ステップ 1：image990.png" loading="lazy" width="591" height="611"></a><figcaption><span class="n">画面 979</span><span class="src">image990.png · 591×611</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t36/01_2_image991.png"><img src="assets/img/pp/t36/01_2_image991.png" alt="資材所要量計画を実行 · ステップ 1：image991.png" loading="lazy" width="388" height="454"></a><figcaption><span class="n">画面 980</span><span class="src">image991.png · 388×454</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 本ステップでは、システムが BOM に従って品目所要量を自動的に展開します ロジスティクス－生産－資材所要量計画－計画－MD02-単品、多階層</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：本步骤将由系统自动按照 BOM 来展开物料需求后勤－生产－物料需求计划－计划－MD02-单项，多层</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t36/02_1_image992.png"><img src="assets/img/pp/t36/02_1_image992.png" alt="資材所要量計画を実行 · ステップ 2：解説：本ステップでは、システムが BOM に従って品目所要量を自動的に展開します ロジスティクス－生産－資材所要量計画－計画－MD02-単品、多階層" loading="lazy" width="590" height="695"></a><figcaption><span class="n">画面 981</span><span class="src">image992.png · 590×695</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t36/02_2_image993.png"><img src="assets/img/pp/t36/02_2_image993.png" alt="資材所要量計画を実行 · ステップ 2：解説：本ステップでは、システムが BOM に従って品目所要量を自動的に展開します ロジスティクス－生産－資材所要量計画－計画－MD02-単品、多階層" loading="lazy" width="564" height="331"></a><figcaption><span class="n">画面 982</span><span class="src">image993.png · 564×331</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 983）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t36/03_1_image994.png"><img src="assets/img/pp/t36/03_1_image994.png" alt="資材所要量計画を実行 · ステップ 3：image994.png" loading="lazy" width="875" height="363"></a><figcaption><span class="n">画面 983</span><span class="src">image994.png · 875×363</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">F999-100 をダブルクリックして進みます</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击 F999-100，进入</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t36/04_1_image995.png"><img src="assets/img/pp/t36/04_1_image995.png" alt="資材所要量計画を実行 · ステップ 4：F999-100 をダブルクリックして進みます" loading="lazy" width="1087" height="806"></a><figcaption><span class="n">画面 984</span><span class="src">image995.png · 1087×806</span></figcaption></figure>
+<div class="note info"><b class="t">原理の説明</b>解説：これは完成品の鋳鋼ポンプ 170-230 の MRP 実行結果です。各独立所要量に対してそれぞれ対応する計画手配が割り当てられていることがわかります。同時に、安全在庫に対する古い計画手配は、開始時間が過去にあるため、実行可能な時間に変更されました。</div>
+</li>
+<li>
+<p class="opcap">000000000xx/在庫 xx.xx.2021<br>戻って、品目 R999-100 をダブルクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">000000000xx/库存 xx.xx.2021<br>回退，双击物料 R999-100</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t36/05_1_image996.png"><img src="assets/img/pp/t36/05_1_image996.png" alt="資材所要量計画を実行 · ステップ 5：000000000xx/在庫 xx.xx.2021 戻って、品目 R999-100 をダブルクリックします" loading="lazy" width="852" height="825"></a><figcaption><span class="n">画面 985</span><span class="src">image996.png · 852×825</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>確認後、保存前に「結果を表示」のチェックボックスにチェックを入れ、Enter キーで MRP を再実行します</div>
+</li>
+<li>
+<p class="opcap">原材料（ROH）については、多くの非独立所要量 DepReq が生成されていることがわかります。これらの非独立所要量は完成品 F999-100 に対するもので、その日付には生産リードタイムが考慮されています。これらの所要量に対してシステムは新たな計画手配を生成し、同時に、元の購買依頼も日付が変更されました。<br>18.05.2021 PurRqs 0010000020/00010 14.05.2021</p>
+<details class="orig"><summary>原文</summary><div class="zh">我们可以看到，对于原材料来说，生成了许多非独立需求 DepReq，这些非独立需求是针对产成品 F999-100的 ，这些非独立需求的日期考虑了生产提前期。针对这些需求系统生成了新的计划订单，于此同时，原来的采购申请也被修改了日期。<br>18.05.2021 PurRqs 0010000020/00010 14.05.2021</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t36/06_1_image997.png"><img src="assets/img/pp/t36/06_1_image997.png" alt="資材所要量計画を実行 · ステップ 6：原材料（ROH）については、多くの非独立所要量 DepReq が生成されていることがわかります。これらの非独立所要量は完成品 F999-100 に対するもので、その日付には生産リードタイムが考慮されています。これらの所要量に対してシステムは新たな計画手配を生成し、同時に、元の購買依頼も日付が変更されました。 18.05" loading="lazy" width="726" height="234"></a><figcaption><span class="n">画面 986</span><span class="src">image997.png · 726×234</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t36/07_1_image998.png"><img src="assets/img/pp/t36/07_1_image998.png" alt="資材所要量計画を実行 · ステップ 7：image998.png" loading="lazy" width="574" height="737"></a><figcaption><span class="n">画面 987</span><span class="src">image998.png · 574×737</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">上記の方法を繰り返し、T999-100 に対して MRP を実行します</p>
+<details class="orig"><summary>原文</summary><div class="zh">重复上述方法，对 T999-100 运行 MRP</div></details>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t36/08_1_image999.png"><img src="assets/img/pp/t36/08_1_image999.png" alt="資材所要量計画を実行 · ステップ 8：上記の方法を繰り返し、T999-100 に対して MRP を実行します" loading="lazy" width="620" height="596"></a><figcaption><span class="n">画面 988</span><span class="src">image1001.png · 620×596</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t36/08_2_image1000.png"><img src="assets/img/pp/t36/08_2_image1000.png" alt="資材所要量計画を実行 · ステップ 8：上記の方法を繰り返し、T999-100 に対して MRP を実行します" loading="lazy" width="564" height="744"></a><figcaption><span class="n">画面 989</span><span class="src">image1002.png · 564×744</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t36/08_1_image999.png"><img src="assets/img/pp/t36/08_1_image999.png" alt="資材所要量計画を実行 · ステップ 8：上記の方法を繰り返し、T999-100 に対して MRP を実行します" loading="lazy" width="620" height="596"></a><figcaption><span class="n">画面 988</span><span class="src">image1001.png · 620×596</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t36/08_2_image1000.png"><img src="assets/img/pp/t36/08_2_image1000.png" alt="資材所要量計画を実行 · ステップ 8：上記の方法を繰り返し、T999-100 に対して MRP を実行します" loading="lazy" width="564" height="744"></a><figcaption><span class="n">画面 989</span><span class="src">image1002.png · 564×744</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 992）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t36/09_1_image1003.png"><img src="assets/img/pp/t36/09_1_image1003.png" alt="資材所要量計画を実行 · ステップ 9：image1003.png" loading="lazy" width="704" height="238"></a><figcaption><span class="n">画面 992</span><span class="src">image1003.png · 704×238</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t37"><span class="no">タスク 37</span><h3>計画手配を製造指図に変換</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">MD04</span><span class="tc2">4 画面 / 4 ステップ</span></div>
+<p>解説：計画手配の内容が画面の製造指図登録にコピーされます。このときシステムは完成品の工順に従ってスケジュール計画を再設定し、完了日を決定します。</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】将计划订单转换为生产订单<br>解释：计划订单中的内容被复制到了屏幕中的生产订单创建中。这时系统根据产成品的工艺路线重新安排了排程计划，确定了完成日期，</div></details>
+<div class="pathline" data-copy="ロジスティクス → 生産 → 資材所要量計画 → 評価 → MD04-在庫/所要量一覧"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 生産 → 資材所要量計画 → 評価 → MD04-在庫/所要量一覧</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 生产 → 物料需求计划 → 评估 → MD04-库存/需求清单</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">ロジスティクス－生産－資材所要量計画－評価－MD04-在庫/所要量一覧</p>
+<details class="orig"><summary>原文</summary><div class="zh">后勤－生产－物料需求计划－评估－MD04-库存/需求清单</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t37/01_1_image1004.png"><img src="assets/img/pp/t37/01_1_image1004.png" alt="計画手配を製造指図に変換 · ステップ 1：ロジスティクス－生産－資材所要量計画－評価－MD04-在庫/所要量一覧" loading="lazy" width="403" height="290"></a><figcaption><span class="n">画面 993</span><span class="src">image1004.png · 403×290</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> MRP の実行には 2 つの主要な結果があります。1 つは完成品に対する計画手配の生成、もう 1 つは原材料に対する購買依頼の生成です。本ステップでは、完成品の計画手配を正式な製造指図に変換します。<br>この一覧で変換の操作を直接実行できます</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：MRP 运行有两个主要结果：一个是对产成品生成计划订单，另外一个是对原材料产生采购申请。本步骤中我们将产成品的计划订单转换成正式的生产订单。<br>我们可以在此清单中直接完成转换的操作</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t37/02_1_image1005.png"><img src="assets/img/pp/t37/02_1_image1005.png" alt="計画手配を製造指図に変換 · ステップ 2：解説：MRP の実行には 2 つの主要な結果があります。1 つは完成品に対する計画手配の生成、もう 1 つは原材料に対する購買依頼の生成です。本ステップでは、完成品の計画手配を正式な製造指図に変換します。 この一覧で変換の操作を直接実行できます" loading="lazy" width="795" height="248"></a><figcaption><span class="n">画面 994</span><span class="src">image1005.png · 795×248</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 画面にはこの計画手配の主要情報が表示されます。下部のボタン列で各種の変換操作を実行できます。この計画手配を製造指図に変換します。「製造指図」ボタンをクリックし、「戻る」をクリックします。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：屏幕中显示的是该计划订单的主要信息，在下方的一排按钮可以执行各种转换操作，我们将该计划订单转换成生产订单，点击生产订单键，点后退</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t37/03_1_image1006.png"><img src="assets/img/pp/t37/03_1_image1006.png" alt="計画手配を製造指図に変換 · ステップ 3：解説：画面にはこの計画手配の主要情報が表示されます。下部のボタン列で各種の変換操作を実行できます。この計画手配を製造指図に変換します。「製造指図」ボタンをクリックし、「戻る」をクリックします。" loading="lazy" width="1055" height="346"></a><figcaption><span class="n">画面 995</span><span class="src">image1006.png · 1055×346</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 996）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t37/04_1_image1007.png"><img src="assets/img/pp/t37/04_1_image1007.png" alt="計画手配を製造指図に変換 · ステップ 4：image1007.png" loading="lazy" width="765" height="676"></a><figcaption><span class="n">画面 996</span><span class="src">image1007.png · 765×676</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>「保存」をクリック</div>
+<div class="note tip"><b class="t">教材ノート</b>同じ方法で、その他の計画手配も製造指図に変換します</div>
+</li>
+</ol>
+<div class="steph" id="t38"><span class="no">タスク 38</span><h3>製造指図一覧を照会</h3><span class="tc">COOIS</span><span class="tc2">5 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】显示生产订单清单<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 生産 → ショップフロアコントロール → 情報システム → COOIS-指図情報システム"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 生産 → ショップフロアコントロール → 情報システム → COOIS-指図情報システム</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 生产 → 车间现场控制 → 信息系统 → COOIS-订单信息系统</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> このステップでは情報システムで頤寧公司の新しい製造指図の一覧を確認します。業務処理</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：这一步我们到信息系统中去查看颐宁公司新的生产订单的清单。前台</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t38/01_1_image1008.png"><img src="assets/img/pp/t38/01_1_image1008.png" alt="製造指図一覧を照会 · ステップ 1：解説：このステップでは情報システムで頤寧公司の新しい製造指図の一覧を確認します。業務処理" loading="lazy" width="289" height="439"></a><figcaption><span class="n">画面 997</span><span class="src">image1008.png · 289×439</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 998）</span></p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t38/02_1_image1009.png"><img src="assets/img/pp/t38/02_1_image1009.png" alt="製造指図一覧を照会 · ステップ 2：image1011.png" loading="lazy" width="832" height="807"></a><figcaption><span class="n">画面 998</span><span class="src">image1011.png · 832×807</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t38/02_2_image1010.png"><img src="assets/img/pp/t38/02_2_image1010.png" alt="製造指図一覧を照会 · ステップ 2：image1012.png" loading="lazy" width="1180" height="573"></a><figcaption><span class="n">画面 999</span><span class="src">image1012.png · 1180×573</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t38/02_1_image1009.png"><img src="assets/img/pp/t38/02_1_image1009.png" alt="製造指図一覧を照会 · ステップ 2：image1011.png" loading="lazy" width="832" height="807"></a><figcaption><span class="n">画面 998</span><span class="src">image1011.png · 832×807</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t38/02_2_image1010.png"><img src="assets/img/pp/t38/02_2_image1010.png" alt="製造指図一覧を照会 · ステップ 2：image1012.png" loading="lazy" width="1180" height="573"></a><figcaption><span class="n">画面 999</span><span class="src">image1012.png · 1180×573</span></figcaption></figure></div>
+<div class="note info"><b class="t">原理の説明</b>解説：ここでは製造指図の一覧が表示されます。一覧には製造指図の主要な情報が表示されます。この一覧はレポートではなく、この一覧から製造指図の変更、伝票の照会、製造指図の印刷など、さまざまな操作を実行できます。</div>
+</li>
+</ol>
+<div class="steph" id="t39"><span class="no">タスク 39</span><h3>購買依頼を購買発注に変換</h3><span class="tc">MD04</span><span class="tc2">13 画面 / 12 ステップ</span></div>
+<p>解説：これは購買発注登録の画面です。画面左側には選択した購買依頼番号が、右側には購買発注登録の標準画面が表示されています</p>
+<p>仕入先 10000001 長平鉄工場、購買組織 Y999、会社コード C999、購買グループ PG1 を入力します</p>
+<p>「採用」ボタンをクリックし、「保存」をクリック。</p>
+<p>同じ方法で、その他の購買依頼もすべて購買発注に変換します。</p>
+<p>購買依頼を購買発注に変換します。仕入先と品目の関係は、仕入先と品目の関係を参照します。</p>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】将采购申请转换为采购订单<br>解释：这是采购订单创建的屏幕，屏幕左侧是我们选中的采购申请号，右侧是采购订单创建的标准屏幕<br>输入供应商 10000001 长平铁工厂，采购组织 Y999 公司代码 C999，采购组 PG1<br>点击采用按钮，点击保存。<br>同样的方法把其他采购申请都转换为采购订单。<br>采购申请转换为采购订单，供应商和物料间 的关系参照供应商和物料之间的关系。</div></details>
+<div class="pathline" data-copy="ロジスティクス → 生産 → 資材所要量計画 → 評価 → MD04-在庫/所要量一覧"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 生産 → 資材所要量計画 → 評価 → MD04-在庫/所要量一覧</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 生产 → 物料需求计划 → 评估 → MD04-库存/需求清单</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> このステップでは、MRP によって生成された原材料の購買依頼を購買発注に変換します。業務処理<br>ロジスティクス－生産－資材所要量計画－評価－MD04-在庫/所要量一覧</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：此步骤将 MRP 生成的对于原材料的采购申请转换为采购订单。前台<br>后勤－生产－物料需求计划－评估－MD04-库存/需求清单</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/01_1_image1013.png"><img src="assets/img/pp/t39/01_1_image1013.png" alt="購買依頼を購買発注に変換 · ステップ 1：解説：このステップでは、MRP によって生成された原材料の購買依頼を購買発注に変換します。業務処理 ロジスティクス－生産－資材所要量計画－評価－MD04-在庫/所要量一覧" loading="lazy" width="302" height="625"></a><figcaption><span class="n">画面 1002</span><span class="src">image1013.png · 302×625</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 1003）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/02_1_image1014.png"><img src="assets/img/pp/t39/02_1_image1014.png" alt="購買依頼を購買発注に変換 · ステップ 2：image1014.png" loading="lazy" width="418" height="285"></a><figcaption><span class="n">画面 1003</span><span class="src">image1014.png · 418×285</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">引き続き在庫所要量一覧で購買依頼の変換を行います</p>
+<details class="orig"><summary>原文</summary><div class="zh">我们仍然在库存需求清单中完成采购申请的转换</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/03_1_image1015.png"><img src="assets/img/pp/t39/03_1_image1015.png" alt="購買依頼を購買発注に変換 · ステップ 3：引き続き在庫所要量一覧で購買依頼の変換を行います" loading="lazy" width="806" height="603"></a><figcaption><span class="n">画面 1004</span><span class="src">image1015.png · 806×603</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>具体的な位置は下図のとおり：</div>
+</li>
+<li>
+<p class="opcap">前のステップで変換した製造指図も表示されていることがわかります。「指図構造の作成」ボタンをクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">可以看到，上步骤转换的生产订单也显示出来了。点击建立订单结构按钮</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/04_1_image1016.png"><img src="assets/img/pp/t39/04_1_image1016.png" alt="購買依頼を購買発注に変換 · ステップ 4：前のステップで変換した製造指図も表示されていることがわかります。「指図構造の作成」ボタンをクリックします" loading="lazy" width="897" height="317"></a><figcaption><span class="n">画面 1005</span><span class="src">image1016.png · 897×317</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 1006）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/05_1_image1017.png"><img src="assets/img/pp/t39/05_1_image1017.png" alt="購買依頼を購買発注に変換 · ステップ 5：image1017.png" loading="lazy" width="1920" height="428"></a><figcaption><span class="n">画面 1006</span><span class="src">image1017.png · 1920×428</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">画面左側に完成品の最初の製造指図 1000000 の構成ツリーが表示され、右側は引き続き完成品の在庫所要量一覧です<br>原材料（ROH）R999-200 をダブルクリックして進みます</p>
+<details class="orig"><summary>原文</summary><div class="zh">屏幕左侧出现了针对产成品的第一个生产订单 1000000的组建树，右侧依然是产成品的库存需求清单<br>双击原材料 R999-200，进入</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/06_1_image1018.png"><img src="assets/img/pp/t39/06_1_image1018.png" alt="購買依頼を購買発注に変換 · ステップ 6：画面左側に完成品の最初の製造指図 1000000 の構成ツリーが表示され、右側は引き続き完成品の在庫所要量一覧です 原材料（ROH）R999-200 をダブルクリックして進みます" loading="lazy" width="1552" height="752"></a><figcaption><span class="n">画面 1007</span><span class="src">image1018.png · 1552×752</span></figcaption></figure>
+<div class="note info"><b class="t">原理の説明</b>解説：このとき、画面の下側が原材料であるカバーの在庫所要量一覧に変わります。完成品から生じた非独立所要量 DepReq が、完成品の製造指図の登録に伴って指図引当 OrdRes に変換されたことがわかります。次に、購買依頼を購買発注に変換します。</div>
+</li>
+<li>
+<p class="opcap">購買依頼 PurRqs 0010000021/00010 をダブルクリックして入ります</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击采购申请 PurRqs 0010000021/00010，进入</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/07_1_image1019.png"><img src="assets/img/pp/t39/07_1_image1019.png" alt="購買依頼を購買発注に変換 · ステップ 7：購買依頼 PurRqs 0010000021/00010 をダブルクリックして入ります" loading="lazy" width="620" height="274"></a><figcaption><span class="n">画面 1008</span><span class="src">image1019.png · 620×274</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「購買発注」をクリックして進む</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击采购订单，进入</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/08_1_image1020.png"><img src="assets/img/pp/t39/08_1_image1020.png" alt="購買依頼を購買発注に変換 · ステップ 8：「購買発注」をクリックして進む" loading="lazy" width="1504" height="955"></a><figcaption><span class="n">画面 1009</span><span class="src">image1020.png · 1504×955</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>同様に MD04 で R999-200、R999-300、R999-400、R999-500 および商品（HAWA）T999-100 の</div>
+</li>
+<li>
+<p class="opcap">R999-500 10000000<br>T999-100 20000000 PG2</p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/09_1_image1021.jpeg"><img src="assets/img/pp/t39/09_1_image1021.jpeg" alt="購買依頼を購買発注に変換 · ステップ 9：R999-500 10000000 T999-100 20000000 PG2" loading="lazy" width="1459" height="816"></a><figcaption><span class="n">画面 1010</span><span class="src">image1021.jpeg · 1459×816</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/10_1_image1022.jpeg"><img src="assets/img/pp/t39/10_1_image1022.jpeg" alt="購買依頼を購買発注に変換 · ステップ 10：image1022.jpeg" loading="lazy" width="1428" height="859"></a><figcaption><span class="n">画面 1011</span><span class="src">image1022.jpeg · 1428×859</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t39/10_2_image1023.jpeg"><img src="assets/img/pp/t39/10_2_image1023.jpeg" alt="購買依頼を購買発注に変換 · ステップ 10：image1023.jpeg" loading="lazy" width="1441" height="916"></a><figcaption><span class="n">画面 1012</span><span class="src">image1023.jpeg · 1441×916</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/11_1_image1024.jpeg"><img src="assets/img/pp/t39/11_1_image1024.jpeg" alt="購買依頼を購買発注に変換 · ステップ 11：image1024.jpeg" loading="lazy" width="1433" height="876"></a><figcaption><span class="n">画面 1013</span><span class="src">image1024.jpeg · 1433×876</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 1014）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t39/12_1_image1025.jpeg"><img src="assets/img/pp/t39/12_1_image1025.jpeg" alt="購買依頼を購買発注に変換 · ステップ 12：image1025.jpeg" loading="lazy" width="1441" height="818"></a><figcaption><span class="n">画面 1014</span><span class="src">image1025.jpeg · 1441×818</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t40"><span class="no">タスク 40</span><h3>購買発注に対して入庫</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">MIGO</span><span class="tc2">2 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】对采购订单收货<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 品目管理 → 在庫管理（MM-IM） → 在庫移動 → 入庫 → 購買発注に対して → 購買発注の GR（MIGO）"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 品目管理 → 在庫管理（MM-IM） → 在庫移動 → 入庫 → 購買発注に対して → 購買発注の GR（MIGO）</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 物料管理 → 库存管理 → 货物移动 → 收货 → 对采购订单 → 采购订单的 GR（MIGO）</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap">ロジスティクス－品目管理－在庫管理（MM-IM）－在庫移動－入庫－購買発注に対して－購買発注の GR（MIGO）</p>
+<details class="orig"><summary>原文</summary><div class="zh">后勤－物料管理－库存管理－货物移动－收货－对采购订单－采购订单的 GR（MIGO）</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t40/01_1_image1026.png"><img src="assets/img/pp/t40/01_1_image1026.png" alt="購買発注に対して入庫 · ステップ 1：ロジスティクス－品目管理－在庫管理（MM-IM）－在庫移動－入庫－購買発注に対して－購買発注の GR（MIGO）" loading="lazy" width="461" height="553"></a><figcaption><span class="n">画面 1015</span><span class="src">image1026.png · 461×553</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 1016）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t40/02_1_image1027.jpeg"><img src="assets/img/pp/t40/02_1_image1027.jpeg" alt="購買発注に対して入庫 · ステップ 2：image1027.jpeg" loading="lazy" width="1369" height="849"></a><figcaption><span class="n">画面 1016</span><span class="src">image1027.jpeg · 1369×849</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>また、商品（HAWA）の保管場所は 0003 です</div>
+<div class="note tip"><b class="t">教材ノート</b>「採用」をクリックし、同一仕入先の品目を一度にまとめて入庫します。明細確定にチェックを入れ、保管場所を 0001 にするのを忘れないでください。同じ方法で原材料もすべて入庫します。</div>
+</li>
+</ol>
+<div class="steph" id="t41"><span class="no">タスク 41</span><h3>購買請求書を入力する</h3><span class="tc">MIRO</span><span class="tc">MRBR</span><span class="tc2">5 画面 / 5 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】输入采购发票<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 品目管理 → ロジスティクス請求書照合（LIV） → 伝票入力 → MIRO-請求書の入力"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 品目管理 → ロジスティクス請求書照合（LIV） → 伝票入力 → MIRO-請求書の入力</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 物料管理 → 后勤发票校验 → 凭证输入 → MIRO-输入发票</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> このステップでは、先ほどの購買発注に対して購買請求書を入力し、請求書照合を実行します。業務処理<br>ロジスティクス－品目管理－ロジスティクス請求書照合（LIV）－伝票入力－MIRO-請求書の入力</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：这一步我们为前面的采购订单输入采购发票，并执行发票校验。前台<br>后勤－物料管理－后勤发票校验－凭证输入－MIRO-输入发票</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t41/01_1_image1028.png"><img src="assets/img/pp/t41/01_1_image1028.png" alt="購買請求書を入力する · ステップ 1：解説：このステップでは、先ほどの購買発注に対して購買請求書を入力し、請求書照合を実行します。業務処理 ロジスティクス－品目管理－ロジスティクス請求書照合（LIV）－伝票入力－MIRO-請求書の入力" loading="lazy" width="228" height="194"></a><figcaption><span class="n">画面 1017</span><span class="src">image1028.png · 228×194</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t41/02_1_image1029.png"><img src="assets/img/pp/t41/02_1_image1029.png" alt="購買請求書を入力する · ステップ 2：image1029.png" loading="lazy" width="1143" height="935"></a><figcaption><span class="n">画面 1018</span><span class="src">image1029.png · 1143×935</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 1019）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t41/03_1_image1030.png"><img src="assets/img/pp/t41/03_1_image1030.png" alt="購買請求書を入力する · ステップ 3：image1030.png" loading="lazy" width="957" height="893"></a><figcaption><span class="n">画面 1019</span><span class="src">image1030.png · 957×893</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">同じ方法を繰り返し、前述のすべての購買発注について請求書をパークし、トランザクションコード MRBR を実行してブロック請求書を解除します</p>
+<details class="orig"><summary>原文</summary><div class="zh">重复同样的办法，对所有前面的采购订单进行发票预制运行事务代码 MRBR 下达冻结发票</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t41/04_1_image1031.jpeg"><img src="assets/img/pp/t41/04_1_image1031.jpeg" alt="購買請求書を入力する · ステップ 4：同じ方法を繰り返し、前述のすべての購買発注について請求書をパークし、トランザクションコード MRBR を実行してブロック請求書を解除します" loading="lazy" width="1709" height="311"></a><figcaption><span class="n">画面 1020</span><span class="src">image1031.jpeg · 1709×311</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「請求書の承認」F9（緑色の小旗）をクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击批准发票 F9（绿色小旗帜）</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t41/05_1_image1032.png"><img src="assets/img/pp/t41/05_1_image1032.png" alt="購買請求書を入力する · ステップ 5：「請求書の承認」F9（緑色の小旗）をクリックします" loading="lazy" width="1709" height="309"></a><figcaption><span class="n">画面 1021</span><span class="src">image1032.png · 1709×309</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t42"><span class="no">タスク 42</span><h3>製造指図を指図発行</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">CO02</span><span class="tc2">6 画面 / 5 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】下达生产订单<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 生産 → 生産管理 → 指図 → CO02-変更"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 生産 → 生産管理 → 指図 → CO02-変更</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 生产 → 生产控制 → 订单 → CO02-更改</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">ロジスティクス－生産－生産管理－指図－CO02-変更</p>
+<details class="orig"><summary>原文</summary><div class="zh">后勤－生产－生产控制－订单－CO02-更改</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t42/01_1_image1033.png"><img src="assets/img/pp/t42/01_1_image1033.png" alt="製造指図を指図発行 · ステップ 1：ロジスティクス－生産－生産管理－指図－CO02-変更" loading="lazy" width="465" height="633"></a><figcaption><span class="n">画面 1022</span><span class="src">image1033.png · 465×633</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 内部指図と同様に、製造指図も「ステータス管理」を採用しています。先に登録した製造指図はまだ実行できず、指図発行した後に初めて実行できます。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：和内部订单类似生产订单也是采用 “ 状态管理” 的，前面创建的生产订单还不能执行，只有在我们将它下达后，它才能被执行</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t42/02_1_image1034.png"><img src="assets/img/pp/t42/02_1_image1034.png" alt="製造指図を指図発行 · ステップ 2：解説：内部指図と同様に、製造指図も「ステータス管理」を採用しています。先に登録した製造指図はまだ実行できず、指図発行した後に初めて実行できます。" loading="lazy" width="458" height="309"></a><figcaption><span class="n">画面 1023</span><span class="src">image1034.png · 458×309</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 1024）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t42/03_1_image1035.png"><img src="assets/img/pp/t42/03_1_image1035.png" alt="製造指図を指図発行 · ステップ 3：image1035.png" loading="lazy" width="636" height="682"></a><figcaption><span class="n">画面 1024</span><span class="src">image1035.png · 636×682</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>入庫ページで「入庫」にチェックを入れる</div>
+</li>
+<li>
+<p class="opcap">画面の上方のステータスをクリックすると、その製造指図の現在のステータスが行に表示されます。隣の i ボタンをクリックするとそのステータスを確認できます。緑の旗をクリックして製造指図を指図発行します。画面の下方にメッセージが表示され、指図発行が実行されました。「保存」をクリックし、同じ方法で他の製造指図も指図発行します。</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击屏幕上方的状态，行显示了这张生产订单目前的状态，可以点击旁边的 i 按钮查看其状态 点击绿色旗帜下达生产订单，屏幕下方出现提示，下达已执行，点击保存，使用同样的方法下达其他生产订单</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t42/04_1_image1036.png"><img src="assets/img/pp/t42/04_1_image1036.png" alt="製造指図を指図発行 · ステップ 4：画面の上方のステータスをクリックすると、その製造指図の現在のステータスが行に表示されます。隣の i ボタンをクリックするとそのステータスを確認できます。緑の旗をクリックして製造指図を指図発行します。画面の下方にメッセージが表示され、指図発行が実行されました。「保存」をクリックし、同じ方法で他の製造指図も指図発行します。" loading="lazy" width="597" height="803"></a><figcaption><span class="n">画面 1025</span><span class="src">image1036.png · 597×803</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t42/04_2_image1037.png"><img src="assets/img/pp/t42/04_2_image1037.png" alt="製造指図を指図発行 · ステップ 4：画面の上方のステータスをクリックすると、その製造指図の現在のステータスが行に表示されます。隣の i ボタンをクリックするとそのステータスを確認できます。緑の旗をクリックして製造指図を指図発行します。画面の下方にメッセージが表示され、指図発行が実行されました。「保存」をクリックし、同じ方法で他の製造指図も指図発行します。" loading="lazy" width="649" height="690"></a><figcaption><span class="n">画面 1026</span><span class="src">image1037.png · 649×690</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 1027）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t42/05_1_image1038.png"><img src="assets/img/pp/t42/05_1_image1038.png" alt="製造指図を指図発行 · ステップ 5：image1038.png" loading="lazy" width="623" height="362"></a><figcaption><span class="n">画面 1027</span><span class="src">image1038.png · 623×362</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t43"><span class="no">タスク 43</span><h3>製造指図に対して出庫</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc2">8 画面 / 8 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】对生产订单发货<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 品目管理 → 在庫管理（MM-IM） → 在庫移動 → MB1A-出庫"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 品目管理 → 在庫管理（MM-IM） → 在庫移動 → MB1A-出庫</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 物料管理 → 库存管理 → 货物移动 → MB1A-发货</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 完成品の鋳鋼ポンプ 170-230 の製造指図を指図発行すると、製造指図の実行を開始できます。本ステップでは製造指図に原材料を払い出します。<br>ロジスティクス－品目管理－在庫管理（MM-IM）－在庫移動－MB1A-出庫</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：产成品铸钢泵 170-230 的生产订单下达后就可以开始生产订单的执行，本步骤我们给生产订单发原材料。<br>后勤－物料管理－库存管理－货物移动－MB1A-发货</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t43/01_1_image1039.png"><img src="assets/img/pp/t43/01_1_image1039.png" alt="製造指図に対して出庫 · ステップ 1：解説：完成品の鋳鋼ポンプ 170-230 の製造指図を指図発行すると、製造指図の実行を開始できます。本ステップでは製造指図に原材料を払い出します。 ロジスティクス－品目管理－在庫管理（MM-IM）－在庫移動－MB1A-出庫" loading="lazy" width="641" height="447"></a><figcaption><span class="n">画面 1028</span><span class="src">image1039.png · 641×447</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">Enter</p>
+<details class="orig"><summary>原文</summary><div class="zh">回车</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t43/02_1_image1040.png"><img src="assets/img/pp/t43/02_1_image1040.png" alt="製造指図に対して出庫 · ステップ 2：Enter" loading="lazy" width="764" height="706"></a><figcaption><span class="n">画面 1029</span><span class="src">image1040.png · 764×706</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「指図へ」をクリックし、製造指図番号とプラントを入力します</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击到订单，输入生产订单号及工厂</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t43/03_1_image1041.png"><img src="assets/img/pp/t43/03_1_image1041.png" alt="製造指図に対して出庫 · ステップ 3：「指図へ」をクリックし、製造指図番号とプラントを入力します" loading="lazy" width="776" height="356"></a><figcaption><span class="n">画面 1030</span><span class="src">image1041.png · 776×356</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">システムが指図内の未出庫の品目を自動的にコピーするので、「保存」をクリックします</p>
+<details class="orig"><summary>原文</summary><div class="zh">系统自动将订单中尚未发货的物料复制过来，点击保存</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t43/04_1_image1042.png"><img src="assets/img/pp/t43/04_1_image1042.png" alt="製造指図に対して出庫 · ステップ 4：システムが指図内の未出庫の品目を自動的にコピーするので、「保存」をクリックします" loading="lazy" width="613" height="463"></a><figcaption><span class="n">画面 1031</span><span class="src">image1042.png · 613×463</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">「出庫」メニュー---「照会」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击发货菜单---显示</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t43/05_1_image1043.png"><img src="assets/img/pp/t43/05_1_image1043.png" alt="製造指図に対して出庫 · ステップ 5：「出庫」メニュー---「照会」をクリック" loading="lazy" width="363" height="194"></a><figcaption><span class="n">画面 1032</span><span class="src">image1043.png · 363×194</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">Enter 後に表示される</p>
+<details class="orig"><summary>原文</summary><div class="zh">回车后看到</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t43/06_1_image1044.png"><img src="assets/img/pp/t43/06_1_image1044.png" alt="製造指図に対して出庫 · ステップ 6：Enter 後に表示される" loading="lazy" width="810" height="544"></a><figcaption><span class="n">画面 1033</span><span class="src">image1044.png · 810×544</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>「会計伝票」をクリック</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 1034）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t43/07_1_image1045.png"><img src="assets/img/pp/t43/07_1_image1045.png" alt="製造指図に対して出庫 · ステップ 7：image1045.png" loading="lazy" width="375" height="207"></a><figcaption><span class="n">画面 1034</span><span class="src">image1045.png · 375×207</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">会計伝票をダブルクリックすると、次のとおり</p>
+<details class="orig"><summary>原文</summary><div class="zh">双击会计凭证，如下</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t43/08_1_image1046.png"><img src="assets/img/pp/t43/08_1_image1046.png" alt="製造指図に対して出庫 · ステップ 8：会計伝票をダブルクリックすると、次のとおり" loading="lazy" width="738" height="557"></a><figcaption><span class="n">画面 1035</span><span class="src">image1046.png · 738×557</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>戻って同じ方法を繰り返し、残りの指図発行済み製造指図に対して出庫します</div>
+</li>
+</ol>
+<div class="steph" id="t44"><span class="no">タスク 44</span><h3>指図確認</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">CO11N</span><span class="tc2">10 画面 / 8 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】工单确认<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 生産 → 生産管理 → 確認 → Enter → 作業用 → CO11N-作業票"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 生産 → 生産管理 → 確認 → Enter → 作業用 → CO11N-作業票</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 生产 → 生产控制 → 确认 → 回车 → 用于操作 → CO11N-计工单</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 本ステップは製造指図の実行プロセスで、完了した各工程を 1 つずつ確認し、作業実績を報告します。これを工票確認または作業時間報告と呼びます。</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：本步骤是生产订单的执行过程，对于已经完成的各道工序进行逐个的确认和报工，我们称之为工票确认或计工单。</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t44/01_1_image1047.png"><img src="assets/img/pp/t44/01_1_image1047.png" alt="指図確認 · ステップ 1：解説：本ステップは製造指図の実行プロセスで、完了した各工程を 1 つずつ確認し、作業実績を報告します。これを工票確認または作業時間報告と呼びます。" loading="lazy" width="734" height="769"></a><figcaption><span class="n">画面 1036</span><span class="src">image1047.png · 734×769</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">Enter を押す</p>
+<details class="orig"><summary>原文</summary><div class="zh">按回车</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t44/02_1_image1048.png"><img src="assets/img/pp/t44/02_1_image1048.png" alt="指図確認 · ステップ 2：Enter を押す" loading="lazy" width="1104" height="868"></a><figcaption><span class="n">画面 1037</span><span class="src">image1048.png · 1104×868</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">「在庫移動」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击货物移动</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t44/03_1_image1049.png"><img src="assets/img/pp/t44/03_1_image1049.png" alt="指図確認 · ステップ 3：「在庫移動」をクリック" loading="lazy" width="1122" height="847"></a><figcaption><span class="n">画面 1038</span><span class="src">image1049.png · 1122×847</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">Enter をクリックすると、次のとおり</p>
+<details class="orig"><summary>原文</summary><div class="zh">点击回车后，如下所示</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t44/04_1_image1050.png"><img src="assets/img/pp/t44/04_1_image1050.png" alt="指図確認 · ステップ 4：Enter をクリックすると、次のとおり" loading="lazy" width="679" height="748"></a><figcaption><span class="n">画面 1039</span><span class="src">image1050.png · 679×748</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t44/04_2_image1051.png"><img src="assets/img/pp/t44/04_2_image1051.png" alt="指図確認 · ステップ 4：Enter をクリックすると、次のとおり" loading="lazy" width="698" height="882"></a><figcaption><span class="n">画面 1040</span><span class="src">image1051.png · 698×882</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">ここでは完成品がまだ完成入庫していないことがわかります。「保存」ボタンをクリックし、他の工程の確認を続けます。今回は並行工程の塗装・外装を選択します<br>「在庫移動」をクリックし、「保存」をクリック</p>
+<details class="orig"><summary>原文</summary><div class="zh">这里我们看到产成品尚未完工收获，点击保存按钮，继续对其他工序进行确认，这次我们选择并行的工序，油漆罩壳<br>点击货物移动，单击保存</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t44/05_1_image1052.png"><img src="assets/img/pp/t44/05_1_image1052.png" alt="指図確認 · ステップ 5：ここでは完成品がまだ完成入庫していないことがわかります。「保存」ボタンをクリックし、他の工程の確認を続けます。今回は並行工程の塗装・外装を選択します 「在庫移動」をクリックし、「保存」をクリック" loading="lazy" width="734" height="690"></a><figcaption><span class="n">画面 1041</span><span class="src">image1052.png · 734×690</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>上記の方法を繰り返し、工程 20、30、40、50 の作業報告を行います。完成品 F999-100 には全部で 6 つの工程があり、それぞれ 10、20、30、40、50 です。当該工程で計画人工工数を変更した以外は、残りはシステムが自動的に呼び出した計画値を保持します。</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 1042）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t44/06_1_image1053.png"><img src="assets/img/pp/t44/06_1_image1053.png" alt="指図確認 · ステップ 6：image1053.png" loading="lazy" width="661" height="739"></a><figcaption><span class="n">画面 1042</span><span class="src">image1053.png · 661×739</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t44/07_1_image1054.png"><img src="assets/img/pp/t44/07_1_image1054.png" alt="指図確認 · ステップ 7：image1054.png" loading="lazy" width="653" height="663"></a><figcaption><span class="n">画面 1043</span><span class="src">image1054.png · 653×663</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t44/07_2_image1055.png"><img src="assets/img/pp/t44/07_2_image1055.png" alt="指図確認 · ステップ 7：image1055.png" loading="lazy" width="575" height="666"></a><figcaption><span class="n">画面 1044</span><span class="src">image1055.png · 575×666</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 1045）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t44/08_1_image1056.png"><img src="assets/img/pp/t44/08_1_image1056.png" alt="指図確認 · ステップ 8：image1056.png" loading="lazy" width="696" height="656"></a><figcaption><span class="n">画面 1045</span><span class="src">image1056.png · 696×656</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t45"><span class="no">タスク 45</span><h3>製造指図に対して入庫</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">MIGO</span><span class="tc2">2 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】对生产订单收货<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 品目管理 → 在庫管理（MM-IM） → 在庫移動 → 入庫 → 指図の GR（MIGO） MIGO_GO"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 品目管理 → 在庫管理（MM-IM） → 在庫移動 → 入庫 → 指図の GR（MIGO） MIGO_GO</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 物料管理 → 库存管理 → 货物移动 → 收货 → 订单的 GR（MIGO） MIGO_GO</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 製品の鋳鋼ポンプ 170-230 の生産は、各工程の加工を経て正式に完了します。本ステップでは指図の完了入庫を行います</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：产品铸钢泵 170-230 的生产经过各道工序的加工后正式完工，本步骤进行订单完工收货</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t45/01_1_image1057.png"><img src="assets/img/pp/t45/01_1_image1057.png" alt="製造指図に対して入庫 · ステップ 1：解説：製品の鋳鋼ポンプ 170-230 の生産は、各工程の加工を経て正式に完了します。本ステップでは指図の完了入庫を行います" loading="lazy" width="398" height="468"></a><figcaption><span class="n">画面 1046</span><span class="src">image1057.png · 398×468</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 1047）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t45/02_1_image1058.png"><img src="assets/img/pp/t45/02_1_image1058.png" alt="製造指図に対して入庫 · ステップ 2：image1058.png" loading="lazy" width="1411" height="716"></a><figcaption><span class="n">画面 1047</span><span class="src">image1058.png · 1411×716</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>この画面は購買入庫と似ていますが、入力する必要があるのは製造指図（1000013）の番号だけです。（製造指図の入庫ページで入庫のチェックを入れるのを忘れないでください）</div>
+</li>
+</ol>
+<div class="steph" id="t46"><span class="no">タスク 46</span><h3>製造指図の原価を照会</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">CO03</span><span class="tc2">5 画面 / 1 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】显示生产订单的成本<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 生産 → 生産管理 → 指図 → CO03-照会"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 生産 → 生産管理 → 指図 → CO03-照会</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 生产 → 生产控制 → 订单 → CO03-显示</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 1048）</span></p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/pp/t46/01_1_image1059.png"><img src="assets/img/pp/t46/01_1_image1059.png" alt="製造指図の原価を照会 · ステップ 1：image1059.png" loading="lazy" width="651" height="676"></a><figcaption><span class="n">画面 1048</span><span class="src">image1059.png · 651×676</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t46/02_1_image1060.png"><img src="assets/img/pp/t46/02_1_image1060.png" alt="製造指図の原価を照会 · ステップ 1：image1062.png" loading="lazy" width="701" height="770"></a><figcaption><span class="n">画面 1049</span><span class="src">image1062.png · 701×770</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t46/02_2_image1061.jpeg"><img src="assets/img/pp/t46/02_2_image1061.jpeg" alt="製造指図の原価を照会 · ステップ 1：image1063.jpeg" loading="lazy" width="1207" height="512"></a><figcaption><span class="n">画面 1050</span><span class="src">image1063.jpeg · 1207×512</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t46/02_1_image1060.png"><img src="assets/img/pp/t46/02_1_image1060.png" alt="製造指図の原価を照会 · ステップ 1：image1062.png" loading="lazy" width="701" height="770"></a><figcaption><span class="n">画面 1049</span><span class="src">image1062.png · 701×770</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t46/02_2_image1061.jpeg"><img src="assets/img/pp/t46/02_2_image1061.jpeg" alt="製造指図の原価を照会 · ステップ 1：image1063.jpeg" loading="lazy" width="1207" height="512"></a><figcaption><span class="n">画面 1050</span><span class="src">image1063.jpeg · 1207×512</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t47"><span class="no">タスク 47</span><h3>製造指図を技術的完了にする</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">CO02</span><span class="tc2">2 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】对生产订单技术性完成<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 生産 → 生産管理 → 指図 → CO02-変更"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 生産 → 生産管理 → 指図 → CO02-変更</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 生产 → 生产控制 → 订单 → CO02-更改</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 製造指図には 4 つのシステム標準ステータスがあります。登録、指図発行、技術的完了、そして完了です。製造指図と生産に関連する各操作が完了したら、製造指図を技術的完了にする必要があります。しかしこの時点でも、指図決済などの特別な操作を行うことができ、すべての操作が完了した後に初めて指図を完了します。<br>ロジスティクス－生産－生産管理－指図－CO02-変更</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：生产订单有四种系统标准状：创建、下达、技术性完成和关闭。当生产订单和生产相关的各项操作完成后应该将生产订单作技术性完成，但是这时候我们仍然可以做诸如订单结算等特殊的操作，当所有的操作都完成后，我们才将订单关闭。<br>后勤－生产－生产控制－订单－CO02-更改</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t47/01_1_image1064.png"><img src="assets/img/pp/t47/01_1_image1064.png" alt="製造指図を技術的完了にする · ステップ 1：解説：製造指図には 4 つのシステム標準ステータスがあります。登録、指図発行、技術的完了、そして完了です。製造指図と生産に関連する各操作が完了したら、製造指図を技術的完了にする必要があります。しかしこの時点でも、指図決済などの特別な操作を行うことができ、すべての操作が完了した後に初めて指図を完了します。 ロジスティクス" loading="lazy" width="689" height="754"></a><figcaption><span class="n">画面 1053</span><span class="src">image1064.png · 689×754</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>ステータスを表示</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 1054）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t47/02_1_image1065.png"><img src="assets/img/pp/t47/02_1_image1065.png" alt="製造指図を技術的完了にする · ステップ 2：image1065.png" loading="lazy" width="629" height="807"></a><figcaption><span class="n">画面 1054</span><span class="src">image1065.png · 629×807</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t48"><span class="no">タスク 48</span><h3>製造指図の差異決済</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc">KO88</span><span class="tc2">2 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】生产订单差异结算<br></div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 製品原価管理 → 原価対象管理 → 受注別製品原価 → 期末決算 → 単一機能 → KO88 個別処理"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 製品原価管理 → 原価対象管理 → 受注別製品原価 → 期末決算 → 単一機能 → KO88 個別処理</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 控制 → 产品成本控制 → 成本对象控制 → 按订单划分的产品成本 → 期末结算 → 单一功能 → KO88 单个处理</code></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解説：</span> 46 の時点で、この製造指図の実際原価に残高があることが分かりました。これは投入が産出を上回っていることを意味し、製造指図の差異と呼びます。会計の観点では、製造指図の差異は決済を行う必要があります。<br>会計－管理会計－製品原価管理－原価対象管理－受注別製品原価－期末決算－単一機能－KO88 個別処理</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：46 的时候我们发现该生产订单的实际成本中有余额，这就意味着投入高过产出，我们称之为生产订单的差异，从会计角度来讲，生产订单差异需要做结算。<br>会计－控制－产品成本控制－成本对象控制－按订单划分的产品成本－期末结算－单一功能－KO88 单个处理</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t48/01_1_image1066.png"><img src="assets/img/pp/t48/01_1_image1066.png" alt="製造指図の差異決済 · ステップ 1：解説：46 の時点で、この製造指図の実際原価に残高があることが分かりました。これは投入が産出を上回っていることを意味し、製造指図の差異と呼びます。会計の観点では、製造指図の差異は決済を行う必要があります。 会計－管理会計－製品原価管理－原価対象管理－受注別製品原価－期末決算－単一機能－KO88 個別処理" loading="lazy" width="697" height="498"></a><figcaption><span class="n">画面 1055</span><span class="src">image1066.png · 697×498</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 1056）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t48/02_1_image1067.png"><img src="assets/img/pp/t48/02_1_image1067.png" alt="製造指図の差異決済 · ステップ 2：image1067.png" loading="lazy" width="910" height="265"></a><figcaption><span class="n">画面 1056</span><span class="src">image1067.png · 910×265</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t49"><span class="no">タスク 49</span><h3>製造指図原価レポートの照会</h3><span class="tc2">2 画面 / 1 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】生产订单成本报表显示<br></div></details>
+<div class="pathline" data-copy="会計 → 管理会計 → 製品原価管理 → 原価対象管理 → 受注別製品原価 → 情報システム → 受注別製品原価レポート → 詳細レポート → KKBC_ORD-受注用"><b>IMG パス（IMG 設定メニュー）</b>会計 → 管理会計 → 製品原価管理 → 原価対象管理 → 受注別製品原価 → 情報システム → 受注別製品原価レポート → 詳細レポート → KKBC_ORD-受注用</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>会计 → 控制 → 产品成本控制 → 成本对象控制 → 按订单划分的产品成本 → 信息系统 → 按订单的产品成本报表 → 详细的报表 → KKBC_ORD-用于订单</code></div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">会計－管理会計－製品原価管理－原価対象管理－受注別製品原価－情報システム－受注別製品原価レポート－詳細レポート－KKBC_ORD-受注用</p>
+<details class="orig"><summary>原文</summary><div class="zh">会计－控制－产品成本控制－成本对象控制－按订单划分的产品成本－信息系统－按订单的产品成本报表－详细的报表－KKBC_ORD-用于订单</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t49/01_1_image1068.png"><img src="assets/img/pp/t49/01_1_image1068.png" alt="製造指図原価レポートの照会 · ステップ 1：会計－管理会計－製品原価管理－原価対象管理－受注別製品原価－情報システム－受注別製品原価レポート－詳細レポート－KKBC_ORD-受注用" loading="lazy" width="546" height="401"></a><figcaption><span class="n">画面 1057</span><span class="src">image1068.png · 546×401</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t49/01_2_image1069.jpeg"><img src="assets/img/pp/t49/01_2_image1069.jpeg" alt="製造指図原価レポートの照会 · ステップ 1：会計－管理会計－製品原価管理－原価対象管理－受注別製品原価－情報システム－受注別製品原価レポート－詳細レポート－KKBC_ORD-受注用" loading="lazy" width="1206" height="464"></a><figcaption><span class="n">画面 1058</span><span class="src">image1069.jpeg · 1206×464</span></figcaption></figure>
+<div class="note info"><b class="t">原理の説明</b>解説：このステップでは情報システムで製造指図の原価レポートを確認します。業務処理</div>
+</li>
+</ol>
+<div class="steph" id="t50"><span class="no">タスク 50</span><h3>在庫一覧を照会</h3><span class="tc">MD04</span><span class="tc2">6 画面 / 5 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】显示库存清单<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 生産 → 資材所要量計画 → 評価 → MD04 在庫所要量一覧"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 生産 → 資材所要量計画 → 評価 → MD04 在庫所要量一覧</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 生产 → 物料需求计划 → 评估 → MD04 库存需求清单</code></div>
+<table class="tbl vals"><thead><tr><th>項目（日本語）</th><th>画面の中国語</th><th>教材の設定値</th></tr></thead><tbody><tr><td>ダブルクリック</td><td><code>双击</code></td><td>Stock</td></tr></tbody></table>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">ロジスティクス－生産－資材所要量計画－評価－MD04 在庫所要量一覧</p>
+<details class="orig"><summary>原文</summary><div class="zh">后勤－生产－物料需求计划－评估－MD04 库存需求清单</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t50/01_1_image1070.png"><img src="assets/img/pp/t50/01_1_image1070.png" alt="在庫一覧を照会 · ステップ 1：ロジスティクス－生産－資材所要量計画－評価－MD04 在庫所要量一覧" loading="lazy" width="411" height="276"></a><figcaption><span class="n">画面 1059</span><span class="src">image1070.png · 411×276</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/pp/t50/01_2_image1071.png"><img src="assets/img/pp/t50/01_2_image1071.png" alt="在庫一覧を照会 · ステップ 1：ロジスティクス－生産－資材所要量計画－評価－MD04 在庫所要量一覧" loading="lazy" width="837" height="717"></a><figcaption><span class="n">画面 1060</span><span class="src">image1071.png · 837×717</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> 生産が完了したので、在庫所要量一覧を確認し、完成品の需要と供給のバランス状態を見ます。業務処理</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：完成了生产，查看一下库存需求清单，来看看产成品的需求和供给的平衡状态。前台</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t50/02_1_image1072.png"><img src="assets/img/pp/t50/02_1_image1072.png" alt="在庫一覧を照会 · ステップ 2：解説：生産が完了したので、在庫所要量一覧を確認し、完成品の需要と供給のバランス状態を見ます。業務処理" loading="lazy" width="682" height="552"></a><figcaption><span class="n">画面 1061</span><span class="src">image1072.png · 682×552</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">前の画面に続けて操作します（画面 1062）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t50/03_1_image1073.png"><img src="assets/img/pp/t50/03_1_image1073.png" alt="在庫一覧を照会 · ステップ 3：image1073.png" loading="lazy" width="710" height="377"></a><figcaption><span class="n">画面 1062</span><span class="src">image1073.png · 710×377</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">同じ方法で、T999-100 を確認します</p>
+<details class="orig"><summary>原文</summary><div class="zh">同样的方法，查看 T999-100</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t50/04_1_image1074.png"><img src="assets/img/pp/t50/04_1_image1074.png" alt="在庫一覧を照会 · ステップ 4：同じ方法で、T999-100 を確認します" loading="lazy" width="733" height="666"></a><figcaption><span class="n">画面 1063</span><span class="src">image1074.png · 733×666</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">T999-100 はすべて 0003 の輸送倉庫にあります</p>
+<details class="orig"><summary>原文</summary><div class="zh">T999-100 全在 0003 运输库中</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t50/05_1_image1075.png"><img src="assets/img/pp/t50/05_1_image1075.png" alt="在庫一覧を照会 · ステップ 5：T999-100 はすべて 0003 の輸送倉庫にあります" loading="lazy" width="955" height="451"></a><figcaption><span class="n">画面 1064</span><span class="src">image1075.png · 955×451</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t51"><span class="no">タスク 51</span><h3>棚卸資産の在庫転送</h3><span class="fb img">業務処理（トランザクション）</span><span class="tc2">2 画面 / 2 ステップ</span></div>
+<details class="orig"><summary>原語（中国語）</summary><div class="zh">【タスク名】存货移库<br></div></details>
+<div class="pathline" data-copy="ロジスティクス → 品目管理 → 在庫管理（MM-IM） → 在庫移動 → MB1B-転送転記"><b>IMG パス（IMG 設定メニュー）</b>ロジスティクス → 品目管理 → 在庫管理（MM-IM） → 在庫移動 → MB1B-転送転記</div>
+<div class="pathzh"><b>原教材の中国語パス</b><code>后勤 → 物料管理 → 库存管理 → 货物移动 → MB1B-转移记账</code></div>
+<ol class="oplist">
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/pp/t51/01_1_image1076.png"><img src="assets/img/pp/t51/01_1_image1076.png" alt="棚卸資産の在庫転送 · ステップ 1：image1076.png" loading="lazy" width="655" height="456"></a><figcaption><span class="n">画面 1065</span><span class="src">image1076.png · 655×456</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解説：</span> PP のステップはすべて完了しました。最後に、一部の完成品の在庫を生産倉庫から販売・輸送倉庫へ移します。<br>ロジスティクス－品目管理－在庫管理（MM-IM）－在庫移動－MB1B-転送転記</p>
+<details class="orig"><summary>原文</summary><div class="zh">解释：PP 的步骤都已经完成，最后我们将部分产成品的库存从生产仓库移存到销售运输仓库，。<br>后勤－物料管理－库存管理－货物移动－MB1B-转移记账</div></details>
+<figure class="shot"><a class="zoom" href="assets/img/pp/t51/02_1_image1077.png"><img src="assets/img/pp/t51/02_1_image1077.png" alt="棚卸資産の在庫転送 · ステップ 2：解説：PP のステップはすべて完了しました。最後に、一部の完成品の在庫を生産倉庫から販売・輸送倉庫へ移します。 ロジスティクス－品目管理－在庫管理（MM-IM）－在庫移動－MB1B-転送転記" loading="lazy" width="860" height="325"></a><figcaption><span class="n">画面 1066</span><span class="src">image1077.png · 860×325</span></figcaption></figure>
+<div class="note tip"><b class="t">教材ノート</b>完了後、「保存」をクリック</div>
+</li>
+</ol>
+<h2 id="sources">4. スクリーンショットと設定値について</h2>
+<div class="box warn"><b class="t">画面は原教材ドキュメントのものです</b>本モジュールのスクリーンショットはすべて <code>S4.docx</code> の著者が実システムでキャプチャした中国語インターフェースの画面です（元のファイル名 <code>imageNNN.png</code> は各図の図注に残しているので、Word の原文と 1 枚ずつ照合できます）。当サイトはこれらの画面を一切描き直したり、シミュレーションで再現したりしていません。</div>
+<div class="box info"><b class="t">設定値はご自身のシステムの値を基準にしてください</b>ドキュメント内の組織構造とマスタデータの番号（会社コード <code>C999</code>、会社名「頤寧機械有限公司」、プラント <code>F999</code>、品目 <code>R999-100</code>/<code>T999-100</code>/<code>F999-100</code>、得意先 <code>K001</code>/<code>K002</code> など）はすべて原作者の教材環境のものです。手順どおりに作業するときは、<b>操作の順序と設定ポイントはそのまま流用できますが、具体的な番号や名称はご自身のシステムの値に置き換えてください</b>；ドキュメントと異なるメッセージが出た場合は、まず「<a href="issues.html">トラブルシューティングと注意点</a>」ページで原教材ドキュメントに記録された同種の問題を確認してください。</div>
+<div class="panel" style="margin-top:22px"><a href="mm.html">← 前のモジュール：MM 品目管理 MM（Materials Management）</a><br><a href="sd.html">次のモジュール：SD 販売管理 SD（Sales and Distribution） →</a><br><a href="tasks.html">全 222 タスクの索引 →</a></div>
+</article></main>
+</div>
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA 日本語実習サイト — 全モジュールの設定と操作手順 · 実機画面</h5>
+  <p>内容は同ディレクトリの教材ドキュメント <code>S4.docx</code>（425 ページ · 6 大モジュール · 222 タスク · 1385 枚の実機スクリーンショット）に基づいて整理しています。すべてのページはオフラインで開くことができ、外部依存はありません。</p>
+  <div><h5>画面について</h5><p>サイト内のすべてのスクリーンショットは<b>原教材ドキュメントの実機画面</b>（中国語インターフェースの SAP GUI）であり、イメージ図やシミュレーションによる生成画像ではありません。ファイル名は原教材ドキュメントの番号をそのまま保持しており、Word の原文と対照できます。ドキュメント内のサンプル値（会社コード <code>C999</code>、プラント <code>F999</code>、品目 <code>R999-100</code> など）は原作者の教材環境のものですので、ご自身のシステムの組織構造と番号範囲に合わせて読み替えてください。</p></div></div>
+  <div class="cols">
+    <div><h5>モジュール</h5>
+      <a href="prep.html">準備 — 準備作業 — システムへのログオンと IMG 設定への移動</a><br>
+      <a href="fi.html">FI — 財務会計 FI</a><br>
+      <a href="co.html">CO — 管理会計 CO</a><br>
+      <a href="mm.html">MM — 品目管理 MM</a><br>
+      <a href="pp.html">PP — 生産計画 PP</a><br>
+      <a href="sd.html">SD — 販売管理 SD</a><br>    </div>
+    <div><h5>サイト全体</h5>
+      <a href="prep.html">準備</a><br>
+      <a href="fi.html">FI</a><br>
+      <a href="co.html">CO</a><br>
+      <a href="mm.html">MM</a><br>
+      <a href="pp.html">PP</a><br>
+      <a href="sd.html">SD</a><br>
+      <a href="tcode.html">T-code</a><br>
+      <a href="glossary.html">用語</a><br>
+      <a href="issues.html">トラブルシューティング</a><br>
+      <a href="tasks.html">索引</a><br>
+      <a href="instructor.html">講師</a><br>
+      <a href="worksheet.html">受講者</a><br>
+      <a href="quiz.html">自習テスト</a><br>    </div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/s4jp.js"></script>
+</body>
+</html>

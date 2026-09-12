@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>手顺③ RAP 行为层 · RAP 专项训练站</title>
+<meta name="description" content="RAP 实训第三步：Behavior Definition（managed+draft）、Behavior Implementation：编号、Determination、Validation、Action、字段控制与权限（WBS 3.2〜3.8、统合项目 STEP4）。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">RAP</span><span class="txt">RAP 专项训练站</span></a>
+    <nav class="main">
+      <a href="index.html">首页</a>
+      <a href="concept.html">概念与架构</a>
+      <a href="project.html">完整项目</a>
+      <a href="handson-1.html">手顺① 数据模型</a>
+      <a href="handson-2.html">手顺② CDS 视图</a>
+      <a class="active" href="handson-3.html">手顺③ RAP 行为</a>
+      <a href="handson-4.html">手顺④ 服务与 Fiori</a>
+      <a href="code.html">项目代码</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">首页</a> / 手顺③ RAP 行为层</div>
+<main class="page"><article>
+
+<h1>手顺③ RAP 行为层（BDEF + BIL）</h1>
+<div class="box info"><b class="t">本页对应</b>
+WBS PH3 3.2（BDEF managed）/ 3.3（BIL 实现）/ 3.5（Draft）/ 3.6（Action）/ 3.7（Numbering）/ 3.8（Authorization）＋ 统合项目 STEP4。
+<b>这是整个 WBS 中最容易卡住的阶段</b>（WBS 备注：STEP4 でつまずく人が最多）。建议流程：<b>Generator 自动生成 → 读代码 → 手动修改</b>。</div>
+
+<h2>操作流程（本页总览）</h2>
+<div class="flow">
+  <div class="node">1 生成 BDEF<br><small>右键 ZR_ZPOHEADER</small></div><div class="arrow">→</div>
+  <div class="node">2 启用 Draft<br><small>managed + draft</small></div><div class="arrow">→</div>
+  <div class="node">3 生成 BIL 池<br><small>zbp_zr_zpoheader</small></div><div class="arrow">→</div>
+  <div class="node">4 加方法<br><small>Determination / Validation / Action / 编号</small></div><div class="arrow">→</div>
+  <div class="node">5 激活 + EML 试跑<br><small>或 Preview（手顺④）</small></div><div class="arrow">→</div>
+  <div class="node">✓ 验收</div>
+</div>
+
+<h2>STEP 3-1 生成 Behavior Definition（managed）</h2>
+<ol class="steps">
+  <li>Project Explorer 中右键 <code>ZR_ZPOHEADER</code> → New Behavior Definition。</li>
+  <li>默认实现类型选 <b>Managed</b>，勾选 <b>Draft Enabled</b>（弹窗里会出现）。名称默认与实体同名：<code>ZR_ZPOHEADER</code>。</li>
+  <li>点 Finish 后 ADT 生成骨架 BDEF（含 root + 子实体 + 草稿表提示）。粘贴/核对以下内容：</li>
+</ol>
+
+<pre class="hl"><div class="code-head"><span class="lang">abap · BDEF ZR_ZPOHEADER（完整版：CRUD + draft + action + determination + validation）</span><button class="copy-btn" type="button">复制</button></div><code class="lang-abap">managed implementation in class zbp_zr_zpoheader unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZR_ZPOHEADER alias ZpoHeader
+persistent table z_po_hdr
+lock master
+authorization master ( instance )
+early numbering
+{
+  create;
+  update;
+  delete;
+
+  field ( readonly : update ) CreatedBy;   " 创建人：仅创建时由 Determination 填充，之后只读
+  field ( readonly ) PoNum;                 " 主键：仅编号方法可填，客户端始终只读
+
+  mapping for z_po_hdr corresponding
+  {
+    PoNum      = po_num;
+    PoDate     = po_date;
+    VendorCode = vendor_code;
+    Status     = status;
+    CreatedBy  = created_by;
+    ZzMemo     = zz_memo;
+  }
+
+  /* ---- 默认值 ---- */
+  determination setDefaultValues on modify { create; }
+
+  /* ---- 校验 ---- */
+  validation validateVendor on save { create; update; }
+
+  /* ---- 动作：確定订单 ---- */
+  action ConfirmOrder result [1] self;
+
+  association _Items { create; with draft; }
+}
+
+define behavior for ZR_ZPOITEM alias ZpoItem
+persistent table z_po_itm
+{
+  create;
+  update;
+  delete;
+
+  field ( readonly ) PoNum;
+  field ( mandatory ) Matnr, Qty, NetPrice;
+
+  validation validateItemAmount on save { create; update; }
+
+  mapping for z_po_itm corresponding
+  {
+    PoNum    = po_num;
+    ItemNum  = item_num;
+    Matnr    = matnr;
+    Qty      = qty;
+    Unit     = unit;
+    NetPrice = net_price;
+    Currency = currency;
+  }
+}
+</code></pre>
+
+<div class="box warn"><b class="t">字段控制说明（能力测试必考）</b>
+<ul>
+  <li><code>field ( readonly ) X</code>：create/update 都不能由客户端改（如系统管理字段）。</li>
+  <li><code>field ( readonly : update ) PoNum</code>：创建时可提供、更新时只读。</li>
+  <li><code>field ( mandatory ) ...</code>：客户端必须提供（缺了报错）。</li>
+  <li>子实体 <code>PoNum</code> 只读：父键由关联/上级带入，UI 不让用户直接改。</li>
+</ul></div>
+
+<h2>STEP 3-2 关于 Draft 的处理（WBS 3.5）</h2>
+<ol class="steps">
+  <li>在 BDEF 头部 <code>strict ( 2 );</code> 之后加 <code>with draft;</code>（上方代码已含）。</li>
+  <li>激活时 ADT 会自动创建草稿表（命名形如 <code>ZR_ZPOHEADER_D</code> / 子表 <code>ZR_ZPOITEM_D</code>）。若提示需手工建，用 Quick Assist（Ctrl+1）→ Create draft table。</li>
+  <li>Draft 激活后：Fiori/EML 中 Save = 存草稿，Activate 才写正式表；同时提供 Edit 锁、Discard、Resume。</li>
+  <li>BDEF 中的 <code>draft action</code>（Activate/Edit/Resume/Discard）由 managed 框架自动提供，无需像 unmanaged 那样显式列出——但如需禁用可在行为定义中显式覆盖。</li>
+</ol>
+<div class="box info"><b class="t">Draft + 编号的关系（WBS 3.7 延伸）</b>
+Managed BO 若启用 draft，通常用 <b>UUID（raw16, managed numbering）</b> 或 <b>早编号（early numbering）</b> 保证“CREATE 一发生就有主键”（draft 行也需要键）。晚编号（late numbering）是给 unmanaged 的 SAVE 序列用的，不适合 draft。本站用 CHAR 主键 + 早编号 + 番号范围 ZNPO 教学。</div>
+
+<h2>STEP 3-3 生成 Behavior Implementation（BIL）</h2>
+<ol class="steps">
+  <li>BDEF 中把光标放到方法名上（如 <code>determination setDefaultValues</code>），按 <b>Ctrl+1</b> → Add implementation（或 Add all missing methods）→ 生成类 <code>zbp_zr_zpoheader</code>。</li>
+  <li>会生成两类本地类：<b>LHC（handler）</b> 与 <b>LSC（saver，draft 时出现）</b>。我们只需填 LHC 方法。</li>
+  <li>逐一实现下面 4 个方法 + 编号方法。</li>
+</ol>
+
+<h3>① earlynumbering_create（编号：Z+10 位番号）</h3>
+<pre class="hl"><div class="code-head"><span class="lang">abap · 编号方法（FOR NUMBERING）</span><button class="copy-btn" type="button">复制</button></div><code class="lang-abap">" 在 LHC_ZPOHEADER（handler 类）中实现
+METHODS earlynumbering_create FOR NUMBERING
+  IMPORTING entities FOR CREATE ZR_ZPOHEADER.
+
+METHOD earlynumbering_create.
+  DATA: lv_number TYPE n LENGTH 10,
+        lv_po_num TYPE z_po_hdr-po_num.
+
+  LOOP AT entities INTO DATA(ls_entity)
+       WHERE %is_draft = if_abap_behv=>mk-on.
+    " 从番号范围 ZNPO 取号（需先在 SNRO 建好，见 STEP 3-6）
+    CALL FUNCTION 'NUMBER_GET_NEXT'
+      EXPORTING
+        nr_range_nr = '01'
+        object      = 'ZNPO'
+      IMPORTING
+        number      = lv_number.
+    CONCATENATE 'Z' lv_number INTO lv_po_num.
+
+    APPEND VALUE #( %cid      = ls_entity-%cid
+                    %key      = ls_entity-%key
+                    %is_draft = ls_entity-%is_draft
+                    PoNum     = lv_po_num )
+           TO mapped-zr_zpoheader.
+  ENDLOOP.
+ENDMETHOD.
+</code></pre>
+
+<h3>② determination setDefaultValues（默认值：日期 / 创建人）</h3>
+<pre class="hl"><div class="code-head"><span class="lang">abap · Determination（modify 时触发）</span><button class="copy-btn" type="button">复制</button></div><code class="lang-abap">" 在 LHC_ZPOHEADER 中
+METHODS setDefaultValues FOR DETERMINE ON MODIFY
+  IMPORTING keys FOR ZR_ZPOHEADER.
+
+METHOD setDefaultValues.
+  READ ENTITIES OF zr_zpoheader IN LOCAL MODE
+    ENTITY zr_zpoheader
+    FIELDS ( po_num po_date vendor_code status created_by )
+    WITH CORRESPONDING #( keys )
+    RESULT DATA(lt_headers).
+
+  " 用系统日期 / 当前用户补默认值
+  DATA(lv_date) = cl_abap_context_info=>get_system_date( ).
+  DATA(lv_user) = cl_abap_context_info=>get_user_abap_64( ).
+
+  MODIFY ENTITIES OF zr_zpoheader IN LOCAL MODE
+    ENTITY zr_zpoheader
+    UPDATE FIELDS ( po_date created_by status )
+    WITH VALUE #( FOR ls_hdr IN lt_headers (
+        %tky      = ls_hdr-%tky
+        po_date   = COND #( WHEN ls_hdr-po_date IS INITIAL
+                            THEN lv_date ELSE ls_hdr-po_date )
+        created_by = COND #( WHEN ls_hdr-created_by IS INITIAL
+                             THEN lv_user ELSE ls_hdr-created_by )
+        status    = COND #( WHEN ls_hdr-status IS INITIAL
+                            THEN 'NEW' ELSE ls_hdr-status ) ) )
+    REPORTED DATA(lt_rep)
+    FAILED DATA(lt_fail).
+ENDMETHOD.
+</code></pre>
+
+<h3>③ validation validateVendor（校验：供应商必须存在）</h3>
+<pre class="hl"><div class="code-head"><span class="lang">abap · Validation（save 时触发）</span><button class="copy-btn" type="button">复制</button></div><code class="lang-abap">" 在 LHC_ZPOHEADER 中
+METHODS validateVendor FOR VALIDATE ON SAVE
+  IMPORTING keys FOR ZR_ZPOHEADER.
+
+METHOD validateVendor.
+  READ ENTITIES OF zr_zpoheader IN LOCAL MODE
+    ENTITY zr_zpoheader
+    FIELDS ( vendor_code )
+    WITH CORRESPONDING #( keys )
+    RESULT DATA(lt_headers).
+
+  DATA: lv_exists TYPE abap_bool.
+  LOOP AT lt_headers INTO DATA(ls_hdr).
+    CLEAR lv_exists.
+    SELECT SINGLE @abap_true FROM z_vendor_txt
+      WHERE vendor_code = @ls_hdr-vendor_code INTO @lv_exists.
+
+    IF lv_exists <> abap_true.
+      APPEND VALUE #( %tky = ls_hdr-%tky ) TO failed-zr_zpoheader.
+      APPEND VALUE #( %tky = ls_hdr-%tky
+                      %state_area = 'VALIDATE_VENDOR'
+                      %msg = new_message_with_text(
+                        severity = if_abap_behv_message=>severity-error
+                        text     = |供应商 { ls_hdr-vendor_code } 不存在| ) )
+             TO reported-zr_zpoheader.
+    ENDIF.
+  ENDLOOP.
+ENDMETHOD.
+</code></pre>
+
+<h3>④ action ConfirmOrder（確定订单 → CONFIRMED）</h3>
+<pre class="hl"><div class="code-head"><span class="lang">abap · Action（实例动作）</span><button class="copy-btn" type="button">复制</button></div><code class="lang-abap">" 在 LHC_ZPOHEADER 中
+METHODS confirmorder FOR MODIFY
+  IMPORTING keys FOR ACTION zr_zpoheader~confirmorder
+            RESULT result.
+
+METHOD confirmorder.
+  " 只允许状态=NEW 的订单被确定
+  READ ENTITIES OF zr_zpoheader IN LOCAL MODE
+    ENTITY zr_zpoheader
+    FIELDS ( status )
+    WITH CORRESPONDING #( keys )
+    RESULT DATA(lt_headers).
+
+  DATA: lt_failed  TYPE TABLE FOR FAILED   zr_zpoheader,
+        lt_reported TYPE TABLE FOR REPORTED zr_zpoheader.
+
+  LOOP AT lt_headers INTO DATA(ls_hdr)
+       WHERE status <> 'NEW'.
+    APPEND VALUE #( %tky = ls_hdr-%tky ) TO lt_failed.
+    APPEND VALUE #( %tky = ls_hdr-%tky
+                    %state_area = 'CONFIRM_ORDER'
+                    %msg = new_message_with_text(
+                      severity = if_abap_behv_message=>severity-error
+                      text     = |只有 NEW 状态的订单可以确定| ) )
+           TO lt_reported.
+  ENDLOOP.
+
+  " 更新状态
+  MODIFY ENTITIES OF zr_zpoheader IN LOCAL MODE
+    ENTITY zr_zpoheader
+    UPDATE FIELDS ( status )
+    WITH VALUE #( FOR ls IN lt_headers WHERE ( status = 'NEW' )
+                  ( %tky = ls-%tky status = 'CONFIRMED' ) )
+    FAILED DATA(lt_mod_fail)
+    REPORTED DATA(lt_mod_rep).
+
+  " 返回更新后的实体（result [1] self）
+  READ ENTITIES OF zr_zpoheader IN LOCAL MODE
+    ENTITY zr_zpoheader
+    ALL FIELDS WITH CORRESPONDING #( keys )
+    RESULT DATA(lt_final).
+
+  result = VALUE #( FOR ls_final IN lt_final
+                    ( %tky   = ls_final-%tky
+                      %param = ls_final ) ).
+ENDMETHOD.
+</code></pre>
+
+<div class="box info"><b class="t">Action 的 result [1] self 是什么？</b>
+声明 <code>action ConfirmOrder result [1] self</code> 表示动作执行后把更新后的自身实体返回给调用方（UI 直接刷新该行，不用重新读取）。WBS 3.6 备注「Action後のRefreshはResponse Entityで制御」指的就是它。</div>
+
+<h2>STEP 3-4 子实体校验：validateItemAmount（金额 &gt; 0）</h2>
+<pre class="hl"><div class="code-head"><span class="lang">abap · 子实体校验（WBS 3.3 的“金额>0”例子）</span><button class="copy-btn" type="button">复制</button></div><code class="lang-abap">" 在 LHC_ZPOITEM（子实体的 handler）中
+METHODS validateitemamount FOR VALIDATE ON SAVE
+  IMPORTING keys FOR ZR_ZPOITEM.
+
+METHOD validateitemamount.
+  READ ENTITIES OF zr_zpoheader IN LOCAL MODE
+    ENTITY zr_zpoitem
+    FIELDS ( net_price qty )
+    WITH CORRESPONDING #( keys )
+    RESULT DATA(lt_items).
+
+  LOOP AT lt_items INTO DATA(ls_item)
+       WHERE net_price &lt;= 0 OR qty &lt;= 0.
+    APPEND VALUE #( %tky = ls_item-%tky ) TO failed-zr_zpoitem.
+    APPEND VALUE #( %tky = ls_item-%tky
+                    %state_area = 'VALIDATE_ITEM_AMOUNT'
+                    %msg = new_message_with_text(
+                      severity = if_abap_behv_message=>severity-error
+                      text     = |行项目金额与数量必须大于 0| ) )
+           TO reported-zr_zpoitem.
+  ENDLOOP.
+ENDMETHOD.
+</code></pre>
+
+<h2>STEP 3-5 激活与快速验证</h2>
+<ol class="steps">
+  <li>保存并激活 BDEF、BIL、CDS（Ctrl+F3 逐个）。激活日志 0 错误。</li>
+  <li>若有 <code>draft table</code> 相关的 Quick Assist 提示，按 Ctrl+1 生成。</li>
+  <li>用 EML 试跑：新建一个程序（如 <code>ZRAP_EML_DEMO</code>）执行创建→确定→查询，代码见 <a href="code.html#eml">项目代码页</a>。</li>
+  <li>也可以在 ADT 中直接 F8（RAP Preview 需先做手顺④的服务绑定；在此之前用 EML 验证最稳）。</li>
+</ol>
+
+<h2>STEP 3-6 番号范围 ZNPO（SNRO）</h2>
+<ol class="steps">
+  <li>SE11 建域/数据元素前先确保 <code>po_num</code> 长度 ≥ 11（Z+10 位）。若表已建为 CHAR 10，可把 ZNPO 长度设 10（纯数字）并在编号方法里只取 <code>lv_number</code>（去掉 Z 前缀），或改表字段为 CHAR 12。</li>
+  <li>事务码 <b>SNRO</b> → 新建：对象 <code>ZNPO</code>，编号长度 10，间隔 01：0000000001〜9999999999，保存。</li>
+  <li>（可选）WBS 要求“Z+10桁”：把表字段 po_num 设为 CHAR 11，然后在 <code>CONCATENATE 'Z' lv_number ...</code> 时直接用 11 位。</li>
+</ol>
+<div class="box warn"><b class="t">番号范围与 draft 的小陷阱</b>
+号码在 create（草稿保存）时就被消耗；若用户放弃草稿，号码会跳号（gap）。这是 early numbering 的正常行为，生产上若需“无跳号请用 late numbering（仅 unmanaged）”。</div>
+
+<h2>STEP 3-7 权限（Authorization，WBS 3.8）</h2>
+<ol class="steps">
+  <li>BDEF 中已写 <code>authorization master ( instance )</code>，意味着实例级权限检查。</li>
+  <li>实现：在 LHC 中写 <code>get_instance_authorizations</code>（FOR INSTANCE AUTHORIZATION）+ 在 save 校验里用 <code>cl_abap_authorization</code> 或 AUTHORITY-CHECK 检查授权对象（如自建 <code>ZPURCHASE_AUTH</code>：activity + 购买组织）。</li>
+  <li>授权对象在 SU21 建，角色 PFCG 分配；开发期可先用 <code>SAP_ALL</code> 或 DCL <code>#NOT_REQUIRED</code> 跳过（本站示例默认 #NOT_REQUIRED，DCL 示例见 <a href="code.html#dcl">代码页</a>）。</li>
+</ol>
+<div class="box info"><b class="t">本页范围说明</b>
+为了控制篇幅，本页把 WBS 3.2〜3.8 的“可运行核心”讲完；实例权限 get_instance_authorizations 的完整代码见<a href="code.html">项目代码</a>页。Draft 深度讲解（draft action、discard/resume 行为）在 quiz 有对应考题。</div>
+
+<h2>验收（完成基准，对应 WBS 3.x 的完了基準）</h2>
+<div class="box ok"><b class="t">✓ 手顺③验收清单</b>
+<ol>
+<li>BDEF/BIL 激活成功，managed + draft 生效（创建草稿表无报错）；</li>
+<li>EML 创建订单头 → 自动带出 po_date / created_by / status=NEW（determination 生效）；</li>
+<li>输入不存在的供应商 → 保存时报错（validation 生效）；</li>
+<li>明细金额 ≤0 → 报错「金额必须大于 0」；</li>
+<li>对 NEW 订单执行 ConfirmOrder → status 变 CONFIRMED 且返回实体；</li>
+<li>对已 CONFIRMED 订单执行 → 报错（状态机校验）；</li>
+<li>创建后 po_num 自动带出编号（编号方法/番号范围生效）；</li>
+<li>（若启用实例权限）无权限用户 → Forbidden 错误（WBS 3.8）。</li>
+</ol></div>
+
+<div class="box info"><b class="t">下一步</b>
+→ <a href="handson-4.html">手顺④ 服务发布与 Fiori Elements 预览</a>：加投影 ZC_ 视图、建 Service Definition / Binding，浏览器里看到可增删改的列表界面。</div>
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>RAP 专项训练站</h5><p>基于《SAP_S4HANA_BTP-学習WBS.xlsx》整理。</p></div>
+  <div class="cols">
+    <div><h5>手顺</h5><a href="handson-1.html">① 数据模型</a><br><a href="handson-2.html">② CDS 视图</a><br><a href="handson-3.html">③ RAP 行为</a><br><a href="handson-4.html">④ 服务与 Fiori</a></div>
+    <div><h5>其他</h5><a href="project.html">完整项目</a><br><a href="code.html">项目代码</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

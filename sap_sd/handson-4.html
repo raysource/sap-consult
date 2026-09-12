@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>练习④ 出荷と請求 · SAP SD 受注処理（Sales Order Processing）实战训练站</title>
+<meta name="description" content="练习④ 出荷と請求：SAP SD 受注処理の実機練習（動画 Unit 14 準拠）。入力値・手順・期待結果・つまずき・検証（証拠の取り方）・验收清单つき。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/sd.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">SD</span><span class="txt">受注処理 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①受注登録</a>
+      <a href="handson-2.html">②伝票変更</a>
+      <a href="handson-3.html">③情報照会</a>
+      <a class="active" href="handson-4.html">④出荷と請求</a>
+      <a href="handson-5.html">⑤ツールと故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 练习④ 出荷と請求</div>
+<main class="page"><article>
+
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。录像里的画面同样可能与你的版本不同。若要换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 一键替换。</div><h1>练习④ 出荷と請求（<code>VL01N</code> → <code>VF01</code>）</h1>
+<div class="box warn"><b class="t">動画の範囲と本站の補足</b>
+<b>動画（录像45）は出荷伝票の「照会」までが範囲です。</b>作成（<code>VL01N</code>）・ピッキング・出庫過帳（PGI）・請求（<code>VF01</code>）は動画には含まれていません。本站が<b>受注から先の流れを補った内容</b>として追加しています（受注が業務として成立するために必要だからです）。<b>「どこからが動画の範囲か」を意識して読んでください。</b></div>
+<div class="box info"><b class="t">本练习完成什么</b>
+受注に<b>出荷伝票と請求書を繋げ、伝票フローを 1 本にします</b>。① 出荷可能な受注の準備 → ② <code>VL01N</code> で出荷伝票作成 → ③ <code>VL02N</code> ピッキングと PGI → ④ <code>VL03N</code> で照会（動画の見方）→ ⑤ <code>VF01</code> で請求 → ⑥ 伝票フローと <code>VC/2</code> で確認。</div>
+<div class="toc">
+  <a href="#s1">4-1 出荷できる受注を準備する</a>
+  <a href="#s2">4-2 出荷伝票の作成（<code>VL01N</code>）</a>
+  <a href="#s3">4-3 ピッキングと出庫過帳（<code>VL02N</code>・PGI）</a>
+  <a href="#s4">4-4 出荷伝票の照会（<code>VL03N</code>・動画と同じ見方）</a>
+  <a href="#s5">4-5 請求（<code>VF01</code>）</a>
+  <a href="#s6">4-6 伝票フローと Sales Summary で確認</a>
+  <a href="#s7">4-7 验收（完成基准）</a>
+</div>
+<h2 id="s1">4-1 出荷できる受注を準備する（前提の確認）</h2>
+<table class="tbl wide">
+<tr><th>前提</th><th>満たしていないときの症状</th><th>確認方法</th></tr>
+<tr><td>受注が<b>出荷ブロックなし</b></td><td>出荷伝票作成時に「ブロックされています」</td><td><code>VA03</code> ヘッダ → 納入ブロック（练习②の 3 階層）</td></tr>
+<tr><td><b>与信ブロックなし</b>（与信管理が有効な環境）</td><td>与信ブロックで出荷が止まる</td><td><code>VA03</code> ヘッダ → 与信ステータス／<code>FD32</code></td></tr>
+<tr><td><b>納入日程行が存在</b>し、納入日が入っている</td><td>「納入日がありません」</td><td><code>VA03</code> 明細 → 納入日程行</td></tr>
+<tr><td><b>在庫がある</b>（在庫確認が有効な場合）</td><td>ATP 不足の警告・出荷数量が減る</td><td><code>CO09</code>／<code>MMBE</code>／<code>MD04</code></td></tr>
+<tr><td>受注が<b>不完全でない</b></td><td>不完全な受注は出荷対象にならないことがある</td><td><code>V.02</code>／<code>VA03</code> のステータス</td></tr>
+</table>
+<ol class="steps">
+  <li><code>VA03</code> で练习①の受注を開き、<b>ブロック（納入・与信）が無い</b>ことを確認する。</li>
+  <li>明細の<b>納入日程行</b>に納入日が入っていることを確認する。</li>
+  <li><code>CO09</code> または <code>MMBE</code> で<b>出荷プラントの在庫</b>を確認する（在庫確認が有効な環境では、無いと出荷が作れません）。</li>
+  <li>問題があれば<b>先に直す</b>（ブロック解除・納入日の変更・在庫の補充）。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① 受注に<b>ブロックが無く</b>、納入日程行がある。<br>② 出荷プラントの在庫が<b>受注数量以上</b>（または在庫確認が無効）。<br>③ 「出荷できる状態」の定義を <b>4 つの前提</b>で説明できる。</div>
+<figure class="gui"><img src="assets/gui/handson-4_s01_1.svg" alt="VA03 の初期画面。受注タイプ OR、販売組織 1000、流通チャネル 10、部門 00、得意先 1000、PO 番号 dddd を入力した状態。" loading="lazy"><figcaption><b class="t">VA03 の初期画面（出荷できる受注かどうかを確認する入口）</b><span class="tx">VA03</span><span class="scr">Display Sales Order: Initial Screen</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 受注タイプ OR と练习①で採番した受注番号で開く。表示モードで開けない＝その伝票が無い、が最初の切り分け</li><li><b>2</b> 出荷できるかはヘッダで判断する：納入ブロック空欄・与信 OK・納入日程行あり＋出荷プラントの在庫あり</li></ol><p class="gui-tip">自システムでの確認：VA03 のヘッダで納入ブロック／与信ステータス、明細で納入日程行、CO09・MMBE で在庫の 4 点。受注番号は例（11088）です（自分の採番に読み替え）。</p></figure>
+
+<h2 id="s2">4-2 出荷伝票の作成（<code>VL01N</code>）</h2>
+<p><b>入力値</b></p>
+<pre class="vals">トランザクション： VL01N（Create Outbound Delivery with Order Reference）
+出荷ポイント：     受注の出荷プラントから決定される（品目マスタの出荷プラント → 出荷ポイント）
+納入日：           受注の納入日程行の日付（または検索用の日付範囲）
+受注番号：         练习①で作った受注
+作成後の確認：     明細の数量（Delivery quantity）と、受注数量の一致</pre>
+<ol class="steps">
+  <li><code>VL01N</code> を起動し、<b>出荷ポイント</b>と<b>納入日</b>を入れる（出荷ポイントが F4 に出ない＝出荷プラントと出荷ポイントの割当を確認）。</li>
+  <li>受注（<code>OR</code>）の番号を入れて Enter。</li>
+  <li>対象の明細が出たら、<b>出荷数量</b>を確認して<b>保存</b>する。</li>
+  <li>出荷伝票番号を記録する（動画の <code>80007832</code> に相当する自分の番号）。</li>
+  <li>（発展）<b>部分数量</b>に変えて出荷し、伝票フローで受注残が残ることを確認する。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① 出荷伝票が採番され、明細の<b>出荷数量＝受注数量</b>になっている。<br>② <code>VA03</code> の伝票フローに<b>出荷伝票が追加されている</b>。<br>③ 出荷伝票の出荷先・住所が受注と一致している。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>出荷ポイントが出ない／選べない</b> → 出荷プラントと出荷ポイントの割当（組織構造）を確認。<br>② <b>受注が出てこない</b> → 納入日が検索範囲外、または受注がブロック／不完全。<br>③ 在庫不足で<b>警告</b>が出る → 出荷は作れますが、ピッキング／PGI で詰まります（C13 の在庫確認）。</div>
+<div class="task"><b class="t">練習課題</b>出荷伝票を作るとき、<b>「出荷ポイントは何から決まったか」</b>を 1 行で答えてください（ヒント：受注の出荷プラント → 出荷ポイントの決定）。</div>
+<figure class="gui"><img src="assets/gui/handson-4_s02_1.svg" alt="VL01N で出荷伝票 80007841 を作成した画面。出荷先 1000 Becker Berlin、納入日 22.11.2000、明細 10 に品目 T-ATA30 が 10 PC、ItCa TAN、出荷プラント 1200 で入っている。" loading="lazy"><figcaption><b class="t">VL01N で受注を参照して作った出荷伝票（明細の出荷数量と出荷プラントを確認する）</b><span class="tx">VL01N</span><span class="scr">Create Outbound Delivery with Order Reference</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> Delivery は保存時に採番される（受注番号とは別体系）。受注参照で作ると明細と数量が引き継がれる</li><li><b>2</b> Sales Organization と納入日は受注から。ここが想定と違うと出荷ポイントも変わる</li></ol><p class="gui-tip">自システムでの確認：VL01N の初期画面で出荷ポイントが F4 に出るか（出ない＝出荷プラントと出荷ポイントの割当が未了）。Route（輸送経路）は Transport タブで確認します。</p></figure>
+
+<h2 id="s3">4-3 ピッキングと出庫過帳（<code>VL02N</code>・PGI）</h2>
+<ol class="steps">
+  <li><code>VL02N</code> で出荷伝票を開く。</li>
+  <li><b>ピッキング数量</b>（Picked quantity）を入れる（通常は出荷数量と同じ。部分ピッキングも試せます）。</li>
+  <li><b>保存</b>し、ステータスが「ピッキング完了」に近づくことを確認する（Status Overview タブ）。</li>
+  <li><b>出庫過帳（Post Goods Issue）</b>を実行する（ボタン、または メニュー）。</li>
+  <li>PGI 後、<b>在庫が減ったか</b>を確認する：<code>MMBE</code>／<code>MB51</code>（移動タイプ <code>601</code> の明細）／<code>MM03</code> のプラント在庫。</li>
+  <li><b>会計への影響</b>を確認する：売上原価の計上（<code>OBYC</code> の設定による）。可能なら <code>FB03</code>／<code>MB51</code> で金額を確認する。</li>
+  <li>（注意）PGI は<b>取消に専用処理が必要</b>です。実行したら伝票フローと在庫を必ず記録してください。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① 出荷伝票の<b>Status Overview</b> で出庫過帳済みになっている。<br>② <code>MB51</code> に移動タイプ <code>601</code> の明細が出て、<b>在庫が減っている</b>。<br>③ 動画の出荷伝票 <code>80007832</code> の「<b>Post goods issue がグレー（実行不可）</b>」の理由を、<b>「既に出庫過帳済みだから」</b>と説明できる。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>PGI ができない</b> → ピッキング未完了、在庫不足、与信ブロック、または期間（会計期間）の問題。<b>エラーメッセージを 1 行ずつ読む</b>。<br>② <b>在庫が減っていない</b> → 移動タイプと在庫の管理単位（プラント／保管場所）を確認。<br>③ PGI 後の取消は <code>VL09</code> 等が必要。<b>練習では「実行前に記録」</b>を徹底。</div>
+<div class="task"><b class="t">練習課題</b>PGI の<b>前と後</b>で、① 在庫数量 ② <code>MB51</code> の明細 ③ 出荷伝票のステータス を記録し、<b>PGI で何が変わったか</b>を 3 行で説明してください。</div>
+<figure class="gui"><img src="assets/gui/handson-4_s03_1.svg" alt="VL02N の Picking タブ。出荷伝票 80007841 の明細 10 に品目 T-ATA30 が出荷数量 10 PC、ピッキング数量 10 PC で入っている。" loading="lazy"><figcaption><b class="t">VL02N の Picking タブ（ピッキング数量を入れて保存し、そのあと出庫過帳する）</b><span class="tx">VL02N</span><span class="scr">Change Outbound Delivery</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> ピッキング数量が納入数量と一致すると「ピッキング完了」に進む。部分数量だと受注残が残る</li><li><b>2</b> ピッキングのあとは Post goods issue。実行すると在庫が減り、取消には VL09 等が必要になる</li></ol><p class="gui-tip">自システムでの確認：PGI の後で MB51（移動タイプ 601 の明細）、MMBE のプラント在庫、VL03N の Status Overview を見る。PGI の前後で必ず記録を取る。</p></figure>
+
+<h2 id="s4">4-4 出荷伝票の照会（<code>VL03N</code>・動画と同じ見方）</h2>
+<p>ここで動画（<code>25:24</code>）の見方に戻ります。動画の出荷伝票 <code>80007832</code> では
+<b>タブ構成（Item Overview／Picking／Loading／Transport／Status Overview／Goods Movement Data）</b>と、
+<b>計画出庫 <code>21.11.2000</code>／実出庫 <code>23.11.2000</code></b> の差が示されていました。</p>
+<ol class="steps">
+  <li><code>VL03N</code> で自分の出荷伝票を照会し、<b>各タブの意味</b>を確認する（とくに <b>Status Overview</b> と <b>Goods Movement Data</b>）。</li>
+  <li>ヘッダで<b>計画日と実績日</b>（計画出庫・実出庫）を確認し、動画と同じく<b>遅延の見方</b>を押さえる。</li>
+  <li><b>伝票フロー</b>を開き、受注 → 出荷 → 請求（まだ無ければ受注 → 出荷）の連鎖を確認する。</li>
+  <li>動画の画面と自分の画面を並べ、<b>違う項目</b>（リリース差）をメモする。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① <code>VL03N</code> の Status Overview で<b>出庫過帳の状態</b>が読める。<br>② 計画日と実績日の差から<b>納期遅延の有無</b>を言える。<br>③ 伝票フローで受注と出荷が繋がっている。</div>
+<figure class="gui"><img src="assets/gui/handson-4_s04_1.svg" alt="VL03N の出荷伝票 80007832 の照会画面。明細 10 が P-102 26 PC、明細 20 が P-104 39 PC（いずれも ItCa TAN）。" loading="lazy"><figcaption><b class="t">動画と同じ VL03N の Item Overview（ヘッダの日付と明細の数量を見る）</b><span class="tx">VL03N</span><span class="scr">Display Outbound Delivery: Item Overview</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 明細の数量が受注と一致しているか。ここが受注 → 出荷の連鎖の土台になる</li><li><b>2</b> Document Date と Planned GI を押さえる。計画と実績の差は Goods Movement Data タブで読む</li></ol><p class="gui-tip">自システムでの確認：VL03N で自分の出荷伝票を開き、タブ構成とヘッダの日付欄のラベル（Planned GI / Actual GI date）を動画と見比べる。ラベルや並びは版により異なります。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-4_s04_2.svg" alt="VL03N の Goods Movement Data タブ。実際の出庫日 23.11.2000、計画出庫 21.11.2000、計画出庫の純額 0.00 EUR が表示されている。" loading="lazy"><figcaption><b class="t">同じ出荷伝票の Goods Movement Data / Status Overview（出庫過帳の状態を日付で読む）</b><span class="tx">VL03N</span><span class="scr">Display Outbound Delivery: Goods Movement Data</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 実出庫日に日付が入っていれば出庫過帳済み。動画で Post goods issue がグレーの理由がここで分かる</li><li><b>2</b> 計画 21.11.2000 と実績 23.11.2000 の差が納期遅延。Status Overview タブと併せて読む</li></ol><p class="gui-tip">自システムでの確認：Goods Movement Data タブと Status Overview タブを見る。Post goods issue がグレーのときは「既に出庫過帳済み」か「権限が無い」を疑う。</p></figure>
+
+<h2 id="s5">4-5 請求（<code>VF01</code>）</h2>
+<p><b>入力値</b></p>
+<pre class="vals">トランザクション： VF01（Create Billing Document）
+参照：             出荷伝票（または受注。請求タイプの決定による）
+請求タイプ：       出荷関連なら F2（請求書）など。伝票タイプ側の「出荷関連請求タイプ」で決まる
+請求日付：         当日（または指定日）
+確認：             請求書の正味価額が受注と一致するか／税が入っているか</pre>
+<ol class="steps">
+  <li><code>VF01</code> を起動し、<b>出荷伝票番号</b>（または受注番号）を入れて Enter。</li>
+  <li>請求タイプ（例 <code>F2</code>）と日付を確認して<b>保存</b>する。</li>
+  <li>請求書番号を記録し、<b>正味価額・税・通貨</b>が受注と一致するか確認する（<code>VF03</code> で照会）。</li>
+  <li><b>会計への転記</b>を確認する（<code>FB03</code>／<code>VF03</code> の会計伝票）。環境により転記のタイミングが異なります。</li>
+  <li><code>VA03</code> の伝票フローで<b>受注 → 出荷 → 請求</b>が 1 本になったことを確認する。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① 請求書が採番され、<b>金額が受注と一致</b>する。<br>② 伝票フローに <b>3 種の伝票</b>（受注・出荷・請求）が並ぶ。<br>③ 請求タイプが<b>どこで決まったか</b>（出荷関連／受注関連）を説明できる。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>請求できない（ブロック）</b> → 請求ブロック（ヘッダ／明細）を確認（练习②）。<br>② 金額が受注と違う → 与力の再決定（請求側の価格決定手順）や数量差を確認。<b>受注と請求で価格決定手順が違うことがあります</b>。<br>③ 転記されない → 会計期間や権限の問題。講師に確認。</div>
+<figure class="gui"><img src="assets/gui/handson-4_s05_1.svg" alt="VF01 で作った請求伝票のヘッダ。請求タイプ F2、請求日 23.11.2000、支払者 1000 Becker Berlin、正味価額 22,990.00 EUR、税額 4,368.10 EUR、通貨 EUR。" loading="lazy"><figcaption><b class="t">VF01 の請求伝票（出荷を参照して作成し、ヘッダの金額と税を確認する）</b><span class="tx">VF01</span><span class="scr">Create Billing Document</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 請求タイプ F2 は出荷関連請求タイプの設定から決まる。ここが伝票フローの 3 本目を決める</li><li><b>2</b> Net Value が受注と一致するか、税が入っているかを、数量差と併せて確認する</li></ol><p class="gui-tip">自システムでの確認：VF01 で出荷番号を入れると請求タイプが提案される（提案されない＝出荷関連請求タイプの設定）。金額が受注と違うときは請求側の価格決定手順と数量差を確認。請求書番号は例（90035251）。ヘッダ項目の並びは版により異なります。</p></figure>
+
+<h2 id="s6">4-6 伝票フローと Sales Summary で確認する（動画の見方に戻る）</h2>
+<ol class="steps">
+  <li><code>VA03</code> → <b>伝票フロー</b>を開き、<b>受注・出荷・請求</b>の番号と数量・金額を表に書き出す。</li>
+  <li><code>VC/2</code>（Sales Summary）を得意先 <code>1000</code> で実行し、<b>Open Sales Order Val／Open Delivery Value／Open Bill. Doc. Val</b> がどう変わったかを確認する。</li>
+  <li>ビュー <code>101</code>（Last SD Documents）で、<b>作成した請求書</b>が一覧に出るか確認する（統計更新のタイミングに注意）。</li>
+  <li>「動画が示したかったこと」を 3 行でまとめる：<b>受注は出荷と請求に繋がって初めて業務になる／情報照会は伝票と連動する／SIS の値は伝票から作られる</b>。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待結果）</b>
+① 伝票フローで<b>受注 → 出荷 → 請求</b>が 1 本になっている。<br>② <code>VC/2</code> の Open 値が変化した（または変化しない理由を説明できる。統計更新のタイミング）。<br>③ 動画（<code>25:24</code> の出荷照会）が<b>なぜこの文脈で出てきたか</b>を説明できる。</div>
+<figure class="gui"><img src="assets/gui/handson-4_s06_1.svg" alt="VA03 の伝票フロー。最上位に受注 11088（22,990.00 EUR）、その下に出荷伝票 80007841（10 PC）と請求書 90035251（F2、22,990.00 EUR）が並んでいる。" loading="lazy"><figcaption><b class="t">VA03 の伝票フロー（受注・出荷・請求の 3 種が 1 本になっていることを確認する）</b><span class="tx">VA03</span><span class="scr">Document Flow</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 受注の下に出荷と請求がぶら下がる。番号・数量・金額の整合をここで確認する</li><li><b>2</b> 請求まで並べば受注は業務として完結。VC/2 の Open 値もこの伝票から動く</li></ol><p class="gui-tip">自システムでの確認：VA03 → 伝票フローで 3 種の伝票を確認し、VC/2（Sales Summary）で Open Sales Order Val／Open Delivery Value／Open Bill. Doc. Val の変化を見る。番号は例です（統計更新のタイミングに注意）。</p></figure>
+
+<h2 id="s7">4-7 验收（完成基准）</h2>
+<ul class="check">
+  <li>出荷できる受注の条件（<b>ブロックなし・納入日程行あり・在庫あり・不完全でない</b>）を 4 つ言える</li>
+  <li><code>VL01N</code> で出荷伝票を作成し、<b>出荷数量＝受注数量</b>になった</li>
+  <li>出荷ポイントが<b>何から決まったか</b>説明できる</li>
+  <li><code>VL02N</code> でピッキング数量を入れ、<b>PGI</b> を実行した</li>
+  <li>PGI の前後で<b>在庫が減った</b>ことを <code>MB51</code>（移動タイプ <code>601</code>）で確認した</li>
+  <li><code>VL03N</code> の <b>Status Overview</b> と計画/実績日を読めた（動画と同じ見方）</li>
+  <li><code>VF01</code> で請求書を作成し、<b>金額が受注と一致</b>することを確認した</li>
+  <li><b>伝票フロー</b>に受注・出荷・請求の 3 種が並び、数量・金額が整合している</li>
+  <li><code>VC/2</code> で Open Sales Order Val／Open Delivery Value／Open Bill. Doc. Val の変化を確認した</li>
+  <li><b>動画の範囲（照会まで）と本站の補足（作成側）の境界</b>を説明できる</li>
+  <li>つまずいた点を<b>「症状 → 根因 → 証拠 → 処置 → 再発防止」</b>で 1 件以上記録した</li>
+</ul>
+<div class="box ok"><b class="t">次の一歩</b>
+→ <a href="handson-5.html">练习⑤ ツール・発展・故障対応</a>（動画の第 2 の目標「tools and help」と、故障切り分けの総仕上げ）</div>
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP SD 受注処理（Sales Order Processing）实战训练站</h5><p>動画「录像45 Sales order processing.mp4」の実演を自分の環境で再現するための练习。各手順に「自系统での確認方法」つき。</p><div><h5>下一步</h5><p><a href="handson-5.html">练习⑤ ツール・発展・故障対応</a> まで通したら、<a href="quiz.html">能力测试</a> で確認します。</p></div></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 受注登録（VA01）</a><br><a href="handson-2.html">② 与力価格と ATP</a><br><a href="handson-3.html">③ 特殊取引</a><br><a href="handson-4.html">④ 出荷と請求</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="worksheet.html">学员版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/quiz.js"></script>
+</body>
+</html>

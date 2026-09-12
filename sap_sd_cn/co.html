@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理会计 CO（Controlling） · 手顺与实机画面</title>
+<meta name="description" content="管理会计 CO（Controlling）：34 个任务的手顺、IMG 路径、T-code 与 206 张实机画面截图。内容依据教材文档 S4.docx 整理。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/s4cn.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">S4</span><span class="txt">中文实训站</span></a>
+    <nav class="main">
+      <a href="index.html">首页</a>
+      <a href="prep.html">准备</a>
+      <a href="fi.html">FI</a>
+      <a class="active" href="co.html">CO</a>
+      <a href="mm.html">MM</a>
+      <a href="pp.html">PP</a>
+      <a href="sd.html">SD</a>
+      <a href="tcode.html">T-code</a>
+      <a href="issues.html">排错</a>
+      <a href="tasks.html">索引</a>
+      <a href="instructor.html">讲师</a>
+      <a href="worksheet.html">学员</a>
+      <a href="quiz.html">自测</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page"><article>
+<p class="breadcrumb"><a href="index.html">首页</a> / <span>管理会计 CO（Controlling）</span></p>
+<h1>管理会计 CO（Controlling）</h1>
+<p class="kicker">管理会计 · 成本中心 · 成本要素 · 作业类型 · 分配分摊 · 内部订单</p>
+<div class="toc"><a href="#guide">1. 本模块导读</a><a href="#toc">2. 任务目录</a><a href="#steps">3. 手顺（逐个任务）</a><a href="#sources">4. 关于截图与取值</a></div>
+<div class="grid cards"><div class="card"><b>34</b><span>个任务</span></div><div class="card"><b>206</b><span>张实机画面</span></div><div class="card"><b>126</b><span>个手顺步骤</span></div><div class="card"><b>3/1</b><span>后台 / 前台任务</span></div></div>
+<h2 id="guide">1. 本模块导读</h2>
+<p>CO 主线是「成本控制范围 → 成本中心 → 成本要素/作业类型 → 期末分摊 → 内部订单」：创建成本控制范围并把公司代码分进去 → 成本中心组与成本中心（<code>OKEON</code>）→ 初级/次级成本要素（<code>KA01</code> / <code>KA06</code>）与成本要素组 → 作业类型（<code>KL01</code>）与作业输出价格（<code>KP26</code>）→ 成本控制凭证编号范围 → 成本中心报表、重过账（<code>KB61</code>）→ 统计指标（<code>KK01</code>）与统计指标数量（<code>KB31N</code>）→ 分配循环（房租）与分摊循环（电费）→ 内部订单：订单类型与编号范围、结算参数文件与分配结构、创建订单（<code>KO04</code>）、费用发票、结算（<code>KO88</code>）与结算结果。</p>
+<p>教材场景把「行政部房租按面积分配给各成本中心」「电费按统计指标分摊」「内部订单归集费用后结算」三件事串起来讲，是理解 CO 期末结账最直观的一条线。</p>
+<div class="panel"><b>本模块重点</b><ul><li>成本控制范围与公司代码的分配（<code>OX19</code>，注意与 FI 公司代码的一致）</li><li>成本要素（初级 = 对应 FI 科目；次级 = 只在 CO 内部流动，如分摊/结算）</li><li>分配（<code>分配循环</code>，按统计指标/追踪因素）与分摊（<code>分摊循环</code>）的区别</li><li>内部订单：类型 → 结算参数文件 → 分配结构 → 创建 → 费用 → 结算 <code>KO88</code></li></ul>
+<p style="margin-top:10px">文档中出现的 T-code：<a class="tag gray" href="tcode.html#OX19">OX19</a> <a class="tag gray" href="tcode.html#OKEON">OKEON</a> <a class="tag gray" href="tcode.html#KA01">KA01</a> <a class="tag gray" href="tcode.html#KA06">KA06</a> <a class="tag gray" href="tcode.html#KL01">KL01</a> <a class="tag gray" href="tcode.html#KP26">KP26</a> <a class="tag gray" href="tcode.html#FB60">FB60</a> <a class="tag gray" href="tcode.html#FB50">FB50</a> <a class="tag gray" href="tcode.html#KB61">KB61</a> <a class="tag gray" href="tcode.html#KK01">KK01</a> <a class="tag gray" href="tcode.html#KB31N">KB31N</a> <a class="tag gray" href="tcode.html#KO04">KO04</a> <a class="tag gray" href="tcode.html#KO88">KO88</a>（完整说明见 <a href="tcode.html">T-code / IMG 路径速查</a>）</p>
+</div>
+<h2 id="toc">2. 任务目录（34 个）</h2>
+<p>其中 30 个任务给出了原文档中的 IMG 后台菜单路径；带 <span class="fb">后台</span> 标注的是定制（配置）任务，带 <span class="fb img">前台</span> 标注的是日常业务操作任务；没有标注的任务原文未指明，请按任务名自行判断（一般「定义/维护…参数」＝后台，「创建/输入/显示…凭证、订单、发票」＝前台）。</p>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>序号</th><th>任务</th><th>前后台</th><th>文档中的 T-code</th><th>画面</th><th>手顺步</th></tr></thead><tbody><tr><td><a href="#t01">任务 01</a></td><td><a href="#t01">创建成本控制范围</a></td><td>—</td><td>—</td><td>4</td><td>4</td></tr><tr><td><a href="#t02">任务 02</a></td><td><a href="#t02">将公司代码分配给成本控制范围</a></td><td>后台</td><td><code>OX19</code></td><td>4</td><td>4</td></tr><tr><td><a href="#t03">任务 03</a></td><td><a href="#t03">维护成本控制范围</a></td><td>后台</td><td>—</td><td>9</td><td>6</td></tr><tr><td><a href="#t04">任务 04</a></td><td><a href="#t04">维护成本中心组和成本中心</a></td><td>前台</td><td><code>OKEON</code></td><td>20</td><td>9</td></tr><tr><td><a href="#t05">任务 05</a></td><td><a href="#t05">新建初级成本要素</a></td><td>—</td><td><code>KA01</code></td><td>30</td><td>8</td></tr><tr><td><a href="#t06">任务 06</a></td><td><a href="#t06">建立次级成本要素</a></td><td>—</td><td><code>KA06</code></td><td>9</td><td>5</td></tr><tr><td><a href="#t07">任务 07</a></td><td><a href="#t07">新建成本要素组</a></td><td>—</td><td>—</td><td>6</td><td>4</td></tr><tr><td><a href="#t08">任务 08</a></td><td><a href="#t08">更改初级成本要素</a></td><td>—</td><td>—</td><td>0</td><td>0</td></tr><tr><td><a href="#t09">任务 09</a></td><td><a href="#t09"></a></td><td>—</td><td>—</td><td>4</td><td>1</td></tr><tr><td><a href="#t10">任务 10</a></td><td><a href="#t10">新建作业类型</a></td><td>—</td><td><code>KL01</code></td><td>6</td><td>2</td></tr><tr><td><a href="#t11">任务 11</a></td><td><a href="#t11">新建作业类型组</a></td><td>—</td><td>—</td><td>3</td><td>2</td></tr><tr><td><a href="#t12">任务 12</a></td><td><a href="#t12">设置作业输出价格</a></td><td>—</td><td><code>KP26</code></td><td>7</td><td>7</td></tr><tr><td><a href="#t13">任务 13</a></td><td><a href="#t13">维护成本控制凭证的编号范围</a></td><td>后台</td><td>—</td><td>6</td><td>5</td></tr><tr><td><a href="#t14">任务 14</a></td><td><a href="#t14">输入费用供应商发票</a></td><td>—</td><td><code>FB60</code></td><td>3</td><td>2</td></tr><tr><td><a href="#t15">任务 15</a></td><td><a href="#t15">输入普通费用发票</a></td><td>—</td><td><code>FB50</code></td><td>4</td><td>4</td></tr><tr><td><a href="#t16">任务 16</a></td><td><a href="#t16">运行成本中心报表</a></td><td>—</td><td>—</td><td>3</td><td>2</td></tr><tr><td><a href="#t17">任务 17</a></td><td><a href="#t17">成本中心数据重过帐</a></td><td>—</td><td><code>KB61</code></td><td>6</td><td>5</td></tr><tr><td><a href="#t18">任务 18</a></td><td><a href="#t18">新建统计指标</a></td><td>—</td><td><code>KK01</code></td><td>5</td><td>2</td></tr><tr><td><a href="#t19">任务 19</a></td><td><a href="#t19">输入统计指标数量</a></td><td>—</td><td><code>KB31N</code></td><td>3</td><td>3</td></tr><tr><td><a href="#t20">任务 20</a></td><td><a href="#t20">定义分配循环</a></td><td>—</td><td>—</td><td>6</td><td>5</td></tr><tr><td><a href="#t21">任务 21</a></td><td><a href="#t21">分配</a></td><td>—</td><td>—</td><td>3</td><td>2</td></tr><tr><td><a href="#t22">任务 22</a></td><td><a href="#t22">显示成本中心分配到的租金</a></td><td>—</td><td>—</td><td>4</td><td>3</td></tr><tr><td><a href="#t23">任务 23</a></td><td><a href="#t23">定义分摊循环</a></td><td>—</td><td>—</td><td>8</td><td>5</td></tr><tr><td><a href="#t24">任务 24</a></td><td><a href="#t24">分摊</a></td><td>—</td><td>—</td><td>4</td><td>1</td></tr><tr><td><a href="#t25">任务 25</a></td><td><a href="#t25">点击执行</a></td><td>—</td><td>—</td><td>1</td><td>1</td></tr><tr><td><a href="#t26">任务 26</a></td><td><a href="#t26">显示成本中心分摊到的电费</a></td><td>—</td><td>—</td><td>4</td><td>2</td></tr><tr><td><a href="#t27">任务 27</a></td><td><a href="#t27">创建内部订单类型并维护编号范围</a></td><td>—</td><td>—</td><td>10</td><td>4</td></tr><tr><td><a href="#t28">任务 28</a></td><td><a href="#t28">维护内部订单的结算参数文件</a></td><td>—</td><td>—</td><td>4</td><td>4</td></tr><tr><td><a href="#t29">任务 29</a></td><td><a href="#t29">维护内部订单结算的分配结构</a></td><td>—</td><td>—</td><td>6</td><td>6</td></tr><tr><td><a href="#t30">任务 30</a></td><td><a href="#t30">维护结算凭证编号范围</a></td><td>—</td><td>—</td><td>3</td><td>2</td></tr><tr><td><a href="#t31">任务 31</a></td><td><a href="#t31">创建内部订单</a></td><td>—</td><td><code>KO04</code></td><td>10</td><td>7</td></tr><tr><td><a href="#t32">任务 32</a></td><td><a href="#t32">输入内部订单费用发票</a></td><td>—</td><td><code>FB50</code></td><td>4</td><td>4</td></tr><tr><td><a href="#t33">任务 33</a></td><td><a href="#t33">内部订单的结算</a></td><td>—</td><td><code>KO88</code></td><td>3</td><td>2</td></tr><tr><td><a href="#t34">任务 34</a></td><td><a href="#t34">显示内部订单的结算结果</a></td><td>—</td><td>—</td><td>4</td><td>3</td></tr></tbody></table></div>
+<h2 id="steps">3. 手顺（逐个任务）</h2>
+<div class="box info"><b class="t">怎么用这一页</b>每个任务按原文档的顺序保留：先读「说明」，再照「IMG 路径」进入配置点，然后按编号步骤（每一步都配原文档的实机画面）逐屏操作。画面里的红色方框/箭头是原文档作者标注的「要填/要选的地方」。点击任意画面可放大（1×/2×/3×，ESC 关闭）。</div>
+<div class="steph" id="t01"><span class="no">任务 01</span><h3>创建成本控制范围</h3><span class="tc2">4 画面 / 4 步</span></div>
+<div class="pathline" data-copy="企业结构 → 定义 → 控制 → 维护成本控制范围"><b>IMG 路径（后台菜单）</b>企业结构 → 定义 → 控制 → 维护成本控制范围</div>
+<ol class="oplist">
+<li>
+<p class="opcap">企业结构－定义－控制－维护成本控制范围</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t01/01_1_image314.png"><img src="assets/img/co/t01/01_1_image314.png" alt="创建成本控制范围 · 第 1 步：企业结构－定义－控制－维护成本控制范围" loading="lazy" width="398" height="370"></a><figcaption><span class="n">画面 310</span><span class="src">image314.png · 398×370</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">弹出选择框 选择维护成本控制范围</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t01/02_1_image315.png"><img src="assets/img/co/t01/02_1_image315.png" alt="创建成本控制范围 · 第 2 步：弹出选择框 选择维护成本控制范围" loading="lazy" width="628" height="209"></a><figcaption><span class="n">画面 311</span><span class="src">image315.png · 628×209</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击新条目,录入公司代码C999</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t01/03_1_image316.png"><img src="assets/img/co/t01/03_1_image316.png" alt="创建成本控制范围 · 第 3 步：点击新条目,录入公司代码C999" loading="lazy" width="442" height="366"></a><figcaption><span class="n">画面 312</span><span class="src">image316.png · 442×366</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 313）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t01/04_1_image317.png"><img src="assets/img/co/t01/04_1_image317.png" alt="创建成本控制范围 · 第 4 步：image317.png" loading="lazy" width="774" height="694"></a><figcaption><span class="n">画面 313</span><span class="src">image317.png · 774×694</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t02"><span class="no">任务 02</span><h3>将公司代码分配给成本控制范围</h3><span class="fb">后台</span><span class="tc">OX19</span><span class="tc2">4 画面 / 4 步</span></div>
+<div class="pathline" data-copy="企业结构 → 分配 → 控制 → 把公司代码分配给成本控制范围"><b>IMG 路径（后台菜单）</b>企业结构 → 分配 → 控制 → 把公司代码分配给成本控制范围</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 314）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t02/01_1_image318.png"><img src="assets/img/co/t02/01_1_image318.png" alt="将公司代码分配给成本控制范围 · 第 1 步：image318.png" loading="lazy" width="351" height="342"></a><figcaption><span class="n">画面 314</span><span class="src">image318.png · 351×342</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">TCODE代码：OX19</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t02/02_1_image319.png"><img src="assets/img/co/t02/02_1_image319.png" alt="将公司代码分配给成本控制范围 · 第 2 步：TCODE代码：OX19" loading="lazy" width="434" height="242"></a><figcaption><span class="n">画面 315</span><span class="src">image319.png · 434×242</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">选中 C999，双击公司代码设置</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t02/03_1_image320.png"><img src="assets/img/co/t02/03_1_image320.png" alt="将公司代码分配给成本控制范围 · 第 3 步：选中 C999，双击公司代码设置" loading="lazy" width="452" height="335"></a><figcaption><span class="n">画面 316</span><span class="src">image320.png · 452×335</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击新条目</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t02/04_1_image321.png"><img src="assets/img/co/t02/04_1_image321.png" alt="将公司代码分配给成本控制范围 · 第 4 步：点击新条目" loading="lazy" width="454" height="398"></a><figcaption><span class="n">画面 317</span><span class="src">image321.png · 454×398</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>将 C999 添加到成本控制范围</div>
+</li>
+</ol>
+<div class="steph" id="t03"><span class="no">任务 03</span><h3>维护成本控制范围</h3><span class="fb">后台</span><span class="tc2">9 画面 / 6 步</span></div>
+<div class="pathline" data-copy="控制 → 一般控制 → 组织结构 → 维护成本控制范围"><b>IMG 路径（后台菜单）</b>控制 → 一般控制 → 组织结构 → 维护成本控制范围</div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">控制－一般控制－组织结构－维护成本控制范围</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t03/01_1_image322.png"><img src="assets/img/co/t03/01_1_image322.png" alt="维护成本控制范围 · 第 1 步：控制－一般控制－组织结构－维护成本控制范围" loading="lazy" width="372" height="498"></a><figcaption><span class="n">画面 318</span><span class="src">image322.png · 372×498</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">弹出选择活动，点击维护成本控制范围</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t03/02_1_image323.png"><img src="assets/img/co/t03/02_1_image323.png" alt="维护成本控制范围 · 第 2 步：弹出选择活动，点击维护成本控制范围" loading="lazy" width="362" height="201"></a><figcaption><span class="n">画面 319</span><span class="src">image323.png · 362×201</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">双击 C999，维护基本数据</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t03/03_1_image324.png"><img src="assets/img/co/t03/03_1_image324.png" alt="维护成本控制范围 · 第 3 步：双击 C999，维护基本数据" loading="lazy" width="436" height="243"></a><figcaption><span class="n">画面 320</span><span class="src">image324.png · 436×243</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 321）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t03/04_1_image325.png"><img src="assets/img/co/t03/04_1_image325.png" alt="维护成本控制范围 · 第 4 步：image325.png" loading="lazy" width="816" height="602"></a><figcaption><span class="n">画面 321</span><span class="src">image325.png · 816×602</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>保存后，点击返回，选中 C999，双击“激活组建/控制标识”</div>
+</li>
+<li>
+<p class="opcap">系统会提示 C999 成本中心标准层次不存在，点击是。</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t03/05_1_image326.png"><img src="assets/img/co/t03/05_1_image326.png" alt="维护成本控制范围 · 第 5 步：系统会提示 C999 成本中心标准层次不存在，点击是。" loading="lazy" width="665" height="330"></a><figcaption><span class="n">画面 322</span><span class="src">image326.png · 665×330</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击新条目，输入起始财年，比如2021年。</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t03/06_1_image327.png"><img src="assets/img/co/t03/06_1_image327.png" alt="维护成本控制范围 · 第 6 步：点击新条目，输入起始财年，比如2021年。" loading="lazy" width="849" height="816"></a><figcaption><span class="n">画面 323</span><span class="src">image329.png · 849×816</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t03/06_2_image328.png"><img src="assets/img/co/t03/06_2_image328.png" alt="维护成本控制范围 · 第 6 步：点击新条目，输入起始财年，比如2021年。" loading="lazy" width="466" height="221"></a><figcaption><span class="n">画面 324</span><span class="src">image330.png · 466×221</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t03/06_1_image327.png"><img src="assets/img/co/t03/06_1_image327.png" alt="维护成本控制范围 · 第 6 步：点击新条目，输入起始财年，比如2021年。" loading="lazy" width="849" height="816"></a><figcaption><span class="n">画面 323</span><span class="src">image329.png · 849×816</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t03/06_2_image328.png"><img src="assets/img/co/t03/06_2_image328.png" alt="维护成本控制范围 · 第 6 步：点击新条目，输入起始财年，比如2021年。" loading="lazy" width="466" height="221"></a><figcaption><span class="n">画面 324</span><span class="src">image330.png · 466×221</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材笔记</b>会计年度是从…年的概念，将来如果配置没有变化，不需要每年都维护</div>
+</li>
+</ol>
+<div class="steph" id="t04"><span class="no">任务 04</span><h3>维护成本中心组和成本中心</h3><span class="fb img">前台</span><span class="tc">OKEON</span><span class="tc2">20 画面 / 9 步</span></div>
+<div class="pathline" data-copy="会计核算 → 控制 → 成本中心会计 → 主数据 → 标准层次 → OKEON-更改"><b>IMG 路径（后台菜单）</b>会计核算 → 控制 → 成本中心会计 → 主数据 → 标准层次 → OKEON-更改</div>
+<ol class="oplist">
+<li>
+<p class="opcap">会计核算－控制－成本中心会计－主数据－标准层次－OKEON-更改</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t04/01_1_image331.png"><img src="assets/img/co/t04/01_1_image331.png" alt="维护成本中心组和成本中心 · 第 1 步：会计核算－控制－成本中心会计－主数据－标准层次－OKEON-更改" loading="lazy" width="284" height="480"></a><figcaption><span class="n">画面 327</span><span class="src">image331.png · 284×480</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t04/01_2_image332.png"><img src="assets/img/co/t04/01_2_image332.png" alt="维护成本中心组和成本中心 · 第 1 步：会计核算－控制－成本中心会计－主数据－标准层次－OKEON-更改" loading="lazy" width="361" height="194"></a><figcaption><span class="n">画面 328</span><span class="src">image332.png · 361×194</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">点击保存就不用每次进来输入成本控制范围了</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t04/02_1_image333.png"><img src="assets/img/co/t04/02_1_image333.png" alt="维护成本中心组和成本中心 · 第 2 步：点击保存就不用每次进来输入成本控制范围了" loading="lazy" width="946" height="672"></a><figcaption><span class="n">画面 329</span><span class="src">image335.png · 946×672</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t04/02_2_image334.png"><img src="assets/img/co/t04/02_2_image334.png" alt="维护成本中心组和成本中心 · 第 2 步：点击保存就不用每次进来输入成本控制范围了" loading="lazy" width="1174" height="678"></a><figcaption><span class="n">画面 330</span><span class="src">image336.png · 1174×678</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t04/02_1_image333.png"><img src="assets/img/co/t04/02_1_image333.png" alt="维护成本中心组和成本中心 · 第 2 步：点击保存就不用每次进来输入成本控制范围了" loading="lazy" width="946" height="672"></a><figcaption><span class="n">画面 329</span><span class="src">image335.png · 946×672</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t04/02_2_image334.png"><img src="assets/img/co/t04/02_2_image334.png" alt="维护成本中心组和成本中心 · 第 2 步：点击保存就不用每次进来输入成本控制范围了" loading="lazy" width="1174" height="678"></a><figcaption><span class="n">画面 330</span><span class="src">image336.png · 1174×678</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">点击保存，选中C999,然后如下图操作</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t04/03_1_image337.png"><img src="assets/img/co/t04/03_1_image337.png" alt="维护成本中心组和成本中心 · 第 3 步：点击保存，选中C999,然后如下图操作" loading="lazy" width="827" height="454"></a><figcaption><span class="n">画面 333</span><span class="src">image337.png · 827×454</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">选择较低组，进入如下页面</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t04/04_1_image338.png"><img src="assets/img/co/t04/04_1_image338.png" alt="维护成本中心组和成本中心 · 第 4 步：选择较低组，进入如下页面" loading="lazy" width="975" height="592"></a><figcaption><span class="n">画面 334</span><span class="src">image338.png · 975×592</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">再创建一个总部</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t04/05_1_image339.png"><img src="assets/img/co/t04/05_1_image339.png" alt="维护成本中心组和成本中心 · 第 5 步：再创建一个总部" loading="lazy" width="953" height="566"></a><figcaption><span class="n">画面 335</span><span class="src">image339.png · 953×566</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">选择 MFG，选择新建成本中心，输入如下字段，并保存，黄色警告，可以略过。</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t04/06_1_image340.jpeg"><img src="assets/img/co/t04/06_1_image340.jpeg" alt="维护成本中心组和成本中心 · 第 6 步：选择 MFG，选择新建成本中心，输入如下字段，并保存，黄色警告，可以略过。" loading="lazy" width="1271" height="838"></a><figcaption><span class="n">画面 336</span><span class="src">image342.jpeg · 1271×838</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t04/06_2_image341.png"><img src="assets/img/co/t04/06_2_image341.png" alt="维护成本中心组和成本中心 · 第 6 步：选择 MFG，选择新建成本中心，输入如下字段，并保存，黄色警告，可以略过。" loading="lazy" width="910" height="265"></a><figcaption><span class="n">画面 337</span><span class="src">image343.png · 910×265</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t04/06_1_image340.jpeg"><img src="assets/img/co/t04/06_1_image340.jpeg" alt="维护成本中心组和成本中心 · 第 6 步：选择 MFG，选择新建成本中心，输入如下字段，并保存，黄色警告，可以略过。" loading="lazy" width="1271" height="838"></a><figcaption><span class="n">画面 336</span><span class="src">image342.jpeg · 1271×838</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t04/06_2_image341.png"><img src="assets/img/co/t04/06_2_image341.png" alt="维护成本中心组和成本中心 · 第 6 步：选择 MFG，选择新建成本中心，输入如下字段，并保存，黄色警告，可以略过。" loading="lazy" width="910" height="265"></a><figcaption><span class="n">画面 337</span><span class="src">image343.png · 910×265</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材笔记</b>创建其他的成本中心</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 340）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t04/07_1_image344.jpeg"><img src="assets/img/co/t04/07_1_image344.jpeg" alt="维护成本中心组和成本中心 · 第 7 步：image344.jpeg" loading="lazy" width="1238" height="854"></a><figcaption><span class="n">画面 340</span><span class="src">image344.jpeg · 1238×854</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t04/08_1_image345.png"><img src="assets/img/co/t04/08_1_image345.png" alt="维护成本中心组和成本中心 · 第 7 步：image345.png" loading="lazy" width="938" height="839"></a><figcaption><span class="n">画面 341</span><span class="src">image345.png · 938×839</span></figcaption></figure>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t04/09_1_image346.png"><img src="assets/img/co/t04/09_1_image346.png" alt="维护成本中心组和成本中心 · 第 8 步：image346.png" loading="lazy" width="1015" height="840"></a><figcaption><span class="n">画面 342</span><span class="src">image346.png · 1015×840</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t04/09_2_image347.png"><img src="assets/img/co/t04/09_2_image347.png" alt="维护成本中心组和成本中心 · 第 8 步：image347.png" loading="lazy" width="967" height="848"></a><figcaption><span class="n">画面 343</span><span class="src">image347.png · 967×848</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t04/09_3_image348.png"><img src="assets/img/co/t04/09_3_image348.png" alt="维护成本中心组和成本中心 · 第 8 步：image348.png" loading="lazy" width="1155" height="851"></a><figcaption><span class="n">画面 344</span><span class="src">image348.png · 1155×851</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/co/t04/10_1_image349.png"><img src="assets/img/co/t04/10_1_image349.png" alt="维护成本中心组和成本中心 · 第 9 步：image349.png" loading="lazy" width="981" height="858"></a><figcaption><span class="n">画面 345</span><span class="src">image349.png · 981×858</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t04/10_2_image350.png"><img src="assets/img/co/t04/10_2_image350.png" alt="维护成本中心组和成本中心 · 第 9 步：image350.png" loading="lazy" width="1247" height="857"></a><figcaption><span class="n">画面 346</span><span class="src">image350.png · 1247×857</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t05"><span class="no">任务 05</span><h3>新建初级成本要素</h3><span class="tc">KA01</span><span class="tc2">30 画面 / 8 步</span></div>
+<div class="pathline" data-copy="会计 → 控制 → 成本中心会计 → 主数据 → 成本要素 → 单个处理 → KA01-创建初级成本"><b>IMG 路径（后台菜单）</b>会计 → 控制 → 成本中心会计 → 主数据 → 成本要素 → 单个处理 → KA01-创建初级成本</div>
+<ol class="oplist">
+<li>
+<p class="opcap">CO 用“成本要素”来管理成本流，成本要素和财务会计里的科目类似<br>会计－控制－成本中心会计－主数据－成本要素－单个处理－KA01-创建初级成本</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t05/01_1_image352.png"><img src="assets/img/co/t05/01_1_image352.png" alt="新建初级成本要素 · 第 1 步：CO 用“成本要素”来管理成本流，成本要素和财务会计里的科目类似 会计－控制－成本中心会计－主数据－成本要素－单个处理－KA01-创建初级成本" loading="lazy" width="313" height="521"></a><figcaption><span class="n">画面 347</span><span class="src">image352.png · 313×521</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">lu41010101</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t05/02_1_image353.png"><img src="assets/img/co/t05/02_1_image353.png" alt="新建初级成本要素 · 第 2 步：lu41010101" loading="lazy" width="439" height="307"></a><figcaption><span class="n">画面 348</span><span class="src">image355.png · 439×307</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/02_2_image354.png"><img src="assets/img/co/t05/02_2_image354.png" alt="新建初级成本要素 · 第 2 步：lu41010101" loading="lazy" width="557" height="523"></a><figcaption><span class="n">画面 349</span><span class="src">image356.png · 557×523</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/02_1_image353.png"><img src="assets/img/co/t05/02_1_image353.png" alt="新建初级成本要素 · 第 2 步：lu41010101" loading="lazy" width="439" height="307"></a><figcaption><span class="n">画面 348</span><span class="src">image355.png · 439×307</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/02_2_image354.png"><img src="assets/img/co/t05/02_2_image354.png" alt="新建初级成本要素 · 第 2 步：lu41010101" loading="lazy" width="557" height="523"></a><figcaption><span class="n">画面 349</span><span class="src">image356.png · 557×523</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材笔记</b>重复上述步骤，所有损益类科目都是初级成本要素，除了 41010901 生产成本－生产订单差异的成本要素类别是 “ 22 外部结算”，其他所有初级成本要素的类别都是 “ 1 初级成本/成本降低产生的利润”</div>
+</li>
+<li>
+<p class="opcap">解释“41010901 生产成本－生产订单差异”是生产订单结算产生的，是管理会计计算初结果后，使用一种特殊的成本要素类别“22 外部结算”。</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t05/03_1_image357.png"><img src="assets/img/co/t05/03_1_image357.png" alt="新建初级成本要素 · 第 3 步：解释“41010901 生产成本－生产订单差异”是生产订单结算产生的，是管理会计计算初结果后，使用一种特殊的成本要素类别“22 外部结算”。" loading="lazy" width="578" height="461"></a><figcaption><span class="n">画面 352</span><span class="src">image357.png · 578×461</span></figcaption></figure>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t05/04_1_image358.png"><img src="assets/img/co/t05/04_1_image358.png" alt="新建初级成本要素 · 第 4 步：image360.png" loading="lazy" width="605" height="448"></a><figcaption><span class="n">画面 353</span><span class="src">image360.png · 605×448</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/04_2_image359.png"><img src="assets/img/co/t05/04_2_image359.png" alt="新建初级成本要素 · 第 4 步：image361.png" loading="lazy" width="588" height="571"></a><figcaption><span class="n">画面 354</span><span class="src">image361.png · 588×571</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/04_3_image362.png"><img src="assets/img/co/t05/04_3_image362.png" alt="新建初级成本要素 · 第 4 步：image362.png" loading="lazy" width="587" height="451"></a><figcaption><span class="n">画面 355</span><span class="src">image362.png · 587×451</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/04_4_image363.png"><img src="assets/img/co/t05/04_4_image363.png" alt="新建初级成本要素 · 第 4 步：image363.png" loading="lazy" width="581" height="477"></a><figcaption><span class="n">画面 356</span><span class="src">image363.png · 581×477</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/04_1_image358.png"><img src="assets/img/co/t05/04_1_image358.png" alt="新建初级成本要素 · 第 4 步：image360.png" loading="lazy" width="605" height="448"></a><figcaption><span class="n">画面 353</span><span class="src">image360.png · 605×448</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/04_2_image359.png"><img src="assets/img/co/t05/04_2_image359.png" alt="新建初级成本要素 · 第 4 步：image361.png" loading="lazy" width="588" height="571"></a><figcaption><span class="n">画面 354</span><span class="src">image361.png · 588×571</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t05/05_1_image364.png"><img src="assets/img/co/t05/05_1_image364.png" alt="新建初级成本要素 · 第 5 步：image364.png" loading="lazy" width="581" height="454"></a><figcaption><span class="n">画面 359</span><span class="src">image364.png · 581×454</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/05_2_image365.png"><img src="assets/img/co/t05/05_2_image365.png" alt="新建初级成本要素 · 第 5 步：image365.png" loading="lazy" width="589" height="444"></a><figcaption><span class="n">画面 360</span><span class="src">image365.png · 589×444</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/05_3_image366.png"><img src="assets/img/co/t05/05_3_image366.png" alt="新建初级成本要素 · 第 5 步：image366.png" loading="lazy" width="591" height="467"></a><figcaption><span class="n">画面 361</span><span class="src">image366.png · 591×467</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/05_4_image367.png"><img src="assets/img/co/t05/05_4_image367.png" alt="新建初级成本要素 · 第 5 步：image367.png" loading="lazy" width="596" height="455"></a><figcaption><span class="n">画面 362</span><span class="src">image367.png · 596×455</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t05/06_1_image368.png"><img src="assets/img/co/t05/06_1_image368.png" alt="新建初级成本要素 · 第 6 步：image370.png" loading="lazy" width="592" height="448"></a><figcaption><span class="n">画面 363</span><span class="src">image370.png · 592×448</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/06_2_image369.png"><img src="assets/img/co/t05/06_2_image369.png" alt="新建初级成本要素 · 第 6 步：image371.png" loading="lazy" width="587" height="460"></a><figcaption><span class="n">画面 364</span><span class="src">image371.png · 587×460</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/06_3_image372.png"><img src="assets/img/co/t05/06_3_image372.png" alt="新建初级成本要素 · 第 6 步：image372.png" loading="lazy" width="584" height="457"></a><figcaption><span class="n">画面 365</span><span class="src">image372.png · 584×457</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/06_4_image373.png"><img src="assets/img/co/t05/06_4_image373.png" alt="新建初级成本要素 · 第 6 步：image373.png" loading="lazy" width="588" height="447"></a><figcaption><span class="n">画面 366</span><span class="src">image373.png · 588×447</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/06_1_image368.png"><img src="assets/img/co/t05/06_1_image368.png" alt="新建初级成本要素 · 第 6 步：image370.png" loading="lazy" width="592" height="448"></a><figcaption><span class="n">画面 363</span><span class="src">image370.png · 592×448</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/06_2_image369.png"><img src="assets/img/co/t05/06_2_image369.png" alt="新建初级成本要素 · 第 6 步：image371.png" loading="lazy" width="587" height="460"></a><figcaption><span class="n">画面 364</span><span class="src">image371.png · 587×460</span></figcaption></figure></div>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t05/07_1_image374.png"><img src="assets/img/co/t05/07_1_image374.png" alt="新建初级成本要素 · 第 7 步：image376.png" loading="lazy" width="586" height="471"></a><figcaption><span class="n">画面 369</span><span class="src">image376.png · 586×471</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/07_2_image375.png"><img src="assets/img/co/t05/07_2_image375.png" alt="新建初级成本要素 · 第 7 步：image377.png" loading="lazy" width="593" height="463"></a><figcaption><span class="n">画面 370</span><span class="src">image377.png · 593×463</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/07_3_image378.png"><img src="assets/img/co/t05/07_3_image378.png" alt="新建初级成本要素 · 第 7 步：image378.png" loading="lazy" width="589" height="453"></a><figcaption><span class="n">画面 371</span><span class="src">image378.png · 589×453</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/07_4_image379.png"><img src="assets/img/co/t05/07_4_image379.png" alt="新建初级成本要素 · 第 7 步：image379.png" loading="lazy" width="588" height="463"></a><figcaption><span class="n">画面 372</span><span class="src">image379.png · 588×463</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/07_1_image374.png"><img src="assets/img/co/t05/07_1_image374.png" alt="新建初级成本要素 · 第 7 步：image376.png" loading="lazy" width="586" height="471"></a><figcaption><span class="n">画面 369</span><span class="src">image376.png · 586×471</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/07_2_image375.png"><img src="assets/img/co/t05/07_2_image375.png" alt="新建初级成本要素 · 第 7 步：image377.png" loading="lazy" width="593" height="463"></a><figcaption><span class="n">画面 370</span><span class="src">image377.png · 593×463</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 375）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t05/08_1_image380.png"><img src="assets/img/co/t05/08_1_image380.png" alt="新建初级成本要素 · 第 8 步：image380.png" loading="lazy" width="584" height="450"></a><figcaption><span class="n">画面 375</span><span class="src">image380.png · 584×450</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t05/09_1_image381.png"><img src="assets/img/co/t05/09_1_image381.png" alt="新建初级成本要素 · 第 8 步：image381.png" loading="lazy" width="591" height="462"></a><figcaption><span class="n">画面 376</span><span class="src">image381.png · 591×462</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t06"><span class="no">任务 06</span><h3>建立次级成本要素</h3><span class="tc">KA06</span><span class="tc2">9 画面 / 5 步</span></div>
+<div class="pathline" data-copy="会计 → 控制 → 成本中心会计 → 主数据 → 成本要素 → 单个处理 → KA06-创建次级成本"><b>IMG 路径（后台菜单）</b>会计 → 控制 → 成本中心会计 → 主数据 → 成本要素 → 单个处理 → KA06-创建次级成本</div>
+<ol class="oplist">
+<li>
+<p class="opcap">会计－控制－成本中心会计－主数据－成本要素－单个处理－KA06-创建次级成本</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t06/01_1_image382.png"><img src="assets/img/co/t06/01_1_image382.png" alt="建立次级成本要素 · 第 1 步：会计－控制－成本中心会计－主数据－成本要素－单个处理－KA06-创建次级成本" loading="lazy" width="310" height="522"></a><figcaption><span class="n">画面 377</span><span class="src">image382.png · 310×522</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 378）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t06/02_1_image383.png"><img src="assets/img/co/t06/02_1_image383.png" alt="建立次级成本要素 · 第 2 步：image383.png" loading="lazy" width="426" height="323"></a><figcaption><span class="n">画面 378</span><span class="src">image383.png · 426×323</span></figcaption></figure>
+</li>
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t06/03_1_image384.png"><img src="assets/img/co/t06/03_1_image384.png" alt="建立次级成本要素 · 第 3 步：image384.png" loading="lazy" width="592" height="457"></a><figcaption><span class="n">画面 379</span><span class="src">image384.png · 592×457</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t06/03_2_image385.png"><img src="assets/img/co/t06/03_2_image385.png" alt="建立次级成本要素 · 第 3 步：image385.png" loading="lazy" width="593" height="449"></a><figcaption><span class="n">画面 380</span><span class="src">image385.png · 593×449</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t06/03_3_image386.png"><img src="assets/img/co/t06/03_3_image386.png" alt="建立次级成本要素 · 第 3 步：image386.png" loading="lazy" width="591" height="453"></a><figcaption><span class="n">画面 381</span><span class="src">image386.png · 591×453</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">43 是和内部作业相关的成本要素</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t06/04_1_image387.png"><img src="assets/img/co/t06/04_1_image387.png" alt="建立次级成本要素 · 第 4 步：43 是和内部作业相关的成本要素" loading="lazy" width="593" height="451"></a><figcaption><span class="n">画面 382</span><span class="src">image387.png · 593×451</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 383）</span></p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t06/05_1_image388.png"><img src="assets/img/co/t06/05_1_image388.png" alt="建立次级成本要素 · 第 5 步：image388.png" loading="lazy" width="588" height="444"></a><figcaption><span class="n">画面 383</span><span class="src">image388.png · 588×444</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t06/06_1_image389.png"><img src="assets/img/co/t06/06_1_image389.png" alt="建立次级成本要素 · 第 5 步：image389.png" loading="lazy" width="593" height="459"></a><figcaption><span class="n">画面 384</span><span class="src">image389.png · 593×459</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t06/06_2_image390.png"><img src="assets/img/co/t06/06_2_image390.png" alt="建立次级成本要素 · 第 5 步：image390.png" loading="lazy" width="585" height="456"></a><figcaption><span class="n">画面 385</span><span class="src">image390.png · 585×456</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t07"><span class="no">任务 07</span><h3>新建成本要素组</h3><span class="tc2">6 画面 / 4 步</span></div>
+<div class="pathline" data-copy="我们可以将公司的成本要素按层次结构来管理，这种成本要素组可用根据需要定义任意多个会计 → 控制 → 成本要素会计 → 主数据 → 成本要素组 → KAH1 创建"><b>IMG 路径（后台菜单）</b>我们可以将公司的成本要素按层次结构来管理，这种成本要素组可用根据需要定义任意多个会计 → 控制 → 成本要素会计 → 主数据 → 成本要素组 → KAH1 创建</div>
+<ol class="oplist">
+<li>
+<p class="opcap">我们可以将公司的成本要素按层次结构来管理，这种成本要素组可用根据需要定义任意多个会计－控制－成本要素会计－主数据－成本要素组－KAH1 创建</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t07/01_1_image391.png"><img src="assets/img/co/t07/01_1_image391.png" alt="新建成本要素组 · 第 1 步：我们可以将公司的成本要素按层次结构来管理，这种成本要素组可用根据需要定义任意多个会计－控制－成本要素会计－主数据－成本要素组－KAH1 创建" loading="lazy" width="234" height="437"></a><figcaption><span class="n">画面 386</span><span class="src">image391.png · 234×437</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 387）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t07/02_1_image392.png"><img src="assets/img/co/t07/02_1_image392.png" alt="新建成本要素组 · 第 2 步：image392.png" loading="lazy" width="366" height="249"></a><figcaption><span class="n">画面 387</span><span class="src">image392.png · 366×249</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="assets/img/co/t07/03_1_image393.png"><img src="assets/img/co/t07/03_1_image393.png" alt="新建成本要素组 · 第 2 步：image393.png" loading="lazy" width="654" height="76"></a><figcaption><span class="n">画面 388</span><span class="src">image393.png · 654×76</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击较低层次</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t07/04_1_image394.png"><img src="assets/img/co/t07/04_1_image394.png" alt="新建成本要素组 · 第 3 步：点击较低层次" loading="lazy" width="752" height="151"></a><figcaption><span class="n">画面 389</span><span class="src">image394.png · 752×151</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">选中 PRI 点击成本要素键</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t07/05_1_image395.png"><img src="assets/img/co/t07/05_1_image395.png" alt="新建成本要素组 · 第 4 步：选中 PRI 点击成本要素键" loading="lazy" width="561" height="646"></a><figcaption><span class="n">画面 390</span><span class="src">image395.png · 561×646</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t07/05_2_image396.png"><img src="assets/img/co/t07/05_2_image396.png" alt="新建成本要素组 · 第 4 步：选中 PRI 点击成本要素键" loading="lazy" width="645" height="675"></a><figcaption><span class="n">画面 391</span><span class="src">image396.png · 645×675</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t08"><span class="no">任务 08</span><h3>更改初级成本要素</h3><span class="tc2">0 画面 / 0 步</span></div>
+<div class="steph" id="t09"><span class="no">任务 09</span><h3></h3><span class="tc2">4 画面 / 1 步</span></div>
+<ol class="oplist">
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t09/01_1_image398.png"><img src="assets/img/co/t09/01_1_image398.png" alt=" · 第 1 步：image398.png" loading="lazy" width="398" height="306"></a><figcaption><span class="n">画面 392</span><span class="src">image398.png · 398×306</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t09/01_2_image399.png"><img src="assets/img/co/t09/01_2_image399.png" alt=" · 第 1 步：image399.png" loading="lazy" width="418" height="303"></a><figcaption><span class="n">画面 393</span><span class="src">image399.png · 418×303</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t09/01_3_image400.png"><img src="assets/img/co/t09/01_3_image400.png" alt=" · 第 1 步：image400.png" loading="lazy" width="404" height="309"></a><figcaption><span class="n">画面 394</span><span class="src">image400.png · 404×309</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t09/01_4_image401.png"><img src="assets/img/co/t09/01_4_image401.png" alt=" · 第 1 步：image401.png" loading="lazy" width="536" height="523"></a><figcaption><span class="n">画面 395</span><span class="src">image401.png · 536×523</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t10"><span class="no">任务 10</span><h3>新建作业类型</h3><span class="tc">KL01</span><span class="tc2">6 画面 / 2 步</span></div>
+<div class="pathline" data-copy="会计 → 控制 → 成本中心会计 → 主数据 → 作业类型 → 单个处理 → KL01-创建"><b>IMG 路径（后台菜单）</b>会计 → 控制 → 成本中心会计 → 主数据 → 作业类型 → 单个处理 → KL01-创建</div>
+<ol class="oplist">
+<li class="is-note">
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t10/01_1_image403.png"><img src="assets/img/co/t10/01_1_image403.png" alt="新建作业类型 · 第 1 步：image405.png" loading="lazy" width="304" height="642"></a><figcaption><span class="n">画面 396</span><span class="src">image405.png · 304×642</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t10/01_2_image404.png"><img src="assets/img/co/t10/01_2_image404.png" alt="新建作业类型 · 第 1 步：image406.png" loading="lazy" width="873" height="703"></a><figcaption><span class="n">画面 397</span><span class="src">image406.png · 873×703</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t10/01_3_image407.png"><img src="assets/img/co/t10/01_3_image407.png" alt="新建作业类型 · 第 1 步：image407.png" loading="lazy" width="652" height="688"></a><figcaption><span class="n">画面 398</span><span class="src">image407.png · 652×688</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t10/01_1_image403.png"><img src="assets/img/co/t10/01_1_image403.png" alt="新建作业类型 · 第 1 步：image405.png" loading="lazy" width="304" height="642"></a><figcaption><span class="n">画面 396</span><span class="src">image405.png · 304×642</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t10/01_2_image404.png"><img src="assets/img/co/t10/01_2_image404.png" alt="新建作业类型 · 第 1 步：image406.png" loading="lazy" width="873" height="703"></a><figcaption><span class="n">画面 397</span><span class="src">image406.png · 873×703</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap">会计－控制－成本中心会计－主数据－作业类型－单个处理－KL01-创建</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t10/02_1_image408.png"><img src="assets/img/co/t10/02_1_image408.png" alt="新建作业类型 · 第 2 步：会计－控制－成本中心会计－主数据－作业类型－单个处理－KL01-创建" loading="lazy" width="638" height="688"></a><figcaption><span class="n">画面 401</span><span class="src">image408.png · 638×688</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t11"><span class="no">任务 11</span><h3>新建作业类型组</h3><span class="tc2">3 画面 / 2 步</span></div>
+<div class="pathline" data-copy="会计 → 控制 → 成本中心会计 → 主数据 → 作业类型组 → KLH1-创建"><b>IMG 路径（后台菜单）</b>会计 → 控制 → 成本中心会计 → 主数据 → 作业类型组 → KLH1-创建</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 402）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t11/01_1_image409.png"><img src="assets/img/co/t11/01_1_image409.png" alt="新建作业类型组 · 第 1 步：image409.png" loading="lazy" width="293" height="595"></a><figcaption><span class="n">画面 402</span><span class="src">image409.png · 293×595</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t11/01_2_image410.png"><img src="assets/img/co/t11/01_2_image410.png" alt="新建作业类型组 · 第 1 步：image410.png" loading="lazy" width="364" height="244"></a><figcaption><span class="n">画面 403</span><span class="src">image410.png · 364×244</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击作业类型按钮</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t11/02_1_image411.png"><img src="assets/img/co/t11/02_1_image411.png" alt="新建作业类型组 · 第 2 步：点击作业类型按钮" loading="lazy" width="738" height="193"></a><figcaption><span class="n">画面 404</span><span class="src">image411.png · 738×193</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t12"><span class="no">任务 12</span><h3>设置作业输出价格</h3><span class="tc">KP26</span><span class="tc2">7 画面 / 7 步</span></div>
+<div class="pathline" data-copy="会计核算 → 控制 → 成本中心会计 → 计划 → 作业输出/价格 → KP26 → 更改"><b>IMG 路径（后台菜单）</b>会计核算 → 控制 → 成本中心会计 → 计划 → 作业输出/价格 → KP26 → 更改</div>
+<ol class="oplist">
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/co/t12/01_1_image412.png"><img src="assets/img/co/t12/01_1_image412.png" alt="设置作业输出价格 · 第 1 步：image412.png" loading="lazy" width="324" height="465"></a><figcaption><span class="n">画面 405</span><span class="src">image412.png · 324×465</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">会计核算－控制－成本中心会计－计划－作业输出/价格－KP26－更改</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t12/02_1_image413.png"><img src="assets/img/co/t12/02_1_image413.png" alt="设置作业输出价格 · 第 2 步：会计核算－控制－成本中心会计－计划－作业输出/价格－KP26－更改" loading="lazy" width="613" height="818"></a><figcaption><span class="n">画面 406</span><span class="src">image413.png · 613×818</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击工具栏上的概览屏幕(F5)</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t12/03_1_image414.png"><img src="assets/img/co/t12/03_1_image414.png" alt="设置作业输出价格 · 第 3 步：点击工具栏上的概览屏幕(F5)" loading="lazy" width="933" height="257"></a><figcaption><span class="n">画面 407</span><span class="src">image414.png · 933×257</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/co/t12/04_1_image415.png"><img src="assets/img/co/t12/04_1_image415.png" alt="设置作业输出价格 · 第 4 步：image415.png" loading="lazy" width="580" height="407"></a><figcaption><span class="n">画面 408</span><span class="src">image415.png · 580×407</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击保存，回到如下页面，继续维护机器工时</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t12/05_1_image416.png"><img src="assets/img/co/t12/05_1_image416.png" alt="设置作业输出价格 · 第 5 步：点击保存，回到如下页面，继续维护机器工时" loading="lazy" width="959" height="269"></a><figcaption><span class="n">画面 409</span><span class="src">image416.png · 959×269</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">保存，返回继续维护 SET</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t12/06_1_image417.png"><img src="assets/img/co/t12/06_1_image417.png" alt="设置作业输出价格 · 第 6 步：保存，返回继续维护 SET" loading="lazy" width="590" height="420"></a><figcaption><span class="n">画面 410</span><span class="src">image417.png · 590×420</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 411）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t12/07_1_image418.png"><img src="assets/img/co/t12/07_1_image418.png" alt="设置作业输出价格 · 第 7 步：image418.png" loading="lazy" width="928" height="257"></a><figcaption><span class="n">画面 411</span><span class="src">image418.png · 928×257</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t13"><span class="no">任务 13</span><h3>维护成本控制凭证的编号范围</h3><span class="fb">后台</span><span class="tc2">6 画面 / 5 步</span></div>
+<div class="pathline" data-copy="控制 → 一般控制 → 组织结构 → 维护成本控制凭证的编号范围"><b>IMG 路径（后台菜单）</b>控制 → 一般控制 → 组织结构 → 维护成本控制凭证的编号范围</div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">控制－一般控制－组织结构－维护成本控制凭证的编号范围</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t13/01_1_image419.png"><img src="assets/img/co/t13/01_1_image419.png" alt="维护成本控制凭证的编号范围 · 第 1 步：控制－一般控制－组织结构－维护成本控制凭证的编号范围" loading="lazy" width="371" height="417"></a><figcaption><span class="n">画面 412</span><span class="src">image419.png · 371×417</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t13/01_2_image420.png"><img src="assets/img/co/t13/01_2_image420.png" alt="维护成本控制凭证的编号范围 · 第 1 步：控制－一般控制－组织结构－维护成本控制凭证的编号范围" loading="lazy" width="547" height="176"></a><figcaption><span class="n">画面 413</span><span class="src">image420.png · 547×176</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击复制键</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t13/02_1_image421.png"><img src="assets/img/co/t13/02_1_image421.png" alt="维护成本控制凭证的编号范围 · 第 2 步：点击复制键" loading="lazy" width="151" height="194"></a><figcaption><span class="n">画面 414</span><span class="src">image421.png · 151×194</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 415）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t13/03_1_image422.png"><img src="assets/img/co/t13/03_1_image422.png" alt="维护成本控制凭证的编号范围 · 第 3 步：image422.png" loading="lazy" width="599" height="562"></a><figcaption><span class="n">画面 415</span><span class="src">image422.png · 599×562</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">直接复制，程序显示不能复制，点击组菜单，点击维护组</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t13/04_1_image423.png"><img src="assets/img/co/t13/04_1_image423.png" alt="维护成本控制凭证的编号范围 · 第 4 步：直接复制，程序显示不能复制，点击组菜单，点击维护组" loading="lazy" width="545" height="184"></a><figcaption><span class="n">画面 416</span><span class="src">image423.png · 545×184</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 417）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t13/05_1_image424.png"><img src="assets/img/co/t13/05_1_image424.png" alt="维护成本控制凭证的编号范围 · 第 5 步：image424.png" loading="lazy" width="588" height="224"></a><figcaption><span class="n">画面 417</span><span class="src">image424.png · 588×224</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t14"><span class="no">任务 14</span><h3>输入费用供应商发票</h3><span class="tc">FB60</span><span class="tc2">3 画面 / 2 步</span></div>
+<table class="tbl vals"><thead><tr><th>项目</th><th>文档中的取值</th></tr></thead><tbody><tr><td>供应商</td><td>30000001</td></tr><tr><td>总帐科目</td><td>55020141</td></tr><tr><td>凭证货币计的金额</td><td>90000</td></tr><tr><td>成本中心</td><td>2001</td></tr></tbody></table>
+<div class="note tip"><b class="t">教材笔记</b>FB60</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 颐宁公司收到佳音地产公司房租发票一张，金额为 90000，这里我们需把这笔费用计入 2001 财务部成本中心</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t14/01_1_image425.png"><img src="assets/img/co/t14/01_1_image425.png" alt="输入费用供应商发票 · 第 1 步：解释：颐宁公司收到佳音地产公司房租发票一张，金额为 90000，这里我们需把这笔费用计入 2001 财务部成本中心" loading="lazy" width="359" height="413"></a><figcaption><span class="n">画面 418</span><span class="src">image425.png · 359×413</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t14/01_2_image426.png"><img src="assets/img/co/t14/01_2_image426.png" alt="输入费用供应商发票 · 第 1 步：解释：颐宁公司收到佳音地产公司房租发票一张，金额为 90000，这里我们需把这笔费用计入 2001 财务部成本中心" loading="lazy" width="756" height="761"></a><figcaption><span class="n">画面 419</span><span class="src">image426.png · 756×761</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">发票日期 2021年3月17日过帐日期 2021年3月17日金额 90000</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t14/02_1_image427.png"><img src="assets/img/co/t14/02_1_image427.png" alt="输入费用供应商发票 · 第 2 步：发票日期 2021年3月17日过帐日期 2021年3月17日金额 90000" loading="lazy" width="730" height="308"></a><figcaption><span class="n">画面 420</span><span class="src">image427.png · 730×308</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>点击保存按钮，将会出现凭证被保存的提示。</div>
+</li>
+</ol>
+<div class="steph" id="t15"><span class="no">任务 15</span><h3>输入普通费用发票</h3><span class="tc">FB50</span><span class="tc2">4 画面 / 4 步</span></div>
+<p>凭证日期 今天记帐日期 今天</p>
+<p>总帐科目 41050121 D/C 借方</p>
+<div class="pathline" data-copy="会计 → 财务会计 → 总分类帐 → 过帐 → FB50 输入总帐科目凭证"><b>IMG 路径（后台菜单）</b>会计 → 财务会计 → 总分类帐 → 过帐 → FB50 输入总帐科目凭证</div>
+<table class="tbl vals"><thead><tr><th>项目</th><th>文档中的取值</th></tr></thead><tbody><tr><td>凭证货币计的金额</td><td>25500</td></tr><tr><td>成本中心</td><td>2006</td></tr><tr><td>凭证货币计的金额</td><td>25500</td></tr></tbody></table>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 颐宁公司又支付了一笔 25500 元的电费，这笔电费被记录到了 2006 行政部成本中心。这里我们用一般的总账凭证的方式输入这张凭证</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t15/01_1_image428.png"><img src="assets/img/co/t15/01_1_image428.png" alt="输入普通费用发票 · 第 1 步：解释：颐宁公司又支付了一笔 25500 元的电费，这笔电费被记录到了 2006 行政部成本中心。这里我们用一般的总账凭证的方式输入这张凭证" loading="lazy" width="345" height="313"></a><figcaption><span class="n">画面 421</span><span class="src">image428.png · 345×313</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>凭证抬头文本 11 月电费</div>
+</li>
+<li>
+<p class="opcap">总帐科目 10020111 D/C 贷方<br>原书截图有误，贷方不能录入成本中心</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t15/02_1_image429.png"><img src="assets/img/co/t15/02_1_image429.png" alt="输入普通费用发票 · 第 2 步：总帐科目 10020111 D/C 贷方 原书截图有误，贷方不能录入成本中心" loading="lazy" width="863" height="478"></a><figcaption><span class="n">画面 422</span><span class="src">image429.png · 863×478</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击模拟 点击保存</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t15/03_1_image430.png"><img src="assets/img/co/t15/03_1_image430.png" alt="输入普通费用发票 · 第 3 步：点击模拟 点击保存" loading="lazy" width="700" height="319"></a><figcaption><span class="n">画面 423</span><span class="src">image430.png · 700×319</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">保存</p>
+<figure class="shot narrow"><a class="zoom" href="assets/img/co/t15/04_1_image431.png"><img src="assets/img/co/t15/04_1_image431.png" alt="输入普通费用发票 · 第 4 步：保存" loading="lazy" width="323" height="28"></a><figcaption><span class="n">画面 424</span><span class="src">image431.png · 323×28</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t16"><span class="no">任务 16</span><h3>运行成本中心报表</h3><span class="tc2">3 画面 / 2 步</span></div>
+<div class="pathline" data-copy="会计 → 控制 → 成本中心会计 → 信息系统 → 成本中心会计的报表 → 计划/实际比较 → 成本中心：实际/计划/差异"><b>IMG 路径（后台菜单）</b>会计 → 控制 → 成本中心会计 → 信息系统 → 成本中心会计的报表 → 计划/实际比较 → 成本中心：实际/计划/差异</div>
+<table class="tbl vals"><thead><tr><th>项目</th><th>文档中的取值</th></tr></thead><tbody><tr><td>成本控制范围</td><td>C999</td></tr><tr><td>会计年度</td><td>2006</td></tr><tr><td>开始期间</td><td>1</td></tr><tr><td>终止期间</td><td>12</td></tr><tr><td>计划版本</td><td>0</td></tr><tr><td>成本中心价值</td><td>2001</td></tr><tr><td>点击闹钟运行或者按</td><td>F8</td></tr></tbody></table>
+<ol class="oplist">
+<li>
+<p class="opcap">会计－控制－成本中心会计－信息系统－成本中心会计的报表－计划/实际比较－成本中心：实际/计划/差异</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t16/01_1_image432.png"><img src="assets/img/co/t16/01_1_image432.png" alt="运行成本中心报表 · 第 1 步：会计－控制－成本中心会计－信息系统－成本中心会计的报表－计划/实际比较－成本中心：实际/计划/差异" loading="lazy" width="693" height="738"></a><figcaption><span class="n">画面 425</span><span class="src">image432.png · 693×738</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 426）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t16/02_1_image433.png"><img src="assets/img/co/t16/02_1_image433.png" alt="运行成本中心报表 · 第 2 步：image433.png" loading="lazy" width="616" height="410"></a><figcaption><span class="n">画面 426</span><span class="src">image433.png · 616×410</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t16/03_1_image434.png"><img src="assets/img/co/t16/03_1_image434.png" alt="运行成本中心报表 · 第 2 步：image434.png" loading="lazy" width="726" height="358"></a><figcaption><span class="n">画面 427</span><span class="src">image434.png · 726×358</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t17"><span class="no">任务 17</span><h3>成本中心数据重过帐</h3><span class="tc">KB61</span><span class="tc2">6 画面 / 5 步</span></div>
+<div class="pathline" data-copy="会计 → 控制 → 成本中心会计 → 实际记账 → 重过账行项目 → KB61 输入"><b>IMG 路径（后台菜单）</b>会计 → 控制 → 成本中心会计 → 实际记账 → 重过账行项目 → KB61 输入</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 90000 元的房租被错误的记录到了 2001 财务部成本中心，我们不必冲销财务凭证。只需要在管理会计中做“重过账”重新将其指定到 2006 行政部成本中心</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t17/01_1_image435.png"><img src="assets/img/co/t17/01_1_image435.png" alt="成本中心数据重过帐 · 第 1 步：解释：90000 元的房租被错误的记录到了 2001 财务部成本中心，我们不必冲销财务凭证。只需要在管理会计中做“重过账”重新将其指定到 2006 行政部成本中心" loading="lazy" width="276" height="661"></a><figcaption><span class="n">画面 428</span><span class="src">image435.png · 276×661</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t17/01_2_image436.png"><img src="assets/img/co/t17/01_2_image436.png" alt="成本中心数据重过帐 · 第 1 步：解释：90000 元的房租被错误的记录到了 2001 财务部成本中心，我们不必冲销财务凭证。只需要在管理会计中做“重过账”重新将其指定到 2006 行政部成本中心" loading="lazy" width="651" height="387"></a><figcaption><span class="n">画面 429</span><span class="src">image436.png · 651×387</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">运行</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t17/02_1_image437.png"><img src="assets/img/co/t17/02_1_image437.png" alt="成本中心数据重过帐 · 第 2 步：运行" loading="lazy" width="851" height="116"></a><figcaption><span class="n">画面 430</span><span class="src">image437.png · 851×116</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">在这个屏幕里，我们将这笔费用重新指定到 2006 行政部成本中心，然后 点击保存CTRL+S</p>
+<figure class="shot narrow"><a class="zoom" href="assets/img/co/t17/03_1_image438.png"><img src="assets/img/co/t17/03_1_image438.png" alt="成本中心数据重过帐 · 第 3 步：在这个屏幕里，我们将这笔费用重新指定到 2006 行政部成本中心，然后 点击保存CTRL+S" loading="lazy" width="215" height="46"></a><figcaption><span class="n">画面 431</span><span class="src">image438.png · 215×46</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">重新查询报表</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t17/04_1_image439.png"><img src="assets/img/co/t17/04_1_image439.png" alt="成本中心数据重过帐 · 第 4 步：重新查询报表" loading="lazy" width="1155" height="334"></a><figcaption><span class="n">画面 432</span><span class="src">image439.png · 1155×334</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 433）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t17/05_1_image440.png"><img src="assets/img/co/t17/05_1_image440.png" alt="成本中心数据重过帐 · 第 5 步：image440.png" loading="lazy" width="1142" height="349"></a><figcaption><span class="n">画面 433</span><span class="src">image440.png · 1142×349</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>可以看到成本中心 2001 下的租金已经转到了 2006</div>
+</li>
+</ol>
+<div class="steph" id="t18"><span class="no">任务 18</span><h3>新建统计指标</h3><span class="tc">KK01</span><span class="tc2">5 画面 / 2 步</span></div>
+<div class="pathline" data-copy="会计 → 控制 → 成本中心会计 → 主数据 → 统计指标 → 单个处理 → KK01-创建"><b>IMG 路径（后台菜单）</b>会计 → 控制 → 成本中心会计 → 主数据 → 统计指标 → 单个处理 → KK01-创建</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 颐宁公司决定使用各成本中心占地面积来分配房租费用。在 SAP 管理会计中，类似占地面积等非财务指标,可以用“ 统计指标” 来记录。这里我们建立一个物业租金面积的统计指标。<br>会计－控制－成本中心会计－主数据－统计指标－单个处理－KK01-创建</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t18/01_1_image441.png"><img src="assets/img/co/t18/01_1_image441.png" alt="新建统计指标 · 第 1 步：解释：颐宁公司决定使用各成本中心占地面积来分配房租费用。在 SAP 管理会计中，类似占地面积等非财务指标,可以用“ 统计指标” 来记录。这里我们建立一个物业租金面积的统计指标。 会计－控制－成本中心会计－主数据－统计指标－单个处理－KK01-创建" loading="lazy" width="301" height="284"></a><figcaption><span class="n">画面 434</span><span class="src">image443.png · 301×284</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t18/01_2_image442.png"><img src="assets/img/co/t18/01_2_image442.png" alt="新建统计指标 · 第 1 步：解释：颐宁公司决定使用各成本中心占地面积来分配房租费用。在 SAP 管理会计中，类似占地面积等非财务指标,可以用“ 统计指标” 来记录。这里我们建立一个物业租金面积的统计指标。 会计－控制－成本中心会计－主数据－统计指标－单个处理－KK01-创建" loading="lazy" width="275" height="725"></a><figcaption><span class="n">画面 435</span><span class="src">image444.png · 275×725</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t18/01_1_image441.png"><img src="assets/img/co/t18/01_1_image441.png" alt="新建统计指标 · 第 1 步：解释：颐宁公司决定使用各成本中心占地面积来分配房租费用。在 SAP 管理会计中，类似占地面积等非财务指标,可以用“ 统计指标” 来记录。这里我们建立一个物业租金面积的统计指标。 会计－控制－成本中心会计－主数据－统计指标－单个处理－KK01-创建" loading="lazy" width="301" height="284"></a><figcaption><span class="n">画面 434</span><span class="src">image443.png · 301×284</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t18/01_2_image442.png"><img src="assets/img/co/t18/01_2_image442.png" alt="新建统计指标 · 第 1 步：解释：颐宁公司决定使用各成本中心占地面积来分配房租费用。在 SAP 管理会计中，类似占地面积等非财务指标,可以用“ 统计指标” 来记录。这里我们建立一个物业租金面积的统计指标。 会计－控制－成本中心会计－主数据－统计指标－单个处理－KK01-创建" loading="lazy" width="275" height="725"></a><figcaption><span class="n">画面 435</span><span class="src">image444.png · 275×725</span></figcaption></figure></div>
+<div class="note tip"><b class="t">教材笔记</b>录入如下数据，保存</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 438）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t18/02_1_image445.png"><img src="assets/img/co/t18/02_1_image445.png" alt="新建统计指标 · 第 2 步：image445.png" loading="lazy" width="455" height="344"></a><figcaption><span class="n">画面 438</span><span class="src">image445.png · 455×344</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t19"><span class="no">任务 19</span><h3>输入统计指标数量</h3><span class="tc">KB31N</span><span class="tc2">3 画面 / 3 步</span></div>
+<div class="pathline" data-copy="会计 → 控制 → 成本中心会计 → 实际记账 → 统计指标 → KB31N-输入"><b>IMG 路径（后台菜单）</b>会计 → 控制 → 成本中心会计 → 实际记账 → 统计指标 → KB31N-输入</div>
+<ol class="oplist">
+<li>
+<p class="opcap">会计－控制－成本中心会计－实际记账－统计指标－KB31N-输入</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t19/01_1_image446.png"><img src="assets/img/co/t19/01_1_image446.png" alt="输入统计指标数量 · 第 1 步：会计－控制－成本中心会计－实际记账－统计指标－KB31N-输入" loading="lazy" width="303" height="817"></a><figcaption><span class="n">画面 439</span><span class="src">image446.png · 303×817</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 440）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t19/02_1_image447.png"><img src="assets/img/co/t19/02_1_image447.png" alt="输入统计指标数量 · 第 2 步：image447.png" loading="lazy" width="913" height="550"></a><figcaption><span class="n">画面 440</span><span class="src">image447.png · 913×550</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">保存</p>
+<figure class="shot narrow"><a class="zoom" href="assets/img/co/t19/03_1_image448.png"><img src="assets/img/co/t19/03_1_image448.png" alt="输入统计指标数量 · 第 3 步：保存" loading="lazy" width="204" height="31"></a><figcaption><span class="n">画面 441</span><span class="src">image448.png · 204×31</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t20"><span class="no">任务 20</span><h3>定义分配循环</h3><span class="tc2">6 画面 / 5 步</span></div>
+<div class="pathline" data-copy="会计 → 控制 → 成本中心会计 → 期末结账 → 当前设置 → 定义分配"><b>IMG 路径（后台菜单）</b>会计 → 控制 → 成本中心会计 → 期末结账 → 当前设置 → 定义分配</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 颐宁公司确定的分配房租费用的规则是将记录到 2006 行政部成本中心的所有房租费用按照总部各成本中心的占地面积分配给各成本中心。制造部的工作地点不在这个办公物业中，所以不需要承担房租费用。现在我们把这个分配规则定义在 SAP 管理会计中，SAP 称为“分配循环”</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t20/01_1_image449.png"><img src="assets/img/co/t20/01_1_image449.png" alt="定义分配循环 · 第 1 步：解释：颐宁公司确定的分配房租费用的规则是将记录到 2006 行政部成本中心的所有房租费用按照总部各成本中心的占地面积分配给各成本中心。制造部的工作地点不在这个办公物业中，所以不需要承担房租费用。现在我们把这个分配规则定义在 SAP 管理会计中，SAP 称为“分配循环”" loading="lazy" width="410" height="718"></a><figcaption><span class="n">画面 442</span><span class="src">image449.png · 410×718</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t20/01_2_image450.png"><img src="assets/img/co/t20/01_2_image450.png" alt="定义分配循环 · 第 1 步：解释：颐宁公司确定的分配房租费用的规则是将记录到 2006 行政部成本中心的所有房租费用按照总部各成本中心的占地面积分配给各成本中心。制造部的工作地点不在这个办公物业中，所以不需要承担房租费用。现在我们把这个分配规则定义在 SAP 管理会计中，SAP 称为“分配循环”" loading="lazy" width="288" height="337"></a><figcaption><span class="n">画面 443</span><span class="src">image450.png · 288×337</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 444）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t20/02_1_image451.png"><img src="assets/img/co/t20/02_1_image451.png" alt="定义分配循环 · 第 2 步：image451.png" loading="lazy" width="589" height="281"></a><figcaption><span class="n">画面 444</span><span class="src">image451.png · 589×281</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">在一个循环里，可以维护很多个分配标准，每个分配标准称为一个“段”，我们点击增加段</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t20/03_1_image452.png"><img src="assets/img/co/t20/03_1_image452.png" alt="定义分配循环 · 第 3 步：在一个循环里，可以维护很多个分配标准，每个分配标准称为一个“段”，我们点击增加段" loading="lazy" width="748" height="464"></a><figcaption><span class="n">画面 445</span><span class="src">image452.png · 748×464</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">在段表头，我们定义一些概览参数。发送方将成本发送出去，接收方接收成本。点击发送方/接收方</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t20/04_1_image453.png"><img src="assets/img/co/t20/04_1_image453.png" alt="定义分配循环 · 第 4 步：在段表头，我们定义一些概览参数。发送方将成本发送出去，接收方接收成本。点击发送方/接收方" loading="lazy" width="773" height="678"></a><figcaption><span class="n">画面 446</span><span class="src">image453.png · 773×678</span></figcaption></figure>
+<div class="note info"><b class="t">原理说明</b>解释：发送方将成本发送出去，接收方接收成本，所以这个分配规则的发送方是 2006 行政部，成本中心的 55020141 管理费用-租金成本要素，接收方是 HQ 总部成本中心组中的各成本中心</div>
+</li>
+<li>
+<p class="opcap">点击接收方追踪因素</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t20/05_1_image454.png"><img src="assets/img/co/t20/05_1_image454.png" alt="定义分配循环 · 第 5 步：点击接收方追踪因素" loading="lazy" width="640" height="466"></a><figcaption><span class="n">画面 447</span><span class="src">image454.png · 640×466</span></figcaption></figure>
+<div class="note info"><b class="t">原理说明</b>解释：接收方追踪因素是指在多个接收方之间按什么标准分配成本，所以我们的规则是按照</div>
+<div class="note tip"><b class="t">教材笔记</b>RENT 物业租金面积统计指标的实际统计值分配成本。</div>
+</li>
+</ol>
+<div class="steph" id="t21"><span class="no">任务 21</span><h3>分配</h3><span class="tc2">3 画面 / 2 步</span></div>
+<div class="pathline" data-copy="会计 → 控制 → 成本中心会计 → 期末结账 → 单一功能 → 分配 → KSV5 分配"><b>IMG 路径（后台菜单）</b>会计 → 控制 → 成本中心会计 → 期末结账 → 单一功能 → 分配 → KSV5 分配</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 完成了前面的准备工作，接下来要在这个月的月结时，将房租成本分配给了各成本中心<br>会计－控制－成本中心会计－期末结账－单一功能－分配－KSV5 分配</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t21/01_1_image455.png"><img src="assets/img/co/t21/01_1_image455.png" alt="分配 · 第 1 步：解释：完成了前面的准备工作，接下来要在这个月的月结时，将房租成本分配给了各成本中心 会计－控制－成本中心会计－期末结账－单一功能－分配－KSV5 分配" loading="lazy" width="386" height="848"></a><figcaption><span class="n">画面 448</span><span class="src">image455.png · 386×848</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t21/01_2_image456.png"><img src="assets/img/co/t21/01_2_image456.png" alt="分配 · 第 1 步：解释：完成了前面的准备工作，接下来要在这个月的月结时，将房租成本分配给了各成本中心 会计－控制－成本中心会计－期末结账－单一功能－分配－KSV5 分配" loading="lazy" width="456" height="788"></a><figcaption><span class="n">画面 449</span><span class="src">image456.png · 456×788</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>期间填当月，指执行分配的期间</div>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> 在这个屏幕中，我们填写执行分配的会计期间，我们可以一次运行几个分配循环，只需要将他们填写在下方的清单里即可。<br>点击运行</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t21/02_1_image457.png"><img src="assets/img/co/t21/02_1_image457.png" alt="分配 · 第 2 步：解释：在这个屏幕中，我们填写执行分配的会计期间，我们可以一次运行几个分配循环，只需要将他们填写在下方的清单里即可。 点击运行" loading="lazy" width="643" height="333"></a><figcaption><span class="n">画面 450</span><span class="src">image457.png · 643×333</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t22"><span class="no">任务 22</span><h3>显示成本中心分配到的租金</h3><span class="tc2">4 画面 / 3 步</span></div>
+<div class="pathline" data-copy="会计 → 控制 → 成本中心会计 → 信息系统 → 成本中心会计的报表 → 计划/实际比较 → 成本中心：实际/计划/差异"><b>IMG 路径（后台菜单）</b>会计 → 控制 → 成本中心会计 → 信息系统 → 成本中心会计的报表 → 计划/实际比较 → 成本中心：实际/计划/差异</div>
+<ol class="oplist">
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/co/t22/01_1_image458.png"><img src="assets/img/co/t22/01_1_image458.png" alt="显示成本中心分配到的租金 · 第 1 步：image458.png" loading="lazy" width="517" height="583"></a><figcaption><span class="n">画面 451</span><span class="src">image458.png · 517×583</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">会计－控制－成本中心会计－信息系统－成本中心会计的报表－计划/实际比较－成本中心：实际/计划/差异</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t22/02_1_image459.png"><img src="assets/img/co/t22/02_1_image459.png" alt="显示成本中心分配到的租金 · 第 2 步：会计－控制－成本中心会计－信息系统－成本中心会计的报表－计划/实际比较－成本中心：实际/计划/差异" loading="lazy" width="591" height="393"></a><figcaption><span class="n">画面 452</span><span class="src">image459.png · 591×393</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t22/02_2_image460.png"><img src="assets/img/co/t22/02_2_image460.png" alt="显示成本中心分配到的租金 · 第 2 步：会计－控制－成本中心会计－信息系统－成本中心会计的报表－计划/实际比较－成本中心：实际/计划/差异" loading="lazy" width="1264" height="638"></a><figcaption><span class="n">画面 453</span><span class="src">image460.png · 1264×638</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击左边各成本中心，可查看到各成本中心分配到的房租费用</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t22/03_1_image461.png"><img src="assets/img/co/t22/03_1_image461.png" alt="显示成本中心分配到的租金 · 第 3 步：点击左边各成本中心，可查看到各成本中心分配到的房租费用" loading="lazy" width="1259" height="593"></a><figcaption><span class="n">画面 454</span><span class="src">image461.png · 1259×593</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t23"><span class="no">任务 23</span><h3>定义分摊循环</h3><span class="tc2">8 画面 / 5 步</span></div>
+<div class="pathline" data-copy="会计 → 控制 → 成本中心会计 → 期末结账 → 当前设置 → 定义评估"><b>IMG 路径（后台菜单）</b>会计 → 控制 → 成本中心会计 → 期末结账 → 当前设置 → 定义评估</div>
+<div class="note info"><b class="t">原理说明</b>解释：前面的房租费用分配，分配前后成本流的形态，也就是房租费用并没有发生变化，所以分配是一种对初级成本要素的分配，但在有些情况下，分摊前后的成本流形态 发生了变化。比如行政部门发生各种费用，但是以“行政管理费”的形式分摊给其他的成本中心，再比如工厂食堂成本中心发生各种费用，但是它就以食堂费的形式分摊给其他的成本中心，这时候接收方比如财务部成本中心看到的不是食堂里发生的电费水费材料费人工费等，而是看到分摊给它的食堂费是多少，这种食堂费或行政管理费就是我们前面讲的次级成本要素，在 SAP 中称为分摊，它和前面的分配含义不同。</div>
+<ol class="oplist">
+<li>
+<p class="opcap">在本例里我们使用802010 电费作为次级成本要素来分摊41050121 电费初级成本要素为了说明在分摊中成本流的形态发生了怎样的变化。本例不是实际的场景<br>会计－控制－成本中心会计－期末结账－当前设置－定义评估</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t23/01_1_image462.png"><img src="assets/img/co/t23/01_1_image462.png" alt="定义分摊循环 · 第 1 步：在本例里我们使用802010 电费作为次级成本要素来分摊41050121 电费初级成本要素为了说明在分摊中成本流的形态发生了怎样的变化。本例不是实际的场景 会计－控制－成本中心会计－期末结账－当前设置－定义评估" loading="lazy" width="388" height="572"></a><figcaption><span class="n">画面 455</span><span class="src">image464.png · 388×572</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t23/01_2_image463.png"><img src="assets/img/co/t23/01_2_image463.png" alt="定义分摊循环 · 第 1 步：在本例里我们使用802010 电费作为次级成本要素来分摊41050121 电费初级成本要素为了说明在分摊中成本流的形态发生了怎样的变化。本例不是实际的场景 会计－控制－成本中心会计－期末结账－当前设置－定义评估" loading="lazy" width="331" height="362"></a><figcaption><span class="n">画面 456</span><span class="src">image465.png · 331×362</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t23/01_1_image462.png"><img src="assets/img/co/t23/01_1_image462.png" alt="定义分摊循环 · 第 1 步：在本例里我们使用802010 电费作为次级成本要素来分摊41050121 电费初级成本要素为了说明在分摊中成本流的形态发生了怎样的变化。本例不是实际的场景 会计－控制－成本中心会计－期末结账－当前设置－定义评估" loading="lazy" width="388" height="572"></a><figcaption><span class="n">画面 455</span><span class="src">image464.png · 388×572</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t23/01_2_image463.png"><img src="assets/img/co/t23/01_2_image463.png" alt="定义分摊循环 · 第 1 步：在本例里我们使用802010 电费作为次级成本要素来分摊41050121 电费初级成本要素为了说明在分摊中成本流的形态发生了怎样的变化。本例不是实际的场景 会计－控制－成本中心会计－期末结账－当前设置－定义评估" loading="lazy" width="331" height="362"></a><figcaption><span class="n">画面 456</span><span class="src">image465.png · 331×362</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> 和分配类似，我们首先需要把分摊的规则定义在“分摊循环”里，在这个屏幕里，我们给分摊循环起一个编码，并说明他的有效开始时间</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t23/02_1_image466.png"><img src="assets/img/co/t23/02_1_image466.png" alt="定义分摊循环 · 第 2 步：解释：和分配类似，我们首先需要把分摊的规则定义在“分摊循环”里，在这个屏幕里，我们给分摊循环起一个编码，并说明他的有效开始时间" loading="lazy" width="657" height="308"></a><figcaption><span class="n">画面 459</span><span class="src">image466.png · 657×308</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">在一个循环里可以维护很多分摊标准，每个分摊标准称为一个段。点击增加段</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t23/03_1_image467.png"><img src="assets/img/co/t23/03_1_image467.png" alt="定义分摊循环 · 第 3 步：在一个循环里可以维护很多分摊标准，每个分摊标准称为一个段。点击增加段" loading="lazy" width="708" height="519"></a><figcaption><span class="n">画面 460</span><span class="src">image467.png · 708×519</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap"><span class="lead">解释：</span> 和分配不同，分摊中成本流转使用的是次级成本要素，所以在这个屏幕里需要指定相关的次级成本要素。我们既可以像现在这样指定一个固定的分摊成本要素，也可以建立一种从原始的初级成本要素到分摊成本要素的对应关系，SAP 称之为分配结构（屏幕中分摊成本要素的下方）此外，本例中我们使用“固定百分比”的规则在接收方中分摊成本。</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t23/04_1_image468.png"><img src="assets/img/co/t23/04_1_image468.png" alt="定义分摊循环 · 第 4 步：解释：和分配不同，分摊中成本流转使用的是次级成本要素，所以在这个屏幕里需要指定相关的次级成本要素。我们既可以像现在这样指定一个固定的分摊成本要素，也可以建立一种从原始的初级成本要素到分摊成本要素的对应关系，SAP 称之为分配结构（屏幕中分摊成本要素的下方）此外，本例中我们使用“固定百分比”的规则在接收方中分摊成本。" loading="lazy" width="605" height="460"></a><figcaption><span class="n">画面 461</span><span class="src">image468.png · 605×460</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">发送方是 2006 行政部成本中心的 41050121 成本要素，接收方是 MFG 制造部成本中心的各成本中心</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t23/05_1_image469.png"><img src="assets/img/co/t23/05_1_image469.png" alt="定义分摊循环 · 第 5 步：发送方是 2006 行政部成本中心的 41050121 成本要素，接收方是 MFG 制造部成本中心的各成本中心" loading="lazy" width="608" height="368"></a><figcaption><span class="n">画面 462</span><span class="src">image469.png · 608×368</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>这里表明，1001 及 1002 各占的比例</div>
+<div class="note tip"><b class="t">教材笔记</b>填写完毕，点击保存即可</div>
+</li>
+</ol>
+<div class="steph" id="t24"><span class="no">任务 24</span><h3>分摊</h3><span class="tc2">4 画面 / 1 步</span></div>
+<div class="pathline" data-copy="会计 → 控制 → 成本中心会计 → 期末结账 → 单一功能 → 分配 → KSU5-分配"><b>IMG 路径（后台菜单）</b>会计 → 控制 → 成本中心会计 → 期末结账 → 单一功能 → 分配 → KSU5-分配</div>
+<ol class="oplist">
+<li>
+<p class="opcap">完成了准备工作，我们来执行这个分摊循环</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t24/01_1_image470.png"><img src="assets/img/co/t24/01_1_image470.png" alt="分摊 · 第 1 步：完成了准备工作，我们来执行这个分摊循环" loading="lazy" width="354" height="811"></a><figcaption><span class="n">画面 463</span><span class="src">image472.png · 354×811</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t24/01_2_image471.png"><img src="assets/img/co/t24/01_2_image471.png" alt="分摊 · 第 1 步：完成了准备工作，我们来执行这个分摊循环" loading="lazy" width="517" height="787"></a><figcaption><span class="n">画面 464</span><span class="src">image473.png · 517×787</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t24/01_1_image470.png"><img src="assets/img/co/t24/01_1_image470.png" alt="分摊 · 第 1 步：完成了准备工作，我们来执行这个分摊循环" loading="lazy" width="354" height="811"></a><figcaption><span class="n">画面 463</span><span class="src">image472.png · 354×811</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t24/01_2_image471.png"><img src="assets/img/co/t24/01_2_image471.png" alt="分摊 · 第 1 步：完成了准备工作，我们来执行这个分摊循环" loading="lazy" width="517" height="787"></a><figcaption><span class="n">画面 464</span><span class="src">image473.png · 517×787</span></figcaption></figure></div>
+</li>
+</ol>
+<div class="steph" id="t25"><span class="no">任务 25</span><h3>点击执行</h3><span class="tc2">1 画面 / 1 步</span></div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 467）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t25/01_1_image474.png"><img src="assets/img/co/t25/01_1_image474.png" alt="点击执行：image474.png" loading="lazy" width="704" height="307"></a><figcaption><span class="n">画面 467</span><span class="src">image474.png · 704×307</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t26"><span class="no">任务 26</span><h3>显示成本中心分摊到的电费</h3><span class="tc2">4 画面 / 2 步</span></div>
+<div class="pathline" data-copy="会计 → 控制 → 成本中心会计 → 信息系统 → 成本中心会计的报表 → 计划/实际比较 → 成本中心：实际/计划/差异"><b>IMG 路径（后台菜单）</b>会计 → 控制 → 成本中心会计 → 信息系统 → 成本中心会计的报表 → 计划/实际比较 → 成本中心：实际/计划/差异</div>
+<ol class="oplist">
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/co/t26/01_1_image475.png"><img src="assets/img/co/t26/01_1_image475.png" alt="显示成本中心分摊到的电费 · 第 1 步：image475.png" loading="lazy" width="617" height="386"></a><figcaption><span class="n">画面 468</span><span class="src">image475.png · 617×386</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t26/01_2_image476.png"><img src="assets/img/co/t26/01_2_image476.png" alt="显示成本中心分摊到的电费 · 第 1 步：image476.png" loading="lazy" width="478" height="589"></a><figcaption><span class="n">画面 469</span><span class="src">image476.png · 478×589</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">会计－控制－成本中心会计－信息系统－成本中心会计的报表－计划/实际比较－成本中心：实际/计划/差异</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t26/02_1_image477.png"><img src="assets/img/co/t26/02_1_image477.png" alt="显示成本中心分摊到的电费 · 第 2 步：会计－控制－成本中心会计－信息系统－成本中心会计的报表－计划/实际比较－成本中心：实际/计划/差异" loading="lazy" width="881" height="327"></a><figcaption><span class="n">画面 470</span><span class="src">image477.png · 881×327</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t26/02_2_image478.png"><img src="assets/img/co/t26/02_2_image478.png" alt="显示成本中心分摊到的电费 · 第 2 步：会计－控制－成本中心会计－信息系统－成本中心会计的报表－计划/实际比较－成本中心：实际/计划/差异" loading="lazy" width="1002" height="657"></a><figcaption><span class="n">画面 471</span><span class="src">image478.png · 1002×657</span></figcaption></figure>
+<div class="note info"><b class="t">原理说明</b>注意：我们显示的 802010 电费分摊是一个次级成本要素，它是公司内部成本流转使用的，是财务会计中没有的科目</div>
+</li>
+</ol>
+<div class="steph" id="t27"><span class="no">任务 27</span><h3>创建内部订单类型并维护编号范围</h3><span class="tc2">10 画面 / 4 步</span></div>
+<div class="pathline" data-copy="点击新条目点击新条目后台 → 控制 → 内部订单 → 订单主数据 → 定义订单类型"><b>IMG 路径（后台菜单）</b>点击新条目点击新条目后台 → 控制 → 内部订单 → 订单主数据 → 定义订单类型</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 颐宁公司将要举行 “ 国内用户大会” 为了这次市场推广活动，公司会发生很多费用，我们希望能对这次活动单独核算费用，而不是在成本中心各种费用中。公司中类似的“ 项目”还有很多，在 SAP 管理会计中我们可以用“内部订单”来管理这些项目。项目有各种类型，如市场类的，研发类的，工会活动类的等等。</p>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="assets/img/co/t27/01_1_image479.png"><img src="assets/img/co/t27/01_1_image479.png" alt="创建内部订单类型并维护编号范围 · 第 1 步：解释：颐宁公司将要举行 “ 国内用户大会” 为了这次市场推广活动，公司会发生很多费用，我们希望能对这次活动单独核算费用，而不是在成本中心各种费用中。公司中类似的“ 项目”还有很多，在 SAP 管理会计中我们可以用“内部订单”来管理这些项目。项目有各种类型，如市场类的，研发类的，工会活动类的等等。" loading="lazy" width="512" height="710"></a><figcaption><span class="n">画面 472</span><span class="src">image482.png · 512×710</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t27/01_2_image480.png"><img src="assets/img/co/t27/01_2_image480.png" alt="创建内部订单类型并维护编号范围 · 第 1 步：解释：颐宁公司将要举行 “ 国内用户大会” 为了这次市场推广活动，公司会发生很多费用，我们希望能对这次活动单独核算费用，而不是在成本中心各种费用中。公司中类似的“ 项目”还有很多，在 SAP 管理会计中我们可以用“内部订单”来管理这些项目。项目有各种类型，如市场类的，研发类的，工会活动类的等等。" loading="lazy" width="405" height="555"></a><figcaption><span class="n">画面 473</span><span class="src">image483.png · 405×555</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t27/01_3_image481.png"><img src="assets/img/co/t27/01_3_image481.png" alt="创建内部订单类型并维护编号范围 · 第 1 步：解释：颐宁公司将要举行 “ 国内用户大会” 为了这次市场推广活动，公司会发生很多费用，我们希望能对这次活动单独核算费用，而不是在成本中心各种费用中。公司中类似的“ 项目”还有很多，在 SAP 管理会计中我们可以用“内部订单”来管理这些项目。项目有各种类型，如市场类的，研发类的，工会活动类的等等。" loading="lazy" width="625" height="544"></a><figcaption><span class="n">画面 474</span><span class="src">image484.png · 625×544</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t27/01_1_image479.png"><img src="assets/img/co/t27/01_1_image479.png" alt="创建内部订单类型并维护编号范围 · 第 1 步：解释：颐宁公司将要举行 “ 国内用户大会” 为了这次市场推广活动，公司会发生很多费用，我们希望能对这次活动单独核算费用，而不是在成本中心各种费用中。公司中类似的“ 项目”还有很多，在 SAP 管理会计中我们可以用“内部订单”来管理这些项目。项目有各种类型，如市场类的，研发类的，工会活动类的等等。" loading="lazy" width="512" height="710"></a><figcaption><span class="n">画面 472</span><span class="src">image482.png · 512×710</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t27/01_2_image480.png"><img src="assets/img/co/t27/01_2_image480.png" alt="创建内部订单类型并维护编号范围 · 第 1 步：解释：颐宁公司将要举行 “ 国内用户大会” 为了这次市场推广活动，公司会发生很多费用，我们希望能对这次活动单独核算费用，而不是在成本中心各种费用中。公司中类似的“ 项目”还有很多，在 SAP 管理会计中我们可以用“内部订单”来管理这些项目。项目有各种类型，如市场类的，研发类的，工会活动类的等等。" loading="lazy" width="405" height="555"></a><figcaption><span class="n">画面 473</span><span class="src">image483.png · 405×555</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t27/01_3_image481.png"><img src="assets/img/co/t27/01_3_image481.png" alt="创建内部订单类型并维护编号范围 · 第 1 步：解释：颐宁公司将要举行 “ 国内用户大会” 为了这次市场推广活动，公司会发生很多费用，我们希望能对这次活动单独核算费用，而不是在成本中心各种费用中。公司中类似的“ 项目”还有很多，在 SAP 管理会计中我们可以用“内部订单”来管理这些项目。项目有各种类型，如市场类的，研发类的，工会活动类的等等。" loading="lazy" width="625" height="544"></a><figcaption><span class="n">画面 474</span><span class="src">image484.png · 625×544</span></figcaption></figure></div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 478）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t27/02_1_image485.png"><img src="assets/img/co/t27/02_1_image485.png" alt="创建内部订单类型并维护编号范围 · 第 2 步：image485.png" loading="lazy" width="588" height="722"></a><figcaption><span class="n">画面 478</span><span class="src">image485.png · 588×722</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t27/02_2_image486.png"><img src="assets/img/co/t27/02_2_image486.png" alt="创建内部订单类型并维护编号范围 · 第 2 步：image486.png" loading="lazy" width="565" height="730"></a><figcaption><span class="n">画面 479</span><span class="src">image486.png · 565×730</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">保存后，点击编号范围区间</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t27/03_1_image487.png"><img src="assets/img/co/t27/03_1_image487.png" alt="创建内部订单类型并维护编号范围 · 第 3 步：保存后，点击编号范围区间" loading="lazy" width="820" height="209"></a><figcaption><span class="n">画面 480</span><span class="src">image487.png · 820×209</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">将光标选中“未分配的”里的 PMKT 市场活动，点击然后 勾上市场和广告需求。订单前面的方框，再点击</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t27/04_1_image488.png"><img src="assets/img/co/t27/04_1_image488.png" alt="创建内部订单类型并维护编号范围 · 第 4 步：将光标选中“未分配的”里的 PMKT 市场活动，点击然后 勾上市场和广告需求。订单前面的方框，再点击" loading="lazy" width="813" height="881"></a><figcaption><span class="n">画面 481</span><span class="src">image488.png · 813×881</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>点击保存</div>
+</li>
+</ol>
+<div class="steph" id="t28"><span class="no">任务 28</span><h3>维护内部订单的结算参数文件</h3><span class="tc2">4 画面 / 4 步</span></div>
+<div class="pathline" data-copy="后台 → 控制 → 内部订单 → 实际过账 → 结算 → 维护结算参数文件"><b>IMG 路径（后台菜单）</b>后台 → 控制 → 内部订单 → 实际过账 → 结算 → 维护结算参数文件</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 为了举行“国内用户大会”公司创建了“市场活动”订单类型，其中结算参数文件选择的是系统中已经有的 100，本步骤中，我们来检查结算参数文件 100 的设置</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t28/01_1_image490.png"><img src="assets/img/co/t28/01_1_image490.png" alt="维护内部订单的结算参数文件 · 第 1 步：解释：为了举行“国内用户大会”公司创建了“市场活动”订单类型，其中结算参数文件选择的是系统中已经有的 100，本步骤中，我们来检查结算参数文件 100 的设置" loading="lazy" width="419" height="901"></a><figcaption><span class="n">画面 482</span><span class="src">image490.png · 419×901</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">双击“维护结算参数文件”</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t28/02_1_image491.png"><img src="assets/img/co/t28/02_1_image491.png" alt="维护内部订单的结算参数文件 · 第 2 步：双击“维护结算参数文件”" loading="lazy" width="641" height="680"></a><figcaption><span class="n">画面 483</span><span class="src">image491.png · 641×680</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 484）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t28/03_1_image492.png"><img src="assets/img/co/t28/03_1_image492.png" alt="维护内部订单的结算参数文件 · 第 3 步：image492.png" loading="lazy" width="476" height="317"></a><figcaption><span class="n">画面 484</span><span class="src">image492.png · 476×317</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">双击“结算参数文件100”，<br>如果没有，则点击新条目，然后回头修改上一步的参结算参数文件，当时我们选择的为20</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t28/04_1_image493.png"><img src="assets/img/co/t28/04_1_image493.png" alt="维护内部订单的结算参数文件 · 第 4 步：双击“结算参数文件100”， 如果没有，则点击新条目，然后回头修改上一步的参结算参数文件，当时我们选择的为20" loading="lazy" width="694" height="646"></a><figcaption><span class="n">画面 485</span><span class="src">image493.png · 694×646</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t29"><span class="no">任务 29</span><h3>维护内部订单结算的分配结构</h3><span class="tc2">6 画面 / 6 步</span></div>
+<div class="pathline" data-copy="后台 → 控制 → 内部订单 → 实际过账 → 结算 → 维护分配结构"><b>IMG 路径（后台菜单）</b>后台 → 控制 → 内部订单 → 实际过账 → 结算 → 维护分配结构</div>
+<div class="note info"><b class="t">原理说明</b>解释：公司创建了“市场活动”订单类型，其中结算参数文件是 100。在结算参数文件 100中选择的分配结构是 AI -&gt; CO 分配结构，本步骤中，我们来维护 A1 分配结构</div>
+<ol class="oplist">
+<li>
+<p class="opcap">后台－控制－内部订单－实际过账－结算－维护分配结构</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t29/01_1_image494.png"><img src="assets/img/co/t29/01_1_image494.png" alt="维护内部订单结算的分配结构 · 第 1 步：后台－控制－内部订单－实际过账－结算－维护分配结构" loading="lazy" width="354" height="906"></a><figcaption><span class="n">画面 486</span><span class="src">image494.png · 354×906</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 487）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t29/02_1_image495.png"><img src="assets/img/co/t29/02_1_image495.png" alt="维护内部订单结算的分配结构 · 第 2 步：image495.png" loading="lazy" width="581" height="236"></a><figcaption><span class="n">画面 487</span><span class="src">image495.png · 581×236</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">双击分配</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t29/03_1_image496.png"><img src="assets/img/co/t29/03_1_image496.png" alt="维护内部订单结算的分配结构 · 第 3 步：双击分配" loading="lazy" width="609" height="302"></a><figcaption><span class="n">画面 488</span><span class="src">image496.png · 609×302</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">选中 001 行，然后点击左边的源文件，如果没有001，则点击新的条目，双击左边的“源”</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t29/04_1_image497.png"><img src="assets/img/co/t29/04_1_image497.png" alt="维护内部订单结算的分配结构 · 第 4 步：选中 001 行，然后点击左边的源文件，如果没有001，则点击新的条目，双击左边的“源”" loading="lazy" width="642" height="229"></a><figcaption><span class="n">画面 489</span><span class="src">image497.png · 642×229</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>点击左边的“结算成本要素”</div>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 490）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t29/05_1_image498.png"><img src="assets/img/co/t29/05_1_image498.png" alt="维护内部订单结算的分配结构 · 第 5 步：image498.png" loading="lazy" width="786" height="223"></a><figcaption><span class="n">画面 490</span><span class="src">image498.png · 786×223</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击新条目</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t29/06_1_image499.png"><img src="assets/img/co/t29/06_1_image499.png" alt="维护内部订单结算的分配结构 · 第 6 步：点击新条目" loading="lazy" width="763" height="245"></a><figcaption><span class="n">画面 491</span><span class="src">image499.png · 763×245</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t30"><span class="no">任务 30</span><h3>维护结算凭证编号范围</h3><span class="tc2">3 画面 / 2 步</span></div>
+<div class="pathline" data-copy="后台 → 控制 → 内部订单 → 实际过账 → 结算 → 维护结算凭证编号范围"><b>IMG 路径（后台菜单）</b>后台 → 控制 → 内部订单 → 实际过账 → 结算 → 维护结算凭证编号范围</div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">后台－控制－内部订单－实际过账－结算－维护结算凭证编号范围</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t30/01_1_image500.png"><img src="assets/img/co/t30/01_1_image500.png" alt="维护结算凭证编号范围 · 第 1 步：后台－控制－内部订单－实际过账－结算－维护结算凭证编号范围" loading="lazy" width="523" height="933"></a><figcaption><span class="n">画面 492</span><span class="src">image500.png · 523×933</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t30/01_2_image501.png"><img src="assets/img/co/t30/01_2_image501.png" alt="维护结算凭证编号范围 · 第 1 步：后台－控制－内部订单－实际过账－结算－维护结算凭证编号范围" loading="lazy" width="800" height="411"></a><figcaption><span class="n">画面 493</span><span class="src">image501.png · 800×411</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> 对于 颐宁公司国内用户大会发生的费用，我们将通过创建市场活动类型内部订单来举行归集，然后结算到各个成本中心中去，结算完成时会产生相应的结算凭证。本步骤中我们将对结算凭证维护编号范围。<br>屏幕上方的是已经分配了号码范围的成本控制对象。成本控制对象 C999 还未分配。在未分配栏中选中 C999，点击 ，在标准会计凭证框内打勾，然后点击元素/组按钮 ，未找到用下图的01代替</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t30/02_1_image502.png"><img src="assets/img/co/t30/02_1_image502.png" alt="维护结算凭证编号范围 · 第 2 步：解释：对于 颐宁公司国内用户大会发生的费用，我们将通过创建市场活动类型内部订单来举行归集，然后结算到各个成本中心中去，结算完成时会产生相应的结算凭证。本步骤中我们将对结算凭证维护编号范围。 屏幕上方的是已经分配了号码范围的成本控制对象。成本控制对象 C999 还未分配。在未分配栏中选中 C999，点击 ，在标准会计凭证" loading="lazy" width="834" height="123"></a><figcaption><span class="n">画面 494</span><span class="src">image502.png · 834×123</span></figcaption></figure>
+<div class="note tip"><b class="t">教材笔记</b>看到已经分配了点击保存</div>
+</li>
+</ol>
+<div class="steph" id="t31"><span class="no">任务 31</span><h3>创建内部订单</h3><span class="tc">KO04</span><span class="tc2">10 画面 / 7 步</span></div>
+<div class="pathline" data-copy="会计 → 控制 → 内部订单 → 主数据 → KO04-订单管理员"><b>IMG 路径（后台菜单）</b>会计 → 控制 → 内部订单 → 主数据 → KO04-订单管理员</div>
+<ol class="oplist">
+<li class="is-note">
+<p class="opcap">会计－控制－内部订单－主数据－KO04-订单管理员</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t31/01_1_image503.png"><img src="assets/img/co/t31/01_1_image503.png" alt="创建内部订单 · 第 1 步：会计－控制－内部订单－主数据－KO04-订单管理员" loading="lazy" width="329" height="449"></a><figcaption><span class="n">画面 495</span><span class="src">image503.png · 329×449</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="lead">解释：</span> 我们已经创建了市场活动订单类型，我们将在此类型下创建内部订单来归集国内用户大会发生的费用。</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t31/02_1_image504.png"><img src="assets/img/co/t31/02_1_image504.png" alt="创建内部订单 · 第 2 步：解释：我们已经创建了市场活动订单类型，我们将在此类型下创建内部订单来归集国内用户大会发生的费用。" loading="lazy" width="446" height="337"></a><figcaption><span class="n">画面 496</span><span class="src">image504.png · 446×337</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击新建</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t31/03_1_image505.png"><img src="assets/img/co/t31/03_1_image505.png" alt="创建内部订单 · 第 3 步：点击新建" loading="lazy" width="529" height="167"></a><figcaption><span class="n">画面 497</span><span class="src">image505.png · 529×167</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">然后点击保存然后点击保存</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t31/04_1_image506.png"><img src="assets/img/co/t31/04_1_image506.png" alt="创建内部订单 · 第 4 步：然后点击保存然后点击保存" loading="lazy" width="868" height="716"></a><figcaption><span class="n">画面 498</span><span class="src">image506.png · 868×716</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">点击结算规则</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t31/05_1_image507.png"><img src="assets/img/co/t31/05_1_image507.png" alt="创建内部订单 · 第 5 步：点击结算规则" loading="lazy" width="843" height="154"></a><figcaption><span class="n">画面 499</span><span class="src">image507.png · 843×154</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t31/05_2_image508.png"><img src="assets/img/co/t31/05_2_image508.png" alt="创建内部订单 · 第 5 步：点击结算规则" loading="lazy" width="789" height="439"></a><figcaption><span class="n">画面 500</span><span class="src">image508.png · 789×439</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">录入上述信息并回车，得到如下结果：</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t31/06_1_image509.png"><img src="assets/img/co/t31/06_1_image509.png" alt="创建内部订单 · 第 6 步：录入上述信息并回车，得到如下结果：" loading="lazy" width="738" height="414"></a><figcaption><span class="n">画面 501</span><span class="src">image509.png · 738×414</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t31/06_2_image510.png"><img src="assets/img/co/t31/06_2_image510.png" alt="创建内部订单 · 第 6 步：录入上述信息并回车，得到如下结果：" loading="lazy" width="968" height="238"></a><figcaption><span class="n">画面 502</span><span class="src">image510.png · 968×238</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击修改按钮，然后点击屏幕右方的控制数据</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t31/07_1_image511.png"><img src="assets/img/co/t31/07_1_image511.png" alt="创建内部订单 · 第 7 步：点击修改按钮，然后点击屏幕右方的控制数据" loading="lazy" width="865" height="338"></a><figcaption><span class="n">画面 503</span><span class="src">image511.png · 865×338</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t31/07_2_image512.png"><img src="assets/img/co/t31/07_2_image512.png" alt="创建内部订单 · 第 7 步：点击修改按钮，然后点击屏幕右方的控制数据" loading="lazy" width="912" height="532"></a><figcaption><span class="n">画面 504</span><span class="src">image512.png · 912×532</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t32"><span class="no">任务 32</span><h3>输入内部订单费用发票</h3><span class="tc">FB50</span><span class="tc2">4 画面 / 4 步</span></div>
+<div class="pathline" data-copy="会计核算 → 财务会计 → 总帐 → 凭证录入 → FB50-输入总账科目凭证"><b>IMG 路径（后台菜单）</b>会计核算 → 财务会计 → 总帐 → 凭证录入 → FB50-输入总账科目凭证</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 会计核算－财务会计－总帐－凭证录入－FB50-输入总账科目凭证</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t32/01_1_image513.png"><img src="assets/img/co/t32/01_1_image513.png" alt="输入内部订单费用发票 · 第 1 步：解释： 会计核算－财务会计－总帐－凭证录入－FB50-输入总账科目凭证" loading="lazy" width="568" height="310"></a><figcaption><span class="n">画面 505</span><span class="src">image513.png · 568×310</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 506）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t32/02_1_image514.png"><img src="assets/img/co/t32/02_1_image514.png" alt="输入内部订单费用发票 · 第 2 步：image514.png" loading="lazy" width="892" height="533"></a><figcaption><span class="n">画面 506</span><span class="src">image514.png · 892×533</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击模拟</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t32/03_1_image515.png"><img src="assets/img/co/t32/03_1_image515.png" alt="输入内部订单费用发票 · 第 3 步：点击模拟" loading="lazy" width="724" height="339"></a><figcaption><span class="n">画面 507</span><span class="src">image515.png · 724×339</span></figcaption></figure>
+</li>
+<li class="is-note">
+<p class="opcap">点击保存</p>
+<figure class="shot narrow"><a class="zoom" href="assets/img/co/t32/04_1_image516.png"><img src="assets/img/co/t32/04_1_image516.png" alt="输入内部订单费用发票 · 第 4 步：点击保存" loading="lazy" width="329" height="27"></a><figcaption><span class="n">画面 508</span><span class="src">image516.png · 329×27</span></figcaption></figure>
+</li>
+</ol>
+<div class="steph" id="t33"><span class="no">任务 33</span><h3>内部订单的结算</h3><span class="tc">KO88</span><span class="tc2">3 画面 / 2 步</span></div>
+<div class="pathline" data-copy="控制 → 内部订单 → 单一功能 → 结算 → KO88-单个处理"><b>IMG 路径（后台菜单）</b>控制 → 内部订单 → 单一功能 → 结算 → KO88-单个处理</div>
+<ol class="oplist">
+<li>
+<p class="opcap"><span class="lead">解释：</span> 颐宁公司举办了国内用户大会，并为此创建了内部订单来归集发生的费用。本步骤中我们将把订单中归集的费用结算到各个成本中心中去。<br>控制－内部订单－单一功能－结算－KO88-单个处理</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t33/01_1_image517.png"><img src="assets/img/co/t33/01_1_image517.png" alt="内部订单的结算 · 第 1 步：解释：颐宁公司举办了国内用户大会，并为此创建了内部订单来归集发生的费用。本步骤中我们将把订单中归集的费用结算到各个成本中心中去。 控制－内部订单－单一功能－结算－KO88-单个处理" loading="lazy" width="382" height="735"></a><figcaption><span class="n">画面 509</span><span class="src">image517.png · 382×735</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap"><span class="sub">按上一屏继续操作（画面 510）</span></p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t33/02_1_image518.png"><img src="assets/img/co/t33/02_1_image518.png" alt="内部订单的结算 · 第 2 步：image518.png" loading="lazy" width="610" height="430"></a><figcaption><span class="n">画面 510</span><span class="src">image518.png · 610×430</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t33/03_1_image519.png"><img src="assets/img/co/t33/03_1_image519.png" alt="内部订单的结算 · 第 2 步：image519.png" loading="lazy" width="835" height="804"></a><figcaption><span class="n">画面 511</span><span class="src">image519.png · 835×804</span></figcaption></figure>
+<div class="note warn"><b class="t">踩坑提醒</b>无错误，运行已经完成</div>
+</li>
+</ol>
+<div class="steph" id="t34"><span class="no">任务 34</span><h3>显示内部订单的结算结果</h3><span class="tc2">4 画面 / 3 步</span></div>
+<div class="pathline" data-copy="会计 → 控制 → 成本中心会计 → 信息系统 → 成本中心会计的报表 → 计划/实际比较 → 成本中心：实际/计划/差异"><b>IMG 路径（后台菜单）</b>会计 → 控制 → 成本中心会计 → 信息系统 → 成本中心会计的报表 → 计划/实际比较 → 成本中心：实际/计划/差异</div>
+<ol class="oplist">
+<li>
+<p class="opcap">会计－控制－成本中心会计－信息系统－成本中心会计的报表－计划/实际比较－成本中心：实际/计划/差异</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t34/01_1_image520.png"><img src="assets/img/co/t34/01_1_image520.png" alt="显示内部订单的结算结果 · 第 1 步：会计－控制－成本中心会计－信息系统－成本中心会计的报表－计划/实际比较－成本中心：实际/计划/差异" loading="lazy" width="497" height="589"></a><figcaption><span class="n">画面 512</span><span class="src">image520.png · 497×589</span></figcaption></figure>
+</li>
+<li class="is-note">
+<figure class="shot"><a class="zoom" href="assets/img/co/t34/02_1_image521.png"><img src="assets/img/co/t34/02_1_image521.png" alt="显示内部订单的结算结果 · 第 2 步：image521.png" loading="lazy" width="1152" height="785"></a><figcaption><span class="n">画面 513</span><span class="src">image521.png · 1152×785</span></figcaption></figure><figure class="shot"><a class="zoom" href="assets/img/co/t34/02_2_image522.png"><img src="assets/img/co/t34/02_2_image522.png" alt="显示内部订单的结算结果 · 第 2 步：image522.png" loading="lazy" width="595" height="389"></a><figcaption><span class="n">画面 514</span><span class="src">image522.png · 595×389</span></figcaption></figure>
+</li>
+<li>
+<p class="opcap">点击各成本中心查看报表</p>
+<figure class="shot"><a class="zoom" href="assets/img/co/t34/03_1_image523.png"><img src="assets/img/co/t34/03_1_image523.png" alt="显示内部订单的结算结果 · 第 3 步：点击各成本中心查看报表" loading="lazy" width="1063" height="597"></a><figcaption><span class="n">画面 515</span><span class="src">image523.png · 1063×597</span></figcaption></figure>
+</li>
+</ol>
+<h2 id="sources">4. 关于截图与取值</h2>
+<div class="box warn"><b class="t">画面来自原教材文档</b>本模块的截图全部来自 <code>S4.docx</code> 中作者在真实系统里截取的中文界面画面（原始文件名 <code>imageNNN.png</code> 保留在每张图的图注里，可与 Word 原文逐张对照）。本站没有对这些画面做任何重绘或模拟。</div>
+<div class="box info"><b class="t">取值请以自系统为准</b>文档中的组织结构与主数据编号（公司代码 <code>C999</code>、公司名「颐宁机械有限公司」、工厂 <code>F999</code>、物料 <code>R999-100</code>/<code>T999-100</code>/<code>F999-100</code>、客户 <code>K001</code>/<code>K002</code> 等）都来自原作者的教材环境。照着手顺做时，<b>操作顺序与配置点可以照搬，具体编号/名称请换成你自己系统里的值</b>；遇到与文档不同的提示消息，先看「<a href="issues.html">排错与踩坑</a>」页里原文档记录的同类问题。</div>
+<div class="panel" style="margin-top:22px"><a href="fi.html">← 上一模块：FI 财务会计 FI（Financial Accounting）</a><br><a href="mm.html">下一模块：MM 物料管理 MM（Materials Management） →</a><br><a href="tasks.html">全部 222 个任务索引 →</a></div>
+</article></main>
+</div>
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA 中文实训站 — 全模块配置与操作手顺 · 实机画面</h5>
+  <p>内容依据同目录教材文档 <code>S4.docx</code>（425 页 · 6 大模块 · 222 个任务 · 1385 张实机截图）整理。全部页面可离线打开，无外部依赖。</p>
+  <div><h5>关于画面</h5><p>站内所有截图都是<b>原教材文档中的实机画面</b>（中文界面 SAP GUI），不是示意图、也不是模拟生成图；文件名保留原文档编号以便与 Word 原文对照。文档中的示例值（公司代码 <code>C999</code>、工厂 <code>F999</code>、物料 <code>R999-100</code> 等）属于原作者的教材环境，请以自己系统的组织结构与编号范围为准。</p></div></div>
+  <div class="cols">
+    <div><h5>模块</h5>
+      <a href="prep.html">准备 — 准备工作 — 登录系统与进入后台</a><br>
+      <a href="fi.html">FI — 财务会计 FI</a><br>
+      <a href="co.html">CO — 管理会计 CO</a><br>
+      <a href="mm.html">MM — 物料管理 MM</a><br>
+      <a href="pp.html">PP — 生产计划 PP</a><br>
+      <a href="sd.html">SD — 销售与分销 SD</a><br>    </div>
+    <div><h5>全站</h5>
+      <a href="prep.html">准备</a><br>
+      <a href="fi.html">FI</a><br>
+      <a href="co.html">CO</a><br>
+      <a href="mm.html">MM</a><br>
+      <a href="pp.html">PP</a><br>
+      <a href="sd.html">SD</a><br>
+      <a href="tcode.html">T-code</a><br>
+      <a href="issues.html">排错</a><br>
+      <a href="tasks.html">索引</a><br>
+      <a href="instructor.html">讲师</a><br>
+      <a href="worksheet.html">学员</a><br>
+      <a href="quiz.html">自测</a><br>    </div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/s4cn.js"></script>
+</body>
+</html>

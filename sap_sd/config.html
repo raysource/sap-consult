@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>配置手顺 · SAP SD 受注処理（Sales Order Processing）实战训练站</title>
+<meta name="description" content="SAP SD 受注処理の練習配置 C0〜C16：前提確認、伝票タイプ（VOV8）、明細カテゴリ（VOV7）、得意先勘定グループ（OVT0）、得意先グループ（OVS9）、SIS レポートビュー（Sales Summary/VC/2 の 4 Customizing）、納入日程行カテゴリ（VOV6）、明細カテゴリ決定（VOV4）、出荷プラントの自動提案（VD51/XD02/MM02）、パートナー決定、与力価格決定（OVKK/VK11）、在庫確認（OVZ2）、不完全性チェック（OVA2/V.02）、コピー管理（VTAA/VTFL/VTFA）、出荷・請求（VL01N/VF01/OBYC）。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/sd.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">SD</span><span class="txt">受注処理 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a class="active" href="config.html">配置手顺</a>
+      <a href="handson-1.html">①受注登録</a>
+      <a href="handson-2.html">②伝票変更</a>
+      <a href="handson-3.html">③情報照会</a>
+      <a href="handson-4.html">④出荷と請求</a>
+      <a href="handson-5.html">⑤ツールと故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 配置手顺</div>
+<main class="page"><article>
+
+<h1>配置手顺（C0〜C16）—— 練習配置</h1>
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。若是想换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 即可一键替换。</div>
+
+<div class="box info"><b class="t">この頁の使い方と方針</b>
+<b>動画が実演している Customizing は C1（<code>VOV8</code>）・C3（<code>OVT0</code>）・C4（<code>OVS9</code>）・C5（SIS レポートビュー）</b>です。それ以外は
+「受注処理が成り立つために必要な設定」として、動画の概念スライド（伝票データの 4 つの源泉）と対応させて並べました。<br>
+各 STEP は <b>目的 / IMG パス / T-code / 入力値 / 手順 / 確認（自系统） / つまずき / 練習課題</b> の固定構成です。
+<b>標準値は環境で異なるので暗記せず</b>、必ず「自系统での確認方法」で自分の環境の値を確かめてください。
+練習では <b><code>Z</code> で始まる自分のオブジェクト</b>を作る方針を推奨します（標準を壊さないため）。</div>
+<div class="toc">
+  <a href="#c0">C0 前提与环境确认（受注が成立する 5 条件）</a>
+  <a href="#c1">C1 伝票タイプ（Sales Document Types</a>
+  <a href="#c2">C2 明細カテゴリ（Item Categories）— 明</a>
+  <a href="#c3">C3 得意先勘定グループ（Customer Account</a>
+  <a href="#c4">C4 得意先グループ（Customer Groups）— </a>
+  <a href="#c5">C5 SIS レポートビュー（Sales Summary </a>
+  <a href="#c6">C6 納入日程行カテゴリ（Schedule Line Ca</a>
+  <a href="#c7">C7 伝票タイプ × 明細カテゴリの割当（許可テーブル）</a>
+  <a href="#c8">C8 明細カテゴリ決定（決定テーブル）— 受注処理の心臓</a>
+  <a href="#c9">C9 納入日程行カテゴリの決定</a>
+  <a href="#c10">C10 出荷プラントの自動提案（3 つの優先順位）</a>
+  <a href="#c11">C11 パートナー機能と決定（得意先マスタ側）</a>
+  <a href="#c12">C12 与力価格決定（条件技術の入口）</a>
+  <a href="#c13">C13 在庫確認（ATP）の 3 階層</a>
+  <a href="#c14">C14 不完全性チェック（Incompletion）—「不完</a>
+  <a href="#c15">C15 コピー管理（受注 → 出荷 → 請求）</a>
+  <a href="#c16">C16 出荷・請求・自動転記（受注の先）</a>
+  <a href="#done">配置完了チェックリスト</a>
+</div>
+<h2 id="prep">配置前的准备</h2>
+<p>配置に入る前に 3 つ確認します。<b>① カスタマイジング依頼（Transport Request）を指定できるか</b>、
+<b>② <code>SPRO</code> に入れる権限があるか</b>（照会だけでも学習は可能）、<b>③ 練習用の販売エリア・得意先・品目が使えるか</b>（C0）。</p>
+<div class="box warn"><b class="t">SD 特有の前提（これを最初に確認する）</b>
+① <b>伝票タイプを自分で作れるか</b>：<code>VOV8</code> でコピーすれば標準を壊さずに練習できます（推奨：<code>ZOR1</code>）。
+② <b>明細カテゴリの決定を触る勇気</b>：決定テーブル（<code>VOV4</code>）は<b>受注が動かなくなる箇所</b>です。1 行ずつ追加して検証してください。
+③ <b>SIS（<code>VC/2</code>）は統計ファイルに依存</b>します。C5 で情報ビューを足しても、統計が未構築なら数字は出ません（構造だけは見えます）。
+④ <b>動画は 2007 年頃の R/3</b>です。S/4HANA では Fiori アプリに置き換わった操作があります（<code>VA01</code> →「Sales Order」アプリ等）。<b>画面は違っても、決まり方（決定テーブル・優先順位）は同じ</b>です。</div>
+<div class="steph" id="c0"><span class="no">C0</span><h3>前提与环境确认（受注が成立する 5 条件）</h3><span class="tc">VA01・VA03・XD03・MM03・VK13・SU3</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>動画のデモを自分の環境で再現できるかを、最初に確認します。<b>受注は「得意先・品目・条件・組織」の 4 つが揃わないと 1 件も作れません</b>。ここを飛ばすと、以降の練習で「なぜか保存できない」で止まります。</dd>
+  <dt>IMG パス（環境によって呼称が異なる）</dt>
+  <dd>SPRO → 販売と流通（Sales and Distribution）／権限は <code>SU3</code> のプロファイルで確認。<b>動画の環境は SAP Training System / クライアント <code>800</code> / ユーザ <code>S000</code>・<code>tscm6-00</code></b> です（自システムの値に読み替えてください）。</dd>
+  <dt>T-code</dt>
+  <dd><code>VA01</code>（初期画面）・<code>VA03</code>（照会）・<code>XD03</code>（得意先）・<code>MM03</code>（品目）・<code>VK13</code>（条件レコード）・<code>SU3</code>（ユーザプロファイル）・<code>SE16N</code>（テーブル照会）</dd>
+</dl>
+<dl class="kv"><dt>入力値 / 確認対象</dt><dd><pre class="vals">販売組織 1000 / 販売チャネル 10 / 部門 00      （＝販売エリア。動画のデモ値）
+得意先     1000（Becker Berlin）または T-S62130（Teleko Textilien）
+品目       T-ATA30（明細カテゴリ TAN になること）/ T-ATA29
+受注タイプ OR（Standard Order）
+支払条件   ZB01（14 Days 3%, 30/2%）  インコタームズ FOB
+出荷プラント（品目マスタ 販売組織1 の値。動画では 1200）
+与力条件   PR00（および税 MWST）が受注日を含む有効期間で存在すること</pre></dd></dl>
+<ol class="steps">
+  <li><b>販売エリア</b>：<code>VA01</code> の初期画面で <code>1000</code>／<code>10</code>／<code>00</code> が F4 で選べること（選べない＝組織構造の割当未了）。</li>
+  <li><b>得意先</b>：<code>XD03</code> → 得意先 <code>1000</code> → <b>販売エリアビュー</b>があり、パートナー機能（<code>SP</code>／<code>BP</code>／<code>PY</code>／<code>SH</code>）と支払条件・インコタームズが入っていること。</li>
+  <li><b>品目</b>：<code>MM03</code> → 品目 <code>T-ATA30</code> → <b>販売組織 1</b>（出荷プラント・品目カテゴリグループ）、<b>販売組織 2</b>、<b>プラント在庫</b>ビューがあること。</li>
+  <li><b>与力条件</b>：<code>VK13</code> で <code>PR00</code>（価格）を照会。得意先×品目の組み合わせで有効な条件レコードがあること（<b>無いと Net value が 0 のままになります</b>）。</li>
+  <li><b>権限とユーザ設定</b>：<code>SU3</code> で自分のユーザ（動画では <code>tscm6-00</code>）の <b>住所・既定値（Defaults）・パラメータ（Parameters）</b>を確認。ここで受注の既定値を仕込んでおくと入力が減ります。</li>
+</ol>
+<div class="box info"><b class="t">確認（自系统での確認方法）</b>
+① <code>VA01</code> で <code>OR</code> ＋ 得意先 <code>1000</code> まで入れて Enter し、<b>概況画面（Create Standard Order: Overview）が開く</b>こと。<br>② 得意先が複数の販売エリアを持つ場合、動画と同じく「<b>Sales area for customer</b>」ダイアログが出ます（<code>09:02</code> 付近）。ここで選んだ販売エリアが以降のすべての基準になります。<br>③ 保存は<b>しない</b>で構いません（C0 は「入口が開くか」の確認だけ）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 得意先を入れても販売エリアが選べない → 得意先マスタにその販売エリアビューが無い（<code>XD03</code>）。<br>② 与力条件が無く Net value が <code>0.00</code> → 受注の問題ではなく条件レコードの問題（<code>VK13</code> で有効期間を確認）。<br>③ 動画では<b>PO 番号が必須</b>になっています（保存時に「Enter PO number」のエラーが出る場面があります）。自システムの必須項目は <code>V.02</code>（不完全な受注一覧）で確認するのが早道です。</div>
+<div class="task"><b class="t">練習課題</b>C0 の 5 項目を一覧にし、<b>自分の環境の実測値</b>（得意先番号・品目番号・販売エリア・出荷プラント・与力条件の有無）を書いてください。この一覧は練習⑤の故障切り分けで最初に見る資料になります。</div>
+<figure class="gui"><img src="assets/gui/config_s01_1.svg" alt="VA01 の初期画面。受注タイプ OR、販売組織 1000、流通チャネル 10、部門 00、得意先 1000 を入力し、PO 番号は未入力の状態。" loading="lazy"><figcaption><b class="t">VA01 の初期画面（受注が作れる環境かの入口確認：受注タイプ OR ／販売エリア 1000・10・00 ／得意先 1000）</b><span class="tx">VA01</span><span class="scr">Create Sales Order: Initial Screen</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> F4 で 1000／10／00 が選べないときは、販売組織→流通チャネル→部門の割当未了を疑う。受注側の問題ではない</li><li><b>2</b> 得意先は複数の販売エリアを持ち得る。Enter 後に「Sales area for customer」ダイアログが出たら 1000 / 10 / 00 を選ぶ</li></ol><p class="gui-tip">自システムでの確認：得意先 1000 が無ければ T-S62130（Teleko Textilien, Mainz）で読み替える。項目名は環境により異なる（S/4HANA では Fiori アプリに置き換わっている場合がある）。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s01_2.svg" alt="VK13 の条件レコード一覧。条件タイプ PR00 の有効期間 01.01.2007 から 31.12.2007、金額 2,299.00 EUR の 1 行。" loading="lazy"><figcaption><b class="t">VK13 で PR00 の条件レコードを照会（与力条件が無いと Net value が 0 のままになる）</b><span class="tx">VK13</span><span class="scr">Display Conditions</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 条件レコードが無い／期間外だと Net value は 0.00 のまま。受注の設定を疑う前にここを見る</li><li><b>2</b> 金額は環境により異なる。自分の環境では受注の Net value（動画は 22,990.00 EUR / 10 PC）から逆算して確認する</li></ol><p class="gui-tip">自システムでの確認：VK13 で PR00 → 得意先 1000 × 品目 T-ATA30。行が無ければ VA03 の条件画面で Net value 0.00 になる理由がここ。期間・金額・欄名は環境により異なる。</p></figure>
+
+<div class="steph" id="c1"><span class="no">C1</span><h3>伝票タイプ（Sales Document Types）— 動画の Customizing ①</h3><span class="tc">VOV8・SE16N（TVAK）</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>受注タイプは<b>受注処理の「性格」を決める 1 番の設定</b>です。動画（<code>51:35</code> 付近）では <code>VOV8</code> の詳細画面が実演され、出荷・請求まわりの項目（納入タイプ・納入ブロック・出荷条件・即時出荷・請求タイプ・請求ブロック）が示されます。<b>動画が見ているのは一覧（238 エントリ）と、その中の <code>CR</code>（Credit Memo Request）の詳細</b>です。<code>OR</code> の詳細は値が違うので、<b>自分の環境で <code>OR</code> の詳細を開いて読み替えてください</b>（所要量タイプ・ブロックの有無・請求タイプは伝票タイプごとに違います）。</dd>
+  <dt>IMG パス（環境によって呼称が異なる）</dt>
+  <dd>SPRO → 販売と流通 → 販売 → 販売伝票 → 販売伝票ヘッダ → <b>販売伝票タイプを定義</b>（呼称はリリースで異なる。SPRO の検索窓に「販売伝票タイプ」で探すのが確実）</dd>
+  <dt>T-code</dt>
+  <dd><code>VOV8</code>（伝票タイプの定義＝動画で実演）／<code>SE16N</code> でテーブル <code>TVAK</code>（伝票タイプ）・<code>TVAKT</code>（名称）を確認</dd>
+</dl>
+<dl class="kv"><dt>入力値 / 確認対象</dt><dd><pre class="vals">伝票タイプ：OR（Standard Order）  ← 標準。練習では ZOR1 を作る
+今回の練習で作るもの（推奨）：
+  伝票タイプ ZOR1   名称 Z受注（練習用）  ← OR をコピーして作成
+  作成時に確認する主な項目：
+    与力関連／明細カテゴリ決定／価格決定手順／与信・納入・請求ブロック
+    出荷：納入タイプ（LF）・出荷条件・即時出荷
+    請求：出荷関連請求タイプ・受注関連請求タイプ（例 G2 Credit Memo）・請求ブロック（例 08）
+    テキスト・出力決定手順・不完全性手順（→ C14）</pre></dd></dl>
+<ol class="steps">
+  <li><code>VOV8</code> を起動 → 一覧（動画では <b>238 エントリ</b>）で <code>OR</code> を確認 →「照会」→「コピー（<code>新しいエントリを作成</code>／Copy As）」で <b><code>ZOR1</code></b> を作る。</li>
+  <li><b>明細カテゴリ決定</b>・<b>価格決定手順</b>・<b>不完全性手順</b>・テキスト決定手順を、<code>OR</code> と同じ値で引き継がせる（練習では変えない）。</li>
+  <li><b>出荷ブロック</b>を確認：標準 <code>OR</code> は空。ここに値を入れると、その伝票タイプで作った受注が<b>最初から出荷ブロック付き</b>になります（練習②で実験）。</li>
+  <li><b>請求ブロック</b>を確認：動画の <code>VOV8</code> 詳細画面では <code>08 Check credit memo</code> のような値が出ています（<code>CR</code> の受注関連請求タイプ <code>G2</code> = Credit Memo）。<b>これは CR の値なので、OR では別の値になります</b>。</li>
+  <li><b>照会だけなら <code>VOV8</code> は表示モードでも安全</b>です。変更は必ずカスタマイジング依頼（Transport）に入れてください。</li>
+</ol>
+<div class="box info"><b class="t">確認（自系统での確認方法）</b>
+① <code>VOV8</code> の一覧に <code>OR</code> と作成した <code>ZOR1</code> が並んでいる。<br>② 詳細画面で<b>出荷・請求・与信・不完全性の各グループ</b>の値を読み上げられること（動画と同じ項目を指せること）。<br>③ <code>SE16N</code> で <code>TVAK</code> を見て、同じ伝票タイプが 1 行になっていること（画面とテーブルが一致することを確認）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>標準 <code>OR</code> を直接変更してしまう</b> → 以降の標準動作が変わります。<b>必ず Z コピー</b>。<br>② 伝票タイプを変えたのに受注の挙動が変わらない → 既存受注は<b>作ったときの設定を保持</b>します（新規受注で確認）。<br>③ 出荷タイプ・請求タイプの<b>決定は伝票タイプ側と品目側の両方</b>が絡みます（出荷タイプは出荷タイプ決定テーブル）。「設定したのに反映されない」は決定テーブルを確認。</div>
+<div class="task"><b class="t">練習課題</b><code>VOV8</code> で <code>OR</code> の詳細を開き、<b>出荷／請求グループの項目名を 6 つ書き出して</b>、それぞれ「受注の何を決めるか」を 1 行で説明してください。</div>
+<figure class="gui"><img src="assets/gui/config_s02_1.svg" alt="VOV8 の販売伝票タイプ一覧。OR（Standard Order）、ZOR1、CR、RE、DR が並び、OR の行が選択されている。" loading="lazy"><figcaption><b class="t">VOV8 の伝票タイプ一覧（OR から ZOR1 をコピーして練習する）</b><span class="tx">VOV8</span><span class="scr">Sales Document Types: Overview</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> OR の行で「照会」→「新しいエントリを作成（コピー）」が練習の起点。標準 OR を直接変えると標準業務の挙動が変わってしまう</li><li><b>2</b> 一覧に出るのはキーと名称だけ。出荷・請求・価格の実値は詳細画面に入ってから読む（同じ VOV8 の中）</li></ol><p class="gui-tip">自システムでの確認：VOV8 の一覧を SE16N の TVAK（名称は TVAKT）と突き合わせると、画面とテーブルが 1 対 1 で対応することが分かる。エントリ数は環境により異なる（動画は 238）。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s02_2.svg" alt="VOV8 の伝票タイプ OR の詳細画面。出荷タイプ LF、受注関連請求タイプ G2、請求ブロック 08 Check credit memo を表示。" loading="lazy"><figcaption><b class="t">VOV8 の詳細画面（伝票タイプ OR）：出荷・請求まわりの項目を読むのがこの節の目的</b><span class="tx">VOV8</span><span class="scr">Sales Document Types: Details</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> Delivery Type LF は「伝票タイプ側の既定」。実際の出荷タイプは出荷タイプ決定テーブルで上書きされる（設定が効かない＝決定テーブルを疑う）</li><li><b>2</b> 請求ブロック 08 と受注関連請求タイプ G2（Credit Memo）はセット。出荷関連請求タイプ（例 F2）とは別物なので混同しない</li></ol><p class="gui-tip">自システムでの確認：出荷条件・即時出荷・請求タイプ・不完全性手順の欄もあわせて指せるようにする。標準値は環境・リリースで異なるので暗記しない。</p></figure>
+
+<div class="steph" id="c2"><span class="no">C2</span><h3>明細カテゴリ（Item Categories）— 明細の性格を決める</h3><span class="tc">VOV7・SE16N（TVAP・TSTL）</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>明細カテゴリは<b>「その明細が何をするか」</b>を決めます。動画のデモでは明細カテゴリは <code>TAN</code>（Standard Item）です。ここが変わると、所要量が作られるか（受注在庫になるか）、在庫確認（ATP）をするか、価格を探すか、が変わります。</dd>
+  <dt>IMG パス（環境によって呼称が異なる）</dt>
+  <dd>SPRO → 販売と流通 → 販売 → 販売伝票 → 販売伝票明細 → <b>販売伝票明細カテゴリを定義</b></dd>
+  <dt>T-code</dt>
+  <dd><code>VOV7</code>／<code>SE16N</code>（<code>TVAP</code>＝明細カテゴリ、<code>TVAPT</code>＝名称）</dd>
+</dl>
+<dl class="kv"><dt>入力値 / 確認対象</dt><dd><pre class="vals">明細カテゴリ：TAN（Standard Item）  ← ドイツ語 „Standard“ 由来。動画のデモの値
+確認する主な項目：
+  一般：明細カテゴリグループ／高レベル明細カテゴリ（構造）
+  与力：与力関連（Pricing relevant）
+  所要量：所要量タイプ（TAN は空＝所要量を作らない）
+  在庫：在庫管理（在庫を持つか）
+  請求：請求関連、請求タイプの決定
+  納入日程：納入日程行カテゴリの決定（→ VOV5）</pre></dd></dl>
+<ol class="steps">
+  <li><code>VOV7</code> で <code>TAN</code> の詳細を開き、<b>「所要量タイプ」が空</b>であることを自分で確認する（＝<code>TAN</code> は在庫を持たない標準明細）。</li>
+  <li>同じ画面で <b>「与力関連」が ON</b>であることを確認（＝与力価格が決定される）。</li>
+  <li>明細カテゴリの一覧で <code>TAE</code>／<code>TAB</code>（見積・照会など）や <code>TANN</code> などの違いを見て、<b>受注（<code>TAN</code>）と見積の明細カテゴリが別物</b>であることを確認。</li>
+  <li>練習用を作る場合は <code>ZTAN</code>（<code>TAN</code> のコピー）を作り、以降の決定テーブルは <code>ZTAN</code> で試す。</li>
+</ol>
+<div class="box info"><b class="t">確認（自系统での確認方法）</b>
+① <code>VOV7</code> で <code>TAN</code> の「所要量タイプ」が空／「与力関連」が ON であること。<br>② <code>VA03</code> で動画と同じ受注（明細カテゴリ <code>TAN</code>、品目 <code>T-ATA30</code>）を開き、<b>画面の明細カテゴリと設定画面が一致</b>すること。<br>③ <code>MD04</code> で <code>T-ATA30</code> を見て<b>所要量が作られていない</b>こと（＝<code>TAN</code> は所要量作成をしない）を確認。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 「受注したのに MRP で何も起きない」→ <b><code>TAN</code> では正常</b>です。受注在庫・所要量は戦略グループと所要量クラスを持つ品目（→ <code>../sapmto/</code>）の話。<br>② 明細カテゴリを変えると<b>既存の納入日程行・請求関連の挙動も変わる</b>ため、後続伝票がある受注では変更しない。<br>③ <code>TAN</code> と <code>TAE</code>（見積）を混同しない。<b>照会・見積・受注で明細カテゴリが違うのは正常</b>です。</div>
+<div class="task"><b class="t">練習課題</b><code>VOV7</code> で <code>TAN</code>／<code>TAE</code>／<code>TAB</code> の 3 つを比較し、<b>所要量タイプ・与力関連・在庫管理</b>の 3 項目の違いを表にしてください。</div>
+<figure class="gui"><img src="assets/gui/config_s03_1.svg" alt="VOV7 の明細カテゴリ TAN の詳細画面。所要量タイプは空、与力関連は ON（Yes）と表示されている。" loading="lazy"><figcaption><b class="t">VOV7 の明細カテゴリ TAN の詳細（所要量タイプが空／与力関連が ON を確認する）</b><span class="tx">VOV7</span><span class="scr">Item Categories: Details</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 所要量タイプが空＝所要量を作らない。だから TAN の受注は MD04 に何も出ない（故障ではなく仕様）</li><li><b>2</b> 与力関連（Pricing）が OFF だと Net value が 0.00 のままになる。受注明細の金額が出ないときの最初の確認点</li></ol><p class="gui-tip">自システムでの確認：VA03 で動画と同じ受注（品目 T-ATA30、明細カテゴリ TAN）を開き、画面の明細カテゴリと VOV7 の設定が一致することを見る。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s03_2.svg" alt="明細カテゴリ TAN・TAE・TAB の比較表。所要量タイプは空、与力関連は ON、説明は Standard item と見積・照会用。" loading="lazy"><figcaption><b class="t">VOV7 で TAN と見積・照会用カテゴリを比較（所要量タイプ・与力関連・在庫管理の違いを整理）</b><span class="tx">VOV7</span><span class="scr">Item Categories: Comparison</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 受注と見積・照会で明細カテゴリが別物なのは正常。所要量タイプが入るカテゴリだけが在庫確認・所要量作成の対象</li></ol><p class="gui-tip">自システムでの確認：比較は VOV7 の詳細と SE16N の TVAP・TVAPT で行う。どのカテゴリがどの値かは自分の環境で必ず実測する。</p></figure>
+
+<div class="steph" id="c3"><span class="no">C3</span><h3>得意先勘定グループ（Customer Account Groups）— 動画の Customizing ②</h3><span class="tc">OVT0・XD02</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>動画（<code>52:54</code>〜<code>54:09</code>）は <code>OVT0</code> で<b>得意先勘定グループ</b>の詳細画面を実演します。勘定グループは<b>得意先の番号範囲・項目ステータス（必須/表示のみ）・パートナー決定手順・出力決定手順</b>を決める、得意先マスタの「型」です。動画では <code>0001 Sold-to party</code>／<code>0002 Goods recipient</code>／<code>0003 Payer</code>／<code>0004 Bill-to party</code> が一覧で示されます。</dd>
+  <dt>IMG パス（環境によって呼称が異なる）</dt>
+  <dd>SPRO → 財務会計／販売と流通 → 基本機能 → <b>取引先 → 得意先 → 得意先勘定グループを定義</b>（<code>OVT0</code>）</dd>
+  <dt>T-code</dt>
+  <dd><code>OVT0</code>（動画で実演）／<code>XD02</code>（得意先マスタで使用中の勘定グループを確認）</dd>
+</dl>
+<dl class="kv"><dt>入力値 / 確認対象</dt><dd><pre class="vals">動画で確認できる勘定グループ（標準）：
+  0001 Sold-to party     0002 Goods recipient    0003 Payer
+  0004 Bill-to party     0005 Prospective customer
+  0006 Competitor        0007 Sales partner
+勘定グループ 0001 の詳細（動画の画面）：
+  番号範囲 01 ／ One-time acct（未チェック）
+  項目ステータス：General data／Company code data／&lt;b&gt;Sales data&lt;/b&gt;
+  （動画では Competitors／Sales partner／Prospect／Default SP／Consumer の各チェックが外れている）</pre></dd></dl>
+<ol class="steps">
+  <li><code>OVT0</code> を起動 → 一覧で <code>0001</code>〜<code>0007</code> を確認（動画と同じ並び）。</li>
+  <li>詳細画面で <b>「Expand field status」</b>を押し、<b>項目ステータス（必須／任意／表示のみ）</b>を確認する（＝どの項目が受注登録時に必須になるかの源流）。</li>
+  <li><b>番号範囲</b>を確認（動画は <code>01</code>）。<code>XD01</code> で得意先を新規作成するとき、この番号範囲が採番に使われます。</li>
+  <li><b>パートナー決定手順</b>・<b>出力決定手順</b>の欄を確認（動画の画面にも <code>PartnDet.Proc.</code>／<code>OutputDet.Proc.</code> が出ています）。受注のパートナーがどう決まるかはここが起点。</li>
+  <li><code>XD02</code> で得意先 <code>1000</code> を開き、上部の<b>勘定グループ</b>が何になっているかを確認（この得意先がどの「型」かが分かります）。</li>
+</ol>
+<div class="box info"><b class="t">確認（自系统での確認方法）</b>
+① <code>OVT0</code> の一覧に <code>0001</code>〜<code>0007</code> があること。<br>② 得意先 <code>1000</code> の勘定グループが分かること（<code>XD02</code>）。<br>③ 「勘定グループを変えると何が変わるか」を 3 つ言えること（<b>番号範囲・項目ステータス・パートナー/出力決定手順</b>）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>使用中の得意先の勘定グループを変える</b> → 番号範囲・項目ステータスが変わり、既存データと矛盾することがあります（業務では原則変更しない）。<br>② 「受注で住所が必須にならない」→ 勘定グループの項目ステータスが原因（<code>OVT0</code>）。<b>受注側の設定だと思い込むと迷子になります</b>。</div>
+<div class="task"><b class="t">練習課題</b><code>OVT0</code> で <code>0001</code> と <code>0002</code> の項目ステータスを比べ、<b>違いが業務上何を意味するか</b>を 3 行で書いてください。</div>
+<figure class="gui"><img src="assets/gui/config_s04_1.svg" alt="OVT0 の得意先勘定グループ一覧。0001 Sold-to party から 0007 Sales partner までの 7 行。" loading="lazy"><figcaption><b class="t">OVT0 の勘定グループ一覧（0001 Sold-to party 〜 0007 Sales partner）</b><span class="tx">OVT0</span><span class="scr">Customer Account Groups: Overview</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 0001 は受注の「得意先」用。0002〜0004 は出荷先・支払元・請求先で、受注の 4 役割（SP/SH/PY/BP）と対応する</li><li><b>2</b> OVS9 の得意先グループとは別物。名前が似ているが、受注の挙動を変えるのがこちら（勘定グループ）</li></ol><p class="gui-tip">自システムでの確認：件数・名称は環境により異なる。得意先 1000 がどの勘定グループかは XD02 のヘッダで確認する。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s04_2.svg" alt="OVT0 の勘定グループ 0001 の詳細画面。番号範囲 01、項目ステータス、パートナー決定手順・出力決定手順の欄を表示。" loading="lazy"><figcaption><b class="t">OVT0 の勘定グループ 0001（Sold-to party）の詳細：番号範囲・項目ステータス・パートナー決定手順</b><span class="tx">OVT0</span><span class="scr">Customer Account Groups: Details</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 番号範囲 01 は XD01 で得意先を新規作成するときの採番。使っている得意先がある状態で変えると既存番号と矛盾する</li><li><b>2</b> 受注のパートナー（SP／SH／BP／PY）が自動で決まる源流。ここが空だと受注でパートナーが出ない</li></ol><p class="gui-tip">自システムでの確認：0001 と 0002 の項目ステータスを比べる。「受注で住所が必須にならない」はこの設定が原因で、受注側の設定ではない。欄名は環境により異なる。</p></figure>
+
+<div class="steph" id="c4"><span class="no">C4</span><h3>得意先グループ（Customer Groups）— 動画の Customizing ③</h3><span class="tc">OVS9・XD02</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>動画（<code>52:22</code> 付近）は <code>OVS9</code> で<b>得意先グループ</b>の一覧（47 エントリ）を実演します。得意先グループは得意先の<b>分類（統計・分析のキー）</b>で、受注処理そのものを制御する設定ではありません。「制御する設定」と「分析用の属性」を区別できることが、この節の目的です。</dd>
+  <dt>IMG パス（環境によって呼称が異なる）</dt>
+  <dd>SPRO → 販売と流通 → 販売 → マスタデータ → 得意先 → <b>得意先グループを定義</b></dd>
+  <dt>T-code</dt>
+  <dd><code>OVS9</code>（動画で実演）／<code>XD02</code> の販売エリアデータ → 販売タブ（得意先の得意先グループ欄）</dd>
+</dl>
+<dl class="kv"><dt>入力値 / 確認対象</dt><dd><pre class="vals">動画で確認できる得意先グループ：
+  01 Industrial customers      02 Trading companies
+  03 Development partners      04 Wholly-owned subsid.
+  05 Part-owned subsidi.       06 Competition
+  07 Public sector             10 Private customer
+  20 CP Mass                    （ほか、計 47 エントリ）</pre></dd></dl>
+<ol class="steps">
+  <li><code>OVS9</code> を起動し、一覧が動画と同じ並び（<code>01</code>〜）であることを確認する。</li>
+  <li><code>XD02</code> → 得意先 <code>1000</code> → <b>販売エリアデータ → 販売タブ</b>で「得意先グループ」欄を確認（動画 <code>51:22</code> 付近の画面にも出ています）。</li>
+  <li>自分の環境で使う予定のグループ（例 <code>01</code> Industrial customers）を 1 つメモする。</li>
+</ol>
+<div class="box info"><b class="t">確認（自系统での確認方法）</b>
+① <code>OVS9</code> の一覧が読めること。<br>② <code>XD02</code> で得意先の得意先グループが確認できること。<br>③ <b>得意先グループは「分析・統計の分類」であり、与力価格や明細カテゴリを直接決める設定ではない</b>と言えること。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <code>OVS9</code> が「得意先グループ（Customer groups）」で、<b>勘定グループ（Account groups, <code>OVT0</code>）とは別物</b>です。名前が似ているので混同注意。<br>② 得意先グループを変えただけで受注の挙動（ブロック・価格）が変わると思い込む → 変わりません（分析属性です）。</div>
+<div class="task"><b class="t">練習課題</b>「得意先グループ」と「得意先勘定グループ」の違いを、<b>① 決めるもの ② T-code ③ 変更したときに起こること</b>の 3 観点で表にしてください。</div>
+<figure class="gui"><img src="assets/gui/config_s05_1.svg" alt="OVS9 の得意先グループ一覧。01 Industrial customers から 20 CP Mass までの 9 行。" loading="lazy"><figcaption><b class="t">OVS9 の得意先グループ一覧（動画と同じ 01〜20 の並び、動画は 47 エントリ）</b><span class="tx">OVS9</span><span class="scr">Customer Groups: Overview</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 統計・分析の分類であり、与力価格や明細カテゴリを決める設定ではない。混同すると探す場所を間違える</li><li><b>2</b> ここにグループを足しても、得意先マスタ（XD02 販売エリアデータ → 販売タブ）に値が入るまで受注には影響しない</li></ol><p class="gui-tip">自システムでの確認：エントリ数は環境により異なる。得意先 1000 の得意先グループは XD02 の販売タブで確認する。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s05_2.svg" alt="XD02 の得意先 1000 の販売エリアデータ（販売タブ）。得意先グループ 01、通貨 EUR などを表示。" loading="lazy"><figcaption><b class="t">XD02 の得意先 1000「販売エリアデータ → 販売タブ」（得意先グループ欄はここで確認できる）</b><span class="tx">XD02</span><span class="scr">Change Customer 1000: Sales Area Data</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 得意先グループは得意先マスタ側の属性。受注画面で見えても、変えただけでブロックや価格は動かない</li><li><b>2</b> 勘定グループはこの画面ではなくヘッダ（XD02 の初期画面）で見る。0001（得意先）と 0002（出荷先）は別物</li></ol><p class="gui-tip">自システムでの確認：タブ名・欄名はリリースで異なる。得意先グループが空でも受注は作れる（分析に使われていないだけ）。</p></figure>
+
+<div class="steph" id="c5"><span class="no">C5</span><h3>SIS レポートビュー（Sales Summary <code>VC/2</code> の画面設計）— 動画の Customizing ④</h3><span class="tc">SPRO（4 画面）・VC/2</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>動画（<code>27:06</code>〜<code>28:29</code>）が最も長く割いている Customizing です。<b><code>VC/2</code>（Sales Summary）に何が出るかは、ここで決まります</b>。受注処理の「ツールとヘルプ」の後半を担う内容で、動画では 4 つの表が実演されます。</dd>
+  <dt>IMG パス（環境によって呼称が異なる）</dt>
+  <dd>SPRO → 販売と流通 → 販売サポート（CAS）／情報システム（SIS）→ <b>リスト（Lists）</b> → レポートビュー関連の 4 アクティビティ</dd>
+  <dt>T-code</dt>
+  <dd><code>SPRO</code>（IMG）／<code>VC/2</code>（Sales Summary 本体）／<code>SM30</code>・<code>SM31</code>（同じ表を直接保守する場合）</dd>
+</dl>
+<dl class="kv"><dt>入力値 / 確認対象</dt><dd><pre class="vals">動画の 4 画面（この順に実演されます）：
+
+① Maintain Report Views（情報ビューの定義）
+   001 Complete information（Standard＝チェック済み / Form SD-SALES-SUMMARY）
+   002 Address/partner info   003 Statistical info   005 Telesales
+   100 Credit Information     101 Last SD Documents 102 Backorders
+   103 Quick Info             900 New Internet cust.
+
+② Maintain Views for an Evaluation（ビューへ情報ブロックを順番つきで割当）
+   例：Info view 001 Complete information
+       Seq 001 Address / 002 Customer Classific. / 003 Performance Measures /
+           004 Contact persons / 005 Sales Order Info / 006 Customer Pricing /
+           007 Cust Delivery Info / 008 Partial Deliv. Info / 009 Cust Transport Info …
+      （動画では 51 ブロック。詳細画面で Form / Window / Element まで持ちます）
+
+③ Maintain the Report Views for a User（ユーザ別の既定ビュー）
+   例：ユーザ BAPMS → ビュー ZPD（Precision Drilling V）
+       ユーザ WF-SD-2 → ビュー 900（New Internet cust.）
+
+④ Last Documents for a Customer（既存伝票の統計更新）
+   文書カテゴリごとの「Statistics update desired」：
+     1 Sales activities(CAS) 2 External transaction 3 Invoice list 4 Credit memo list
+     5 Intercompany invoice  6 Intercompany credit me. A Inquiry B Quotation(チェック)
+     C Order(チェック) D Item proposal …（動画では &lt;b&gt;B Quotation・C Order・Delivery・Credit memo request&lt;/b&gt; にチェックが入っています）</pre></dd></dl>
+<ol class="steps">
+  <li><code>SPRO</code> →「SAP Reference IMG」→ 販売と流通（Sales and Distribution）配下で<b>「リスト（Lists）」</b>を開き、動画と同じ 4 つのアクティビティを見つける（<b>Set Updating Of Partner Index／Item Index／Define Selection Criteria／Define List Layout Of Expected Customer Price</b> が並ぶ画面が動画に出ます）。</li>
+  <li><b>① Maintain Report Views</b>：情報ビューの一覧を確認。動画では <code>001</code> にだけ Standard チェックが入っています（＝既定で完全情報が出る理由）。</li>
+  <li><b>② Maintain Views for an Evaluation</b>：行を選んで詳細を開き、<b>Form / Window / Element</b>（例 Form <code>SD-SALES-SUMMARY</code> / Window <code>MAIN</code> / Element <code>LIST1_001</code>）まで確認する。</li>
+  <li><b>③ Maintain the Report Views for a User</b>：自分のユーザが入っていなければ、<b>動画と同じように 1 行追加して既定ビューを割り当てる</b>（練習では <code>001</code> か <code>101</code> を推奨）。</li>
+  <li><b>④ Last Documents for a Customer</b>：文書カテゴリ <b><code>C Order</code></b> の Statistics update が ON であることを確認（OFF だと <code>VC/2</code> の Last SD documents に受注が出ません）。</li>
+  <li><code>VC/2</code> を起動し、得意先 <code>1000</code> を入れて「<b>View</b>」ボタンで<b>動画と同じ情報ビュー一覧（<code>001</code>〜<code>900</code>）</b>が出ることを確認する。</li>
+</ol>
+<div class="box info"><b class="t">確認（自系统での確認方法）</b>
+① <code>VC/2</code> の「View」で、<code>001</code>／<code>002</code>／<code>003</code>／<code>005</code>／<code>100</code>／<code>101</code>／<code>102</code>／<code>103</code>／<code>900</code> が並ぶこと（動画と同じ）。<br>② ビュー <code>101</code>（Last SD Documents）を選ぶと、<b>受注と請求書の一覧（番号・日付・正味価額・ステータス）</b>が出ること。<br>③ 自分を「Report Views for a User」に割り当てた場合、<code>VC/2</code> の初期表示がそのビューになること。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>情報ビューが 1 つも出ない／少ない</b> → <code>001</code> の定義が無い、またはユーザ別割当がおかしい（①②③のどれか）。<br>② <b>Last SD documents が空</b> → 「Last Documents for a Customer」で <code>C Order</code> の統計更新が OFF、またはその得意先に伝票が無い。<br>③ SIS のフレキシブル分析は<b>統計ファイルの初期構築</b>が必要な環境があります。動画の環境（IDES/教育用）では既に構築済みなので、疑うのは最後にしてください。<br>④ 動画の概念スライドに出てくる得意先 <code>5264</code>（FA IDES, Walldorf）は<b>スライド用の例</b>です。実演は得意先 <code>1000</code> です。</div>
+<div class="task"><b class="t">練習課題</b><code>VC/2</code> を得意先 <code>1000</code> ・ビュー <code>001</code> とビュー <code>101</code> で表示し、<b>出てくる情報ブロックの違いを一覧</b>にしてください。そのうえで「③ Report Views for a User に行を足すと何が変わるか」を予想してから実際に試してください。</div>
+<figure class="gui"><img src="assets/gui/config_s06_1.svg" alt="SIS のレポートビュー一覧。001 Complete information から 900 New Internet cust. までの 9 件で、001 に Standard フラグが立っている。" loading="lazy"><figcaption><b class="t">① Maintain Report Views：情報ビュー 001〜900 の一覧（Standard は 001 のみ）</b><span class="tx">SPRO</span><span class="scr">Maintain Report Views</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 001 の Standard チェックが外れると VC/2 の既定ビューが変わる。動画では 001 にだけ入っている</li><li><b>2</b> Form SD-SALES-SUMMARY は「② Maintain Views for an Evaluation」の詳細で確認する。VC/2 のレイアウトはここに紐づく</li></ol><p class="gui-tip">自システムでの確認：SPRO の「リスト（Lists）」配下で 4 つのアクティビティ（① Maintain Report Views ② Maintain Views for an Evaluation ③ Maintain the Report Views for a User ④ Last Documents for a Customer）を探す。画面名は環境により異なる。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s06_2.svg" alt="VC/2 の情報ビュー 101（Last SD Documents）の一覧。受注 11076〜10765 と請求書 90035240〜90023097 が並ぶ。" loading="lazy"><figcaption><b class="t">VC/2「Last SD Documents」（情報ビュー 101）：受注と請求書が並ぶ</b><span class="tx">VC/2</span><span class="scr">Last SD Documents</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 文書カテゴリ C Order の統計更新が OFF だと、ここに受注が並ばない（→ ④ Last Documents for a Customer）</li><li><b>2</b> 番号は動画と同じ得意先 1000 の例。概念スライドの得意先 5264（FA IDES, Walldorf）は例示なので混同しない</li></ol><p class="gui-tip">自システムでの確認：VC/2 で得意先 1000 を入れ「View」を押すと 001／002／003／005／100／101／102／103／900 が並ぶ。統計が未構築の環境では数字が出ない（構造だけは見える）。</p></figure>
+
+<div class="steph" id="c6"><span class="no">C6</span><h3>納入日程行カテゴリ（Schedule Line Categories）</h3><span class="tc">VOV6</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>納入日程行（Schedule line）は<b>「いつ、いくつ納入するか」</b>を持ち、<b>所要量タイプと在庫確認（ATP）</b>がここに付きます。「受注したのに在庫確認が走らない／所要量が出ない」は、ほとんどの場合この設定です。</dd>
+  <dt>IMG パス（環境によって呼称が異なる）</dt>
+  <dd>SPRO → 販売と流通 → 販売 → 販売伝票 → 販売伝票明細 → <b>納入日程行カテゴリを定義</b></dd>
+  <dt>T-code</dt>
+  <dd><code>VOV6</code>／<code>SE16N</code>（<code>TVEP</code>＝納入日程行カテゴリ）／<code>VA03</code>（明細 → 納入日程行）</dd>
+</dl>
+<dl class="kv"><dt>入力値 / 確認対象</dt><dd><pre class="vals">納入日程行カテゴリの例（環境により異なる。動画のデモは 明細 TAN の標準）：
+  項目：所要量タイプ（Requirement type）／在庫確認（Availability check）／
+        納入日付タイプ（Delivery date type）／納入数量提案／与力関連 など
+確認の手順：
+  1) VA03 で受注を開く → 明細 → 納入日程行 → カテゴリを読む
+  2) VOV6 でそのカテゴリを開き、所要量タイプと在庫確認を読む
+  3) 品目マスタ（MM03 → MRP3）の&lt;b&gt;戦略グループ&lt;/b&gt;と突き合わせる</pre></dd></dl>
+<ol class="steps">
+  <li><code>VA03</code> で動画と同じ受注を開き、明細の<b>納入日程行</b>を展開して<b>カテゴリ</b>を確認する（例：明細 <code>TAN</code> に対する標準の納入日程行カテゴリ）。</li>
+  <li><code>VOV6</code> でそのカテゴリを開き、<b>所要量タイプ</b>と<b>在庫確認</b>の値を確認する。</li>
+  <li><b>品目マスタ（<code>MM03</code> → MRP3）</b>で <b>戦略グループ</b>を確認し、納入日程行カテゴリの所要量タイプと<b>整合</b>しているかを見る。</li>
+  <li>在庫確認の 3 階層（<b>伝票タイプ → 納入日程行カテゴリ → 品目マスタ</b>）を、<code>OVZ2</code>（伝票タイプ側）と <code>MM03</code> で突き合わせる（詳細は C13）。</li>
+</ol>
+<div class="box info"><b class="t">確認（自系统での確認方法）</b>
+① <code>VA03</code> の納入日程行カテゴリが読めること。<br>② そのカテゴリの<b>所要量タイプ</b>と、品目マスタ MRP3 の<b>戦略グループ</b>が対応して説明できること。<br>③ <code>MD04</code> で、<b>所要量タイプが空の場合は何も出ない</b>ことを確認（<code>TAN</code> の標準挙動）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>標準値は環境・リリースで異なります</b>（動画のデモは 2007 年頃の R/3）。<b>暗記せず、<code>VA03</code> と <code>VOV6</code> で確認する習慣</b>を付けてください。<br>② 納入日程行カテゴリを変えると<b>所要量・ATP・納入日の決まり方が同時に変わります</b>。1 項目ずつ変えて差分を見る。</div>
+<div class="task"><b class="t">練習課題</b>受注 1 件について「明細カテゴリ → 納入日程行カテゴリ → 所要量タイプ → 品目マスタの戦略グループ」を 1 本の線で書き出してください。</div>
+<figure class="gui"><img src="assets/gui/config_s07_1.svg" alt="VA03 の受注明細 10 の納入日程行一覧。納入日程行カテゴリ CP、日付 09.06.2007、数量 10。" loading="lazy"><figcaption><b class="t">VA03 で受注を開き、明細 10 の納入日程行を展開してカテゴリを読む</b><span class="tx">VA03</span><span class="scr">Display Sales Order: Overview</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 納入日程行カテゴリ CP は「在庫確認（ATP）＋所要量転送」が有効な標準カテゴリ。ここが空／別カテゴリだと MD04 に所要量が出ない</li><li><b>2</b> 日付は納入日程行の日付。受注の Req.deliv.date 09.06.2007 がここに落ちる</li></ol><p class="gui-tip">自システムでの確認：VA03 → 明細 → 納入日程行を表示し、Sched.line cat. の列を読む（表示方法と列名は環境により異なる）。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s07_2.svg" alt="VOV6 の納入日程行カテゴリ CP の詳細画面。移動タイプ 601、所要量タイプ KE、在庫確認が有効。" loading="lazy"><figcaption><b class="t">VOV6 で納入日程行カテゴリの中身（所要量タイプ・在庫確認）を読む</b><span class="tx">VOV6</span><span class="scr">Change View &quot;Schedule line categories&quot;: Details</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 所要量タイプ（Requirement type）が入っているから品目所要量が MRP に渡る。空だと何も出ない（エラーではなく仕様）</li><li><b>2</b> 在庫確認は 伝票タイプ → 納入日程行カテゴリ → 品目マスタ の 3 階層。上位が下位を上書きする（C13）</li></ol><p class="gui-tip">自システムでの確認：VOV6 で自分の環境のカテゴリを開く。移動タイプ 601 は「受注出庫」を示すが、値は環境により異なる。</p></figure>
+
+<div class="steph" id="c7"><span class="no">C7</span><h3>伝票タイプ × 明細カテゴリの割当（許可テーブル）</h3><span class="tc">VOV4</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd><b>明細カテゴリ決定の前段</b>です。伝票タイプごとに「使ってよい明細カテゴリ」を許可します。ここに無いカテゴリは<b>受注に投入できません</b>（画面には入るが、Enter でエラーや別カテゴリに変わる）。</dd>
+  <dt>IMG パス（環境によって呼称が異なる）</dt>
+  <dd>SPRO → 販売と流通 → 販売 → 販売伝票 → 販売伝票明細 → <b>伝票タイプごとに明細カテゴリを割当</b></dd>
+  <dt>T-code</dt>
+  <dd><code>VOV4</code>（割当と決定の両方がある。練習では「割当」側）／<code>SE16N</code>（<code>TVAK</code>・<code>TVAP</code> と割当の関係）</dd>
+</dl>
+<dl class="kv"><dt>入力値 / 確認対象</dt><dd><pre class="vals">例（動画のデモに倣う）：
+  伝票タイプ OR に許可する明細カテゴリ：TAN（標準）／TAX 系（無償）／TANN ほか
+  練習で作る場合：ZOR1 → ZTAN を追加し、OR の標準は変えない
+注意：品目使用目的（Usage）や高レベル明細カテゴリの組み合わせで
+      「使う／使わない」が更に分かれる場合があります（返品・無償など）</pre></dd></dl>
+<ol class="steps">
+  <li><code>VOV4</code> の該当ビューで、伝票タイプ <code>OR</code> に許可されている明細カテゴリの一覧を確認する。</li>
+  <li><b>明細カテゴリを 1 つ追加して試す</b>（例：練習用に <code>ZTAN</code> を作り、<code>ZOR1</code> に割り当てる）→ <code>VA01</code> で <code>ZOR1</code> を使い、品目を入れて<b>明細カテゴリが <code>ZTAN</code> になる</b>ことを確認。</li>
+  <li>逆に、許可していない明細カテゴリを指定しようとしたときの<b>挙動（エラー／代替）を記録する</b>（故障対照表の材料になります）。</li>
+</ol>
+<div class="box info"><b class="t">確認（自系统での確認方法）</b>
+① <code>OR</code>（または <code>ZOR1</code>）で <code>TAN</code> が使えること。<br>② 追加したカテゴリが新規受注で実際に使われること（<code>VA01</code> → 明細詳細で確認）。<br>③ 「割当（許可）」と「決定（自動でどれになるか）」は<b>別の仕組み</b>だと説明できること（決定は C8）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>割当だけ足して決定テーブルを足し忘れる</b> → 自動では選ばれず、手で入れてもエラーになることがあります（C8 とセットで）。<br>② 標準の <code>OR</code> の割当を削ると、既存の標準業務が止まります。<b>Z 伝票タイプで練習</b>。</div>
+<div class="task"><b class="t">練習課題</b><code>VOV4</code> で「割当」と「決定」の 2 画面を開き、<b>それぞれ何を決めているか</b>を 1 行ずつで書き分けてください。</div>
+<figure class="gui"><img src="assets/gui/config_s08_1.svg" alt="VOV4 の明細カテゴリ割当一覧。伝票タイプ OR に TAN・TANN・TAX、ZOR1 に ZTAN が許可されている。" loading="lazy"><figcaption><b class="t">VOV4 で伝票タイプ OR に許可されている明細カテゴリの一覧を確認する</b><span class="tx">VOV4</span><span class="scr">Change View &quot;Item categories&quot;: Overview</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> ここは「使ってよい明細カテゴリ」の割当（許可）リスト。決定テーブル（C8）とは別の仕組み</li><li><b>2</b> 追加した ZOR1 × ZTAN の行。VA01 では新規受注でだけ効く（既存受注の明細カテゴリは不変）</li></ol><p class="gui-tip">自システムでの確認：VOV4 の割当ビューで OR の行を読み、練習では ZOR1 × ZTAN を追加してから VA01 で ZOR1 の受注を作る。画面の呼称は環境により異なる。</p></figure>
+
+<div class="steph" id="c8"><span class="no">C8</span><h3>明細カテゴリ決定（決定テーブル）— 受注処理の心臓</h3><span class="tc">VOV4・VOV7・SE16N</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd><b>「なぜこの明細カテゴリになるのか」の答えがここにあります。</b>販売伝票タイプ × 品目カテゴリグループ × 品目使用目的 × 高レベル明細カテゴリ の 4 キーで明細カテゴリが決まります。</dd>
+  <dt>IMG パス（環境によって呼称が異なる）</dt>
+  <dd>SPRO → 販売と流通 → 販売 → 販売伝票 → 販売伝票明細 → <b>明細カテゴリ決定</b></dd>
+  <dt>T-code</dt>
+  <dd><code>VOV4</code>（決定テーブル）／<code>VOV7</code>（カテゴリ定義）／<code>MM03</code>（品目カテゴリグループ）／<code>VA03</code>（結果の確認）</dd>
+</dl>
+<dl class="kv"><dt>入力値 / 確認対象</dt><dd><pre class="vals">決定テーブルのキー（動画のデモで実際に使われている値）：
+  販売伝票タイプ        OR
+  品目カテゴリグループ  （品目 T-ATA30 の値。品目マスタ 販売組織2 の「品目カテゴリグループ」）
+  品目使用目的          （空。返品・無償などで値が入る）
+  高レベル明細カテゴリ  （空。BOM 親明細などの構造で使う）
+  → 明細カテゴリ        TAN（Standard Item）
+
+確認の順序：
+  1) VA03 で明細カテゴリ（TAN）を読む
+  2) MM03 の販売組織2 で品目カテゴリグループを読む
+  3) VOV4 の決定テーブルで 4 キー → TAN の行を探す</pre></dd></dl>
+<ol class="steps">
+  <li><code>MM03</code> → 品目 <code>T-ATA30</code> → <b>販売組織 2</b> ビューで<b>品目カテゴリグループ</b>を読む。</li>
+  <li><code>VOV4</code> の明細カテゴリ決定テーブルで、<b><code>OR</code> × その品目カテゴリグループ × 空 × 空</b>の行を探し、結果が <code>TAN</code> であることを確認する。</li>
+  <li><b>品目カテゴリグループを別の値にした品目</b>（例：<code>T-ATA29</code> や別の品目）で受注を作り、<b>明細カテゴリが変わるか</b>を観察する（変わらなければ決定テーブルの別行が効いています）。</li>
+  <li>練習として、<b>決定テーブルに 1 行追加</b>して（<code>ZOR1</code> × 品目カテゴリグループ × 空 × 空 → <code>ZTAN</code>）、新規受注で反映されることを確認する。</li>
+</ol>
+<div class="box info"><b class="t">確認（自系统での確認方法）</b>
+① <code>VA03</code> の明細カテゴリと、<code>VOV4</code> の決定テーブルの結果が<b>一致</b>すること。<br>② 4 つのキーの名前を、資料を見ずに言えること（<b>伝票タイプ・品目カテゴリグループ・品目使用目的・高レベル明細カテゴリ</b>）。<br>③ 追加した行が新規受注で効くこと（既存受注には効かないことを確認）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>決定テーブルに行が無い</b> → 受注に品目を入れた時点でエラー、または別のカテゴリにフォールバック。必ずキー 4 つを確認。<br>② <b>品目使用目的（Usage）や高レベル明細カテゴリが意図せず入る</b> → 参照コピーした受注・BOM 品目で起こりやすい。<code>VA03</code> の明細詳細で確認。<br>③ 伝票タイプを変えても既存受注の明細カテゴリは変わりません（<b>新規受注で確認</b>）。</div>
+<div class="task"><b class="t">練習課題</b>品目カテゴリグループの<b>違う品目を 2 つ</b>選び、それぞれの受注で明細カテゴリがどうなるかを実測して表にしてください（キー 4 つと結果の組で）。</div>
+<figure class="gui"><img src="assets/gui/config_s09_1.svg" alt="MM03 の品目 T-ATA30 販売組織 2 ビュー。品目カテゴリグループ NORM、販売組織 1000、流通チャネル 10。" loading="lazy"><figcaption><b class="t">MM03 の販売組織 2 ビューで品目カテゴリグループを読む</b><span class="tx">MM03</span><span class="scr">Display Material T-ATA30 (Sales Org. 2)</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 決定テーブルの 2 つ目のキー。OR × NORM × 空 × 空 → TAN の行を VOV4 で探しにいく</li><li><b>2</b> ここを別の値にした品目で受注を作ると明細カテゴリが変わる。変えたら必ず新規受注で確認する（既存受注は不変）</li></ol><p class="gui-tip">自システムでの確認：MM03 → 品目 → 販売組織 2 → Item category group。ビューの呼称は環境により異なる。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s09_2.svg" alt="VOV4 の明細カテゴリ決定テーブル。OR × NORM × 空 × 空 → TAN、ZOR1 × NORM × 空 × 空 → ZTAN の 2 行。" loading="lazy"><figcaption><b class="t">VOV4 の明細カテゴリ決定テーブルで OR × NORM × 空 × 空 → TAN の行を探す</b><span class="tx">VOV4</span><span class="scr">Change View &quot;Item category determination&quot;: Overview</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 1 つでもキーが合わないと行に当たらず、エラーまたは別カテゴリへフォールバックする。必ずキー 4 つを読む</li><li><b>2</b> 練習で追加した ZOR1 × NORM × 空 × 空 → ZTAN の行。新規受注でだけ効く</li></ol><p class="gui-tip">自システムでの確認：VA03 の明細カテゴリと、VOV4 の決定テーブルの結果が一致するかを見る。既存受注は伝票タイプを変えても明細カテゴリが変わらない。</p></figure>
+
+<div class="steph" id="c9"><span class="no">C9</span><h3>納入日程行カテゴリの決定</h3><span class="tc">VOV5・VOV6</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>明細カテゴリと所要量タイプから<b>納入日程行カテゴリ</b>を決めるテーブルです。ここが <b>在庫確認（ATP）と所要量作成の入口</b>になります。</dd>
+  <dt>IMG パス（環境によって呼称が異なる）</dt>
+  <dd>SPRO → 販売と流通 → 販売 → 販売伝票 → 販売伝票明細 → <b>納入日程行カテゴリの決定</b></dd>
+  <dt>T-code</dt>
+  <dd><code>VOV5</code>（決定）／<code>VOV6</code>（定義）／<code>VA03</code>（結果確認）</dd>
+</dl>
+<dl class="kv"><dt>入力値 / 確認対象</dt><dd><pre class="vals">キー：明細カテゴリ × 所要量タイプ（品目マスタ MRP3 由来）
+  → 納入日程行カテゴリ（所要量タイプ／在庫確認／納入日付タイプを持つ）
+
+確認の順序：
+  1) VA03 の明細 → 納入日程行 → カテゴリを読む
+  2) VOV5 でそのカテゴリに至るキーを特定する
+  3) VOV6 でカテゴリの中身（在庫確認の有無）を読む</pre></dd></dl>
+<ol class="steps">
+  <li><code>VA03</code> で受注の納入日程行カテゴリを確認する。</li>
+  <li><code>VOV5</code> の決定テーブルで、<b>明細カテゴリ × 所要量タイプ</b>の組み合わせを確認する。</li>
+  <li><code>VOV6</code> でそのカテゴリの<b>在庫確認</b>の値を確認し、C13 の 3 階層（伝票タイプ／納入日程行カテゴリ／品目マスタ）と突き合わせる。</li>
+</ol>
+<div class="box info"><b class="t">確認（自系统での確認方法）</b>
+① <code>VA03</code> → <code>VOV5</code> → <code>VOV6</code> の順で、<b>同じカテゴリに行き着く</b>こと。<br>② 在庫確認の ON/OFF がどこで決まっているかを言えること。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 所要量タイプが空だと<b>決定に至らない</b>ことがあります（<code>TAN</code> の標準はこのケース）。エラーではなく仕様です。<br>② <b>在庫確認の 3 階層の優先順位</b>を混同しやすい（C13 で整理）。</div>
+<div class="task"><b class="t">練習課題</b>「明細カテゴリ → 所要量タイプ → 納入日程行カテゴリ → 在庫確認」の 4 段を、自システムの実値で 1 本の線にしてください。</div>
+<figure class="gui"><img src="assets/gui/config_s10_1.svg" alt="VOV5 の納入日程行カテゴリ決定テーブル。明細カテゴリ TAN × MRP タイプ PD で納入日程行カテゴリ CP、ZTAN も CP。" loading="lazy"><figcaption><b class="t">VOV5 の決定テーブルで明細カテゴリ × MRP タイプの組み合わせを確認する</b><span class="tx">VOV5</span><span class="scr">Change View &quot;Schedule line categories&quot;: Overview</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> キーは「明細カテゴリ × MRP タイプ」。MRP 3 ビューの戦略グループ由来の所要量タイプと混同しやすい</li><li><b>2</b> MRP タイプが空、または行が無いと決定に至らず、在庫確認も所要量も走らない（エラーではなく仕様）</li></ol><p class="gui-tip">自システムでの確認：VA03 → VOV5 → VOV6 の順にたどり、同じカテゴリに行き着くことを確かめる。決定したカテゴリの在庫確認は VOV6 で読む。</p></figure>
+
+<div class="steph" id="c10"><span class="no">C10</span><h3>出荷プラントの自動提案（3 つの優先順位）</h3><span class="tc">VD51/VD52/VD53・XD02・MM02・VBAP</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>動画が独立したスライドを割いた論点（<code>19:51</code> 付近）です。<b>受注明細の出荷プラントは、3 つの主データから優先順位つきで提案されます</b>。「品目マスタを直したのに反映されない」を防ぐのがこの STEP の目的です。</dd>
+  <dt>IMG パス（環境によって呼称が異なる）</dt>
+  <dd>SPRO → 販売と流通 → 基本機能 → マスタデータ → <b>客先品目情報</b>／得意先マスタ・品目マスタ側は各マスタの保守画面</dd>
+  <dt>T-code</dt>
+  <dd><code>VD51</code>（客先品目情報の登録／<code>VD52</code>・<code>VD53</code>）／<code>XD02</code>（得意先：販売エリアデータ → 出荷タブ）／<code>MM02</code>（品目：販売組織 1）／<code>SE16N</code>（<code>KNMT</code>・<code>KNVV</code>・<code>MVKE</code>）</dd>
+</dl>
+<dl class="kv"><dt>入力値 / 確認対象</dt><dd><pre class="vals">優先順位（上が強い。動画のスライドと同じ）：
+
+  1. 客先品目情報（Customer-Material Info Record）  VD51/VD52/VD53
+     動画スライド：C1 × M1 × 客先品目コード PC-100 → 出荷プラント 1400
+
+  2. 得意先マスタ（出荷先の販売エリアデータ）      XD02 → 出荷タブ
+     動画スライド：得意先マスタ S1 → 出荷プラント 1100
+
+  3. 品目マスタ（販売組織 1 ビュー）               MM02 → 販売組織 1
+     動画スライド：品目マスタ M1 → 1000 / M2 → 1200
+     （本編デモの品目 T-ATA30 は 1200 ＝ Change Plant で 1000 Dresden を選ぶ場面もあり）</pre></dd></dl>
+<ol class="steps">
+  <li><b>3 か所を順に開いて、動画のデモ品目の実値を書き出す</b>：<code>VD53</code>（得意先×品目）→ <code>XD03</code>（出荷先の販売エリアデータ → 出荷タブ）→ <code>MM03</code>（販売組織 1 の出荷プラント）。</li>
+  <li><b>わざと 3 か所に違う値を入れて、受注でどれが勝つかを実測する</b>（練習では <code>XD02</code> と <code>MM02</code> の 2 か所から開始し、最後に <code>VD51</code> を追加）。</li>
+  <li>受注（<code>VA01</code>）で明細を入れ、<b>Deliver.Plant に何が入ったか</b>を記録する。</li>
+  <li><code>SE16N</code> で <code>VBAP</code>（受注明細）の <code>WERKS</code> と、<code>MVKE</code>／<code>KNVV</code>／<code>KNMT</code> の該当項目を並べて見る（<b>どの源泉が効いたかを証拠で示す</b>）。</li>
+</ol>
+<div class="box info"><b class="t">確認（自系统での確認方法）</b>
+① <b>3 か所すべての値</b>を書き出し、受注に入った値が<b>優先順位どおり</b>であること。<br>② 「品目マスタを変えても受注が変わらない」場合、<b>上位 2 か所（客先品目情報・得意先マスタ）に値が入っている</b>ことを証拠として示せること。<br>③ <code>VBAP-WERKS</code> で受注明細の出荷プラントを直接確認できること。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>品目マスタだけ見て終わる</b>のが最頻出の誤り。<b>3 か所を見る</b>癖を付けてください。<br>② 動画のスライドには <b>“Weighting the different sources of information during plant determination”</b> とあり、標準の順序は <b>ABAP（USEREXIT 等）で上書き</b>され得ます（SAP Note <b>2787562</b>）。3 か所すべて空／矛盾しているのに想定外のプラントが入る場合は、拡張を疑って講師に確認してください。<br>③ 出荷プラントが変わると<b>出荷ポイントと出荷タイプも再決定</b>されます（後続伝票があると影響大。練習では後続伝票の無い受注で）。</div>
+<div class="task"><b class="t">練習課題</b>3 か所の値を 1 枚の表にし、<b>「どこを消せばどの値が採用されるか」</b>を予想してから実測してください（予想と結果の差が学習効果になります）。</div>
+<figure class="gui"><img src="assets/gui/config_s11_1.svg" alt="VD53 の客先品目情報。得意先 1000、品目 T-ATA30、販売組織 1000、流通チャネル 10、出荷プラント 1200。" loading="lazy"><figcaption><b class="t">VD53 で客先品目情報（優先順位 1 位）の出荷プラントを読む</b><span class="tx">VD53</span><span class="scr">Display Customer-Material Info Record</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 客先品目情報は 得意先 × 品目 × 販売エリア の組み合わせで持つ。登録は VD51、照会は VD53</li><li><b>2</b> ここに入ると得意先マスタ・品目マスタの出荷プラントより強く効く。上位が優先される</li></ol><p class="gui-tip">自システムでの確認：VD53 で得意先 × 品目 × 販売エリアを入れて出荷プラントを読む。値が空なら下位（得意先マスタ → 品目マスタ）が提案される。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s11_2.svg" alt="VA03 の受注明細 10。品目 T-ATA30、数量 10、明細カテゴリ TAN、出荷プラント 1200、要求納入日 09.06.2007。" loading="lazy"><figcaption><b class="t">VA03 の明細 10 で Deliver.Plant に入った値を確認する</b><span class="tx">VA03</span><span class="scr">Display Sales Order: Item Data</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 受注明細の出荷プラント。SE16N で VBAP を見れば「どの源泉が効いたか」を証拠として示せる</li><li><b>2</b> 品目マスタを直しても変わらないときは、上位 2 つ（客先品目情報・得意先マスタ）に値が入っている証拠</li></ol><p class="gui-tip">自システムでの確認：XD03 の出荷タブ、MM03 の販売組織 1、VD53 の 3 か所を書き出してから VA01 で明細を投入する。想定外のプラントは ABAP 拡張（SAP Note 2787562）を疑う。</p></figure>
+
+<div class="steph" id="c11"><span class="no">C11</span><h3>パートナー機能と決定（得意先マスタ側）</h3><span class="tc">XD02・OVT0・VBPA</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>受注の 4 役割（<code>SP</code>／<code>SH</code>／<code>BP</code>／<code>PY</code>）は、<b>得意先マスタのパートナー機能</b>と<b>勘定グループ／伝票タイプのパートナー決定手順</b>から自動提案されます。動画の <code>XD02</code> 実演（<code>51:10</code> 付近）がまさにこの画面です。</dd>
+  <dt>IMG パス（環境によって呼称が異なる）</dt>
+  <dd>SPRO → 販売と流通 → 基本機能 → パートナー → <b>パートナー決定手順を設定</b>／得意先側は <code>XD02</code></dd>
+  <dt>T-code</dt>
+  <dd><code>XD02</code>（販売エリアデータ → パートナー機能タブ）／<code>OVT0</code>（勘定グループのパートナー決定手順）／<code>SE16N</code>（<code>VBPA</code>＝受注のパートナー、<code>KNVP</code>＝得意先のパートナー）</dd>
+</dl>
+<dl class="kv"><dt>入力値 / 確認対象</dt><dd><pre class="vals">動画の XD02（得意先 1000）で確認できるもの：
+  パートナー機能一覧：SP Sold-to party 1000 / BP Bill-to party 1000（＋ SH・PY など）
+  その近くのブロック：Delivery and payment terms（Incoterms／Terms of payment／
+                       Paym.guar.proc.／Credit ctrl area）
+  販売タブ：Sales district／Sales Office／Sales Group／Customer group／
+           ABC class／Currency／Order probab.  ← 動画 51:22 付近
+受注側の対応：VA03 のヘッダ → パートナー（SP/SH/BP/PY と相手先）</pre></dd></dl>
+<ol class="steps">
+  <li><code>XD02</code> → 得意先 <code>1000</code> → 販売エリア <code>1000/10/00</code> → <b>パートナー機能</b>タブで <code>SP</code>／<code>BP</code>／<code>PY</code>／<code>SH</code> の登録を確認する。</li>
+  <li>同じ画面の <b>Delivery and payment terms</b>（インコタームズ・支払条件・与信管理エリア）を確認する（<b>受注の支払条件 <code>ZB01</code> の出所</b>）。</li>
+  <li><b>販売タブ</b>で Sales Office／Sales Group／得意先グループ／Order probability を確認する（動画 <code>51:22</code> の画面）。</li>
+  <li><code>VA01</code> で新規受注を作り、<b>パートナーが自動提案される</b>ことを確認する。出荷先だけ手で変えて、<b>何が再決定されるか</b>を見る（練習②の予習）。</li>
+  <li><code>SE16N</code> で <code>KNVP</code>（得意先のパートナー）と <code>VBPA</code>（受注のパートナー）を並べて見る。</li>
+</ol>
+<div class="box info"><b class="t">確認（自系统での確認方法）</b>
+① 得意先マスタの <code>SP</code>／<code>BP</code>／<code>PY</code>／<code>SH</code> が受注のパートナーに<b>そのまま提案される</b>こと。<br>② 支払条件 <code>ZB01</code> が<b>得意先マスタ由来</b>であることを、両画面で示せること。<br>③ <code>KNVP</code> と <code>VBPA</code> の対応が読めること。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>パートナーが出ない</b> → 得意先マスタのパートナー機能が未保守、またはパートナー決定手順（勘定グループ／伝票タイプ）の設定漏れ。<br>② 出荷先（<code>SH</code>）を変えたときの<b>再決定の範囲</b>を誤解しやすい（→ 概念 8 節）。<b>与力価格・出荷プラントは再決定、販売エリア・販売事務所は不変</b>。</div>
+<div class="task"><b class="t">練習課題</b>得意先マスタのパートナー機能を 1 つ追加（例：別の出荷先）し、新規受注で<b>自動提案されるか／されないか</b>を確認して、理由を書いてください。</div>
+<figure class="gui"><img src="assets/gui/config_s12_1.svg" alt="XD03 の得意先 1000 販売エリアデータ。支払条件 ZB01、Incoterms FOB、得意先価格決定手順 1。" loading="lazy"><figcaption><b class="t">XD03 の販売エリアデータで支払条件・インコタームズ・得意先価格決定手順を確認する（動画 51:22 付近の画面）</b><span class="tx">XD03</span><span class="scr">Display Customer 1000: Sales Area 1000 / 10 / 00</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> Incoterms FOB。納入条件は受注ヘッダに提案され、出荷・請求まで引き継がれる</li><li><b>2</b> Cust.pric.proc. は与力価格決定の 3 つ目のキー（OVKK）。ここが変わると価格決定手順が変わる</li></ol><p class="gui-tip">自システムでの確認：XD03 → 得意先 1000 → 販売エリア 1000/10/00 → Sales / Shipping タブ。与信管理エリアと支払保証手続も同じ画面で読める。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s12_2.svg" alt="XD03 のパートナー機能一覧。SP・BP・PY・SH がすべて得意先 1000 で登録されている。" loading="lazy"><figcaption><b class="t">XD03 のパートナー機能タブで SP／BP／PY／SH の登録を確認する</b><span class="tx">XD03</span><span class="scr">Display Customer 1000: Partner Functions</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> SP／SH／BP／PY はここから受注へ自動提案される（KNVP → VBPA の対応で確認）</li><li><b>2</b> 出荷先を変えると与力価格・出荷プラントは再決定、販売エリアと販売事務所は不変</li></ol><p class="gui-tip">自システムでの確認：VA01 で新規受注を作り、パートナーが自動提案されるかを見る。SE16N で KNVP と VBPA を並べると対応が読める。</p></figure>
+
+<div class="steph" id="c12"><span class="no">C12</span><h3>与力価格決定（条件技術の入口）</h3><span class="tc">OVKK・V/06・V/07・V/08・VK11/VK13</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>受注の <b>Net value</b>（動画では <code>22,990.00 EUR</code>）がどこから来るのかを追えるようにします。価格は「条件レコード」から来ますが、<b>どの条件タイプを探すかは価格決定手順が決める</b>という 2 段構造が要点です。</dd>
+  <dt>IMG パス（環境によって呼称が異なる）</dt>
+  <dd>SPRO → 販売と流通 → 基本機能 → 与力（Pricing）→ <b>与力手順を定義</b>／<b>条件タイプを定義</b>／<b>アクセス順序を定義</b></dd>
+  <dt>T-code</dt>
+  <dd><code>OVKK</code>（価格決定手順の割当＝販売伝票タイプ側）／<code>V/06</code>（条件タイプ）／<code>V/07</code>（アクセス順序）／<code>V/08</code>（条件テーブル）／<code>VK11</code>・<code>VK13</code>（条件レコード）</dd>
+</dl>
+<dl class="kv"><dt>入力値 / 確認対象</dt><dd><pre class="vals">動画のデモで確認できるもの：
+  受注の Net value：22,990.00 EUR（明細 10 PC 投入後。動画 19:27 付近）
+  条件タイプ：PR00（価格）／MWST（税）／VPRS（在庫評価額）ほか
+  確認の順序：
+   1) VA03 の条件画面で、実際に決定された条件タイプと金額を読む
+   2) その条件タイプの条件レコードを VK13 で照会（得意先×品目の有効期間）
+   3) VOV8 で伝票タイプ OR の「価格決定手順」を確認 → OVKK で手順の中身
+   4) V/07 でアクセス順序（どの条件テーブルをどの順で探すか）</pre></dd></dl>
+<ol class="steps">
+  <li><code>VA03</code> で受注を開き、<b>条件画面（与力分析）</b>を表示して、決定された条件タイプと金額を書き出す。</li>
+  <li><code>VK13</code> でその条件タイプ（<code>PR00</code>）を照会し、<b>有効期間と金額</b>を確認する（受注日が期間内かどうかが肝）。</li>
+  <li><code>VOV8</code> → 伝票タイプ <code>OR</code> の詳細で<b>価格決定手順</b>を確認し、<code>OVKK</code> でその手順に含まれる条件タイプの順序を見る。</li>
+  <li><b>わざと条件を無効化</b>（または期間外にして）受注を作り、<b>Net value が 0 になる／警告が出る</b>ことを観察する（故障対照表の材料）。</li>
+</ol>
+<div class="box info"><b class="t">確認（自系统での確認方法）</b>
+① 受注の Net value が<b>条件レコードの合計から説明できる</b>こと。<br>② 「どの条件タイプを探すかは価格決定手順が決める」と言えること（<b>手順 → 条件タイプ → 条件レコード</b>の 3 段）。<br>③ 条件を無効にしたときの症状（Net value 0／与力日付のエラー等）を記録したこと。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>条件レコードが無い／期間外</b> → Net value が 0。受注ではなく条件の問題（<code>VK13</code> で有効期間を確認）。<br>② 明細ごとに<b>与力日付（Pricing date）</b>が使われます。動画のデモでは与力日付 <code>02.06.2007</code> が出ています。<b>日付がずれると条件が拾われません</b>。<br>③ 手で条件を変更（手動条件）すると、後で<b>再決定で消える</b>ことがあります（練習②の再決定と関連）。</div>
+<div class="task"><b class="t">練習課題</b>受注 1 件について、<b>条件画面の各行が「どの条件レコードのどの期間」から来たか</b>を 3 行分書き出してください。</div>
+<figure class="gui"><img src="assets/gui/config_s13_1.svg" alt="VA03 の明細 10 の条件画面。条件タイプ PR00（Price）で金額 22,990.00 EUR。" loading="lazy"><figcaption><b class="t">VA03 の条件画面（与力分析）で Net value 22,990.00 EUR の内訳を読む</b><span class="tx">VA03</span><span class="scr">Display Sales Order: Item Conditions</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> PR00 が Net value 22,990.00 EUR の本体。ここが空なら受注ではなく条件レコードの問題</li><li><b>2</b> 与力日付 02.06.2007 が条件レコードの有効期間に入っているかを必ず確認する</li></ol><p class="gui-tip">自システムでの確認：明細の条件画面で条件タイプと金額を書き出し、VK13 の条件レコードの有効期間と突き合わせる。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s13_2.svg" alt="VK13 の条件レコード照会画面。条件タイプ PR00、販売組織 1000、流通チャネル 10、品目 T-ATA30、金額 2,299.00 EUR / 1 PC、通貨 EUR。" loading="lazy"><figcaption><b class="t">VK13 で条件タイプ PR00 の条件レコードを照会し、有効期間と金額を確認する</b><span class="tx">VK13</span><span class="scr">Display Condition Record</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 条件レコードは 得意先 × 品目 × 有効期間 の組み合わせ。与力日付がこの期間に入るかで金額が決まる</li><li><b>2</b> 手順（OVKK）→ 条件タイプ（V/06）→ 条件レコード（VK13）の 3 段。どの条件タイプを探すかは手順が決める</li></ol><p class="gui-tip">自システムでの確認：VK13 で PR00 を照会し、有効期間に与力日付 02.06.2007 が入るかを見る。手順は VOV8 の伝票タイプ OR → OVKK で確認する。</p></figure>
+
+<div class="steph" id="c13"><span class="no">C13</span><h3>在庫確認（ATP）の 3 階層</h3><span class="tc">OVZ2・MM02（MRP3）・VOV6</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>「在庫があるのに受注で警告が出る／出ない」を切り分けられるようにします。<b>在庫確認は 伝票タイプ・納入日程行カテゴリ・品目マスタ の 3 か所で決まり、上位は下位を上書きできます</b>。</dd>
+  <dt>IMG パス（環境によって呼称が異なる）</dt>
+  <dd>SPRO → 販売と流通 → 基本機能 → <b>在庫確認（Availability check）</b>／品目側は <code>MM02</code> → MRP3 → 在庫確認</dd>
+  <dt>T-code</dt>
+  <dd><code>OVZ2</code>（伝票タイプ別の在庫確認）／<code>VOV6</code>（納入日程行カテゴリ側）／<code>MM02</code>・<code>MM03</code>（MRP3 の在庫確認）／<code>CO09</code>（与力可能数量の照会）／<code>MD04</code></dd>
+</dl>
+<dl class="kv"><dt>入力値 / 確認対象</dt><dd><pre class="vals">3 つの階層（上位が優先。品目マスタが最下位）：
+  1) 伝票タイプの在庫確認              OVZ2（例：OR は 在庫確認を実行しない、が既定のことが多い）
+  2) 納入日程行カテゴリの在庫確認      VOV6（在庫確認の可否）
+  3) 品目マスタ MRP3 の在庫確認        MM02/MM03（例 02 = 個別所要量ベース）
+確認の道具：CO09（与力可能数量と不足）／MD04（所要量と在庫の流れ）</pre></dd></dl>
+<ol class="steps">
+  <li><code>MM03</code> → 品目 → <b>MRP3</b> で「在庫確認」の値を確認する。</li>
+  <li><code>VOV6</code> で納入日程行カテゴリの在庫確認を確認し、<code>OVZ2</code> で伝票タイプ側を確認する。<b>3 か所の値を並べて書く</b>。</li>
+  <li><code>CO09</code> で品目とプラントを入れ、<b>与力可能数量</b>を確認する。</li>
+  <li><code>VA01</code> で在庫を超える数量を受注し、<b>警告が出るか／ブロックされるか</b>を記録する（伝票タイプ・品目の設定で挙動が変わることを体感する）。</li>
+</ol>
+<div class="box info"><b class="t">確認（自系统での確認方法）</b>
+① 3 階層のどこで在庫確認が ON になっているかを<b>実値で説明</b>できること。<br>② <code>CO09</code> の数量と、受注時の警告が<b>整合</b>していること。<br>③ 在庫確認が「されない」設定（動画の <code>TAN</code> は所要量タイプが空）では、<b>警告が出ないのが正常</b>であること。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>階層の優先順位を逆に覚える</b>と迷います。<b>伝票タイプ＞納入日程行カテゴリ＞品目マスタ</b>（品目側は最下位＝既定値）と整理してください。<br>② 所要量タイプが空の明細では在庫確認が走らないため、「ATP が効かない」のではなく「受注在庫を持たない明細だから」が答えです（→ <code>../sapmto/</code> で受注在庫の実習）。</div>
+<div class="task"><b class="t">練習課題</b>同じ品目で「在庫確認 02」と「空」の 2 通りを作り、受注時の挙動を<b>症状つき</b>で記録してください（故障対照表に追記）。</div>
+<figure class="gui"><img src="assets/gui/config_s14_1.svg" alt="MM03 の品目マスタ MRP3 ビュー。品目 T-ATA30・プラント 1200・在庫確認 02 が表示されている。" loading="lazy"><figcaption><b class="t">C13 在庫確認（ATP）の最下位層：品目マスタ MRP3 の在庫確認</b><span class="tx">MM03 / OVZ2 / VOV6</span><span class="scr">Display Material T-ATA30</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 品目マスタの在庫確認は 3 階層の最下位。伝票タイプや納入日程行カテゴリ側が OFF なら ATP は走らない</li><li><b>2</b> 所要量タイプが空の明細（動画の TAN）は ATP の対象外。「在庫があるのに警告が出ない」の答え</li></ol><p class="gui-tip">自システムでの確認：MM03 で 品目 × プラント の MRP3 を開き、在庫確認の値を書き出す。伝票タイプ側は OVZ2、納入日程行カテゴリ側は VOV6、引ける数量は CO09、所要量の流れは MD04 で確認する。</p></figure>
+
+<div class="steph" id="c14"><span class="no">C14</span><h3>不完全性チェック（Incompletion）—「不完全な受注」はこう作られる</h3><span class="tc">OVA2・VUA2・VUP2・VUE2・V.02・SE16N</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>動画では <code>VA01</code> のデモ中に<b>「Enter PO number」の必須エラー</b>が出ます（<code>09:28</code> 付近）。これが不完全性チェックです。<b>どの項目が必須かを定義する側</b>を設定します。</dd>
+  <dt>IMG パス（環境によって呼称が異なる）</dt>
+  <dd>SPRO → 販売と流通 → 基本機能 → <b>不完全項目のログ（Log of Incomplete Items）</b> → 不完全性手順を定義</dd>
+  <dt>T-code</dt>
+  <dd><code>OVA2</code>（不完全性手順の定義）／<code>VUA2</code>（警告かエラーか）／<code>VUP2</code>（明細カテゴリへの割当）／<code>VUE2</code>（納入日程行カテゴリへの割当）／<code>V.02</code>（不完全な受注の一覧）／<code>V.00</code>（不完全な伝票の一覧）</dd>
+</dl>
+<dl class="kv"><dt>入力値 / 確認対象</dt><dd><pre class="vals">動画の環境で確認できる症状：
+  PO 番号が必須（保存時に「Enter PO number」）
+  → 受注の PO Number 欄に dddd / test 等のダミーを入れて保存している
+
+定義の階層：
+  不完全性手順（Procedure）     OVA2：手順に「グループ」を割り当てる
+  グループ（Groups）            例：ヘッダ／明細／納入日程行／パートナー
+  項目（Fields）                例：VBAP-POSEX（PO 番号）など
+  挙動（Warning / Error）       VUA2
+  適用先                        伝票タイプ（VOV8 の不完全性手順）／明細カテゴリ（VUP2）／
+                                納入日程行カテゴリ（VUE2）
+主要テーブル：TVUV（手順）・TVUVG（グループ）・TVUVF（項目）・
+             VBUV（明細）・VBUP（明細ステータス）・VBUK（ヘッダステータス）</pre></dd></dl>
+<ol class="steps">
+  <li><code>OVA2</code> を起動し、動画のデモ伝票タイプ <code>OR</code> に割り当てられている<b>不完全性手順</b>を確認する。</li>
+  <li>その手順に含まれる<b>グループと項目</b>を開き、<b>PO 番号系の項目</b>が入っているかを探す（<b>動画の症状と設定を結びつける</b>）。</li>
+  <li><code>VUA2</code> で<b>警告／エラー</b>の設定を確認する（エラー＝保存不可、警告＝保存可）。</li>
+  <li><b>自分の練習用に 1 項目追加</b>して効果を見る（例：納入希望日を必須にする）→ <code>VA01</code> で空にして保存し、<b>症状を記録</b>。</li>
+  <li><code>V.02</code>（不完全な受注の一覧）を実行し、<b>わざと作った不完全な受注が一覧に出る</b>ことを確認する。<code>SE16N</code> で <code>VBUV</code>／<code>VBUK</code> も見る。</li>
+</ol>
+<div class="box info"><b class="t">確認（自系统での確認方法）</b>
+① 動画の「Enter PO number」が<b>どの設定に由来するか</b>を、<code>OVA2</code> を指して説明できること。<br>② 自分で追加した必須項目で、保存時にエラーが出ることを確認したこと。<br>③ 不完全な受注が <code>V.02</code> に表示されること（＝不完全なまま放置されない仕組み）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 「PO 番号が必須なのは標準」と思い込む → <b>環境設定</b>です（動画の環境がそうなっているだけ）。<br>② エラーにしたまま<b>保存できない伝票を作る</b>と業務が止まります。運用的には<b>警告</b>にして <code>V.02</code> で管理するのが一般的。<br>③ 変更は<b>伝票タイプ・明細カテゴリ・納入日程行カテゴリの 3 か所</b>に分かれます。「設定したのに効かない」は適用先を確認。</div>
+<div class="task"><b class="t">練習課題</b>不完全性チェックの<b>3 階層（手順／グループ／項目）</b>を図にし、<b>動画の PO 番号</b>がどこに入るかを書き込んでください。</div>
+<figure class="gui"><img src="assets/gui/config_s15_1.svg" alt="OVA2 の不完全性手順。伝票タイプ OR の手順と、Sales - Header / Item / Sched. Line のグループ、PO 番号系の項目が表示されている。" loading="lazy"><figcaption><b class="t">C14 不完全性手順（OVA2）：手順 → グループ → 項目の 3 階層</b><span class="tx">OVA2</span><span class="scr">Incompleteness Procedure: Overview</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 動画の「Enter PO number」はこの 1 項目。手順 → グループ → 項目の 3 階層で必須が決まる</li><li><b>2</b> 項目ごとの Warning にチェックが無ければエラー（保存不可）。運用は警告にして V.02 で管理するのが現実的</li></ol><p class="gui-tip">自システムでの確認：OVA2 で伝票タイプ OR に割り当てられた手順を開き、グループごとに項目（VBAP-POSEX など）を書き出す。割当先は 伝票タイプ（VOV8）・明細カテゴリ（VUP2）・納入日程行カテゴリ（VUE2）の 3 か所。</p></figure>
+<figure class="gui"><img src="assets/gui/config_s15_2.svg" alt="V.02 の不完全な受注一覧。受注 0000001234 の明細 10 と 20 が不完全として表示されている。" loading="lazy"><figcaption><b class="t">C14 不完全な受注の一覧（V.02）：不完全なまま保存した受注をここで管理する</b><span class="tx">V.02</span><span class="scr">List of Incomplete Sales Orders</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> わざと不完全なまま保存した受注がここに出る。出ないときは不完全性手順が伝票タイプ・明細カテゴリに未割当</li><li><b>2</b> どの項目が欠けているかは VBUV（不完全性ログ）と VA03 の不完全性ログで見る。VBUK は伝票ヘッダの状態</li></ol><p class="gui-tip">自システムでの確認：伝票タイプの不完全性手順（VOV8）を外すと V.02 に出なくなる。SE16N で VBUV（不完全性ログ）・VBUK・VBUP（伝票／明細ステータス）も見ておく。</p></figure>
+
+<div class="steph" id="c15"><span class="no">C15</span><h3>コピー管理（受注 → 出荷 → 請求）</h3><span class="tc">VTAA・VTFL・VTFA・VTFA（請求）</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>参照コピーしたときに<b>どの値を引き継ぎ、何を再決定するか</b>を決めるのがコピー管理です。動画の <b>Business Data スライド</b>（支払条件 <code>ZB01</code>／インコタームズ <code>FOB</code> の上書き）は、この設定と対で理解します。</dd>
+  <dt>IMG パス（環境によって呼称が異なる）</dt>
+  <dd>SPRO → 販売と流通 → 販売 → 販売伝票 → <b>伝票のコピー管理を設定</b></dd>
+  <dt>T-code</dt>
+  <dd><code>VTAA</code>（受注 → 受注）／<code>VTFL</code>（受注 → 出荷）／<code>VTFA</code>（受注 → 請求）／<code>VA01</code>（「Create with Reference」で参照コピー）／<code>VL01N</code>・<code>VF01</code></dd>
+</dl>
+<dl class="kv"><dt>入力値 / 確認対象</dt><dd><pre class="vals">コピー管理の要点（画面で確認する項目）：
+  要求伝票タイプ → ターゲット伝票タイプ（例：OR → LF、OR → F2）
+  コピーグループ（Header / Item / Schedule line）
+  データ転送（Data transfer）
+    − ヘッダ／明細のどちらの値を使うか
+    − 価格（与力タイプ）を再決定するか、コピーするか
+    − 支払条件・インコタームズはヘッダからコピーか、明細から再決定か
+  数量／日付のルール（部分数量でのコピー等）</pre></dd></dl>
+<ol class="steps">
+  <li><code>VTFL</code>（受注 → 出荷）を開き、<b>OR → LF</b> のエントリで<b>データ転送の設定</b>（与力の再決定など）を確認する。</li>
+  <li><code>VA01</code> の初期画面で「<b>Create with Reference</b>」を使い、<b>既存受注を参照して新しい受注を作る</b>（動画の Business Data スライドの状況を再現）。</li>
+  <li>参照元と新しい受注で<b>支払条件・インコタームズがどうなったか</b>を比べる（動画のスライドでは明細 20 で <code>ZB01→ZB02</code>／<code>FOB→EXW</code> の上書き例が示されています）。</li>
+  <li><code>VA03</code> の<b>伝票フロー</b>で、受注 → 出荷 → 請求の連鎖を確認する（どの伝票からコピーされたかが分かります）。</li>
+</ol>
+<div class="box info"><b class="t">確認（自系统での確認方法）</b>
+① 参照コピーで「何が引き継がれ、何が再決定されたか」を<b>値の差分</b>で示せること。<br>② 出荷・請求が受注からコピーされる流れを、伝票フローで説明できること。<br>③ 与力を再決定する設定／コピーする設定の違いを、<code>VTFL</code> の画面で指せること。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>参照コピーは「コピー」ではなく「一部再決定」</b>です。古い受注を参照すると<b>古い価格・古い与力日付</b>が入り、想定と違う金額になることがあります。<br>② 後続伝票がある受注を参照コピーすると、<b>数量の二重計上</b>になり得ます（部分コピーの設定を確認）。</div>
+<div class="task"><b class="t">練習課題</b>参照コピーで作った受注と元の受注を並べ、<b>一致した項目／変わった項目</b>を表にしてください（最低 5 項目）。</div>
+<figure class="gui"><img src="assets/gui/config_s16_1.svg" alt="コピー管理の明細レベル画面。源泉伝票タイプ OR からターゲット伝票タイプ LF への設定で、価格は再決定、数量コピーと伝票フロー更新が有効になっている。" loading="lazy"><figcaption><b class="t">C15 コピー管理（受注 → 出荷）：何を引き継ぎ、何を再決定するか</b><span class="tx">VTLA / VTFL</span><span class="scr">Copying Control: Sales Document to Delivery Document</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 価格を「コピー」するか「再決定」するかがこの設定。Redetermine なら参照元の古い価格は引き継がれない</li><li><b>2</b> 受注 → 出荷のコピー管理は VTLA（出荷 → 請求は VTFL）。OR → LF の行が無いと出荷が作れない</li></ol><p class="gui-tip">自システムでの確認：手顺ページは VTFL を「受注 → 出荷」と書いていますが、その T-code は VTLA です（VTFL は 出荷 → 請求）。VTFA（受注 → 請求）と合わせ、支払条件 ZB01・インコタームズ FOB がどこで決まるかを VA01 の参照コピーで追う。</p></figure>
+
+<div class="steph" id="c16"><span class="no">C16</span><h3>出荷・請求・自動転記（受注の先）</h3><span class="tc">VL01N・VL02N・VF01・OBYC・VBFA</span></div>
+<dl class="kv">
+  <dt>目的</dt>
+  <dd>受注は<b>出荷と請求に繋がって初めて業務になります</b>。動画は出荷伝票 <code>80007832</code> の<b>照会</b>までを示しています。ここでは作成側の入口と、在庫・会計への自動転記の所在を押さえます。</dd>
+  <dt>IMG パス（環境によって呼称が異なる）</dt>
+  <dd>SPRO → 販売と流通 → 出荷（Shipping）／請求（Billing）／自動転記は 財務会計 → <b>自動転記（OBYC）</b></dd>
+  <dt>T-code</dt>
+  <dd><code>VL01N</code>／<code>VL02N</code>／<code>VL03N</code>（出荷）・<code>VF01</code>／<code>VF03</code>（請求）・<code>OBYC</code>（自動転記）・<code>VA03</code>（伝票フロー）・<code>MB51</code>／<code>MM03</code>（在庫への影響確認）</dd>
+</dl>
+<dl class="kv"><dt>入力値 / 確認対象</dt><dd><pre class="vals">動画で確認できる値（出荷伝票の照会画面）：
+  出荷伝票 80007832  ドキュメント日付 22.11.2000
+  出荷先 1000（Becker Berlin）  計画出庫 21.11.2000 / 実出庫 23.11.2000
+  明細：10 P-102 26 PC / 20 P-104 39 PC（いずれも ItCa TAN）
+  タブ：Item Overview / Picking / Loading / Transport / Status Overview / Goods Movement Data
+自システムで作る場合の入口：
+  VL01N（受注参照で出荷を作成）→ VL02N（ピッキング数量入力 → 出庫過帳 PGI）→ VF01（請求）</pre></dd></dl>
+<ol class="steps">
+  <li><code>VA03</code> で受注を開き、<b>伝票フロー</b>を確認する（動画では受注から出荷 <code>80007832</code> へ飛べることが示されます）。</li>
+  <li><b>出荷を作る</b>：<code>VL01N</code> → 出荷ポイントと納入日を指定 → 受注番号を参照 → 明細と数量を確認 → 保存。</li>
+  <li><code>VL02N</code> で<b>ピッキング数量</b>を入れ、<b>出庫過帳（PGI）</b>を実行する。実行後、<b>在庫が減り、売上原価が計上される</b>ことを <code>MB51</code>／<code>MM03</code>／<code>FB03</code> で確認する（自動転記 <code>OBYC</code> の設定による）。</li>
+  <li><code>VF01</code> で<b>請求</b>を作成する（受注または出荷を参照）。請求書の<b>正味価額が受注と一致</b>するか確認する。</li>
+  <li>再度 <code>VA03</code> の伝票フローで<b>受注 → 出荷 → 請求</b>が 1 本に繋がっていることを確認する。</li>
+  <li><code>VC/2</code>（Sales Summary）で<b>得意先 <code>1000</code> の Open Sales Order Val／Open Delivery Value／Open Bill. Doc. Val</b> が変化することを見る（動画 <code>25:25</code> 付近と同じ見方）。</li>
+</ol>
+<div class="box info"><b class="t">確認（自系统での確認方法）</b>
+① 伝票フローに<b>受注・出荷・請求の 3 種</b>が並び、数量・金額が整合していること。<br>② PGI 後に<b>在庫が減る</b>ことを確認したこと（<code>MB51</code> または <code>MM03</code> のプラント在庫）。<br>③ <code>VC/2</code> の与信・受注残の値が動いたこと（＝情報照会が受注処理と連動していることを実感）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>PGI は戻せません</b>（取消の専用処理 <code>VL09</code> 等が必要）。練習環境でも、まずは<b>照会と作成の分離</b>を意識してください。<br>② 在庫が無い／与信ブロックが付いていると出荷が作れません。<b>C13（在庫確認）と C14（不完全性）／与信設定</b>を先に確認。<br>③ 動画は<b>照会まで</b>です。「作成手順は本站が補った内容」であることを意識して読み、必ず自システムの画面で確かめてください。</div>
+<div class="task"><b class="t">練習課題</b>受注 1 件を出荷・請求まで流し、<b>伝票フローの番号・数量・金額</b>を記録してください。そのうえで「PGI で何が起きたか」を 3 行で説明してください。</div>
+<figure class="gui"><img src="assets/gui/config_s17_1.svg" alt="VL03N の出荷伝票照会。出荷伝票 80007832・出荷先 1000・文書日付 22.11.2000・計画出庫 21.11.2000・実出庫 23.11.2000、明細は P-102 26 PC と P-104 39 PC（ItCa TAN）。" loading="lazy"><figcaption><b class="t">C16 出荷伝票 80007832 の照会（動画と同じ値で確認する）</b><span class="tx">VL03N</span><span class="scr">Display Outbound Delivery 80007832</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 実出庫日 23.11.2000 が入ると在庫が減り、売上原価が計上される（OBYC）。計画 21.11.2000 との差が遅延の記録</li><li><b>2</b> 明細の ItCa は TAN。想定と違うときは明細カテゴリ決定（VOV4 の 4 キー）を疑う</li></ol><p class="gui-tip">自システムでの確認：VA03 の伝票フローで 受注 → 出荷 80007832 → 請求 が 1 本に繋がること。PGI 後に在庫が減ることを MB51／MM03 で、VC/2 で Open Sales Order／Delivery Value が動くことも見る。</p></figure>
+
+<h2 id="done">配置完了チェックリスト</h2>
+<p>以下がすべて「はい」になれば、受注処理の練習環境は整っています。</p>
+<ul class="check">
+  <li><code>VA01</code> で <code>OR</code> ＋ 得意先 1000 から概況画面まで進める（C0）</li>
+  <li><code>VOV8</code> で伝票タイプ <code>OR</code> の出荷・請求・与信・不完全性の各グループを説明できる（C1）</li>
+  <li><code>VOV7</code> で明細カテゴリ <code>TAN</code> の「所要量タイプが空」「与力関連 ON」を確認した（C2）</li>
+  <li><code>OVT0</code> で勘定グループの番号範囲・項目ステータス・パートナー決定手順を確認した（C3）</li>
+  <li><code>OVS9</code> と <code>OVT0</code> の違い（得意先グループ vs 得意先勘定グループ）を説明できる（C4）</li>
+  <li><code>VC/2</code> で情報ビューを切り替え、Last SD documents と与信情報を表示できた（C5）</li>
+  <li>納入日程行カテゴリの所要量タイプと品目マスタの戦略グループを突き合わせた（C6）</li>
+  <li><code>VOV4</code> の「割当」と「決定」の違いを説明できる（C7・C8）</li>
+  <li>明細カテゴリ決定の 4 キーを暗唱でき、<code>VA03</code> の結果と一致させた（C8）</li>
+  <li>納入日程行カテゴリ決定から在庫確認まで 1 本の線で説明できる（C9・C13）</li>
+  <li>出荷プラントの 3 つの優先順位を実測し、<code>VBAP-WERKS</code> で確認した（C10）</li>
+  <li>得意先マスタのパートナー機能と受注のパートナーを対応づけた（C11）</li>
+  <li>与力価格の 3 段（手順 → 条件タイプ → 条件レコード）を説明できる（C12）</li>
+  <li>不完全性チェックの 3 階層を説明し、<code>V.02</code> に不完全な受注を出せた（C14）</li>
+  <li>参照コピーで一致した項目／変わった項目を示せた（C15）</li>
+  <li>受注 → 出荷 → 請求を 1 本に繋ぎ、伝票フローで示せた（C16）</li>
+</ul>
+<div class="box ok"><b class="t">次の一歩</b>
+設定が終わったら <a href="handson-1.html">练习① 受注登録</a> へ。配置で分からなくなった箇所は、<a href="concept.html">概念与设计</a> の該当節（とくに 5 節の出荷プラント・6 節の決定链）に戻ると解決が早いです。</div>
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP SD 受注処理（Sales Order Processing）实战训练站</h5><p>動画の Customizing（VOV8・OVT0・OVS9・SIS レポートビュー）を中核に、受注処理が動くための設定を C0〜C16 に整理。各 STEP に「自系统での確認方法」つき。</p><div><h5>下一步</h5><p><a href="handson-1.html">练习① 受注登録（VA01）</a> から、動画と同じ流れを自分の環境で再現します。</p></div></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 受注登録（VA01）</a><br><a href="handson-2.html">② 与力価格と ATP</a><br><a href="handson-3.html">③ 特殊取引</a><br><a href="handson-4.html">④ 出荷と請求</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="worksheet.html">学员版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/quiz.js"></script>
+</body>
+</html>

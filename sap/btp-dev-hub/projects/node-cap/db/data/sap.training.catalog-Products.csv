@@ -1,0 +1,11 @@
+ID;name;description;price;currency;stock;reorderLevel;category_ID;isActive
+P-1001;SAP 培训笔记本电脑 (ThinkPad X1);16G/512G 企业办公本;8999.00;CNY;32;10;C-ELEC;true
+P-1002;27 寸 4K 显示器;IPS 广色域, 支持 USB-C 反向供电;2599.00;CNY;18;5;C-ELEC;true
+P-1003;无线机械键盘;青轴, 蓝牙 5.0 双模;459.00;CNY;120;20;C-ACC;true
+P-1004;人体工学椅;全网布, 4D 扶手;1899.00;CNY;9;5;C-FURN;true
+P-1005;升降办公桌;140x70, 双电机;3299.00;CNY;6;5;C-FURN;true
+P-1006;企业级无线 AP;Wi-Fi 6E, 支持 128 终端;1299.00;CNY;25;8;C-NET;true
+P-1007;千兆企业交换机;24 口 PoE+, 网管型;2380.00;CNY;14;5;C-NET;true
+P-1008;USB-C 扩展坞;双 4K@60Hz, 千兆网口;699.00;CNY;60;15;C-ACC;true
+P-1009;会议全向麦;拾音半径 5 米, USB/蓝牙;1599.00;CNY;11;5;C-ELEC;true
+P-1010;NAS 网络存储;4 盘位, 支持 RAID5;4599.00;CNY;4;3;C-NET;true

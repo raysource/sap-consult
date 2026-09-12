@@ -1,0 +1,19 @@
+# --- 大文件 / 源素材（GitHub 单文件上限 100 MB，且属外部素材） ---
+*.mp4
+*.docx
+*.zip
+
+# --- 快照与派生物（可由脚本重建） ---
+_snapshots/
+*/work/docx_extract/
+*/work/render/
+*/assets/gui_png/
+*/*_画面PNG.zip
+*/*_講義用画面集.pdf
+*/*_学员用記入シート.pdf
+
+# --- 依赖与本地状态 ---
+node_modules/
+__pycache__/
+.DS_Store
+**/.DS_Store

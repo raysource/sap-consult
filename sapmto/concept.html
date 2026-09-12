@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念与设计 · SAP S/4HANA SD 受注生産（MTO）实战训练站</title>
+<meta name="description" content="受注生産（MTO）的机制：見込生産との比較、得意先個別在庫（特在 E）の成立条件、明細カテゴリ 4 键决定、所要量タイプ→所要量クラス の連鎖、関連テーブルと S/4HANA 変更点。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/mto.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MTO</span><span class="txt">SD 受注生産 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a class="active" href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①受注</a>
+      <a href="handson-2.html">②MRP</a>
+      <a href="handson-3.html">③出入库</a>
+      <a href="handson-4.html">④出货</a>
+      <a href="handson-5.html">⑤发展</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 概念与设计</div>
+<main class="page"><article>
+
+<h1>概念与设计：MTO 到底改了什么</h1>
+<div class="box info"><b class="t">本页要带走的三句话</b>
+① MTO 的本质 = <b>需求与库存按「受注明细」切分</b>（＝特別在庫区分 E、受注在庫）；
+② 切分是靠一条配置链实现的：<span class="mono">品目マスタ（戦略グループ 20）→ 所要量タイプ KE → 所要量クラス 040/046 → 個別在庫 E</span>，
+　明細カテゴリ（VOV7 の 特別在庫 E）と納入日程行カテゴリ（VOV6 の 所要量転送）是把 SD 的传票接进这条链的两个入口；
+③ 只要链上任一环缺失，症状一定出现在 <b>MD04 / MMBE / 出荷の引当 / 受注在庫の評価</b> 这四处。<br>
+（本页出现的标准值都以「通常情况」表述，请用各页给出的手顺在你自己的系统里确认。见 <a href="index.html#caveat">关于标准值的立场</a>。）</div>
+
+<div class="toc">
+  <a href="#compare">1. 生产形态的比较</a>
+  <a href="#stock">2. 得意先個別在庫（特在 E）</a>
+  <a href="#chain">3. 决定链：从品目主数据到 E 特在</a>
+  <a href="#sdcfg">4. SD 侧三个对象的分工</a>
+  <a href="#rf">5. 所要量タイプ／所要量クラス</a>
+  <a href="#tables">6. 相关表与字段</a>
+  <a href="#s4">7. S/4HANA 的变更点</a>
+  <a href="#mistake">8. 十个常见误解</a>
+</div>
+
+<h2 id="compare">1. 生产形态的比较（同一品目、不同「何时被计划」）</h2>
+<table class="tbl wide">
+<tr><th>形态</th><th>计划起点</th><th>库存</th><th>计划方針（戦略グループ）</th><th>本教程</th></tr>
+<tr><td>見込生産（MTS）</td><td>計画独立所要量（PIR, MD61）</td><td>プラント在庫（自由在庫）</td><td><code>10</code> / <code>11</code> / <code>30</code> / <code>40</code> 等</td><td>对照</td></tr>
+<tr><td><b>受注生産（MTO, 組立指図なし）</b></td><td><b>受注（销售订单）</b></td><td><b>得意先個別在庫（E）</b></td><td><b><code>20</code></b>（所要量タイプ <code>KE</code>）</td><td>本教程主线（练习①②③④）</td></tr>
+<tr><td>受注生産 + 組立処理（受注と同時に指図）</td><td>受注（保存時に指図を自動生成）</td><td>得意先個別在庫（E）</td><td><code>82</code>（所要量タイプ <code>KMFA</code> / 所要量クラス <code>201</code> / 指図タイプ <code>PP04</code>）</td><td>练习⑤ 发展课题</td></tr>
+<tr><td>受注設計生産（ETO）</td><td>受注 + プロジェクト（WBS）</td><td>プロジェクト個別在庫（Q）</td><td>PS 連携</td><td>范围外</td></tr>
+<tr><td>バリアント設定付き受注生産（VC）</td><td>受注 + 設定値</td><td>得意先個別在庫（E）</td><td><code>25</code>（所要量タイプ <code>KEK</code> / 所要量クラス <code>046</code>）</td><td>范围外（只需知道存在）</td></tr>
+</table>
+<div class="box ok"><b class="t">判断口诀</b>
+「<b>库存能不能给别人用？</b>」——能 → MTS；不能，只能给这一张受注明细 → MTO（个别库存 E）。
+「<b>什么时候建指图？</b>」——MRP 跑出来再建 → 战略 20；保存受注就自动建 → 战略 82（组立处理）。</div>
+
+<h2 id="stock">2. 得意先個別在庫（特別在庫区分 E）</h2>
+<p>「特別在庫（special stock）」是 SAP 库存的一层附加区分。受注生産用的是 <b>E：得意先個別在庫（sales order stock / 受注在庫）</b>——
+库存数量不属于工厂自由库存，而是<b>挂在受注番号 + 明細番号</b>上。具体差别：</p>
+<table class="tbl wide">
+<tr><th>视角</th><th>自由在庫（MTS）</th><th>受注在庫 E（MTO）</th></tr>
+<tr><td>数量归属性</td><td>工厂/保管場所単位</td><td>受注番号 + 受注明細単位（他の受注には使えない）</td></tr>
+<tr><td>需求来源</td><td>PIR（MD61）+ 受注</td><td>受注の得意先所要量のみ（PIR は使わない）</td></tr>
+<tr><td>库存一览</td><td><code>MMBE</code> / <code>MB52</code> のプラント在庫</td><td><code>MMBE</code> / <code>MB52</code> の「受注在庫／特別在庫」欄、<code>MSKA</code>（後述の表参照）</td></tr>
+<tr><td>入出库</td><td>101 / 261 / 601（自由在庫）</td><td>101 入受注在庫（指図の受注明細参照が必要）、601 出荷時に E 在庫から引き落とし</td></tr>
+<tr><td>評価（＝会计金额）</td><td>通常の評価（標準価格/移動平均）</td><td><b>受注在庫として評価するかどうかは設定次第</b>。S/4HANA Cloud の MTO シナリオは評価付（所要量クラス <code>046</code>、評価区分 M）が前提</td></tr>
+<tr><td>会計影響</td><td>在庫勘定（BSX）</td><td>受注在庫勘定／仕掛（WIP）→ 出荷時に売上原価へ、差異は指図決済で処理</td></tr>
+</table>
+<div class="box warn"><b class="t">名称の揺れ（日本語現場で混ざる）</b>
+E 特在 ＝<b>受注在庫</b>＝<b>得意先個別在庫</b>＝<b>販売伝票在庫</b>＝<b>個別在庫</b>。英語では sales order stock / individual customer stock。
+要項クラスの項目名では「個別在庫」「特別在庫」と訳されることがあります。同じものを指しているので、画面では<b>区分 E と受注番号が付いているか</b>で判断してください。</div>
+
+<h2 id="chain">3. 决定链：从品目主数据到 E 特在</h2>
+<p>受注一张单，系统按下面的顺序把「这张明细属于哪个客户的哪张受注」一层层决定下来。<b>这条链是本站所有配置和练习的主干</b>。</p>
+<pre class="vals">［品目マスタ］                                   ［カスタマイズ］                     ［結果］
+Sales Org 2: 品目カテゴリグループ = 0001 (NORM) ─┐
+                                                 ├─ VOV4: 伝票タイプ + 品目カテゴリグループ + 用途 + 上位明細
+受注伝票タイプ = OR ─────────────────────────────┘        → 明細カテゴリ = TAN / ZTAK
+                                                                     │  (VOV7: 価格設定・納入日程行許可・特別在庫 = E)
+                                                                     ▼
+                                             VOV5: 明細カテゴリ + MRPタイプ → 納入日程行カテゴリ = CN / CP / ZCP
+                                                                     │  (VOV6: 所要量転送 ON / 在庫確認 / 移動タイプ)
+                                                                     ▼
+                                       所要量タイプの決定
+                                       (1) 品目マスタ MRP3 の 戦略グループ = 20 → 所要量タイプ KE   ← 通常こちらが優先
+                                       (2) 戦略グループが無い場合のみ、OVZI の 明細カテゴリ + MRPタイプ
+                                                                     ▼
+                                       所要量タイプ KE → 所要量クラス 040（OVZG）
+                                       所要量クラスが決める: 所要タイプ（得意先所要量）/ 個別在庫 E / MRP への転送 /
+                                                          在庫確認 / 評価（評価付なら 046 系）
+                                                                     ▼
+［伝票］受注明細 VBAP（SOBKZ = E）→ 納入日程行 VBEP（所要量転送）→ 所要量 VBBE
+                                                                     ▼
+                                        MD04: 「得意先所要量 10 PC（受注 0000000xxx/000010）」
+                                        → MRP → 計画手配 → 製造指図（受注明細参照）→ 101 入庫 → 受注在庫 E 10 PC</pre>
+<div class="task"><b class="t">练习课题（概念确认，用你自己的系统 5 分钟）</b>
+① <code>VA03</code> 打开任意一张受注 → 明細 → 「明細カテゴリ」と「特別在庫」欄を見る（E かどうか）；
+② <code>MM03</code> 品目 → MRP3「戦略グループ」と MRP4「個別/包括所要量」を見る；
+③ <code>MD04</code> で同じ受注の「得意先所要量」行を探す（無ければ納入日程行カテゴリの所要量転送を疑う）。</div>
+
+<h2 id="sdcfg">4. SD 侧三个对象的分工（配错了症状各不相同）</h2>
+<table class="tbl wide">
+<tr><th>对象</th><th>层级</th><th>决定方式</th><th>它控制什么（与受注生産有关的部分）</th><th>配错的典型症状</th></tr>
+<tr><td>販売伝票タイプ（<code>VOV8</code>）</td><td>传票头</td><td>用户选择 / 参照</td><td>传票种类（受注 OR / 見積 / 契約）、番号範囲、全体动作</td><td>明細无法输入、无法参照出货</td></tr>
+<tr><td>明細カテゴリ（<code>VOV7</code>）</td><td>明細</td><td><code>VOV4</code> 的 4 键</td><td>価格設定、納入日程行の許可、<b>特別在庫（E）</b>、請求関連、構造（BOM）范围</td><td>入库进了自由库存（特别在庫没设 E）／纳期行不出来（納入日程行許可 OFF）</td></tr>
+<tr><td>納入日程行カテゴリ（<code>VOV6</code>）</td><td>纳期行</td><td><code>VOV5</code> 的 2 键（明細カテゴリ + MRPタイプ）</td><td><b>所要量転送</b>（MRP に伝わるか）、在庫確認（ATP）、購買発注／移動タイプ、所要量タイプ（項目）</td><td>MD04 看不到需求（所要量転送 OFF）／ATP 不动作（在庫確認 OFF）</td></tr>
+</table>
+<p class="mini">补足：4 键 = 販売伝票タイプ + 品目カテゴリグループ（品目マスタ 販売組織2）+ 用途（明細用途）+ 上位明細の明細カテゴリ。空字段也参与匹配（表现为「空+空」的一行）。</p>
+
+<h2 id="rf">5. 所要量タイプ／所要量クラス（MTO 的心脏）</h2>
+<table class="tbl wide">
+<tr><th>项目</th><th>作用</th><th>MTO 的典型值</th><th>在哪里看／改</th></tr>
+<tr><td>所要量タイプ（requirement type）</td><td>把受注需求「翻译」成 MRP 看得懂的需求种类</td><td><code>KE</code>（受注生産・組立指図なし）／<code>KMFA</code>（組立処理）／<code>KEK</code>（VC）</td><td><code>OVZG</code>（定義）、<code>OVZI</code>（明細カテゴリ+MRPタイプによる決定）、品目マスタ戦略グループ経由</td></tr>
+<tr><td>所要量クラス（requirement class）</td><td>真正装开关的地方：所要タイプ（得意先所要量）、<b>個別在庫</b>、MRP 転送、在庫確認、評価、原価計算</td><td><code>040</code>（受注生産）／<code>046</code>（評価付販売伝票在庫。S/4HANA Cloud の MTO）／<code>201</code>（組立処理）</td><td><code>OVZG</code>（IMG：販売管理 &gt; 基本機能 &gt; 在庫確認と所要量転送 &gt; 所要量転送）</td></tr>
+<tr><td>計画方針グループ（strategy group）</td><td>品目マスタから「どの戦略（＝どの所要量タイプ）を使うか」を引く鍵</td><td><code>20</code>（受注生産）／<code>25</code>（VC 受注生産）／<code>82</code>（組立処理）</td><td>品目マスタ MRP3；定義は <code>OPPJ</code> / <code>OPPS</code></td></tr>
+<tr><td>所要量タイプの決定順位</td><td>①まとめ品目マスタの戦略グループ → ②（戦略グループが無い場合）明細カテゴリ + MRPタイプ（<code>OVZI</code>）</td><td>—</td><td><code>OVZI</code>（「所要量タイプの起点」列の値で制御）</td></tr>
+</table>
+<div class="box info"><b class="t">実機での確認手順（覚えておくと便利）</b>
+受注明細を保存 → <code>VA03</code> → 明細行 → ダブルクリックで明細詳細 → 「納入日程行」タブ →
+右側の項目に<b>所要量タイプ</b>と<b>所要量クラス</b>が表示されます（表示されない場合は項目の表示設定／ユーザパラメータを調整）。
+さらに <code>MD04</code> を見れば「その所要量が実際に MRP に届いたか」が一目で分かります＝<b>所要量転送の最終確認は MD04</b>。</div>
+
+<h2 id="tables">6. 相关表与字段（排障时用得到）</h2>
+<table class="tbl wide">
+<tr><th>表</th><th>内容</th><th>MTO で見る項目（例）</th></tr>
+<tr><td><code>VBAK</code> / <code>VBAP</code></td><td>受注ヘッダ / 明細</td><td>VBAP-PSTYV（明細カテゴリ）、<b>VBAP-SOBKZ（特別在庫 = E）</b>、VBAP-WERKS（プラント）</td></tr>
+<tr><td><code>VBEP</code></td><td>納入日程行</td><td>納入日付・納入数量、所要量転送の結果（所要量タイプは納入日程行カテゴリ側の定義 <code>TVEP-BDART</code> を参照）</td></tr>
+<tr><td><code>VBBS</code> / <code>VBBE</code></td><td>受注在庫の集計 / 個別所要量</td><td>受注明細ごとの在庫・所要量。MD04 の元情報</td></tr>
+<tr><td><code>PLAF</code></td><td>計画手配</td><td>特殊在庫（受注在庫）区分・受注番号・明細</td></tr>
+<tr><td><code>AUFK</code> / <code>AFKO</code> / <code>AFPO</code></td><td>指図ヘッダ / ヘッダ補助 / 明細</td><td>AFPO-KDAUF・KDPOS（受注番号・明細）＝ <b>指図が受注に紐づいている証拠</b>、AFPO-PSMNG（生産数量）</td></tr>
+<tr><td><code>RESB</code></td><td>予約（部品の所要）</td><td>指図からの部品所要量（261 出庫の元）</td></tr>
+<tr><td><code>MSKA</code> / <code>MSPR</code></td><td>特別在庫数量（E：受注在庫 / Q：プロジェクト在庫）</td><td>SOBKZ = E、KDAUF / KDPOS（受注番号・明細）、数量・金額</td></tr>
+<tr><td><code>MSEG</code>・<code>MKPF</code>（S/4HANA では <code>MATDOC</code>）</td><td>在庫伝票（明細 / ヘッダ）</td><td>移動タイプ 261 / 101 / 601、特別在庫 E、受注番号</td></tr>
+<tr><td><code>COEP</code> / <code>COEJ</code></td><td>CO の明細（製造指図の原価）</td><td>受注在庫への入庫金額、差異</td></tr>
+</table>
+<p class="mini">表名与字段名会随版本/追加项目不同（例：S/4HANA では在庫伝票が <code>MATDOC</code> に一本化され、<code>MSEG</code>/<code>MKPF</code> は互換ビュー相当になります）。<code>SE16N</code> / <code>SE11</code> で必ず自分の環境で確認してください。</p>
+
+<h2 id="s4">7. S/4HANA 的变更点（配置与操作的影响）</h2>
+<table class="tbl wide">
+<tr><th>项目</th><th>ECC の世界</th><th>S/4HANA</th><th>本教程への影響</th></tr>
+<tr><td>MRP 実行</td><td><code>MD01</code>（全体）/ <code>MD02</code>（単品目）/ <code>MD03</code></td><td><b>MRP Live（<code>MD01N</code>）</b>が基本。<code>MD02</code> は単品目用に残る。<code>MD03</code>（単品目バッチ）は提供されない。MRP リストは作成されない（<code>MD04</code> を使う）</td><td>练习② 以 <code>MD01N</code> 为主、<code>MD02</code> 为辅。参考 KBA 2640393 / Note 1914010</td></tr>
+<tr><td>在庫伝票の構造</td><td><code>MKPF</code> + <code>MSEG</code>（別テーブル）</td><td><code>MATDOC</code> に一本化</td><td><code>SE16N</code> で在庫伝票を見るときの第一候補が <code>MATDOC</code></td></tr>
+<tr><td>受注在庫の評価</td><td>評価付／評価なしの両方が可能</td><td>評価付販売伝票在庫が標準的な前提（<b>所要量クラス 046、評価区分 M</b>、原価計算 B）</td><td>若你的系统用 <code>040</code> 系，请先确认在庫が評価されるか（<code>MMBE</code> の金額欄 / <code>S_ALR</code> 系レポート）</td></tr>
+<tr><td>MRP エリア</td><td>導入は任意</td><td>MRP エリア（プラント + 保管場所/下請）の利用が一般的</td><td>若品目在 MRP エリア下，MRP 対象が変わる。<code>MM02</code> MRP4 の MRP エリア設定を確認</td></tr>
+<tr><td>操作界面</td><td>GUI トランザクション</td><td>Fiori 应用与 GUI 事务码并存（On-Premise）。Public Cloud は Fiori 应用主体</td><td>本教程用 GUI 事务码写手顺，Public Cloud 的对应应用见 <a href="config.html#cloud">差异对照</a></td></tr>
+</table>
+
+<h2 id="mistake">8. 十个常见误解（也是测试题的重点）</h2>
+<ol class="steps">
+  <li><b>「受注生産 就用 明細カテゴリグループ 0002」</b>——不准确。0002（LUMF）在标准里属于 BOM／可配置品相关的组（ERLA 是头品、LUMF 是组件侧）。
+  平时的 MTO 做法是<b>品目カテゴリグループ维持 0001（NORM）</b>，靠 <b>戦略グループ 20 + 個別所要量</b> 实现 MTO；要靠明細カテゴリ区分时再自建 <code>Z001/ZTAK</code>。</li>
+  <li><b>「TAK 是 SAP 标准明細カテゴリ」</b>——不是。SAP Note 2708455 明确：<i>Item category TAK (make-to-order) is not defined in the standard SAP system</i>。很多教材里的 TAK 是项目自建或旧版遗留。</li>
+  <li><b>「只要品目マスタ MRP4 设成個別所要量就行」</b>——不够还要（a）所要量クラス有<b>個別在庫</b>的设定、（b）明細カテゴリの<b>特別在庫 E</b>（或等价的决定路径）。三点齐全才是完整的 E 特在。</li>
+  <li><b>「加个 MRP タイプ ND 就不跑 MRP，正好做受注生産」</b>——错。ND（計画なし）会让你的受注需求<b>产生不了计划订单</b>。MTO 需要 MRP 対象（如 <code>PD</code>）。</li>
+  <li><b>「受注在庫は必ず評価される」</b>——取决于设定（所要量クラスの評価区分）。S/4HANA Cloud 的 MTO 场景是<b>評価付</b>前提（<code>046</code> / 評価 M）；On-Premise 用 <code>040</code> 系时可能是非評価。</li>
+  <li><b>「在庫は自由在庫に入っても、出荷時に受注へ引き当てれば同じ」</b>——不可。自由在庫に 101 入庫した時点で别的受注也能抢占，MTO 的「按单」就失效了。</li>
+  <li><b>「所要量転送（納入日程行カテゴリ）は既定で ON」</b>——不一定。很多自建纳期行类别会关掉在庫確認或所要量転送；症状是 MD04 里什么都看不到。</li>
+  <li><b>「MRP 跑完就一定有计划订单」</b>——还要看純所要量（在手库存、入库预定、批量）、手配タイプ（E/F/X）、ロットサイズ、以及<b>その所要量が MRP 対象か</b>。</li>
+  <li><b>「CO08 与 CO01 一样，只是多输个受注」</b>——CO08 的意义正是<b>与受注明細建立关联</b>；用 CO01 建出来的指图不会自动落到受注在庫。</li>
+  <li><b>「差异只有财务关心」</b>——MTO 的差异（標準原価 vs 実績）产生在指图上，<code>KKS1</code>/<code>KO88</code> 处理结果直接影响受注在庫出货时的销售成本。SD 顾问也要看得懂这最后一公里。</li>
+</ol>
+
+<div class="box ok"><b class="t">下一步</b>
+→ <a href="config.html">练习配置手顺</a>（C0〜C16）或 → <a href="handson-1.html">练习① 受注と所要量</a>。</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SD 受注生産（MTO）实战训练站</h5><p>概念页：机制、决定链、相关表与 S/4HANA 变更点。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 受注と所要量</a><br><a href="handson-2.html">② MRP と製造指図</a><br><a href="handson-3.html">③ 出庫と入庫</a><br><a href="handson-4.html">④ 出荷と請求</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="config.html">练习配置手顺</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

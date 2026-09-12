@@ -1,0 +1,721 @@
+{
+ "handson-3.html": {
+  "3-1 初期画面と照会": [
+   {
+    "tx": "VC/2",
+    "title": "Sales Summary",
+    "kind": "form",
+    "fields": [
+     [
+      "Customer number",
+      "1000",
+      true
+     ],
+     [
+      "Sales organization",
+      "1000",
+      true
+     ],
+     [
+      "Customer number to",
+      "1000"
+     ],
+     [
+      "Distribution channel",
+      ""
+     ],
+     [
+      "Dynamic selections",
+      ""
+     ],
+     [
+      "Division",
+      ""
+     ]
+    ],
+    "note": "動画の初期画面（メニューは Program）。実行するとメニューが Sales summary に変わり、ツールバーに Info block / View が出る。Dynamic selections は照会項目を足す入口。",
+    "status": [
+     "info",
+     "Choose Execute (F8) to display the sales summary for customer 1000"
+    ],
+    "status_right": "SAP Training System / 800 / trn03 / OVR",
+    "toolbar": [
+     [
+      "↩",
+      "Enter"
+     ],
+     [
+      "▶",
+      "Exec"
+     ],
+     [
+      "⇦",
+      "Back"
+     ]
+    ],
+    "callouts": [
+     [
+      "得意先 1000 は動画のデモ値（概念スライドの 5264 = FA IDES は例）。自分の得意先に読み替える",
+      350,
+      183,
+      "得意先を読み替える"
+     ],
+     [
+      "販売エリアで絞ると対象の伝票が限定される。まず絞らずに実行するのが切り分けの定石",
+      950,
+      183,
+      "まず絞らずに実行"
+     ]
+    ],
+    "caption": "VC/2 の初期（選択）画面：得意先 1000 と販売エリアを指定する（到達経路は 3 通り）",
+    "tip": "自システムでの確認：コマンドフィールドに VC/2 ／ SAP メニュー → Sales and Distribution → Sales Support → Information system ／ 受注（VA03）の Environment メニュー「Sales Summary」の 3 通りを試す。実行後のタイトルは Sales Summary for Customer 0000001000 Becker Berlin。",
+    "aria": "VC/2 の初期（選択）画面。Customer number 1000、Sales organization 1000 を入力し、Distribution channel・Division・Dynamic selections は空の状態。"
+   }
+  ],
+  "3-2 情報ビュー": [
+   {
+    "tx": "VC/2",
+    "title": "Sales Summary",
+    "kind": "table",
+    "table": {
+     "title": "Info View Selection",
+     "columns": [
+      "ID",
+      "View"
+     ],
+     "widths": [
+      0.7,
+      3.3
+     ],
+     "rows": [
+      [
+       "001",
+       "Complete information"
+      ],
+      [
+       "002",
+       "Address/partner info"
+      ],
+      [
+       "003",
+       "Statistical info"
+      ],
+      [
+       "005",
+       "Telesales"
+      ],
+      [
+       "100",
+       "Credit Information"
+      ],
+      [
+       "101",
+       "Last SD Documents"
+      ],
+      [
+       "102",
+       "Backorders"
+      ],
+      [
+       "103",
+       "Quick Info"
+      ],
+      [
+       "900",
+       "New Internet cust."
+      ]
+     ],
+     "selected": 5,
+     "footer": "動画の View ボタンで開くダイアログ。001 が既定、101 が受注と請求の一覧、103 が要点だけ。"
+    },
+    "note": "列見出しは ID / View（実機の画面準拠）。名称は Customizing や言語で変わる環境があるので、ID で覚えるのが確実。",
+    "status": [
+     "info",
+     "Select the info views to be displayed"
+    ],
+    "status_right": "SAP Training System / 800 / trn03 / OVR",
+    "toolbar": [
+     [
+      "↩",
+      "Enter"
+     ],
+     [
+      "▤",
+      "Info"
+     ],
+     [
+      "▦",
+      "View"
+     ],
+     [
+      "⇦",
+      "Back"
+     ]
+    ],
+    "callouts": [
+     [
+      "001 が既定（Standard フラグ付き）。ここに並ぶのは Report Views に定義されたビューだけ（出なければ C5 ①/③）",
+      350,
+      183,
+      "001 が既定ビュー"
+     ],
+     [
+      "101 が Last SD Documents。自分の练习受注が出るかを見る本命のビュー",
+      950,
+      313,
+      "自分の受注を探す"
+     ]
+    ],
+    "caption": "Info View Selection：ビュー 001〜900 の一覧（実機ではユーザ固有の 900 も並ぶ）",
+    "tip": "自システムでの確認：001 しか出ないときは「Maintain the Report Views for a User」に自分が割り当てられているかを見る。ビューを選んでも中身が空なら統計更新（文書カテゴリ C Order）を疑う。",
+    "aria": "Info View Selection ダイアログ。ID と View の 2 列に 001〜900 の 9 件が並び、101 Last SD Documents の行が選択されている。"
+   }
+  ],
+  "3-3 与信情報": [
+   {
+    "tx": "VC/2",
+    "title": "Sales Summary",
+    "window_title": "VC/2   Sales Summary for Customer 0000001000 Becker Berlin",
+    "kind": "form",
+    "section": "Credit Information",
+    "fields": [
+     [
+      "Credit Limit",
+      "511,291.88 EUR"
+     ],
+     [
+      "Usage Level",
+      "1,472,653.29 EUR"
+     ],
+     [
+      "Delta",
+      "-961,361.41"
+     ],
+     [
+      "Consumption in %",
+      "288"
+     ],
+     [
+      "Receivables",
+      "835,166.13 EUR"
+     ],
+     [
+      "Special Liabilities",
+      "0.00 EUR"
+     ],
+     [
+      "Open Delivery Value",
+      "528,437.42 EUR"
+     ],
+     [
+      "Open Sales Order Val",
+      "109,049.74 EUR"
+     ],
+     [
+      "Open Bill. Doc. Val",
+      "0.00 EUR"
+     ]
+    ],
+    "note": "Payment history の 5 項目は与信チェックの内訳（売掛＋出荷済み未請求＋受注残）。金額は動画の例。",
+    "status": [
+     "warning",
+     "Credit limit exceeded for customer 1000: usage 288 %"
+    ],
+    "status_right": "SAP Training System / 800 / trn03 / OVR",
+    "toolbar": [
+     [
+      "↩",
+      "Enter"
+     ],
+     [
+      "▤",
+      "Info"
+     ],
+     [
+      "▦",
+      "View"
+     ],
+     [
+      "⇦",
+      "Back"
+     ]
+    ],
+    "callouts": [
+     [
+      "Credit Limit は FD32 で設定した与信限度額。Sales Summary は照会なのでここでは変更できない",
+      350,
+      183,
+      "FD32 で設定した値"
+     ],
+     [
+      "Usage Level − Credit Limit = Delta。マイナスは超過＝新しい受注に与信ブロックが付き得る状態",
+      350,
+      237,
+      "マイナス＝超過"
+     ]
+    ],
+    "caption": "ビュー 100（Credit Information）：与信限度 511,291.88 EUR に対し使用額 1,472,653.29 EUR（動画 25:25 付近）",
+    "tip": "自システムでの確認：FD32 で Credit Limit / Credit limit used を突き合わせる。与信ブロックが出ないときは OVA8（与信管理の有効化）・OB45（与信管理領域）・得意先の与信区分を疑う（不完全性エラーは保存時に出るので症状のタイミングが違う）。",
+    "aria": "Sales Summary の Credit Information ブロック。Credit Limit 511,291.88 EUR、Usage Level 1,472,653.29 EUR、Delta -961,361.41、Consumption in % 288 と Payment history の内訳が並ぶ。"
+   },
+   {
+    "tx": "FD32",
+    "title": "Change Customer Credit Management",
+    "kind": "form",
+    "fields": [
+     [
+      "Customer",
+      "1000",
+      true
+     ],
+     [
+      "Credit control area",
+      "1000",
+      true
+     ],
+     [
+      "Credit limit",
+      "511,291.88 EUR"
+     ],
+     [
+      "Credit limit used",
+      "1,472,653.29 EUR"
+     ]
+    ],
+    "note": "動画には FD32 の画面は出てこない（手順書が示す照会先）。項目名と並びはリリースにより異なるため、Credit limit と Credit limit used の 2 つだけを突き合わせる。",
+    "status": [
+     "success",
+     "Customer 1000 credit data was displayed"
+    ],
+    "status_right": "SAP Training System / 800 / trn03 / OVR",
+    "toolbar": [
+     [
+      "↩",
+      "Enter"
+     ],
+     [
+      "⇦",
+      "Back"
+     ],
+     [
+      "✖",
+      "Cancel"
+     ]
+    ],
+    "callouts": [
+     [
+      "Credit limit が Sales Summary の Credit Limit の出所。値がずれるときは与信管理領域の取り違えを疑う",
+      350,
+      213,
+      "値の出所はここ"
+     ],
+     [
+      "Credit limit used が Usage Level と対応する（売掛＋出荷残＋受注残の合計）",
+      950,
+      213,
+      "Usage Level と一致"
+     ]
+    ],
+    "caption": "FD32（得意先の与信）：Sales Summary の与信値の出所を確認しに行く画面",
+    "tip": "自システムでの確認：FD32 で得意先と与信管理領域を指定。与信管理の有効化は OVA8、与信管理領域の定義は OB45。与信ステータスの照会は VA03 のヘッダ、与信解除の入口は VKM1。",
+    "aria": "FD32 の与信照会画面。Customer 1000、Credit control area 1000、Credit limit 511,291.88 EUR、Credit limit used 1,472,653.29 EUR を表示している。"
+   }
+  ],
+  "3-4 Last SD documents": [
+   {
+    "tx": "VC/2",
+    "title": "Sales Summary",
+    "kind": "table",
+    "table": {
+     "title": "Last SD documents",
+     "columns": [
+      "Order / Invoice",
+      "Date",
+      "Net Value",
+      "Status"
+     ],
+     "widths": [
+      1.3,
+      0.9,
+      1.3,
+      1.4
+     ],
+     "rows": [
+      [
+       "11076",
+       "13.05.07",
+       "100.00 EUR",
+       "Open"
+      ],
+      [
+       "11075",
+       "13.05.07",
+       "100.00 EUR",
+       "Open"
+      ],
+      [
+       "11074",
+       "13.05.07",
+       "100.00 EUR",
+       "Open"
+      ],
+      [
+       "11072",
+       "16.03.06",
+       "52,000.00 EUR",
+       "Open"
+      ],
+      [
+       "10765",
+       "21.01.05",
+       "300,000.00 EUR",
+       "Open"
+      ],
+      [
+       "90035240",
+       "21.01.05",
+       "30,000.00 EUR",
+       "Completed"
+      ],
+      [
+       "90033630",
+       "08.04.03",
+       "24,000.00 EUR",
+       "Being processed"
+      ],
+      [
+       "90033619",
+       "28.03.03",
+       "60,000.00 EUR",
+       "Being processed"
+      ],
+      [
+       "90023097",
+       "24.11.00",
+       "536,088.60 EUR",
+       "Being processed"
+      ]
+     ],
+     "selected": 0,
+     "footer": "受注 5 件はすべて Open、請求書 4 件は Completed 1 件・Being processed 3 件。自分の受注がここに出るかが最初の確認点。"
+    },
+    "note": "実機では受注（Orders）と請求書（Invoices）の見出しで区分される。名称と並びは環境により異なる。受注は 5 桁、請求書は 9 で始まる 8 桁。",
+    "status": [
+     "info",
+     "5 sales orders and 4 billing documents displayed"
+    ],
+    "status_right": "SAP Training System / 800 / trn03 / OVR",
+    "toolbar": [
+     [
+      "↩",
+      "Enter"
+     ],
+     [
+      "▤",
+      "Info"
+     ],
+     [
+      "▦",
+      "View"
+     ],
+     [
+      "⇦",
+      "Back"
+     ]
+    ],
+    "callouts": [
+     [
+      "受注は Status が Open。自分の练习① の受注がここに出れば SIS の統計更新は生きている",
+      350,
+      470
+     ],
+     [
+      "請求書は番号の体系が違う（8 桁・9 始まり）。Completed と Being processed は請求処理の進み具合",
+      950,
+      540
+     ]
+    ],
+    "caption": "ビュー 101（Last SD Documents）：受注 5 件と請求書 4 件の一覧（動画 31:53 付近）",
+    "tip": "自システムでの確認：受注番号をダブルクリックすると VA03 の伝票照会へ飛べる（ドリルダウン）。空のときは「Last Documents for a Customer」で C Order の統計更新を確認する。",
+    "aria": "Sales Summary の Last SD documents ブロック。受注 11076 / 11075 / 11074 / 11072 / 10765 と請求書 90035240 / 90033630 / 90033619 / 90023097 が日付・正味価額・ステータス付きで並ぶ。"
+   },
+   {
+    "tx": "VC/2",
+    "title": "Sales Summary",
+    "kind": "table",
+    "table": {
+     "title": "Statistical Information",
+     "columns": [
+      "Key figure",
+      "2007",
+      "2006"
+     ],
+     "widths": [
+      2.8,
+      1.1,
+      1.1
+     ],
+     "rows": [
+      [
+       "Net val. incoming ord.",
+       "300.00",
+       "52,000.00 EUR"
+      ],
+      [
+       "Net sales",
+       "0.00",
+       "0.00 EUR"
+      ],
+      [
+       "Open net val. orders",
+       "300.00",
+       "52,000.00 EUR"
+      ],
+      [
+       "Net val. inc. returns",
+       "",
+       ""
+      ],
+      [
+       "Net val. credit memos",
+       "",
+       ""
+      ],
+      [
+       "Number of order items",
+       "",
+       ""
+      ],
+      [
+       "No. of returns items",
+       "",
+       ""
+      ]
+     ],
+     "selected": 0,
+     "footer": "列は 2007 / 2006 の年度比較。動画で読み取れる数値は 3 行分だけなので、空欄の行は自環境の値で埋める。"
+    },
+    "note": "動画 32:09 のビュー 003。数値は 300.00 / 52,000.00 EUR など動画の例。空欄は実機で選択ダイアログに隠れて数値が読めない行で、行との対応は自環境で確認する。",
+    "status": [
+     "info",
+     "Statistical information: fiscal year 2007 compared with fiscal year 2006"
+    ],
+    "status_right": "SAP Training System / 800 / trn03 / OVR",
+    "toolbar": [
+     [
+      "↩",
+      "Enter"
+     ],
+     [
+      "▤",
+      "Info"
+     ],
+     [
+      "▦",
+      "View"
+     ],
+     [
+      "⇦",
+      "Back"
+     ]
+    ],
+    "callouts": [
+     [
+      "2007 と 2006 の 2 期比較。前年との差で受注と売上の傾向を読む（ビュー 003 の役割）",
+      350,
+      183,
+      "年度比較で読む"
+     ],
+     [
+      "空欄は動画で数値が読めない行。自分の環境の統計データで埋めて、指標の定義を確認する",
+      350,
+      261,
+      "数値は自環境で確認"
+     ]
+    ],
+    "caption": "ビュー 003（Statistical info）：2007 と 2006 の年度比較（動画 32:07〜32:09 付近）",
+    "tip": "自システムでの確認：行の名称は動画の表記（Net value of incoming orders ／ Net sales ／ Open net value of orders ／ Net value of inc. returns ／ Net value of credit memos ／ Number of order items ／ No. of returns items）を図では短縮している。数値が出ないときはビュー 003 の割当（② Maintain Views for an Evaluation）と統計ファイルの更新を疑う（初期構築は講師に確認）。",
+    "aria": "Sales Summary の Statistical Information ブロック。Net value of incoming orders などの指標が 2007 と 2006 の 2 列で比較され、300.00 / 52,000.00 EUR などの値が入っている。"
+   }
+  ],
+  "3-5 出荷伝票へのドリルダウン": [
+   {
+    "tx": "VL03N",
+    "title": "Delivery 80007832 Display: Overview",
+    "kind": "table",
+    "tabs": [
+     "Item Overview",
+     "Picking",
+     "Loading",
+     "Transport",
+     "Status Overview",
+     "Goods Movement Data"
+    ],
+    "active_tab": 0,
+    "table": {
+     "title": "All items",
+     "columns": [
+      "Item",
+      "Material",
+      "Delivery quantity",
+      "SU",
+      "ItCa"
+     ],
+     "widths": [
+      0.6,
+      1.0,
+      1.5,
+      0.5,
+      0.7
+     ],
+     "rows": [
+      [
+       "10",
+       "P-102",
+       "26",
+       "PC",
+       "TAN"
+      ],
+      [
+       "20",
+       "P-104",
+       "39",
+       "PC",
+       "TAN"
+      ]
+     ],
+     "selected": 0,
+     "footer": "Outbound deliv. 80007832 / Ship-to party 1000 Becker Berlin / Document Date 22.11.2000 / Planned GI 21.11.2000 / Actual GI date 23.11.2000"
+    },
+    "note": "タブは Item Overview が既定。Status Overview で「出庫過帳済みか」を見るのが定番。PGI ボタンはグレー＝実行不可。",
+    "status": [
+     "warning",
+     "Goods issue has already been posted for delivery 80007832"
+    ],
+    "status_right": "SAP Training System / 800 / trn03 / OVR",
+    "toolbar": [
+     [
+      "↩",
+      "Enter"
+     ],
+     [
+      "▤",
+      "PGI"
+     ],
+     [
+      "⇦",
+      "Back"
+     ]
+    ],
+    "callouts": [
+     [
+      "明細は受注からそのまま引き継がれる。数量が受注と違えばピッキングで差が出ている",
+      350,
+      287,
+      "受注と数量を突き合わせる"
+     ],
+     [
+      "番号 80007832 は動画の教育用データ。計画 21.11.2000 に対し実績 23.11.2000 の差が「遅延」の見方",
+      350,
+      313,
+      "自システムには無い番号"
+     ]
+    ],
+    "caption": "VL03N：動画の出荷伝票 80007832（明細 P-102 26 PC・P-104 39 PC、タブは 6 つ）",
+    "tip": "自システムでの確認：自分の出荷伝票番号で VL03N を開き、Status Overview タブと PGI（Post goods issue）ボタンの活性／非活性を見る。実機の明細列は他に Description・Open quantity・Val. type がある（図では省略）。受注 ⇄ 出荷伝票は VA03 の伝票フローから双方向に辿れる（出荷伝票は练习④ で作る）。",
+    "aria": "VL03N の出荷伝票照会。出荷伝票 80007832、タブは Item Overview が選択され、明細 10 P-102 26 PC（ItCa TAN）と 20 P-104 39 PC が表示されている。"
+   }
+  ],
+  "3-6 出てこないときの切り分け": [
+   {
+    "tx": "VC/2",
+    "title": "Sales Summary",
+    "kind": "table",
+    "table": {
+     "title": "症状 → 見る場所 → 設定（SIS Customizing の 4 画面）",
+     "columns": [
+      "症状",
+      "見る場所",
+      "設定"
+     ],
+     "widths": [
+      1.5,
+      1.4,
+      1.6
+     ],
+     "rows": [
+      [
+       "情報ビューが 1 つしか出ない",
+       "VC/2 の View 一覧（割当）",
+       "③ Report Views / User"
+      ],
+      [
+       "ビューはあるがブロックが少ない",
+       "ビューの中身（割当）",
+       "② Views for Evaluation"
+      ],
+      [
+       "特定のビューが無い",
+       "ビューの定義そのもの",
+       "① Report Views"
+      ],
+      [
+       "Last SD documents が空",
+       "伝票の有無 → 統計更新",
+       "④ Last Docs / Customer"
+      ],
+      [
+       "統計情報（年度比較）が出ない",
+       "ビュー 003 の割当",
+       "①②＋統計の初期構築"
+      ],
+      [
+       "与信ブロックが出ない",
+       "与信管理の有効化",
+       "OB45 / OVA8 / FD32"
+      ]
+     ],
+     "selected": 0,
+     "footer": "1 か所だけ変えて（例：自分を ③ に追加）VC/2 の表示がどう変わるかを確認する。"
+    },
+    "note": "動画の 4 画面（27:06〜28:29）と自分の環境の設定を対応づける。症状 → 原因（設定）→ 証拠（画面）→ 処置 を 1 行で書ければ切り分けができる。",
+    "status": [
+     "warning",
+     "Statistical update is not active for document category C (order)"
+    ],
+    "status_right": "SAP Training System / 800 / trn03 / OVR",
+    "toolbar": [
+     [
+      "↩",
+      "Enter"
+     ],
+     [
+      "⌕",
+      "Search"
+     ],
+     [
+      "⇦",
+      "Back"
+     ]
+    ],
+    "callouts": [
+     [
+      "まず症状を特定する。症状が決まれば疑う画面が 1 つに絞られる（＝切り分けの型）",
+      350,
+      183,
+      "症状から引く"
+     ],
+     [
+      "「Last SD documents が空」の最頻出原因は C Order の統計更新 OFF。④ の画面で確認する",
+      950,
+      261,
+      "C Order の統計更新"
+     ]
+    ],
+    "caption": "症状から疑う画面を引く：Sales Summary に出る内容は SIS の 4 画面の設定で決まる",
+    "tip": "自システムでの確認：SPRO → Sales and Distribution → Sales Support → Information System 配下の 4 画面。設定欄は正式名を短縮した（① Maintain Report Views ／ ② Maintain Views for an Evaluation ／ ③ Maintain the Report Views for a User ／ ④ Last Documents for a Customer）。与信は OB45・OVA8・FD32。",
+    "aria": "Sales Summary の切り分け表。症状（情報ビューが 1 つしか出ない、Last SD documents が空 など）と、見る場所・対応する Customizing 画面の対応が 6 行で並ぶ。"
+   }
+  ]
+ }
+}

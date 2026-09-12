@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概要 · SAP S/4HANA 日本語実習サイト（全モジュールの手順 + 実機画面）</title>
+<meta name="description" content="SAP S/4HANA 日本語実習サイト：425 ページの教材ドキュメント S4.docx を基に整理した 6 大モジュール 222 タスクの手順、IMG パス、T-code、ステップごとの操作と 1385 枚の実機画面スクリーンショットを収録。講師用、受講者用、自習テスト、トラブルシューティングのページも付属します。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/s4jp.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">S4</span><span class="txt">日本語実習サイト</span></a>
+    <nav class="main">
+      <a class="active" href="index.html">ホーム</a>
+      <a href="prep.html">準備</a>
+      <a href="fi.html">FI</a>
+      <a href="co.html">CO</a>
+      <a href="mm.html">MM</a>
+      <a href="pp.html">PP</a>
+      <a href="sd.html">SD</a>
+      <a href="tcode.html">T-code</a>
+      <a href="glossary.html">用語</a>
+      <a href="issues.html">トラブルシューティング</a>
+      <a href="tasks.html">索引</a>
+      <a href="instructor.html">講師</a>
+      <a href="worksheet.html">受講者</a>
+      <a href="quiz.html">自習テスト</a>
+    </nav>
+  </div>
+</header>
+<div class="hero"><div class="hero-inner">
+  <div class="kicker">SAP S/4HANA · 全モジュールの設定と操作 · <b>日本語版</b> · 教材ドキュメント <code>S4.docx</code> に基づく（1385 枚の埋め込み画像 / 425 ページ）</div>
+  <h1>SAP S/4HANA 日本語実習サイト</h1>
+  <p class="lead">本サイトは、425 ページの中国語 S/4HANA 教材ドキュメント（<code>S4.docx</code>）を<b>日本語に翻訳・再構成</b>した、オフラインで閲覧できる研修サイトです：
+  <b>6 大モジュール · 222 タスク · 879 手順ステップ · 1369 枚の実機操作画面</b>。
+  各タスクには<b>原教材の IMG 設定メニューパス（日本語訳 + 中国語原文）</b>、<b>教材に出てくる T-code</b>、<b>ステップごとの手順</b>、
+  そして<b>原教材の著者が実際のシステムでキャプチャした画面</b>（中国語インターフェース。赤い枠は著者が入力・選択すべき位置を示したものです）を掲載しています。</p>
+  <p class="lead"><b>画面は中国語のまま収録しています</b>（原教材の実機画面のため描き直していません）。日本語の手順と画面の中国語表示を結びつけるため、
+  各ステップに「原文（中国語）」の折りたたみ、各タスクの入力値表に「画面の中国語」列、
+  そして <a href="glossary.html">用語対照表（日本語 ⇔ 中国語画面）</a> を用意しました。</p>
+  <p class="lead">対象範囲：<b>準備作業（ログオン / SPRO の IMG 設定）→ 財務会計 FI → 管理会計 CO → 品目管理 MM →
+ 生産計画 PP → 販売管理 SD</b>。また、原教材ドキュメントの順序に従い、組織構造・マスタデータ・設定パラメータから業務処理・レポートに至るまで一連の流れをそのまま保持しています。</p>
+  <div class="toc">
+    <a href="#what">1. このサイトは何か</a>
+    <a href="#scale">2. 規模と構成</a>
+    <a href="#route">3. 学習ルート</a>
+    <a href="#cards">4. 6 つのモジュール</a>
+    <a href="#howto">5. ページの使い方</a>
+    <a href="#tools">6. 関連ページ（講師用／受講者用／自習テスト）</a>
+    <a href="#truth">7. 画面と設定値についての説明</a>
+    <a href="#sisters">8. 同じディレクトリの姉妹サイト</a>
+  </div></div></div>
+<div class="wrap">
+<main class="page"><article>
+<h2 id="what">1. このサイトとは</h2>
+<p>これは「概念の講義資料」ではなく、<b>そのまま真似して作れる操作マニュアル</b>です。原教材ドキュメント <code>S4.docx</code> の形態は
+「ひとまとまりの説明文 ＋ 一連の実機スクリーンショット」という形で、著者（原教材ドキュメントの署名は「馬老師学習ノート」）が各設定ポイントと各業務を画面で記録しています。
+当サイトはこの形態をそのまま残し、原教材では探しにくい 3 つの情報を追加しました：</p>
+<ul>
+<li><b>IMG 設定のパスを個別に抽出</b>（原教材ドキュメントでは 203 個のタスクでメニューパスが示されています）。クリックでコピーできるので、そのまま SPRO でたどれます。</li>
+<li><b>T-code を個別に抽出</b>（87 個のタスクの本文にトランザクションコードが登場します）、<a href="tcode.html">T-code / IMG パス早見表</a>にまとめています。</li>
+<li><b>タスク索引 + フィルタ</b>（<a href="tasks.html">222 個のタスク</a>）。モジュールまたはキーワード（タスク名、T-code）で絞り込めます。</li>
+</ul>
+<div class="box info"><b class="t">元の素材の形</b>
+原教材ドキュメントは「設定マニュアルの形式」で、説明は短めで重点は画面にあります。そのため本サイトの各手順ステップ = <b>原文の説明 + そのステップに対応する画面</b> としています。
+原文に文字がなく画面だけが掲載されているステップは、当サイトでは「前の画面のとおりに続けて操作（画面 N）」と表記し、推測で補うことはしません。</div>
+<h2 id="scale">2. 規模と構成</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>モジュール</th><th>タスク</th><th>手順ステップ</th><th>実機画面</th><th>IMG／業務（原教材ドキュメントの表記）</th></tr></thead><tbody><tr><td><a href="prep.html">準備作業 — システムへのログオンと IMG 設定への移動</a></td><td>2</td><td>5</td><td>5</td><td>0 / 0</td></tr><tr><td><a href="fi.html">財務会計 FI（Financial Accounting）</a></td><td>45</td><td>181</td><td>304</td><td>7 / 0</td></tr><tr><td><a href="co.html">管理会計 CO（Controlling）</a></td><td>34</td><td>126</td><td>206</td><td>3 / 1</td></tr><tr><td><a href="mm.html">品目管理 MM（Materials Management）</a></td><td>42</td><td>168</td><td>254</td><td>24 / 8</td></tr><tr><td><a href="pp.html">生産計画 PP（Production Planning）</a></td><td>51</td><td>220</td><td>297</td><td>8 / 17</td></tr><tr><td><a href="sd.html">販売管理 SD（Sales and Distribution）</a></td><td>48</td><td>179</td><td>303</td><td>29 / 7</td></tr></tbody><tfoot><tr><th>合計</th><th>222</th><th>879</th><th>1369</th><th>—</th></tr></tfoot></table></div>
+<div class="grid cards">
+  <div class="card"><b>1385</b><span>原教材ドキュメントに埋め込まれた画像の総数</span></div>
+  <div class="card"><b>1369</b><span>当サイトに収録した画面の参照</span></div>
+  <div class="card"><b>1209</b><span>重複を除いた画像ファイル</span></div>
+  <div class="card"><b>20.7 MB</b><span>画像サイズ（オフラインで利用可）</span></div>
+</div>
+<p>原教材ドキュメントに埋め込まれた 1385 枚の画像のうち、7 枚はアイコン／装飾（サイズ 90×14 以下）で、操作画面を構成しないため、当サイトでは除外しています。残りの 1369 か所の引用はすべて保持しています（同じ図を複数のステップで再利用する場合も、ファイルは 1 つだけ保存）。各画像の下には<b>原教材ドキュメントのファイル名</b>（例：<code>image1301.png</code>）とピクセルサイズが表示されているので、Word の原文と 1 枚ずつ照合できます。</p>
+<h2 id="route">3. 学習ロードマップ</h2>
+<p>原教材ドキュメントの順序そのものが、実行可能な一つのロードマップです —— 「会社の登録」から始めて、財務、原価、品目、生産、販売の
+エンタープライズ構造とマスタデータを設定してから業務を実行します。以下の順序どおりに進めることをお勧めします。飛ばさないでください：</p>
+<div class="grid cards"><div class="card"><b>1　準備</b><span>まずクライアントに接続し、SPRO の IMG 設定に入れるようにします</span><span class="dim">以降の設定はすべて SPRO で操作します。まずこの入口に慣れておきましょう。</span><a href="prep.html">準備 へ進む →</a></div><div class="card"><b>2　FI</b><span>財務会計 FI（組織構造 → 勘定 → 伝票 → 売掛・買掛 → レポート）</span><span class="dim">FI の組織構造（会社コード／勘定科目表／会計年度）は CO・MM・SD に共通する前提です。</span><a href="fi.html">FI へ進む →</a></div><div class="card"><b>3　CO</b><span>管理会計 CO（管理会計領域 → 原価センタ → 原価要素／作業タイプ → 配賦・按分 → 内部指図）</span><span class="dim">CO は FI の勘定と会社コードに依存するため、FI の後に置くのがいちばん自然です。</span><a href="co.html">CO へ進む →</a></div><div class="card"><b>4　MM</b><span>品目管理 MM（プラント／購買組織 → 品目マスタ → 自動記帳 → MRP → 購買プロセス）</span><span class="dim">MM は PP と SD のデータソースです：品目マスタ、プラント、保管場所。</span><a href="mm.html">MM へ進む →</a></div><div class="card"><b>5　PP</b><span>生産計画 PP（BOM／作業区／工順 → 原価見積 → MRP → 製造指図 → 決済）</span><span class="dim">PP では MM の品目と購買を使い、CO の原価要素と作業タイプも使います。</span><a href="pp.html">PP へ進む →</a></div><div class="card"><b>6　SD</b><span>販売管理 SD（販売エリア → 価格設定／税 → マスタデータ → 見積→受注→納入→請求）</span><span class="dim">SD は最後に位置します。前の段階で整えた品目、得意先、勘定、更新グループを消費するためです。</span><a href="sd.html">SD へ進む →</a></div></div>
+<h2 id="cards">4. 6 つのモジュール</h2>
+<div class="grid cards"><div class="card"><b>準備 · 準備作業 — システムへのログオンと IMG 設定への移動</b><span>準備作業 · クライアントログオン · SPRO の IMG 設定入口</span><span class="dim">2 タスク · 5 ステップ · 5 画面</span><span class="tags"></span><a href="prep.html">モジュールの手順を開く →</a></div><div class="card"><b>FI · 財務会計 FI</b><span>財務会計 · 組織構造 · 勘定マスタ · 売掛金・買掛金 · 財務諸表</span><span class="dim">45 タスク · 181 ステップ · 304 画面</span><span class="tags"><span class="tag gray">FS00</span> <span class="tag gray">FB50</span> <span class="tag gray">FB03</span> <span class="tag gray">FS10N</span> <span class="tag gray">FD01</span> <span class="tag gray">FK01</span> <span class="tag gray">FB70</span> <span class="tag gray">FD10N</span></span><a href="fi.html">モジュールの手順を開く →</a></div><div class="card"><b>CO · 管理会計 CO</b><span>管理会計 · 原価センタ · 原価要素 · 作業タイプ · 配賦・按分 · 内部指図</span><span class="dim">34 タスク · 126 ステップ · 206 画面</span><span class="tags"><span class="tag gray">OX19</span> <span class="tag gray">OKEON</span> <span class="tag gray">KA01</span> <span class="tag gray">KA06</span> <span class="tag gray">KL01</span> <span class="tag gray">KP26</span> <span class="tag gray">FB60</span> <span class="tag gray">FB50</span></span><a href="co.html">モジュールの手順を開く →</a></div><div class="card"><b>MM · 品目管理 MM</b><span>品目管理 · 組織構造 · 品目マスタ · 自動記帳 · MRP · 購買プロセス</span><span class="dim">42 タスク · 168 ステップ · 254 画面</span><span class="tags"><span class="tag gray">MM60</span> <span class="tag gray">MK01</span> <span class="tag gray">ME11</span> <span class="tag gray">MM02</span> <span class="tag gray">FS00</span> <span class="tag gray">MD03</span> <span class="tag gray">MD04</span> <span class="tag gray">ME51N</span></span><a href="mm.html">モジュールの手順を開く →</a></div><div class="card"><b>PP · 生産計画 PP</b><span>生産計画 · BOM · 作業区 · 工順 · 原価見積 · 製造指図</span><span class="dim">51 タスク · 220 ステップ · 297 画面</span><span class="tags"><span class="tag gray">CS01</span> <span class="tag gray">CS15</span> <span class="tag gray">CR11</span> <span class="tag gray">CR01</span> <span class="tag gray">KP26</span> <span class="tag gray">CA01</span> <span class="tag gray">CA02</span> <span class="tag gray">PC01</span></span><a href="pp.html">モジュールの手順を開く →</a></div><div class="card"><b>SD · 販売管理 SD</b><span>販売管理 · 販売エリア · 価格設定 · パートナ · 販売プロセス · 請求</span><span class="dim">48 タスク · 179 ステップ · 303 画面</span><span class="tags"><span class="tag gray">RVAA01</span> <span class="tag gray">MM01</span> <span class="tag gray">VK11</span> <span class="tag gray">VD01</span> <span class="tag gray">VD02</span> <span class="tag gray">VA21</span> <span class="tag gray">VL01N</span> <span class="tag gray">VF01</span></span><a href="sd.html">モジュールの手順を開く →</a></div></div>
+<h2 id="howto">5. ページの使用説明</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>ページ上で見えるもの</th><th>意味</th></tr></thead><tbody>
+<tr><td><span class="fb">IMG 設定</span> / <span class="fb img">業務処理</span></td><td>原教材ドキュメントが示す設定／操作の性質です：IMG 設定 = IMG カスタマイズ（SPRO）、業務処理 = 日常の業務トランザクション。表示のないタスクは原教材に説明がないため、タスク名から判断してください。</td></tr>
+<tr><td><b>IMG パス（IMG 設定のメニュー）</b></td><td>原教材ドキュメントに示されたメニュー階層を、<code>→</code> で統一して区切っています。クリックするとコピーできます。</td></tr>
+<tr><td><span class="tc">T-code</span></td><td>そのタスクの本文に登場するトランザクションコード（原教材ドキュメントで著者が直接示したもの）。</td></tr>
+<tr><td><b>手順ステップ（番号の丸印）</b></td><td>原教材の順序に沿った抜粋です：1 ステップ = 1 つの説明 + そのステップの画面。意味が不明な「前の画面のとおり続行」= 原教材に画面だけがあり文字がない箇所です。</td></tr>
+<tr><td><b>画面 N</b></td><td>この画面が原教材ドキュメントに登場する順番（1 から）。Word の原文と照合するのに使えます。</td></tr>
+<tr><td><b>教材ノート / 原理の説明 / つまずき注意</b></td><td>原教材ドキュメントの「馬老師学習ノート」や「解説：…」といった記述を、本サイトでは性質ごとに色分けして表示しています。エラーを含むものは<a href="issues.html">トラブルシューティングと注意点</a>も参照してください。</td></tr>
+<tr><td>画面をクリック</td><td>ライトボックスで拡大：1× / 2× / 3×、ESC で閉じます。画像を保存すればそのまま講義資料に使えます。</td></tr>
+</tbody></table></div>
+<h2 id="tools">6. 関連ページ（講師用 / 受講者用 / 自習テスト）</h2>
+<div class="grid cards">
+<div class="card"><b>タスク索引（222 タスク）</b><span><a href="tasks.html">tasks.html</a> — モジュールまたはキーワード（タスク名 / T-code）で絞り込み、任意のタスクの手順に進めます。</span></div>
+<div class="card"><b>T-code と IMG パス早見表</b><span><a href="tcode.html">tcode.html</a> — ドキュメントに登場するすべてのトランザクションコード + 203 件の IMG メニューパス。</span></div>
+<div class="card"><b>トラブルシューティングと注意点</b><span><a href="issues.html">issues.html</a> — 原教材ドキュメントに記録されたエラー現象と対処方法（税コード J1/FS217、評価クラスと BSX、OBYC、VL01N の日付、CK11N/CK24 など）。</span></div>
+<div class="card"><b>用語対照表（日本語 ⇔ 中国語画面）</b><span><a href="glossary.html">glossary.html</a> — 日本語の手順と中国語画面の表示を結びつける対照表。基本操作・SAP 用語・IMG パスの対照を収録。</span></div>
+<div class="card"><b>講師用</b><span><a href="instructor.html">instructor.html</a> — 講義の進め方、時間配分、解説の順序、必ず出題する問答と採点の推奨事項です。</span></div>
+<div class="card"><b>受講者用（記入表）</b><span><a href="worksheet.html">worksheet.html</a> — 222 タスクのチェック進捗表 + 自分のシステムでの設定値を記録する欄。そのまま印刷できます。</span></div>
+<div class="card"><b>自習テスト（30 題）</b><span><a href="quiz.html">quiz.html</a> — T-code、IMG パス、IMG／業務の判断、トラブルシューティングを網羅する自動採点テストです（合格ラインは 75%）。</span></div>
+</div>
+<h2 id="truth">7. 画面と設定値についての説明</h2>
+<div class="box ok"><b class="t">画面は実機スクリーンショットであり、イメージ図ではありません</b>
+当サイトの操作画面はすべて、原教材ドキュメント <code>S4.docx</code> で著者が実際の S/4HANA システムでキャプチャした中国語インターフェースの画面です。
+当サイトは抽出とレイアウトのみを行い、描き直しも生成もシミュレーションもしていません。元のファイル名（<code>imageNNN.png</code>）は図注に残しており、
+Word の原文と 1 枚ずつ照合できます。</div>
+<div class="box warn"><b class="t">サンプルの値は原作者の教材環境のもの</b>
+会社コード <code>C999</code>、会社名「頤寧機械有限公司」、プラント <code>F999</code>、保管場所 <code>P999</code>、
+品目 <code>R999-100</code> / <code>T999-100</code> / <code>F999-100</code>、得意先 <code>K001</code> / <code>K002</code>、
+原価センタ「管理部／製造部」、財務諸表バージョン <code>F999</code> などは、いずれも原教材ドキュメントの著者が自分のシステムで作成したサンプルデータです。
+<b>操作の順序と設定ポイントはそのまま参考にできますが、番号と名称はご自身のシステムの値に置き換えてください</b>。エラーメッセージもバージョン/言語/カスタマイジングによって異なることがあります。</div>
+<div class="box info"><b class="t">当サイトがやらないこと</b>
+当サイトは原教材ドキュメントにない内容を推測で補いません。標準値、テーブル名、項目名、SAP Note 番号が原教材ドキュメントに記載されていなければ、ここでも補いません。
+正確な項目一覧が必要な場合は、システム上で F1（項目ヘルプ）／ F4（入力候補）と SPRO の「ドキュメント」ボタンで確認してください。</div>
+<div class="box info"><b class="t">日本語版としての作り方（原文のたどり方）</b>
+本文は日本語に翻訳していますが、<b>画面は中国語インターフェースのまま</b>収録しています（実機画面を描き直さないため）。
+そこで、日本語の指示と画面の表示を突き合わせられるように、次の 3 つを用意しました：<br>
+① 各手順ステップに <b>「原文（中国語）」</b> の折りたたみ（クリックで開きます）= 原教材ドキュメントのそのままの一文。<br>
+② 各タスクの入力値表に <b>「画面の中国語」</b> 列 = その項目が中国語画面でなんと表示されるか。<br>
+③ <a href="glossary.html">用語対照表（日本語 ⇔ 中国語画面）</a> = 基本操作・SAP 用語・IMG パスの対照表。<br>
+訳語は原教材の表記に合わせています。たとえば中国語の「工厂」は直訳すると「工場」ですが SAP の日本語標準では<b>プラント</b>です。
+自分のシステムが日本語インターフェースなら、日本語訳の語をそのまま画面で探してください。</div>
+<h2 id="sisters">8. 同じディレクトリの姉妹サイト</h2>
+<p>本機の <code>~/Desktop/work/training/</code> の下には、<b>各業務形態に特化した日本語の専門実習サイト</b>（MTO / ETO / MTS / VC / 受注形態比較 / SD 受注処理）もあります。
+それぞれが 1 つの業務形態に焦点を当て、完全な設定手順と練習を備えています。本サイトは<b>全モジュールを横断する手順サイト（中国語教材の日本語版）</b>で、対象範囲がより広く、画面はすべて原教材の実システムから取得したものです。</p>
+<ul>
+<li><a href="../index.html">研修サイト一覧（ハブ）</a> — 各専門サイトへの入口と学習ルート。</li>
+<li>「1 件の受注がどのように見積から請求まで進むか」だけを練習したい場合は、専門サイトのほうが焦点が絞られています。「どのような設定ポイントがあり、どこで設定するか」の全体像を先に把握したい場合は、本サイトから始めてください。</li>
+<li>中国語の原文（<code>S4.docx</code>）と併読する場合は、本サイトの「原文（中国語）」折りたたみと画面番号（<b>画面 N</b>）が照合の手がかりになります。</li>
+</ul>
+</article></main>
+</div>
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA 日本語実習サイト — 全モジュールの設定と操作手順 · 実機画面</h5>
+  <p>内容は同ディレクトリの教材ドキュメント <code>S4.docx</code>（425 ページ · 6 大モジュール · 222 タスク · 1385 枚の実機スクリーンショット）に基づいて整理しています。すべてのページはオフラインで開くことができ、外部依存はありません。</p>
+  <div><h5>画面について</h5><p>サイト内のすべてのスクリーンショットは<b>原教材ドキュメントの実機画面</b>（中国語インターフェースの SAP GUI）であり、イメージ図やシミュレーションによる生成画像ではありません。ファイル名は原教材ドキュメントの番号をそのまま保持しており、Word の原文と対照できます。ドキュメント内のサンプル値（会社コード <code>C999</code>、プラント <code>F999</code>、品目 <code>R999-100</code> など）は原作者の教材環境のものですので、ご自身のシステムの組織構造と番号範囲に合わせて読み替えてください。</p></div></div>
+  <div class="cols">
+    <div><h5>モジュール</h5>
+      <a href="prep.html">準備 — 準備作業 — システムへのログオンと IMG 設定への移動</a><br>
+      <a href="fi.html">FI — 財務会計 FI</a><br>
+      <a href="co.html">CO — 管理会計 CO</a><br>
+      <a href="mm.html">MM — 品目管理 MM</a><br>
+      <a href="pp.html">PP — 生産計画 PP</a><br>
+      <a href="sd.html">SD — 販売管理 SD</a><br>    </div>
+    <div><h5>サイト全体</h5>
+      <a href="prep.html">準備</a><br>
+      <a href="fi.html">FI</a><br>
+      <a href="co.html">CO</a><br>
+      <a href="mm.html">MM</a><br>
+      <a href="pp.html">PP</a><br>
+      <a href="sd.html">SD</a><br>
+      <a href="tcode.html">T-code</a><br>
+      <a href="glossary.html">用語</a><br>
+      <a href="issues.html">トラブルシューティング</a><br>
+      <a href="tasks.html">索引</a><br>
+      <a href="instructor.html">講師</a><br>
+      <a href="worksheet.html">受講者</a><br>
+      <a href="quiz.html">自習テスト</a><br>    </div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+<script src="assets/s4jp.js"></script>
+</body>
+</html>

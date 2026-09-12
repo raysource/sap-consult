@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>总览 · SAP S/4HANA 受注設計生産（ETO）实战训练站</title>
+<meta name="description" content="SAP S/4HANA 受注設計生産（Engineer-to-Order / ETO）实训站：WBS（プロジェクト）× プロジェクト在庫 Q × 製造 × 出荷 × 出来高請求 × 予算・結果分析 的一条龙练习，含详细 SPRO/PS 配置手顺、操作手顺、故障对照表与 Public Cloud（6GD / 戦略グループ E2）差异对照。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/eto.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">ETO</span><span class="txt">受注設計生産 训练站</span></a>
+    <nav class="main">
+      <a class="active" href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①项目</a>
+      <a href="handson-2.html">②计划·MRP</a>
+      <a href="handson-3.html">③执行·入库</a>
+      <a href="handson-4.html">④出荷·请求</a>
+      <a href="handson-5.html">⑤发展·故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero"><div class="hero-inner">
+  <div class="kicker">SAP S/4HANA · PS × SD × PP × CO 跨模块实训 · 中文 + 日本語术语对照</div>
+  <h1>受注設計生産（ETO）实战训练站</h1>
+  <p class="lead">姐妹篇：<b>MTO（受注生産）</b> 把库存切到「受注明細」；<b>ETO（受注設計生産）</b> 把库存切到「<b>プロジェクト（WBS）</b>」。
+  本站跑通一条完整链路：<b>CJ20N 立项（WBS）→ 受注明細に WBS 割当 → MRP → 製造指図（WBS 勘定設定）→ 完成入庫（プロジェクト在庫 Q）
+  → 出荷（Q から PGI）→ 出来高/請求計画で請求 → 予算・実績（CJI3）→ 進捗・結果分析（KKA2/KKAJ）→ 決済（CJ88）</b>。
+  同样分两层：<b>练习配置</b>（PS 侧プロジェクトプロファイル/ネットワークタイプ/予算/決済 + SD 侧明細カテゴリと WBS 割当）与
+  <b>练习流程</b>（5 个实操，含输入值、手顺、期待结果、故障对策、验收清单）。主口径 On-Premise，附 Public Cloud（<b>6GD / 戦略グループ E2</b>）对照。</p>
+  <div class="toc">
+    <a href="#scope">1. 本站教什么</a>
+    <a href="#story">2. 训练场景设定</a>
+    <a href="#flow">3. 端到端流程</a>
+    <a href="#plan">4. 练习安排</a>
+    <a href="#objects">5. 设定对象一览</a>
+    <a href="#env">6. 前提与环境</a>
+    <a href="#caveat">7. 关于标准值的立场</a>
+    <a href="#sources">8. 出典</a>
+  </div>
+</div></div>
+
+<div class="wrap">
+<main class="page"><article>
+
+<h2 id="scope">1. 本站教什么</h2>
+<p>ETO（Engineer-to-Order / 受注設計生産）是「每单都要设计、没有现成库存、按项目核算」的制造形态。
+它的机制支点是 <b>プロジェクト（WBS 要素）</b>：需求、库存、成本、收入全部挂到 WBS 上，而不是像 MTO 那样挂到受注明細（E 特在）。
+SAP 里这一层用一个专门的特别库存区分实现：<b>Q ＝ プロジェクト在庫（project stock）</b>。</p>
+
+<div class="grid cards">
+  <div class="card">
+    <h3><a href="config.html">① 练习配置手顺（PS + SD 详细）</a></h3>
+    <p>C0〜C16：品目マスタ（MRP4 個別所要量・MRP3 戦略グループ）→ プロジェクトプロファイル（<code>OPSA</code>）・プロジェクトタイプ・コーディングマスク →
+    ユーザステータス → ネットワークタイプ/プロファイル → プロジェクト在庫（評価付）→ 受注明細の WBS 割当・請求計画 → 予算（<code>CJ30</code>/<code>CJ32</code>/<code>CJBV</code>）→ 決済（<code>CJ88</code>）→ 結果分析（<code>KKA2</code>）。
+    每步给出 IMG 路径、事务码、输入值、<b>自系统确认方法</b>。</p>
+    <div class="tags"><span>配置</span><span class="tag amber">约 180 分</span></div>
+  </div>
+  <div class="card">
+    <h3><a href="handson-1.html">② 练习流程（5 个实操）</a></h3>
+    <p>①项目与受注（CJ20N + VA01 の WBS 割当）→ ②计划与 MRP（CJ40/CJ42・<code>MD50</code>/<code>MD51</code>・計画手配→製造指図）→ ③执行与入库（261 / CO11N / 101 → <b>プロジェクト在庫 Q</b>）→
+    ④出荷与请求（<code>VL01N</code>・PGI 601・<code>VF01</code> 請求計画・CJI3 で WBS 実績）→ ⑤发展与故障（予算/可用性管理・進捗・結果分析・決済・故障对照表）。</p>
+    <div class="tags"><span>实操</span><span class="tag teal">约 300 分</span></div>
+  </div>
+  <div class="card">
+    <h3><a href="concept.html">③ 概念与设计</a></h3>
+    <p>MTS / MTO(E) / ETO(Q) 对照、個別所要量品目と WBS 参照、プロジェクト在庫の成立条件、WBS の「請求要素」、収益認識（POC/出来高/イベントベース）、
+    相关表（<code>PROJ</code>・<code>PRPS</code>・<code>AUFK</code>・<code>AFPO</code>・<b><code>MSPR</code></b>・<code>COEP</code>）与 S/4HANA 变更点。</p>
+    <div class="tags"><span>概念</span><span class="tag gray">约 75 分</span></div>
+  </div>
+  <div class="card">
+    <h3><a href="quiz.html">④ 能力测试 + 验收清单</a></h3>
+    <p>28 题（概念 / 配置 / 流程 / 故障）× 点击判分 + 解说，外加实机验收清单：把 <code>CJI3</code>（WBS 实績）、<code>CJ20N</code>、<code>MD04</code>、<code>MMBE</code>（特在 Q）、伝票フロー 的证据逐条核对。</p>
+    <div class="tags"><span>测试</span><span class="tag green">约 30 分</span></div>
+  </div>
+</div>
+
+<div class="box ok"><b class="t">授课用の成果物（3 点セット）</b>
+① <a href="instructor.html">讲师版</a>（解答・采分点・必出 Q&A・故障の教え方）／② <a href="worksheet.html">学员版ワークシート</a>（挖空・印刷可）／
+③ Excel <span class="mono">SD受注設計生産ETO_要件定義・手順書.xlsx</span>（<span class="mono">python3 tools/make_eto_xlsx.py</span> で再生成、11 シート）。
+MTO 站（<span class="mono">../sapmto/</span>）とセットで使うと「按单 vs 按项目」的差异最直观。</div>
+
+<h2 id="story">2. 训练场景设定</h2>
+<p>场景：工程公司向客户交付一台特注设备（受注設計生産）。每台都要设计、按项目归集成本与收入，成品入库到<b>该项目专属的库存（Q）</b>，只能供给这个项目。</p>
+<table class="tbl wide">
+<tr><th>区分</th><th>值</th><th>说明</th></tr>
+<tr><td>会社コード / プラント / 出荷プラント</td><td><code>1000</code> / <code>1000</code> / <code>1000</code></td><td>ETO でも製造・出荷は通常のプラントで行う（在庫区分だけが Q）</td></tr>
+<tr><td>販売組織 / チャネル / 部門</td><td><code>1000</code> / <code>10</code> / <code>00</code></td><td>受注の販売エリア</td></tr>
+<tr><td>得意先</td><td><code>1000</code></td><td>需要家（受注先＝出荷先）</td></tr>
+<tr><td><b>プロジェクト定義 / WBS</b></td><td><code>ZETO-1000</code>（例）／ <code>.1 設計・調達</code>・<code>.2 製造</code>・<code>.3 据付・試運転</code></td><td><b>本教程的主角</b>。WBS <code>.1</code> を<b>請求要素</b>、<code>.2</code> を製造（プロジェクト在庫 Q の供給元）に使う</td></tr>
+<tr><td>ネットワーク / 活動</td><td><code>3000001</code>：0010 設計・0020 製造・0030 外注加工</td><td>ネットワークで工程と手配を管理（CN21 / CJ20N）</td></tr>
+<tr><td>完成品（個別所要量品目）</td><td><code>ZETO-FG01</code>（FERT / 1 式）</td><td>MRP4 個別所要量のみ・MRP3 戦略グループ（ETO 用）・手配タイプ E</td></tr>
+<tr><td>部品</td><td><code>ZETO-RM01</code> / <code>ZETO-RM02</code></td><td>BOM 部品（本教程は初期在庫で賄う。外注は発展課題）</td></tr>
+<tr><td>作業区 / 工程</td><td><code>ZETO_WC01</code> / 工程 0010 組立</td><td>指図・ネットワークの基準</td></tr>
+<tr><td>受注</td><td><code>OR</code>、明細 10：<code>ZETO-FG01</code> × 1 式、<code>5,000,000</code> JPY</td><td>明細に <b>WBS（請求要素）を割当</b>。請求計画（出来高/日付）で 30%＋70%</td></tr>
+<tr><td>在庫区分</td><td><b>特別在庫 <code>Q</code>（プロジェクト在庫）</b></td><td>数量表 <code>MSPR</code>、出荷は Q から 601</td></tr>
+<tr><td>指図・移動タイプ</td><td><code>PP01</code>／ 261・101・601</td><td>指図は <b>WBS 勘定設定</b>で生成される</td></tr>
+<tr><td>予算・実績・決済</td><td><code>CJ30</code>/<code>CJ32</code>/<code>CJBV</code>／<code>CJI3</code>／<code>CJ88</code>・<code>CJ8G</code></td><td>WBS 予算と可用性管理、実績レポート、決済</td></tr>
+</table>
+
+<h2 id="flow">3. 端到端流程（练习要跑通的 10 个动作）</h2>
+<div class="flow">
+  <div class="node">1 CJ20N 立项<br><small>WBS・請求要素</small></div><div class="arrow">→</div>
+  <div class="node">2 VA01 受注<br><small>明細に WBS</small></div><div class="arrow">→</div>
+  <div class="node">3 CJ40/CJ42 計画<br><small>原価・収益計画</small></div><div class="arrow">→</div>
+  <div class="node">4 MD50/MD51<br><small>受注/プロジェクト MRP</small></div><div class="arrow">→</div>
+  <div class="node">5 計画手配<br><small>WBS 勘定設定</small></div><div class="arrow">→</div>
+  <div class="node">6 製造指図<br><small>CO40/CO08</small></div><div class="arrow">→</div>
+  <div class="node">7 261/CO11N<br><small>部品出庫・実績</small></div><div class="arrow">→</div>
+  <div class="node">8 101 入庫<br><small>プロジェクト在庫 Q</small></div><div class="arrow">→</div>
+  <div class="node">9 出荷 601<br><small>Q から PGI</small></div><div class="arrow">→</div>
+  <div class="node">10 請求<br><small>VF01 請求計画</small></div>
+</div>
+<table class="tbl wide">
+<tr><th>#</th><th>动作</th><th>事务码</th><th>系统里要看什么（证据）</th><th>对应练习</th></tr>
+<tr><td>1</td><td>プロジェクトと WBS の登録（請求要素・評価付プロジェクト在庫）</td><td><code>CJ20N</code></td><td>WBS 階層、請求要素フラグ、プロジェクト在庫（評価付）フラグ</td><td><a href="handson-1.html">练习①</a></td></tr>
+<tr><td>2</td><td>受注登録＋明細への WBS 割当</td><td><code>VA01</code> / <code>VA02</code></td><td>明細カテゴリ、明細の WBS 要素、所要量タイプ（Q を示すもの）、請求計画</td><td><a href="handson-1.html">练习①</a></td></tr>
+<tr><td>3</td><td>原価・収益計画（WBS）</td><td><code>CJ40</code> / <code>CJ42</code></td><td>WBS ごとの計画原価・計画収益（予実比較の基準）</td><td><a href="handson-2.html">练习②</a></td></tr>
+<tr><td>4</td><td>MRP 実行（受注 MRP / プロジェクト MRP）</td><td><code>MD50</code> / <code>MD51</code>（<code>MD01N</code>）</td><td>計画手配が <b>WBS 勘定設定＋プロジェクト在庫 Q</b> で生成</td><td><a href="handson-2.html">练习②</a></td></tr>
+<tr><td>5</td><td>計画手配 → 製造指図（WBS 参照）</td><td><code>CO40</code> / <code>CO08</code></td><td>指図の勘定設定 = WBS、部品予約、入庫先 = プロジェクト在庫 Q</td><td><a href="handson-2.html">练习②</a></td></tr>
+<tr><td>6</td><td>部品出庫・外注（発展）</td><td><code>MIGO</code>(261) / <code>ME51N</code>→<code>ME21N</code>→<code>MIGO</code></td><td>ネットワーク/指図からの出庫、購買依頼の勘定設定 = WBS</td><td><a href="handson-3.html">练习③</a></td></tr>
+<tr><td>7</td><td>製造実績・ネットワーク確認</td><td><code>CO11N</code> / <code>CN25</code></td><td>歩留数量、活動の確認（実績時間）、進捗の材料</td><td><a href="handson-3.html">练习③</a></td></tr>
+<tr><td>8</td><td>完成品入庫（101 → プロジェクト在庫 Q）</td><td><code>MIGO</code></td><td><code>MMBE</code>/<code>MB52</code> の「プロジェクト在庫」1 式、<code>MSPR</code> に記録</td><td><a href="handson-3.html">练习③</a></td></tr>
+<tr><td>9</td><td>出荷・出庫確認（Q から 601）</td><td><code>VL01N</code> / <code>VL02N</code></td><td>出荷明細の在庫区分 Q、PGI 後に Q 在庫 0</td><td><a href="handson-4.html">练习④</a></td></tr>
+<tr><td>10</td><td>請求（請求計画 / 出来高）＋ WBS への収益</td><td><code>VF01</code></td><td>請求金額、<code>CJI3</code> で WBS に実収益・実原価が計上</td><td><a href="handson-4.html">练习④</a></td></tr>
+</table>
+
+<h2 id="plan">4. 练习安排（建议 3 天，或 2 天压缩版）</h2>
+<table class="tbl wide">
+<tr><th>时段</th><th>内容</th><th>页面</th><th>完成基准</th></tr>
+<tr><td>Day1 上午</td><td>概念与设计：ETO 的机制、WBS 与 プロジェクト在庫 Q、与 MTO(E) 的对照</td><td><a href="concept.html">概念与设计</a></td><td>能说明「プロジェクト在庫 Q 成立的 4 个条件」</td></tr>
+<tr><td>Day1 下午</td><td>练习配置 C0〜C16（自带系统、自己做）</td><td><a href="config.html">配置手顺</a></td><td>項目/WBS/ネットワーク/受注の WBS 割当/予算 が実機で確認できる</td></tr>
+<tr><td>Day2 上午</td><td>练习①〜②（项目・受注・計画・MRP・指図）</td><td><a href="handson-1.html">①②</a></td><td>計画手配の勘定設定 = WBS、指図の入庫先 = Q</td></tr>
+<tr><td>Day2 下午</td><td>练习③〜④（出庫・入庫・出荷・請求）</td><td><a href="handson-3.html">③</a> <a href="handson-4.html">④</a></td><td>プロジェクト在庫 Q が 1 式 → 0、請求が作成され CJI3 に実績が出る</td></tr>
+<tr><td>Day3（或压缩）</td><td>练习⑤（予算・可用性管理・進捗・結果分析・決済）＋ 故障排障 ＋ テスト</td><td><a href="handson-5.html">⑤</a> <a href="quiz.html">测试</a></td><td>CJI3/KKAX/CJ88 の結果を说明できる、テスト ≥75%</td></tr>
+</table>
+<div class="box warn"><b class="t">环境要求</b>
+① S/4HANA On-Premise（PS が導入済み。2020〜2024。画面は 2023/2024 基準）② カスタマイジング依頼に書き込める権限
+③ SD・MM・PP・CO・PS の基本組織（会社コード/プラント/制御エリア/販売組織/得意先/品目）既存 ④ PS の権限（CJ20N・CJ30・CJI3・CJ88）。
+Public Cloud の場合は先に <a href="config.html#cloud">C15 の差異対照</a> を読んでください（ETO は スコープアイテム <b>6GD</b>、戦略グループ <b>E2</b>、所要量タイプ <b>E21</b>、明細カテゴリは交付済みのもののみ）。</div>
+
+<h2 id="objects">5. 设定对象一览（要配/要确认的 17 项）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>设定项目</th><th>标准值的通常情况</th><th>本站练习值</th><th>设定/确认处</th></tr>
+<tr><td>C1</td><td>品目カテゴリグループ（完成品）</td><td>0001 NORM 等（受注生産/設計生産専用の標準キーは無い）</td><td><code>0001</code></td><td><code>MM01/MM03</code> 販売組織2</td></tr>
+<tr><td>C2</td><td>品目 MRP1</td><td>MRPタイプ PD・ロットサイズ EX・手配タイプ E</td><td>PD / EX / E</td><td><code>MM02</code> MRP1</td></tr>
+<tr><td>C3</td><td>品目 MRP3 戦略グループ <span class="pill op">核心</span></td><td>環境依存。S/4HANA Cloud の ETO（6GD）は <b>E2</b>（受注設計生産）。所要量クラスに<b>評価区分 M</b>（販売伝票/プロジェクト参照の別評価）が必要</td><td>自システムの ETO 用戦略グループ（例 <code>E2</code>）。無ければ計画方針グループを確認</td><td><code>MM02</code> MRP3 ／ <code>OPPJ</code>（計画方針グループ）</td></tr>
+<tr><td>C4</td><td>品目 MRP4 個別／包括所要量 <span class="pill op">核心</span></td><td>「個別所要量のみ」または「個別＋集合所要量」（評価付プロジェクト在庫の前提）</td><td>個別所要量のみ</td><td><code>MM02</code> MRP4</td></tr>
+<tr><td>C5</td><td>品目 会計ビュー／評価</td><td>評価クラス＋（評価付プロジェクト在庫なら受注/プロジェクト在庫の評価クラス）</td><td>評価クラス（例 7920）・価格管理 S</td><td><code>MM02/MM03</code> 会計1</td></tr>
+<tr><td>C6</td><td>BOM・作業区・作業手順</td><td>BOM 用途 1、作業区・工程は標準</td><td>RM01×2・RM02×8 / ZETO_WC01 / 工程 0010</td><td><code>CS01</code>・<code>CR01</code>・<code>CA01</code></td></tr>
+<tr><td>C7</td><td>プロジェクトプロファイル <span class="pill op">PS 核心</span></td><td>プロファイルに番号範囲・WBS 画面・予算プロファイル・決済パラメータ・ステータスをまとめる</td><td>練習用プロファイル <code>ZETO01</code>（コピー元は既存の標準プロファイル）</td><td><code>OPSA</code>（IMG: Project System &gt; Structures &gt; Operative Structures &gt; WBS &gt; Create Project Profile）</td></tr>
+<tr><td>C8</td><td>プロジェクトタイプ・コーディングマスク</td><td>WBS 要素のプロジェクトタイプは SM30 ビューで保守</td><td>プロジェクトタイプ（例 <code>Z01</code>）＋コーディングマスク（例 <code>ZETO-</code> + 番号）</td><td>IMG（SM30: <code>V_TCJ1</code>）／コーディングマスクの定義</td></tr>
+<tr><td>C9</td><td>ユーザステータス（プロジェクト・WBS・ネットワーク）</td><td>ステータスプロファイルで「解放」「技術完了」等を制御</td><td>標準プロファイルを確認（練習では変更不要）</td><td>IMG（ステータスプロファイル）<code>BS02</code> 系</td></tr>
+<tr><td>C10</td><td>ネットワークタイプ・パラメータ・プロファイル</td><td>ネットワークタイプに番号範囲・標準値・制御（確認/原価）を持たせる</td><td>標準のネットワークタイプ＋プロファイルを確認（必要なら <code>ZETO</code>）</td><td>IMG: Project System &gt; Networks</td></tr>
+<tr><td>C11</td><td>プロジェクト在庫（評価付）</td><td>プロジェクト定義の「プロジェクト在庫」セクションで<b>評価付プロジェクト在庫</b>を設定</td><td>評価付を ON（練習①でフラグ確認）</td><td><code>CJ20N</code> プロジェクト定義</td></tr>
+<tr><td>C12</td><td>受注明細の WBS 割当と明細カテゴリ</td><td>WBS を割り当てられる明細カテゴリは限定される（例：Cloud の CBAO=マイルストーン請求計画）。請求関連・請求計画の許可が必要</td><td>自システムで WBS 入力可能な明細カテゴリを実測（練習①）。必要なら <code>ZETO</code> 明細カテゴリを作成</td><td><code>VOV7</code> / <code>VOV4</code> / <code>VA02</code> 明細の WBS 項目</td></tr>
+<tr><td>C13</td><td>請求計画／出来高請求</td><td>請求計画タイプ（日付・出来高）＋請求タイプ（F2 等）＋コピー制御（<code>VTFL</code>）</td><td>請求計画で 30%＋70%、請求タイプ <code>F2</code></td><td>IMG（請求計画）／<code>VF01</code>／<code>VTFL</code></td></tr>
+<tr><td>C14</td><td>予算と可用性管理</td><td>予算プロファイル（可用性管理の許容範囲）をプロジェクトプロファイルに割当</td><td>予算投入 <code>CJ30</code> → 解放 <code>CJ32</code> → 可用性管理 <code>CJBV</code>（発展）</td><td><code>CJ30</code> / <code>CJ32</code> / <code>CJBV</code> / <code>CJ31</code></td></tr>
+<tr><td>C15</td><td>決済・結果分析</td><td>決済ルール/決済プロファイル（<code>CJB1/CJB2</code>）、結果分析キーと収益認識キー（<code>KKA2/KKAJ</code>・<code>KKAX</code>）、指図は <code>KO88</code>／受注は <code>VA88</code></td><td>WBS の決済 <code>CJ88</code>（一括 <code>CJ8G</code>）と結果分析 <code>KKA2</code></td><td><code>CJB1/CJB2</code>・<code>CJ88/CJ8G</code>・<code>KKA2/KKAJ/KKAX</code></td></tr>
+<tr><td>C16</td><td>MRP 実行の入口（受注/プロジェクト）</td><td>受注 MRP = <code>MD50</code>、プロジェクト MRP = <code>MD51</code>、全体 = <code>MD01N</code></td><td><code>MD51</code>（プロジェクト指定）を使用</td><td><code>MD50/MD51/MD01N</code>・<code>MD04</code></td></tr>
+<tr><td>C17</td><td>Public Cloud（6GD）差異</td><td>スコープアイテム <b>6GD</b>（Engineer Products and Systems – Project with Production）で交付。戦略グループ <b>E2</b>、所要量タイプ <b>E21</b>（特別在庫 Q）、明細カテゴリは CBAO 系の交付済みのみ</td><td>机制理解に本教材、実施は Test Script に従う</td><td>スコープアイテム 6GD の Test Script / Fiori アプリ</td></tr>
+</table>
+
+<h2 id="env">6. 前提与环境（练习前 40 分钟做完）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>前提</th><th>确认方法</th></tr>
+<tr><td>1</td><td>PS が導入され、制御エリア・会社コード・プラントの設定が存在</td><td><code>CJ20N</code> でプロファイルが選択できる／<code>OKKP</code> 系で制御エリア（権限があれば）</td></tr>
+<tr><td>2</td><td>得意先 1000（販売エリアビュー＋出荷先）</td><td><code>BP</code> / <code>XD03</code></td></tr>
+<tr><td>3</td><td>品目 ZETO-FG01 / RM01 / RM02 の必要ビュー（MRP1〜4・会計・販売組織1・2・原価計算1・プラント在庫）</td><td><code>MM03</code></td></tr>
+<tr><td>4</td><td>BOM・作業区・作業手順</td><td><code>CS03</code> / <code>CR03</code> / <code>CA03</code></td></tr>
+<tr><td>5</td><td>部品の初期在庫（561 で投入）</td><td><code>MMBE</code> / <code>MB52</code></td></tr>
+<tr><td>6</td><td>PS の権限（<code>CJ20N</code>・<code>CJ30</code>・<code>CJ88</code>・<code>CJI3</code>）と SD/MM/PP の登録権限</td><td>各 T-code を事前に開いてみる</td></tr>
+<tr><td>7</td><td>WBS 番号のコーディングマスク／プロジェクト定義の採番が使える</td><td><code>CJ20N</code> で新規作成したとき採番エラーが出ないこと</td></tr>
+</table>
+
+<h2 id="caveat">7. 关于标准值的立场（务必读）</h2>
+<div class="box warn"><b class="t">ETO 是「环境差最大」的场景</b>
+与 MTO 相比，ETO 的标准值更容易因版本、解决方案和既有改造而不同：<br>
+・ETO 用の<b>戦略グループ</b>（Cloud の 6GD は <b>E2</b>、所要量タイプ <b>E21</b>＝特別在庫 Q）は、スコープアイテム/業務機能の活性状況で有無が変わる（SAP KBA 3623492 が「E2 は 6GD 活性後に利用可能」と明記）。<br>
+・<b>WBS を割り当てられる明細カテゴリ</b>は限定される（Cloud の例：CBAO＝マイルストーン請求計画）。On-Premise では自システムで実測して決めるしかない。<br>
+・<b>評価付プロジェクト在庫</b>の前提は「品目マスタ MRP4 個別所要量＋ MRP3 戦略グループ（評価区分 M を持つ所要量クラス）＋ プロジェクト定義の評価付フラグ」の 3 点セット（SAP Help / SAP Learning）。<br>
+だから本站的做法是：<b>把机制写清楚，把每个值都配上「在你系统里怎么确认」的手顺</b>，并让练习用自建对象（<code>ZETO-1000</code>・<code>ZETO01</code> プロファイル等）完成。</div>
+
+<h2 id="sources">8. 出典与参考</h2>
+<ul>
+  <li>SAP Help（S/4HANA On-Premise, PS）<i>Valuated Project Stock: Scenario</i>：プロジェクト定義の「評価付プロジェクト在庫」インジケータと品目マスタ（個別所要量）の前提。
+    <span class="mini">help.sap.com/docs/SAP_S4HANA_ON-PREMISE/4dd8cb7b1c484b4b93af84d00f60fdb8/c6ceb65334e6b54ce10000000a174cb4.html</span></li>
+  <li>SAP Help <i>Stock Tables and Stock Types</i>：<code>MSKA</code>＝受注在庫(E)、<b><code>MSPR</code>＝プロジェクト在庫(Q)</b>、<code>MSKU</code>＝預託在庫(V/W)。
+    <span class="mini">help.sap.com/docs/SUPPORT_CONTENT/erpscm/3362167795.html</span></li>
+  <li>SAP Help <i>Billing with SAP Project System in SAP S/4HANA</i>／<i>Billing Element</i>：受注明細を WBS に割り当て、請求がその WBS（請求要素）へ流れる。
+    <span class="mini">blog.sap-press.com/billing-with-sap-project-system-in-sap-s4hana ／ help.sap.com/docs/SAP_S4HANA_CLOUD/f369b2eff700401494ba6e7c9a573288/a137bf9680c54e70b66ad9d0956e8b77.html</span></li>
+  <li>SAP Help（Cloud, ja）<i>販売伝票の企業ポートフォリオおよびプロジェクト管理</i>：受注明細に WBS 要素を割り当てられる明細カテゴリ（例 <code>CBAO</code>＝マイルストーン請求計画）。
+    <span class="mini">help.sap.com/docs/SAP_S4HANA_CLOUD/a376cd9ea00d476b96f18dea1247e6a5/3804ed4c209a408d8eb660a67172139a.html</span></li>
+  <li>SAP Help（Cloud）<i>受注設計生産 (ETO)</i>／<i>Engineer-to-Order (ETO)（Finance）</i>：ETO では品目を WBS 参照で製造し、こうした品目を<b>個別所要量品目</b>と呼ぶ。
+    <span class="mini">help.sap.com/docs/SAP_S4HANA_CLOUD/4032610758dc437089f0c28320eec93f/af08789e7a6842f68acb056a0bfede9a.html</span></li>
+  <li>SAP Learning <i>Discovering Project-Related Production (Engineer-To-Order Scenario)</i>／<i>Explaining Scenarios in Production Accounting（受注設計生産シナリオ）</i>：評価付プロジェクト在庫の前提（MRP4 個別所要量・戦略グループ・評価区分 M）と原価集計の考え方。</li>
+  <li>SAP Knowledge Base <b>3623492</b>（プロジェクト在庫 Q の出荷で PGI できない）／<b>2763512</b>（請求計画での請求不可のエラー）：Cloud の 6GD・戦略グループ <b>E2</b>・所要量タイプ <b>E21</b> の言及とトラブルシュート。</li>
+  <li>スコープアイテム <b>6GD</b>（Engineer Products and Systems – Project with Production）：Master Data ページに「Strategy Group: E2」「Project Stock scenario では Event-Based Production Cost Posting(3F0) のマスタデータスクリプトが必要」と記載。</li>
+  <li>PS トランザクション一覧（gugulii の PS Transactions：9 フェーズ・39 オブジェクトの型／sapstack の PS T-code 一覧）：<code>CJ20N</code>・<code>CJ21/CJ29</code>・<code>CJ40/CJ42</code>・<code>CJ30/CJ31/CJ32/CJ33/CJBV/CJ34/CJ37</code>・<code>MD50/MD51</code>・<code>CN25/CN27/CN28/CN29</code>・<code>CNE1/CNE2</code>・<code>CJI3/CJI4/CJI5/CJIB/CJIA/CJIC</code>・<code>CJ88/CJ8G</code>・<code>KKA2/KKAJ/KKAX</code>・<code>CNSO</code>（Delivery from Project）。</li>
+  <li>SAP Help <i>S/4HANA information for Cost Object Controlling</i>：WIP 計算 <code>KKAO</code>、指図の差異 <code>KKS1</code>、指図の決済 <code>CO88</code>、<b>受注の決済 <code>VA88</code></b>。</li>
+  <li>プロジェクトプロファイルの IMG パスと <code>OPSA</code>（saponlinetutorials「Maintain Project Profile in SAP」）、PS カスタマイズの IMG ノード一覧（SAP知恵の輪 PS カスタマイズ一覧）。</li>
+</ul>
+
+<div class="box info"><b class="t">下一步</b>
+先理解机制 → <a href="concept.html">概念与设计</a>；直接动手配 → <a href="config.html">练习配置手顺</a>；直接跑流程 → <a href="handson-1.html">练习① 项目与受注</a>。</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>受注設計生産（ETO）实战训练站</h5><p>PS×SD×PP×CO 跨模块实训：WBS・プロジェクト在庫 Q・出来高請求・予算・結果分析まで。<br>内容为教学整理，标准值请以自系统为准。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 項目と受注</a><br><a href="handson-2.html">② 計画・MRP</a><br><a href="handson-3.html">③ 実行・入庫</a><br><a href="handson-4.html">④ 出荷・請求</a><br><a href="handson-5.html">⑤ 発展・故障</a></div>
+    <div><h5>其他</h5><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="worksheet.html">学员版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

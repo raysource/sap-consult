@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>练习③ 製造と入庫（261 / CO11N / 101 → 自由在庫） · SAP S/4HANA 見込生産（MTS）实战训练站</title>
+<meta name="description" content="MTS 练习③ 製造と入庫：CO01/CO02 で指図を解放、MIGO 261 で部品出庫、CO11N で実績、MIGO 101 で完成品を自由在庫へ入庫、MMBE/MB52 で確認、標準原価との差異の入口まで。入力値・手顺・期待结果・つまずき・验收清单。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/mts.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MTS</span><span class="txt">見込生産 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①预测</a>
+      <a href="handson-2.html">②MRP</a>
+      <a class="active" href="handson-3.html">③制造入库</a>
+      <a href="handson-4.html">④出货</a>
+      <a href="handson-5.html">⑤月末</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 练习③ 製造と入庫</div>
+<main class="page"><article>
+
+<h1>练习③ 製造と入庫（261 → CO11N → 101 → 自由在庫）</h1>
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。若是想换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 即可一键替换。</div>
+
+<p class="lead">本练习是 MTS 与 MTO 差别最容易「看见」的地方：<b>入库完成后，产品跑到自由在庫（プラント在庫）而不是受注在庫</b>。<code>MMBE</code> 的金额栏、特在区分栏就是你判断「这个系统到底是 MTS 还是 MTO」的现场证据。</p>
+
+<div class="toc">
+  <a href="#q1">3-1 指図の解放（CO02）</a>
+  <a href="#q2">3-2 部品出庫 261（MIGO）</a>
+  <a href="#q3">3-3 実績（CO11N）</a>
+  <a href="#q4">3-4 完成品入庫 101（MIGO → 自由在庫）</a>
+  <a href="#q5">3-5 標準原価との差異（此处的「金额」问题）</a>
+  <a href="#expect">期待结果汇总</a>
+  <a href="#trouble">つまずきと対処</a>
+  <a href="#accept">验收（完成基准）</a>
+</div>
+
+<div class="flow">
+  <div class="node">CO02 解放<br><small>REL</small></div><div class="arrow">→</div>
+  <div class="node">MIGO 261<br><small>部品出庫</small></div><div class="arrow">→</div>
+  <div class="node">CO11N 実績<br><small>歩留 500</small></div><div class="arrow">→</div>
+  <div class="node">MIGO 101<br><small>自由在庫 +500</small></div><div class="arrow">→</div>
+  <div class="node">MMBE 確認<br><small>特在区分 空</small></div>
+</div>
+
+<h2 id="q1">3-1 指図の解放（CO02）</h2>
+<p>未解放（<code>CRTD</code>）的指图不能出库、不能实绩。解放的动作同时会做两件事：<b>① 部品预约（<code>RESB</code>）生效 → 库存对部品「预留」；② 排程/能力需求确定。</b></p>
+<table class="tbl wide">
+<tr><th>項目</th><th>値</th><th>見る画面</th></tr>
+<tr><td>指図番号 / タイプ</td><td>练习② で作った指図 / <code>PP01</code></td><td><code>CO03</code> ヘッダ</td></tr>
+<tr><td>状態</td><td><code>CRTD</code> → <code>REL</code></td><td><code>CO03</code> ヘッダのシステム状態</td></tr>
+<tr><td>構成品目（部品予約）</td><td><code>ZMTS-RM01</code> 1,000 PC / <code>ZMTS-RM02</code> 2,000 PC</td><td><code>CO03</code> → 構成品目 / <code>RESB</code></td></tr>
+</table>
+<ol class="steps">
+  <li><code>CO03</code> → 指図 → ヘッダで明細と納入日を確認（状態 <code>CRTD</code>）。</li>
+  <li><code>CO02</code> → 同上の指図 → メニュー「機能 &gt; 解放（Release）」（或は変更画面のヘッダ機能）→ 保存。</li>
+  <li><code>CO03</code> で状態が <code>REL</code>（解放済）になったことを確認。</li>
+  <li>（練習用オプション）<code>CO02</code> → 明細の「指図数量」を変更できることを確認（不用现在改）。</li>
+</ol>
+
+
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+<code>CO03</code> の状態。表なら <code>SE16N: AUFK-STAT</code>（或は <code>SE16N: JEST</code> でステータス詳細）与 <code>SE16N: RESB</code>（解放後に予約が有効化される）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 解放せずに 261 → 「指図が解放されていません」エラー。<br>
+② 解放後も部品予約の数量が 0 → BOM の有効日 or 工程割当（<a href="config.html#c3">C3</a>）。<br>
+③ 状態が <code>REL</code> にならない → ユーザ権限、或は指図タイプの解放範囲設定（<code>OPJH</code>/<code>OPL8</code>）。</div>
+<div class="task"><b class="t">練習課題</b>解放する前後で <code>MMBE</code> の部品在庫表示が変わらないのに、<code>MD04</code>（部品側）の「予約（引当）」が増えることを確認する。—— 在库数量与预留（预约）是两件事，这是后面 ATP 与缺料报警的基础。</div>
+<figure class="gui"><img src="assets/gui/handson-3_s01_1.svg" alt="CO02 で指図 1000123 を開き、機能 &gt; 解放を実行する前の状態。部品予約はまだ有効化されていない。" loading="lazy"><figcaption><b class="t">CO02：解放前の指図（CRTD）</b><span class="tx">CO02</span><span class="scr">製造指図 変更：解放前（状態 CRTD）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 状態 CRTD では出庫できない。解放が 3-2 / 3-3 の前提</li><li><b>2</b> 解放する前後で MMBE の部品在庫は変わらないが、MD04 の予約（引当）は増える</li></ol><p class="gui-tip">自システムでの確認：SE16N: AUFK-STAT / JEST（ステータス詳細）、解放後は SE16N: RESB で予約が有効化されます。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-3_s01_2.svg" alt="CO03 で状態が REL になり、構成品目の予約数量が有効になったことを確認する。" loading="lazy"><figcaption><b class="t">CO03：解放後（REL）と部品予約</b><span class="tx">CO03</span><span class="scr">製造指図 照会：解放後（状態 REL）と部品予約</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 状態が REL になったことを自分の目で確認する（ここを見ずに 261 へ進むと失敗する）</li><li><b>2</b> 解放後も予約数量が 0 のときは BOM の有効日か工程割当（C3）を疑う</li></ol><p class="gui-tip">自システムでの確認：MMBE の部品在庫は変わらないのに、MD04（部品側）の予約（引当）が増えることを確かめてください。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="q2">3-2 部品出庫 261（MIGO）</h2>
+<table class="tbl wide">
+<tr><th>項目</th><th>値</th><th>説明</th></tr>
+<tr><td>トランザクション / 移動タイプ</td><td><code>MIGO</code> &gt; 入出庫 &gt; 出庫 &gt; 指図、移動タイプ <code>261</code></td><td><code>MB1A</code>（旧）でも同じ</td></tr>
+<tr><td>指図番号</td><td>练习②/3-1 の指図</td><td>入力すると構成品目が自動展開される</td></tr>
+<tr><td>出庫数量</td><td><code>RM01</code> 1,000 PC / <code>RM02</code> 2,000 PC</td><td>必要量と実出庫（<code>MENGE</code> / <code>ENMNG</code>）を確認</td></tr>
+<tr><td>保管場所</td><td><code>0001</code></td><td>部品の在庫場所</td></tr>
+<tr><td>バックフラッシュ</td><td>品目 MRP1 の設定に従う</td><td>ON なら <code>CO11N</code> の実績時に自動出庫される（手動 261 は不要）</td></tr>
+</table>
+<ol class="steps">
+  <li><code>CO03</code> で構成品目の必要量を確認（RM01 1,000 / RM02 2,000）。</li>
+  <li><code>MIGO</code> → 指図出庫（<code>261</code>）→ 指図番号を入力 → 構成品目の数量を確認 → 「確認（Check）」→「転記（Post）」。</li>
+  <li>転記メッセージの<b>物料伝票番号（<code>MATDOC</code>）</b>を記録。</li>
+  <li><code>MMBE</code> で部品在庫が減っていること（1,000 → 0、2,000 → 0 等）を確認。</li>
+  <li>指図側で「指図への出庫（実績）」が計上されたことを <code>CO03</code> → 明細 → 「実際原価」/構成品目の実績で確認。</li>
+</ol>
+
+
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+① 在庫：<code>MMBE</code> / <code>MB52</code>（部品の自由在庫が減少）。<br>
+② 物料伝票：S/4HANA では <code>SE16N: MATDOC</code>（移動タイプ <code>261</code>、指図参照 <code>AUFNR</code>）に一本化（ECC の <code>MKPF</code>＋<code>MSEG</code> に相当）。<br>
+③ 指図の実績：<code>CO03</code> → 構成品目（引当数 <code>ENMNG</code> と実出庫）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 「数量が在庫を超えています」 → 部品の初期在庫が足りない（<a href="config.html#c1">C1</a> の 561 を追加）。<br>
+② 構成品目が出ない → BOM の有効日、或は指図作成後に BOM を変えた（コピー済みの構成品目は変わらない）。<br>
+③ バックフラッシュ設定の品目で手動 261 をすると二重出庫 → <code>MM03</code> MRP1 のバックフラッシュを確認。<br>
+④ 出庫したのに指図の実績が見えない → 転記前（Check 止まり）或は別の指図に行った。</div>
+<div class="task"><b class="t">練習課題</b>261 で実際に出库した数量（1,000 / 2,000）が <b>BOM の倍数と一致する理由</b>を、<code>CO03</code> の構成品目と <code>CS03</code> の BOM を見比べて説明する。</div>
+<figure class="gui"><img src="assets/gui/handson-3_s02_1.svg" alt="MIGO で移動タイプ 261 の指図出庫を登録する。指図番号 1000123 を入れると構成品目が自動展開される。" loading="lazy"><figcaption><b class="t">MIGO：指図への部品出庫（261）</b><span class="tx">MIGO</span><span class="scr">入出庫：指図への出庫（移動タイプ 261）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 指図番号を入れると部品が自動展開される。数量は BOM の倍数（RM01 1,000 / RM02 2,000）</li><li><b>2</b> 在庫不足なら「数量が在庫を超えています」。C1 の 561 初期在庫を追加する</li></ol><p class="gui-tip">自システムでの確認：SE16N: MATDOC（移動タイプ 261・指図参照）。バックフラッシュ ON の品目は CO11N で自動出庫されるため手動 261 と二重にならないよう注意。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-3_s02_2.svg" alt="MMBE で部品 ZMTS-RM01 と ZMTS-RM02 の自由在庫が 0 になったことを確認する。" loading="lazy"><figcaption><b class="t">MMBE：261 で部品在庫が 0 になる</b><span class="tx">MMBE</span><span class="scr">在庫一覧：部品の減少（261 後）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 部品が 0 になったことを確認してから実績・入庫へ進む（ここが欠品判定の基礎）</li><li><b>2</b> 構成品目が出ないときは BOM の有効日か、指図作成後に BOM を変えたかを疑う</li></ol><p class="gui-tip">自システムでの確認：MB52（保管場所別）と SE16N: MATDOC（261 / 指図参照 AUFNR）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="q3">3-3 実績（CO11N）</h2>
+<table class="tbl wide">
+<tr><th>項目</th><th>値</th><th>説明</th></tr>
+<tr><td>T-code</td><td><code>CO11N</code>（単品目・時間単位）/ <code>CO15</code> / 一括は <code>CO12</code></td><td>時短のため <code>CO11N</code> 一本で</td></tr>
+<tr><td>指図 / 工程</td><td>指図番号 / 工程 <code>0010</code></td><td>—</td></tr>
+<tr><td>歩留数量（Yield）</td><td><code>500</code> PC</td><td><b>良品数</b>。スクラップを出したら数量を分けて入力</td></tr>
+<tr><td>作業時間</td><td>実測（例 1 H/PC × 500 = 500 H。練習では 1 H でも実績可）</td><td><code>KP26</code> のレートで金額化 → 差異の材料になる</td></tr>
+<tr><td>バックフラッシュ</td><td>ON なら同時に部品が出庫される</td><td>手動 261 と二重にならないよう注意</td></tr>
+</table>
+<ol class="steps">
+  <li><code>CO11N</code> → 指図番号 / 工程 <code>0010</code> → 歩留数量 <code>500</code>、作業時間を入力 → 保存。</li>
+  <li><code>CO03</code> → ヘッダの状態が <code>CNF</code>（確認済）になることを確認。</li>
+  <li><code>CO03</code> → 明細 → 「実際原価（Actual Costs）」或は「コンポーネント/作業」で、実績が計上されたことを確認。</li>
+  <li>（差分の練習）歩留を 490 にして 10 PC を不良扱いすると、差異の数字がどうなるかを見る（本练习用に 1 件だけ作るのがおすすめ）。</li>
+</ol>
+
+
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+<code>CO03</code> の状態（<code>CNF</code>）・実際原価。表：<code>SE16N: AFRU</code>（実績明細：歩留 <code>LMNGA</code> / 不良 <code>XMNGA</code> / 作業時間 <code>ISMNW</code>）。<br>
+部品を 261 で手動出庫した場合、<code>AFRU</code> の歩留と <code>MATDOC</code> の出庫数量は<b>別々</b>に記録される（両方を突き合わせるのが実績の確認）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 歩留数量が 0 のまま保存 → 状態だけ <code>CNF</code> になり、後で入庫 101 が数量不足でできない。<br>
+② 作業時間を入れない → 作業費の差異が「全部の作業費」になる（比較の意味がなくなる）。<br>
+③ 「部分確認」と「最終確認」の区別：最終確認で状態が <code>CNF</code>、入庫 101 で <code>DLV</code>。混同すると差异的时点判断がずれる。</div>
+<div class="task"><b class="t">練習課題</b>歩留 500 の正常ケースの後、同じ手顺で<b>歩留 490（不良 10）</b>の指図を作り、<code>CO03</code> の実績数量と（练习⑤ で）差異の数字を比べる。<b>「スクラップはどこで捕まえるか」</b>の答え：入庫数量が減る（101 で 490）＋差異カテゴリに出る。</div>
+<figure class="gui"><img src="assets/gui/handson-3_s03_1.svg" alt="CO11N で指図 1000123 の工程 0010 を確認し、歩留数量 500 PC と作業時間を入力する。" loading="lazy"><figcaption><b class="t">CO11N：歩留 500 PC の実績</b><span class="tx">CO11N</span><span class="scr">工程確認：歩留数量の実績</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 歩留数量 500 がそのまま 3-4 の入庫上限になる（歩留を超えて入庫はできない）</li><li><b>2</b> 作業時間を入れないと作業費の差異が「全部の作業費」になり比較の意味がなくなる</li></ol><p class="gui-tip">自システムでの確認：CO03 の状態（CNF）と実際原価、SE16N: AFRU（歩留 LMNGA / 作業時間 ISMNW）。手動 261 の出庫数量は MATDOC 側に別記録されます。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-3_s03_2.svg" alt="CO03 で指図の状態が CNF になったことを確認する。" loading="lazy"><figcaption><b class="t">CO03：状態 CNF（確認済）</b><span class="tx">CO03</span><span class="scr">製造指図 照会：状態 CNF（確認済）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> CNF になっていることを確認してから 101 入庫へ。CRTD のままなら解放か保存を忘れている</li><li><b>2</b> 「部分確認」と「最終確認」の区別。最終確認で状態が CNF、入庫 101 で DLV になる</li></ol><p class="gui-tip">自システムでの確認：CO03 → 明細 →「実際原価」で実績が計上されていること。不良を出す練習では歩留 490 にして差異の変化を見ます。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="q4">3-4 完成品入庫 101（MIGO → 自由在庫）</h2>
+<table class="tbl wide">
+<tr><th>項目</th><th>値</th><th>説明</th></tr>
+<tr><td>T-code / 移動タイプ</td><td><code>MIGO</code> &gt; 入出庫 &gt; 入庫 &gt; 指図、移動タイプ <code>101</code>（<code>MB31</code> も可）</td><td>指図への入庫</td></tr>
+<tr><td>入庫数量</td><td><code>500</code> PC</td><td>歩留数量を超えて入庫はできない</td></tr>
+<tr><td><b>在庫区分</b></td><td><b>空（自由在庫 / プラント在庫）</b></td><td><b>MTS の決定的証拠</b>。MTO なら特在区分 <code>E</code></td></tr>
+<tr><td>保管場所</td><td><code>0001</code></td><td>自由在庫はプラント + 保管場所に帰属</td></tr>
+<tr><td>会計連携</td><td>標準価格 × 数量（例 8,000 × 500 = 4,000,000 JPY）</td><td>FI の在庫勘定（<code>OBYC: BSX</code>）と指図の貸方</td></tr>
+</table>
+<ol class="steps">
+  <li><code>MIGO</code> → 入庫 &gt; 指図（<code>101</code>）→ 指図番号・品目 <code>ZMTS-FG01</code>・数量 <code>500</code>・保管場所 <code>0001</code> → Check → 転記。</li>
+  <li><code>MMBE</code> → <code>ZMTS-FG01</code> / プラント <code>1000</code>：<b>非制限利用（自由在庫）= 500 PC</b>、<b>特別在庫（得意先別）は空</b>であることを確認。</li>
+  <li><code>MB52</code> でも同じ行が見えること（プラント横断の一覧）。</li>
+  <li><code>CO03</code> → 指図状態が <code>DLV</code>（入庫完了）になることを確認。</li>
+  <li><code>FB03</code> で 101 の会計伝票（在庫勘定 / 指図への入庫）を確認——金額が<b>標準価格</b>ベースであることが MTS の要点。</li>
+</ol>
+
+
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+① 数量と区分：<code>MMBE</code>／<code>MB52</code>（自由在庫 500 / 特在空）、表は <code>SE16N: MARD</code>（品目/プラント/保管場所の非制限在庫 <code>LABST</code>）。<b>対照</b>：MTO なら <code>MSKA</code> に受注番号付きで入る。<br>
+② 物料伝票：<code>SE16N: MATDOC</code>（<code>101</code>、指図参照）。<br>
+③ 会計：<code>FB03</code>（在庫勘定の借方 / 指図の貸方。勘定は <code>OBYC: BSX</code> の評価クラス別設定）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 入庫したら在庫が「得意先別」に出た → <b>MTO 化している</b>（品目 MRP4 の個別/包括所要量、または指図が受注に紐づいている）。<a href="config.html#c2">C2</a> と <code>AFPO-KDAUF</code> を確認。<br>
+② 特定在庫（ブロック在庫/品質検査在庫）に入った → 入庫時に在庫タイプを指定している（<code>101</code> なのに画面で「品質検査」等を選んだ）。<br>
+③ 入庫できない（歩留不足） → <code>CO11N</code> の歩留数量不足、或は既に入庫済み（二重入庫は不可、超過入庫の設定次第）。<br>
+④ 在庫は増えたのに金額が 0 → 品目 会計1 の標準価格未リリース（<a href="config.html#c4">C4</a>）。</div>
+<div class="task"><b class="t">練習課題</b><code>MMBE</code> の画面を「数量」と「金額」の両方で見て、<b>自由在庫の金額 = 標準価格 × 数量</b>であることを確かめる。次に姊妹站 sapmto の同场景（MTO）と比べ、<b>この行が受注在庫側に現れる</b>ことを読み比べる。</div>
+<figure class="gui"><img src="assets/gui/handson-3_s04_1.svg" alt="MIGO で移動タイプ 101 の指図入庫を登録する。完成品 500 PC が自由在庫（在庫区分は空）に入る。" loading="lazy"><figcaption><b class="t">MIGO：完成品入庫 101 → 自由在庫</b><span class="tx">MIGO</span><span class="scr">入出庫：指図への入庫（移動タイプ 101）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 在庫タイプは非制限利用（自由在庫）のまま。品質検査/ブロックを選ぶと特定在庫に入る</li><li><b>2</b> 歩留数量を超えて入庫はできない（歩留 490 なら 101 も最大 490）</li></ol><p class="gui-tip">自システムでの確認：SE16N: MATDOC（101・指図参照）、FB03（在庫勘定 / 指図への入庫）。金額は標準価格 × 数量 = 8,000 × 500 = 4,000,000 JPY。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-3_s04_2.svg" alt="MMBE で完成品の非制限利用在庫が 500 PC になり、特別在庫が空であることを確認する。" loading="lazy"><figcaption><b class="t">MMBE：自由在庫 500 PC・特別在庫は空</b><span class="tx">MMBE</span><span class="scr">在庫一覧：自由在庫 +500（特在区分は空）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 自由在庫 500 PC に入った = 誰でも使える在庫。MTS の核心</li><li><b>2</b> 金額欄で見ると 500 × 8,000 = 4,000,000 JPY（標準価格ベース）</li></ol><p class="gui-tip">自システムでの確認：SE16N: MARD（LABST = 非制限在庫）、対照で MTO は MSKA。MB52 でも同じ行が見えます。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="q5">3-5 標準原価との差異（「此处的金额」问题）</h2>
+<p>入库记的是<b>标准价</b>，但实际花掉的钱是「部品实际价 + 实际工时 × 实际费率」。两者之差不是错误，而是<b>要由差异计算来处理的信号</b>（练习⑤）。本练习先建立「差在哪里、差多少」的直觉。</p>
+<pre class="vals">标准（目標原価）= 8,000 × 500 = 4,000,000 JPY
+実際原価の内訳（例）
+  部品: RM01 1,000 PC × 実際単価 + RM02 2,000 PC × 実際単価
+  作業: 実績時間 × レート
+  間接費: 原価計算バリアントの設定による
+   → 実際 4,150,000 JPY なら 差異 = 150,000 JPY（= 300 JPY/PC）
+
+差異の「見え方」は 2 か所
+  ① 指図単位（CO03 の実際原価 vs 目標原価）  ← 練習で見る場所
+  ② 品目/期間単位（KKS1 → KO88 で FI へ）    ← 練習⑤ で見る場所</pre>
+<ol class="steps">
+  <li><code>CO03</code> → 明細 → 「実際原価 / 目標原価」の比較画面（或は「原価分析」）を開く。</li>
+  <li>標準（目標）と実際の差額を記録する。</li>
+  <li>部品の実際単価を確認したい場合は、部品の 101 入庫時の価格（<code>MBEW</code> 或は <code>MATDOC</code>）を見る——練習環境では 561 の初期在庫価格がそのまま使われることが多い。</li>
+</ol>
+
+
+<div class="box info"><b class="t">確認（自システムでの確認方法）</b>
+<code>CO03</code> の原価比較（目標/実際）。品目の標準価格は <code>MM03</code> 会計1 / <code>SE16N: MBEW-STPRS</code>。<br>
+差異の<b>具体カテゴリ</b>は <code>KKS1</code>/<code>KKS2</code> を実行した後の差異分析で見る（练习⑤）。カテゴリの定義は SAP Help <i>Variance Categories</i>。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① 「差異が出た＝設定ミス」と思い込む → 現場では<b>差異が出るのが正常</b>。重要なのは額と原因。<br>
+② 差異が 0 に見える → 目標原価が未計算（<code>CK11N</code> 未実施 / 会計1 の標準価格なし）或は実績未入力。<br>
+③ 差異を月末まで放置 → <code>KKS1</code> を実行しても「目標原価が無い」と言われる（標準価格未リリース）。</div>
+<div class="task"><b class="t">練習課題</b>差异的三个来源（部品价格 / 用量 / 工时）のうち、<b>あなたの環境で最も大きかったのはどれか</b>を、<code>CO03</code> の原価比較から推定して書く。—— これが练习⑤ で差異カテゴリを読むときの予習になる。</div>
+<figure class="gui"><img src="assets/gui/handson-3_s05_1.svg" alt="CO03 の原価比較。目標原価 4,000,000 JPY に対し実際原価 4,150,000 JPY で差異 150,000 JPY になる。" loading="lazy"><figcaption><b class="t">CO03：目標原価 4,000,000 と実際原価 4,150,000（差異 150,000）</b><span class="tx">CO03</span><span class="scr">原価比較：目標原価と実際原価の差</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 差異が 0 に見えるときは目標原価が未計算（CK11N 未実施 / 標準価格なし）or 実績未入力を疑う</li><li><b>2</b> 差異を月末まで放置すると、KKS1 で「目標原価が無い」と言われる（標準価格未リリース）</li></ol><p class="gui-tip">自システムでの確認：品目の標準価格は MM03 会計1 / SE16N: MBEW-STPRS。差異カテゴリは KKS1・KKS2 実行後に見ます（练习⑤）。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="expect">期待结果汇总（本练习做完时的系统状态）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>期待结果</th><th>確認方法</th></tr>
+<tr><td>1</td><td>指図が <code>REL</code> に解放され、部品予約が有効</td><td><code>CO03</code>・<code>RESB</code></td></tr>
+<tr><td>2</td><td>261 で部品が出庫され、部品在庫が減少（RM01 1,000 / RM02 2,000 PC）</td><td><code>MMBE</code>・<code>MATDOC</code></td></tr>
+<tr><td>3</td><td><code>CO11N</code> で歩留 500 PC を実績、指図状態 <code>CNF</code></td><td><code>CO03</code>・<code>AFRU</code></td></tr>
+<tr><td>4</td><td>101 で完成品 500 PC 入庫、<b>自由在庫（非制限利用）に +500</b>、<b>特在区分は空</b></td><td><code>MMBE</code>・<code>MB52</code>・<code>MARD</code></td></tr>
+<tr><td>5</td><td>指図状態が <code>DLV</code>、会計伝票が標準価格ベースで生成</td><td><code>CO03</code>・<code>FB03</code></td></tr>
+<tr><td>6</td><td>受注在庫（<code>MSKA</code>）には何も入っていない</td><td><code>SE16N: MSKA</code></td></tr>
+</table>
+
+<h2 id="trouble">つまずきと対処（本练习版）</h2>
+<table class="tbl wide">
+<tr><th>症状</th><th>根因の候補</th><th>確認手順</th></tr>
+<tr><td>261 で「指図が解放されていない」</td><td>状態 <code>CRTD</code></td><td><code>CO03</code> → <code>CO02</code> で解放</td></tr>
+<tr><td>261 で「在庫不足」</td><td>部品の初期在庫不足</td><td><code>MMBE</code> → <code>MIGO 561</code> で補充</td></tr>
+<tr><td>入庫が特定在庫に入る</td><td>入庫画面で在庫タイプを変えている</td><td>MIGO の画面（在庫タイプ欄）</td></tr>
+<tr><td>入庫が「得意先別」に出る</td><td>品目が MTO 化（MRP4 個別所要量 / 受注参照）</td><td><code>MM03</code> MRP4・<code>AFPO-KDAUF</code>・<code>MMBE</code></td></tr>
+<tr><td><code>CO11N</code> 後も状態が <code>CRTD</code></td><td>解放していない、或は保存していない</td><td><code>CO03</code> の状態</td></tr>
+<tr><td>在庫金額が 0 / 異常</td><td>標準価格未リリース、評価クラス不正</td><td><code>MM03</code> 会計1・<code>OBYC</code></td></tr>
+<tr><td>差異が想定外に大きい</td><td>実績時間の入力ミス・部品の実際単価が違う</td><td><code>CO03</code> 原価比較・<code>AFRU</code>・<code>MATDOC</code></td></tr>
+</table>
+
+<h2 id="accept">验收（完成基准）</h2>
+<div class="box ok"><b class="t">全部勾上才算练习③ 完成</b>
+<ul class="check">
+  <li>指図を <code>CO02</code> で解放し、状態が <code>REL</code> になったことを確認した。</li>
+  <li>261 で部品（RM01 1,000 / RM02 2,000 PC）を出库し、部品在庫が減ったことを <code>MMBE</code> で確認した。</li>
+  <li><code>CO11N</code> で歩留 500 PC を実績し、<code>AFRU</code> 或は <code>CO03</code> で実績数量を確認した。</li>
+  <li>101 で完成品 500 PC を入庫し、<code>MMBE</code>・<code>MB52</code> で<b>自由在庫（非制限利用）</b>に入ったことを確認した。</li>
+  <li><b>特在区分（得意先別）が空</b>であることを自分の目で確認し、これが MTS の証拠だと説明できる。</li>
+  <li>指図の状態遷移（<code>REL</code> → <code>CNF</code> → <code>DLV</code>）を実際に見た。</li>
+  <li>101 の会計伝票（<code>FB03</code>）の金額が<b>標準価格 × 数量</b>であることを確認した。</li>
+  <li><code>CO03</code> の原価比較で、目標（標準）と実際の差額を数字で言える。</li>
+</ul></div>
+
+<div class="box info"><b class="t">出典</b>
+移動タイプ 261/101/601 の意味と用途：SAP Help（在庫管理・移動タイプ）。<br>
+自由在庫の数量表 <code>MARD</code>/<code>MCHB</code> と受注在庫 <code>MSKA</code> の対照：SAP Help（Support Content）<i>Stock Tables and Stock Types</i>。<br>
+S/4HANA の在庫伝票一本化（<code>MATDOC</code>）：SAP Help（S/4HANA 簡素化項目）。<br>
+標準価格での入庫評価と差異計算の位置づけ：SAP Learning <i>Performing Variance Calculation</i>、SAP Help <i>Variance Categories</i>。<br>
+指図の状態（CRTD/REL/CNF/DLV/TECO）と実績（<code>AFRU</code>）・部品予約（<code>RESB</code>）：SAP Help（Production Orders）。Cloud の対応フローは スコープアイテム <b><code>BJ5</code></b>。</div>
+
+<div class="box ok"><b class="t">下一步</b>
+→ <a href="handson-4.html">练习④ 受注・引当・出荷・請求（VA01 → ATP → VL01N → VF01）</a>。</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP 見込生産（MTS）实战训练站</h5><p>练习③：製造と入庫（CO02 解放 → 261 → CO11N → 101 → 自由在庫）。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 需要予測とPIR</a><br><a href="handson-2.html">② MRP と計画手配</a><br><a href="handson-3.html">③ 製造と入庫</a><br><a href="handson-4.html">④ 受注・出荷・請求</a><br><a href="handson-5.html">⑤ 月末と発展</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

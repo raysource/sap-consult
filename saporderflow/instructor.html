@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>讲师版 · SAP 受注形態の横断比較</title>
+<meta name="description" content="受注形態の対比講義の讲师版：時間割（90 分 / 180 分）、板書用の 3 つの問い、演習（形態振り分け 5 件・判別 8 問）の模範解答、討論テーマ、採点観点、必出質問と模範回答。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/cmp.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">CMP</span><span class="txt">受注形態 横断比較</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="compare.html">横断比较</a>
+      <a href="scenario-eq.html">E vs Q 对照</a>
+      <a href="vc.html">VC 概観</a>
+      <a class="active" href="instructor.html">讲师版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 讲师版</div>
+<main class="page"><article>
+
+<h1>讲师版：対比講義の進め方と解答</h1>
+<div class="box warn"><b class="t">配布の注意</b>本ページは<b>講師用</b>です。受講者には <a href="compare.html">横断比较</a> と <a href="scenario-eq.html">E vs Q 对照</a> を渡し、演習は本ページの解答を見せずに考えさせてください。</div>
+
+<div class="toc">
+  <a href="#plan">1. 時間割</a>
+  <a href="#board">2. 板書用（3 つの問い）</a>
+  <a href="#ans1">3. 演習解答：形態の振り分け（5 件）</a>
+  <a href="#ans2">4. 演習解答：E vs Q 判別（8 問）</a>
+  <a href="#discuss">5. 討論テーマ</a>
+  <a href="#grade">6. 採点・評価</a>
+  <a href="#qa">7. 必出質問 Q&A</a>
+</div>
+
+<h2 id="plan">1. 時間割</h2>
+<table class="tbl wide">
+<tr><th>方案</th><th>時間</th><th>流れ</th><th>ポイント</th></tr>
+<tr><td>講義のみ</td><td>90 分</td><td>地図 25 分 → 横断比較 30 分 → 振り分け演習 15 分 → 判別演習 10 分 → テスト 10 分</td><td>「どの設定が効くか」を質問しながら進める（一方的に読ませない）</td></tr>
+<tr><td>講義＋デモ</td><td>180 分</td><td>前半 90 分 ＋ <b>実機デモ 60 分</b>（講師が MTO と ETO を最小手顺で走らせ、MD04/MMBE/MSKA・MSPR/CJI3 の 4 画面を見せる）＋ 質疑 30 分</td><td>デモは「同じ受注を 2 通りで」が効果的。<code>MMBE</code> で <b>MSKA と MSPR を見比べる</b>瞬間が山場</td></tr>
+<tr><td>講義＋対比実習</td><td>4〜5 時間</td><td>講義 90 分 → MTO を <span class="mono">../sapmto/</span> の練習①〜③ で実機（90 分）→ ETO を <span class="mono">../sapeto/</span> の練習①〜③ で実機（120 分）→ 対照表を埋めて発表（60 分）</td><td>最後に「5 点を資料なしで説明」させると定着する</td></tr>
+</table>
+<div class="box info"><b class="t">事前準備（講師）</b>
+① 両站の環境（<span class="mono">../sapmto/</span>・<span class="mono">../sapeto/</span> の README の前提）を確認 ② デモ用に MTO/ETO のデータを 1 セットずつ用意 ③ <code>MMBE</code> の「受注在庫」と「プロジェクト在庫」欄を事前に表示確認（環境によっては項目表示の追加が必要）。</div>
+
+<h2 id="board">2. 板書用：3 つの問い（この順で問いかける）</h2>
+<pre class="vals">問い 1：この商流は「受注の前にモノを作るか？」
+        → 作る＝MTS（PIR・自由在庫）／作らない＝受注起点（次へ）
+
+問い 2：この案件は「プロジェクト（案件）単位で原価・収益・進捗を管理するか？」
+        → する＝ETO（Q・WBS・請求計画・結果分析）／しない＝MTO（E・指図）
+
+問い 3：この製品は「得意先が仕様を選ぶタイプか？ そして受注後すぐ組むか？」
+        → 選ぶ＝VC（KMAT・特徴/クラス・設定プロファイル）
+        → すぐ組む＝ATO（戦略 82・受注と同時に指図）
+
+※ モノの流れ（261 / 101 / 601）と請求伝票（VF01）はどの形態でも同じ。
+   違うのは「帰属先」「成本の対象」「月末の処理」。この 3 点だけを板書に残す。</pre>
+<div class="box ok"><b class="t">講義で必ず言う 3 点</b>
+① <b>库存区分が全てを決める</b>：自由 / E（受注明細）/ Q（WBS）——表は <code>MARD</code> / <code>MSKA</code> / <code>MSPR</code>。<br>
+② <b>受注在庫 E の 4 点セット</b>：MRP4 個別所要量／所要量クラスの個別在庫／明細カテゴリの特別在庫 E／（＋戦略グループ）。<br>
+③ <b>プロジェクト在庫 Q の 4 点セット</b>：評価付プロジェクト在庫／MRP4 個別所要量／戦略グループ（評価区分 M）／受注明細への WBS 割当。</div>
+
+<h2 id="ans1">3. 演習解答：形態の振り分け（<a href="compare.html">横断比较</a> の演習）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>ケース</th><th>形態</th><th>库存区分</th><th>成本の対象</th><th>請求方式</th></tr>
+<tr><td>①</td><td>標準的な工作機械の受注生産（納期 2 か月・分割請求なし）</td><td><b>MTO</b></td><td>E（受注在庫）</td><td>製造指図</td><td>出荷ベース（<code>F2</code>）</td></tr>
+<tr><td>②</td><td>得意先工場に据え付ける特注ライン（設計・据付・検収・着手金あり）</td><td><b>ETO</b></td><td>Q（プロジェクト在庫）</td><td><b>WBS</b>（＋指図）</td><td>請求計画/出来高＋結果分析</td></tr>
+<tr><td>③</td><td>自社ブランドの切削工具（見込みで在庫し出荷）</td><td><b>MTS</b></td><td>自由在庫</td><td>品目/指図（標準原価）</td><td>出荷ベース</td></tr>
+<tr><td>④</td><td>得意先が容量・色・材質を選ぶ産業用ポンプ（受注後すぐ組立）</td><td><b>VC ＋ ATO</b></td><td>E（または自由在庫＋指図）</td><td>製造指図</td><td>出荷ベース（変種価格の加算あり）</td></tr>
+<tr><td>⑤</td><td>得意先ごとにソフトウェアをカスタマイズして納める案件</td><td><b>ETO</b>（サービス明細の併用も）</td><td>Q（または在庫なし＋費用）</td><td>WBS（プロジェクト）</td><td>請求計画/出来高。役務は納入不要の明細（<code>DIEN</code> 系）も検討</td></tr>
+</table>
+<p class="mini">採点の見方：形態名だけでなく<b>库存区分・成本の対象・請求方式</b>が揃って正解。特に ④ で「VC は形態ではなく構成エンジン」と説明できるかが理解の分かれ目です。</p>
+
+<h2 id="ans2">4. 演習解答：E vs Q 判別（<a href="scenario-eq.html">E vs Q 对照</a> の 8 問）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>問い</th><th>解答</th><th>解説（採点のポイント）</th></tr>
+<tr><td>1</td><td>受注 10 台・納期 2 か月・分割請求なし・設計は流用</td><td><b>MTO（E）</b></td><td>設計も据付もなく、受注後に造って納めるだけ → WBS を作る理由がない。原価は指図で足りる</td></tr>
+<tr><td>2</td><td>工場据付の特注ライン・着手金 30%・検収後 70%</td><td><b>ETO（Q）</b></td><td>据付・検収・分割請求＝案件としての原価/収益管理が必要 → WBS ＋ 請求計画（30/70）</td></tr>
+<tr><td>3</td><td><code>MMBE</code> に「特別在庫 E、受注 0000001234/000010」</td><td><b>MTO</b></td><td>特別在庫 E は受注明細に帰属。数を確認する表は <code>MSKA</code></td></tr>
+<tr><td>4</td><td>計画手配の勘定設定が空・在庫区分も空。最初に疑う設定は？</td><td><b>4 点セットの不成立</b>（ETO なら特に ① 評価付プロジェクト在庫 と ④ 受注明細の WBS、MTO なら ③ 明細カテゴリの特別在庫 E）</td><td>「空」＝個別需要として成立していない。まず受注明細（WBS / 特別在庫）→ 次に品目 MRP4 → 戦略グループの順で見る</td></tr>
+<tr><td>5</td><td><code>CJI3</code> に収益が出ない</td><td><b>受注明細が指す WBS が請求要素でない</b>（または受注明細に WBS が無い）</td><td>収益は請求要素、原価は勘定設定要素。<code>CJ20N</code> の WBS フラグと <code>VA03</code> の WBS を突き合わせる</td></tr>
+<tr><td>6</td><td>請求計画なしで出荷ベースだけの請求は可能か？</td><td><b>可能</b></td><td>請求計画は「分割して請求する」仕組み。出荷ベースなら出荷（PGI）後に <code>VF01</code>。明細カテゴリの請求関連とコピー制御（<code>VTFL</code>）を確認</td></tr>
+<tr><td>7</td><td>同じ品目を MTO と ETO の両方で使えるか？</td><td><b>技術的には可能</b>（受注明細の WBS / 特別在庫で分岐）</td><td>ただし<b>運用は分けるのが安全</b>。同じ品目に E と Q が混在すると、入庫先・評価・決済が読みにくくなる。品目を分けるか、得意先/チャネルで運用を分けるのが実務的</td></tr>
+<tr><td>8</td><td>得意先が色と容量を選ぶ。MTO のままで対応できるか？</td><td><b>不可（VC が必要）</b></td><td>選択値を BOM・工程・価格に反映するには <code>KMAT</code>・特徴/クラス・設定プロファイルと依存関係が必要。品目カテゴリグループ <code>0002</code>＋戦略 25（または 82）</td></tr>
+</table>
+
+<h2 id="discuss">5. 討論テーマ（15 分ずつ、現場感覚を養う）</h2>
+<ol class="steps">
+  <li><b>「E と Q のどちらで設計すべきか」</b>——同じ製品でも、得意先が「据付・検収・分割払い」を求めるかどうかで変わる。要件定義でどの質問を得意先にするか。<span class="mini">（答えの型：原価/収益の管理単位＝受注か案件か、請求の仕方＝出荷か請求計画か）</span></li>
+  <li><b>「VC を入れるべきか、品目を増やすべきか」</b>——品目が 50 → 5,000 に増える見込みがあるなら VC。ただし依存関係の設計・保守コストを直視する。</li>
+  <li><b>「予算管理は必要か」</b>——ETO で案件ごとに予算統制するか、計画＋実績の比較で足りるか。可用性管理（<code>CJBV</code>）の警告/エラー設計は業務と合意が必要。</li>
+  <li><b>「収益認識はどの方式か」</b>——出荷ベース / 出来高 / POC（進捗比例）/ イベントベース。会計方針×契約×システム対応（結果分析 or イベントベース）の掛け算で決める。</li>
+  <li><b>「月末に何を見るか」</b>——MTO は指図の差異、ETO は WBS の予実と WIP。経営層に見せる帳票はどれか。</li>
+</ol>
+
+<h2 id="grade">6. 採点・評価</h2>
+<table class="tbl wide">
+<tr><th>観点</th><th>配点</th><th>合格ライン</th><th>見方</th></tr>
+<tr><td>知識（選択問題）</td><td>40</td><td><a href="quiz.html">能力测试</a> 20 題で 75% 以上（15 問）</td><td>誤答分野（形態判別 / 主数据 / T-code / 故障 / VC）で戻るページを指示</td></tr>
+<tr><td>説明力（対比）</td><td>40</td><td>「需要の帰属・在庫の表・成本の対象・請求の仕方・月末処理」の 5 点を、資料を見ずに 5 分で説明できる</td><td><a href="scenario-eq.html">E vs Q 对照</a> の 5 点。<b>ここが本講義の主評価</b></td></tr>
+<tr><td>実機（任意）</td><td>20</td><td>MTO と ETO の両方で、受注→入庫→出荷→請求を 1 回ずつ通した証跡（伝票番号・<code>MSKA</code>/<code>MSPR</code> の行）</td><td>詳細は各站のチェックリストで採点</td></tr>
+</table>
+<div class="box ok"><b class="t">フィードバック文例</b>
+「比較表は読めています。次は<b>判断</b>です。『この商流なら Q、理由は◯◯』を自分の言葉で言えるようにしましょう。特に『なぜ E では足りないのか』を説明できると、要件定義の場で信頼されます。」</div>
+
+<h2 id="qa">7. 必出質問 Q&A</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>質問</th><th>模範回答</th></tr>
+<tr><td>1</td><td>E と Q を同じ受注で同時に使えますか？</td><td>明細単位では混在可能ですが、運用は分けるのが安全です。理由は、入庫先・評価・決済・帳票がすべて変わるためです。設計上は「案件＝Q」「単発＝E」のように切り分けるのが定石です</td></tr>
+<tr><td>2</td><td>ETO で必ずネットワークを使いますか？</td><td>不要です。WBS ＋ 製造指図で回せます。ネットワークは設計・据付・外注の工程管理と工数集計（<code>CN25</code>）に価値があります</td></tr>
+<tr><td>3</td><td>VC を入れたら ETO にできますか？</td><td>できます（VC × Q）。Cloud では「完成品受注で BOM を展開したい」場合に E2 を使わない選択もあるため、スコープ要件の確認が必要です</td></tr>
+<tr><td>4</td><td>戦略グループ 82 は VC 専用ですか？</td><td>違います。82 は組立処理（受注と同時に指図、1:1、BOM 必須）で、VC の有無に関係なく使えます</td></tr>
+<tr><td>5</td><td>MTS の在庫と MTO の受注在庫を同じ品目で持ちますか？</td><td>持ち得ますが、実務では分ける（品目を分ける・プラントを分ける）ことが多いです。MRP4 の個別/包括所要量は<b>品目単位</b>の設定なので、混在させると在庫と需要の見え方が複雑になります</td></tr>
+<tr><td>6</td><td>請求計画と出来高請求の違いは？</td><td>請求計画は「いつ・いくら請求するか」の一覧（日付ベースも出来高ベースもある）。出来高請求はマイルストーン達成をトリガにする方式で、請求計画タイプの一つとして扱います</td></tr>
+<tr><td>7</td><td>どの形態でも 261/101/601 は同じですか？</td><td>移動タイプは同じです。違うのは「入庫先（自由 / E / Q）」と「勘定設定（受注明細 / WBS）」です</td></tr>
+</table>
+
+<div class="box info"><b class="t">関連ページ</b><a href="compare.html">横断比较</a>／<a href="scenario-eq.html">E vs Q 对照</a>／<a href="vc.html">VC 概観</a>／<a href="quiz.html">能力测试</a></div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>受注形態 横断比較</h5><p>讲师版：時間割・板書用の 3 つの問い・演習解答（振り分け 5 件 / 判別 8 問）・討論テーマ・採点・必出 Q&A。</p></div>
+  <div class="cols">
+    <div><h5>本サイト</h5><a href="index.html">总览</a><br><a href="compare.html">横断比较</a><br><a href="scenario-eq.html">E vs Q 对照</a><br><a href="vc.html">VC 概観</a><br><a href="quiz.html">能力测试</a></div>
+    <div><h5>実機の手顺</h5><span class="mono">../sapmto/index.html</span>（MTO）<br><span class="mono">../sapeto/index.html</span>（ETO）</div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

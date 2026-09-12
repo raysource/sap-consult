@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>练习① 特徴とクラスの設計 · SAP S/4HANA バリアント設定付き受注生産（VC / AVC）实战训练站</title>
+<meta name="description" content="VC 练习①：用 CT04 建立 4 个特徴（容量・材質・塗装・付属品）并在 CL02 建立クラス ZVC_PUMP_CL（クラス型 300）、割当特徴与必须设定，最后用 CT04/CL03 与 CU50 前确认验证。含输入值、操作手顺、期待结果、つまずき、验收清单。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/vc.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">VC</span><span class="txt">バリアント設定 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a class="active" href="handson-1.html">①主数据</a>
+      <a href="handson-2.html">②受注与设定</a>
+      <a href="handson-3.html">③依存与BOM</a>
+      <a href="handson-4.html">④制造与出荷</a>
+      <a href="handson-5.html">⑤发展与故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 练习① 特徴とクラスの設計</div>
+<main class="page"><article>
+
+<h1>练习① 特徴とクラスの設計（<code>CT04</code> × 4 → <code>CL02</code>）</h1>
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。若是想换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 即可一键替换。</div>
+
+<div class="box info"><b class="t">本练习完成什么</b>
+VC 的第一层地基：<b>「質問と選択肢」（特徴）</b>と<b>「質問票」（クラス）</b>を作ります。
+① <code>CT04</code> で特徴 4 つ（<code>ZVC_CAPACITY</code> / <code>ZVC_MATERIAL</code> / <code>ZVC_COATING</code> / <code>ZVC_ACCESSORY</code>）を許可値つきで登録、
+② <code>CL02</code> でクラス型 <code>300</code> のクラス <code>ZVC_PUMP_CL</code> を作り 4 特徴を割当、③ <code>CT04</code>/<code>CL03</code> で<b>証跡を残す</b>、までです。
+预计 40 分钟。<b>本练习之后系统里的状态是</b>：特徴 4 つとクラス 1 つが存在し、<b>まだ品目には何も割り当たっていない</b>（それは练习②）。</div>
+
+<div class="flow">
+  <div class="node">1 CT04<br><small>容量（数値）</small></div><div class="arrow">→</div>
+  <div class="node">2 CT04<br><small>材質・塗装</small></div><div class="arrow">→</div>
+  <div class="node">3 CT04<br><small>付属品（複数値）</small></div><div class="arrow">→</div>
+  <div class="node">4 CL02<br><small>型 300 のクラス</small></div><div class="arrow">→</div>
+  <div class="node">5 特徴の割当<br><small>必須の設計</small></div><div class="arrow">→</div>
+  <div class="node">✓ 验收</div>
+</div>
+
+<h2>1-1 特徴の設計（何を特徴にするかを先に決める）</h2>
+<p><b>手を動かす前に 5 分で決めてください。</b>特徴は後から作り直せますが、<b>データタイプ（数値／文字）は後から変えられません</b>（作り直しになります）。</p>
+<table class="tbl wide">
+<tr><th>特徴（技術名称）</th><th>名称</th><th>データタイプ</th><th>値</th><th>なぜこの設計か</th></tr>
+<tr><td><code>ZVC_CAPACITY</code></td><td>容量 (m3/h)</td><td><code>NUM</code></td><td><code>50</code> / <code>80</code> / <code>120</code></td><td>数値にすると大小比較（<code>&gt;=</code>）の依存関係が書ける。「120 以上でのみ選べる」ような条件に必須</td></tr>
+<tr><td><code>ZVC_MATERIAL</code></td><td>材質</td><td><code>CHAR</code></td><td><code>FC200</code> / <code>SUS304</code> / <code>SUS316</code></td><td>価格差が最も出る特徴。変種価格のキーに使う（C13）</td></tr>
+<tr><td><code>ZVC_COATING</code></td><td>塗装</td><td><code>CHAR</code></td><td><code>NONE</code> / <code>EPOXY</code> / <code>URETHANE</code></td><td>工程（塗装工程）の取捨に使う（C9）。前提条件の練習にも使う（C5）</td></tr>
+<tr><td><code>ZVC_ACCESSORY</code></td><td>付属品</td><td><code>CHAR</code></td><td><code>NONE</code> / <code>PG</code> / <code>FG</code> / <code>PG_FG</code></td><td><b>複数値（複数選択可）</b>を許可して練習する。BOM 明細の選択条件の題材になる（C6）</td></tr>
+</table>
+<div class="dep"><b class="t">設計判断：付属品を「複数値」にするか「組合せ値」にするか</b>
+① <b>複数値（複数選択可）</b>＝「圧力計と流量計の両方」を素直に表現できる。ただし<b>前提条件・選択条件の判定が「すべての値が条件を満たすか」になる</b>ため、
+単純な <code>= 'PG'</code> では拾えないことがある。<br>
+② <b>組合せ値（<code>NONE</code>/<code>PG</code>/<code>FG</code>/<code>PG_FG</code>）</b>＝判定は単純（<code>= 'PG_FG'</code>）になるが、付属品が 5 種類になると組合せが爆発する。<br>
+<b>本站は両方を使う</b>：複数値の挙動を体感した上で、判定は組合せ値で確実に取る——<b>「複数値の特徴は判定が難しい」という現場の実感を持って帰るのがゴール</b>です。</div>
+<figure class="gui"><img src="assets/gui/handson-1_s01_1.svg" alt="特徴 4 つの設計表。ZVC_CAPACITY（NUM / 50・80・120）、ZVC_MATERIAL（CHAR / FC200・SUS304・SUS316）、ZVC_COATING（CHAR / NONE・EPOXY・URETHANE）、ZVC_ACCESSORY（CHAR / NONE・PG・FG・PG_FG）。" loading="lazy"><figcaption><b class="t">1-1 特徴 4 つを先に設計する（データタイプは後から変えられない）</b><span class="tx">CT04</span><span class="scr">特徴の設計表（決めてから CT04 へ）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 容量を CHAR にすると大小比較（&gt;= 120）が書けなくなる</li><li><b>2</b> 材質は価格差が最も出る特徴 → 変種価格のキーに使う（C13）</li></ol><p class="gui-tip">自システムでの確認：CT04（照会）で 4 特徴の名称・データタイプ・許可値を一覧にする。SE16N は CABN（技術名称 ATNAM という記載）→ 項目名は SE11 で確認。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>1-2 特徴の登録（<code>CT04</code>）</h2>
+<p><b>入力值</b>：1-1 の表のとおり（名称・データタイプ・許可値）。</p>
+<ol class="steps">
+  <li><code>CT04</code> → 初期画面で「<b>変更</b>」を押す（照会モードのままだと登録できません）→ 特徴名 <code>ZVC_CAPACITY</code> → 「登録」。</li>
+  <li><b>基本データ</b>タブ：名称「容量 (m3/h)」、データタイプ<b>数値（<code>NUM</code>）</b>、桁数（例 3）・小数点（0 または 1）、<b>値チェック＝許可値</b>（「許可値のみ」を選ぶ）。</li>
+  <li><b>許可値</b>タブ：<code>50</code> / <code>80</code> / <code>120</code> を入力（説明欄に「小型/標準/大型」と入れておくと設定画面が読みやすくなる）。</li>
+  <li>同様に <code>ZVC_MATERIAL</code>（<code>CHAR</code>、<code>FC200</code>/<code>SUS304</code>/<code>SUS316</code>）、<code>ZVC_COATING</code>（<code>CHAR</code>、<code>NONE</code>/<code>EPOXY</code>/<code>URETHANE</code>）を登録。</li>
+  <li><code>ZVC_ACCESSORY</code>：基本データで<b>「複数値」を ON</b>（複数選択可）にしてから、値 <code>NONE</code>/<code>PG</code>/<code>FG</code>/<code>PG_FG</code> を登録。</li>
+  <li>4 つ登録したら「戻る」で一覧に戻り、<b>4 件が並ぶことを確認</b>。ここで一度<b>保存状態と依頼（カスタマイジング依頼）</b>を確認する（依頼を求められたら练习用依頼を指定）。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待结果）</b>
+① <code>CT04</code> 照会モードで <code>ZVC_MATERIAL</code> を開く → データタイプ <code>CHAR</code>・許可値 3 件・複数値 OFF。
+② <code>ZVC_ACCESSORY</code> → 複数値 ON になっている。<b>この 1 項目が後（C6）の選択条件の難易度を決めます</b>。
+③ <code>SE16N</code> → <code>CABN</code>：特徴の技術名称の項目（<b><code>ATNAM</code> という記載が一般的</b>）で <code>ZVC_*</code> を絞り 4 件見える。値は <code>CAWN</code>／テキストは <code>CAWNT</code> という記載（<b>項目名は <code>SE11</code> で確認</b>）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>照会モードのまま</b>登録しようとして「変更できません」→ 初期画面で「変更」。
+② <b>データタイプを <code>CHAR</code> にしてしまう</b>（容量）→ 後で <code>&gt;=</code> が使えず、容量の条件が書けない。<b>ここだけは最初に正しく</b>。
+③ <code>NUM</code> にしたのに値に「120m3/h」のような単位を入れる → <b>数値型は値だけ</b>。単位は名称か、別途単位設定で表現する。
+④ 値の前後に空白・全角スペース（見えない）→ 依存関係の <code>=</code> が一致せず「反応しない」原因になる。コピペせず手入力する。</div>
+<div class="task"><b class="t">練習課題</b>特徴の「値チェック」を「許可値のみ」以外（自由入力）にすると、VC で何が困るか？ 3 つ挙げよ（ヒント：依存関係の網羅性、条件レコードのキー、入力ミス）。</div>
+<figure class="gui"><img src="assets/gui/handson-1_s02_1.svg" alt="CT04 の基本データタブ。特徴 ZVC_CAPACITY、名称 容量、データタイプ NUM、桁数 3、値チェック 許可値のみ。" loading="lazy"><figcaption><b class="t">1-2 CT04 は「変更」を押してから登録（照会モードでは登録できない）</b><span class="tx">CT04</span><span class="scr">特徴の登録：基本データ（ZVC_CAPACITY）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 照会モードのまま登録しようとすると「変更できません」。初期画面で「変更」を押す</li><li><b>2</b> 4 特徴を登録したら一覧に戻り、4 件並ぶことを確認する</li></ol><p class="gui-tip">自システムでの確認：CT04 の照会モードで ZVC_MATERIAL を開き、データタイプ CHAR・許可値 3 件・複数値 OFF を確認。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-1_s02_2.svg" alt="CT04 の許可値タブ。付属品の値 NONE / PG / FG / PG_FG が並び、複数値が ON になっている。" loading="lazy"><figcaption><b class="t">1-2 付属品は複数値（複数選択可）の練習用特徴</b><span class="tx">CT04</span><span class="scr">特徴 ZVC_ACCESSORY の許可値（複数値 ON）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 組合せ値 PG_FG を用意しておくと選択条件の判定が確実になる</li></ol><p class="gui-tip">自システムでの確認：CT04 照会で ZVC_ACCESSORY の「複数値」が ON、許可値 4 件。この 1 項目が C6 の選択条件の難易度を決める。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>1-3 クラスの登録と特徴の割当（<code>CL02</code>）</h2>
+<p><b>入力值</b>：クラス型 <code>300</code> / クラス <code>ZVC_PUMP_CL</code> / 名称「ポンプ バリアントクラス」/ 特徴 4 つ（必須：容量・材質・塗装の 3 つ、付属品は任意）。</p>
+<ol class="steps">
+  <li><code>CL02</code> → <b>クラス型 <code>300</code></b> を選択（F4 で「品目変種」系の型を確認できる）。<b>他の型（<code>001</code> 等）を選ばないこと</b>。</li>
+  <li>クラス <code>ZVC_PUMP_CL</code> → 「登録」→ 名称「ポンプ バリアントクラス」。</li>
+  <li>「<b>特徴</b>」タブ → 行追加 → <code>ZVC_CAPACITY</code> を入力（特徴名が自動表示され、名称・データタイプが読み込まれる）。</li>
+  <li>同じ行の「<b>必須</b>（必須特徴）」列を ON。続けて <code>ZVC_MATERIAL</code>（必須 ON）・<code>ZVC_COATING</code>（必須 ON）・<code>ZVC_ACCESSORY</code>（<b>必須 OFF</b>）。</li>
+  <li>保存 → 依頼を指定 → <code>CL03</code> でクラス <code>ZVC_PUMP_CL</code> を照会し、4 特徴と必須状態を確認。</li>
+</ol>
+<div class="box info"><b class="t">確認（期待结果）</b>
+① <code>CL03</code> → クラス <code>ZVC_PUMP_CL</code>：特徴タブに 4 行、必須列が「容量・材質・塗装＝ON／付属品＝OFF」。
+② <code>SE16N</code> → <code>KLAH</code>：<code>CLASS = ZVC_PUMP_CL</code>・<b>クラス型の項目（<code>KLART</code>）＝ <code>300</code></b> という記載。クラスに割当てた特徴は <code>KSML</code> という記載（<code>CLINT</code> の内部番号で絞る）。
+③ <code>CT04</code> → <code>ZVC_MATERIAL</code> → どこで使われているか（使用箇所）を見ると <code>ZVC_PUMP_CL</code> が出る（環境により表示場所が違う：<code>CL03</code> と <code>SE16N KSML</code> の両方で確認すると確実）。</div>
+<div class="box warn"><b class="t">つまずき</b>
+① <b>クラス型を間違える</b>（最も多い）→ 品目の分類ビューでクラスが出ない／受注で構成画面が出ない。症状が出たら<b>最初にクラス型を見る</b>。
+② 特徴の「必須」を全部 ON にして <code>CU50</code> で抜けられなくなる → <b>正しい動作</b>です（完全性チェック）。ただし「任意項目を必須にしてしまう」設計ミスは現場で嫌われる。<b>何を必須にするかは業務と合意する</b>。
+③ 既に受注が流れているクラスへ特徴を追加 → 既存受注の再構成が必要になる（変更統制 → <a href="handson-5.html">练习⑤</a>）。
+④ クラス名を「<code>ZVC_PUMP_CL</code>」ではなく「<code>PUMP_CL</code>」など <code>Z</code> 無しで作ると、後続の手顺（品目への割当）で見つけにくくなる。<b>命名は全手順で統一</b>。</div>
+<div class="task"><b class="t">練習課題</b>クラス <code>ZVC_PUMP_CL</code> の <code>ZVC_ACCESSORY</code> を<b>必須（ON）に変更</b>して保存し、<a href="handson-2.html">练习②</a> の前に <code>CU50</code> を触ってみてください（品目が未作成なので、<code>CU50</code> は<b>品目なしでは動かない</b>ことも確認できます）。<b>必ず元（OFF）に戻すこと</b>——戻せることが「変更統制の基本動作」です。</div>
+<figure class="gui"><img src="assets/gui/handson-1_s03_1.svg" alt="CL02 の特徴タブ。クラス型 300 のクラス ZVC_PUMP_CL に 4 特徴が並び、必須列が ON/OFF になっている。" loading="lazy"><figcaption><b class="t">1-3 クラス型 300 に 4 特徴を割当（必須：容量・材質・塗装＝ON／付属品＝OFF）</b><span class="tx">CL02</span><span class="scr">クラス ZVC_PUMP_CL：特徴の割当と必須フラグ</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> クラス型を間違えると品目の分類ビューにクラスが出ない（症状が出たら最初に見る）</li><li><b>2</b> 付属品は任意。練習課題で必須に変えて元に戻せることを確認する</li></ol><p class="gui-tip">自システムでの確認：CL03 の特徴タブ、SE16N KLAH（CLASS / KLART = 300 という記載）と KSML（割当てた特徴という記載）→ 項目名は SE11 で確認。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>1-4 本练习的期待结果汇总</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>成果物</th><th>期待值</th><th>証跡（画面/T-code）</th></tr>
+<tr><td>1</td><td>特徴 4 つ</td><td><code>ZVC_CAPACITY</code>(<code>NUM</code>) / <code>ZVC_MATERIAL</code>(<code>CHAR</code>) / <code>ZVC_COATING</code>(<code>CHAR</code>) / <code>ZVC_ACCESSORY</code>(<code>CHAR</code>・複数値 ON)</td><td><code>CT04</code> 照会／<code>SE16N</code> <code>CABN</code></td></tr>
+<tr><td>2</td><td>許可値</td><td>3 / 3 / 3 / 4 件</td><td><code>CT04</code> の許可値タブ</td></tr>
+<tr><td>3</td><td>クラス</td><td><code>ZVC_PUMP_CL</code>・クラス型 <code>300</code></td><td><code>CL03</code>／<code>KLAH</code>（<code>KLART = 300</code>）</td></tr>
+<tr><td>4</td><td>特徴の割当</td><td>4 行（必須：3 つ ON／付属品 OFF）</td><td><code>CL03</code> の特徴タブ／<code>KSML</code></td></tr>
+</table>
+
+<h2>1-5 つまずきと対処（まとめ）</h2>
+<table class="tbl wide">
+<tr><th>症状</th><th>原因の第一嫌疑</th><th>确认手顺</th></tr>
+<tr><td>特徴が登録できない</td><td><code>CT04</code> が照会モード／権限不足</td><td>初期画面で「変更」を押す。それでも不可なら権限（C0 の 5 T-code 確認に戻る）</td></tr>
+<tr><td>値が 2 つしか出ない／登録した値が出ない</td><td>保存していない／別の特徴に値を入れた</td><td><code>CT04</code> で該当特徴の許可値タブを再確認。<b>保存は値の入力ごとに</b>行うのが安全</td></tr>
+<tr><td>数値の比較が使えない</td><td>データタイプが <code>CHAR</code></td><td><code>CT04</code> 基本データのデータタイプ。<b>後から変えられない</b>ので作り直し</td></tr>
+<tr><td>品目（或いは受注）でクラスが出てこない</td><td>クラス型が <code>300</code> でない</td><td><code>CL03</code> のクラス型 → 正しければ品目側の分類ビュー（练习②）</td></tr>
+<tr><td><code>CU50</code> で品目が選べない</td><td>品目が未作成（练习②の領域）</td><td>本练习の範囲外。<b>「特徴・クラスだけでは設定できない」ことを理解する</b>のが正解</td></tr>
+</table>
+
+<h2>1-6 验收（完成基准）</h2>
+<ul class="check">
+  <li>特徴 4 つが正しいデータタイプ（容量＝数値／他＝文字）で登録されている</li>
+  <li>容量の許可値が <code>50</code> / <code>80</code> / <code>120</code>、材質・塗装が各 3 値、付属品が 4 値になっている</li>
+  <li><code>ZVC_ACCESSORY</code> の「複数値」が ON になっている</li>
+  <li>クラス <code>ZVC_PUMP_CL</code> が<b>クラス型 <code>300</code></b> で作られている</li>
+  <li>クラスに 4 特徴が割当たり、必須が「容量・材質・塗装＝ON／付属品＝OFF」になっている</li>
+  <li><code>CL03</code> と <code>CT04</code> の画面（または <code>KLAH</code>/<code>CABN</code> の <code>SE16N</code>）を<b>自分の目で見て証跡として提示できる</b></li>
+  <li>「データタイプは後から変えられない」「必須フラグはクラス側で持つ」の 2 点を自分の言葉で説明できる</li>
+</ul>
+
+<div class="box info"><b class="t">下一步</b> → <a href="handson-2.html">练习② 設定可能品目と設定プロファイル</a>（品目 <code>ZVC-PUMP01</code> を作り、ここで作ったクラスを割り当てます）</div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>SAP S/4HANA バリアント設定付き受注生産（VC / AVC）实战训练站</h5><p>练习①：<code>CT04</code> で特徴 4 つ → <code>CL02</code> でクラス（型 <code>300</code>）→ 特徴割当と必須設計 → <code>CL03</code>/<code>CT04</code> で証跡。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 特徴とクラス</a><br><a href="handson-2.html">② 設定可能品目とプロファイル</a><br><a href="handson-3.html">③ 依存関係とスーパー BOM</a><br><a href="handson-4.html">④ 受注で構成・製造・出荷</a><br><a href="handson-5.html">⑤ 発展と故障対応</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

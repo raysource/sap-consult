@@ -1,0 +1,30 @@
+# CAP Java 应用配置
+# 本地开发: 文件型 SQLite (先执行: npx cds deploy --to sqlite:db.sqlite 建库并灌入 CSV 测试数据)
+spring:
+  datasource:
+    url: jdbc:sqlite:db.sqlite?foreign_keys=on
+    hikari:
+      maximum-pool-size: 1          # SQLite 仅支持单写者, 官方建议把连接池压到 1
+
+cds:
+  # 本地 mock 用户(替代 XSUAA)。角色名对齐 service 上的 @requires
+  security:
+    mock:
+      users:
+        alice:
+          password: alice
+          roles:
+            - authenticated-user
+        admin:
+          password: admin
+          roles:
+            - admin
+            - authenticated-user
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    com.sap.cds: INFO

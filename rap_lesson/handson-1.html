@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>手顺① 数据模型准备 · RAP 专项训练站</title>
+<meta name="description" content="RAP 实训第一步：包与 Transport、Z_PO_HDR / Z_PO_ITM / Z_VENDOR_TXT 三张表、测试数据（WBS PH0 与统合项目 STEP1）。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">RAP</span><span class="txt">RAP 专项训练站</span></a>
+    <nav class="main">
+      <a href="index.html">首页</a>
+      <a href="concept.html">概念与架构</a>
+      <a href="project.html">完整项目</a>
+      <a class="active" href="handson-1.html">手顺① 数据模型</a>
+      <a href="handson-2.html">手顺② CDS 视图</a>
+      <a href="handson-3.html">手顺③ RAP 行为</a>
+      <a href="handson-4.html">手顺④ 服务与 Fiori</a>
+      <a href="code.html">项目代码</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">首页</a> / 手顺① 数据模型准备</div>
+<main class="page"><article>
+
+<h1>手顺① 数据模型准备（建表 + 造数）</h1>
+<div class="box info"><b class="t">本页对应</b>
+WBS PH0.2（包/TR）+ PH3 3.1 的前置 + 统合项目 STEP1。完成基准：SE11 中三张 Z 表可用，SE16N 可见 ≥5 条测试数据。</div>
+
+<h2>操作流程（本页总览）</h2>
+<div class="flow">
+  <div class="node">1 创建包 Z_WBS_DEV<br><small>（或沿用项目包）</small></div><div class="arrow">→</div>
+  <div class="node">2 创建 Transport<br><small>（Workbench TR）</small></div><div class="arrow">→</div>
+  <div class="node">3 建表 x3<br><small>SE11 / ADT</small></div><div class="arrow">→</div>
+  <div class="node">4 字段/键检查<br><small>激活（Ctrl+F3）</small></div><div class="arrow">→</div>
+  <div class="node">5 造数<br><small>SE16N ≥5 条</small></div><div class="arrow">→</div>
+  <div class="node">✓ 验收</div>
+</div>
+
+<h2>STEP 1-1 创建包与 Transport（WBS PH0.2）</h2>
+<ol class="steps">
+  <li><b>ADT（Eclipse）连接 S/4</b>：Project Explorer → 右键 → New → ABAP Project（输入系统、客户端、账号）。确认可浏览包与表。</li>
+  <li><b>建包</b>：右键项目 → New → ABAP Package → 名称 <code>Z_WBS_DEV</code>，说明「RAP 学习用（WBS 实训）」；Software Component 选 <code>HOME</code>，Transport Layer 用默认（SAP）。创建时选择 <b>创建 Transport Request</b>。</li>
+  <li><b>确认 TR</b>：若弹出 Transport Request 对话框，新建 Workbench TR（类型：开发/更正）。后期所有激活对象应归属该 TR（或系统自动分配）。</li>
+  <li><b>备用</b>：也可以在 SE03 / STMS 中查看 TR。若环境已有项目包（如 ZPURORDER_APP），可跳过新建，直接使用。</li>
+</ol>
+<div class="box warn"><b class="t">注意事项（WBS 备注引用）</b>
+① 本地产包 <code>$TMP</code> 不能上传输请求，实训中请务必用正式包。② 自定义对象一律 <code>Z/ZZ</code> 开头，禁止直接改 SAP 标准对象。</div>
+
+<h2>STEP 1-2 创建三张表（SE11 / ADT）</h2>
+<p>按统合项目 Sheet③「【数据模型】作成するZテーブル」定义。三张表结构如下（建议 ADT：右键包 → New → Other ABAP Repository Object → Dictionary → Database Table）：</p>
+
+<h3>表 1：z_po_hdr（采购订单头，RAP Root 的数据源）</h3>
+<table class="tbl">
+<tr><th>字段</th><th>Key</th><th>数据类型</th><th>说明</th></tr>
+<tr><td>mandt</td><td>✓（自动）</td><td>CLNT 3</td><td>客户端（SE11 自动加）</td></tr>
+<tr><td>po_num</td><td>✓</td><td>CHAR 11</td><td>采购订单号（Z+10位，本教程由番号范围 ZNPO 分配）</td></tr>
+<tr><td>po_date</td><td></td><td>DATS 8</td><td>采购日期（Determination 自动补默认）</td></tr>
+<tr><td>vendor_code</td><td></td><td>CHAR 10</td><td>供应商代码（关联 z_vendor_txt）</td></tr>
+<tr><td>status</td><td></td><td>CHAR 10</td><td>状态：NEW / CONFIRMED / CANCELLED</td></tr>
+<tr><td>created_by</td><td></td><td>CHAR 12</td><td>创建人（Determination 自动填入当前用户）</td></tr>
+<tr><td>zz_memo</td><td></td><td>CHAR 100</td><td>备注（对应 WBS 统合项目里的追加字段落点）</td></tr>
+</table>
+
+<h3>表 2：z_po_itm（采购订单明细，RAP Child）</h3>
+<table class="tbl">
+<tr><th>字段</th><th>Key</th><th>数据类型</th><th>说明</th></tr>
+<tr><td>mandt</td><td>✓（自动）</td><td>CLNT 3</td><td>客户端</td></tr>
+<tr><td>po_num</td><td>✓</td><td>CHAR 10</td><td>订单号（父键）</td></tr>
+<tr><td>item_num</td><td>✓</td><td>NUMC 4</td><td>行项目号（如 0010/0020）</td></tr>
+<tr><td>matnr</td><td></td><td>CHAR 40</td><td>物料/商品代码（简单字符即可）</td></tr>
+<tr><td>qty</td><td></td><td>QUAN 15,3</td><td>数量（维护单位）</td></tr>
+<tr><td>unit</td><td></td><td>UNIT 3</td><td>单位（EA/PC 等，可带检查表）</td></tr>
+<tr><td>net_price</td><td></td><td>CURR 15,2</td><td>单价</td></tr>
+<tr><td>currency</td><td></td><td>CUKY 5</td><td>币种（JPY/USD 等）</td></tr>
+</table>
+
+<h3>表 3：z_vendor_txt（供应商主数据简单表）</h3>
+<table class="tbl">
+<tr><th>字段</th><th>Key</th><th>数据类型</th><th>说明</th></tr>
+<tr><td>mandt</td><td>✓（自动）</td><td>CLNT 3</td><td>客户端</td></tr>
+<tr><td>vendor_code</td><td>✓</td><td>CHAR 10</td><td>供应商代码</td></tr>
+<tr><td>vendor_name</td><td></td><td>CHAR 80</td><td>供应商名称（列表显示用）</td></tr>
+<tr><td>country</td><td></td><td>CHAR 3</td><td>国家</td></tr>
+</table>
+
+<div class="box info"><b class="t">数据元素建议</b>
+字段建议用统一前缀数据元素（如 ZPO_NUM、ZVENDOR_CODE 等），也可在 ADT 建表向导里直接选择“内置类型 + 预定义”。Quantity/Currency 字段（QUAN/CURR）在 SE11 需要“参考表/参考字段”维护（如 qty 参考 ekpo-menge 或自建参考），若嫌麻烦可先全部用 CHAR/DEC 简化，教程代码不受影响。</div>
+
+<h2>STEP 1-3 激活并检查</h2>
+<ol class="steps">
+  <li>每张表保存后 <b>激活（Ctrl+F3）</b>，激活日志无错误。</li>
+  <li>Project Explorer → 双击表 → 上方「内容 / Contents」页签可看到空表；或用 <b>SE16N</b> 输入表名回车确认可访问。</li>
+  <li>（可选）在表上追加<strong>管理字段</strong>：创建人/创建时间等。本站为聚焦 RAP，用 determination 写 <code>created_by</code>，不额外加时间戳。</li>
+</ol>
+
+<h2>STEP 1-4 造数（≥5 条测试数据）</h2>
+<ol class="steps">
+  <li>先给 <b>z_vendor_txt</b> 造 3〜5 家供应商（vendor_code 如 <code>0000000001</code>～<code>0000000005</code>，名称任写）。</li>
+  <li>再给 <b>z_po_hdr + z_po_itm</b> 造 2〜3 张订单、每张 2〜3 行明细（合计明细 ≥5 行）。</li>
+  <li>用 SE16N 逐张维护；或复制下方 ABAP 程序在 SE38/ADT 运行一次（会覆盖式插入示例数据，适合练习环境）。</li>
+</ol>
+<pre class="hl"><div class="code-head"><span class="lang">abap · 示例造数程序（可复制，需在可写系统运行）</span><button class="copy-btn" type="button">复制</button></div><code class="lang-abap">REPORT zrap_seed_data.
+
+" 1) 供应商
+DELETE FROM z_vendor_txt.
+INSERT z_vendor_txt FROM TABLE @( VALUE #(
+  ( vendor_code = '0000000001' vendor_name = 'ABC Trading'  country = 'JP' )
+  ( vendor_code = '0000000002' vendor_name = 'XYZ Parts'    country = 'DE' )
+  ( vendor_code = '0000000003' vendor_name = 'Global Foods' country = 'US' ) ) ).
+
+" 2) 订单头 + 明细
+DELETE FROM z_po_hdr.
+DELETE FROM z_po_itm.
+INSERT z_po_hdr FROM TABLE @( VALUE #(
+  ( po_num = '4500000001' po_date = '20260901' vendor_code = '0000000001' status = 'NEW'       created_by = sy-uname )
+  ( po_num = '4500000002' po_date = '20260902' vendor_code = '0000000002' status = 'CONFIRMED' created_by = sy-uname ) ) ).
+INSERT z_po_itm FROM TABLE @( VALUE #(
+  ( po_num = '4500000001' item_num = '0010' matnr = 'MAT-100' qty = 10 unit = 'EA' net_price = '1000.00' currency = 'JPY' )
+  ( po_num = '4500000001' item_num = '0020' matnr = 'MAT-200' qty = 5  unit = 'EA' net_price = '2500.00' currency = 'JPY' )
+  ( po_num = '4500000002' item_num = '0010' matnr = 'MAT-300' qty = 2  unit = 'PC' net_price = '80.00'   currency = 'USD' ) ) ).
+
+IF sy-subrc = 0.
+  WRITE 'OK: vendor=3, header=2, item=3'.
+ENDIF.
+</code></pre>
+<div class="box warn"><b class="t">⚠ DELETE 有风险</b>
+上面程序会 <b>删除整表数据</b>，只应在练习环境/空表使用。真实系统请改用 SE16N 逐条添加。</div>
+
+<h2>验收（完成基准）</h2>
+<div class="box ok"><b class="t">✓ 手顺①验收清单</b>
+<ol>
+<li>包 Z_WBS_DEV 存在且绑定 TR；</li>
+<li>三张表已激活，SE16N 均可打开；</li>
+<li>供应商 ≥3 条，订单头 ≥2 条，明细 ≥3 行（统合项目 STEP1 基准：数据 5 件以上确认 OK）；</li>
+<li>（可选）已试过 Data Preview / SE16N 查看。</li>
+</ol></div>
+
+<div class="box info"><b class="t">下一步</b>
+→ <a href="handson-2.html">手顺② CDS 视图</a>：在表之上创建 BO 视图 ZR_ZPOHEADER / ZR_ZPOITEM 与 Composition/Association。</div>
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>RAP 专项训练站</h5><p>基于《SAP_S4HANA_BTP-学習WBS.xlsx》整理。</p></div>
+  <div class="cols">
+    <div><h5>手顺</h5><a href="handson-1.html">① 数据模型</a><br><a href="handson-2.html">② CDS 视图</a><br><a href="handson-3.html">③ RAP 行为</a><br><a href="handson-4.html">④ 服务与 Fiori</a></div>
+    <div><h5>其他</h5><a href="project.html">完整项目</a><br><a href="code.html">项目代码</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

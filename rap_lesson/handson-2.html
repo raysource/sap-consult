@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>手顺② CDS 视图 · RAP 专项训练站</title>
+<meta name="description" content="RAP 实训第二步：创建 BO 视图 ZR_ZPOHEADER / ZR_ZPOITEM，Composition 与 Association、注解、数据预览（WBS 3.1、统合项目 STEP2）。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">RAP</span><span class="txt">RAP 专项训练站</span></a>
+    <nav class="main">
+      <a href="index.html">首页</a>
+      <a href="concept.html">概念与架构</a>
+      <a href="project.html">完整项目</a>
+      <a href="handson-1.html">手顺① 数据模型</a>
+      <a class="active" href="handson-2.html">手顺② CDS 视图</a>
+      <a href="handson-3.html">手顺③ RAP 行为</a>
+      <a href="handson-4.html">手顺④ 服务与 Fiori</a>
+      <a href="code.html">项目代码</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">首页</a> / 手顺② CDS 视图</div>
+<main class="page"><article>
+
+<h1>手顺② CDS 视图（BO 层）</h1>
+<div class="box info"><b class="t">本页对应</b>
+WBS PH3 3.1（Root BO View 作成）+ 统合项目 STEP2（CDS View 作成、Associations）。完成基准：ZR_ZPOHEADER / ZR_ZPOITEM 激活成功；Data Preview 能显示头+明细关联数据（供应商名可见）。</div>
+
+<h2>操作流程（本页总览）</h2>
+<div class="flow">
+  <div class="node">1 建 root BO 视图<br><small>ZR_ZPOHEADER</small></div><div class="arrow">→</div>
+  <div class="node">2 建明细视图<br><small>ZR_ZPOITEM</small></div><div class="arrow">→</div>
+  <div class="node">3 加 Composition<br><small>_Items</small></div><div class="arrow">→</div>
+  <div class="node">4 加 Association<br><small>供应商 → _Vendor</small></div><div class="arrow">→</div>
+  <div class="node">5 Data Preview<br><small>展开确认</small></div><div class="arrow">→</div>
+  <div class="node">✓ 验收</div>
+</div>
+
+<h2>STEP 2-1 创建根视图 ZR_ZPOHEADER（ADT）</h2>
+<ol class="steps">
+  <li>右键包 Z_WBS_DEV → New → Other ABAP Repository Object → Core Data Services → <b>Data Definition</b>。</li>
+  <li>名称 <code>ZR_ZPOHEADER</code>；模板选「<b>Define Root View Entity</b>」。</li>
+  <li>粘贴下列 DDL（其中 <code>po_num → PoNum</code> 等为字段改名，便于 Fiori/ABAP 用驼峰名）。</li>
+</ol>
+<pre class="hl"><div class="code-head"><span class="lang">cds · ZR_ZPOHEADER（根视图，含 Composition 与 Association）</span><button class="copy-btn" type="button">复制</button></div><code class="lang-cds">@EndUserText.label: '采购订单头 BO Root View'
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@Metadata.allowExtensions: true
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+define root view entity ZR_ZPOHEADER
+  as select from z_po_hdr
+  composition [0..*] of ZR_ZPOITEM as _Items
+  association [0..1] to ZR_VENDOR_TXT as _Vendor
+    on $projection.VendorCode = _Vendor.VendorCode
+{
+  key po_num       as PoNum,
+      po_date      as PoDate,
+      vendor_code  as VendorCode,
+      status       as Status,
+      created_by   as CreatedBy,
+      zz_memo      as ZzMemo,
+
+      /* 关联：供应商主数据（只读），供 UI/服务导航 */
+      _Vendor
+}
+</code></pre>
+<div class="box warn"><b class="t">两个小坑（WBS 实训常见）</b>
+① 若报「未知实体 ZR_VENDOR_TXT」→ 先建下一节的供应商视图，再回来激活。② Root View 与普通 View 不同：根上才能挂 Composition；只有 <code>define root view entity</code> 才可以被 BDEF 作为根引用。</div>
+
+<h2>STEP 2-2 创建明细视图 ZR_ZPOITEM</h2>
+<ol class="steps">
+  <li>同上建 Data Definition，模板选「Define <b>View Entity</b>」（非 root）。名称 <code>ZR_ZPOITEM</code>。</li>
+  <li>粘贴代码。key = po_num + item_num。</li>
+</ol>
+<pre class="hl"><div class="code-head"><span class="lang">cds · ZR_ZPOITEM（明细视图）</span><button class="copy-btn" type="button">复制</button></div><code class="lang-cds">@EndUserText.label: '采购订单明细 BO View'
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@Metadata.allowExtensions: true
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+define view entity ZR_ZPOITEM
+  as select from z_po_itm
+{
+  key po_num     as PoNum,
+  key item_num   as ItemNum,
+      matnr      as Matnr,
+      qty        as Qty,
+      unit       as Unit,
+      net_price  as NetPrice,
+      currency   as Currency
+}
+</code></pre>
+
+<h2>STEP 2-3 供应商主数据视图 ZR_VENDOR_TXT（VH 用）</h2>
+<pre class="hl"><div class="code-head"><span class="lang">cds · ZR_VENDOR_TXT（简单主数据视图）</span><button class="copy-btn" type="button">复制</button></div><code class="lang-cds">@EndUserText.label: '供应商主数据视图'
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@AbapCatalog.viewEnhancementCategory: [#NONE]
+define view entity ZR_VENDOR_TXT
+  as select from z_vendor_txt
+{
+  key vendor_code   as VendorCode,
+      vendor_name   as VendorName,
+      country       as Country
+}
+</code></pre>
+
+<h2>STEP 2-4 激活与数据预览</h2>
+<ol class="steps">
+  <li>激活顺序：ZR_VENDOR_TXT → ZR_ZPOITEM → ZR_ZPOHEADER（Ctrl+F3 逐个激活）。</li>
+  <li>右键 <code>ZR_ZPOHEADER</code> → Open With → <b>Data Preview</b>。应显示 2 张订单头。</li>
+  <li>测试关联：在 Data Preview 的 SQL Console（或右键 → Open in SQL Console）执行：<br>
+  <code>SELECT * FROM ZR_ZPOHEADER;</code>；再 <code>SELECT * FROM ZR_ZPOITEM WHERE PoNum = '4500000001';</code> 确认明细。</li>
+  <li>用 CDS 关联展开测试：建一个临时查询或直接看 <code>_Vendor</code> 是否可导航（Association 在预览中的体现）。若想看到“供应商名称”，最直观是后面在投影/列表注解里把 <code>_Vendor.VendorName</code> 暴露给 UI（手顺④）。</li>
+</ol>
+
+<div class="box info"><b class="t">关于 VDM 三层（I/C/P）的取舍</b>
+WBS PH1 阶段要求练习 I（Interface）/ C（Consumption）/ P（Private）分层；本站直接以 RAP 的方式建 BO 视图（ZR_）并在后面加消费投影（ZC_），相当于“BO 即 I 层、ZC 即 C 层”，避免重复造 I 层包装视图。想完整练习 VDM 的同学可回原 WBS PH1 3 层示例。</div>
+
+<h2>验收（完成基准）</h2>
+<div class="box ok"><b class="t">✓ 手顺②验收清单</b>
+<ol>
+<li>ZR_ZPOHEADER / ZR_ZPOITEM / ZR_VENDOR_TXT 三个 CDS 均激活无错误；</li>
+<li>Data Preview 中 ZR_ZPOHEADER 显示全部订单头；</li>
+<li>ZR_ZPOITEM 可按 PoNum 过滤出明细（统合项目 STEP2 期望：关联正确、仕入先名称可显示或可导航）；</li>
+<li>能口述：Composition 与 Association 的区别、本 BO 中谁是 root。</li>
+</ol></div>
+
+<div class="box info"><b class="t">下一步</b>
+→ <a href="handson-3.html">手顺③ RAP 行为层</a>：为 ZR_ZPOHEADER 生成 BDEF（managed + draft）并实现行为。</div>
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>RAP 专项训练站</h5><p>基于《SAP_S4HANA_BTP-学習WBS.xlsx》整理。</p></div>
+  <div class="cols">
+    <div><h5>手顺</h5><a href="handson-1.html">① 数据模型</a><br><a href="handson-2.html">② CDS 视图</a><br><a href="handson-3.html">③ RAP 行为</a><br><a href="handson-4.html">④ 服务与 Fiori</a></div>
+    <div><h5>其他</h5><a href="project.html">完整项目</a><br><a href="code.html">项目代码</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+# ZC_ZPOHEADER — 消费投影 Behavior Definition（Projection BDEF）
+# 说明: 让投影视图“继承”下层 BO 的行为（CRUD / draft / action）。
+#       ADT 生成投影视图时若选择事务性(transactional_query)会自动创建本文件，
+#       也可手动创建（名称与投影视图同名）。
+projection;
+strict ( 2 );
+use draft;
+
+define behavior for ZC_ZPOHEADER alias ZpoHeader
+{
+  use create;
+  use update;
+  use delete;
+
+  use action ConfirmOrder;
+
+  use association _Items { create; }
+}
+
+define behavior for ZC_ZPOITEM alias ZpoItem
+{
+  use update;
+  use delete;
+}

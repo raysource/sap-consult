@@ -1,0 +1,89 @@
+/* ============================================================
+   SAP SD 受注処理（Sales Order Processing）训练站 - 页面族扩展样式
+   只在 assets/style.css 的基础上追加，不覆盖设计系统
+   （通用部分原型为 sapmto/assets/mto.css；本站追加 SD 专用类见文件末尾）
+   ============================================================ */
+/* 步骤标题（带编号徽章） */
+.steph { display: flex; align-items: baseline; gap: 10px; margin: 30px 0 6px; border-top: 1px solid var(--line); padding-top: 18px; }
+.steph .no {
+  font-family: var(--mono); font-size: 12.5px; font-weight: 700;
+  background: var(--sap-blue); color: #fff; border-radius: 6px; padding: 2px 8px; white-space: nowrap;
+}
+.steph h3 { margin: 0; font-size: 19px; }
+.steph .tc { font-family: var(--mono); font-size: 12.5px; color: var(--sap-blue-dark); background: var(--sap-blue-light); border-radius: 6px; padding: 2px 8px; white-space: nowrap; }
+
+/* 定义行（术语/路径/值） */
+dl.kv { margin: 10px 0; }
+dl.kv dt { font-weight: 700; font-size: 14px; color: var(--ink-2); margin-top: 8px; }
+dl.kv dd { margin: 2px 0 0 0; font-size: 14.5px; }
+
+/* 值表（等宽显示系统值，可复制） */
+pre.vals {
+  font-family: var(--mono); font-size: 12.5px; line-height: 1.7;
+  background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--sap-blue);
+  border-radius: var(--radius); padding: 12px 16px; overflow-x: auto; margin: 12px 0; color: var(--ink-2);
+}
+
+/* 任务/课题块 */
+.task { background: #fff; border: 1px dashed var(--sap-blue); border-radius: var(--radius); padding: 12px 16px; margin: 12px 0; font-size: 14.5px; }
+.task b.t { display: block; color: var(--sap-blue-dark); }
+
+/* 验收清单（□ 行） */
+ul.check { list-style: none; padding-left: 0; margin: 10px 0; }
+ul.check li { padding-left: 26px; position: relative; margin: 5px 0; font-size: 14.5px; }
+ul.check li::before {
+  content: ""; position: absolute; left: 2px; top: 6px;
+  width: 13px; height: 13px; border: 1.5px solid var(--sap-blue); border-radius: 3px; background: #fff;
+}
+
+/* 三栏对照（On-Premise / Public Cloud） */
+.two-col.tight { gap: 12px; }
+.two-col > .panel h4 { margin-top: 0; }
+.pill { display: inline-block; font-size: 11.5px; font-weight: 700; border-radius: 999px; padding: 1px 9px; margin-right: 6px; }
+.pill.op { background: #e3f0fa; color: #0854a0; }
+.pill.pc { background: #e6f2f2; color: #007272; }
+.mini { font-size: 13px; color: var(--muted); }
+.mono { font-family: var(--mono); font-size: 12.5px; }
+table.tbl.wide td:first-child { white-space: nowrap; }
+.nowrap { white-space: nowrap; }
+
+/* 記入用ワークシート（学员版）：罫線付きの記入欄 */
+table.tbl.fill td {
+  height: 34px;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom, transparent 0 30px, #dde6ee 30px 31px);
+  background-repeat: no-repeat;
+  background-size: 100% 31px;
+  background-position: 0 4px;
+}
+table.tbl.fill tr:nth-child(even) td { background-color: #fafbfc; }
+@media print { table.tbl.fill td { height: 42px; } .box, .task { break-inside: avoid; } }
+
+/* ===== VC 追加分（本站专用。上面 60 行与 mto.css 相同） ===== */
+
+/* 依存関係 / 設計判断の説明ブロック */
+.dep { background: #fff; border: 1px solid var(--line); border-left: 3px solid var(--teal); border-radius: var(--radius); padding: 11px 15px; margin: 11px 0; font-size: 14.5px; }
+.dep b.t { display: block; color: #00696d; }
+.dep.sel { border-left-color: var(--sap-blue); }
+.dep.sel b.t { color: var(--sap-blue-dark); }
+
+/* 特徴値・設定値のチップ表示 */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.chip { font-family: var(--mono); font-size: 12px; background: var(--sap-blue-light); color: var(--sap-blue-dark); border-radius: 999px; padding: 2px 10px; }
+.chip.sel { background: #dcf2ea; color: #00696d; font-weight: 700; }
+.chip.off { background: #f1f3f6; color: #8a97a6; }
+
+/* 太字ピル（設定対象の強調） */
+.pill.vc { background: #e6f4e6; color: #256029; }
+.pill.avc { background: #efe6fa; color: #5a1fa8; }
+
+/* 一覧テーブルの補助表記 */
+table.tbl.tight td, table.tbl.tight th { padding-top: 5px; padding-bottom: 5px; font-size: 13.5px; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: var(--muted); margin: 6px 0 0; }
+.legend span::before { content: "■"; margin-right: 5px; color: var(--sap-blue); }
+.legend span.t::before { color: var(--teal); }
+.legend span.a::before { color: #8a5cd6; }
+
+@media print { .chips, .legend { break-inside: avoid; } }
+
+/* ===== SD 追加分（本站专用） ===== */

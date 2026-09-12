@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>练习⑤ 发展与故障 · SAP S/4HANA 受注設計生産（ETO）实战训练站</title>
+<meta name="description" content="ETO 练习⑤：進捗（CNE1/CNE2）と結果分析（KKA2/KKAJ/KKAX）、決済（CJ88/CJ8G・KO88・VA88）、予算可用性管理（CJBV）、出来高請求、ネットワーク運用、18 項の故障対照表と CJI3/MD04 の読み方。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/eto.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">ETO</span><span class="txt">受注設計生産 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①项目</a>
+      <a href="handson-2.html">②计划·MRP</a>
+      <a href="handson-3.html">③执行·入库</a>
+      <a href="handson-4.html">④出荷·请求</a>
+      <a class="active" href="handson-5.html">⑤发展·故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 练习⑤ 発展課題と故障対応</div>
+<main class="page"><article>
+
+<h1>练习⑤ 発展課題与故障对应</h1>
+<div class="gui-note" data-gui-note="1"><b>关于本页的「画面イメージ」</b>：这些图是按 SAP GUI 标准布局重绘的<b>示意图</b>，不是实机截图。字段名、字段顺序、按钮位置会因版本与自定义而不同，请以自系统的画面为准（各 STEP 的「自系统での確認方法」里写了确认用的 T-code 与表）。若是想换成实机截图，把同名 <code>.png</code> 放进 <code>assets/gui/</code> 后执行 <code>python3 tools/swap_gui_images.py &lt;site&gt; --apply</code> 即可一键替换。</div>
+
+<div class="box info"><b class="t">本练习完成什么</b>
+主线（练习①〜④）跑通后，把 ETO 的「收尾」补齐并钉牢理解：<b>①</b> 进度与结果分析（WIP/收益）；<b>②</b> 决济（原价从指图/发注确定到 WBS）；
+<b>③</b> 预算与可用性管理（超支行为）；<b>④</b> 出来高请求；<b>⑤</b> 网络中心的运用；<b>⑥</b> 部品直接按 WBS 采购。
+最后附 <b>18 项故障对照表</b> 与 <b>CJI3／MD04 读法表</b>。预计 120 分钟起（可只挑 2〜3 个课题）。</div>
+
+<div class="toc">
+  <a href="#a1">1. 進捗と結果分析</a>
+  <a href="#a2">2. 決済</a>
+  <a href="#a3">3. 予算と可用性管理</a>
+  <a href="#a4">4. 出来高請求</a>
+  <a href="#a5">5. ネットワーク中心の運用</a>
+  <a href="#a6">6. 部品を WBS で直接手配</a>
+  <a href="#trouble">7. 故障対照表（18 項）</a>
+  <a href="#read">8. CJI3 / MD04 読法表</a>
+</div>
+
+<h2 id="a1">発展 1：進捗と結果分析（WIP と収益を正しく出す）</h2>
+<p>ETO の損益は「<b>進捗 → 結果分析 → WIP／収益 → 決済</b>」で作られます。ここをやらないと、出荷した分しか売上が出ず、仕掛中の案件が損益に反映されません。</p>
+<table class="tbl wide">
+<tr><th>流れ</th><th>事务码</th><th>做什么 / 看什么</th></tr>
+<tr><td>1 進捗の決定</td><td><code>CNE1</code>（個別）/ <code>CNE2</code>（一括）</td><td>進捗分析（進捗バージョン、進捗テクニック：数量比例/原価比例など）で WBS/ネットワークの進捗を決める</td></tr>
+<tr><td>2 活動の確認（材料）</td><td><code>CN25</code>/<code>CN27</code></td><td>活動の実績時間を計上（進捗・原価の材料）</td></tr>
+<tr><td>3 結果分析の実行</td><td><code>KKA2</code>（個別）/ <code>KKAJ</code>（一括）</td><td>収益認識キー/結果分析キーに従って <b>WIP</b> と <b>認識収益</b> を計算</td></tr>
+<tr><td>4 WIP の照会</td><td><code>KKAX</code></td><td>WIP（仕掛品）の金額を照会</td></tr>
+<tr><td>5 カットオフ期間の管理</td><td><code>KKA0P</code> など</td><td>結果分析の対象期間を設定（月次で運用）</td></tr>
+</table>
+<pre class="vals">練習シナリオ（例：WBS .2 の実績原価 3,000,000 / 計画原価 3,200,000 / 進捗 60%）
+  ・進捗 60% → 結果分析が 原価比例（POC）なら 認識収益 ≈ 5,000,000 × 60% = 3,000,000
+  ・実績原価 3,000,000 と 認識収益 3,000,000 が対応 → <b>WIP = 0（損益が出る）</b>
+  ・進捗 40% なら 認識収益 2,000,000 → 実績原価 3,000,000 との差 1,000,000 が <b>WIP</b>（在庫/仕掛として繰延）</pre>
+<div class="box warn"><b class="t">深度声明的边界</b>收益认识方法（POC／出来高／完了基準）、複数履行義務、損失見込の処理などは会計方針と契約に依存する独立領域です。
+本教材は「<b>進捗 → 結果分析 → WIP/収益 がどう動くか</b>」を実機で確認するところまで。Cloud（6GD）は<b>イベントベース</b>の原価転記・収益認識になるため、処理のトリガーが異なります（Test Script 参照）。</div>
+<figure class="gui"><img src="assets/gui/handson-5_s02_1.svg" alt="CNE1 の進捗決定画面。対象の WBS 要素 ZETO-1000.2 とネットワーク 3000001、進捗バージョン、進捗テクニック、期間、進捗率 60 % を指定する。" loading="lazy"><figcaption><b class="t">CNE1：進捗の決定（個別処理）</b><span class="tx">CNE1</span><span class="scr">進捗の決定（個別処理）：WBS とネットワークの進捗を決める</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 進捗は「材料」。ここで入れた値と実績原価の関係で WIP が決まる。結果分析（KKA2）を実行するまで損益は動かない</li><li><b>2</b> 進捗テクニック（原価比例＝POC / 数量比例 / 実績工数）で収益認識の計算式が決まる</li></ol><p class="gui-tip">自システムでの確認：一括は CNE2、活動の実績は CN25 / CN27、予測日付は CJ23。進捗の材料が無いと結果分析（KKA2）で収益が立ちません。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-5_s02_2.svg" alt="KKA2 の結果分析実行画面。WBS 要素 ZETO-1000.2、会計年度 2026、期間 1-12 を指定して実行し、認識収益 3,000,000 と WIP 0 が計算された状態を示す。" loading="lazy"><figcaption><b class="t">KKA2：結果分析の実行（WIP と認識収益）</b><span class="tx">KKA2</span><span class="scr">結果分析の実行：WIP と認識収益を計算する</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 進捗 60 % なら認識収益 = 受注 5,000,000 × 60 % = 3,000,000。実績原価 3,000,000 と一致するので WIP は 0（損益が出る）</li><li><b>2</b> WIP の金額は KKAX（WIP 照会）で確認する。進捗 40 % なら認識収益 2,000,000 → 差 1,000,000 が WIP として繰延</li></ol><p class="gui-tip">自システムでの確認：一括は KKAJ、対象期間（カットオフ）は KKA0P 系。結果分析キー / 収益認識キーは環境依存なので、WBS の設定を先に記録してください。</p></figure>
+
+
+
+
+
+
+
+<h2 id="a2">発展 2：決済（原価を WBS へ確定させる）</h2>
+<table class="tbl wide">
+<tr><th>対象</th><th>事务码</th><th>説明</th></tr>
+<tr><td>製造指図</td><td><code>KO88</code>（個別）/ <code>CO88</code>（一括）</td><td>指図に集まった原価を決済ルールに従って受注/WBS へ</td></tr>
+<tr><td>得意先受注</td><td><code>VA88</code></td><td>受注をコスト対象にしている場合の決済</td></tr>
+<tr><td>WBS 要素</td><td><code>CJ88</code>（個別）/ <code>CJ8G</code>（一括）</td><td>WBS に集まった原価・収益を決済受信者（会社コードの損益勘定など）へ</td></tr>
+<tr><td>決済ルール</td><td><code>CJB2</code>（個別）/ <code>CJB1</code>（一括）</td><td>決済受信者の定義。無いと決済できない</td></tr>
+<tr><td>決済明細の照会</td><td><code>CJIC</code>/<code>CJID</code></td><td>決済で何がどこへ流れたかを確認</td></tr>
+</table>
+<ol class="steps">
+  <li>练习④ の直後に <code>CJI3</code> を確認し、<b>指図の原価がまだ WBS へ確定していない状態</b>を記録する。</li>
+  <li><code>KO88</code>（指図）→ 期間・決済タイプを指定して実行 → ログを確認。</li>
+  <li><code>CJ88</code>（WBS <code>.2</code>）→ 実行 → ログと <code>CJIC</code>（決済明細）を確認。</li>
+  <li>再度 <code>CJI3</code> を見て、<b>WBS の原価・収益がどう変わったか</b>を説明する（ここが ETO の「月末の意味」）。</li>
+</ol>
+<div class="box ok"><b class="t">覚え方</b>「<b>指図は KO88、受注は VA88、WBS は CJ88（一括は CO88 / CJ8G）</b>」。
+SAP Help「S/4HANA information for Cost Object Controlling」に決済トランザクションの一覧があります。</div>
+<figure class="gui"><img src="assets/gui/handson-5_s03_1.svg" alt="CJ88 の決済実行画面。プロジェクト定義 ZETO-1000、WBS 要素 ZETO-1000.2、会計年度 2026、期間 1-12、決済タイプ FUL を指定する。" loading="lazy"><figcaption><b class="t">CJ88：WBS の決済実行</b><span class="tx">CJ88</span><span class="scr">WBS の決済：決済を実行する（原価を WBS へ確定させる）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 実行の前に CJI3 で「指図の原価がまだ WBS へ確定していない」状態を記録しておく。実行後の CJI3 と見比べるのがこの発展の目的</li><li><b>2</b> 決済ルール（CJB2）が無いと決済できない。指図は KO88 / 受注は VA88 / WBS の一括は CJ8G</li></ol><p class="gui-tip">自システムでの確認：テスト実行で先にログを見る癖をつけてください。決済後に CJI3 の「決済」列がマイナス表示になることがあります（正常）。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-5_s03_2.svg" alt="CJIC の決済明細照会画面。決済受信者・決済タイプ・金額を示し、WBS の原価がどこへ出たかを確認する。" loading="lazy"><figcaption><b class="t">CJIC：決済明細（決済の行き先）</b><span class="tx">CJIC</span><span class="scr">決済明細の照会：決済で何がどこへ流れたか</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 決済で WBS の原価・収益が決済受信者へ出る。CJI3 の同じ金額と一致すれば链路は通っている</li></ol><p class="gui-tip">自システムでの確認：金額と決済タイプは決済対象（WBS に集まった原価・収益）と決済ルール（CJB2）次第で変わります。一括の決済明細は CJID です。</p></figure>
+
+
+
+
+
+
+
+<h2 id="a3">発展 3：予算と可用性管理（超支会怎样）</h2>
+<ol class="steps">
+  <li>現在の予算使用額を <code>CJ31</code>（元予算）と <code>CJI5</code>（コミットメント）で確認する。</li>
+  <li><code>CJBV</code> で可用性管理を活性化（未実行なら）→ 予算プロファイルの許容範囲（警告/エラー）を確認する。</li>
+  <li>予算を超える発注（<code>ME21N</code>）や指図（<code>CO02</code> の数量増）を試し、<b>警告かエラーか</b>、メッセージ番号を記録する。</li>
+  <li>対処を体験：<code>CJ34</code>（予算振替）/ <code>CJ37</code>（予算補足）/ <code>CJ36</code>（プロジェクトへの補足）で予算を増やす。<br>
+      <span class="mini">予算が「Budgeted」状態でロックされている場合は、ステータス系の機能（<code>OPSX</code> など）で解除が必要になることがあります。</span></li>
+</ol>
+<div class="box warn"><b class="t">現場で必ず聞かれること</b>
+「予算超過で止めたい／止めたくない」は<b>業務要件</b>です。許容範囲（例 90% で警告、100% でエラー）を業務と合意してから設定します。</div>
+<figure class="gui"><img src="assets/gui/handson-5_s04_1.svg" alt="CJ31 の元予算照会画面。WBS 要素ごとに元予算・解放額・使用額（実績＋コミット）・利用可能を示し、ZETO-1000.2 が予算を超過している。" loading="lazy"><figcaption><b class="t">CJ31：予算と使用額（超支の姿）— 投入は CJ30 / 解放は CJ32</b><span class="tx">CJ31</span><span class="scr">元予算の照会：予算と使用額（超支の姿を見る）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 使用額は「実績＋コミットメント」。発注（ME21N）しただけでも予算を食う＝超過の主因になりやすい</li><li><b>2</b> 超過したまま進めると可用性管理（CJBV）の警告/エラーで購買・指図が止まる。増額は CJ37（補足）/ CJ34（振替）</li></ol><p class="gui-tip">自システムでの確認：予算の投入・変更は CJ30、解放は CJ32、増額は CJ37（補足）/ CJ34（振替）。列見出しは画面の並びに合わせています（名称は環境により異なる場合があります）。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-5_s04_2.svg" alt="CJBV の画面。プロジェクト定義 ZETO-1000 で可用性管理をオンにし、許容範囲に 90 %（警告）と 100 %（エラー）を設定する。" loading="lazy"><figcaption><b class="t">CJBV：可用性管理の活性化と許容範囲</b><span class="tx">CJBV</span><span class="scr">可用性管理の活性化：予算超過時の挙動（警告 / エラー）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 100 % でエラーにするか警告で止めるかは業務要件。業務と合意してから設定する（ここが「超支会怎样」の答え）</li><li><b>2</b> 超過させたまま進めたいなら CJ37（補足）/ CJ34（振替）で予算を増やす。実行時のメッセージ番号を必ず記録する</li></ol><p class="gui-tip">自システムでの確認：ME21N（発注）または CO02（数量増）で予算を超えさせ、警告かエラーか・メッセージ番号・対処（CJ34 / CJ37）を記録してください。挙動は予算プロファイル次第です。</p></figure>
+
+
+
+
+
+
+
+<h2 id="a4">発展 4：出来高請求（マイルストーン請求）</h2>
+<ol class="steps">
+  <li>ネットワーク活動（または WBS）に<b>マイルストーン</b>を登録する（<code>CN21/CN22</code> のマイルストーン、日付と「請求の解除」を設定）。</li>
+  <li>受注明細の請求計画を<b>日付ベースから出来高ベース</b>（または両方）に整える（請求計画タイプに注意）。</li>
+  <li>マイルストーン達成（<code>CN25</code> など）→ 受注の請求計画の該当行が「請求可能」になる。</li>
+  <li><code>VF01</code> で請求できることを確認し、<code>CJI3</code> に収益が立つことを確認する。</li>
+</ol>
+<div class="box info"><b class="t">実務のバリエーション</b>着手金（前受金）を請求計画の 1 行目に置く、出来高と日付を混在させる、資源関連請求（<code>DP90/DP91</code>）で実績原価ベースに請求する——いずれも「請求計画 × 明細カテゴリの請求関連」の組み合わせで実現します。</div>
+<figure class="gui"><img src="assets/gui/handson-5_s05_1.svg" alt="VA02 の請求計画画面。明細 000010 の請求計画 2 行（12.09.2026 に 1,500,000、11.03.2027 に 3,500,000）と請求ステータスを示す。" loading="lazy"><figcaption><b class="t">VA02：請求計画（30 % / 70 % の 2 行と請求ステータス）</b><span class="tx">VA02</span><span class="scr">請求計画：日付ベース 2 行（30 % / 70 %）と請求ステータス</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 請求ステータス C は請求済みの印（請求後に自動で付き、同じ行の二重請求を防ぐ）</li><li><b>2</b> 請求計画に無い日付では請求できない（KBA 2763512）。出来高ベースならマイルストーンとの紐付けが前提</li></ol><p class="gui-tip">自システムでの確認：請求計画タイプ（日付ベース / 出来高ベース）と明細カテゴリの請求関連は VA03 と VOV7 で確認。マイルストーンは CN22（変更）/ CN23（照会）で登録・確認します。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-5_s05_2.svg" alt="VF01 の請求登録画面。請求タイプ F2、請求日付 11.03.2027、請求計画の行 2、金額 3,500,000 JPY で請求する。" loading="lazy"><figcaption><b class="t">VF01：請求（請求計画の行 2 で 70 % を請求）</b><span class="tx">VF01</span><span class="scr">請求伝票の登録：請求計画の行 2（完成・検収 70 %）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> マイルストーン達成で行 2 が「請求可能」になった（CN22 でマイルストーンと「請求の解除」を設定）</li><li><b>2</b> 請求後は行 2 の請求ステータスが C になり、CJI3 の WBS .1 に収益が累計 5,000,000 立つ</li></ol><p class="gui-tip">自システムでの確認：出来高ベースの請求計画は請求計画タイプとマイルストーンの紐付け、明細カテゴリの請求関連（VOV7）が前提です。取消は VF11。</p></figure>
+
+
+
+
+
+
+
+<h2 id="a5">発展 5：ネットワーク中心の運用（工数と進捗）</h2>
+<pre class="vals">活動の確認      : CN25（個別）/ CN27（一括）/ 表示 CN28 / 取消 CN29
+タイムシート    : CAT2（入力）/ CAT3（照会）→ 活動や WBS に工数を計上
+進捗の決定      : CNE1（個別）/ CNE2（一括）
+日程の更新      : CJ23（変更）/ CJ24（照会）— 予測日付（forecast dates）
+能力評価        : CM01（作業区視点）/ CMP2（要員計画）</pre>
+<ol class="steps">
+  <li><code>CN25</code> で活動 0020 の実作業時間を計上 → <code>CJI3</code> で労務費として集まることを確認。</li>
+  <li><code>CNE1</code> で進捗を決定 → <code>KKA2</code> で結果分析 → <code>KKAX</code> で WIP を確認（発展 1 と組み合わせ）。</li>
+  <li><code>CJ23</code> で予測日付を更新し、<code>CJ20N</code> の日程（ガント）で反映を確認。</li>
+</ol>
+<div class="box warn"><b class="t">二重計上の禁止</b>製造指図（<code>CO11N</code>）とネットワーク活動（<code>CN25</code>）で<b>同じ作業の工数を両方に計上しない</b>こと。どちらで拾うかを案件ルールで決めます。</div>
+<figure class="gui"><img src="assets/gui/handson-5_s06_1.svg" alt="CN25 の活動確認画面。ネットワーク 3000001 の活動 0010 に 8 H、0020 に 24 H を計上し、活動一覧で作業区と確認日付を示す。" loading="lazy"><figcaption><b class="t">CN25：ネットワーク活動の確認（工数の計上）</b><span class="tx">CN25</span><span class="scr">ネットワーク活動の確認：工数を計上して進捗の材料にする</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 計上した工数は CJI3 で WBS の労務費として見える（ネットワークは WBS .2 にぶら下がる）</li><li><b>2</b> 製造指図（CO11N）と同じ作業を両方に計上しない。どちらで工数を拾うか案件ルールで決める</li></ol><p class="gui-tip">自システムでの確認：一括確認は CN27、照会は CN28、取消は CN29。タイムシートは CAT2（入力）/ CAT3（照会）。進捗は CNE1 → KKA2 → KKAX、日程は CJ23（変更）/ CJ24（照会）で予測日付を更新し CJ20N のガントで確認します。</p></figure>
+
+
+
+
+
+
+
+<h2 id="a6">発展 6：部品・外注を WBS で直接手配</h2>
+<ol class="steps">
+  <li>製造指図を経由せず、<code>ME51N</code> で<b>勘定設定 = WBS <code>ZETO-1000.2</code></b> の購買依頼を作る（材料直買い・外注加工のケース）。</li>
+  <li><code>ME21N</code> で発注 → <code>CJI5</code>（コミットメント）に予定額が出ることを確認。</li>
+  <li><code>MIGO</code>（101）で入庫（在庫にせず費用処理する設定なら費用計上）、または外注の場合は支給/入庫の流れを確認。<code>MIRO</code> で請求書照合。</li>
+  <li>確認：<code>CJI3</code> に費用（該当費目）が出て、WBS に集まっていること。</li>
+</ol>
+<figure class="gui"><img src="assets/gui/handson-5_s07_1.svg" alt="ME51N の購買依頼登録画面。部品 RM01 2 PC と RM02 8 PC、外注加工 1 式を、勘定設定 WBS ZETO-1000.2 で登録する。" loading="lazy"><figcaption><b class="t">ME51N：購買依頼（勘定設定 = WBS で直接手配）</b><span class="tx">ME51N</span><span class="scr">購買依頼の登録：勘定設定に WBS を入れて直接手配する</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 勘定設定に WBS を入れる＝費用が WBS に集まる。空のままだと費用はどの案件にも集まらない（CJI3 に出ない）</li><li><b>2</b> 発注（ME21N）すると CJI5 にコミットメント（予定額）が立ち、予算を先に食う＝発展 3 の可用性管理の練習材料</li></ol><p class="gui-tip">自システムでの確認：発注は ME21N → 入庫は MIGO（101）/ 外注は支給と入庫 → 請求書照合は MIRO。コミットメントは CJI5、WBS の費用は CJI3、予算の使用額は CJ31 で確認します。外注の品目と移動タイプは F1 で確認してください。</p></figure>
+
+
+
+
+
+
+
+<h2 id="trouble">7. 故障対照表（18 項：症状から引く）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>症状</th><th>第一嫌疑</th><th>確認手顺</th></tr>
+<tr><td>1</td><td>受注明細に WBS を入力できない</td><td>明細カテゴリが WBS 割当を許していない</td><td><code>VOV7</code> の明細カテゴリ → <code>VOV4</code> の決定 → 必要なら ZETO 明細カテゴリを作成（Cloud は CBAO 系の交付済みのみ）</td></tr>
+<tr><td>2</td><td>WBS を入れても所要量タイプが MTO 用（<code>KE</code> 等）</td><td>品目マスタ MRP3 の戦略グループ</td><td><code>MM03</code> MRP3 → <code>OPPJ</code>/<code>OVZG</code> で Q 系の所要量タイプか確認（Cloud は <code>E2</code>→<code>E21</code>）</td></tr>
+<tr><td>3</td><td>MD04 に需要が出ない</td><td>受注明細の WBS／所要量転送／納入日程行カテゴリ</td><td><code>VA03</code> 明細と納期行 → <code>VOV6</code> の所要量転送 → <code>VOV5</code> の決定</td></tr>
+<tr><td>4</td><td>計画手配の勘定設定が空</td><td>需要が WBS に帰属していない</td><td><code>MD04</code> の計画手配明細 → <code>VA03</code> の WBS → <code>SE16N: PLAF</code></td></tr>
+<tr><td>5</td><td>計画手配の在庫区分が自由在庫（Q でない）</td><td>個別所要量／戦略グループ／評価付フラグ</td><td><code>MM03</code> MRP4 → <code>OVZG</code>（所要量クラス）→ <code>CJ20N</code>（評価付プロジェクト在庫）</td></tr>
+<tr><td>6</td><td>101 入庫が自由在庫に入る</td><td>指図の WBS 勘定設定が無い／Q が不成立</td><td><code>CO03</code> ヘッダの勘定設定 → 上記 #5 の 3 点</td></tr>
+<tr><td>7</td><td>プロジェクト在庫に金額が付かない</td><td>評価付プロジェクト在庫 OFF／評価クラス未設定</td><td><code>CJ20N</code> のフラグ → <code>MM03</code> 会計ビュー → <code>MMBE</code> の金額欄</td></tr>
+<tr><td>8</td><td>出荷で引当できない</td><td>プロジェクト在庫に入庫されていない／保管場所違い</td><td><code>MMBE</code>（Q の数量と保管場所）→ 练习③ の 101 をやり直し</td></tr>
+<tr><td>9</td><td><b>PGI ができない（特別在庫 Q）</b></td><td>戦略グループ/在庫区分の不整合（Cloud は 6GD の既知事象）</td><td>On-Premise：<code>MM03</code> MRP3・所要量タイプ・評価付フラグ。Cloud：<b>KBA 3623492</b>（<code>E2</code>・6GD の活性状況）</td></tr>
+<tr><td>10</td><td>請求できない（請求計画）</td><td>請求計画の日付/金額、明細カテゴリの請求関連</td><td><code>VA03</code> 請求計画 → <code>VOV7</code> の請求関連。<b>KBA 2763512</b></td></tr>
+<tr><td>11</td><td>CJI3 に収益が出ない</td><td>受注明細の WBS が請求要素でない</td><td><code>CJ20N</code> の WBS フラグ（請求要素）→ <code>VA03</code> 明細の WBS</td></tr>
+<tr><td>12</td><td>CJI3 に原価が出ない</td><td>指図/発注の勘定設定が WBS でない</td><td><code>CO03</code>／<code>ME23N</code> の勘定設定 → <code>SE16N: COEP</code></td></tr>
+<tr><td>13</td><td>予算超過で発注/指図が止まる</td><td>可用性管理（<code>CJBV</code>）と許容範囲</td><td><code>CJ31</code> の使用額 → 予算を振替/補足（<code>CJ34</code>/<code>CJ37</code>）または許容範囲を業務と合意</td></tr>
+<tr><td>14</td><td>予算が投入できない</td><td>予算プロファイル未割当／年度・期間の不整合／ステータス</td><td>プロジェクトプロファイルの予算プロファイル → 年度設定 → ステータス系機能</td></tr>
+<tr><td>15</td><td>決済できない</td><td>決済ルールが無い／ステータス未解放</td><td><code>CJB2</code>（決済ルール）→ <code>CJ20N</code> のステータス → <code>CJ88</code> のログ</td></tr>
+<tr><td>16</td><td>結果分析で WIP/収益が出ない</td><td>結果分析キー/収益認識キーが未設定、カットオフ期間の不整合</td><td>WBS の結果分析キー → <code>KKA2</code> のログ → <code>KKA0P</code>（カットオフ）</td></tr>
+<tr><td>17</td><td>進捗が更新されない</td><td>進捗バージョン/進捗テクニックの未設定</td><td><code>CNE1</code> の設定を確認（進捗分析のカスタマイズ）→ <code>CNE2</code> で一括実行</td></tr>
+<tr><td>18</td><td>取消できない（後続伝票が存在）</td><td>—</td><td>逆順：請求 <code>VF11</code> → PGI <code>VL09</code> → 入庫（<code>MIGO</code>取消/<code>MBST</code>）→ 実績 <code>CO13</code>/<code>CN29</code> → 指図 <code>CO02</code>（TECO/削除）</td></tr>
+</table>
+<div class="box ok"><b class="t">排障四分层（ETO 版，背这个）</b>
+<b>① SD/WBS 层</b>：受注明細に WBS が入り、需要が MD04 に出るか → 出ないなら SD/明細カテゴリ/戦略グループ。<br>
+<b>② PS 层</b>：手配の勘定設定が WBS か、在庫区分が Q か → 違うなら MRP4・評価付フラグ・戦略グループ。<br>
+<b>③ MM 层</b>：Q 在庫ができて増減するか（<code>MMBE</code>/<code>MSPR</code>）→ できないなら指図の勘定設定と入庫先。<br>
+<b>④ CO 层</b>：WBS に原価・収益が集まり、決済・結果分析で損益になるか → ならないなら請求要素・決済ルール・結果分析キー。</div>
+
+<h2 id="read">8. CJI3 / MD04 読法表</h2>
+<table class="tbl wide">
+<tr><th>画面・行</th><th>見方</th><th>ETO での意味</th></tr>
+<tr><td><code>CJI3</code> の「計画」列</td><td>CJ40/CJ42 で入れた計画原価・計画収益</td><td>予実比較と POC の分母</td></tr>
+<tr><td><code>CJI3</code> の「実績」列（コスト要素別）</td><td>材料費・労務費・外注費・諸経費</td><td>WBS に集まった原価。費目がバラける・空欄なら勘定設定を疑う</td></tr>
+<tr><td><code>CJI3</code> の「収益」</td><td>請求で立った収益</td><td><b>請求要素にだけ立つ</b></td></tr>
+<tr><td><code>CJI3</code> の「決済」列</td><td>決済で外へ出た金額</td><td>決済後にマイナス表示になることがある（正常）</td></tr>
+<tr><td><code>CJI3</code> の「WIP」</td><td>結果分析で計算された仕掛</td><td>進捗と実績の関係で増減（発展 1 の例）</td></tr>
+<tr><td><code>CJ31</code> / <code>CJI5</code></td><td>予算・解放額・使用額 / コミットメント</td><td>発注残（コミット）も予算を食う点に注意</td></tr>
+<tr><td><code>MD04</code> の「得意先所要量」</td><td>受注の需要（WBS 付き）</td><td>WBS に帰属している証拠</td></tr>
+<tr><td><code>MD04</code> の「計画手配」</td><td>勘定設定 = WBS、在庫区分 = Q</td><td>ETO 成立の証拠</td></tr>
+<tr><td><code>MD04</code> の「プロジェクト在庫」</td><td>Q の現在量</td><td>101 で増、601 で減</td></tr>
+<tr><td><code>MMBE</code> / <code>MSPR</code></td><td>プロジェクト在庫の数量と金額（表は <code>MSPR</code>、<code>SOBKZ = Q</code>）</td><td>「Q は表に書かれている」ことを常に確認</td></tr>
+</table>
+<figure class="gui"><img src="assets/gui/handson-5_s01_1.svg" alt="CJI3 の列ごとの読み方をまとめた画面。計画、実績（費目別）、収益、決済、WIP の見方と ETO での意味を示す。" loading="lazy"><figcaption><b class="t">CJI3 の読法（計画 / 実績 / 収益 / 決済 / WIP）</b><span class="tx">CJI3</span><span class="scr">CJI3 の読み方（列ごとの意味）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 収益の行が空なら請求要素（.1）のフラグと受注明細の WBS、原価の行が空なら指図/発注の勘定設定を疑う</li></ol><p class="gui-tip">実績の費目は原価要素の設定に依存します。決済（CJ88 / KO88）の前後で同じ CJI3 を見比べると「月末処理の意味」が見えます。</p></figure>
+<figure class="gui"><img src="assets/gui/handson-5_s01_2.svg" alt="MD04 の行ごとの読み方をまとめた画面。得意先所要量、計画手配、プロジェクト在庫、MMBE / MSPR、CJ31 / CJI5 の見方を示す。" loading="lazy"><figcaption><b class="t">MD04 の読法（得意先所要量 / 計画手配 / プロジェクト在庫）</b><span class="tx">MD04</span><span class="scr">MD04 の読み方（行ごとの意味）</span><span class="kind">画面イメージ</span></figcaption><ol class="gui-legend"><li><b>1</b> 計画手配の 1 行（勘定設定 = WBS、在庫区分 = Q）が読めれば、ETO の在庫設計は理解できています</li></ol><p class="gui-tip">列見出しは画面の並びに合わせています（名称は環境により異なる場合があります）。表で確認する癖をつけると、症状から原因を引けるようになります。</p></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>验收（完成基准）</h2>
+<div class="box ok"><b class="t">✓ 练习⑤验收清单</b>
+<ul class="check">
+  <li>発展 1〜6 のうち<b>少なくとも 2 つ</b>を実機で実施し、結果を記録した。</li>
+  <li><code>CNE1</code>（進捗）→ <code>KKA2</code>（結果分析）→ <code>KKAX</code>（WIP）の流れを 1 回実行し、金額の動きを説明できる。</li>
+  <li><code>KO88</code>（指図）と <code>CJ88</code>（WBS）を 1 回実行し、決済前後の <code>CJI3</code> の違いを説明できる。</li>
+  <li>予算超過時の挙動（警告/エラー）を実機で確認し、メッセージと対処（<code>CJ34</code>/<code>CJ37</code>）を記録した。</li>
+  <li>出来高請求またはネットワーク運用（<code>CN25</code>/<code>CAT2</code>）のどちらかを試した。</li>
+  <li>故障対照表 18 項のうち、実際に遭遇したものを「症状／根因／証跡 T-code」の 3 点で説明できる。</li>
+</ul></div>
+
+<div class="box info"><b class="t">下一步</b> → <a href="quiz.html">能力测试（28 题 + 实机验收清单）</a>／復習：<a href="concept.html">概念与设计</a>・<a href="config.html">配置手顺</a></div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>受注設計生産（ETO）实战训练站</h5><p>练习⑤：進捗・結果分析・決済・予算可用性管理・出来高請求・ネットワーク運用・故障対照表 18 項。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 項目と受注</a><br><a href="handson-2.html">② 計画・MRP</a><br><a href="handson-3.html">③ 実行・入庫</a><br><a href="handson-4.html">④ 出荷・請求</a><br><a href="handson-5.html">⑤ 発展・故障</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="concept.html">概念与设计</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="worksheet.html">学员版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

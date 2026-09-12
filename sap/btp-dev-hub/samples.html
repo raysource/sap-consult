@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>示例工程与测试数据 · SAP BTP 开发者训练站</title>
+<meta name="description" content="SAP BTP 示例工程与测试数据总入口：CAP Node/Java、Fiori、iFlow 素材与数据集">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">SAP</span><span class="txt">SAP BTP 开发者训练站</span></a>
+    <nav class="main"><a href="index.html">首页</a><a href="isuite.html">Integration Suite</a><a href="iflow.html">iFlow 实战</a><a href="rap.html">RAP</a><a href="cap.html">CAP</a><a href="fiori.html">Fiori / UI5</a><a href="dev-course.html">全流程课件</a><a class="active" href="samples.html">示例工程</a></nav>
+  </div>
+</header>
+<div class="hero"><div class="hero-inner"><div class="kicker">动手区</div><h1>示例工程与测试数据</h1><p class="lead">四个可运行的工程 + 一套同源测试数据(CSV/JSON)。每个工程都标注了验证状态与运行命令。</p></div></div><main class="page"><div class="wrap"><article><div class="toc"><a href="#projects">四个工程</a><a href="#node">Node.js CAP</a><a href="#java">Java CAP</a><a href="#iflow">iFlow 素材包</a><a href="#fiori">Fiori 演示</a><a href="#data">测试数据仓库</a><a href="#regenerate">怎么改数据</a></div><h2 id="projects">工程总览</h2><p><b>想先看“一个业务怎么从要件定义做到上线”？</b> 请走《<a href='dev-course.html'>开发全流程课件：图书受注管理</a>》——那里有 Excel 要件定義書和完整案例实现 <code>projects/book-order-app/</code>。下面按技术栈列出本站全部工程：</p><div class="grid cards"><div class="card"><h3><a href="#node">CAP Node.js 示例</a></h3><p>OData CRUD + 校验/读增强 + Action + 报表函数 + CSV 种子；本机实测可运行。</p><div class="tags"><span class="tag ">Node.js</span><span class="tag ">已验证</span></div></div><div class="card"><h3><a href="#java">CAP Java 示例</a></h3><p>同一套 CDS 模型的 Java 运行时版本(脚手架级)。</p><div class="tags"><span class="tag ">Java</span><span class="tag ">需 JDK21</span></div></div><div class="card"><h3><a href="#iflow">iFlow 素材包</a></h3><p>端到端建模手册 + Groovy 脚本 + 样例载荷。</p><div class="tags"><span class="tag ">CPI</span><span class="tag ">Groovy</span></div></div><div class="card"><h3><a href="#fiori">Fiori / UI5 演示</a></h3><p>Freestyle 应用: 列表/搜索/排序/交互。</p><div class="tags"><span class="tag ">UI5</span></div></div></div><h2 id="node">① CAP Node.js：sap-training-catalog（推荐先跑）</h2><pre class="hl"><div class="code-head"><span class="lang">Text</span><button class="copy-btn" type="button">复制</button></div><code class="lang-text">projects/node-cap/
+├── package.json
+├── db/schema.cds              模型: Products / Categories / 统计视图
+├── db/data/*.csv              种子数据(10 产品 + 4 分类)
+└── srv/
+    ├── catalog-service.cds    服务: draft + action adjustPrice
+    └── catalog-service.js     事件: 校验 / 读增强 / action</code></pre><pre class="hl"><div class="code-head"><span class="lang">Shell</span><button class="copy-btn" type="button">复制</button></div><code class="lang-bash">cd projects/node-cap
+npm install          # Node 18+(本机验证于 Node 22)
+npm run deploy       # 建 db.sqlite 并灌 CSV
+npm start            # http://localhost:4004
+# 验收: $metadata / CRUD / 校验(400 中文报错) / Action / $expand=category
+# 详见 node-cap/README.md 的验收命令清单</code></pre><div class="box ok"><b class="t">验证通过 · 本机实测通过</b>安装、建库、启动、OData 查询与 Action 调用均验证成功（测试环境 macOS / Node 22；Node 26 因底层 sqlite 原生库尚不支持未能本地跑，工程本身无影响）。</div><h2 id="java">② CAP Java：同一模型的另一种运行时</h2><pre class="hl"><div class="code-head"><span class="lang">Text</span><button class="copy-btn" type="button">复制</button></div><code class="lang-text">projects/java-cap/
+├── pom.xml                   Spring Boot parent + cds-services-bom
+├── package.json              @sap/cds-dk(供 maven npm 目标使用)
+├── db/                       与 node 版相同的 schema.cds / data.csv
+└── srv/src/main/
+    ├── java/com/training/catalog/
+    │   ├── Application.java
+    │   └── CatalogServiceHandler.java   @On Action(类型化上下文)
+    └── resources/application.yaml       SQLite + mock 用户</code></pre><pre class="hl"><div class="code-head"><span class="lang">Shell</span><button class="copy-btn" type="button">复制</button></div><code class="lang-bash">cd projects/java-cap
+npx cds deploy --to sqlite:db.sqlite   # 建库+种子
+mvn clean spring-boot:run              # http://localhost:8080/odata/catalog
+# 带 Basic Auth 调用(admin/admin 或 alice/alice)</code></pre><div class="box warn"><b class="t">注意 · 验证状态</b>本机无 JDK/Maven，工程<b>未编译验证</b>。结构与官方 cloud-cap-samples-java 一致；首次 <code>mvn compile</code> 会生成 cds.gen 类型，若与处理器中的签名有出入，以生成代码为准（README 有对照表）。</div><h2 id="iflow">③ iFlow 素材包（在 CPI 租户里照抄）</h2><pre class="hl"><div class="code-head"><span class="lang">Text</span><button class="copy-btn" type="button">复制</button></div><code class="lang-text">projects/iflow/
+├── manual/01-build-low-stock-alert.md     9 步建模手册(字段级)
+└── resources/
+    ├── script/  01-read-and-log / 02-xml-to-csv / 03-json-transform
+    ├── payload/ in-odata-products.xml / out-low-stock-products.csv
+    └── config/  content-modifier-values.md(三个 CM 精确配置)</code></pre><div class="box warn"><b class="t">注意 · 前提</b>需要一个可登录的 Integration Suite / CPI 租户(试用版即可)。手册目标 OData 用公开 Northwind V3，若租户网络不可达，把 payload 样例当 Mock 响应即可。</div><h2 id="fiori">④ Fiori / UI5 演示（浏览器直开）</h2><pre class="hl"><div class="code-head"><span class="lang">Text</span><button class="copy-btn" type="button">复制</button></div><code class="lang-text">projects/fiori/webapp/
+├── index.html                 OpenUI5 CDN 引导
+├── Component.js / manifest.json
+├── view/Products.view.xml + controller/Products.controller.js
+└── data/products.json         10 条本地 Mock</code></pre><pre class="hl"><div class="code-head"><span class="lang">Shell</span><button class="copy-btn" type="button">复制</button></div><code class="lang-bash">cd projects/fiori/webapp
+python3 -m http.server 8080
+# 打开 http://localhost:8080/index.html (需联网拉取 OpenUI5)</code></pre><h2 id="data">测试数据仓库（data/，CSV 与 JSON 同源）</h2><table class="tbl"><tr><th>文件</th><th>内容</th><th>适用场景</th></tr>
+<tr><td>data/catalog/products.csv / .json</td><td>26 条产品(中英文名称/价格/币种/库存/补货阈值/分类)</td><td>CAP 种子、OData 演示、报表联调</td></tr>
+<tr><td>data/catalog/categories.csv / .json</td><td>4 个分类</td><td>关联/CodeList 演示</td></tr>
+<tr><td>data/customers/*</td><td>5 个客户</td><td>主数据类接口演示</td></tr>
+<tr><td>data/orders/orders.csv + order_items.csv</td><td>8 张订单 / 19 条明细(共 136 件)</td><td>订单主从、金额计算</td></tr>
+<tr><td>data/orders/orders.json</td><td>同数据(嵌套明细)</td><td>JSON 载荷、Mock API</td></tr>
+<tr><td>data/orders/orders-odata-response.json</td><td>OData V4 集合响应格式</td><td>前端 Mock 对齐 @odata.context</td></tr>
+<tr><td>projects/iflow/resources/payload/*</td><td>OData XML feed / 期望 CSV</td><td>iFlow 脚本离线调试</td></tr>
+<tr><td>projects/fiori/webapp/data/products.json</td><td>10 条(UI 友好字段)</td><td>UI5 JSONModel</td></tr>
+</table><h2 id="regenerate">数据从哪来 / 怎么改</h2><p>全部业务数据由 <code>tools/make_data.py</code> 单点维护：改里面的 Python 列表 → 重跑 → CSV/JSON 同步刷新，保证两格式永远一致。页面由 <code>tools/sitegen/</code> 生成：</p><pre class="hl"><div class="code-head"><span class="lang">Shell</span><button class="copy-btn" type="button">复制</button></div><code class="lang-bash">cd btp-dev-hub
+python3 tools/make_data.py          # 刷新 data/ 下的 csv+json
+python3 tools/sitegen/generate.py   # 重新生成全部 html 页面</code></pre><div class="box danger"><b class="t">警告 · 免责声明</b>本站为学习/培训用途的独立资料站，与 SAP 无隶属关系；示例代码与数据仅供参考，不构成任何 SAP 官方支持范围。ABAP/CPI 侧语法随版本演进，落地前请以你的系统与官方文档为准。</div></article></div></main>
+<footer class="site">
+  <div class="inner">
+    <div>
+      <h5>SAP BTP 开发者训练站</h5>
+      <p>面向培训/自学的中文资料站 · 代码与数据见 “示例工程” 页<br>
+      内容基于公开官方文档整理，非 SAP 官方交付物，请以 help.sap.com / cap.cloud.sap 为准。</p>
+      <p>© <span data-year>2026</span> 学习用途</p>
+    </div>
+    <div class="cols">
+      <div><h5>官方文档</h5><ul style="margin:0;padding-left:18px"><li><a href="https://help.sap.com/docs/btp" target="_blank" rel="noopener">SAP BTP 帮助中心 ↗</a></li><li><a href="https://help.sap.com/docs/integration-suite" target="_blank" rel="noopener">Integration Suite ↗</a></li><li><a href="https://help.sap.com/docs/cloud-integration" target="_blank" rel="noopener">Cloud Integration ↗</a></li><li><a href="https://cap.cloud.sap/docs/" target="_blank" rel="noopener">CAP (capire) ↗</a></li><li><a href="https://sapui5.hana.ondemand.com/" target="_blank" rel="noopener">SAPUI5 ↗</a></li><li><a href="https://help.sap.com/docs/btp/sap-abap-development-user-guide" target="_blank" rel="noopener">ABAP 开发用户指南 ↗</a></li></ul></div>
+    </div>
+  </div>
+</footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

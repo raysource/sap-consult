@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 760" width="1180" height="760" role="img" aria-label="ETO で使う移動タイプの一覧。261（部品出庫）・101（指図への入庫）・601（出荷の出庫確認）・561（初期在庫）の意味を示す。">
+<defs><linearGradient id="tb" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#37699b"/><stop offset="100%" stop-color="#21456e"/></linearGradient></defs>
+<rect x="0" y="0" width="1180" height="760" rx="0" fill="#f4f4f2" stroke="none" stroke-width="1"/>
+<rect x="0" y="0" width="1180" height="32" rx="0" fill="url(#tb)" stroke="none" stroke-width="1"/>
+<text x="12" y="21" font-size="13" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#ffffff" text-anchor="start">MIGO   移動タイプの整理（261 / 101 / 601 / 561）</text>
+<text x="1114" y="21" font-size="13" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#dce8f5" text-anchor="start">─</text>
+<text x="1136" y="21" font-size="13" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#dce8f5" text-anchor="start">▢</text>
+<text x="1158" y="21" font-size="13" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#dce8f5" text-anchor="start">✕</text>
+<rect x="0" y="32" width="1180" height="24" rx="0" fill="#e9e9e9" stroke="none" stroke-width="1"/>
+<line x1="0" y1="56" x2="1180" y2="56" stroke="#8f9aa6" stroke-width="1"/>
+<text x="12" y="48" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#333a42" text-anchor="start">メニュー</text>
+<text x="78" y="48" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#333a42" text-anchor="start">編集</text>
+<text x="118" y="48" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#333a42" text-anchor="start">お気に入り</text>
+<text x="197" y="48" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#333a42" text-anchor="start">ジャンプ</text>
+<text x="263" y="48" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#333a42" text-anchor="start">システム</text>
+<text x="329" y="48" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#333a42" text-anchor="start">ヘルプ</text>
+<text x="1166" y="48" font-size="12" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#5b6b7c" text-anchor="end">取引コード: MIGO</text>
+<rect x="0" y="56" width="1180" height="28" rx="0" fill="#e9e9e9" stroke="none" stroke-width="1"/>
+<line x1="0" y1="84" x2="1180" y2="84" stroke="#8f9aa6" stroke-width="1"/>
+<rect x="10" y="59" width="24" height="22" rx="3" fill="#fdfdfd" stroke="#c3ccd6" stroke-width="1"/><text x="22" y="75" font-size="13" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#3c5a78" text-anchor="middle">↩</text><text x="22" y="93" font-size="8" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#6b7a8d" text-anchor="middle">Enter</text>
+<rect x="40" y="59" width="24" height="22" rx="3" fill="#fdfdfd" stroke="#c3ccd6" stroke-width="1"/><text x="52" y="75" font-size="13" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#3c5a78" text-anchor="middle">⇩</text><text x="52" y="93" font-size="8" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#6b7a8d" text-anchor="middle">次頁</text>
+<rect x="70" y="59" width="24" height="22" rx="3" fill="#fdfdfd" stroke="#c3ccd6" stroke-width="1"/><text x="82" y="75" font-size="13" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#3c5a78" text-anchor="middle">⇧</text><text x="82" y="93" font-size="8" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#6b7a8d" text-anchor="middle">前頁</text>
+<rect x="100" y="59" width="24" height="22" rx="3" fill="#fdfdfd" stroke="#c3ccd6" stroke-width="1"/><text x="112" y="75" font-size="13" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#3c5a78" text-anchor="middle">⇦</text><text x="112" y="93" font-size="8" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#6b7a8d" text-anchor="middle">戻る</text>
+<line x1="0" y1="110" x2="1180" y2="110" stroke="#bdbdbd" stroke-width="1"/>
+<rect x="0" y="110" width="1180" height="616" rx="0" fill="#f4f4f2" stroke="none" stroke-width="1"/>
+<text x="22" y="126" font-size="13" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#0a4f9e" text-anchor="start">移動タイプと在庫への影響</text>
+<rect x="22" y="142" width="1136" height="24" rx="0" fill="#b7c7dd" stroke="#8f9aa6" stroke-width="1"/>
+<rect x="22" y="142" width="34" height="24" rx="0" fill="#a9bad0" stroke="#8f9aa6" stroke-width="1"/>
+<text x="39" y="159" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#1d2d3e" text-anchor="middle"></text>
+<text x="62" y="159" font-size="12" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#17263a" text-anchor="start">移動タイプ</text>
+<line x1="56" y1="142" x2="56" y2="722" stroke="#c3ccd6" stroke-width="1"/>
+<text x="337.5" y="159" font-size="12" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#17263a" text-anchor="start">ETO での意味</text>
+<line x1="331.5" y1="142" x2="331.5" y2="722" stroke="#c3ccd6" stroke-width="1"/>
+<rect x="22" y="166" width="1136" height="26" rx="0" fill="#ffffff" stroke="#d7dee6" stroke-width="1"/>
+<text x="39" y="183.68" font-size="11.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#6b7a8d" text-anchor="middle">1</text>
+<text x="62" y="183.68" font-size="12" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">261</text>
+<text x="337.5" y="183.68" font-size="12" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">指図/ネットワークへの部品出庫（勘定設定 = WBS → 原価は WBS へ）</text>
+<rect x="22" y="192" width="1136" height="26" rx="0" fill="#f3f6fa" stroke="#d7dee6" stroke-width="1"/>
+<text x="39" y="209.68" font-size="11.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#6b7a8d" text-anchor="middle">2</text>
+<text x="62" y="209.68" font-size="12" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">101</text>
+<text x="337.5" y="209.68" font-size="12" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">指図への入庫 → プロジェクト在庫 Q（評価付なら金額も計上）</text>
+<rect x="22" y="218" width="1136" height="26" rx="0" fill="#ffffff" stroke="#d7dee6" stroke-width="1"/>
+<text x="39" y="235.68" font-size="11.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#6b7a8d" text-anchor="middle">3</text>
+<text x="62" y="235.68" font-size="12" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">601</text>
+<text x="337.5" y="235.68" font-size="12" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">出荷の出庫確認（在庫区分 Q から）</text>
+<rect x="22" y="244" width="1136" height="26" rx="0" fill="#f3f6fa" stroke="#d7dee6" stroke-width="1"/>
+<text x="39" y="261.68" font-size="11.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#6b7a8d" text-anchor="middle">4</text>
+<text x="62" y="261.68" font-size="12" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">561</text>
+<text x="337.5" y="261.68" font-size="12" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">初期在庫の投入（本教材は部品のみ。自由在庫に入る）</text>
+<rect x="0" y="726" width="1180" height="34" rx="0" fill="#eef1f4" stroke="none" stroke-width="1"/>
+<line x1="0" y1="726" x2="1180" y2="726" stroke="#bdbdbd" stroke-width="1"/>
+<text x="14" y="748" font-size="14" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#0a4f9e" text-anchor="start">ℹ</text>
+<text x="34" y="748" font-size="12.5" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#0a4f9e" text-anchor="start">261 は消費、101 はプロジェクト在庫の増加、601 は Q からの出庫です。</text>
+<line x1="880" y1="730" x2="880" y2="756" stroke="#bdbdbd" stroke-width="1"/>
+<text x="890" y="748" font-size="11.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#5b6b7c" text-anchor="start">S4H / 100 / TRAIN-01</text>
+<circle cx="455.5" cy="153" r="13" fill="#ffffff" stroke="#d32f2f" stroke-width="2"/>
+<text x="455.5" y="158" font-size="13" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#d32f2f" text-anchor="middle">1</text>
+<line x1="469.5" y1="153" x2="597.5" y2="153" stroke="#d32f2f" stroke-width="1.5" stroke-dasharray="4 3"/>
+<rect x="475.5" y="123" width="216.0" height="24" rx="4" fill="#fff5f5" stroke="#d32f2f" stroke-width="1"/>
+<text x="483.5" y="140" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#b71c1c" text-anchor="start">101 → プロジェクト在庫 Q</text>
+</svg>

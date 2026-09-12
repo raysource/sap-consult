@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 760" width="1180" height="760" role="img" aria-label="CN21 のネットワーク作成画面。説明、WBS 要素 ZETO-1000.2、作業区 ZETO_WC01 と 3 つの活動を入力する。">
+<defs><linearGradient id="tb" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#37699b"/><stop offset="100%" stop-color="#21456e"/></linearGradient></defs>
+<rect x="0" y="0" width="1180" height="760" rx="0" fill="#f4f4f2" stroke="none" stroke-width="1"/>
+<rect x="0" y="0" width="1180" height="32" rx="0" fill="url(#tb)" stroke="none" stroke-width="1"/>
+<text x="12" y="21" font-size="13" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#ffffff" text-anchor="start">CN21   ネットワークの作成（活動 0010 / 0020 / 0030）</text>
+<text x="1114" y="21" font-size="13" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#dce8f5" text-anchor="start">─</text>
+<text x="1136" y="21" font-size="13" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#dce8f5" text-anchor="start">▢</text>
+<text x="1158" y="21" font-size="13" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#dce8f5" text-anchor="start">✕</text>
+<rect x="0" y="32" width="1180" height="24" rx="0" fill="#e9e9e9" stroke="none" stroke-width="1"/>
+<line x1="0" y1="56" x2="1180" y2="56" stroke="#8f9aa6" stroke-width="1"/>
+<text x="12" y="48" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#333a42" text-anchor="start">メニュー</text>
+<text x="78" y="48" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#333a42" text-anchor="start">編集</text>
+<text x="118" y="48" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#333a42" text-anchor="start">お気に入り</text>
+<text x="197" y="48" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#333a42" text-anchor="start">ジャンプ</text>
+<text x="263" y="48" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#333a42" text-anchor="start">システム</text>
+<text x="329" y="48" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#333a42" text-anchor="start">ヘルプ</text>
+<text x="1166" y="48" font-size="12" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#5b6b7c" text-anchor="end">取引コード: CN21</text>
+<rect x="0" y="56" width="1180" height="28" rx="0" fill="#e9e9e9" stroke="none" stroke-width="1"/>
+<line x1="0" y1="84" x2="1180" y2="84" stroke="#8f9aa6" stroke-width="1"/>
+<rect x="10" y="59" width="24" height="22" rx="3" fill="#fdfdfd" stroke="#c3ccd6" stroke-width="1"/><text x="22" y="75" font-size="13" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#3c5a78" text-anchor="middle">↩</text><text x="22" y="93" font-size="8" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#6b7a8d" text-anchor="middle">Enter</text>
+<rect x="40" y="59" width="24" height="22" rx="3" fill="#fdfdfd" stroke="#c3ccd6" stroke-width="1"/><text x="52" y="75" font-size="13" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#3c5a78" text-anchor="middle">▣</text><text x="52" y="93" font-size="8" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#6b7a8d" text-anchor="middle">保存</text>
+<rect x="70" y="59" width="24" height="22" rx="3" fill="#fdfdfd" stroke="#c3ccd6" stroke-width="1"/><text x="82" y="75" font-size="13" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#3c5a78" text-anchor="middle">✖</text><text x="82" y="93" font-size="8" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#6b7a8d" text-anchor="middle">取消</text>
+<rect x="100" y="59" width="24" height="22" rx="3" fill="#fdfdfd" stroke="#c3ccd6" stroke-width="1"/><text x="112" y="75" font-size="13" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#3c5a78" text-anchor="middle">⇦</text><text x="112" y="93" font-size="8" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#6b7a8d" text-anchor="middle">戻る</text>
+<line x1="0" y1="110" x2="1180" y2="110" stroke="#bdbdbd" stroke-width="1"/>
+<rect x="0" y="110" width="1180" height="616" rx="0" fill="#f4f4f2" stroke="none" stroke-width="1"/>
+<text x="26" y="132" font-size="13" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#0a4f9e" text-anchor="start">ネットワークの作成（活動 0010 設計 / 0020 組立 / 0030 外注加工）</text>
+<text x="26" y="166" font-size="12.5" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#38424e" text-anchor="start">ネットワークタイプ</text>
+<rect x="26" y="172" width="304.70000000000005" height="22" rx="2" fill="#ffffff" stroke="#8f9aa6" stroke-width="1"/>
+<text x="32" y="187" font-size="12.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">標準タイプ（C7 で確認）</text>
+<rect x="335.70000000000005" y="178" width="10" height="10" rx="1" fill="#ffffff" stroke="#8f9aa6" stroke-width="1"/>
+<text x="336.70000000000005" y="187" font-size="10" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#2e7d32" text-anchor="start">✓</text>
+<text x="580" y="166" font-size="12.5" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#38424e" text-anchor="start">プロファイル</text>
+<rect x="580" y="172" width="304.70000000000005" height="22" rx="2" fill="#ffffff" stroke="#8f9aa6" stroke-width="1"/>
+<text x="586" y="187" font-size="12.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">（ネットワークプロファイル）</text>
+<text x="26" y="220" font-size="12.5" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#38424e" text-anchor="start">説明</text>
+<rect x="26" y="226" width="304.70000000000005" height="22" rx="2" fill="#ffffff" stroke="#8f9aa6" stroke-width="1"/>
+<text x="32" y="241" font-size="12.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">特注装置 ETO 練習ネットワーク</text>
+<text x="580" y="220" font-size="12.5" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#38424e" text-anchor="start">WBS 要素</text>
+<rect x="580" y="226" width="304.70000000000005" height="22" rx="2" fill="#ffffff" stroke="#8f9aa6" stroke-width="1"/>
+<text x="586" y="241" font-size="12.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">ZETO-1000.2   製造</text>
+<rect x="889.7" y="232" width="10" height="10" rx="1" fill="#ffffff" stroke="#8f9aa6" stroke-width="1"/>
+<text x="890.7" y="241" font-size="10" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#2e7d32" text-anchor="start">✓</text>
+<text x="26" y="274" font-size="12.5" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#38424e" text-anchor="start">プラント</text>
+<rect x="26" y="280" width="304.70000000000005" height="22" rx="2" fill="#ffffff" stroke="#8f9aa6" stroke-width="1"/>
+<text x="32" y="295" font-size="12.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">1000</text>
+<rect x="335.70000000000005" y="286" width="10" height="10" rx="1" fill="#ffffff" stroke="#8f9aa6" stroke-width="1"/>
+<text x="336.70000000000005" y="295" font-size="10" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#2e7d32" text-anchor="start">✓</text>
+<text x="580" y="274" font-size="12.5" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#38424e" text-anchor="start">作業区</text>
+<rect x="580" y="280" width="304.70000000000005" height="22" rx="2" fill="#ffffff" stroke="#8f9aa6" stroke-width="1"/>
+<text x="586" y="295" font-size="12.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">ZETO_WC01   組立・調整</text>
+<text x="26" y="328" font-size="12.5" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#38424e" text-anchor="start">基本開始日 / 終了日</text>
+<rect x="26" y="334" width="304.70000000000005" height="22" rx="2" fill="#ffffff" stroke="#8f9aa6" stroke-width="1"/>
+<text x="32" y="349" font-size="12.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#101820" text-anchor="start">12.09.2026 / 11.03.2027</text>
+<rect x="0" y="726" width="1180" height="34" rx="0" fill="#eef1f4" stroke="none" stroke-width="1"/>
+<line x1="0" y1="726" x2="1180" y2="726" stroke="#bdbdbd" stroke-width="1"/>
+<text x="14" y="748" font-size="14" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#2e7d32" text-anchor="start">✓</text>
+<text x="34" y="748" font-size="12.5" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#2e7d32" text-anchor="start">ネットワーク 3000001 を作成しました。</text>
+<line x1="880" y1="730" x2="880" y2="756" stroke="#bdbdbd" stroke-width="1"/>
+<text x="890" y="748" font-size="11.5" font-family='SFMono-Regular,Menlo,Consolas,"Courier New",monospace' fill="#5b6b7c" text-anchor="start">S4H / 100 / TRAIN-01</text>
+<circle cx="970" cy="237" r="13" fill="#ffffff" stroke="#d32f2f" stroke-width="2"/>
+<text x="970" y="242" font-size="13" font-weight="700" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#d32f2f" text-anchor="middle">1</text>
+<line x1="984" y1="237" x2="1119" y2="237" stroke="#d32f2f" stroke-width="1.5" stroke-dasharray="4 3"/>
+<rect x="990" y="207" width="228.5" height="24" rx="4" fill="#fff5f5" stroke="#d32f2f" stroke-width="1"/>
+<text x="998" y="224" font-size="12" font-family='-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Hiragino Sans","Microsoft YaHei",Meiryo,sans-serif' fill="#b71c1c" text-anchor="start">WBS = ZETO-1000.2</text>
+</svg>

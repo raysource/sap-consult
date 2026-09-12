@@ -1,0 +1,504 @@
+{
+ "handson-5.html": {
+  "5-1 ツールとヘルプ": [
+   {
+    "tx": "SU3",
+    "title": "Maintain User Profile",
+    "kind": "table",
+    "tabs": [
+     "Address",
+     "Defaults",
+     "Parameters",
+     "Favorites"
+    ],
+    "active_tab": 2,
+    "table": {
+     "title": "Parameters",
+     "columns": [
+      "Parameter ID",
+      "Parameter value",
+      "Short Text"
+     ],
+     "widths": [
+      1.4,
+      1.0,
+      2.4
+     ],
+     "rows": [
+      [
+       "POP",
+       "01",
+       "Plan Version (PD)"
+      ],
+      [
+       "SD_VARIANT_MAINTAIN",
+       "A",
+       "Auth. variant maint."
+      ]
+     ],
+     "selected": 0,
+     "footer": "動画 55:13 付近の SU3（Parameters タブ）と同じ 2 行。Short Text は実機では「Authorization for variant maintenance」と全表示される"
+    },
+    "note": "Parameters の値はその項目の初期値になる。変える前に元の値を必ずメモする（つまずき①）",
+    "status": [
+     "success",
+     "Data was saved"
+    ],
+    "status_right": "SAP Training System / 800 / trn03 / OVR",
+    "callouts": [
+     [
+      "Parameter ID と値の組が「入力の既定値」。受注の F4 や初期値がここで変わるので、変更は元の値を記録してから",
+      350,
+      183,
+      "既定値が入る"
+     ],
+     [
+      "入力欄にカーソルを置いて F1 を押すと、その欄のテーブル名・項目名（例：出荷プラント → VBAP-WERKS）が読める。値の出所を追う基本武器",
+      950,
+      209,
+      "F1 で出所を追う"
+     ]
+    ],
+    "caption": "SU3（ユーザプロファイル）の Parameters タブ — ユーザ TSCM6-00 に設定された 2 行",
+    "tip": "自システムでの確認：SU3 の 4 タブ（Address／Defaults／Parameters／Favorites）を開き、Defaults で日付書式と通貨、Parameters で既定値、Favorites に VA01／VA03／VC/2／V.02 を登録する。F1 が出ない環境では SE16N で VBAK／VBAP を見て同じことを確認する。",
+    "aria": "SU3 のユーザプロファイル画面。ユーザ TSCM6-00、タブは Address／Defaults／Parameters（選択中）。Parameters タブに POP＝01（Plan Version (PD)）と SD_VARIANT_MAINTAIN＝A の 2 行が並ぶ。"
+   }
+  ],
+  "5-2 発展①": [
+   {
+    "tx": "VOV8",
+    "title": "Change View \"Maintain Sales Order Types\": Details",
+    "kind": "form",
+    "section": "Shipping",
+    "fields": [
+     [
+      "Sales Document Type",
+      "ZOR1",
+      true
+     ],
+     [
+      "Description",
+      "Z受注（練習用）"
+     ],
+     [
+      "Delivery Type",
+      "LF"
+     ],
+     [
+      "Delivery Block",
+      "01"
+     ],
+     [
+      "Shipping Conditions",
+      ""
+     ],
+     [
+      "Immediate Delivery",
+      ""
+     ],
+     [
+      "Incompl. Proced.",
+      "01"
+     ],
+     [
+      "Doc. Prc. Procedure",
+      "A"
+     ]
+    ],
+    "note": "動画の VOV8 詳細は「一般管理・出荷・請求・契約」のグループが縦に並ぶ（ここは出荷グループを抜粋）",
+    "status": [
+     "success",
+     "Data was saved"
+    ],
+    "status_right": "SAP Training System / 800 / trn03 / OVR",
+    "callouts": [
+     [
+      "標準 OR は変更せず、コピーして作った自分の伝票タイプ ZOR1 を触る（標準を壊すと以降の動作が変わる）",
+      350,
+      183,
+      "ZOR1 は自分の練習用"
+     ],
+     [
+      "Delivery Block に値を入れると、この伝票タイプで作る受注は最初から出荷ブロック付きになる。設定を戻しても既存受注のブロックは残る（作ったときの設定が焼き付く）",
+      950,
+      237,
+      "受注に自動で付く"
+     ]
+    ],
+    "caption": "VOV8 の詳細画面（ZOR1）— 出荷グループの Delivery Block に Customizing 由来のブロックを仕込んだ状態",
+    "tip": "自システムでの確認：ZOR1 で VA01 の受注を作ると Delivery block が自動で入り、OR では入らない。設定を戻したあと、新規受注には反映されず既存受注には残ることを比較する。不完全性手順などの ID は環境の値に読み替える。",
+    "aria": "VOV8 の変更画面（伝票タイプ詳細）。伝票タイプ ZOR1、名称 Z受注（練習用）、出荷グループに Delivery Type LF、Delivery Block 01、Immediate Delivery、Incompl. Proced.、Doc. Prc. Procedure A が表示されている。"
+   }
+  ],
+  "5-3 発展②": [
+   {
+    "tx": "VD53",
+    "title": "Display Customer Material Info Record",
+    "kind": "form",
+    "section": "Sales Area",
+    "fields": [
+     [
+      "Customer",
+      "1000",
+      true
+     ],
+     [
+      "Material",
+      "T-ATA30",
+      true
+     ],
+     [
+      "Sales Organization",
+      "1000"
+     ],
+     [
+      "Distribution Channel",
+      "10"
+     ],
+     [
+      "Plant",
+      "1200"
+     ]
+    ],
+    "note": "欄名は環境により「Plant」「Delivering Plant」などと表示される。無い場合は MM03 の販売組織 1 ビューで確認する",
+    "status": [
+     "info",
+     "Customer material info record 1000 / T-ATA30 is displayed"
+    ],
+    "status_right": "SAP Training System / 800 / trn03 / OVR",
+    "callouts": [
+     [
+      "客先品目情報の出荷プラントは 3 つの供給源のうち最優先。ここに値があると受注の VBAP-WERKS はこの値になる（空に戻すと得意先マスタの値に戻る）",
+      350,
+      291,
+      "ここが最優先になる"
+     ],
+     [
+      "キーは得意先＋品目＋販売エリア（販売組織・チャネル）。ここを間違えると受注のプラント決定に効かない（つまずき①）",
+      950,
+      183,
+      "キーは販売エリア単位"
+     ]
+    ],
+    "caption": "VD53（客先品目情報）の表示画面 — 得意先 1000 × 品目 T-ATA30 に出荷プラント 1200 を保守した状態",
+    "tip": "自システムでの確認：優先順位は 客先品目情報（VD53）> 得意先マスタ（XD03 の出荷タブ）> 品目マスタ（MM03 の販売組織 1）。3 回受注を作り、各段階で SE16N の VBAP-WERKS を記録すると実測できる（動画スライドの 1400／1100／1000／1200 と同じ仕組み）。終わったら元の値に戻す。",
+    "aria": "VD53 の客先品目情報。得意先 1000、品目 T-ATA30、販売組織 1000、流通チャネル 10、Plant 1200 が表示されている。"
+   }
+  ],
+  "5-4 発展③": [
+   {
+    "tx": "SPRO",
+    "title": "Change View \"Maintain Report Views\": Overview",
+    "kind": "table",
+    "table": {
+     "title": "Info view / Description / Standard / Form",
+     "columns": [
+      "Info view",
+      "Description",
+      "Standard",
+      "Form"
+     ],
+     "widths": [
+      1.0,
+      1.6,
+      0.9,
+      1.6
+     ],
+     "rows": [
+      [
+       "001",
+       "Complete information",
+       "✓",
+       "SD-SALES-SUMMARY"
+      ],
+      [
+       "101",
+       "Last SD documents",
+       "",
+       "SD-SALES-SUMMARY"
+      ],
+      [
+       "*Z01",
+       "*Z 受注確認用",
+       "",
+       "SD-SALES-SUMMARY"
+      ]
+     ],
+     "selected": 2,
+     "footer": "New Entries で追加した 3 行目が自分のビュー Z01。Form は標準と同じ SD-SALES-SUMMARY のままでよい"
+    },
+    "note": "動画では既存ビュー 001〜900 と ZP2・ZPD が並び、Form はどの行も SD-SALES-SUMMARY（全 11 エントリ）",
+    "status": [
+     "info",
+     "Entry 3 of 11 - new entry not saved yet"
+    ],
+    "status_right": "SAP Training System / 800 / trn03 / OVR",
+    "callouts": [
+     [
+      "Info view は VC/2（Sales Summary）で選ぶビューの ID。Z で始めれば標準ビューを壊さない",
+      350,
+      183,
+      "Z で始める"
+     ],
+     [
+      "ここで行を足しただけでは VC/2 に出ない。② 情報ブロックの割当（Maintain Views for an Evaluation）→ ③ ユーザへの割当 まで進めて初めて使える",
+      950,
+      235,
+      "②③まで必要"
+     ]
+    ],
+    "caption": "SPRO の「Maintain Report Views」— 情報ビュー Z01 を新規追加した 3 行目",
+    "tip": "自システムでの確認：SPRO → 販売と流通 → 販売サポート → リスト → 販売サマリ の 4 画面（Define Reporting Views／Assign Information Blocks To A View／Assign Default View To User／Set Document Display）。動画ではここで ZP2・ZPD が既に定義されている。",
+    "aria": "SPRO の Maintain Report Views 画面。Info view／Description／Standard／Form の一覧で、3 行目に追加した Z01（Z 受注確認用、Form SD-SALES-SUMMARY）が選択されている。"
+   },
+   {
+    "tx": "SPRO",
+    "title": "Change View \"Maintain the Report Views for a User\": Overview",
+    "kind": "table",
+    "table": {
+     "title": "User / Info view / Description",
+     "columns": [
+      "User",
+      "Info view",
+      "Description"
+     ],
+     "widths": [
+      1.2,
+      1.0,
+      1.8
+     ],
+     "rows": [
+      [
+       "TSCM6-00",
+       "*Z01",
+       "*Z 受注確認用"
+      ],
+      [
+       "BAPMS",
+       "ZPD",
+       "Precision Drilling V"
+      ],
+      [
+       "WF-SD-2",
+       "900",
+       "New Internet cust."
+      ]
+     ],
+     "selected": 0,
+     "footer": "1 行目が自分の割当（動画では BAPMS→ZPD、WF-SD-2→900 の 2 行だけ）"
+    },
+    "note": "情報ブロックを割り当てていないビューは中身が空なので、② を先に済ませてから割り当てる",
+    "status": [
+     "success",
+     "Data was saved"
+    ],
+    "status_right": "SAP Training System / 800 / trn03 / OVR",
+    "callouts": [
+     [
+      "自分のユーザを Z01 に紐づける行。ここに入って初めて VC/2 のビュー選択に Z01 が出る",
+      350,
+      183,
+      "VC/2 に出る"
+     ],
+     [
+      "User はログオン名と完全一致（大文字小文字と - の位置まで）。動画は BAPMS／WF-SD-2 という命名",
+      950,
+      235,
+      "名前は完全一致"
+     ]
+    ],
+    "caption": "Maintain the Report Views for a User — 自分のユーザ TSCM6-00 を Z01 に割り当てた状態",
+    "tip": "自システムでの確認：割当後に VC/2 を実行し、View 一覧に Z01 が出るか、表示される情報ブロックが自分で選んだ 3〜5 個（Address／Sales Order Info／Last SD Documents など）になっているかを見る。練習後は元に戻すか講師の指示に従う。",
+    "aria": "SPRO の Maintain the Report Views for a User 画面。User／Info view／Description の一覧で、TSCM6-00 に Z01（Z 受注確認用）が割り当てられた行が選択されている。"
+   }
+  ],
+  "5-5 発展④": [
+   {
+    "tx": "OVA2",
+    "title": "Change View \"Incompletion Procedure\": Overview",
+    "kind": "table",
+    "table": {
+     "title": "Procedure / Field / Status",
+     "columns": [
+      "Procedure",
+      "Field",
+      "Status"
+     ],
+     "widths": [
+      1.0,
+      1.6,
+      1.0
+     ],
+     "rows": [
+      [
+       "01",
+       "Delivery Date",
+       "*Warning"
+      ],
+      [
+       "01",
+       "PO Number",
+       "Error"
+      ]
+     ],
+     "selected": 0,
+     "footer": "手順 → グループ → 項目 の 3 階層。警告／エラーの実体は VUA2、値は環境により異なる"
+    },
+    "note": "列名と手順 ID はリリース・IMG の呼称により異なる（SPRO → 基本機能 → 不完全項目のログ）",
+    "status": [
+     "success",
+     "Data was saved"
+    ],
+    "status_right": "SAP Training System / 800 / trn03 / OVR",
+    "callouts": [
+     [
+      "今回追加した項目。VUA2 で Warning にすると保存はできて、V.02 の一覧に載せて運用で拾える（Error のままだと保存できない）",
+      350,
+      183,
+      "Warning は保存可"
+     ],
+     [
+      "動画で保存時に出る「Enter PO number」エラーはこの行が原因。標準ではなく、その環境の不完全性手順の設定",
+      950,
+      209,
+      "動画の症状の出所"
+     ]
+    ],
+    "caption": "OVA2（不完全性手順）— 納入日程関連の項目を 1 つ追加し、VUA2 で Warning にした状態",
+    "tip": "自システムでの確認：OVA2 で OR に割り当てた手順を開き、PO 番号系の項目が入っているかを見て「動画の症状がどの設定から出るか」を説明する。適用先は伝票タイプ（VOV8）／明細カテゴリ（VUP2）／納入日程行カテゴリ（VUE2）の 3 か所。変更前に元の値をメモし、最後に元へ戻す。",
+    "aria": "OVA2 の不完全性手順の一覧。Procedure／Field／Status の列に、追加した Delivery Date が Warning、PO Number が Error として表示されている。"
+   },
+   {
+    "tx": "V.02",
+    "title": "List of Incomplete Sales Orders",
+    "kind": "table",
+    "table": {
+     "title": "Incomplete sales orders",
+     "columns": [
+      "Sales Doc.",
+      "Item",
+      "Order Type",
+      "Sold-to party"
+     ],
+     "widths": [
+      1.3,
+      0.6,
+      1.0,
+      1.3
+     ],
+     "rows": [
+      [
+       "0000001234",
+       "10",
+       "OR",
+       "1000"
+      ],
+      [
+       "0000001235",
+       "10",
+       "ZOR1",
+       "1000"
+      ]
+     ],
+     "selected": 0,
+     "footer": "1 行目が「わざと項目を空にして警告で保存した」受注。不完全な伝票だけがこの一覧に出る"
+    },
+    "note": "伝票番号は例。自システムで作った受注番号に読み替える",
+    "status": [
+     "success",
+     "2 incomplete sales orders found"
+    ],
+    "status_right": "SAP Training System / 800 / trn03 / OVR",
+    "callouts": [
+     [
+      "保存時に警告で通した受注がここに載っている＝不完全なまま残っている証拠。放置すると出荷・請求に進めない",
+      350,
+      183,
+      "不完全だけが出る"
+     ],
+     [
+      "項目を埋めて保存し直すと、この行は一覧から消える。消えたことをもって直った確認にする",
+      950,
+      209,
+      "直すと消える"
+     ]
+    ],
+    "caption": "V.02（不完全な受注一覧）— 警告で保存した受注が載っている状態",
+    "tip": "自システムでの確認：V.02 の選択条件・列・タイトルは環境により異なる。どの項目が欠けているかは SE16N の VBUV（明細）／VBUK（ヘッダ）で直接見る。受注を直して保存し直し、一覧から消えることまで確認する。",
+    "aria": "V.02 の不完全な受注一覧。Sales Doc.／Item／Order Type／Sold-to party の列に、OR の 0000001234 と ZOR1 の 0000001235（得意先 1000）が並んでいる。"
+   }
+  ],
+  "5-6 故障対応の 4 画面": [
+   {
+    "tx": "VA03",
+    "title": "Diagnosis: Sales Order / Master Data / Customizing / Extension",
+    "kind": "table",
+    "table": {
+     "title": "切り分けの 4 画面",
+     "columns": [
+      "順序",
+      "画面",
+      "見るもの",
+      "分かること"
+     ],
+     "widths": [
+      0.6,
+      1.3,
+      2.0,
+      2.0
+     ],
+     "rows": [
+      [
+       "①",
+       "VA03 受注",
+       "ブロック・ステータス・明細",
+       "何が空か／何が違うか"
+      ],
+      [
+       "②",
+       "XD03 / MM03 / VD53",
+       "得意先・品目・客先品目情報",
+       "入るはずの値の出所"
+      ],
+      [
+       "③",
+       "VOV8 / VOV4 / OVA2",
+       "決定テーブル・優先順位",
+       "決まり方は意図どおりか"
+      ],
+      [
+       "④",
+       "（講師に相談）",
+       "USEREXIT / BAdI",
+       "①②③が正しければ最後"
+      ]
+     ],
+     "selected": 0,
+     "footer": "① 受注 → ② 主データ → ③ 設定 → ④ 拡張 の順に開く。逆順（いきなり設定を触る）は最も遠回りで環境を壊す危険もある"
+    },
+    "status": [
+     "info",
+     "Start with VA03: check the blocks and the item status"
+    ],
+    "status_right": "SAP Training System / 800 / trn03 / OVR",
+    "callouts": [
+     [
+      "まず受注そのものを見る。何が空か／何が想定と違うかを言葉にしてから次の画面へ進む（症状の形が決まらないと ②③ は見当違いになる）",
+      350,
+      183,
+      "症状を確定する"
+     ],
+     [
+      "①②③がすべて正しいのに挙動が違うときだけ ④ を疑う。ABAP 拡張（USEREXIT・BAdI）は自分で直さず講師に相談する",
+      950,
+      235,
+      "最後の容疑者"
+     ]
+    ],
+    "caption": "故障対応の 4 画面 — 切り分けの順序（① 受注 → ② 主データ → ③ 設定 → ④ 拡張）",
+    "tip": "自システムでの確認：異常が出たら VA03 で症状を記録 → XD03／MM03／VD53 で値の出所 → VOV8／VOV4／VOV5／OVA2 で決まり方 → 最後に拡張を疑う。症状・根因・証拠・処置を 3 件以上記録するのが验收の条件。",
+    "aria": "故障切り分けの 4 画面を示す表。順序／画面／見るもの／分かることの列に、① VA03 受注 ② XD03・MM03・VD53 ③ VOV8・VOV4・OVA2 ④ USEREXIT・BAdI が並んでいる。"
+   }
+  ]
+ }
+}

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念与设计 · SAP S/4HANA 受注設計生産（ETO）实战训练站</title>
+<meta name="description" content="受注設計生産（ETO）的机制：MTS/MTO(E)/ETO(Q) 对照、プロジェクト在庫 Q 的成立条件（評価付フラグ・個別所要量・戦略グループ・WBS 割当）、WBS 的角色（構造/勘定設定/請求要素）、収益認識、関連テーブル（PROJ/PRPS/MSPR/COEP）与 S/4HANA 变更点。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/eto.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">ETO</span><span class="txt">受注設計生産 训练站</span></a>
+    <nav class="main">
+      <a href="index.html">总览</a>
+      <a class="active" href="concept.html">概念与设计</a>
+      <a href="config.html">配置手顺</a>
+      <a href="handson-1.html">①项目</a>
+      <a href="handson-2.html">②计划·MRP</a>
+      <a href="handson-3.html">③执行·入库</a>
+      <a href="handson-4.html">④出荷·请求</a>
+      <a href="handson-5.html">⑤发展·故障</a>
+      <a href="instructor.html">讲师版</a>
+      <a href="worksheet.html">学员版</a>
+      <a href="quiz.html">能力测试</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="breadcrumb"><a href="index.html">总览</a> / 概念与设计</div>
+<main class="page"><article>
+
+<h1>概念与设计：ETO 把库存切到「项目」</h1>
+<div class="box info"><b class="t">本页要带走的三句话</b>
+① ETO 的库存不是「受注在庫 E」而是 <b>プロジェクト在庫 Q</b>（挂在 WBS 上）；
+② Q 的成立是 <b>4 点セット</b>：プロジェクト定義の<b>評価付プロジェクト在庫</b>フラグ ＋ 品目マスタ <b>MRP4 個別所要量</b> ＋ <b>MRP3 戦略グループ</b>（評価区分 M を持つ所要量クラス）＋ <b>受注明細への WBS 割当</b>；
+③ ETO 的收尾在 CO/PS 一侧：<b>WBS 予算 → 実績（CJI3）→ 進捗 → 結果分析（KKA2/KKAJ）→ 決済（CJ88）</b>，不做这一步，项目损益与 WIP 都是错的。<br>
+（本页所有标准值都以「通常情况」表述；ETO 的环境差最大，请用各页的手顺在自系统确认。）</div>
+
+<div class="toc">
+  <a href="#compare">1. 生产形态对照（E vs Q）</a>
+  <a href="#q">2. プロジェクト在庫 Q 是什么</a>
+  <a href="#cond">3. Q 成立的 4 点セット</a>
+  <a href="#chain">4. 决定链（WBS 到决算）</a>
+  <a href="#wbs">5. WBS 的三种角色</a>
+  <a href="#net">6. 网络与制造指图的并用</a>
+  <a href="#rev">7. 请求与收益认识</a>
+  <a href="#tables">8. 相关表与字段</a>
+  <a href="#s4">9. S/4HANA 变更点</a>
+  <a href="#mistake">10. 十个常见误解</a>
+</div>
+
+<h2 id="compare">1. 生产形态对照：库存切分到哪里，就决定了后面的一切</h2>
+<table class="tbl wide">
+<tr><th>形态</th><th>计划起点</th><th>库存区分</th><th>成本/收益的对象</th><th>请求方式</th></tr>
+<tr><td>見込生産（MTS）</td><td>PIR（MD61）</td><td>自由在庫</td><td>品目/プラント</td><td>出荷ベース（F2）</td></tr>
+<tr><td>受注生産（MTO）</td><td>受注</td><td><b>E ＝ 受注在庫</b>（受注明細）</td><td>製造指図</td><td>出荷ベース</td></tr>
+<tr><td><b>受注設計生産（ETO）</b></td><td><b>受注（+ プロジェクト）</b></td><td><b>Q ＝ プロジェクト在庫</b>（WBS 要素）</td><td><b>WBS 要素（+ 指図）</b></td><td><b>請求計画/出来高・収益認識</b></td></tr>
+<tr><td>受注組立（ATO）</td><td>受注（保存時に指図）</td><td>E</td><td>製造指図</td><td>出荷ベース</td></tr>
+<tr><td>バリアント設定（VC）</td><td>受注 + 設定値</td><td>E（または Q）</td><td>指図</td><td>出荷ベース</td></tr>
+</table>
+<div class="box ok"><b class="t">判断口诀</b>
+「<b>这张单要不要按项目管成本、还要不要分期/按进度收钱？</b>」——要 → ETO（Q + 请求计划/出来高）。
+「<b>库存只能给一张受注，还是只能给一个项目？</b>」——前者 MTO(E)，后者 ETO(Q)。两者可以并存（同一张单里既有 E 明细也有 Q 明细），但<b>不能混在同一个明细上</b>。</div>
+
+<h2 id="q">2. プロジェクト在庫 Q（project stock）是什么</h2>
+<p>「特別在庫（special stock）」是 SAP 库存的附加区分层。ETO 用 <b>Q：プロジェクト在庫</b>——数量与金额挂在 <b>WBS 要素</b>上，只有该 WBS 的组件/成品能用。</p>
+<table class="tbl wide">
+<tr><th>视角</th><th>受注在庫 E（MTO）</th><th>プロジェクト在庫 Q（ETO）</th></tr>
+<tr><td>归属单位</td><td>受注番号 + 受注明細</td><td><b>WBS 要素（プロジェクト）</b></td></tr>
+<tr><td>数量テーブル</td><td><code>MSKA</code></td><td><b><code>MSPR</code></b></td></tr>
+<tr><td>需要来源</td><td>受注の得意先所要量</td><td>受注（WBS 割当）＋ ネットワーク/指図の所要量</td></tr>
+<tr><td>評価（金额）</td><td>評価付／なしは設定次第</td><td><b>プロジェクト定義の「評価付プロジェクト在庫」で決まる</b>（評価付なら数量＋金額を持ち、MTS 在庫と独立して評価）</td></tr>
+<tr><td>入出庫</td><td>101 入 E、601 出荷で減</td><td>101 入 Q、601 出荷で減（<b>勘定設定は WBS</b>）</td></tr>
+<tr><td>一览</td><td><code>MMBE</code>/<code>MB52</code> の受注在庫欄、<code>MSKA</code></td><td><code>MMBE</code>/<code>MB52</code> の<b>プロジェクト在庫</b>欄、<code>MSPR</code></td></tr>
+</table>
+<div class="box warn"><b class="t">名称の注意</b>
+「プロジェクト在庫」「特別在庫 Q」「WBS 在庫」は同じものを指します。調達側では<b>勘定設定カテゴリ Q</b>（project stock への調達）として現れます。
+「評価付プロジェクト在庫（valuated project stock）」は<b>金額も持つ</b>プロジェクト在庫のことで、これが実務の標準的な選択です。</div>
+
+<h2 id="cond">3. プロジェクト在庫 Q 成立的 4 点セット（背下来这一条）</h2>
+<table class="tbl wide">
+<tr><th>#</th><th>条件</th><th>どこで設定</th><th>確認方法</th></tr>
+<tr><td>①</td><td><b>プロジェクト定義の「評価付プロジェクト在庫」</b>が ON（数量＋金額を持たせる）</td><td>プロジェクト定義（<code>CJ20N</code>）の「プロジェクト在庫」セクション</td><td><code>CJ20N</code>/<code>CJ03</code> でプロジェクト定義の項目を表示</td></tr>
+<tr><td>②</td><td>品目マスタ <b>MRP4「個別/包括所要量」＝ 個別所要量のみ</b>（または個別＋集合）＝ <b>個別所要量品目</b></td><td><code>MM02</code> MRP4</td><td><code>MM03</code> MRP4 の項目</td></tr>
+<tr><td>③</td><td>品目マスタ <b>MRP3 戦略グループ</b>に、<b>評価区分 M（販売伝票/プロジェクト参照の別評価）</b>を持つ所要量クラスを指す戦略が割当てられている（Cloud の ETO は <code>E2</code>）</td><td><code>MM02</code> MRP3（戦略グループ）／<code>OVZG</code>（所要量クラス）／<code>OPPJ</code>（計画方針グループ）</td><td><code>MM03</code> MRP3 → <code>OPPJ</code>/<code>OPPS</code> で戦略の中身 → <code>OVZG</code> で所要量クラスの評価区分</td></tr>
+<tr><td>④</td><td>受注明細に <b>WBS 要素</b>（請求要素）を割当（明細カテゴリが WBS 割当を許すこと）</td><td><code>VA01/VA02</code> 明細の「WBS 要素」／明細カテゴリ（<code>VOV7</code>）</td><td><code>VA03</code> 明細 → WBS 要素、所要量タイプ（Q を示す値。Cloud は <code>E21</code>）</td></tr>
+</table>
+<div class="box info"><b class="t">4 点のどれが欠けるとどうなるか（症状で覚える）</b>
+① 欠ける → 入庫が自由在庫に入る、または金額が付かない（評価されない）<br>
+② 欠ける → 需要が集合所要量扱いになり、プロジェクト在庫にならない<br>
+③ 欠ける → 所要量タイプが Q にならない（＝在庫区分が Q にならない）<br>
+④ 欠ける → WBS への帰属がなく、CJI3 に実績が出ない／請求が WBS に集まらない</div>
+
+<h2 id="chain">4. 决定链：从 WBS 到决算</h2>
+<pre class="vals">［PS 侧］                                    ［SD 侧］                              ［結果］
+プロジェクト定義 (CJ20N)                    ┌─ 受注明細の WBS 要素 (VBAP-PS_PSP_PNR)
+ ・評価付プロジェクト在庫 = ON ─────────────┤   ・明細カテゴリが WBS 割当を許可（例 CBAO 系）
+ ・WBS 階層（構造/勘定設定/請求要素）        └─ 所要量タイプ（Q を示す。Cloud は E21）
+ ・予算（CJ30/CJ32）                                 │
+ ・ステータス（解放）                                ▼
+                                         需要（得意先所要量）→ MRP
+                                         実行入口：MD50（受注 MRP）/ MD51（プロジェクト MRP）/ MD01N
+                                                     │
+                                                     ▼
+                                         計画手配（勘定設定 = WBS、在庫区分 = プロジェクト在庫 Q）
+                                                     │  CO40/CO41 変換 または CO08
+                                                     ▼
+                                         製造指図（WBS 参照・部品予約 RESB・入庫先 Q）
+                                                     │  261 部品出庫 / 外注は ME51N→ME21N→MIGO
+                                                     ▼
+                                         101 入庫 → プロジェクト在庫 Q（数量表 MSPR、評価付なら金額も）
+                                                     │  VL01N 出荷（在庫区分 Q）→ VL02N 出庫確認 601
+                                                     ▼
+                                         請求（VF01：請求計画/出来高 または 出荷ベース）
+                                                     │  請求 → WBS（請求要素）へ売上・収益
+                                                     ▼
+                                         WBS に集約：計画（CJ40/CJ42）／実績（CJI3）／コミット（CJI5）
+                                                     │
+                                         月末：進捗（CNE1/CNE2）→ 結果分析（KKA2/KKAJ）→ WIP（KKAX）
+                                                     │
+                                         決済（WBS: CJ88 / 一括 CJ8G、指図: KO88、受注: VA88）→ FI</pre>
+<div class="task"><b class="t">练习课题（概念确认，5 分钟）</b>
+① <code>CJ20N</code> で既存プロジェクトを開き、プロジェクト定義の「プロジェクト在庫」欄に<b>評価付</b>のチェックがあるか見る；<br>
+② <code>MM03</code> で MRP4 の個別/包括所要量 と MRP3 の戦略グループを見る；<br>
+③ <code>VA03</code> で受注明細に WBS 要素が入っているか、所要量タイプが何かを確認する。</div>
+
+<h2 id="wbs">5. WBS 的三种角色（同一张表 <code>PRPS</code>，用标志区分）</h2>
+<table class="tbl wide">
+<tr><th>角色</th><th>日文/英文</th><th>作用</th><th>本站练习中的例子</th></tr>
+<tr><td>结构要素</td><td>構造要素</td><td>把项目拆成管理单位（层级）</td><td><code>ZETO-1000</code> 的 <code>.1/.2/.3</code></td></tr>
+<tr><td>勘定設定要素</td><td>勘定設定要素（Account assignment element）</td><td>可以挂成本、可以接收订单/指图/购买发注的<b>会计对象</b></td><td><code>.2 製造</code>（指图、発注明細的勘定設定）</td></tr>
+<tr><td><b>請求要素</b></td><td>請求要素（Billing element）</td><td><b>可以挂收入</b>、受注明細可指向它；請求が出るとここに収益が集まる</td><td><code>.1 設計・調達</code> を請求要素に</td></tr>
+</table>
+<div class="box warn"><b class="t">踩坑最多的地方</b>
+「请求出来了，但 <code>CJI3</code> 里看不到收入」——几乎都是<b>受注明細指向的 WBS 不是請求要素</b>（或指向了结构要素）。
+反过来「成本进不了项目」——受注/指图/发注的勘定設定要素没设好。「構造のみ（明细要素）」的 WBS 两者都不行。</div>
+
+<h2 id="net">6. 网络（ネットワーク）与制造指图的并用</h2>
+<table class="tbl wide">
+<tr><th>手段</th><th>向き</th><th>要点</th><th>T-code</th></tr>
+<tr><td>ネットワーク＋活動</td><td>設計・据付・試運転など「作业型」的工程、以及外注加工的手配</td><td>活動ごとに確認（<code>CN25</code>）で実績を集め、進捗の材料になる</td><td><code>CN21/CN22/CN23</code>・<code>CN25/CN27</code></td></tr>
+<tr><td>製造指図</td><td>製造（組立）そのもの</td><td>BOM 展開 → 部品予約 → 261/101。勘定設定＝WBS、入庫先＝プロジェクト在庫 Q</td><td><code>CO40</code>/<code>CO08</code>/<code>CO11N</code></td></tr>
+<tr><td>購買（外注・材料）</td><td>外部調達</td><td>購買依頼の勘定設定に WBS が付く（＝費用が WBS へ）</td><td><code>ME51N</code>→<code>ME21N</code>→<code>MIGO</code>/<code>MIRO</code></td></tr>
+</table>
+<p class="mini">On-Premise はネットワークを本格的に使えますが、Public Cloud（6GD）は <b>WBS 要素単位の計画・実行</b>が中心で、ネットワークの利用範囲はスコープアイテム次第です（→ <a href="config.html#cloud">C15 差異対照</a>）。</p>
+
+<h2 id="rev">7. 请求与收益认识（ETO 的「收钱」方式与 MTO 不同）</h2>
+<table class="tbl wide">
+<tr><th>方式</th><th>内容</th><th>向いている場面</th><th>手がかり</th></tr>
+<tr><td>出荷ベース請求</td><td>出荷（PGI）した数量に対して請求</td><td>物を納めてから請求（MTO と同じ）</td><td><code>VF01</code>（請求タイプ F2）</td></tr>
+<tr><td><b>請求計画（日付ベース）</b></td><td>契約時に支払計画を登録（例 30% 着手金・70% 完成時）</td><td>長期案件の分割請求</td><td>受注明細/ヘッダの請求計画（<code>VA01/VA02</code>）</td></tr>
+<tr><td><b>出来高請求（マイルストーン）</b></td><td>マイルストーン達成で請求（例：設計承認・検収合格）</td><td>マイルストーンを契約に含める案件</td><td>請求計画タイプ（出来高）＋明細カテゴリの請求関連</td></tr>
+<tr><td>資源関連請求（RRB）</td><td>実績原価ベースで請求（サービス・エンジニアリング）</td><td>原価＋フィーの契約</td><td><code>DP90/DP91</code>（請求依頼）</td></tr>
+</table>
+<p>收益认识的时点，靠<b>収益認識キー／結果分析キー</b>决定：工事進行基準（POC）、出来高基準、完了基準など。
+月末处理流程：<b>進捗入力（CNE1/CNE2 など）→ 結果分析（<code>KKA2</code> 個別 / <code>KKAJ</code> 一括）→ WIP 照会（<code>KKAX</code>）→ 決済（<code>CJ88</code> / <code>CJ8G</code>）</b>。
+Cloud 的 ETO（6GD）使用<b>イベントベースの原価転記・収益認識</b>，原価の集計与収益認識的触发器不同（スコープアイテムの Test Script 参照）。</p>
+
+<h2 id="tables">8. 相关表与字段（排障时用）</h2>
+<table class="tbl wide">
+<tr><th>表</th><th>内容</th><th>見る項目</th></tr>
+<tr><td><code>PROJ</code></td><td>プロジェクト定義</td><td>プロジェクト在庫（評価付）関連、プロファイル</td></tr>
+<tr><td><code>PRPS</code></td><td><b>WBS 要素マスタ</b></td><td>WBS 階層（上位）、請求要素/勘定設定/構造の各フラグ、ステータス</td></tr>
+<tr><td><code>VBAP</code></td><td>受注明細</td><td><b><code>PS_PSP_PNR</code>（WBS 要素）</b>、明細カテゴリ、プラント</td></tr>
+<tr><td><code>VBEP</code> / <code>VBBS</code> / <code>VBBE</code></td><td>納期行 / 在庫集計 / 個別所要量</td><td>所要量転送の結果</td></tr>
+<tr><td><code>PLAF</code> / <code>EBAN</code></td><td>計画手配 / 購買依頼</td><td>勘定設定（WBS）と在庫区分（Q）</td></tr>
+<tr><td><code>AUFK</code> / <code>AFPO</code> / <code>AFVC</code></td><td>指図ヘッダ / 指図明細 / 工程</td><td><b><code>AUFK-PS_PSP_PNR</code>（WBS）</b>、AFPO の数量・入庫済</td></tr>
+<tr><td><code>RESB</code></td><td>予約（部品・活動の所要）</td><td>指図/ネットワークからの部品所要（261 の元）</td></tr>
+<tr><td><b><code>MSPR</code></b></td><td><b>プロジェクト在庫の数量</b></td><td><code>SOBKZ = Q</code>、WBS（PS_PSP_PNR）、数量</td></tr>
+<tr><td><code>MSEG</code> / <code>MKPF</code>（S/4HANA は <code>MATDOC</code>）</td><td>在庫伝票</td><td>移動タイプ 261/101/601、特別在庫 Q、金額</td></tr>
+<tr><td><code>COEP</code> / <code>COEJ</code></td><td>CO 明細（実績原価）</td><td>WBS・指図への原価計上</td></tr>
+<tr><td><code>COSP</code> / <code>COSS</code> / <code>COOI</code></td><td>原価集計（計画/実績）</td><td>WBS 単位の予実比較（<code>CJI3</code> 系レポートの元）</td></tr>
+<tr><td><code>VBFA</code></td><td>伝票フロー</td><td>受注 → 指図 → 入庫 → 出荷 → 出庫確認 → 請求</td></tr>
+</table>
+<p class="mini">表名/字段名随版本不同（S/4HANA の在庫伝票は <code>MATDOC</code> に一本化）。<code>SE11</code>/<code>SE16N</code> で必ず自環境確認を。</p>
+
+<h2 id="s4">9. S/4HANA 的变更点（ETO 相关）</h2>
+<table class="tbl wide">
+<tr><th>项目</th><th>要点</th><th>本教材への影響</th></tr>
+<tr><td>MRP</td><td>MRP Live（<code>MD01N</code>）が基本。<code>MD50/MD51</code>（受注/プロジェクト MRP）の役割は変わらないが、結果は <code>MD04</code> で見る（MRP リストは作られない）</td><td>练习② 以 <code>MD51</code> 为主、必要时用 <code>MD01N</code></td></tr>
+<tr><td>在庫伝票</td><td><code>MATDOC</code> に一本化（<code>MSEG</code>/<code>MKPF</code> は互換ビュー相当）</td><td>在庫伝票の確認は <code>MATDOC</code> を第一候補に</td></tr>
+<tr><td>収益認識</td><td>S/4HANA は IFRS15 ベースの新収益認識。<b>Cloud（6GD）はイベントベース</b>の原価転記・収益認識を提供。On-Premise の ETO では従来の結果分析（<code>KKA2</code> 系）＋収益認識キーを使うケースが多い</td><td>练习⑤ で <code>KKA2</code>/<code>KKAX</code> を扱う。<b>どちらの方式かは自システムのスコープで確認</b></td></tr>
+<tr><td>PS の画面/アプリ</td><td>Fiori アプリ（プロジェクト管理・予算管理・プロジェクト実績など）と GUI（<code>CJ20N</code> 系）が併存</td><td>手順は GUI 事务码で記載。Cloud は Fiori アプリ名に読み替え</td></tr>
+<tr><td>予算可用性管理</td><td>予算プロファイルの許容範囲（警告/エラー）で制御（<code>CJBV</code> で活性化）</td><td>练习⑤ で「予算超過時の挙動」を体験</td></tr>
+<tr><td>Simplification（移行時）</td><td>PS にも簡素化項目があるため、<b>コンバージョン時は Simplification Item Check の確認が必須</b>（本教材は新規導入前提の設定手顺）</td><td>移行案件では必ず SI-Check の結果と突き合わせる</td></tr>
+</table>
+
+<h2 id="mistake">10. 十个常见误解（也是测试题的重点）</h2>
+<ol class="steps">
+  <li><b>「ETO でも在庫は受注在庫 E でいい」</b>——不行。ETO 用 <b>Q（プロジェクト在庫）</b>；库存归属到 WBS，才能按项目核算。</li>
+  <li><b>「受注を保存すればプロジェクトが自動でできる」</b>——SAP 标准没有这回事。プロジェクトは <code>CJ20N</code> で作る（自動化するなら BAdI/連携の実装が必要）。</li>
+  <li><b>「プロジェクト在庫は必ず評価される」</b>——<b>プロジェクト定義の「評価付プロジェクト在庫」</b>のフラグ次第。評価付でなければ数量だけ。</li>
+  <li><b>「ネットワークが無ければ ETO にならない」</b>——WBS ＋ 製造指図だけでも成立（Cloud は WBS 中心の設計）。ネットワークは設計・据付・外注の管理に使う。</li>
+  <li><b>「予算を入れないと実績が計上されない」</b>——実績は入ります。予算は<b>統制（可用性管理）と予実比較</b>のためのもの。</li>
+  <li><b>「請求すれば損益が正しくなる」</b>——請求は売上を立てるだけ。原価の決済（<code>CJ88</code>）と結果分析（<code>KKA2</code>）をやらないと WIP と損益が正しくなりません。</li>
+  <li><b>「明細に WBS を入れればいつでも通る」</b>——<b>WBS を割り当てられる明細カテゴリは限定</b>（Cloud の例：<code>CBAO</code>＝マイルストーン請求計画）。自システムで実測必須。</li>
+  <li><b>「予算超過は自動で止まる」</b>——可用性管理（<code>CJBV</code>）と予算プロファイルの許容範囲次第。「警告」か「エラー」かは設定で決まる。</li>
+  <li><b>「進捗を入れれば収益が立つ」</b>——進捗は材料。収益認識キー/結果分析キーの設定と<b>結果分析の実行</b>があって初めて損益が出ます。</li>
+  <li><b>「ETO は必ず工事進行基準（POC）」</b>——出来高（マイルストーン）請求や、出荷ベース、資源関連請求も選択肢。得意先契約と会計方針で決める。</li>
+</ol>
+
+<div class="box ok"><b class="t">下一步</b>
+→ <a href="config.html">练习配置手顺（C0〜C16）</a>／→ <a href="handson-1.html">练习① 项目与受注</a></div>
+
+
+
+</article>
+</main>
+</div>
+
+<footer class="site"><div class="inner">
+  <div><h5>受注設計生産（ETO）实战训练站</h5><p>概念页：E 与 Q 的差异、Q 的 4 点セット、WBS 三种角色、请求与收益认识、相关表。</p></div>
+  <div class="cols">
+    <div><h5>练习</h5><a href="handson-1.html">① 項目と受注</a><br><a href="handson-2.html">② 計画・MRP</a><br><a href="handson-3.html">③ 実行・入庫</a><br><a href="handson-4.html">④ 出荷・請求</a><br><a href="handson-5.html">⑤ 発展・故障</a></div>
+    <div><h5>其他</h5><a href="index.html">总览</a><br><a href="config.html">配置手顺</a><br><a href="instructor.html">讲师版</a><br><a href="worksheet.html">学员版</a><br><a href="quiz.html">能力测试</a></div>
+  </div>
+</div></footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

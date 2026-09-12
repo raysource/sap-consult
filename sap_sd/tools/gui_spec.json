@@ -1,0 +1,4414 @@
+{
+ "_comment": "sap_sd（SAP SD 受注処理 / Sales Order Processing）の手顺ページ用 SAP GUI 画面イメージ仕様。sap_sd/tools/gui_spec_build.py が tools/gui_spec.d/*.json から生成する（直接編集しない）。生成物は実機のスクリーンショットではなく標準レイアウトに基づく再現イメージ。",
+ "pages": {
+  "config.html": {
+   "c0": [
+    {
+     "tx": "VA01",
+     "title": "Create Sales Order: Initial Screen",
+     "kind": "form",
+     "section": "Create with Reference / Sales",
+     "fields": [
+      [
+       "Order Type",
+       "OR",
+       true
+      ],
+      [
+       "Sales Organization",
+       "1000",
+       true
+      ],
+      [
+       "Distribution Channel",
+       "10",
+       true
+      ],
+      [
+       "Division",
+       "00",
+       true
+      ],
+      [
+       "Sold-to party",
+       "1000",
+       true
+      ],
+      [
+       "PO Number",
+       ""
+      ]
+     ],
+     "note": "C0 は「入口が開くか」の確認だけ。保存はしない（PO 番号が必須の環境では保存時にエラーになる）",
+     "status": [
+      "info",
+      "Sales area 1000 / 10 / 00 : order type OR (Standard Order)"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "F4 で 1000／10／00 が選べないときは、販売組織→流通チャネル→部門の割当未了を疑う。受注側の問題ではない",
+       350,
+       150
+      ],
+      [
+       "得意先は複数の販売エリアを持ち得る。Enter 後に「Sales area for customer」ダイアログが出たら 1000 / 10 / 00 を選ぶ",
+       950,
+       267,
+       "2"
+      ]
+     ],
+     "caption": "VA01 の初期画面（受注が作れる環境かの入口確認：受注タイプ OR ／販売エリア 1000・10・00 ／得意先 1000）",
+     "tip": "自システムでの確認：得意先 1000 が無ければ T-S62130（Teleko Textilien, Mainz）で読み替える。項目名は環境により異なる（S/4HANA では Fiori アプリに置き換わっている場合がある）。",
+     "aria": "VA01 の初期画面。受注タイプ OR、販売組織 1000、流通チャネル 10、部門 00、得意先 1000 を入力し、PO 番号は未入力の状態。"
+    },
+    {
+     "tx": "VK13",
+     "title": "Display Conditions",
+     "kind": "table",
+     "table": {
+      "title": "条件レコード（条件タイプ PR00 ／ 得意先 1000 ／ 品目 T-ATA30）",
+      "columns": [
+       "Valid from",
+       "Valid to",
+       "Amount",
+       "Crcy"
+      ],
+      "widths": [
+       1.0,
+       1.0,
+       1.0,
+       0.6
+      ],
+      "rows": [
+       [
+        "01.01.2007",
+        "31.12.2007",
+        "2,299.00",
+        "EUR"
+       ]
+      ],
+      "selected": 0,
+      "footer": "与力日付（受注日 02.06.2007）がこの期間内かどうかで Net value が決まる"
+     },
+     "status": [
+      "success",
+      "1 condition record found for condition type PR00"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "条件レコードが無い／期間外だと Net value は 0.00 のまま。受注の設定を疑う前にここを見る",
+       350,
+       209
+      ],
+      [
+       "金額は環境により異なる。自分の環境では受注の Net value（動画は 22,990.00 EUR / 10 PC）から逆算して確認する",
+       950,
+       235,
+       "2"
+      ]
+     ],
+     "caption": "VK13 で PR00 の条件レコードを照会（与力条件が無いと Net value が 0 のままになる）",
+     "tip": "自システムでの確認：VK13 で PR00 → 得意先 1000 × 品目 T-ATA30。行が無ければ VA03 の条件画面で Net value 0.00 になる理由がここ。期間・金額・欄名は環境により異なる。",
+     "aria": "VK13 の条件レコード一覧。条件タイプ PR00 の有効期間 01.01.2007 から 31.12.2007、金額 2,299.00 EUR の 1 行。"
+    }
+   ],
+   "c1": [
+    {
+     "tx": "VOV8",
+     "title": "Sales Document Types: Overview",
+     "kind": "table",
+     "table": {
+      "title": "販売伝票タイプ一覧（動画では 238 エントリ）",
+      "columns": [
+       "Sales Doc. Type",
+       "Description"
+      ],
+      "widths": [
+       1.4,
+       2.8
+      ],
+      "rows": [
+       [
+        "OR",
+        "Standard Order"
+       ],
+       [
+        "ZOR1",
+        "Z受注（練習用）"
+       ],
+       [
+        "CR",
+        "Credit memo request"
+       ],
+       [
+        "RE",
+        "Returns"
+       ],
+       [
+        "DR",
+        "Debit memo request"
+       ]
+      ],
+      "selected": 0,
+      "footer": "標準 OR は変更せず、コピーして Z 伝票タイプを作る（作業後は Transport に入れる）"
+     },
+     "status": [
+      "info",
+      "238 entries found"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "OR の行で「照会」→「新しいエントリを作成（コピー）」が練習の起点。標準 OR を直接変えると標準業務の挙動が変わってしまう",
+       350,
+       209
+      ],
+      [
+       "一覧に出るのはキーと名称だけ。出荷・請求・価格の実値は詳細画面に入ってから読む（同じ VOV8 の中）",
+       950,
+       235,
+       "2"
+      ]
+     ],
+     "caption": "VOV8 の伝票タイプ一覧（OR から ZOR1 をコピーして練習する）",
+     "tip": "自システムでの確認：VOV8 の一覧を SE16N の TVAK（名称は TVAKT）と突き合わせると、画面とテーブルが 1 対 1 で対応することが分かる。エントリ数は環境により異なる（動画は 238）。",
+     "aria": "VOV8 の販売伝票タイプ一覧。OR（Standard Order）、ZOR1、CR、RE、DR が並び、OR の行が選択されている。"
+    },
+    {
+     "tx": "VOV8",
+     "title": "Sales Document Types: Details",
+     "kind": "form",
+     "section": "Sales Document Type OR (Standard Order)",
+     "fields": [
+      [
+       "Sales Doc. Type",
+       "OR"
+      ],
+      [
+       "Delivery Type",
+       "LF"
+      ],
+      [
+       "Order-Related Billing Type",
+       "G2"
+      ],
+      [
+       "Billing Block",
+       "08 Check credit memo"
+      ],
+      [
+       "Delivery Block",
+       ""
+      ],
+      [
+       "Sales Document Category",
+       "C"
+      ]
+     ],
+     "note": "動画 51:35 付近の画面。出荷・請求・与信・不完全性の 4 グループを指せるようにする（欄名はリリースで異なる）",
+     "status": [
+      "success",
+      "Entry OR (Standard Order) displayed"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "Delivery Type LF は「伝票タイプ側の既定」。実際の出荷タイプは出荷タイプ決定テーブルで上書きされる（設定が効かない＝決定テーブルを疑う）",
+       350,
+       183
+      ],
+      [
+       "請求ブロック 08 と受注関連請求タイプ G2（Credit Memo）はセット。出荷関連請求タイプ（例 F2）とは別物なので混同しない",
+       950,
+       213,
+       "2"
+      ]
+     ],
+     "caption": "VOV8 の詳細画面（伝票タイプ OR）：出荷・請求まわりの項目を読むのがこの節の目的",
+     "tip": "自システムでの確認：出荷条件・即時出荷・請求タイプ・不完全性手順の欄もあわせて指せるようにする。標準値は環境・リリースで異なるので暗記しない。",
+     "aria": "VOV8 の伝票タイプ OR の詳細画面。出荷タイプ LF、受注関連請求タイプ G2、請求ブロック 08 Check credit memo を表示。"
+    }
+   ],
+   "c2": [
+    {
+     "tx": "VOV7",
+     "title": "Item Categories: Details",
+     "kind": "form",
+     "section": "Item Category TAN (Standard item)",
+     "fields": [
+      [
+       "Item Category",
+       "TAN",
+       true
+      ],
+      [
+       "Description",
+       "Standard item"
+      ],
+      [
+       "Requirement Type",
+       ""
+      ],
+      [
+       "Pricing",
+       "Yes"
+      ],
+      [
+       "Billing Relevant",
+       "Yes"
+      ],
+      [
+       "Inventory Management",
+       "Yes"
+      ]
+     ],
+     "note": "動画のデモの受注明細はこの TAN。欄名はリリース・言語により異なる（与力関連＝Pricing のチェック）",
+     "status": [
+      "info",
+      "Item category TAN (Standard item) : pricing relevant, requirement type blank"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "所要量タイプが空＝所要量を作らない。だから TAN の受注は MD04 に何も出ない（故障ではなく仕様）",
+       350,
+       213
+      ],
+      [
+       "与力関連（Pricing）が OFF だと Net value が 0.00 のままになる。受注明細の金額が出ないときの最初の確認点",
+       950,
+       237,
+       "2"
+      ]
+     ],
+     "caption": "VOV7 の明細カテゴリ TAN の詳細（所要量タイプが空／与力関連が ON を確認する）",
+     "tip": "自システムでの確認：VA03 で動画と同じ受注（品目 T-ATA30、明細カテゴリ TAN）を開き、画面の明細カテゴリと VOV7 の設定が一致することを見る。",
+     "aria": "VOV7 の明細カテゴリ TAN の詳細画面。所要量タイプは空、与力関連は ON（Yes）と表示されている。"
+    },
+    {
+     "tx": "VOV7",
+     "title": "Item Categories: Comparison",
+     "kind": "table",
+     "table": {
+      "title": "明細カテゴリの比較（TAN ／ TAE ／ TAB）",
+      "columns": [
+       "Item Cat.",
+       "Requirement Type",
+       "Pricing",
+       "Description"
+      ],
+      "widths": [
+       1.0,
+       1.4,
+       0.8,
+       1.8
+      ],
+      "rows": [
+       [
+        "TAN",
+        "(empty)",
+        "Yes",
+        "Standard item"
+       ],
+       [
+        "TAE",
+        "(empty)",
+        "Yes",
+        "見積・照会用（環境により異なる）"
+       ],
+       [
+        "TAB",
+        "(empty)",
+        "Yes",
+        "見積・照会用（環境により異なる）"
+       ]
+      ],
+      "selected": 0,
+      "footer": "練習課題：3 項目の違いを自分の環境の実値で埋める（値は環境により異なるので暗記しない）"
+     },
+     "status": [
+      "info",
+      "Item categories read from table TVAP (view)"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "受注と見積・照会で明細カテゴリが別物なのは正常。所要量タイプが入るカテゴリだけが在庫確認・所要量作成の対象",
+       350,
+       209
+      ]
+     ],
+     "caption": "VOV7 で TAN と見積・照会用カテゴリを比較（所要量タイプ・与力関連・在庫管理の違いを整理）",
+     "tip": "自システムでの確認：比較は VOV7 の詳細と SE16N の TVAP・TVAPT で行う。どのカテゴリがどの値かは自分の環境で必ず実測する。",
+     "aria": "明細カテゴリ TAN・TAE・TAB の比較表。所要量タイプは空、与力関連は ON、説明は Standard item と見積・照会用。"
+    }
+   ],
+   "c3": [
+    {
+     "tx": "OVT0",
+     "title": "Customer Account Groups: Overview",
+     "kind": "table",
+     "table": {
+      "title": "得意先勘定グループ一覧（動画と同じ並び）",
+      "columns": [
+       "Acct grp",
+       "Description"
+      ],
+      "widths": [
+       1.0,
+       3.0
+      ],
+      "rows": [
+       [
+        "0001",
+        "Sold-to party"
+       ],
+       [
+        "0002",
+        "Goods recipient"
+       ],
+       [
+        "0003",
+        "Payer"
+       ],
+       [
+        "0004",
+        "Bill-to party"
+       ],
+       [
+        "0005",
+        "Prospective customer"
+       ],
+       [
+        "0006",
+        "Competitor"
+       ],
+       [
+        "0007",
+        "Sales partner"
+       ]
+      ],
+      "selected": 0,
+      "footer": "勘定グループは得意先マスタの「型」：番号範囲・項目ステータス・パートナー/出力決定手順を決める"
+     },
+     "status": [
+      "info",
+      "Customer account groups 0001 - 0007 displayed"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "0001 は受注の「得意先」用。0002〜0004 は出荷先・支払元・請求先で、受注の 4 役割（SP/SH/PY/BP）と対応する",
+       350,
+       209
+      ],
+      [
+       "OVS9 の得意先グループとは別物。名前が似ているが、受注の挙動を変えるのがこちら（勘定グループ）",
+       950,
+       287,
+       "2"
+      ]
+     ],
+     "caption": "OVT0 の勘定グループ一覧（0001 Sold-to party 〜 0007 Sales partner）",
+     "tip": "自システムでの確認：件数・名称は環境により異なる。得意先 1000 がどの勘定グループかは XD02 のヘッダで確認する。",
+     "aria": "OVT0 の得意先勘定グループ一覧。0001 Sold-to party から 0007 Sales partner までの 7 行。"
+    },
+    {
+     "tx": "OVT0",
+     "title": "Customer Account Groups: Details",
+     "kind": "form",
+     "section": "Account group 0001 (Sold-to party)",
+     "fields": [
+      [
+       "Acct grp",
+       "0001",
+       true
+      ],
+      [
+       "Description",
+       "Sold-to party"
+      ],
+      [
+       "Number range",
+       "01"
+      ],
+      [
+       "One-time acct",
+       ""
+      ],
+      [
+       "PartnDet.Proc.",
+       ""
+      ],
+      [
+       "OutputDet.Proc.",
+       ""
+      ]
+     ],
+     "note": "「Expand field status」を押すと General data／Company code data／Sales data の必須・任意・表示のみが開く（動画 52:54〜54:09）",
+     "status": [
+      "success",
+      "Number range 01 is assigned to account group 0001"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "番号範囲 01 は XD01 で得意先を新規作成するときの採番。使っている得意先がある状態で変えると既存番号と矛盾する",
+       350,
+       213
+      ],
+      [
+       "受注のパートナー（SP／SH／BP／PY）が自動で決まる源流。ここが空だと受注でパートナーが出ない",
+       950,
+       183,
+       "2"
+      ]
+     ],
+     "caption": "OVT0 の勘定グループ 0001（Sold-to party）の詳細：番号範囲・項目ステータス・パートナー決定手順",
+     "tip": "自システムでの確認：0001 と 0002 の項目ステータスを比べる。「受注で住所が必須にならない」はこの設定が原因で、受注側の設定ではない。欄名は環境により異なる。",
+     "aria": "OVT0 の勘定グループ 0001 の詳細画面。番号範囲 01、項目ステータス、パートナー決定手順・出力決定手順の欄を表示。"
+    }
+   ],
+   "c4": [
+    {
+     "tx": "OVS9",
+     "title": "Customer Groups: Overview",
+     "kind": "table",
+     "table": {
+      "title": "得意先グループ一覧（動画では 47 エントリ）",
+      "columns": [
+       "Cust. grp",
+       "Description"
+      ],
+      "widths": [
+       1.2,
+       3.0
+      ],
+      "rows": [
+       [
+        "01",
+        "Industrial customers"
+       ],
+       [
+        "02",
+        "Trading companies"
+       ],
+       [
+        "03",
+        "Development partners"
+       ],
+       [
+        "04",
+        "Wholly-owned subsid."
+       ],
+       [
+        "05",
+        "Part-owned subsidi."
+       ],
+       [
+        "06",
+        "Competition"
+       ],
+       [
+        "07",
+        "Public sector"
+       ],
+       [
+        "10",
+        "Private customer"
+       ],
+       [
+        "20",
+        "CP Mass"
+       ]
+      ],
+      "selected": 0,
+      "footer": "得意先グループは統計・分析のキー。受注のブロックや価格は変えない"
+     },
+     "status": [
+      "info",
+      "47 entries found"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "統計・分析の分類であり、与力価格や明細カテゴリを決める設定ではない。混同すると探す場所を間違える",
+       350,
+       209
+      ],
+      [
+       "ここにグループを足しても、得意先マスタ（XD02 販売エリアデータ → 販売タブ）に値が入るまで受注には影響しない",
+       950,
+       261,
+       "2"
+      ]
+     ],
+     "caption": "OVS9 の得意先グループ一覧（動画と同じ 01〜20 の並び、動画は 47 エントリ）",
+     "tip": "自システムでの確認：エントリ数は環境により異なる。得意先 1000 の得意先グループは XD02 の販売タブで確認する。",
+     "aria": "OVS9 の得意先グループ一覧。01 Industrial customers から 20 CP Mass までの 9 行。"
+    },
+    {
+     "tx": "XD02",
+     "title": "Change Customer 1000: Sales Area Data",
+     "kind": "form",
+     "tabs": [
+      "Sales",
+      "Shipping",
+      "Billing",
+      "Partner Functions"
+     ],
+     "active_tab": 0,
+     "section": "Sales area 1000 / 10 / 00",
+     "fields": [
+      [
+       "Customer",
+       "1000",
+       true
+      ],
+      [
+       "Customer group",
+       "01"
+      ],
+      [
+       "Sales District",
+       ""
+      ],
+      [
+       "Sales Office",
+       ""
+      ],
+      [
+       "Sales Group",
+       ""
+      ],
+      [
+       "Currency",
+       "EUR"
+      ],
+      [
+       "ABC Class",
+       ""
+      ],
+      [
+       "Order Probab.",
+       ""
+      ]
+     ],
+     "note": "動画 51:22 付近の画面。得意先グループ欄はこの販売タブにある（勘定グループはヘッダ側）",
+     "status": [
+      "info",
+      "Customer 1000 / sales area 1000 / 10 / 00 : customer group 01"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "得意先グループは得意先マスタ側の属性。受注画面で見えても、変えただけでブロックや価格は動かない",
+       950,
+       183
+      ],
+      [
+       "勘定グループはこの画面ではなくヘッダ（XD02 の初期画面）で見る。0001（得意先）と 0002（出荷先）は別物",
+       350,
+       213,
+       "2"
+      ]
+     ],
+     "caption": "XD02 の得意先 1000「販売エリアデータ → 販売タブ」（得意先グループ欄はここで確認できる）",
+     "tip": "自システムでの確認：タブ名・欄名はリリースで異なる。得意先グループが空でも受注は作れる（分析に使われていないだけ）。",
+     "aria": "XD02 の得意先 1000 の販売エリアデータ（販売タブ）。得意先グループ 01、通貨 EUR などを表示。"
+    }
+   ],
+   "c5": [
+    {
+     "tx": "SPRO",
+     "title": "Maintain Report Views",
+     "kind": "table",
+     "table": {
+      "title": "情報ビュー（Report Views）の一覧",
+      "columns": [
+       "Report view",
+       "Description",
+       "Standard"
+      ],
+      "widths": [
+       1.2,
+       2.6,
+       0.9
+      ],
+      "rows": [
+       [
+        "001",
+        "Complete information",
+        "X"
+       ],
+       [
+        "002",
+        "Address/partner info",
+        ""
+       ],
+       [
+        "003",
+        "Statistical info",
+        ""
+       ],
+       [
+        "005",
+        "Telesales",
+        ""
+       ],
+       [
+        "100",
+        "Credit Information",
+        ""
+       ],
+       [
+        "101",
+        "Last SD Documents",
+        ""
+       ],
+       [
+        "102",
+        "Backorders",
+        ""
+       ],
+       [
+        "103",
+        "Quick Info",
+        ""
+       ],
+       [
+        "900",
+        "New Internet cust.",
+        ""
+       ]
+      ],
+      "selected": 0,
+      "footer": "Standard が 001 だけ＝VC/2 の既定表示が「完全情報」になる理由"
+     },
+     "status": [
+      "info",
+      "9 report views defined (standard flag set for 001)"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "001 の Standard チェックが外れると VC/2 の既定ビューが変わる。動画では 001 にだけ入っている",
+       350,
+       209
+      ],
+      [
+       "Form SD-SALES-SUMMARY は「② Maintain Views for an Evaluation」の詳細で確認する。VC/2 のレイアウトはここに紐づく",
+       950,
+       235,
+       "2"
+      ]
+     ],
+     "caption": "① Maintain Report Views：情報ビュー 001〜900 の一覧（Standard は 001 のみ）",
+     "tip": "自システムでの確認：SPRO の「リスト（Lists）」配下で 4 つのアクティビティ（① Maintain Report Views ② Maintain Views for an Evaluation ③ Maintain the Report Views for a User ④ Last Documents for a Customer）を探す。画面名は環境により異なる。",
+     "aria": "SIS のレポートビュー一覧。001 Complete information から 900 New Internet cust. までの 9 件で、001 に Standard フラグが立っている。"
+    },
+    {
+     "tx": "VC/2",
+     "title": "Last SD Documents",
+     "kind": "table",
+     "table": {
+      "title": "Last SD Documents（情報ビュー 101 ／ 得意先 1000）",
+      "columns": [
+       "Document",
+       "Category"
+      ],
+      "widths": [
+       2.0,
+       1.4
+      ],
+      "rows": [
+       [
+        "11076",
+        "Order"
+       ],
+       [
+        "11075",
+        "Order"
+       ],
+       [
+        "11074",
+        "Order"
+       ],
+       [
+        "11072",
+        "Order"
+       ],
+       [
+        "10765",
+        "Order"
+       ],
+       [
+        "90035240",
+        "Invoice"
+       ],
+       [
+        "90033630",
+        "Invoice"
+       ],
+       [
+        "90033619",
+        "Invoice"
+       ],
+       [
+        "90023097",
+        "Invoice"
+       ]
+      ],
+      "selected": 0,
+      "footer": "受注が出ないときは「④ Last Documents for a Customer」で C Order の統計更新を確認する"
+     },
+     "status": [
+      "success",
+      "Sales summary for customer 1000 : report view 101 (Last SD Documents)"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "文書カテゴリ C Order の統計更新が OFF だと、ここに受注が並ばない（→ ④ Last Documents for a Customer）",
+       950,
+       235
+      ],
+      [
+       "番号は動画と同じ得意先 1000 の例。概念スライドの得意先 5264（FA IDES, Walldorf）は例示なので混同しない",
+       350,
+       209,
+       "2"
+      ]
+     ],
+     "caption": "VC/2「Last SD Documents」（情報ビュー 101）：受注と請求書が並ぶ",
+     "tip": "自システムでの確認：VC/2 で得意先 1000 を入れ「View」を押すと 001／002／003／005／100／101／102／103／900 が並ぶ。統計が未構築の環境では数字が出ない（構造だけは見える）。",
+     "aria": "VC/2 の情報ビュー 101（Last SD Documents）の一覧。受注 11076〜10765 と請求書 90035240〜90023097 が並ぶ。"
+    }
+   ],
+   "c6": [
+    {
+     "tx": "VA03",
+     "title": "Display Sales Order: Overview",
+     "kind": "table",
+     "table": {
+      "title": "納入日程行（明細 10 / 品目 T-ATA30 / 明細カテゴリ TAN）",
+      "columns": [
+       "Sched.line",
+       "Sched.line cat.",
+       "Date",
+       "Order qty"
+      ],
+      "widths": [
+       1.2,
+       1.6,
+       1.2,
+       1.2
+      ],
+      "rows": [
+       [
+        "1",
+        "CP",
+        "09.06.2007",
+        "10"
+       ]
+      ],
+      "selected": 0,
+      "footer": "明細 → 納入日程行は 1 件。カテゴリ CP は在庫確認（ATP）と所要量転送が有効な標準カテゴリ（値は環境により異なる）"
+     },
+     "note": "動画のデモ（2007 年頃の R/3）は明細 TAN の標準カテゴリ。自分の環境では納入日程行の実値と列名を必ず読む",
+     "status": [
+      "info",
+      "Display of sales document: schedule lines for item 10"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "納入日程行カテゴリ CP は「在庫確認（ATP）＋所要量転送」が有効な標準カテゴリ。ここが空／別カテゴリだと MD04 に所要量が出ない",
+       350,
+       184,
+       "カテゴリが肝"
+      ],
+      [
+       "日付は納入日程行の日付。受注の Req.deliv.date 09.06.2007 がここに落ちる",
+       950,
+       210,
+       "ここが納入日"
+      ]
+     ],
+     "caption": "VA03 で受注を開き、明細 10 の納入日程行を展開してカテゴリを読む",
+     "tip": "自システムでの確認：VA03 → 明細 → 納入日程行を表示し、Sched.line cat. の列を読む（表示方法と列名は環境により異なる）。",
+     "aria": "VA03 の受注明細 10 の納入日程行一覧。納入日程行カテゴリ CP、日付 09.06.2007、数量 10。"
+    },
+    {
+     "tx": "VOV6",
+     "title": "Change View \"Schedule line categories\": Details",
+     "kind": "form",
+     "section": "Schedule line category CP (item cat. TAN × MRP type PD)",
+     "fields": [
+      [
+       "Sched.line cat.",
+       "CP",
+       true
+      ],
+      [
+       "Movement type",
+       "601"
+      ],
+      [
+       "Requirement type",
+       "KE"
+      ],
+      [
+       "Availability check",
+       "X"
+      ]
+     ],
+     "note": "所要量タイプが空だと所要量が MRP に渡らない（MD04 に出ない）。欄の名称・有無はリリースにより異なる",
+     "status": [
+      "info",
+      "Display view: schedule line categories, detail"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "所要量タイプ（Requirement type）が入っているから品目所要量が MRP に渡る。空だと何も出ない（エラーではなく仕様）",
+       350,
+       214,
+       "所要量タイプが鍵"
+      ],
+      [
+       "在庫確認は 伝票タイプ → 納入日程行カテゴリ → 品目マスタ の 3 階層。上位が下位を上書きする（C13）",
+       950,
+       214,
+       "在庫確認の 1 階層"
+      ]
+     ],
+     "caption": "VOV6 で納入日程行カテゴリの中身（所要量タイプ・在庫確認）を読む",
+     "tip": "自システムでの確認：VOV6 で自分の環境のカテゴリを開く。移動タイプ 601 は「受注出庫」を示すが、値は環境により異なる。",
+     "aria": "VOV6 の納入日程行カテゴリ CP の詳細画面。移動タイプ 601、所要量タイプ KE、在庫確認が有効。"
+    }
+   ],
+   "c7": [
+    {
+     "tx": "VOV4",
+     "title": "Change View \"Item categories\": Overview",
+     "kind": "table",
+     "table": {
+      "title": "伝票タイプに許可された明細カテゴリ（割当）",
+      "columns": [
+       "Sales Doc. Type",
+       "Item cat.",
+       "Description"
+      ],
+      "widths": [
+       1.6,
+       1.2,
+       2.2
+      ],
+      "rows": [
+       [
+        "OR",
+        "TAN",
+        "*Standard item"
+       ],
+       [
+        "OR",
+        "TANN",
+        ""
+       ],
+       [
+        "OR",
+        "TAX",
+        ""
+       ],
+       [
+        "ZOR1",
+        "ZTAN",
+        ""
+       ]
+      ],
+      "selected": 0,
+      "footer": "割当は「その伝票タイプで使ってよい明細カテゴリ」の許可リスト。自動でどれになるか（決定）は C8 の決定テーブルで別に決まる"
+     },
+     "note": "練習用に ZOR1 × ZTAN を 1 行追加した状態。標準の OR の割当は削らずに Z 伝票タイプで練習する",
+     "status": [
+      "success",
+      "Data was saved"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "ここは「使ってよい明細カテゴリ」の割当（許可）リスト。決定テーブル（C8）とは別の仕組み",
+       350,
+       184,
+       "許可リスト"
+      ],
+      [
+       "追加した ZOR1 × ZTAN の行。VA01 では新規受注でだけ効く（既存受注の明細カテゴリは不変）",
+       950,
+       236,
+       "新規受注で確認"
+      ]
+     ],
+     "caption": "VOV4 で伝票タイプ OR に許可されている明細カテゴリの一覧を確認する",
+     "tip": "自システムでの確認：VOV4 の割当ビューで OR の行を読み、練習では ZOR1 × ZTAN を追加してから VA01 で ZOR1 の受注を作る。画面の呼称は環境により異なる。",
+     "aria": "VOV4 の明細カテゴリ割当一覧。伝票タイプ OR に TAN・TANN・TAX、ZOR1 に ZTAN が許可されている。"
+    }
+   ],
+   "c8": [
+    {
+     "tx": "MM03",
+     "title": "Display Material T-ATA30 (Sales Org. 2)",
+     "kind": "form",
+     "section": "Sales Org. 2 — Item category group",
+     "fields": [
+      [
+       "Material",
+       "T-ATA30",
+       true
+      ],
+      [
+       "Sales Org.",
+       "1000"
+      ],
+      [
+       "Item category group",
+       "NORM",
+       true
+      ],
+      [
+       "Distr. Channel",
+       "10"
+      ]
+     ],
+     "note": "品目カテゴリグループは明細カテゴリ決定テーブルの 2 つ目のキー。値は環境により異なる（動画のデモ品目は標準のグループ）",
+     "status": [
+      "info",
+      "Display material T-ATA30: view \"Sales Org. 2\""
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "決定テーブルの 2 つ目のキー。OR × NORM × 空 × 空 → TAN の行を VOV4 で探しにいく",
+       350,
+       214,
+       "2 つ目のキー"
+      ],
+      [
+       "ここを別の値にした品目で受注を作ると明細カテゴリが変わる。変えたら必ず新規受注で確認する（既存受注は不変）",
+       950,
+       214,
+       "変更は新規受注で"
+      ]
+     ],
+     "caption": "MM03 の販売組織 2 ビューで品目カテゴリグループを読む",
+     "tip": "自システムでの確認：MM03 → 品目 → 販売組織 2 → Item category group。ビューの呼称は環境により異なる。",
+     "aria": "MM03 の品目 T-ATA30 販売組織 2 ビュー。品目カテゴリグループ NORM、販売組織 1000、流通チャネル 10。"
+    },
+    {
+     "tx": "VOV4",
+     "title": "Change View \"Item category determination\": Overview",
+     "kind": "table",
+     "table": {
+      "title": "明細カテゴリ決定テーブル（キーは 4 つ）",
+      "columns": [
+       "Sales Doc. Type",
+       "ItemCatGrp",
+       "Usage",
+       "HLevItCat",
+       "Item cat."
+      ],
+      "widths": [
+       1.5,
+       1.3,
+       0.8,
+       1.2,
+       1.0
+      ],
+      "rows": [
+       [
+        "OR",
+        "NORM",
+        "",
+        "",
+        "TAN"
+       ],
+       [
+        "ZOR1",
+        "NORM",
+        "",
+        "",
+        "ZTAN"
+       ]
+      ],
+      "selected": 0,
+      "footer": "キー 4 つ：伝票タイプ × 品目カテゴリグループ × 品目使用目的 × 高レベル明細カテゴリ → 明細カテゴリ。動画のデモは OR × NORM × 空 × 空 → TAN"
+     },
+     "note": "使用目的（Usage）と高レベル明細カテゴリが意図せず入るのは、参照コピーした受注や BOM 品目で起こりやすい（VA03 の明細詳細で確認）",
+     "status": [
+      "success",
+      "Data was saved"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "1 つでもキーが合わないと行に当たらず、エラーまたは別カテゴリへフォールバックする。必ずキー 4 つを読む",
+       350,
+       184,
+       "キーは 4 つ"
+      ],
+      [
+       "練習で追加した ZOR1 × NORM × 空 × 空 → ZTAN の行。新規受注でだけ効く",
+       950,
+       210,
+       "追加行はこちら"
+      ]
+     ],
+     "caption": "VOV4 の明細カテゴリ決定テーブルで OR × NORM × 空 × 空 → TAN の行を探す",
+     "tip": "自システムでの確認：VA03 の明細カテゴリと、VOV4 の決定テーブルの結果が一致するかを見る。既存受注は伝票タイプを変えても明細カテゴリが変わらない。",
+     "aria": "VOV4 の明細カテゴリ決定テーブル。OR × NORM × 空 × 空 → TAN、ZOR1 × NORM × 空 × 空 → ZTAN の 2 行。"
+    }
+   ],
+   "c9": [
+    {
+     "tx": "VOV5",
+     "title": "Change View \"Schedule line categories\": Overview",
+     "kind": "table",
+     "table": {
+      "title": "納入日程行カテゴリの決定（明細カテゴリ × MRP タイプ）",
+      "columns": [
+       "Item cat.",
+       "MRP type",
+       "Sched.line cat.",
+       "Description"
+      ],
+      "widths": [
+       1.0,
+       1.0,
+       1.5,
+       1.9
+      ],
+      "rows": [
+       [
+        "TAN",
+        "PD",
+        "CP",
+        ""
+       ],
+       [
+        "ZTAN",
+        "PD",
+        "CP",
+        ""
+       ]
+      ],
+      "selected": 0,
+      "footer": "キーは 明細カテゴリ × MRP タイプ（品目マスタ MRP 1 ビュー）。PD ＝ 所要量計画あり → CP（ATP あり・所要量転送あり）"
+     },
+     "note": "画面・キーの呼称は環境により異なる（所要量タイプと説明される場合あり）。VOV5 に実際に出ている列名を読むのが確実",
+     "status": [
+      "info",
+      "Display view: schedule line categories (determination)"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "キーは「明細カテゴリ × MRP タイプ」。MRP 3 ビューの戦略グループ由来の所要量タイプと混同しやすい",
+       350,
+       184,
+       "キーは 2 つ"
+      ],
+      [
+       "MRP タイプが空、または行が無いと決定に至らず、在庫確認も所要量も走らない（エラーではなく仕様）",
+       950,
+       210,
+       "空なら決定しない"
+      ]
+     ],
+     "caption": "VOV5 の決定テーブルで明細カテゴリ × MRP タイプの組み合わせを確認する",
+     "tip": "自システムでの確認：VA03 → VOV5 → VOV6 の順にたどり、同じカテゴリに行き着くことを確かめる。決定したカテゴリの在庫確認は VOV6 で読む。",
+     "aria": "VOV5 の納入日程行カテゴリ決定テーブル。明細カテゴリ TAN × MRP タイプ PD で納入日程行カテゴリ CP、ZTAN も CP。"
+    }
+   ],
+   "c10": [
+    {
+     "tx": "VD53",
+     "title": "Display Customer-Material Info Record",
+     "kind": "form",
+     "section": "Customer 1000 × Material T-ATA30 (1000 / 10)",
+     "fields": [
+      [
+       "Customer",
+       "1000",
+       true
+      ],
+      [
+       "Material",
+       "T-ATA30",
+       true
+      ],
+      [
+       "Sales Org.",
+       "1000"
+      ],
+      [
+       "Distr. Channel",
+       "10"
+      ],
+      [
+       "Cust. material",
+       ""
+      ],
+      [
+       "Deliver.Plant",
+       "1200"
+      ]
+     ],
+     "note": "客先品目情報の出荷プラントは優先順位 1 位。動画のスライドは C1 × M1 × PC-100 → 1400、実機の値は環境により異なる",
+     "status": [
+      "info",
+      "Customer-material info record displayed (customer 1000 / material T-ATA30)"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "客先品目情報は 得意先 × 品目 × 販売エリア の組み合わせで持つ。登録は VD51、照会は VD53",
+       350,
+       160,
+       "優先順位 1 位"
+      ],
+      [
+       "ここに入ると得意先マスタ・品目マスタの出荷プラントより強く効く。上位が優先される",
+       950,
+       214,
+       "最優先の源泉"
+      ]
+     ],
+     "caption": "VD53 で客先品目情報（優先順位 1 位）の出荷プラントを読む",
+     "tip": "自システムでの確認：VD53 で得意先 × 品目 × 販売エリアを入れて出荷プラントを読む。値が空なら下位（得意先マスタ → 品目マスタ）が提案される。",
+     "aria": "VD53 の客先品目情報。得意先 1000、品目 T-ATA30、販売組織 1000、流通チャネル 10、出荷プラント 1200。"
+    },
+    {
+     "tx": "VA03",
+     "title": "Display Sales Order: Item Data",
+     "kind": "form",
+     "section": "Item 10 — Sales A",
+     "fields": [
+      [
+       "Material",
+       "T-ATA30"
+      ],
+      [
+       "Order Quantity",
+       "10"
+      ],
+      [
+       "Item category",
+       "TAN"
+      ],
+      [
+       "Sales unit",
+       "PC"
+      ],
+      [
+       "Deliver.Plant",
+       "1200"
+      ],
+      [
+       "Req.deliv.date",
+       "09.06.2007"
+      ]
+     ],
+     "note": "Deliver.Plant が受注明細の出荷プラント（VBAP-WERKS）。どの源泉が効いたかをここで確認する",
+     "status": [
+      "info",
+      "Item 10 displayed: Deliver.Plant 1200"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "受注明細の出荷プラント。SE16N で VBAP を見れば「どの源泉が効いたか」を証拠として示せる",
+       350,
+       274,
+       "VBAP-WERKS"
+      ],
+      [
+       "品目マスタを直しても変わらないときは、上位 2 つ（客先品目情報・得意先マスタ）に値が入っている証拠",
+       950,
+       274,
+       "3 か所を見る"
+      ]
+     ],
+     "caption": "VA03 の明細 10 で Deliver.Plant に入った値を確認する",
+     "tip": "自システムでの確認：XD03 の出荷タブ、MM03 の販売組織 1、VD53 の 3 か所を書き出してから VA01 で明細を投入する。想定外のプラントは ABAP 拡張（SAP Note 2787562）を疑う。",
+     "aria": "VA03 の受注明細 10。品目 T-ATA30、数量 10、明細カテゴリ TAN、出荷プラント 1200、要求納入日 09.06.2007。"
+    }
+   ],
+   "c11": [
+    {
+     "tx": "XD03",
+     "title": "Display Customer 1000: Sales Area 1000 / 10 / 00",
+     "kind": "form",
+     "section": "Sales Area Data 1000 / 10 / 00",
+     "fields": [
+      [
+       "Sold-to party",
+       "1000",
+       true
+      ],
+      [
+       "Name 1",
+       "Becker Berlin"
+      ],
+      [
+       "Terms of payment",
+       "ZB01"
+      ],
+      [
+       "Incoterms",
+       "FOB"
+      ],
+      [
+       "Cust.pric.proc.",
+       "1"
+      ],
+      [
+       "Sales Office",
+       ""
+      ]
+     ],
+     "note": "空欄は自システムの値を確認。支払条件 ZB01（14 Days 3% / 30 Days 2%）と Incoterms FOB はそのまま受注ヘッダに提案される",
+     "status": [
+      "info",
+      "Display customer 1000: sales area 1000 / 10 / 00"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "Incoterms FOB。納入条件は受注ヘッダに提案され、出荷・請求まで引き継がれる",
+       950,
+       214,
+       "Incoterms も提案"
+      ],
+      [
+       "Cust.pric.proc. は与力価格決定の 3 つ目のキー（OVKK）。ここが変わると価格決定手順が変わる",
+       350,
+       266,
+       "OVKK のキー"
+      ]
+     ],
+     "caption": "XD03 の販売エリアデータで支払条件・インコタームズ・得意先価格決定手順を確認する（動画 51:22 付近の画面）",
+     "tip": "自システムでの確認：XD03 → 得意先 1000 → 販売エリア 1000/10/00 → Sales / Shipping タブ。与信管理エリアと支払保証手続も同じ画面で読める。",
+     "aria": "XD03 の得意先 1000 販売エリアデータ。支払条件 ZB01、Incoterms FOB、得意先価格決定手順 1。"
+    },
+    {
+     "tx": "XD03",
+     "title": "Display Customer 1000: Partner Functions",
+     "kind": "table",
+     "table": {
+      "title": "得意先 1000 / 販売エリア 1000 / 10 / 00 のパートナー機能",
+      "columns": [
+       "Partn.func.",
+       "Partner",
+       "Description"
+      ],
+      "widths": [
+       1.2,
+       1.0,
+       2.2
+      ],
+      "rows": [
+       [
+        "SP",
+        "1000",
+        "Sold-to party"
+       ],
+       [
+        "BP",
+        "1000",
+        "Bill-to party"
+       ],
+       [
+        "PY",
+        "1000",
+        "Payer"
+       ],
+       [
+        "SH",
+        "1000",
+        "Ship-to party"
+       ]
+      ],
+      "selected": 0,
+      "footer": "得意先マスタ（KNVP）のパートナー機能。受注（VBPA）ではここから SP／SH／BP／PY が自動提案される"
+     },
+     "note": "パートナーが出ない場合は、この表が未保守か、勘定グループ／伝票タイプのパートナー決定手順（OVT0）の設定漏れ",
+     "status": [
+      "info",
+      "Partner functions of customer 1000 (sales area 1000 / 10 / 00)"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "SP／SH／BP／PY はここから受注へ自動提案される（KNVP → VBPA の対応で確認）",
+       350,
+       184,
+       "提案の源泉"
+      ],
+      [
+       "出荷先を変えると与力価格・出荷プラントは再決定、販売エリアと販売事務所は不変",
+       950,
+       210,
+       "再決定の範囲"
+      ]
+     ],
+     "caption": "XD03 のパートナー機能タブで SP／BP／PY／SH の登録を確認する",
+     "tip": "自システムでの確認：VA01 で新規受注を作り、パートナーが自動提案されるかを見る。SE16N で KNVP と VBPA を並べると対応が読める。",
+     "aria": "XD03 のパートナー機能一覧。SP・BP・PY・SH がすべて得意先 1000 で登録されている。"
+    }
+   ],
+   "c12": [
+    {
+     "tx": "VA03",
+     "title": "Display Sales Order: Item Conditions",
+     "kind": "table",
+     "table": {
+      "title": "明細 10 の条件（与力分析）",
+      "columns": [
+       "Cntr",
+       "Condition type",
+       "Description",
+       "Amount",
+       "Crcy"
+      ],
+      "widths": [
+       0.5,
+       1.5,
+       1.8,
+       1.2,
+       0.6
+      ],
+      "rows": [
+       [
+        "1",
+        "PR00",
+        "Price",
+        "22,990.00",
+        "EUR"
+       ]
+      ],
+      "selected": 0,
+      "footer": "Net value 22,990.00 EUR はここに並ぶ条件の合計（明細 10 PC）。条件が期間外・未登録なら空になり Net value は 0 になる"
+     },
+     "note": "決定される条件タイプと金額は環境により異なる。自分の受注の条件画面で実値を読むのが確実",
+     "status": [
+      "info",
+      "Conditions displayed for item 10 (Net value 22,990.00 EUR)"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "PR00 が Net value 22,990.00 EUR の本体。ここが空なら受注ではなく条件レコードの問題",
+       350,
+       184,
+       "Net value の本体"
+      ],
+      [
+       "与力日付 02.06.2007 が条件レコードの有効期間に入っているかを必ず確認する",
+       950,
+       184,
+       "与力日付と期間"
+      ]
+     ],
+     "caption": "VA03 の条件画面（与力分析）で Net value 22,990.00 EUR の内訳を読む",
+     "tip": "自システムでの確認：明細の条件画面で条件タイプと金額を書き出し、VK13 の条件レコードの有効期間と突き合わせる。",
+     "aria": "VA03 の明細 10 の条件画面。条件タイプ PR00（Price）で金額 22,990.00 EUR。"
+    },
+    {
+     "tx": "VK13",
+     "title": "Display Condition Record",
+     "kind": "form",
+     "section": "Condition Type PR00 (1000 / 10 / T-ATA30)",
+     "fields": [
+      [
+       "Cond. type",
+       "PR00",
+       true
+      ],
+      [
+       "Sales Org.",
+       "1000"
+      ],
+      [
+       "Material",
+       "T-ATA30"
+      ],
+      [
+       "Distr. Channel",
+       "10"
+      ],
+      [
+       "Amount",
+       "2,299.00"
+      ],
+      [
+       "Per",
+       "1 PC"
+      ],
+      [
+       "Currency",
+       "EUR"
+      ]
+     ],
+     "note": "1 PC あたり 2,299.00 EUR（Net value 22,990.00 ÷ 10 PC）。金額と有効期間の実値は環境により異なる",
+     "status": [
+      "info",
+      "Condition record for condition type PR00 displayed"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "条件レコードは 得意先 × 品目 × 有効期間 の組み合わせ。与力日付がこの期間に入るかで金額が決まる",
+       350,
+       214,
+       "期間が肝"
+      ],
+      [
+       "手順（OVKK）→ 条件タイプ（V/06）→ 条件レコード（VK13）の 3 段。どの条件タイプを探すかは手順が決める",
+       950,
+       160,
+       "手順が決める"
+      ]
+     ],
+     "caption": "VK13 で条件タイプ PR00 の条件レコードを照会し、有効期間と金額を確認する",
+     "tip": "自システムでの確認：VK13 で PR00 を照会し、有効期間に与力日付 02.06.2007 が入るかを見る。手順は VOV8 の伝票タイプ OR → OVKK で確認する。",
+     "aria": "VK13 の条件レコード照会画面。条件タイプ PR00、販売組織 1000、流通チャネル 10、品目 T-ATA30、金額 2,299.00 EUR / 1 PC、通貨 EUR。"
+    }
+   ],
+   "c13": [
+    {
+     "tx": "MM03 / OVZ2 / VOV6",
+     "title": "Display Material T-ATA30",
+     "kind": "form",
+     "tabs": [
+      "Basic Data 1",
+      "Sales Org. 1",
+      "MRP 1",
+      "MRP 2",
+      "MRP 3",
+      "MRP 4"
+     ],
+     "active_tab": 4,
+     "section": "MRP 3  -  Availability check",
+     "fields": [
+      [
+       "Material",
+       "T-ATA30",
+       true
+      ],
+      [
+       "Plant",
+       "1200",
+       true
+      ],
+      [
+       "Strategy group",
+       ""
+      ],
+      [
+       "Availability check",
+       "02  Individual requirements"
+      ]
+     ],
+     "note": "在庫確認は 伝票タイプ（OVZ2）＞納入日程行カテゴリ（VOV6）＞品目マスタ MRP3 の 3 階層。ここは最下位＝既定値で、上位が上書きする",
+     "status": [
+      "info",
+      "Display material T-ATA30 plant 1200 (MRP 3 view)"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "品目マスタの在庫確認は 3 階層の最下位。伝票タイプや納入日程行カテゴリ側が OFF なら ATP は走らない",
+       350,
+       209,
+       "最下位の層"
+      ],
+      [
+       "所要量タイプが空の明細（動画の TAN）は ATP の対象外。「在庫があるのに警告が出ない」の答え",
+       950,
+       263,
+       "TAN は対象外"
+      ]
+     ],
+     "caption": "C13 在庫確認（ATP）の最下位層：品目マスタ MRP3 の在庫確認",
+     "tip": "自システムでの確認：MM03 で 品目 × プラント の MRP3 を開き、在庫確認の値を書き出す。伝票タイプ側は OVZ2、納入日程行カテゴリ側は VOV6、引ける数量は CO09、所要量の流れは MD04 で確認する。",
+     "aria": "MM03 の品目マスタ MRP3 ビュー。品目 T-ATA30・プラント 1200・在庫確認 02 が表示されている。"
+    }
+   ],
+   "c14": [
+    {
+     "tx": "OVA2",
+     "title": "Incompleteness Procedure: Overview",
+     "kind": "tree",
+     "tree": {
+      "title": "Incompleteness Procedure: Groups and Fields",
+      "rows": [
+       [
+        "Incompleteness procedure assigned to order type OR",
+        0,
+        "TVUV"
+       ],
+       [
+        "Sales - Header",
+        1,
+        "TVUVG"
+       ],
+       [
+        "BSTNK - Customer PO number",
+        2,
+        "TVUVF"
+       ],
+       [
+        "Sales - Item",
+        1,
+        "TVUVG"
+       ],
+       [
+        "POSEX - PO item",
+        2,
+        "TVUVF"
+       ],
+       [
+        "Sales - Sched. Line",
+        1,
+        "TVUVG"
+       ],
+       [
+        "Partner",
+        1,
+        "TVUVG"
+       ]
+      ],
+      "selected": 2
+     },
+     "note": "グループ名・項目・Warning 欄の値は環境により異なる。ここでは 手順（TVUV）→ グループ（TVUVG）→ 項目（TVUVF）の 3 階層を見る",
+     "status": [
+      "info",
+      "Display incompleteness procedure for order type OR (no changes made)"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "動画の「Enter PO number」はこの 1 項目。手順 → グループ → 項目の 3 階層で必須が決まる",
+       350,
+       199,
+       "PO 番号の項目"
+      ],
+      [
+       "項目ごとの Warning にチェックが無ければエラー（保存不可）。運用は警告にして V.02 で管理するのが現実的",
+       950,
+       251,
+       "Warning 欄"
+      ]
+     ],
+     "caption": "C14 不完全性手順（OVA2）：手順 → グループ → 項目の 3 階層",
+     "tip": "自システムでの確認：OVA2 で伝票タイプ OR に割り当てられた手順を開き、グループごとに項目（VBAP-POSEX など）を書き出す。割当先は 伝票タイプ（VOV8）・明細カテゴリ（VUP2）・納入日程行カテゴリ（VUE2）の 3 か所。",
+     "aria": "OVA2 の不完全性手順。伝票タイプ OR の手順と、Sales - Header / Item / Sched. Line のグループ、PO 番号系の項目が表示されている。"
+    },
+    {
+     "tx": "V.02",
+     "title": "List of Incomplete Sales Orders",
+     "kind": "table",
+     "table": {
+      "title": "Incomplete Sales Orders (V.02)",
+      "columns": [
+       "Sales Doc.",
+       "Item",
+       "Sold-to party",
+       "Status",
+       "Net value"
+      ],
+      "widths": [
+       1.3,
+       0.7,
+       1.5,
+       1.2,
+       1.3
+      ],
+      "rows": [
+       [
+        "0000001234",
+        "000010",
+        "1000 / Becker Berlin",
+        "Incomplete",
+        "22,990.00 EUR"
+       ],
+       [
+        "0000001234",
+        "000020",
+        "1000 / Becker Berlin",
+        "Incomplete",
+        "22,990.00 EUR"
+       ]
+      ],
+      "selected": 0
+     },
+     "note": "動画の環境では PO 番号が必須。不完全なまま保存した受注がここに残り、欠落項目は VA03 の不完全性ログで確認する（VBUV / VBUK）",
+     "status": [
+      "info",
+      "Incomplete sales orders: 1 document / 2 items found"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "わざと不完全なまま保存した受注がここに出る。出ないときは不完全性手順が伝票タイプ・明細カテゴリに未割当",
+       350,
+       176,
+       "不完全な受注"
+      ],
+      [
+       "どの項目が欠けているかは VBUV（不完全性ログ）と VA03 の不完全性ログで見る。VBUK は伝票ヘッダの状態",
+       950,
+       254,
+       "VBUV / VBUK"
+      ]
+     ],
+     "caption": "C14 不完全な受注の一覧（V.02）：不完全なまま保存した受注をここで管理する",
+     "tip": "自システムでの確認：伝票タイプの不完全性手順（VOV8）を外すと V.02 に出なくなる。SE16N で VBUV（不完全性ログ）・VBUK・VBUP（伝票／明細ステータス）も見ておく。",
+     "aria": "V.02 の不完全な受注一覧。受注 0000001234 の明細 10 と 20 が不完全として表示されている。"
+    }
+   ],
+   "c15": [
+    {
+     "tx": "VTLA / VTFL",
+     "title": "Copying Control: Sales Document to Delivery Document",
+     "kind": "form",
+     "tabs": [
+      "Header",
+      "Item",
+      "Schedule line"
+     ],
+     "active_tab": 1,
+     "section": "Copy control  -  OR -> LF  (Item level)",
+     "fields": [
+      [
+       "Source Document Type",
+       "OR",
+       true
+      ],
+      [
+       "Target Document Type",
+       "LF",
+       true
+      ],
+      [
+       "Pricing Type",
+       "Redetermine pricing"
+      ],
+      [
+       "Copy Quantity",
+       "X"
+      ],
+      [
+       "Complete Reference",
+       "X"
+      ],
+      [
+       "Update Document Flow",
+       "X"
+      ]
+     ],
+     "note": "ルーチン番号（Copying requirements / Data transfer routine）と Pricing type の記号は環境で異なる。ここでは「何を引き継ぎ、何を再決定するか」を確認する",
+     "status": [
+      "info",
+      "Copying control sales document type OR to delivery type LF is active"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "価格を「コピー」するか「再決定」するかがこの設定。Redetermine なら参照元の古い価格は引き継がれない",
+       350,
+       263,
+       "与力の再決定"
+      ],
+      [
+       "受注 → 出荷のコピー管理は VTLA（出荷 → 請求は VTFL）。OR → LF の行が無いと出荷が作れない",
+       950,
+       209,
+       "OR → LF が有効"
+      ]
+     ],
+     "caption": "C15 コピー管理（受注 → 出荷）：何を引き継ぎ、何を再決定するか",
+     "tip": "自システムでの確認：手顺ページは VTFL を「受注 → 出荷」と書いていますが、その T-code は VTLA です（VTFL は 出荷 → 請求）。VTFA（受注 → 請求）と合わせ、支払条件 ZB01・インコタームズ FOB がどこで決まるかを VA01 の参照コピーで追う。",
+     "aria": "コピー管理の明細レベル画面。源泉伝票タイプ OR からターゲット伝票タイプ LF への設定で、価格は再決定、数量コピーと伝票フロー更新が有効になっている。"
+    }
+   ],
+   "c16": [
+    {
+     "tx": "VL03N",
+     "title": "Display Outbound Delivery 80007832",
+     "kind": "split",
+     "split_ratio": 0.5,
+     "section": "Delivery header",
+     "fields": [
+      [
+       "Delivery",
+       "80007832",
+       true
+      ],
+      [
+       "Ship-to party",
+       "1000  Becker Berlin",
+       true
+      ],
+      [
+       "Document Date",
+       "22.11.2000"
+      ],
+      [
+       "Planned GI Date",
+       "21.11.2000"
+      ],
+      [
+       "Actual GI Date",
+       "23.11.2000"
+      ]
+     ],
+     "table": {
+      "columns": [
+       "Item",
+       "Material",
+       "Delivery Qty",
+       "ItCa",
+       "Plant"
+      ],
+      "widths": [
+       0.7,
+       1.2,
+       1.4,
+       0.8,
+       1.2
+      ],
+      "rows": [
+       [
+        "000010",
+        "P-102",
+        "26 PC",
+        "TAN",
+        "1200"
+       ],
+       [
+        "000020",
+        "P-104",
+        "39 PC",
+        "TAN",
+        "1200"
+       ]
+      ],
+      "selected": null
+     },
+     "note": "動画はこの照会まで。作成は VL01N → VL02N（ピッキング → PGI）、請求は VF01、在庫と会計への転記は OBYC が決める",
+     "status": [
+      "info",
+      "Display outbound delivery 80007832 (item overview)"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "実出庫日 23.11.2000 が入ると在庫が減り、売上原価が計上される（OBYC）。計画 21.11.2000 との差が遅延の記録",
+       350,
+       291,
+       "実出庫日"
+      ],
+      [
+       "明細の ItCa は TAN。想定と違うときは明細カテゴリ決定（VOV4 の 4 キー）を疑う",
+       350,
+       463,
+       "ItCa"
+      ]
+     ],
+     "caption": "C16 出荷伝票 80007832 の照会（動画と同じ値で確認する）",
+     "tip": "自システムでの確認：VA03 の伝票フローで 受注 → 出荷 80007832 → 請求 が 1 本に繋がること。PGI 後に在庫が減ることを MB51／MM03 で、VC/2 で Open Sales Order／Delivery Value が動くことも見る。",
+     "aria": "VL03N の出荷伝票照会。出荷伝票 80007832・出荷先 1000・文書日付 22.11.2000・計画出庫 21.11.2000・実出庫 23.11.2000、明細は P-102 26 PC と P-104 39 PC（ItCa TAN）。"
+    }
+   ]
+  },
+  "handson-1.html": {
+   "1-1 VA01 初期画面": [
+    {
+     "tx": "VA01",
+     "title": "Create Sales Order: Initial Screen",
+     "kind": "form",
+     "section": "Create with Reference / Sales",
+     "fields": [
+      [
+       "Order Type",
+       "OR",
+       true
+      ],
+      [
+       "Sales Organization",
+       "1000",
+       true
+      ],
+      [
+       "Distribution Channel",
+       "10",
+       true
+      ],
+      [
+       "Division",
+       "00",
+       true
+      ],
+      [
+       "Sold-to party",
+       "1000",
+       true
+      ],
+      [
+       "PO Number",
+       "dddd",
+       true
+      ],
+      [
+       "Sales Office",
+       ""
+      ],
+      [
+       "Sales Group",
+       ""
+      ]
+     ],
+     "note": "動画 08:37 付近と同じ初期画面。受注タイプ OR を入れるだけで「Standard Order」が補完される",
+     "status": [
+      "success",
+      "得意先 1000 の販売エリア 1000 / 10 / 00 を設定しました"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "受注タイプ OR ＝ Standard Order。伝票タイプが明細カテゴリ決定・価格決定手順・不完全性手順を決める起点",
+       350,
+       157
+      ],
+      [
+       "得意先は複数の販売エリアを持ち得る。Enter 後に選択ダイアログが出るのはそのため",
+       950,
+       267,
+       "2"
+      ]
+     ],
+     "caption": "VA01 の初期画面（受注タイプ OR と販売エリア・得意先を入力する）",
+     "tip": "自システムでの確認：VA01 初期画面の F4 に自分の販売組織が出るか（出ない＝組織構造の割当未了）。得意先の販売エリアは XD03、PO 番号が必須かは V.02 で確認。",
+     "aria": "VA01 の初期画面。受注タイプ OR、販売組織 1000、流通チャネル 10、部門 00、得意先 1000、PO 番号 dddd を入力した状態。"
+    },
+    {
+     "tx": "VA01",
+     "title": "Sales area for customer",
+     "kind": "table",
+     "table": {
+      "title": "得意先 1000 が持ち得る販売エリア",
+      "columns": [
+       "SOrg",
+       "DC",
+       "Dv",
+       "Description"
+      ],
+      "widths": [
+       0.8,
+       0.6,
+       0.6,
+       2.4
+      ],
+      "rows": [
+       [
+        "1000",
+        "10",
+        "00",
+        "Final customer DE"
+       ],
+       [
+        "1000",
+        "01",
+        "01",
+        "Direct sales DE"
+       ],
+       [
+        "1000",
+        "10",
+        "A1",
+        "Vehicles DE"
+       ]
+      ],
+      "selected": 0,
+      "footer": "動画 09:02 付近と同じ選択ダイアログ。ここで選んだ販売エリアが受注全体の基準になる"
+     },
+     "status": [
+      "info",
+      "販売エリアを選択してください（3 件）"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "ここに出るのは得意先マスタ（KNVV）に登録済みの販売エリアだけ",
+       350,
+       209
+      ],
+      [
+       "選んだ販売エリアが、以降の与力条件・出荷条件・パートナー・出力の基準になる",
+       950,
+       235,
+       "2"
+      ]
+     ],
+     "caption": "「Sales area for customer」ダイアログ（得意先が複数の販売エリアを持つ場合）",
+     "tip": "自システムでの確認：XD03 の販売エリアビューで、その得意先が持つ販売エリアを確認する。",
+     "aria": "得意先 1000 が持つ販売エリアの選択ダイアログ。1000/10/00 の行が選択されている。"
+    }
+   ],
+   "1-2 概況画面": [
+    {
+     "tx": "VA01",
+     "title": "Create Standard Order: Overview",
+     "kind": "form",
+     "fields": [
+      [
+       "Sold-to party",
+       "1000",
+       true
+      ],
+      [
+       "Ship-to party",
+       "1000",
+       true
+      ],
+      [
+       "PO Number",
+       "dddd",
+       true
+      ],
+      [
+       "Req. deliv.date",
+       "09.06.2007",
+       true
+      ],
+      [
+       "Payment terms",
+       "ZB01"
+      ],
+      [
+       "Incoterms",
+       "FOB"
+      ],
+      [
+       "Pricing date",
+       "02.06.2007"
+      ],
+      [
+       "Net value",
+       "0.00"
+      ],
+      [
+       "Currency",
+       "EUR"
+      ],
+      [
+       "Sales area",
+       "1000 / 10 / 00"
+      ]
+     ],
+     "note": "動画 09:28 付近の概況画面。項目名・並び順は環境により異なる（支払条件とインコタームズは Sales タブ側に出る場合がある）",
+     "status": [
+      "info",
+      "Sales area 1000 / 10 / 00 determined from sold-to party 1000"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "PO Number はこの環境では必須。空のまま保存すると不完全性チェックで『Enter PO number』の赤いエラーが出る（動画 09:28 付近の症状がこれ）",
+       350,
+       183
+      ],
+      [
+       "与力価格日付がずれると条件レコードが拾われず Net value が 0 になる（C12）。納入希望日との関係は VOV6 の日付タイプ",
+       350,
+       237
+      ],
+      [
+       "この時点の Net value 0.00 は正常（明細がまだ無い）。明細投入後も 0.00 なら条件レコード不在か有効期間外を疑う",
+       950,
+       237
+      ]
+     ],
+     "caption": "概況画面（Create Standard Order: Overview）。ヘッダの住所・支払条件・インコタームズは得意先 1000 のマスタからの提案値",
+     "tip": "自システムでの確認：提案値の出所は XD03（販売エリアビュー）と VOV8（伝票タイプの既定値）。PO Number が必須かは V.02 で確認。与力日付タイプは VOV6。",
+     "aria": "VA01 の概況画面。受注タイプ OR の Standard Order で、Sold-to party と Ship-to party が 1000、PO Number が dddd、納入希望日 09.06.2007、与力価格日付 02.06.2007、Net value 0.00 EUR、販売エリア 1000 / 10 / 00 が入っている。"
+    }
+   ],
+   "1-3 明細の入力": [
+    {
+     "tx": "VA01",
+     "title": "Create Standard Order: Overview",
+     "kind": "table",
+     "table": {
+      "title": "All items",
+      "columns": [
+       "Item",
+       "Material",
+       "Order Quantity",
+       "ItCa",
+       "Deliver.Plant"
+      ],
+      "widths": [
+       0.7,
+       1.4,
+       1.4,
+       0.8,
+       1.2
+      ],
+      "rows": [
+       [
+        "10",
+        "T-ATA30",
+        "10",
+        "TAN",
+        "1200"
+       ],
+       [
+        "20",
+        "T-ATA29",
+        "1",
+        "",
+        ""
+       ]
+      ],
+      "selected": 0,
+      "footer": "ItCa = 明細カテゴリ、Deliver.Plant = 出荷プラント（自動決定）。明細 20 の空欄は決定前で、Enter 後に埋まる"
+     },
+     "note": "動画 18:39 / 19:51 付近。単位（PC）の列名は環境により SU / Sales Unit / Order Unit と表示される",
+     "status": [
+      "success",
+      "Item category TAN determined for material T-ATA30"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "ItCa は品目カテゴリグループ × 伝票タイプの決定テーブルで決まる。TAN にならない＝ VOV4 と MM03 販売組織2 の MTPOS を疑う（C8）",
+       350,
+       209
+      ],
+      [
+       "Deliver.Plant が空なら 3 つの優先順位を順に確認：KNMT（客先品目情報）> KNVV（得意先）> MVKE（品目）。最下位の MVKE は販売エリア込みで見る（C10）",
+       950,
+       209
+      ],
+      [
+       "明細 20 は任意の追加。決定結果は明細詳細で確認する（ここではまだ空のまま＝決定前の状態）",
+       350,
+       235
+      ]
+     ],
+     "caption": "明細概況（All items）グリッド。明細 10 に T-ATA30 / 10 PC を入れて Enter した直後の状態",
+     "tip": "自システムでの確認：T-ATA30 が F4 に出ない環境では、自分の得意先・品目に読み替える。決定結果は明細詳細の ItCa と Deliver.Plant、与力価格は条件で確認。",
+     "aria": "VA01 の明細概況。明細 10 が T-ATA30、数量 10、明細カテゴリ TAN、出荷プラント 1200。明細 20 は T-ATA29、数量 1 で明細カテゴリと出荷プラントがまだ空。"
+    },
+    {
+     "tx": "VA01",
+     "title": "Create Standard Order: Item Data",
+     "kind": "form",
+     "tabs": [
+      "Sales A",
+      "Sales B",
+      "Shipping",
+      "Conditions"
+     ],
+     "active_tab": 0,
+     "fields": [
+      [
+       "Material",
+       "T-ATA30"
+      ],
+      [
+       "Item category",
+       "TAN"
+      ],
+      [
+       "Order Quantity",
+       "10"
+      ],
+      [
+       "Deliver.Plant",
+       "1200"
+      ],
+      [
+       "Delivery date",
+       "09.06.2007"
+      ]
+     ],
+     "note": "Sales A タブの明細詳細。タブの構成と項目名（Delivery date 等）は版・環境により異なる",
+     "status": [
+      "success",
+      "Delivery plant 1200 determined for item 000010"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "Item category TAN は「伝票タイプ × 品目カテゴリグループ」で決まる。手で変えられるが、変えた理由を説明できるようにする（C8）",
+       350,
+       183
+      ],
+      [
+       "Deliver.Plant 1200 の出所は環境で違う。KNMT に値があればそれが最優先＝品目マスタを直しても変わらない（C10）",
+       950,
+       213
+      ]
+     ],
+     "caption": "明細詳細（Sales A）。明細カテゴリ TAN と出荷プラント 1200 の決定結果を、数量・初回納入日と一緒に確認する",
+     "tip": "自システムでの確認：与力条件は Conditions、数量と初回納入日は「Order Quantity and Delivery Date」グループ。Net value が 0 でないことを条件画面（PR00 等）で確認する。",
+     "aria": "VA01 の明細詳細画面。品目 T-ATA30、明細カテゴリ TAN、受注数量 10、出荷プラント 1200、初回納入日 09.06.2007 が表示され、Sales A タブが選ばれている。"
+    }
+   ],
+   "1-4 保存と伝票フロー": [
+    {
+     "tx": "VA03",
+     "title": "Display Standard Order: Overview",
+     "kind": "form",
+     "fields": [
+      [
+       "Sold-to party",
+       "1000",
+       true
+      ],
+      [
+       "Ship-to party",
+       "1000",
+       true
+      ],
+      [
+       "PO Number",
+       "dddd",
+       true
+      ],
+      [
+       "Req. deliv.date",
+       "09.06.2007",
+       true
+      ],
+      [
+       "Payment terms",
+       "ZB01"
+      ],
+      [
+       "Incoterms",
+       "FOB"
+      ],
+      [
+       "Pricing date",
+       "02.06.2007"
+      ],
+      [
+       "Net value",
+       "22,990.00"
+      ],
+      [
+       "Currency",
+       "EUR"
+      ],
+      [
+       "Sales area",
+       "1000 / 10 / 00"
+      ]
+     ],
+     "note": "保存後に VA03 で照会した状態。受注番号はステータスバーのメッセージで確認して記録する",
+     "status": [
+      "success",
+      "Sales order 0000001234 has been saved"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "保存成功のメッセージに出る受注番号が、以降の VA03 / SE16N / V.02 で使う唯一の鍵。必ず記録する",
+       350,
+       150
+      ],
+      [
+       "Net value が 22,990.00 ＝ 明細の与力価格が拾われた証拠。0.00 のままなら条件レコード不在か与力日付ずれ（C12）",
+       950,
+       237
+      ],
+      [
+       "伝票フローは今は受注 1 件だけ。出荷（VT01N）・請求（VF01）を作るとここに増えていく（練習④）",
+       950,
+       267
+      ]
+     ],
+     "caption": "保存後の照会（VA03）。正味価額 22,990.00 EUR とヘッダのステータス、伝票フローで受注 1 件を確認する",
+     "tip": "自システムでの確認：伝票フローは VA03 のメニュー／ボタンから開く。納入日程行は明細 → 納入日程行。不完全性は V.02（不完全な受注一覧）と VBUV / VBUK。",
+     "aria": "VA03 の受注照会画面。得意先 1000、PO Number dddd、納入希望日 09.06.2007、支払条件 ZB01、Net value 22,990.00 EUR、販売エリア 1000 / 10 / 00 が表示され、ステータスバーに受注 0000001234 を保存した旨が出ている。"
+    }
+   ],
+   "1-5 証拠を取る": [
+    {
+     "tx": "SE16N",
+     "title": "Data Browser: Table VBAP",
+     "kind": "table",
+     "table": {
+      "title": "VBAP (Sales Document: Item Data)",
+      "columns": [
+       "Sales Document",
+       "Item",
+       "Material",
+       "Item Category",
+       "Plant"
+      ],
+      "widths": [
+       1.4,
+       0.6,
+       1.3,
+       1.4,
+       0.9
+      ],
+      "rows": [
+       [
+        "0000001234",
+        "10",
+        "T-ATA30",
+        "TAN",
+        "1200"
+       ],
+       [
+        "0000001234",
+        "20",
+        "T-ATA29",
+        "TAN",
+        "1200"
+       ]
+      ],
+      "selected": 0,
+      "footer": "列見出しは項目の説明名。技術名は VBELN / POSNR / MATNR / PSTYV / WERKS で、PSTYV と WERKS が決定結果"
+     },
+     "note": "明細 20 は任意追加のため、ItCa と Plant が自分の環境で異なる場合がある",
+     "status": [
+      "info",
+      "Number of entries: 2"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "明細カテゴリ（PSTYV）と出荷プラント（WERKS）が伝票に保存された決定結果。VA03 の画面で見た値の答え合わせがこの表でできる",
+       350,
+       209
+      ],
+      [
+       "出荷プラント 1200 の出所は KNMT > KNVV > MVKE の順に確認。どこに値があるかで処置（マスタ修正か設定か）が変わる（C10）",
+       950,
+       209
+      ],
+      [
+       "絞り込みは VBELN（受注番号）で。VBAP には販売組織・チャネル・部門が無いので、MVKE / KNVV を見るときは必ず販売エリア込みで絞る",
+       350,
+       235
+      ]
+     ],
+     "caption": "SE16N で VBAP を照会（受注 2 件）。明細カテゴリと出荷プラントの決定結果を 1 枚の表で確認する",
+     "tip": "自システムでの確認：VBAP（受注番号）、MVKE（品目＋販売組織＋チャネル → DWERK）、KNVV（得意先＋販売エリア → ZTERM・出荷プラント）、KNMT（得意先×品目）。値 → 出所 → なぜその源泉が効いたかを 3 列の表にする。",
+     "aria": "SE16N の VBAP 照会結果。受注 0000001234 の明細 10 が T-ATA30 / 明細カテゴリ TAN / 出荷プラント 1200、明細 20 が T-ATA29 / TAN / 1200 の 2 行が表示されている。"
+    }
+   ]
+  },
+  "handson-2.html": {
+   "2-1 変更の 3 方式": [
+    {
+     "tx": "VA02",
+     "title": "Change Standard Order: Overview",
+     "kind": "table",
+     "tabs": [
+      "Sales",
+      "Item overview",
+      "Item detail",
+      "Ordering party",
+      "Procurement",
+      "Shipping"
+     ],
+     "active_tab": 1,
+     "table": {
+      "title": "All items（明細概況 ＝ 明細一括変更の入口）",
+      "columns": [
+       "Item",
+       "Material",
+       "Order quantity",
+       "Plnt"
+      ],
+      "widths": [
+       0.6,
+       1.2,
+       0.9,
+       0.9
+      ],
+      "rows": [
+       [
+        "10",
+        "T-ATA30",
+        "10  PC",
+        "1200"
+       ],
+       [
+        "20",
+        "T-ATA29",
+        "1  PC",
+        "1200"
+       ]
+      ],
+      "selected": 0,
+      "footer": "動画のスライドはこの Plnt を 1200 → 2000 に一括変更（明細 10 と 20 を同時に）。本站の練習は 2-2 で 1200 → 1000 を試す"
+     },
+     "status": [
+      "info",
+      "Sales document 0000001234 is in change mode"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "明細概況（All items）で Plnt を上書きすれば、明細 10 と 20 を同時に変更できる。動画のスライドが示す「1 伝票内の一括変更（Concurrent change to several items）」がこれ",
+       950,
+       178,
+       "Plnt を一括変更"
+      ],
+      [
+       "複数の伝票をまたぐなら VA05（受注一覧、環境により MASS）、文書一覧からなら VA05 と V.02（不完全な受注）。1 伝票内の一括変更とは入口が違う",
+       350,
+       204,
+       "複数伝票は VA05"
+      ]
+     ],
+     "caption": "VA02 の明細概況（All items）。変更の 3 方式のうち①「1 つの伝票内で複数明細を一括変更」の入口",
+     "tip": "自システムでの確認：VA02 → 明細概況で Plnt を直接上書きできるか、メニュー「編集 → 一括変更」にどんな項目（プラント・納入日・数量など）が出るかを確認。② 複数伝票は VA05、③ 文書一覧は VA05 と V.02 で。",
+     "aria": "VA02 の明細概況（All items）。明細 10 の T-ATA30（10 PC）と明細 20 の T-ATA29（1 PC）が、出荷プラント 1200 で 2 行並んでいる。"
+    }
+   ],
+   "2-2 プラント変更": [
+    {
+     "tx": "VA02",
+     "title": "Change Plant",
+     "kind": "form",
+     "section": "Change Plant（動画のダイアログ）",
+     "fields": [
+      [
+       "Plant",
+       "1000  Dresden",
+       true
+      ],
+      [
+       "Sold-to party",
+       "T-S62130  Teleko Textilien"
+      ],
+      [
+       "Ship-to party",
+       "Teleko Textilien / Hirschstr. 53"
+      ],
+      [
+       "Req. deliv. date",
+       "12.06.2007"
+      ],
+      [
+       "Net value",
+       "4,598.00  EUR"
+      ],
+      [
+       "Payment terms",
+       "ZB01  14 Days 3%, 30/2%"
+      ],
+      [
+       "Pricing date",
+       "02.06.2007"
+      ],
+      [
+       "Total Weight",
+       "41  KG"
+      ]
+     ],
+     "note": "動画は得意先 T-S62130 のデモ受注（12.06.2007 / 4,598.00 EUR）。自分の練習は練習①の受注（得意先 1000・明細 10）で 1200 → 1000 を試す",
+     "status": [
+      "success",
+      "Item 10: plant changed to 1000  Dresden"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "Plant を 1200 → 1000 に変えると、出荷ポイント・出荷タイプの決定・ATP の参照プラントが連鎖で再決定される。動画はこの連鎖をそのまま見せている",
+       350,
+       164,
+       "変更の起点は Plant"
+      ],
+      [
+       "Plant 以外の欄は受注ヘッダ（Sold-to / Ship-to / 納入希望日 / 正味価額 / 支払条件）。プラントを変えた後にここが動くかどうかが 2-3 の再決定の観察対象になる",
+       950,
+       290,
+       "再決定の確認対象"
+      ]
+     ],
+     "caption": "VA02 の「Change Plant」ダイアログと受注ヘッダ（動画 38:00 付近）。プラントを変えると出荷ポイントが追随する",
+     "tip": "自システムでの確認：明細の出荷プラント欄をダブルクリック／F4 で「Change Plant」ダイアログが出るか、変更後に出荷タブの出荷ポイントが追随したかを VA02 → VA03 で確認。VBAP-WERKS は SE16N（練習 2-5）で。",
+     "aria": "VA02 の受注画面に Change Plant ダイアログが重なった状態。ダイアログには Plant 1000 Dresden、背後に得意先 T-S62130、納入希望日 12.06.2007、正味価額 4,598.00 EUR、支払条件 ZB01 が見えている。"
+    }
+   ],
+   "2-3 得意先変更と再決定": [
+    {
+     "tx": "VA02",
+     "title": "Customer Change: Initial Screen",
+     "kind": "form",
+     "section": "Customer Change（動画は受注画面から起動）",
+     "fields": [
+      [
+       "Customer",
+       "1000  Becker Berlin",
+       true
+      ],
+      [
+       "Company code",
+       "1000"
+      ],
+      [
+       "Sales Organization",
+       "1000"
+      ],
+      [
+       "Distribution Channel",
+       "10"
+      ],
+      [
+       "Deliver.Plant",
+       "1200"
+      ],
+      [
+       "Division",
+       "00"
+      ]
+     ],
+     "note": "動画のダイアログは会社コード・出荷プラント・販売エリアを空のまま得意先 1000 だけで開く。下に「All sales areas...」「Customer's sales areas...」の 2 ボタンがある",
+     "status": [
+      "info",
+      "Customer change: enter company code, delivering plant and sales area"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "どの販売エリアの得意先マスタを見て変えるかをここで決める。「Customer's sales areas...」はその得意先が持つ販売エリアだけに絞り、「All sales areas...」は全販売エリアを出す",
+       350,
+       164,
+       "販売エリアの絞込"
+      ],
+      [
+       "販売エリアの 3 項目は受注から初期値で入る。ただし動画では空のままで、得意先マスタ側（XD02）へ飛んでいる点に注意",
+       950,
+       236,
+       "受注の販売エリア"
+      ]
+     ],
+     "caption": "「Customer Change: Initial Screen」ダイアログ。得意先変更の入口（販売エリアと出荷プラントを指定する）",
+     "tip": "自システムでの確認：VA02 で受注を開き、得意先変更のメニュー位置（環境により「Sales document → Customer change」等）と、このダイアログの 2 ボタン（All sales areas...／Customer's sales areas...）の違いを実際に開いて確認。",
+     "aria": "VA02 の受注画面に Customer Change: Initial Screen ダイアログが開いた状態。得意先 1000 Becker Berlin、会社コード 1000、販売組織 1000、流通チャネル 10、出荷プラント 1200、部門 00 が入っている。"
+    },
+    {
+     "tx": "XD02",
+     "title": "Change Customer: Sales Area Data",
+     "kind": "form",
+     "tabs": [
+      "Sales",
+      "Shipping",
+      "Billing document",
+      "Partner functions"
+     ],
+     "active_tab": 3,
+     "section": "Partner Functions / Delivery and payment terms",
+     "fields": [
+      [
+       "SP  Sold-to party",
+       "1000  Becker Berlin"
+      ],
+      [
+       "BP  Bill-to party",
+       "1000  Becker Berlin"
+      ],
+      [
+       "PY  Payer",
+       "1050  Becker AG"
+      ],
+      [
+       "SE  Sales employee",
+       "1714  Olaf Hansen"
+      ],
+      [
+       "Incoterms",
+       "FOB"
+      ],
+      [
+       "Terms of payment",
+       "ZB01  14 Days 3%, 30/2%"
+      ],
+      [
+       "Paym.guar.proc.",
+       ""
+      ],
+      [
+       "Credit ctrl area",
+       ""
+      ]
+     ],
+     "note": "動画の XD02 では Paym.guar.proc. と Credit ctrl area は空欄。Incoterms の値は環境により異なる（動画は CIF Berlin、本站の練習は FOB）",
+     "status": [
+      "success",
+      "Customer 1000 saved for sales area 1000 / 10 / 00"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "SP＝受注先、BP＝請求先。得意先を替えると、この役割に誰を入れるかが得意先マスタから再決定される（＝動画スライドの Redetermined 列）",
+       350,
+       182,
+       "再決定される役割"
+      ],
+      [
+       "Incoterms と Terms of payment は受注の値の出どころ。ここを直すと次の受注から変わるが、既存受注は得意先変更をしないと追随しない",
+       950,
+       290,
+       "値の出どころ"
+      ]
+     ],
+     "caption": "XD02 の販売エリアデータ「Partner functions」タブ（SP / BP と Delivery and payment terms）",
+     "tip": "自システムでの確認：XD02 → 得意先 1000 → 販売エリアデータで、自分の販売エリア（1000 / 10 / 00）のパートナー機能・支払条件・インコタームズを開き、受注（VA03）の値と突き合わせる。",
+     "aria": "XD02 の Change Customer: Sales Area Data 画面。Partner functions タブが選ばれ、SP Sold-to party 1000 Becker Berlin、BP Bill-to party 1000 Becker Berlin、PY Payer 1050 Becker AG、SE Sales employee 1714 Olaf Hansen、Incoterms FOB（本站の練習値。動画の実機は CIF Berlin）、Terms of payment ZB01 が表示されている。"
+    }
+   ],
+   "2-4 ブロックの 3 階層": [
+    {
+     "tx": "VA02",
+     "title": "Blocks in the Sales Document",
+     "kind": "table",
+     "table": {
+      "title": "ブロックの 3 階層（動画の Blocks スライド）",
+      "columns": [
+       "Level",
+       "Field",
+       "Where in VA02",
+       "Effect"
+      ],
+      "widths": [
+       1.6,
+       1.0,
+       1.4,
+       0.7
+      ],
+      "rows": [
+       [
+        "Header",
+        "Delivery block",
+        "Sales tab",
+        "Order not delivered"
+       ],
+       [
+        "Header",
+        "Billing block",
+        "Sales tab",
+        "Order not billed"
+       ],
+       [
+        "Item 10",
+        "Billing block",
+        "Item detail - Billing",
+        "Item not billed"
+       ],
+       [
+        "Schedule line",
+        "Delivery block",
+        "Item - Schedule lines",
+        "One date not shipped"
+       ]
+      ],
+      "selected": 0,
+      "footer": "納入日程行の Delivery block は「その納入日だけ」止める。付けたまま忘れると出荷・請求が止まるので、練習の後は必ず解除する"
+     },
+     "status": [
+      "warning",
+      "Delivery block is set for order 0000001234 (header)"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "ヘッダの Delivery block / Billing block は伝票全体を止める。止まった受注を見たら、まずヘッダ → 明細 → 納入日程行の順に上から確認するのが切り分けの定石",
+       350,
+       248,
+       "ヘッダは伝票全体"
+      ],
+      [
+       "同じブロックでも階層ごとに設定場所が違う。明細は請求タブ、納入日程行は明細の納入日程行から設定する（手で付けたか Customizing 由来かも見分ける）",
+       950,
+       248,
+       "階層ごとに場所が違う"
+      ]
+     ],
+     "caption": "ブロックの 3 階層（ヘッダ／明細／納入日程行）。設定場所と効果の対応（動画の Blocks スライド）",
+     "tip": "自システムでの確認：VA02 のヘッダ Sales タブ（Delivery block / Billing block）、明細の請求タブ（Billing block）、明細の納入日程行（Delivery block）を実際に開いて F4 の理由一覧を見る。Customizing は動画スライドの “Defining blocks in Customizing”（伝票タイプに既定ブロックを持たせる）。",
+     "aria": "ブロックの 3 階層を示す一覧。ヘッダに Delivery block と Billing block、明細 10 に Billing block、納入日程行に Delivery block があり、それぞれ設定場所と効果が並んでいる。"
+    }
+   ],
+   "2-5 証拠を取る": [
+    {
+     "tx": "SE16N",
+     "title": "Data Browser: Table VBAP",
+     "kind": "table",
+     "table": {
+      "title": "VBAP（受注明細）— 変更後の値を読む",
+      "columns": [
+       "VBELN",
+       "POSNR",
+       "MATNR",
+       "WERKS",
+       "KWMENG"
+      ],
+      "widths": [
+       1.5,
+       0.7,
+       1.0,
+       0.9,
+       0.8
+      ],
+      "rows": [
+       [
+        "0000001234",
+        "000010",
+        "T-ATA30",
+        "1000",
+        "10"
+       ],
+       [
+        "0000001234",
+        "000020",
+        "T-ATA29",
+        "1000",
+        "1"
+       ]
+      ],
+      "selected": 0,
+      "footer": "WERKS が 1200 → 1000 になっていれば変更が効いている。KWMENG は受注数量（VBEP＝納入日程行、VBPA＝パートナー）"
+     },
+     "status": [
+      "info",
+      "VBAP: 2 entries found"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "VBAP-WERKS がプラント変更の物的証拠。VA03 の出荷タブ（出荷ポイント）と突き合わせて、値が 1 本の線で説明できるようにする",
+       950,
+       248,
+       "WERKS が証拠"
+      ],
+      [
+       "納入日程行は VBEP、パートナーは VBPA。同じ伝票番号で照会すると「どこまで連鎖したか」を表で示せる（変更の事実は VA03 の変更履歴でも）",
+       350,
+       222,
+       "VBEP / VBPA も見る"
+      ]
+     ],
+     "caption": "SE16N で VBAP（受注明細）を照会し、変更後の出荷プラント WERKS を確認する",
+     "tip": "自システムでの確認：SE16N にテーブル VBAP を入れて伝票番号で絞る（自分の受注番号に読み替え。ここでは例として 0000001234）。VBEP・VBPA も同じ伝票番号で。変更履歴は VA03 の環境メニュー、または CDHDR / CDPOS で確認。",
+     "aria": "SE16N の Data Browser でテーブル VBAP を照会した結果。伝票 0000001234 の明細 10（T-ATA30、数量 10）と明細 20（T-ATA29、数量 1）が、変更後の出荷プラント WERKS 1000 で表示されている。"
+    }
+   ]
+  },
+  "handson-3.html": {
+   "3-1 初期画面と照会": [
+    {
+     "tx": "VC/2",
+     "title": "Sales Summary",
+     "kind": "form",
+     "fields": [
+      [
+       "Customer number",
+       "1000",
+       true
+      ],
+      [
+       "Sales organization",
+       "1000",
+       true
+      ],
+      [
+       "Customer number to",
+       "1000"
+      ],
+      [
+       "Distribution channel",
+       ""
+      ],
+      [
+       "Dynamic selections",
+       ""
+      ],
+      [
+       "Division",
+       ""
+      ]
+     ],
+     "note": "動画の初期画面（メニューは Program）。実行するとメニューが Sales summary に変わり、ツールバーに Info block / View が出る。Dynamic selections は照会項目を足す入口。",
+     "status": [
+      "info",
+      "Choose Execute (F8) to display the sales summary for customer 1000"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "toolbar": [
+      [
+       "↩",
+       "Enter"
+      ],
+      [
+       "▶",
+       "Exec"
+      ],
+      [
+       "⇦",
+       "Back"
+      ]
+     ],
+     "callouts": [
+      [
+       "得意先 1000 は動画のデモ値（概念スライドの 5264 = FA IDES は例）。自分の得意先に読み替える",
+       350,
+       183,
+       "得意先を読み替える"
+      ],
+      [
+       "販売エリアで絞ると対象の伝票が限定される。まず絞らずに実行するのが切り分けの定石",
+       950,
+       183,
+       "まず絞らずに実行"
+      ]
+     ],
+     "caption": "VC/2 の初期（選択）画面：得意先 1000 と販売エリアを指定する（到達経路は 3 通り）",
+     "tip": "自システムでの確認：コマンドフィールドに VC/2 ／ SAP メニュー → Sales and Distribution → Sales Support → Information system ／ 受注（VA03）の Environment メニュー「Sales Summary」の 3 通りを試す。実行後のタイトルは Sales Summary for Customer 0000001000 Becker Berlin。",
+     "aria": "VC/2 の初期（選択）画面。Customer number 1000、Sales organization 1000 を入力し、Distribution channel・Division・Dynamic selections は空の状態。"
+    }
+   ],
+   "3-2 情報ビュー": [
+    {
+     "tx": "VC/2",
+     "title": "Sales Summary",
+     "kind": "table",
+     "table": {
+      "title": "Info View Selection",
+      "columns": [
+       "ID",
+       "View"
+      ],
+      "widths": [
+       0.7,
+       3.3
+      ],
+      "rows": [
+       [
+        "001",
+        "Complete information"
+       ],
+       [
+        "002",
+        "Address/partner info"
+       ],
+       [
+        "003",
+        "Statistical info"
+       ],
+       [
+        "005",
+        "Telesales"
+       ],
+       [
+        "100",
+        "Credit Information"
+       ],
+       [
+        "101",
+        "Last SD Documents"
+       ],
+       [
+        "102",
+        "Backorders"
+       ],
+       [
+        "103",
+        "Quick Info"
+       ],
+       [
+        "900",
+        "New Internet cust."
+       ]
+      ],
+      "selected": 5,
+      "footer": "動画の View ボタンで開くダイアログ。001 が既定、101 が受注と請求の一覧、103 が要点だけ。"
+     },
+     "note": "列見出しは ID / View（実機の画面準拠）。名称は Customizing や言語で変わる環境があるので、ID で覚えるのが確実。",
+     "status": [
+      "info",
+      "Select the info views to be displayed"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "toolbar": [
+      [
+       "↩",
+       "Enter"
+      ],
+      [
+       "▤",
+       "Info"
+      ],
+      [
+       "▦",
+       "View"
+      ],
+      [
+       "⇦",
+       "Back"
+      ]
+     ],
+     "callouts": [
+      [
+       "001 が既定（Standard フラグ付き）。ここに並ぶのは Report Views に定義されたビューだけ（出なければ C5 ①/③）",
+       350,
+       183,
+       "001 が既定ビュー"
+      ],
+      [
+       "101 が Last SD Documents。自分の练习受注が出るかを見る本命のビュー",
+       950,
+       313,
+       "自分の受注を探す"
+      ]
+     ],
+     "caption": "Info View Selection：ビュー 001〜900 の一覧（実機ではユーザ固有の 900 も並ぶ）",
+     "tip": "自システムでの確認：001 しか出ないときは「Maintain the Report Views for a User」に自分が割り当てられているかを見る。ビューを選んでも中身が空なら統計更新（文書カテゴリ C Order）を疑う。",
+     "aria": "Info View Selection ダイアログ。ID と View の 2 列に 001〜900 の 9 件が並び、101 Last SD Documents の行が選択されている。"
+    }
+   ],
+   "3-3 与信情報": [
+    {
+     "tx": "VC/2",
+     "title": "Sales Summary",
+     "window_title": "VC/2   Sales Summary for Customer 0000001000 Becker Berlin",
+     "kind": "form",
+     "section": "Credit Information",
+     "fields": [
+      [
+       "Credit Limit",
+       "511,291.88 EUR"
+      ],
+      [
+       "Usage Level",
+       "1,472,653.29 EUR"
+      ],
+      [
+       "Delta",
+       "-961,361.41"
+      ],
+      [
+       "Consumption in %",
+       "288"
+      ],
+      [
+       "Receivables",
+       "835,166.13 EUR"
+      ],
+      [
+       "Special Liabilities",
+       "0.00 EUR"
+      ],
+      [
+       "Open Delivery Value",
+       "528,437.42 EUR"
+      ],
+      [
+       "Open Sales Order Val",
+       "109,049.74 EUR"
+      ],
+      [
+       "Open Bill. Doc. Val",
+       "0.00 EUR"
+      ]
+     ],
+     "note": "Payment history の 5 項目は与信チェックの内訳（売掛＋出荷済み未請求＋受注残）。金額は動画の例。",
+     "status": [
+      "warning",
+      "Credit limit exceeded for customer 1000: usage 288 %"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "toolbar": [
+      [
+       "↩",
+       "Enter"
+      ],
+      [
+       "▤",
+       "Info"
+      ],
+      [
+       "▦",
+       "View"
+      ],
+      [
+       "⇦",
+       "Back"
+      ]
+     ],
+     "callouts": [
+      [
+       "Credit Limit は FD32 で設定した与信限度額。Sales Summary は照会なのでここでは変更できない",
+       350,
+       183,
+       "FD32 で設定した値"
+      ],
+      [
+       "Usage Level − Credit Limit = Delta。マイナスは超過＝新しい受注に与信ブロックが付き得る状態",
+       350,
+       237,
+       "マイナス＝超過"
+      ]
+     ],
+     "caption": "ビュー 100（Credit Information）：与信限度 511,291.88 EUR に対し使用額 1,472,653.29 EUR（動画 25:25 付近）",
+     "tip": "自システムでの確認：FD32 で Credit Limit / Credit limit used を突き合わせる。与信ブロックが出ないときは OVA8（与信管理の有効化）・OB45（与信管理領域）・得意先の与信区分を疑う（不完全性エラーは保存時に出るので症状のタイミングが違う）。",
+     "aria": "Sales Summary の Credit Information ブロック。Credit Limit 511,291.88 EUR、Usage Level 1,472,653.29 EUR、Delta -961,361.41、Consumption in % 288 と Payment history の内訳が並ぶ。"
+    },
+    {
+     "tx": "FD32",
+     "title": "Change Customer Credit Management",
+     "kind": "form",
+     "fields": [
+      [
+       "Customer",
+       "1000",
+       true
+      ],
+      [
+       "Credit control area",
+       "1000",
+       true
+      ],
+      [
+       "Credit limit",
+       "511,291.88 EUR"
+      ],
+      [
+       "Credit limit used",
+       "1,472,653.29 EUR"
+      ]
+     ],
+     "note": "動画には FD32 の画面は出てこない（手順書が示す照会先）。項目名と並びはリリースにより異なるため、Credit limit と Credit limit used の 2 つだけを突き合わせる。",
+     "status": [
+      "success",
+      "Customer 1000 credit data was displayed"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "toolbar": [
+      [
+       "↩",
+       "Enter"
+      ],
+      [
+       "⇦",
+       "Back"
+      ],
+      [
+       "✖",
+       "Cancel"
+      ]
+     ],
+     "callouts": [
+      [
+       "Credit limit が Sales Summary の Credit Limit の出所。値がずれるときは与信管理領域の取り違えを疑う",
+       350,
+       213,
+       "値の出所はここ"
+      ],
+      [
+       "Credit limit used が Usage Level と対応する（売掛＋出荷残＋受注残の合計）",
+       950,
+       213,
+       "Usage Level と一致"
+      ]
+     ],
+     "caption": "FD32（得意先の与信）：Sales Summary の与信値の出所を確認しに行く画面",
+     "tip": "自システムでの確認：FD32 で得意先と与信管理領域を指定。与信管理の有効化は OVA8、与信管理領域の定義は OB45。与信ステータスの照会は VA03 のヘッダ、与信解除の入口は VKM1。",
+     "aria": "FD32 の与信照会画面。Customer 1000、Credit control area 1000、Credit limit 511,291.88 EUR、Credit limit used 1,472,653.29 EUR を表示している。"
+    }
+   ],
+   "3-4 Last SD documents": [
+    {
+     "tx": "VC/2",
+     "title": "Sales Summary",
+     "kind": "table",
+     "table": {
+      "title": "Last SD documents",
+      "columns": [
+       "Order / Invoice",
+       "Date",
+       "Net Value",
+       "Status"
+      ],
+      "widths": [
+       1.3,
+       0.9,
+       1.3,
+       1.4
+      ],
+      "rows": [
+       [
+        "11076",
+        "13.05.07",
+        "100.00 EUR",
+        "Open"
+       ],
+       [
+        "11075",
+        "13.05.07",
+        "100.00 EUR",
+        "Open"
+       ],
+       [
+        "11074",
+        "13.05.07",
+        "100.00 EUR",
+        "Open"
+       ],
+       [
+        "11072",
+        "16.03.06",
+        "52,000.00 EUR",
+        "Open"
+       ],
+       [
+        "10765",
+        "21.01.05",
+        "300,000.00 EUR",
+        "Open"
+       ],
+       [
+        "90035240",
+        "21.01.05",
+        "30,000.00 EUR",
+        "Completed"
+       ],
+       [
+        "90033630",
+        "08.04.03",
+        "24,000.00 EUR",
+        "Being processed"
+       ],
+       [
+        "90033619",
+        "28.03.03",
+        "60,000.00 EUR",
+        "Being processed"
+       ],
+       [
+        "90023097",
+        "24.11.00",
+        "536,088.60 EUR",
+        "Being processed"
+       ]
+      ],
+      "selected": 0,
+      "footer": "受注 5 件はすべて Open、請求書 4 件は Completed 1 件・Being processed 3 件。自分の受注がここに出るかが最初の確認点。"
+     },
+     "note": "実機では受注（Orders）と請求書（Invoices）の見出しで区分される。名称と並びは環境により異なる。受注は 5 桁、請求書は 9 で始まる 8 桁。",
+     "status": [
+      "info",
+      "5 sales orders and 4 billing documents displayed"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "toolbar": [
+      [
+       "↩",
+       "Enter"
+      ],
+      [
+       "▤",
+       "Info"
+      ],
+      [
+       "▦",
+       "View"
+      ],
+      [
+       "⇦",
+       "Back"
+      ]
+     ],
+     "callouts": [
+      [
+       "受注は Status が Open。自分の练习① の受注がここに出れば SIS の統計更新は生きている",
+       350,
+       470
+      ],
+      [
+       "請求書は番号の体系が違う（8 桁・9 始まり）。Completed と Being processed は請求処理の進み具合",
+       950,
+       540
+      ]
+     ],
+     "caption": "ビュー 101（Last SD Documents）：受注 5 件と請求書 4 件の一覧（動画 31:53 付近）",
+     "tip": "自システムでの確認：受注番号をダブルクリックすると VA03 の伝票照会へ飛べる（ドリルダウン）。空のときは「Last Documents for a Customer」で C Order の統計更新を確認する。",
+     "aria": "Sales Summary の Last SD documents ブロック。受注 11076 / 11075 / 11074 / 11072 / 10765 と請求書 90035240 / 90033630 / 90033619 / 90023097 が日付・正味価額・ステータス付きで並ぶ。"
+    },
+    {
+     "tx": "VC/2",
+     "title": "Sales Summary",
+     "kind": "table",
+     "table": {
+      "title": "Statistical Information",
+      "columns": [
+       "Key figure",
+       "2007",
+       "2006"
+      ],
+      "widths": [
+       2.8,
+       1.1,
+       1.1
+      ],
+      "rows": [
+       [
+        "Net val. incoming ord.",
+        "300.00",
+        "52,000.00 EUR"
+       ],
+       [
+        "Net sales",
+        "0.00",
+        "0.00 EUR"
+       ],
+       [
+        "Open net val. orders",
+        "300.00",
+        "52,000.00 EUR"
+       ],
+       [
+        "Net val. inc. returns",
+        "",
+        ""
+       ],
+       [
+        "Net val. credit memos",
+        "",
+        ""
+       ],
+       [
+        "Number of order items",
+        "",
+        ""
+       ],
+       [
+        "No. of returns items",
+        "",
+        ""
+       ]
+      ],
+      "selected": 0,
+      "footer": "列は 2007 / 2006 の年度比較。動画で読み取れる数値は 3 行分だけなので、空欄の行は自環境の値で埋める。"
+     },
+     "note": "動画 32:09 のビュー 003。数値は 300.00 / 52,000.00 EUR など動画の例。空欄は実機で選択ダイアログに隠れて数値が読めない行で、行との対応は自環境で確認する。",
+     "status": [
+      "info",
+      "Statistical information: fiscal year 2007 compared with fiscal year 2006"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "toolbar": [
+      [
+       "↩",
+       "Enter"
+      ],
+      [
+       "▤",
+       "Info"
+      ],
+      [
+       "▦",
+       "View"
+      ],
+      [
+       "⇦",
+       "Back"
+      ]
+     ],
+     "callouts": [
+      [
+       "2007 と 2006 の 2 期比較。前年との差で受注と売上の傾向を読む（ビュー 003 の役割）",
+       350,
+       183,
+       "年度比較で読む"
+      ],
+      [
+       "空欄は動画で数値が読めない行。自分の環境の統計データで埋めて、指標の定義を確認する",
+       350,
+       261,
+       "数値は自環境で確認"
+      ]
+     ],
+     "caption": "ビュー 003（Statistical info）：2007 と 2006 の年度比較（動画 32:07〜32:09 付近）",
+     "tip": "自システムでの確認：行の名称は動画の表記（Net value of incoming orders ／ Net sales ／ Open net value of orders ／ Net value of inc. returns ／ Net value of credit memos ／ Number of order items ／ No. of returns items）を図では短縮している。数値が出ないときはビュー 003 の割当（② Maintain Views for an Evaluation）と統計ファイルの更新を疑う（初期構築は講師に確認）。",
+     "aria": "Sales Summary の Statistical Information ブロック。Net value of incoming orders などの指標が 2007 と 2006 の 2 列で比較され、300.00 / 52,000.00 EUR などの値が入っている。"
+    }
+   ],
+   "3-5 出荷伝票へのドリルダウン": [
+    {
+     "tx": "VL03N",
+     "title": "Delivery 80007832 Display: Overview",
+     "kind": "table",
+     "tabs": [
+      "Item Overview",
+      "Picking",
+      "Loading",
+      "Transport",
+      "Status Overview",
+      "Goods Movement Data"
+     ],
+     "active_tab": 0,
+     "table": {
+      "title": "All items",
+      "columns": [
+       "Item",
+       "Material",
+       "Delivery quantity",
+       "SU",
+       "ItCa"
+      ],
+      "widths": [
+       0.6,
+       1.0,
+       1.5,
+       0.5,
+       0.7
+      ],
+      "rows": [
+       [
+        "10",
+        "P-102",
+        "26",
+        "PC",
+        "TAN"
+       ],
+       [
+        "20",
+        "P-104",
+        "39",
+        "PC",
+        "TAN"
+       ]
+      ],
+      "selected": 0,
+      "footer": "Outbound deliv. 80007832 / Ship-to party 1000 Becker Berlin / Document Date 22.11.2000 / Planned GI 21.11.2000 / Actual GI date 23.11.2000"
+     },
+     "note": "タブは Item Overview が既定。Status Overview で「出庫過帳済みか」を見るのが定番。PGI ボタンはグレー＝実行不可。",
+     "status": [
+      "warning",
+      "Goods issue has already been posted for delivery 80007832"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "toolbar": [
+      [
+       "↩",
+       "Enter"
+      ],
+      [
+       "▤",
+       "PGI"
+      ],
+      [
+       "⇦",
+       "Back"
+      ]
+     ],
+     "callouts": [
+      [
+       "明細は受注からそのまま引き継がれる。数量が受注と違えばピッキングで差が出ている",
+       350,
+       287,
+       "受注と数量を突き合わせる"
+      ],
+      [
+       "番号 80007832 は動画の教育用データ。計画 21.11.2000 に対し実績 23.11.2000 の差が「遅延」の見方",
+       350,
+       313,
+       "自システムには無い番号"
+      ]
+     ],
+     "caption": "VL03N：動画の出荷伝票 80007832（明細 P-102 26 PC・P-104 39 PC、タブは 6 つ）",
+     "tip": "自システムでの確認：自分の出荷伝票番号で VL03N を開き、Status Overview タブと PGI（Post goods issue）ボタンの活性／非活性を見る。実機の明細列は他に Description・Open quantity・Val. type がある（図では省略）。受注 ⇄ 出荷伝票は VA03 の伝票フローから双方向に辿れる（出荷伝票は练习④ で作る）。",
+     "aria": "VL03N の出荷伝票照会。出荷伝票 80007832、タブは Item Overview が選択され、明細 10 P-102 26 PC（ItCa TAN）と 20 P-104 39 PC が表示されている。"
+    }
+   ],
+   "3-6 出てこないときの切り分け": [
+    {
+     "tx": "VC/2",
+     "title": "Sales Summary",
+     "kind": "table",
+     "table": {
+      "title": "症状 → 見る場所 → 設定（SIS Customizing の 4 画面）",
+      "columns": [
+       "症状",
+       "見る場所",
+       "設定"
+      ],
+      "widths": [
+       1.5,
+       1.4,
+       1.6
+      ],
+      "rows": [
+       [
+        "情報ビューが 1 つしか出ない",
+        "VC/2 の View 一覧（割当）",
+        "③ Report Views / User"
+       ],
+       [
+        "ビューはあるがブロックが少ない",
+        "ビューの中身（割当）",
+        "② Views for Evaluation"
+       ],
+       [
+        "特定のビューが無い",
+        "ビューの定義そのもの",
+        "① Report Views"
+       ],
+       [
+        "Last SD documents が空",
+        "伝票の有無 → 統計更新",
+        "④ Last Docs / Customer"
+       ],
+       [
+        "統計情報（年度比較）が出ない",
+        "ビュー 003 の割当",
+        "①②＋統計の初期構築"
+       ],
+       [
+        "与信ブロックが出ない",
+        "与信管理の有効化",
+        "OB45 / OVA8 / FD32"
+       ]
+      ],
+      "selected": 0,
+      "footer": "1 か所だけ変えて（例：自分を ③ に追加）VC/2 の表示がどう変わるかを確認する。"
+     },
+     "note": "動画の 4 画面（27:06〜28:29）と自分の環境の設定を対応づける。症状 → 原因（設定）→ 証拠（画面）→ 処置 を 1 行で書ければ切り分けができる。",
+     "status": [
+      "warning",
+      "Statistical update is not active for document category C (order)"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "toolbar": [
+      [
+       "↩",
+       "Enter"
+      ],
+      [
+       "⌕",
+       "Search"
+      ],
+      [
+       "⇦",
+       "Back"
+      ]
+     ],
+     "callouts": [
+      [
+       "まず症状を特定する。症状が決まれば疑う画面が 1 つに絞られる（＝切り分けの型）",
+       350,
+       183,
+       "症状から引く"
+      ],
+      [
+       "「Last SD documents が空」の最頻出原因は C Order の統計更新 OFF。④ の画面で確認する",
+       950,
+       261,
+       "C Order の統計更新"
+      ]
+     ],
+     "caption": "症状から疑う画面を引く：Sales Summary に出る内容は SIS の 4 画面の設定で決まる",
+     "tip": "自システムでの確認：SPRO → Sales and Distribution → Sales Support → Information System 配下の 4 画面。設定欄は正式名を短縮した（① Maintain Report Views ／ ② Maintain Views for an Evaluation ／ ③ Maintain the Report Views for a User ／ ④ Last Documents for a Customer）。与信は OB45・OVA8・FD32。",
+     "aria": "Sales Summary の切り分け表。症状（情報ビューが 1 つしか出ない、Last SD documents が空 など）と、見る場所・対応する Customizing 画面の対応が 6 行で並ぶ。"
+    }
+   ]
+  },
+  "handson-4.html": {
+   "4-1 出荷できる受注": [
+    {
+     "tx": "VA03",
+     "title": "Display Sales Order: Initial Screen",
+     "kind": "form",
+     "section": "Sales",
+     "fields": [
+      [
+       "Order Type",
+       "OR",
+       true
+      ],
+      [
+       "Sales Organization",
+       "1000",
+       true
+      ],
+      [
+       "Distribution Channel",
+       "10",
+       true
+      ],
+      [
+       "Division",
+       "00",
+       true
+      ],
+      [
+       "Sold-to party",
+       "1000",
+       true
+      ],
+      [
+       "PO Number",
+       "dddd"
+      ]
+     ],
+     "note": "伝票番号の欄は版により Sales Document / Order と異なるため図では省略（値は例 11088）",
+     "status": [
+      "info",
+      "Sales document 11088 is displayed in display mode"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "受注タイプ OR と练习①で採番した受注番号で開く。表示モードで開けない＝その伝票が無い、が最初の切り分け",
+       350,
+       174,
+       "まず伝票を開く"
+      ],
+      [
+       "出荷できるかはヘッダで判断する：納入ブロック空欄・与信 OK・納入日程行あり＋出荷プラントの在庫あり",
+       950,
+       282,
+       "前提は 4 つ"
+      ]
+     ],
+     "caption": "VA03 の初期画面（出荷できる受注かどうかを確認する入口）",
+     "tip": "自システムでの確認：VA03 のヘッダで納入ブロック／与信ステータス、明細で納入日程行、CO09・MMBE で在庫の 4 点。受注番号は例（11088）です（自分の採番に読み替え）。",
+     "aria": "VA03 の初期画面。受注タイプ OR、販売組織 1000、流通チャネル 10、部門 00、得意先 1000、PO 番号 dddd を入力した状態。"
+    }
+   ],
+   "4-2 出荷伝票の作成": [
+    {
+     "tx": "VL01N",
+     "title": "Create Outbound Delivery with Order Reference",
+     "kind": "split",
+     "tabs": [
+      "Item Overview",
+      "Picking",
+      "Loading",
+      "Transport",
+      "Status Overview",
+      "Goods Movement Data"
+     ],
+     "active_tab": 0,
+     "fields": [
+      [
+       "Delivery",
+       "80007841"
+      ],
+      [
+       "Ship-to party",
+       "1000 Becker Berlin"
+      ],
+      [
+       "Delivery date",
+       "22.11.2000"
+      ],
+      [
+       "Sales Organization",
+       "1000"
+      ]
+     ],
+     "table": {
+      "columns": [
+       "Item",
+       "Material",
+       "Delivery Quantity",
+       "ItCa",
+       "Plant"
+      ],
+      "widths": [
+       0.5,
+       0.9,
+       1.2,
+       0.6,
+       0.6
+      ],
+      "rows": [
+       [
+        "10",
+        "T-ATA30",
+        "10 PC",
+        "TAN",
+        "1200"
+       ]
+      ],
+      "selected": 0,
+      "footer": "出荷数量＝受注数量。受注参照で作れば明細・数量・住所は自動で引き継がれる"
+     },
+     "note": "出荷伝票番号は保存時の採番（受注番号とは別体系）。図の番号は例 80007841",
+     "status": [
+      "success",
+      "Delivery 80007841 has been saved"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "Delivery は保存時に採番される（受注番号とは別体系）。受注参照で作ると明細と数量が引き継がれる",
+       350,
+       150,
+       "採番は保存時"
+      ],
+      [
+       "Sales Organization と納入日は受注から。ここが想定と違うと出荷ポイントも変わる",
+       950,
+       213,
+       "受注からの引き継ぎ"
+      ]
+     ],
+     "caption": "VL01N で受注を参照して作った出荷伝票（明細の出荷数量と出荷プラントを確認する）",
+     "tip": "自システムでの確認：VL01N の初期画面で出荷ポイントが F4 に出るか（出ない＝出荷プラントと出荷ポイントの割当が未了）。Route（輸送経路）は Transport タブで確認します。",
+     "aria": "VL01N で出荷伝票 80007841 を作成した画面。出荷先 1000 Becker Berlin、納入日 22.11.2000、明細 10 に品目 T-ATA30 が 10 PC、ItCa TAN、出荷プラント 1200 で入っている。"
+    }
+   ],
+   "4-3 ピッキングと出庫過帳": [
+    {
+     "tx": "VL02N",
+     "title": "Change Outbound Delivery",
+     "kind": "table",
+     "tabs": [
+      "Item Overview",
+      "Picking",
+      "Loading",
+      "Transport",
+      "Status Overview",
+      "Goods Movement Data"
+     ],
+     "active_tab": 1,
+     "table": {
+      "columns": [
+       "Item",
+       "Material",
+       "Delivery Quantity",
+       "Picked Quantity"
+      ],
+      "widths": [
+       0.6,
+       1.1,
+       1.2,
+       1.1
+      ],
+      "rows": [
+       [
+        "10",
+        "T-ATA30",
+        "10 PC",
+        "10 PC"
+       ]
+      ],
+      "selected": 0,
+      "footer": "ピッキング数量を入れて保存すると、Status Overview のピッキング状態が進む"
+     },
+     "note": "ピッキング後に Post goods issue を実行。在庫が減り、移動タイプ 601 の明細が作られる",
+     "status": [
+      "success",
+      "Delivery 80007841 has been saved"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "ピッキング数量が納入数量と一致すると「ピッキング完了」に進む。部分数量だと受注残が残る",
+       350,
+       157,
+       "ピッキング完了"
+      ],
+      [
+       "ピッキングのあとは Post goods issue。実行すると在庫が減り、取消には VL09 等が必要になる",
+       950,
+       157,
+       "PGI は不可逆"
+      ]
+     ],
+     "caption": "VL02N の Picking タブ（ピッキング数量を入れて保存し、そのあと出庫過帳する）",
+     "tip": "自システムでの確認：PGI の後で MB51（移動タイプ 601 の明細）、MMBE のプラント在庫、VL03N の Status Overview を見る。PGI の前後で必ず記録を取る。",
+     "aria": "VL02N の Picking タブ。出荷伝票 80007841 の明細 10 に品目 T-ATA30 が出荷数量 10 PC、ピッキング数量 10 PC で入っている。"
+    }
+   ],
+   "4-4 出荷伝票の照会": [
+    {
+     "tx": "VL03N",
+     "title": "Display Outbound Delivery: Item Overview",
+     "kind": "split",
+     "tabs": [
+      "Item Overview",
+      "Picking",
+      "Loading",
+      "Transport",
+      "Status Overview",
+      "Goods Movement Data"
+     ],
+     "active_tab": 0,
+     "fields": [
+      [
+       "Delivery",
+       "80007832"
+      ],
+      [
+       "Ship-to party",
+       "1000 Becker Berlin"
+      ],
+      [
+       "Document Date",
+       "22.11.2000"
+      ],
+      [
+       "Planned GI",
+       "21.11.2000"
+      ]
+     ],
+     "table": {
+      "columns": [
+       "Item",
+       "Material",
+       "Delivery Quantity",
+       "SU",
+       "ItCa"
+      ],
+      "widths": [
+       0.5,
+       0.9,
+       1.2,
+       0.5,
+       0.6
+      ],
+      "rows": [
+       [
+        "10",
+        "P-102",
+        "26 PC",
+        "PC",
+        "TAN"
+       ],
+       [
+        "20",
+        "P-104",
+        "39 PC",
+        "PC",
+        "TAN"
+       ]
+      ],
+      "selected": 0,
+      "footer": "動画の出荷伝票 80007832。受注明細との数量・品目の対応をここで確認する"
+     },
+     "note": "動画（25:24）の出荷伝票 80007832。自分の番号に読み替える",
+     "status": [
+      "info",
+      "Delivery 80007832 is displayed in display mode"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "明細の数量が受注と一致しているか。ここが受注 → 出荷の連鎖の土台になる",
+       350,
+       150,
+       "受注と一致するか"
+      ],
+      [
+       "Document Date と Planned GI を押さえる。計画と実績の差は Goods Movement Data タブで読む",
+       950,
+       213,
+       "計画と実績の差"
+      ]
+     ],
+     "caption": "動画と同じ VL03N の Item Overview（ヘッダの日付と明細の数量を見る）",
+     "tip": "自システムでの確認：VL03N で自分の出荷伝票を開き、タブ構成とヘッダの日付欄のラベル（Planned GI / Actual GI date）を動画と見比べる。ラベルや並びは版により異なります。",
+     "aria": "VL03N の出荷伝票 80007832 の照会画面。明細 10 が P-102 26 PC、明細 20 が P-104 39 PC（いずれも ItCa TAN）。"
+    },
+    {
+     "tx": "VL03N",
+     "title": "Display Outbound Delivery: Goods Movement Data",
+     "kind": "form",
+     "tabs": [
+      "Item Overview",
+      "Picking",
+      "Loading",
+      "Transport",
+      "Status Overview",
+      "Goods Movement Data"
+     ],
+     "active_tab": 5,
+     "section": "Goods Movement Data",
+     "fields": [
+      [
+       "Delivery",
+       "80007832"
+      ],
+      [
+       "Actual GI date",
+       "23.11.2000"
+      ],
+      [
+       "Planned GI",
+       "21.11.2000"
+      ],
+      [
+       "Plnd gds mvt",
+       "0.00 EUR"
+      ]
+     ],
+     "note": "Actual GI date に日付が入っている＝出庫過帳済み。だから Post goods issue はグレー（実行不可）",
+     "status": [
+      "info",
+      "Delivery 80007832 - goods issue has been posted"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "実出庫日に日付が入っていれば出庫過帳済み。動画で Post goods issue がグレーの理由がここで分かる",
+       350,
+       150,
+       "実出庫＝過帳済み"
+      ],
+      [
+       "計画 21.11.2000 と実績 23.11.2000 の差が納期遅延。Status Overview タブと併せて読む",
+       950,
+       213,
+       "遅延の見方"
+      ]
+     ],
+     "caption": "同じ出荷伝票の Goods Movement Data / Status Overview（出庫過帳の状態を日付で読む）",
+     "tip": "自システムでの確認：Goods Movement Data タブと Status Overview タブを見る。Post goods issue がグレーのときは「既に出庫過帳済み」か「権限が無い」を疑う。",
+     "aria": "VL03N の Goods Movement Data タブ。実際の出庫日 23.11.2000、計画出庫 21.11.2000、計画出庫の純額 0.00 EUR が表示されている。"
+    }
+   ],
+   "4-5 請求": [
+    {
+     "tx": "VF01",
+     "title": "Create Billing Document",
+     "kind": "form",
+     "section": "Billing Document",
+     "fields": [
+      [
+       "Billing Type",
+       "F2",
+       true
+      ],
+      [
+       "Billing Date",
+       "23.11.2000",
+       true
+      ],
+      [
+       "Payer",
+       "1000 Becker Berlin",
+       true
+      ],
+      [
+       "Net Value",
+       "22,990.00 EUR"
+      ],
+      [
+       "Tax Amount",
+       "4,368.10 EUR"
+      ],
+      [
+       "Currency",
+       "EUR"
+      ]
+     ],
+     "note": "Net Value は受注と一致（22,990.00 EUR）。税額は税率（ここでは 19%）で変わる",
+     "status": [
+      "success",
+      "Billing document 90035251 has been saved"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "請求タイプ F2 は出荷関連請求タイプの設定から決まる。ここが伝票フローの 3 本目を決める",
+       350,
+       174,
+       "F2 = 出荷関連"
+      ],
+      [
+       "Net Value が受注と一致するか、税が入っているかを、数量差と併せて確認する",
+       950,
+       237,
+       "受注と一致するか"
+      ]
+     ],
+     "caption": "VF01 の請求伝票（出荷を参照して作成し、ヘッダの金額と税を確認する）",
+     "tip": "自システムでの確認：VF01 で出荷番号を入れると請求タイプが提案される（提案されない＝出荷関連請求タイプの設定）。金額が受注と違うときは請求側の価格決定手順と数量差を確認。請求書番号は例（90035251）。ヘッダ項目の並びは版により異なります。",
+     "aria": "VF01 で作った請求伝票のヘッダ。請求タイプ F2、請求日 23.11.2000、支払者 1000 Becker Berlin、正味価額 22,990.00 EUR、税額 4,368.10 EUR、通貨 EUR。"
+    }
+   ],
+   "4-6 伝票フローと Sales Summary": [
+    {
+     "tx": "VA03",
+     "title": "Document Flow",
+     "kind": "tree",
+     "tree": {
+      "title": "Document Flow",
+      "rows": [
+       [
+        "Sales Order 11088 / OR",
+        0,
+        "22,990.00 EUR"
+       ],
+       [
+        "Outbound Delivery 80007841",
+        1,
+        "10 PC"
+       ],
+       [
+        "Billing Document 90035251 / F2",
+        1,
+        "22,990.00 EUR"
+       ]
+      ],
+      "selected": 1
+     },
+     "note": "受注 → 出荷 → 請求が 1 本に。Sales Summary（VC/2）の Open 値は伝票から作られる",
+     "status": [
+      "info",
+      "Document flow: order 11088, delivery 80007841, billing 90035251"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "受注の下に出荷と請求がぶら下がる。番号・数量・金額の整合をここで確認する",
+       350,
+       152,
+       "1 本に繋がる"
+      ],
+      [
+       "請求まで並べば受注は業務として完結。VC/2 の Open 値もこの伝票から動く",
+       350,
+       204,
+       "VC/2 と連動"
+      ]
+     ],
+     "caption": "VA03 の伝票フロー（受注・出荷・請求の 3 種が 1 本になっていることを確認する）",
+     "tip": "自システムでの確認：VA03 → 伝票フローで 3 種の伝票を確認し、VC/2（Sales Summary）で Open Sales Order Val／Open Delivery Value／Open Bill. Doc. Val の変化を見る。番号は例です（統計更新のタイミングに注意）。",
+     "aria": "VA03 の伝票フロー。最上位に受注 11088（22,990.00 EUR）、その下に出荷伝票 80007841（10 PC）と請求書 90035251（F2、22,990.00 EUR）が並んでいる。"
+    }
+   ]
+  },
+  "handson-5.html": {
+   "5-1 ツールとヘルプ": [
+    {
+     "tx": "SU3",
+     "title": "Maintain User Profile",
+     "kind": "table",
+     "tabs": [
+      "Address",
+      "Defaults",
+      "Parameters",
+      "Favorites"
+     ],
+     "active_tab": 2,
+     "table": {
+      "title": "Parameters",
+      "columns": [
+       "Parameter ID",
+       "Parameter value",
+       "Short Text"
+      ],
+      "widths": [
+       1.4,
+       1.0,
+       2.4
+      ],
+      "rows": [
+       [
+        "POP",
+        "01",
+        "Plan Version (PD)"
+       ],
+       [
+        "SD_VARIANT_MAINTAIN",
+        "A",
+        "Auth. variant maint."
+       ]
+      ],
+      "selected": 0,
+      "footer": "動画 55:13 付近の SU3（Parameters タブ）と同じ 2 行。Short Text は実機では「Authorization for variant maintenance」と全表示される"
+     },
+     "note": "Parameters の値はその項目の初期値になる。変える前に元の値を必ずメモする（つまずき①）",
+     "status": [
+      "success",
+      "Data was saved"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "Parameter ID と値の組が「入力の既定値」。受注の F4 や初期値がここで変わるので、変更は元の値を記録してから",
+       350,
+       183,
+       "既定値が入る"
+      ],
+      [
+       "入力欄にカーソルを置いて F1 を押すと、その欄のテーブル名・項目名（例：出荷プラント → VBAP-WERKS）が読める。値の出所を追う基本武器",
+       950,
+       209,
+       "F1 で出所を追う"
+      ]
+     ],
+     "caption": "SU3（ユーザプロファイル）の Parameters タブ — ユーザ TSCM6-00 に設定された 2 行",
+     "tip": "自システムでの確認：SU3 の 4 タブ（Address／Defaults／Parameters／Favorites）を開き、Defaults で日付書式と通貨、Parameters で既定値、Favorites に VA01／VA03／VC/2／V.02 を登録する。F1 が出ない環境では SE16N で VBAK／VBAP を見て同じことを確認する。",
+     "aria": "SU3 のユーザプロファイル画面。ユーザ TSCM6-00、タブは Address／Defaults／Parameters（選択中）。Parameters タブに POP＝01（Plan Version (PD)）と SD_VARIANT_MAINTAIN＝A の 2 行が並ぶ。"
+    }
+   ],
+   "5-2 発展①": [
+    {
+     "tx": "VOV8",
+     "title": "Change View \"Maintain Sales Order Types\": Details",
+     "kind": "form",
+     "section": "Shipping",
+     "fields": [
+      [
+       "Sales Document Type",
+       "ZOR1",
+       true
+      ],
+      [
+       "Description",
+       "Z受注（練習用）"
+      ],
+      [
+       "Delivery Type",
+       "LF"
+      ],
+      [
+       "Delivery Block",
+       "01"
+      ],
+      [
+       "Shipping Conditions",
+       ""
+      ],
+      [
+       "Immediate Delivery",
+       ""
+      ],
+      [
+       "Incompl. Proced.",
+       "01"
+      ],
+      [
+       "Doc. Prc. Procedure",
+       "A"
+      ]
+     ],
+     "note": "動画の VOV8 詳細は「一般管理・出荷・請求・契約」のグループが縦に並ぶ（ここは出荷グループを抜粋）",
+     "status": [
+      "success",
+      "Data was saved"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "標準 OR は変更せず、コピーして作った自分の伝票タイプ ZOR1 を触る（標準を壊すと以降の動作が変わる）",
+       350,
+       183,
+       "ZOR1 は自分の練習用"
+      ],
+      [
+       "Delivery Block に値を入れると、この伝票タイプで作る受注は最初から出荷ブロック付きになる。設定を戻しても既存受注のブロックは残る（作ったときの設定が焼き付く）",
+       950,
+       237,
+       "受注に自動で付く"
+      ]
+     ],
+     "caption": "VOV8 の詳細画面（ZOR1）— 出荷グループの Delivery Block に Customizing 由来のブロックを仕込んだ状態",
+     "tip": "自システムでの確認：ZOR1 で VA01 の受注を作ると Delivery block が自動で入り、OR では入らない。設定を戻したあと、新規受注には反映されず既存受注には残ることを比較する。不完全性手順などの ID は環境の値に読み替える。",
+     "aria": "VOV8 の変更画面（伝票タイプ詳細）。伝票タイプ ZOR1、名称 Z受注（練習用）、出荷グループに Delivery Type LF、Delivery Block 01、Immediate Delivery、Incompl. Proced.、Doc. Prc. Procedure A が表示されている。"
+    }
+   ],
+   "5-3 発展②": [
+    {
+     "tx": "VD53",
+     "title": "Display Customer Material Info Record",
+     "kind": "form",
+     "section": "Sales Area",
+     "fields": [
+      [
+       "Customer",
+       "1000",
+       true
+      ],
+      [
+       "Material",
+       "T-ATA30",
+       true
+      ],
+      [
+       "Sales Organization",
+       "1000"
+      ],
+      [
+       "Distribution Channel",
+       "10"
+      ],
+      [
+       "Plant",
+       "1200"
+      ]
+     ],
+     "note": "欄名は環境により「Plant」「Delivering Plant」などと表示される。無い場合は MM03 の販売組織 1 ビューで確認する",
+     "status": [
+      "info",
+      "Customer material info record 1000 / T-ATA30 is displayed"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "客先品目情報の出荷プラントは 3 つの供給源のうち最優先。ここに値があると受注の VBAP-WERKS はこの値になる（空に戻すと得意先マスタの値に戻る）",
+       350,
+       291,
+       "ここが最優先になる"
+      ],
+      [
+       "キーは得意先＋品目＋販売エリア（販売組織・チャネル）。ここを間違えると受注のプラント決定に効かない（つまずき①）",
+       950,
+       183,
+       "キーは販売エリア単位"
+      ]
+     ],
+     "caption": "VD53（客先品目情報）の表示画面 — 得意先 1000 × 品目 T-ATA30 に出荷プラント 1200 を保守した状態",
+     "tip": "自システムでの確認：優先順位は 客先品目情報（VD53）> 得意先マスタ（XD03 の出荷タブ）> 品目マスタ（MM03 の販売組織 1）。3 回受注を作り、各段階で SE16N の VBAP-WERKS を記録すると実測できる（動画スライドの 1400／1100／1000／1200 と同じ仕組み）。終わったら元の値に戻す。",
+     "aria": "VD53 の客先品目情報。得意先 1000、品目 T-ATA30、販売組織 1000、流通チャネル 10、Plant 1200 が表示されている。"
+    }
+   ],
+   "5-4 発展③": [
+    {
+     "tx": "SPRO",
+     "title": "Change View \"Maintain Report Views\": Overview",
+     "kind": "table",
+     "table": {
+      "title": "Info view / Description / Standard / Form",
+      "columns": [
+       "Info view",
+       "Description",
+       "Standard",
+       "Form"
+      ],
+      "widths": [
+       1.0,
+       1.6,
+       0.9,
+       1.6
+      ],
+      "rows": [
+       [
+        "001",
+        "Complete information",
+        "✓",
+        "SD-SALES-SUMMARY"
+       ],
+       [
+        "101",
+        "Last SD documents",
+        "",
+        "SD-SALES-SUMMARY"
+       ],
+       [
+        "*Z01",
+        "*Z 受注確認用",
+        "",
+        "SD-SALES-SUMMARY"
+       ]
+      ],
+      "selected": 2,
+      "footer": "New Entries で追加した 3 行目が自分のビュー Z01。Form は標準と同じ SD-SALES-SUMMARY のままでよい"
+     },
+     "note": "動画では既存ビュー 001〜900 と ZP2・ZPD が並び、Form はどの行も SD-SALES-SUMMARY（全 11 エントリ）",
+     "status": [
+      "info",
+      "Entry 3 of 11 - new entry not saved yet"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "Info view は VC/2（Sales Summary）で選ぶビューの ID。Z で始めれば標準ビューを壊さない",
+       350,
+       183,
+       "Z で始める"
+      ],
+      [
+       "ここで行を足しただけでは VC/2 に出ない。② 情報ブロックの割当（Maintain Views for an Evaluation）→ ③ ユーザへの割当 まで進めて初めて使える",
+       950,
+       235,
+       "②③まで必要"
+      ]
+     ],
+     "caption": "SPRO の「Maintain Report Views」— 情報ビュー Z01 を新規追加した 3 行目",
+     "tip": "自システムでの確認：SPRO → 販売と流通 → 販売サポート → リスト → 販売サマリ の 4 画面（Define Reporting Views／Assign Information Blocks To A View／Assign Default View To User／Set Document Display）。動画ではここで ZP2・ZPD が既に定義されている。",
+     "aria": "SPRO の Maintain Report Views 画面。Info view／Description／Standard／Form の一覧で、3 行目に追加した Z01（Z 受注確認用、Form SD-SALES-SUMMARY）が選択されている。"
+    },
+    {
+     "tx": "SPRO",
+     "title": "Change View \"Maintain the Report Views for a User\": Overview",
+     "kind": "table",
+     "table": {
+      "title": "User / Info view / Description",
+      "columns": [
+       "User",
+       "Info view",
+       "Description"
+      ],
+      "widths": [
+       1.2,
+       1.0,
+       1.8
+      ],
+      "rows": [
+       [
+        "TSCM6-00",
+        "*Z01",
+        "*Z 受注確認用"
+       ],
+       [
+        "BAPMS",
+        "ZPD",
+        "Precision Drilling V"
+       ],
+       [
+        "WF-SD-2",
+        "900",
+        "New Internet cust."
+       ]
+      ],
+      "selected": 0,
+      "footer": "1 行目が自分の割当（動画では BAPMS→ZPD、WF-SD-2→900 の 2 行だけ）"
+     },
+     "note": "情報ブロックを割り当てていないビューは中身が空なので、② を先に済ませてから割り当てる",
+     "status": [
+      "success",
+      "Data was saved"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "自分のユーザを Z01 に紐づける行。ここに入って初めて VC/2 のビュー選択に Z01 が出る",
+       350,
+       183,
+       "VC/2 に出る"
+      ],
+      [
+       "User はログオン名と完全一致（大文字小文字と - の位置まで）。動画は BAPMS／WF-SD-2 という命名",
+       950,
+       235,
+       "名前は完全一致"
+      ]
+     ],
+     "caption": "Maintain the Report Views for a User — 自分のユーザ TSCM6-00 を Z01 に割り当てた状態",
+     "tip": "自システムでの確認：割当後に VC/2 を実行し、View 一覧に Z01 が出るか、表示される情報ブロックが自分で選んだ 3〜5 個（Address／Sales Order Info／Last SD Documents など）になっているかを見る。練習後は元に戻すか講師の指示に従う。",
+     "aria": "SPRO の Maintain the Report Views for a User 画面。User／Info view／Description の一覧で、TSCM6-00 に Z01（Z 受注確認用）が割り当てられた行が選択されている。"
+    }
+   ],
+   "5-5 発展④": [
+    {
+     "tx": "OVA2",
+     "title": "Change View \"Incompletion Procedure\": Overview",
+     "kind": "table",
+     "table": {
+      "title": "Procedure / Field / Status",
+      "columns": [
+       "Procedure",
+       "Field",
+       "Status"
+      ],
+      "widths": [
+       1.0,
+       1.6,
+       1.0
+      ],
+      "rows": [
+       [
+        "01",
+        "Delivery Date",
+        "*Warning"
+       ],
+       [
+        "01",
+        "PO Number",
+        "Error"
+       ]
+      ],
+      "selected": 0,
+      "footer": "手順 → グループ → 項目 の 3 階層。警告／エラーの実体は VUA2、値は環境により異なる"
+     },
+     "note": "列名と手順 ID はリリース・IMG の呼称により異なる（SPRO → 基本機能 → 不完全項目のログ）",
+     "status": [
+      "success",
+      "Data was saved"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "今回追加した項目。VUA2 で Warning にすると保存はできて、V.02 の一覧に載せて運用で拾える（Error のままだと保存できない）",
+       350,
+       183,
+       "Warning は保存可"
+      ],
+      [
+       "動画で保存時に出る「Enter PO number」エラーはこの行が原因。標準ではなく、その環境の不完全性手順の設定",
+       950,
+       209,
+       "動画の症状の出所"
+      ]
+     ],
+     "caption": "OVA2（不完全性手順）— 納入日程関連の項目を 1 つ追加し、VUA2 で Warning にした状態",
+     "tip": "自システムでの確認：OVA2 で OR に割り当てた手順を開き、PO 番号系の項目が入っているかを見て「動画の症状がどの設定から出るか」を説明する。適用先は伝票タイプ（VOV8）／明細カテゴリ（VUP2）／納入日程行カテゴリ（VUE2）の 3 か所。変更前に元の値をメモし、最後に元へ戻す。",
+     "aria": "OVA2 の不完全性手順の一覧。Procedure／Field／Status の列に、追加した Delivery Date が Warning、PO Number が Error として表示されている。"
+    },
+    {
+     "tx": "V.02",
+     "title": "List of Incomplete Sales Orders",
+     "kind": "table",
+     "table": {
+      "title": "Incomplete sales orders",
+      "columns": [
+       "Sales Doc.",
+       "Item",
+       "Order Type",
+       "Sold-to party"
+      ],
+      "widths": [
+       1.3,
+       0.6,
+       1.0,
+       1.3
+      ],
+      "rows": [
+       [
+        "0000001234",
+        "10",
+        "OR",
+        "1000"
+       ],
+       [
+        "0000001235",
+        "10",
+        "ZOR1",
+        "1000"
+       ]
+      ],
+      "selected": 0,
+      "footer": "1 行目が「わざと項目を空にして警告で保存した」受注。不完全な伝票だけがこの一覧に出る"
+     },
+     "note": "伝票番号は例。自システムで作った受注番号に読み替える",
+     "status": [
+      "success",
+      "2 incomplete sales orders found"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "保存時に警告で通した受注がここに載っている＝不完全なまま残っている証拠。放置すると出荷・請求に進めない",
+       350,
+       183,
+       "不完全だけが出る"
+      ],
+      [
+       "項目を埋めて保存し直すと、この行は一覧から消える。消えたことをもって直った確認にする",
+       950,
+       209,
+       "直すと消える"
+      ]
+     ],
+     "caption": "V.02（不完全な受注一覧）— 警告で保存した受注が載っている状態",
+     "tip": "自システムでの確認：V.02 の選択条件・列・タイトルは環境により異なる。どの項目が欠けているかは SE16N の VBUV（明細）／VBUK（ヘッダ）で直接見る。受注を直して保存し直し、一覧から消えることまで確認する。",
+     "aria": "V.02 の不完全な受注一覧。Sales Doc.／Item／Order Type／Sold-to party の列に、OR の 0000001234 と ZOR1 の 0000001235（得意先 1000）が並んでいる。"
+    }
+   ],
+   "5-6 故障対応の 4 画面": [
+    {
+     "tx": "VA03",
+     "title": "Diagnosis: Sales Order / Master Data / Customizing / Extension",
+     "kind": "table",
+     "table": {
+      "title": "切り分けの 4 画面",
+      "columns": [
+       "順序",
+       "画面",
+       "見るもの",
+       "分かること"
+      ],
+      "widths": [
+       0.6,
+       1.3,
+       2.0,
+       2.0
+      ],
+      "rows": [
+       [
+        "①",
+        "VA03 受注",
+        "ブロック・ステータス・明細",
+        "何が空か／何が違うか"
+       ],
+       [
+        "②",
+        "XD03 / MM03 / VD53",
+        "得意先・品目・客先品目情報",
+        "入るはずの値の出所"
+       ],
+       [
+        "③",
+        "VOV8 / VOV4 / OVA2",
+        "決定テーブル・優先順位",
+        "決まり方は意図どおりか"
+       ],
+       [
+        "④",
+        "（講師に相談）",
+        "USEREXIT / BAdI",
+        "①②③が正しければ最後"
+       ]
+      ],
+      "selected": 0,
+      "footer": "① 受注 → ② 主データ → ③ 設定 → ④ 拡張 の順に開く。逆順（いきなり設定を触る）は最も遠回りで環境を壊す危険もある"
+     },
+     "status": [
+      "info",
+      "Start with VA03: check the blocks and the item status"
+     ],
+     "status_right": "SAP Training System / 800 / trn03 / OVR",
+     "callouts": [
+      [
+       "まず受注そのものを見る。何が空か／何が想定と違うかを言葉にしてから次の画面へ進む（症状の形が決まらないと ②③ は見当違いになる）",
+       350,
+       183,
+       "症状を確定する"
+      ],
+      [
+       "①②③がすべて正しいのに挙動が違うときだけ ④ を疑う。ABAP 拡張（USEREXIT・BAdI）は自分で直さず講師に相談する",
+       950,
+       235,
+       "最後の容疑者"
+      ]
+     ],
+     "caption": "故障対応の 4 画面 — 切り分けの順序（① 受注 → ② 主データ → ③ 設定 → ④ 拡張）",
+     "tip": "自システムでの確認：異常が出たら VA03 で症状を記録 → XD03／MM03／VD53 で値の出所 → VOV8／VOV4／VOV5／OVA2 で決まり方 → 最後に拡張を疑う。症状・根因・証拠・処置を 3 件以上記録するのが验收の条件。",
+     "aria": "故障切り分けの 4 画面を示す表。順序／画面／見るもの／分かることの列に、① VA03 受注 ② XD03・MM03・VD53 ③ VOV8・VOV4・OVA2 ④ USEREXIT・BAdI が並んでいる。"
+    }
+   ]
+  }
+ }
+}
