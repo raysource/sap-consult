@@ -1,17 +1,18 @@
-# 進捗メモ — SAP 培训站系列（SD 受注処理 / MTO / ETO / MTS / VC / 受注形態比較）
+# 進捗メモ — SAP 培训站系列（全モジュール手順 日本語版/中文版 + SD 受注処理 / MTO / ETO / MTS / VC / 受注形態比較）
 
-最終更新: 2026-09-12 23:00 JST（**`sap_sd_jp`（SAP S/4HANA 日本語実習サイト＝中国語教材 `S4.docx` の日本語版・14 ページ / 222 タスク / 879 手順ステップ / 実機画面 1369）を追加、ハブを 8 站に更新、翻訳パイプライン `work/i18n.py` を追加**） ／ 作業ディレクトリ: `/Users/jason/Desktop/work/training/`
+最終更新: 2026-09-12 23:15 JST（**`sap_sd_jp`（中国語教材 `S4.docx` の日本語版・14 ページ / 222 タスク / 879 手順ステップ / 実機画面 1369）を追加し、続けて *用語の表記揺れを全站で監査・統一*（新ツール `tools/term_consistency_audit.py` ＋ 93 箇所の修正、6 站 + 日本語站を再生成・再検証。残論点 = 6 站の中国語 UI 表記 約 4,700 箇所） ／ 作業ディレクトリ: `/Users/jason/Desktop/work/training/`
 このファイルは**中断・再開用のハンドオフ**です（セッションが切れても、ここから再開できるように書いています）。
 
 ---
 
 ## 1. 何ができているか（このディレクトリで作ったもの）
 
-SAP の業務実践トレーニング教材を **7 サイト**分（うち sap_sd は S/4HANA 以前の R/3 録画、**sap_sd_cn は中国語の全模块手册站で、画面は生成図ではなく教材 Word 文档の実機スクリーンショット**）。各サイトは
+SAP の業務実践トレーニング教材を **8 サイト**分（`sap_sd_jp` = 中国語教材 `S4.docx` の<b>日本語版・全モジュール手順</b>、`sap_sd_cn` = その中国語原文版。この 2 站は**画面が生成図ではなく教材 Word 文档の実機スクリーンショット（中国語インターフェースの SAP GUI）**、残りは sap_sd の R/3 録画を除き生成した画面イメージ）。各サイトは
 **静的 HTML（外部依存なし・オフライン可）＋ Excel＋ SAP GUI 画面イメージ（生成 SVG）**で構成。
 
 | ディレクトリ | 内容 | ページ | 手順ステップ | 画面イメージ | Excel |
 |---|---|---|---|---|---|
+| **`sap_sd_jp/`** | **SAP S/4HANA 日本語実習サイト（全モジュール手順の日本語版）** — `sap_sd_cn` と同一教材 `S4.docx` 準拠。FI/CO/MM/PP/SD の 6 大モジュール・222 タスク・879 手順ステップ。**本文は日本語、画面は中国語のまま収録**し、各ステップに「原文（中国語）」折りたたみ／入力値表に「画面の中国語」列／用語対照表（`glossary.html`）を用意。講師用・受講者用・自習テスト・トラブルシューティング付き。翻訳は `work/i18n.py`（⟦n⟧ マーカー方式） | 14 | 879 | 1369（実機截图・去重 1209） | 手順書+学習WBS(9 sheet) |
 | **`sap_sd_cn/`** | **SAP S/4HANA 中文实训站（全模块手册）** — 同ディレクトリの教材 Word 文档 `S4.docx`（425 页・内嵌画像 1385 枚）準拠。準備/FI/CO/MM/PP/SD の 6 大模块・222 任務。**画面は原文档の実機スクリーンショット（中文界面 SAP GUI）**、T-code 速查・排錯・任務索引・讲师版/学员版/自测 付き | 13 | 879 | 1369（実機截图・去重 1209 ファイル） | 手順書+学習WBS(9 sheet) |
 | **`sap_sd/`** | **SD 受注処理（Sales Order Processing）** — 同ディレクトリの録画 `录像45 Sales order processing.mp4`（SAP Education Unit 14・57 分）準拠。伝票データの 4 つの源泉・販売エリア導出・**出荷プラントの優先順位**・明細カテゴリ決定の 4 キー・変更時の再決定・Sales Summary（`VC/2`） | 11 | 45 | 65 | 要件定義・手順書(11 sheet) + 学習WBS(111 タスク) + 撮影リスト |
 | `sapmto/` | SD 受注生産（MTO / 受注在庫 E） | 11 | 44 | 82 | 要件定義・手順書(11 sheet) + 学習WBS(85 タスク) + 撮影リスト |
@@ -19,7 +20,7 @@ SAP の業務実践トレーニング教材を **7 サイト**分（うち sap_s
 | `sapmts/` | SD 見込生産（MTS / PIR・自由在庫・標準原価） | 11 | 44 | 69 | 要件定義・手順書(11) + 学習WBS(94) + 撮影リスト |
 | `sapvc/` | バリアント設定付き受注生産（VC / AVC・KMAT・依存関係） | 11 | 40 | 74 | 要件定義・手順書(11) + 学習WBS(95) + 撮影リスト |
 | `saporderflow/` | 受注形態の横断比較（講義・E vs Q 対照／VC 概観） | 6 | 9 | 20（6 対は 2 カラム） | 講義テキスト(6) + 学習WBS(19) + 撮影リスト |
-| `index.html` | **索引页（ハブ）**：6 站への入口・学習路線（① 受注処理 → ② MTO → ③ ETO → ④ 横断比較 → ⑤ MTS → ⑥ VC）・規模一覧・ツール説明 | 1 | — | — | `tools/make_hub_page.py` で自動生成 |
+| `index.html` | **索引页（ハブ）**：8 站への入口・学習路線（⓪ 全モジュール手順（日本語版 / 中国語原文版）→ ① 受注処理 → ② MTO → ③ ETO → ④ 横断比較 → ⑤ MTS → ⑥ VC）・規模一覧・ツール説明 | 1 | — | — | `tools/make_hub_page.py` で自動生成 |
 | `tools/` | 共通ツール群（12 スクリプト + 2 ドキュメント。`sap_sd` を SITES に追加済み） | — | — | — | 生成・検証のすべてはここ |
 
 各 11 ページサイトの中身: `index` / `concept` / `config`（C0〜C16 の SPRO 手顺）/
@@ -160,6 +161,37 @@ python3 tools/make_hub_page.py                  # → index.html 再生成
 - **注意**: `sap-consult` は **public** なので、`PROGRESS.md` を含む作業メモも公開されている
   （トークン等の秘密は含めていない）。教材の実機スクリーンショットも公開状態になった（ユーザー承認済み）。
   非公開に戻す場合は `gh repo edit raysource/sap-consult --visibility private`。
+
+### 保存（2026-09-12 23:2x）— 「保存进度」の内容
+
+この時点の保存物は 3 つ。どれも**自分で読んで確認した**結果をここに書いている（人の報告を転記していない）。
+
+1. **git（ローカル + GitHub）**
+   - `training/` ルート: `main` = `69f83cb`（`f367e81` → `982f383` → `69f83cb` の 3 コミット）、
+     ワーキングツリーはクリーン（未コミット 0 行）。
+   - 公開リポジトリ `raysource/sap-consult` の HEAD は `69f83cb`（`git ls-remote` と `gh api commits/main` で一致確認）。
+   - `sap_sd_cn/` は別リポジトリで private `raysource/sap-s4hana-cn-training` に `a3b428e` まで push 済み（`ahead=0`）。
+2. **スナップショット（オフライン復元用）**
+   - `_snapshots/sap_training_sites_8sites_<TS>.tar.gz`（`TS` を渡して同名再作成可能）。
+   - 検算: アーカイブ内 **3152 entries / 38 MB**・`sap_sd_cn/assets/img` **1209**・`sap_sd_jp/assets/img` **1209**・
+     `.git` エントリ **0**・`*.docx` / `*.mp4` **0**（`tar -tzf` で実測）。
+3. **サイト自体の検証状態**
+   - `sap_sd_cn/tools/verify_site_cn.py` → `RESULT: PASS`（222 任务 / 1369 画面引用 / 索引 222 行 / quiz 30 题 / 锚点・nav 一致）
+   - 技能 `verify_site.py` → `PASS: 13 pages, nav identical, 1 active each, tags balanced, quiz keys valid`
+   - `tools/verify_all_sites.py` → 既存 6 站すべて OK（実機截图の 2 站は対象外・`hub_stats.json` で数を申告）
+
+**再開時に最初に叩くもの**（コピペ用）:
+```bash
+cd ~/Desktop/work/training
+git log --oneline -3 && git status --short          # どこまで保存したか
+python3 tools/verify_all_sites.py                   # 既存 6 站の健全性
+cd sap_sd_cn && python3 tools/verify_site_cn.py      # 中文站の健全性（PASS が期待値）
+```
+
+**未着手のまま残っていること**（次にやる候補・優先順）:
+1. `sap_sd_cn` のモジュール別「講義用画面集 PDF」（1 画面 1 页）／配布シート（Chrome 印刷は直列実行）。
+2. `sap-consult` に GitHub Pages（public なので可）＋ `index.html` ポータル。
+3. 配布物 PDF / PNG ZIP（`.gitignore` で除外中）を公開リポジトリに載せるか判断。
 
 ### 個別リポジトリの現状（git remote）
 
@@ -485,7 +517,8 @@ tools/build_pages.py        → 14 HTML        tools/make_jp_xlsx.py → S4JP_�
 これは以前のセッションの作風（sap_sd_cn と対になる中文混じり）なので、**勝手に書き換えていない**。
 全站を日本語 UI に揃えるなら、ナビ・見出し・Excel・ハブの文言まで含む別タスクになる（実測 4,722 箇所 + シート名）。
 
-### 次に触る人へ
+
+## 13. 次に触る人へ（再開手順）
 
 - `tools/hub_stats.json`（`n_pages: 14` / `n_steps: 879` / `figs: 1369`）は `tools/build_pages.py` が自動更新する。
 - `work/i18n.py apply src` は **collect 時のオフセットに差し戻す**方式なので、`jp_finalize*.py` 以降に手を入れたファイルには
