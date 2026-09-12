@@ -193,6 +193,30 @@ cd sap_sd_cn && python3 tools/verify_site_cn.py      # 中文站の健全性（P
 2. `sap-consult` に GitHub Pages（public なので可）＋ `index.html` ポータル。
 3. 配布物 PDF / PNG ZIP（`.gitignore` で除外中）を公開リポジトリに載せるか判断。
 
+### 保存（第 2 回・2026-09-12 23:38）— 併走セッションとの「同名スナップショット」衝突
+
+- git: `training/` は `f7a8f10` まで push 済み（`git rev-parse HEAD` == `git ls-remote` == `gh api commits/main`）。
+  `sap_sd_cn/` は別リポジトリで private に `a3b428e`（`ahead=0`）。
+- スナップショットは 3 本ある（どれも `gzip -t` OK / 3153 entries / 38 MB で中身はほぼ同一）:
+  | ファイル | 出自 | 備考 |
+  |---|---|---|
+  | `_snapshots/sap_training_sites_8sites_20260912_233856_cn.tar.gz` | **本セッション** | **詳細検算済み**（下記） |
+  | `_snapshots/sap_training_sites_8sites_20260912_233859.tar.gz` | 併走セッション（1 秒後に作成） | `gzip -t` OK / 3153 entries |
+  | `_snapshots/sap_training_sites_8sites_20260912_2338.tar.gz` | 分単位の既定名（両者が同時に書いた可能性） | 今は `gzip -t` OK / 3153 entries |
+- 本セッションが作った 1 本の検算結果: `sap_sd_cn` 画像 **1209 == disk**、`sap_sd_jp` 画像 **1209 == disk**、
+  `.svg` **407 == disk**、`.xlsx` **20**、`.git` **0**、`*.docx/*.mp4/*.zip` **0**、`PROGRESS.md`・`index.html` **あり**。
+- **学び（重要）**: `tools/make_snapshot.sh` の既定の出力名は**分単位**（`..._8sites_YYYYMMDD_HHMM.tar.gz`）。
+  同じディレクトリで 2 セッションが同時に「保存」すると**同名衝突**し、**書きかけの tar を読んで「壊れている」と誤判定**する
+  （実際に起きた: `gzip: data stream error` → 直後に同じファイルが VALID になった。原因は書き込み中の読み取り＋二重書き）。
+  対策:
+  ```bash
+  TS="$(date +%Y%m%d_%H%M%S)_cn" TS="$TS" bash tools/make_snapshot.sh   # 秒＋接尾辞で一意化（スクリプトは TS を尊重する）
+  gzip -t <out> && tar -tzf <out> | wc -l                               # 検算は gzip -t → 件数 の順
+  ```
+  さらに「`ls -l` のサイズが秒ごとに変わる＝まだ書き込み中」なので、その間は読まない。
+- 併走セッションが編集中の未コミット変更（`tools/README.md` +12 行、`tools/make_snapshot.sh` 1 行）は
+  **あえて commit していない**（相手の作業中ファイルに触らない方針）。次の保存時に一緒に入れるか、相手の commit を待つ。
+
 ### 個別リポジトリの現状（git remote）
 
 | ディレクトリ | remote | 可視性 | 状態 |
