@@ -85,6 +85,37 @@ python3 ~/.hermes/skills/productivity/sap-training-sites/scripts/verify_site.py 
 `verify_all_sites.py` はこの結果に加えて **`</article>` が 1 回だけで `<footer>` より前にあるか**（コンテナ閉じ位置の異常）も見ます。
 過去に、図の挿入位置がずれて記事コンテナが途中で閉じてしまう事故があったためです（詳細は skill `sap-training-sites` の "Figure-insertion pitfalls"）。
 
+## 実機スクリーンショット系のコース站（站内ツール・共有 `tools/` とは別）
+
+`sap_cn/`（SAP SD 培训课程）は**実機截图 + 自绘 SVG**のコース站で、生成・検証・公開の道具を
+すべて**站内の `sap_cn/tools/`** に閉じている（共有 `tools/` を触らないので他站に影響しない）。
+
+```bash
+cd ~/Desktop/work/training/sap_cn
+python3 tools/make_diagrams.py        # 7 種の自绘图 → assets/diagrams/*.svg（純 Python → SVG）
+python3 tools/build_pages.py          # 16 ページ HTML（統計数字は生成物から数える）
+python3 tools/make_course_xlsx.py     # 课程大纲_学习WBS.xlsx（8 sheet）
+python3 tools/verify_course.py        # 站専用検証器（構造/ナビ/リンク/锚点/画像実在/図注/quiz/hub 一致）
+bash   tools/save_check.sh            # 「保存进度」用：検証 + Excel + hub + snapshot + git を一括実測
+bash   tools/publish_to_github.sh     # 独立リポジトリ raysource/sap_cn_sd へ init/commit/push
+bash   tools/verify_publish.sh        # push の出力ではなく ls-remote / API / ファイル数で確認
+bash   tools/reconcile_remote.sh      # 逐路径対账（core.quotePath=false / blob だけ数える）
+bash   tools/check_snapshot_cn.sh     # スナップショット検証（gzip / 件数 / 归档内 SVG と磁盘 md5 一致）
+```
+
+**踏んだ罠（この種の站で再利用する価値あり）**
+
+- `qlmanage -t` で SVG を確認すると**正方形に pad/クロップ**され、右端が切れて「図が壊れている」と誤判定する。
+  → **Chrome headless で SVG を直接撮る**（`--window-size=1420,1240 --screenshot=… file://…/*.svg`）。Chrome は直列で。
+- `gh api repos/…/git/trees?recursive=1` の件数を「ファイル数」と数えると**ディレクトリ（`type=tree`）が混ざる**
+  （269 → 320 に見えた）。`select(.type=="blob")` で絞る。
+- `comm` は**両側を sort しないと嘘の差分**を出す。`git ls-files` は既定で CJK をエスケープするので
+  `-c core.quotepath=false` を付ける。
+- 親リポジトリ（`sap-consult`）へ入れるときは `tools/include_nested_repo_files.sh` を使う
+  （`sap_cn/` は `.git` を持つ入れ子リポジトリなので `git add sap_cn/...` は黙って無効）。
+- 中国語教材から作った站（`sap_sd_cn` / `sap_sd_jp` / `sap_modules_cn`）の道具も站内に閉じている。
+  それぞれの `tools/` と README を見ること（`sap_modules_cn` は 2026-09-14 朝に別セッションが作成中）。
+
 ## 運用メモ
 
 - **同じ站の HTML を 2 つのプロセス／エージェントで同時に編集しない**（図の挿入はファイル全体を書き換えるため、後勝ちで壊れます）。

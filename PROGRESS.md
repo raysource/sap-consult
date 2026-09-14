@@ -1,26 +1,29 @@
-# 進捗メモ — SAP 培训站系列（全モジュール手順 日本語版/中文版 + SD 受注処理 / MTO / ETO / MTS / VC / 受注形態比較）
+# 進捗メモ — SAP 培训站系列（全モジュール手順 日本語版/中文版 + SD 受注処理 / MTO / ETO / MTS / VC / 受注形態比較
+                      + SD 培训课程 + **全モジュール培训课件（MM / PP / FI / CO）**）
 
-最終更新: 2026-09-12 23:15 JST（**`sap_sd_jp`（中国語教材 `S4.docx` の日本語版・14 ページ / 222 タスク / 879 手順ステップ / 実機画面 1369）を追加し、続けて *用語の表記揺れを全站で監査・統一*（新ツール `tools/term_consistency_audit.py` ＋ 93 箇所の修正、6 站 + 日本語站を再生成・再検証。残論点 = 6 站の中国語 UI 表記 約 4,700 箇所） ／ 作業ディレクトリ: `/Users/jason/Desktop/work/training/`
+最終更新: 2026-09-14 08:40 JST（**`sap_modules_cn`（SAP 全模块培训课件・中文・MM/PP/FI/CO 各 14 ページ + 総覽 = 57 ページ / 教材 172 タスク・695 手順 / 実機截图 1411 処引用（940 枚） / 自绘 SVG 32 図 / 自測 120 題 / Excel 5 冊。`verify_site.py` PASS）を追加**（§14） ／ 作業ディレクトリ: `/Users/jason/Desktop/work/training/`）
 このファイルは**中断・再開用のハンドオフ**です（セッションが切れても、ここから再開できるように書いています）。
 
 ---
 
 ## 1. 何ができているか（このディレクトリで作ったもの）
 
-SAP の業務実践トレーニング教材を **8 サイト**分（`sap_sd_jp` = 中国語教材 `S4.docx` の<b>日本語版・全モジュール手順</b>、`sap_sd_cn` = その中国語原文版。この 2 站は**画面が生成図ではなく教材 Word 文档の実機スクリーンショット（中国語インターフェースの SAP GUI）**、残りは sap_sd の R/3 録画を除き生成した画面イメージ）。各サイトは
+SAP の業務実践トレーニング教材を **10 サイト**分（`sap_sd_jp` = 中国語教材 `S4.docx` の<b>日本語版・全モジュール手順</b>、`sap_sd_cn` = その中国語原文版。この 2 站は**画面が生成図ではなく教材 Word 文档の実機スクリーンショット（中国語インターフェースの SAP GUI）**、`sap_cn` = その SD 部分を使った<b>中国語 SD 専項コース</b>（実機截图 + 自绘の図）、残りは sap_sd の R/3 録画を除き生成した画面イメージ）。各サイトは
 **静的 HTML（外部依存なし・オフライン可）＋ Excel＋ SAP GUI 画面イメージ（生成 SVG）**で構成。
 
 | ディレクトリ | 内容 | ページ | 手順ステップ | 画面イメージ | Excel |
 |---|---|---|---|---|---|
 | **`sap_sd_jp/`** | **SAP S/4HANA 日本語実習サイト（全モジュール手順の日本語版）** — `sap_sd_cn` と同一教材 `S4.docx` 準拠。FI/CO/MM/PP/SD の 6 大モジュール・222 タスク・879 手順ステップ。**本文は日本語、画面は中国語のまま収録**し、各ステップに「原文（中国語）」折りたたみ／入力値表に「画面の中国語」列／用語対照表（`glossary.html`）を用意。講師用・受講者用・自習テスト・トラブルシューティング付き。翻訳は `work/i18n.py`（⟦n⟧ マーカー方式） | 14 | 879 | 1369（実機截图・去重 1209） | 手順書+学習WBS(9 sheet) |
 | **`sap_sd_cn/`** | **SAP S/4HANA 中文实训站（全模块手册）** — 同ディレクトリの教材 Word 文档 `S4.docx`（425 页・内嵌画像 1385 枚）準拠。準備/FI/CO/MM/PP/SD の 6 大模块・222 任務。**画面は原文档の実機スクリーンショット（中文界面 SAP GUI）**、T-code 速查・排錯・任務索引・讲师版/学员版/自测 付き | 13 | 879 | 1369（実機截图・去重 1209 ファイル） | 手順書+学習WBS(9 sheet) |
+| **`sap_cn/`** | **SAP SD 培训课程（中文・从概念到流程 / 总体到局部）** — `sap_sd_cn` と同じ教材 `S4.docx` の SD 48 タスク + 準備章の**実機スクリーンショット 269 枚を再利用**し、概念 → 组织结构 → 主数据 → 定价 → 端到端流程（O2C）→ 配置 → 分析 → 实训 の 16 ページに再構成。**自绘の思维导图/流程图/结构图 7 種 10 図**（純 Python → SVG）＋ 讲师版/学员版/自测 30 題/术语表。`tools/verify_course.py` は站専用検証器 | 16 | 179 | 155（実機截图引用・去重 120） | 課程大綱+学習WBS(8 sheet) |
+| **`sap_modules_cn/`** | **SAP 全模块培训课件（MM / PP / FI / CO）** — 同じ教材 `S4.docx` の MM/PP/FI/CO 4 モジュールを中文课程化。総覽页 + モジュール別 14 ページ（概念→组织→主数据→流程→操作手顺3篇→配置→实训→讲师/学员/自测/术语）。実機截图 1411 処引用（940 枚 = 素材を使い切った）+ 自绘 SVG 32 図 | 57 | 695 | 1411 处引用（去重 940 枚実機截图） | 4 モジュール分 + 総覽（各 8 sheet） | 2026-09-14 |
 | **`sap_sd/`** | **SD 受注処理（Sales Order Processing）** — 同ディレクトリの録画 `录像45 Sales order processing.mp4`（SAP Education Unit 14・57 分）準拠。伝票データの 4 つの源泉・販売エリア導出・**出荷プラントの優先順位**・明細カテゴリ決定の 4 キー・変更時の再決定・Sales Summary（`VC/2`） | 11 | 45 | 65 | 要件定義・手順書(11 sheet) + 学習WBS(111 タスク) + 撮影リスト |
 | `sapmto/` | SD 受注生産（MTO / 受注在庫 E） | 11 | 44 | 82 | 要件定義・手順書(11 sheet) + 学習WBS(85 タスク) + 撮影リスト |
 | `sapeto/` | 受注設計生産（ETO / プロジェクト在庫 Q・WBS・PS） | 11 | 46 | 97 | 要件定義・手順書(11) + 学習WBS(87) + 撮影リスト |
 | `sapmts/` | SD 見込生産（MTS / PIR・自由在庫・標準原価） | 11 | 44 | 69 | 要件定義・手順書(11) + 学習WBS(94) + 撮影リスト |
 | `sapvc/` | バリアント設定付き受注生産（VC / AVC・KMAT・依存関係） | 11 | 40 | 74 | 要件定義・手順書(11) + 学習WBS(95) + 撮影リスト |
 | `saporderflow/` | 受注形態の横断比較（講義・E vs Q 対照／VC 概観） | 6 | 9 | 20（6 対は 2 カラム） | 講義テキスト(6) + 学習WBS(19) + 撮影リスト |
-| `index.html` | **索引页（ハブ）**：8 站への入口・学習路線（⓪ 全モジュール手順（日本語版 / 中国語原文版）→ ① 受注処理 → ② MTO → ③ ETO → ④ 横断比較 → ⑤ MTS → ⑥ VC）・規模一覧・ツール説明 | 1 | — | — | `tools/make_hub_page.py` で自動生成 |
+| `index.html` | **索引页（ハブ）**：10 站への入口・学習路線（⓪ 全モジュール手順（日本語版 / 中国語原文版）→ ① 受注処理 → ② MTO → ③ ETO → ④ 横断比較 → ⑤ MTS → ⑥ VC）・規模一覧・ツール説明 | 1 | — | — | `tools/make_hub_page.py` で自動生成 |
 | `tools/` | 共通ツール群（12 スクリプト + 2 ドキュメント。`sap_sd` を SITES に追加済み） | — | — | — | 生成・検証のすべてはここ |
 
 各 11 ページサイトの中身: `index` / `concept` / `config`（C0〜C16 の SPRO 手顺）/
@@ -222,6 +225,7 @@ cd sap_sd_cn && python3 tools/verify_site_cn.py      # 中文站の健全性（P
 | ディレクトリ | remote | 可視性 | 状態 |
 |---|---|---|---|
 | `sap_sd_cn/` | `origin = https://github.com/raysource/sap-s4hana-cn-training.git` | **private** | 2 commit push 済み（`a3b428e`）、HEAD 一致を API / ls-remote で確認済み |
+| `sap_cn/` | `origin = https://github.com/raysource/sap_cn_sd.git` | **public** | 3 commit push 済み、HEAD `f0bcc698`（`ls-remote` / `gh api` と一致、blobs 318 == tracked 318） |
 | `training/`（ルート） | `origin = https://github.com/raysource/sap-consult.git` | **public** | remote のみ・未 push |
 
 ## 2. 検証（これが「できている」の根拠）
@@ -542,7 +546,294 @@ tools/build_pages.py        → 14 HTML        tools/make_jp_xlsx.py → S4JP_�
 全站を日本語 UI に揃えるなら、ナビ・見出し・Excel・ハブの文言まで含む別タスクになる（実測 4,722 箇所 + シート名）。
 
 
-## 13. 次に触る人へ（再開手順）
+## 13. `sap_cn`（SAP SD 培训课程站・中文）— 2026-09-13 夜
+
+**新規**: `sap_cn/`（16 ページ / 配置タスク 48 / 実機截图の引用 155（去重 121・元ファイル 269）/ 自绘 SVG 10（7 種）/ Excel 8 sheet）。
+「**从概念到流程、从总体到局部**」の SD 専項コース。素材は既存の `sap_sd_cn`（同一教材 `S4.docx`）の
+SD モジュール + 準備章の**実機スクリーンショット 269 枚をコピー**して使い、手順・IMG パス・T-code は
+教材原文のまま（`work/sd_source.json` = `sap_sd_cn/work/site_model.json` の SD 48 タスクを書き出したもの）。
+
+### 構成（16 ページ・ナビ順 = 教学順）
+
+`index`（课程地图 = 思维导图 + 学習路线 + 六大板块）/ `concept`（概念：真实系统界面・三大概念层・五大单据・**12 个常见误解**）/
+`org`（企业结构・销售结构・装运结构 + 12 タスク）/ `master`（客户三层・**四伙伴角色**・物料销售视图・条件记录）/
+`pricing`（条件表 → 存取顺序 → 条件类型 → 定价过程 → 过程确定 → 账户确定）/ `flow`（O2C 泳道流程图 + 单据流 + 集成点）/
+`order` / `delivery` / `billing`（局部详解、各页都有真实画面）/ `analysis`（单据流・VA05・MCTA・**教材踩坑集**）/
+`config`（**48 タスクの完全索引**（A〜J の 10 群・教材原文の IMG パス・手顺要点・画面 96））/
+`practice`（実訓 5 タスク・完成基准つき）/ `instructor`（讲师版：课时分配・板书路线・**必问 12 題と答案**・评分标准）/
+`worksheet`（学员版 记入表・印刷可）/ `quiz`（30 題・合格 75%）/ `glossary`（术语 48 + T-code 33 + 常用表）。
+
+### 自绘图（`tools/make_diagrams.py` → `assets/diagrams/*.svg`・純 Python で SVG）
+
+`mindmap`（思维导图：中央 SD + 6 分岐（左右 3+3））/ `org-structure`（组织结构图 A〜D + 自动派生链条）/
+`integration`（SD ⇄ FI/MM/PP/CO）/ `pricing-chain`（条件技术 4 層 + 过程确定 + 账户确定 + 算价例）/
+`o2c-flow`（端到端 3 泳道流程图）/ `doc-flow`（单据流 + 参照 + 状态）/ `order-internal`（订单内部自动确定 + 3 决定链）。
+
+**描画検証のやり方（次に図を描く人へ）**: `qlmanage -t` は **正方形に pad する**ため右端が切れて見え、
+「切れている」と誤判定する（実際に誤判定した）。**Chrome headless で SVG を直接撮る**こと:
+```bash
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --disable-gpu \
+  --window-size=1420,1240 --screenshot=/tmp/x.png "file://$PWD/assets/diagrams/<name>.svg"
+```
+（Chrome は 1 本ずつ直列で。自分で見て直す前提で、次の 3 つは実際に踏んだ罠）
+1. 中心から分岐への**ベジェ曲線が葉ノードの箱を横切る** → 分岐ヘッダを葉の「上」に置き、曲線は中央の
+   空隙（左右 70px のコリドー）だけを通す。放射レイアウトは最初これで崩れた。
+2. **箱の幅を主テキストだけで計算**すると副ラベル（小さい文字）がはみ出す → `max(text_w(main), text_w(sub)) + pad`。
+3. **横並びチェーンが可用幅を超える**と箱が枠外に出る → `chain()` で自動折返し（同行のみ直矢印、
+   折返しは行末から下行頭へ肘状に戻す。矢印が空白を指さないように）。
+4. `text_w()` は CJK 全角 1.0em / 半角 0.575em（他站と共通の教訓）。`\n` は強制改行として扱う
+   （そうしないと英語フレーズが語中で折れて "Informa tion" になる）。
+
+### 検証（本セッションで実行した実測）
+
+| コマンド | 結果 |
+|---|---|
+| `python3 tools/verify_course.py` | **PASS** — pages=16 / figure.shot=155（去重 120 / 磁盘 269）/ figure.dia=10（去重 7）/ quiz=30 |
+| `python3 ~/.hermes/…/scripts/verify_site.py .` | **PASS**（16 pages, nav identical, 1 active each, tags balanced, quiz keys valid） |
+| `python3 tools/make_course_xlsx.py` | 8 sheet（1_课程大纲 16 行 / 4_截图索引 152 行 = 站内引用数 / 2_学习WBS 19 行 + COUNTIF） |
+| `python3 tools/make_hub_page.py` | ハブを **9 站**（104 页 / 2165 步 / 3300 画面）に更新。`sap_sd_jp`・`sap_sd_cn` の行は差分なし |
+
+`verify_course.py` が見るもの: 構造（DOCTYPE / 単一 `article` / `</article>` が `<footer>` より前 / タグ配平 /
+重複 id なし）、ナビ（全頁 href 一致 + active ちょうど 1）、站内リンクと锚点、`assets/img`・`assets/diagrams` の実在、
+図注（「画面」番号 + 出典）、30 題の答えが選択肢に含まれる、`hub_stats.json` との一致、残留 Markdown/占位符なし。
+
+### 気をつけたこと（次に同種のコース站を作る人へ）
+
+- **「実機截图」は既存站から再利用**。`sap_sd_cn/assets/img/{sd,prep}` をそのままコピーし、
+  各图の説明行に**元ファイル名**（`01_1_image1297.png` 等）を残した → Word 原稿と突き合わせできる。
+  ページのパス・截图は `work/sd_source.json` から取る（手でファイル名を書かない）。
+- **画面の「实测值」は読図で確認してから書く**。`work/gui_screenshot_text.json` = 27 枚のキー画面を
+  视觉で逐字抄録した結果（窗口标题 / 字段 / 表格列名と行データ。不明瞭な箇所は「不清楚」と明記）。
+  ここから確定した値: 销售组织 `C999` 颐宁销售 / 渠道 `Z1` 直销・`Z2` 批发 / 产品组 `Z1` 铸钢泵・`Z2` 增压泵 /
+  **4 つの销售范围**（C999×Z1×Z1 など）/ 工厂 `P999` 颐宁机械工厂 / 起运点 `Z999` / 拣配库位 `003` /
+  客户 `10000000` 远东造船厂（送达方 = 同番号の第三分公司）/ 客户账户组 `K001` 订货方-颐宁 /
+  报价类型 `QT` / 交货 `80000000`（拣配状态 A 尚未拣配・交货/拣配 120 PC・库位 003）/
+  发票 `90000000` / 物料 `F999-100` 铸钢泵 170-230（`FERT`）/ PR00 = **8,000.00 RMB**/PC・有効期間 2021.01.01–9999.04.14 /
+  统计组 `1 'A' 物资`・更新组 `1`。
+  **この作業で実際に誤りを 1 つ発見した**: `prep/t01/04_1_image4.png` は SAP Easy Access のメニューツリー
+  **ではなく** "System Entry Properties"（登录器の接続設定・英語 UI）だった。Easy Access のツリーは
+  `sd/t41/01_1_image1297.png`。図注を根拠なく書くとこうなるので、**画面を読んでから書く**こと。
+- **教材の数値は出典つきで断言**。**それ以外は「自システムで確認」（F1・F4・表名）** と書き、断定しない。
+- **配置页（`config.html`）は教材 48 タスクをそのまま索引化**（IMG パスは教材原文＝ユーザーの中国語システムの
+  実メニュー名なので、勝手に英訳・日本語化しない）。各タスクの画面は「第 1 步 + 最後の步」の 2 枚まで。
+- 共有ファイルは触っていない（`assets/{style.css,main.js,quiz.js}` はコピー、`sd.css`/`sd.js` は
+  `s4cn.css`/`s4cn.js` の站内コピーを改名しただけ）。
+- **標準値の断定を避けた代表例**: 移動类型 601/501/101 は「教材が使った値」として提示、伙伴角色的
+  コードは「システムによって WE/SH が異なるので F4 で確認」と注記、`F1` がキーと单据类型 `F2` の
+  混同を避けるため语境を明示。
+
+### GitHub へ公開（`raysource/sap_cn_sd`）— 2026-09-13 22:22
+
+`sap_cn/` を**独立リポジトリ**として公開した: **https://github.com/raysource/sap_cn_sd**（`main` / **public**）。
+HEAD = `f0bcc698fbb97a1e1447c978af3e1ff9bffd9d66`（3 commit: 站点本体 → 发布脚本 → 对账脚本）。
+
+| コマンド | 結果 |
+|---|---|
+| `bash sap_cn/tools/publish_to_github.sh` | `git init -b main` + remote + commit + push（何度でも再実行可） |
+| `bash sap_cn/tools/verify_publish.sh` | local HEAD == `git ls-remote` == `gh api commits/main` = `f0bcc698…`；**315 blobs**（当時の tracked と一致） |
+| `bash sap_cn/tools/reconcile_remote.sh` | **remote blobs=318 == local tracked=318**、「只在远端 / 只在本地」両方空。CJK ファイル名（`SAPSD_课程大纲_学习WBS.xlsx` sha `ded2dcb9…` / 29207 B）も API で読めることを確認 |
+
+- **教材スクリーンショットを含むので可視性は要判断**: 今回はユーザーが指定した既存リポジトリが **PUBLIC** だったためそのまま公開
+  （同批の截图はすでに public な `raysource/sap-consult` にも入っている）。戻すなら
+  `gh repo edit raysource/sap_cn_sd --visibility private`。
+- **入れ子リポジトリになった**: `sap_cn/.git` ができたので、親の `sap-consult` から `git add sap_cn/...` は
+  **黙って無効**（skill の既知の罠）。親に取り込むときは既存の `tools/include_nested_repo_files.sh`
+  （`git hash-object -w --stdin-paths` → `git update-index --add --index-info`）を使う。
+- **やらかしやすい罠（今回踏んだ）**: ① `gh api …/git/trees` の件数を「ファイル数」と数えると
+  **ディレクトリ項目（`type=tree`）が混ざって 269 → 320 に見える**（`select(.type=="blob")` で絞る）。
+  ② `comm` は**両側を sort しないと嘘の差分を出す**。③ `git ls-files` は既定で CJK を
+  `"SAPSD_\350…"` とエスケープするので、API の生文件名と比較するなら `-c core.quotepath=false`。
+  この 3 つは `reconcile_remote.sh` に正しい形で残した。
+
+### 保存（第 3 回・2026-09-14 22:4x）— 「保存进度」の内容と、**保存していないもの**
+
+併走セッション検知: `PROGRESS.md` / `index.html` の mtime は **2026-09-14 08:3x**（別セッションが
+`sap_modules_cn/` を作り、§14 と hub を更新した）。45 秒あけた 2 回の md5 が同一なので**書き込みは終わっている**。
+そのセッションの成果物には**触っていない**（下記の「保存していないもの」）。
+
+1. **スナップショット（オフライン復元用）**
+
+   `_snapshots/sap_training_sites_9sites_20260914_223904_sapcn.tar.gz`（**43,278,316 B / 41 MB**）
+   `TS="…_sapcn"` を渡して作成（既定名は分単位なので、併走と衝突しないよう秒＋接尾辞）。
+
+   | 検算（実測） | 結果 |
+   |---|---|
+   | `gzip -t` | OK |
+   | entries | **3472** |
+   | `sap_cn/` エントリ | **319**（16 页 + 269 图 + 7 自绘图 + tools/work/README/.gitignore） |
+   | `sap_cn/assets/img` | list **269** == disk **269** |
+   | `sap_cn/assets/diagrams` | list **7** == disk **7** |
+   | `sap_sd_jp` / `sap_sd_cn` 画面 | 1209 / 1209（disk と一致） |
+   | html / xlsx | list 105 / 21 == disk 105 / 21 |
+   | `*/.git/` エントリ | **0**（新しくできた `sap_cn/.git` は除外されている） |
+   | `*.docx` / `*.mp4` / `*.zip` / `gui_png` / 配布 PDF | 0 |
+   | 主要ファイル | `PROGRESS.md`・`index.html`・`sap_cn/index.html`・`mindmap.svg`・`gui_screenshot_text.json`・`SAPSD_课程大纲_学习WBS.xlsx`・`tools/make_hub_page.py` 全部あり |
+
+2. **站自体の検証状態（実測）**
+
+   - `cd sap_cn && python3 tools/verify_course.py` → `pages=16 figure.shot=155（去重 120 / 磁盘 269） figure.dia=10（去重 7） quiz=30` / **RESULT: PASS**
+   - `python3 ~/.hermes/…/scripts/verify_site.py .` → **PASS**（16 pages, nav identical, 1 active each, tags balanced, quiz keys valid）
+   - Excel: **8 sheet**（`4_截图索引` 155 行 = 站内图引用数、`2_学习WBS` 23 行）
+   - hub（`index.html`）: **カード 11 個（10 站 + tools/README.md）**、すべてローカルに実在、「10 个站」表記
+
+3. **git（ローカル + GitHub）**
+
+   | リポジトリ | HEAD | 確認方法 |
+   |---|---|---|
+   | `sap_cn/` → `raysource/sap_cn_sd`（public） | `6bfa0e1e…`（+ この保存で 1 commit 追加） | `git ls-remote origin main` と `gh api repos/…/commits/main` が一致 |
+   | `training/` → `raysource/sap-consult`（public） | 本節執筆時点では `8c68da8c…`（= 既に push 済みの旧 HEAD） | 本節・`index.html`・`tools/*` の更新は**この節のすぐ後に** commit + push し、結果の SHA は下の「追記」に書く |
+
+   `sap_cn/` は `tools/include_nested_repo_files.sh` で**親リポジトリにも普通のファイルとして取り込んだ**
+   （`.git` は保持したまま。script が「親で計算した blob SHA == 入れ子リポジトリの索引の SHA」を assert するので
+   内容一致は証明済み）。`git ls-files sap_cn | wc -l` が `sap_cn` の tracked 数と一致することを確認。
+
+4. **保存していないもの（意図的・要判断）**
+
+   - **`sap_modules_cn/`（別セッションの WIP・1099 ファイル / 27 MB・`.git` なし）**: スナップショットにも
+     親リポジトリの commit にも入れていない。理由: ①作成中（その站の README/PROGRESS 側で完結していない）
+     ②`tools/make_snapshot.sh` の対象にまだ入っていない（入れるのはその担当者の判断）。
+     → ただし**hub（`index.html`）と PROGRESS §14 は彼らの更新を含む**ので、親リポジトリに push した
+     `index.html` の `sap_modules_cn` カードだけは、彼らが親リポジトリへ取り込むまでリンク切れになる
+     （同じ理由で `sap_cn` カードも、取り込み前は切れていた。今回の取り込みで解消）。
+   - **未 commit の他セッションの編集**は「読み切って内容を確認したものだけ」入れた（`index.html` /
+     `tools/make_hub_page.py` / `PROGRESS.md` の §14 と hub の `sap_modules_cn` 対応）。それ以外の
+     ファイルは触っていない。
+
+5. **次にやるとよい順**（前節の続き）
+
+   1. `sap_cn` の講義用 PDF（1 図 1 ページ）／実機で撮り直した画面への差し替え。
+   2. 残り 242 枚の画面の読図（`work/gui_screenshot_text.json` と同じ手順）。
+   3. `sap_modules_cn` の担当者が親リポジトリへの取り込み（`include_nested_repo_files.sh`）と
+      `make_snapshot.sh` への登録を済ませると、hub のリンク切れが消える。
+
+### スナップショット
+
+**最新（この保存で取得）**: `_snapshots/sap_training_sites_9sites_20260914_223904_sapcn.tar.gz`
+（3472 entries / 41 MB / `gzip -t` OK / `sap_cn` 319 entries / `*.git*` 0 / `sap_modules_cn` 0）。
+検算は上の「保存（第 3 回）」§1 の表に実測値を書いてある。
+
+ひとつ前の `_snapshots/sap_training_sites_9sites_20260913_221624_cn.tar.gz`
+（3465 entries / 41 MB、`sap_cn` 312 entries）= 2026-09-13 夜の版。実機截图の 7 枚の図を直す前の状態なので、
+復元するなら新しい方を使うこと。両方残してある（別セッションのものは消していない）。
+
+### 未着手（次にやるとよい順）
+
+1. `sap_cn` の講義用 PDF（`tools/export_gui_png.py` 相当を站内 PNG 用に作る／または Chrome 印刷 1 図 1 ページ）。
+2. 実機で新しく撮ったスクリーンショットへの差し替え（`4_截图索引` の原文件名が対応表）。
+3. **残り 242 枚の画面はまだ読図していない**（27 枚だけ逐字抄録済み）。手顺ページの図注は教材原文の
+   手顺説明を使っているので誤りではないが、`config.html` の 96 図のように「教材の一句」がそのまま
+   図注になっている箇所は、読図して具体的な値（画面に見えているコード・金額）に置き換えるとより良い。
+   進め方は `work/gui_screenshot_text.json` と同じ（読図 → 値の表を作る → ページに反映）。
+4. `sap_cn/tools/*` を共有 `tools/` に寄せるか（現状は站内に閉じている。他站に影響しない代わりに再利用は手作業）。
+
+## 14. `sap_modules_cn`（SAP 全模块培训课件 MM / PP / FI / CO）— 2026-09-14 朝
+
+**依頼**: 「参考 `https://sap-cn-sd.vercel.app/`（= `sap_cn/`）の内容で、**SAP の他モジュール**の培训课件を作る。
+上から下へ、総体から細部へ。概念・流程・操作手顺を含み、SAP GUI の実機スクリーンショット入り。質問せず自分で生成」。
+
+**成果物**: `sap_modules_cn/` — **MM / PP / FI / CO の 4 モジュール × 14 ページ ＋ 総覽ページ**。
+既存の「一主題一站」ではなく**一つの站に 4 モジュール**（根 `index.html` = 総体、`mm/ pp/ fi/ co/` = 各 14 ページ）。
+
+| 項目 | 実測（`tools/verify_site.py`） |
+|---|---|
+| ページ | 56 ＋ 総覽 1 = **57** |
+| 教材タスク | MM 42 / PP 51 / FI 45 / CO 34 = **172**（教材の全タスクを配置篇で逐一走査） |
+| 手順ステップ | **695** |
+| 実機截图引用 | **1411 処（去重 940 枚 = `sap_sd_cn/assets/img/{mm,pp,fi,co}` の素材を全部使い切った）** |
+| 自绘 SVG | **32**（各モジュール 8：mindmap / star 統合 / org tree / 主データ layers / フロー / 水泳線 / 決定鎖） |
+| 自測 | 4 × 30 = **120 題**（全問 `data-answer` が選択肢にあり、解説付き） |
+| Excel | `MM/PP/FI/CO_課程大綱_学習WBS.xlsx`（各 8 シート）＋ `SAP全模块_課程総覧_学習WBS.xlsx` |
+
+**アーキテクチャ（データ / 版面 / 内容の三層分離）**
+
+```
+work/modules.json        モジュールメタ（名称・副題・3 つの流程ページのファイル名とナビ标签）
+work/modules_model.json  教材 4 モジュールの全タスク（prep_data.py が sap_sd_cn/work/site_model.json から抽出）
+work/img_manifest.json   截图の幅高 + 原図名（ページが width/height を書く根拠）
+tools/sitegen/common.py  骨格と部品（Ctx がモジュール接頭辞を束ねる）+ ナビ（スロット → 标签）
+tools/sitegen/walk.py    render_task / render_config：教材タスクを「手順＋截图」ブロックに描画
+tools/sitegen/svgkit.py  7 種の自绘图の排版エンジン + 文字溢出登記（中文が箱を突き抜けたら検知）
+tools/sitegen/pack_<code>.py + <code>_p2/p3/p4.py   モジュール内容パック（「どう教えるか」だけ書く）
+tools/{build_pages,build_diagrams,build_hub,make_xlsx,make_readme,verify_site,shoot_pages}.py
+tools/sitegen/PACK_SPEC.md   モジュールパックの契約（並行執筆のための仕様書）
+```
+
+**「手で写さない」を機械的に保証した点**（sap_cn の発想を強化）
+- 14 ページのスロット順は固定（`index concept org master flow proc1..3 config practice instructor
+  worksheet quiz glossary`）。順番/ファイル名が違えば `build_pages.py` が即エラー。
+- **配置篇は 100% データから描画**：`render_config()` が「グループが教材の全タスクを重複なく覆うか」を検査し、
+  漏れ・重複があれば例外。→ 「站の手顺 = 教材の手顺」が機械保証になる。
+- 自測は `data-answer` が選択肢に無い / 解説が無い / 30 題でない、を検証器が個別に指摘。
+
+**並行執筆のやり方（今回の肝）**
+1. 私が「版面と規格」を先に凍結（`common/walk/svgkit` ＋ build/verify 群 ＋ `PACK_SPEC.md`）。
+2. **MM を参考実装として自分で書き**（`pack_mm.py` + `mm_p2/p3/p4.py` 約 2000 行）、検証を通す。
+3. PP / FI / CO を**3 つの子エージェントで並行執筆**。各エージェントは自分の 4 ファイルだけ変更可、
+   `build_hub.py`（共有産物）とスクリーンショット（Chrome 並行で固まる）は禁止。
+4. 各エージェントは `build_diagrams.py <code>` → `build_pages.py <code>` → `verify_site.py <code>` を
+   `RESULT: PASS` まで自走。最後に**私が全モジュールを再構築して総検証**。
+
+並行のために入れた変更（再利用価値あり）：
+- 統計ファイルを `work/build_stats.json`（単一）→ **`work/stats/<code>.json`（モジュールごと）** に分割。
+  両エージェントが同時に構築しても統計を潰し合わない。hub と検証器はディレクトリ全体を読む。
+- 1 モジュールだけ構築したときのクロスモジュールリンク（`../pp/index.html`）は、
+  **リンク先モジュールのディレクトリが未生成なら WARN**（FAIL にしない）。
+
+**子エージェントの出力を信用しなかった検証（3 段）**
+1. 自分で `build_pages.py` / `build_hub.py` / `verify_site.py` を再実行 → `pages=56 shot=1411 dia=38 quiz=120 RESULT: PASS`。
+2. **自動「捏造検出」**：生 HTML から SAP コードらしいトークン（8 桁科目、`R999-x`、`P999` 等）を抽出し、
+   `work/source_<mod>.txt`（教材原文ダンプ）に存在するか照合。ヒットしなかったのは
+   「表示/変更系 T-code 変体（FD03/CS03/KA02）」「IMG T-code（OBYC/OMJJ/OX10）」など正当な標準知識のみ。
+3. **截图の vision 抜き打ち照合**：CO の自測が言う「1001 Workshops / 1002 Warehouse は MFG 製造部」
+   「分配循環 DRENT」「分配構造 A1 の決済成本要素 803010」を教材原図で逐字確認 → 3 件とも一致
+   （子エージェントは本当に画像を読んでいた）。
+
+**今回踏んだ罠（再発する）**
+1. `svgkit` は**画布の高さを後から回填**する必要がある。占位 `height="100"` のまま出力すると
+   ブラウザは 100px しか表示しない（図が空白に見える）。`build()` で `viewBox/width/height` と背景 `rect` を置換。
+2. `chip_rows()` の戻り値は**「チェーンの底の絶対 y」であって高さではない**。高さとして足すと
+   パネル高が y で累積し、4 パネルの図が **4642px** に伸びた（修復後 688px）。**生成後は viewBox の寸法を必ず見る**
+   （`height > 2600` か `< 200` は疑う）。
+3. **截图パスが別モジュールを指すことがある**（MM の发票校验タスクが `fi/t20/…png` を貼っている）。
+   `assets/img/` のキーは「先頭がモジュール名か」で判定（`Ctx.key()`）。単純に接頭辞を足すと
+   `assets/img/mm/mm/t22/…` になる。
+4. 教材データの `imgs` は既にモジュール接頭辞付き。部品側は両方の書き方を冪等に扱う。
+5. **同一ページで二種類のアンカーを使わない**：`render_task` が作る `id="tNN"` は配置篇のアンカー。
+   流程ページで `<h2 id="t38">` を書くと id 重複（検証器が拾う）。流程ページは `id="secNN"`。
+6. CSS は共有ツリーに**追記のみ**（`assets/mod.css` = sd.css を改名 + 追記：モジュール切替条 `.modsw`、
+   タスク走査ブロック `.taskblk` / `ol.tasksteps` の番号丸、`.muted` / `.lead2` / `.cnt`、印刷規則）。
+7. 統計カードを 1 行 4 枚にするには `.grid.cards.stats { grid-template-columns: repeat(auto-fit, minmax(150px,1fr)) }`。
+8. README 生成器の `"  ".join("%s/" …)` が `co//` を生むなど、**生成物も読んで直す**（数字は自動・文字は手書きの所が崩れる）。
+9. 図は「構造 + 色 + 中文ラベル」のデータ駆動（`DIAGRAMS` は dict のリスト）にすると、子エージェントが
+   SVG の数学に触れずに済み、並行執筆が安全になる。
+
+**再構築コマンド**
+```bash
+cd ~/Desktop/work/training/sap_modules_cn
+python3 tools/prep_data.py        # 教材データ（冪等）
+python3 tools/build_diagrams.py   # 32 枚の SVG（溢出 0 を確認）
+python3 tools/build_pages.py      # 57 ページ
+python3 tools/build_hub.py        # 総覽ページ
+python3 tools/make_xlsx.py        # Excel 5 冊
+python3 tools/make_readme.py      # README.md + tools/hub_stats.json（数字は自動）
+python3 tools/verify_site.py      # RESULT: PASS
+```
+
+**生態系への接続**：`tools/make_hub_page.py` の `SITES` + `ORDER` に `sap_modules_cn` を追加し、
+学習路線に「①' 全模块培训课件」を追記、「立場と注意」の実機スクリーンショット節も更新（本站は実機截图）。
+`python3 tools/make_hub_page.py` 再実行 → ルート `index.html` は **10 站**、本站カードは
+「57 页 / 695 手顺ステップ / 1411 画面 / 5 Excel」（数字は `sap_modules_cn/tools/hub_stats.json` の自己申告）。
+
+**未了 / 次の人へ**
+- GitHub へは**まだ push していない**。`tools/publish_to_github.sh`（既定 `raysource/sap_modules_cn`）と
+  `tools/verify_publish.sh` を用意済み。截图は公開済みの `raysource/sap_cn_sd` と同源だが、
+  public にするかはユーザー判断（private にするなら `gh repo edit … --visibility private`）。
+- 本機に `vercel` CLI は無い（Vercel は GitHub 連携で発火）。push 後に Vercel 側でリポジトリを connect すれば
+  `sap-cn-sd.vercel.app` と同じ形で公開できる。
+- ルート `PROGRESS.md` / `tools/make_snapshot.sh` は**私の変更ではない差分**（前セッションの未コミット）。
+  コミットするなら `git add PROGRESS.md index.html tools/make_hub_page.py sap_modules_cn` のように自分の分だけ。
+
+## 15. 次に触る人へ（再開手順）
 
 - `tools/hub_stats.json`（`n_pages: 14` / `n_steps: 879` / `figs: 1369`）は `tools/build_pages.py` が自動更新する。
 - `work/i18n.py apply src` は **collect 時のオフセットに差し戻す**方式なので、`jp_finalize*.py` 以降に手を入れたファイルには
