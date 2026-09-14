@@ -12,16 +12,18 @@
 set -euo pipefail
 cd /Users/jason/Desktop/work/training
 TS="${TS:-$(date +%Y%m%d_%H%M%S)}"   # TS を渡せば同名で再作成（進捗メモに書いた名前を維持するため）
-OUT="_snapshots/sap_training_sites_8sites_${TS}.tar.gz"
+OUT="_snapshots/sap_training_sites_10sites_${TS}.tar.gz"
 LIST=/tmp/snap_list.txt
 mkdir -p _snapshots
 
 find PROGRESS.md index.html assets tools \
-     sap_sd sapmto sapeto sapmts sapvc saporderflow sap_sd_cn sap_sd_jp \
+     sap_sd sapmto sapeto sapmts sapvc saporderflow sap_sd_cn sap_sd_jp sap_cn \
+     sap_modules_cn \
      -type f \
   ! -path '*/gui_png/*' \
   ! -path '*/.git/*' \
   ! -path '*/work/audio/*' \
+  ! -path 'sap_modules_cn/work/shots/*' \
   ! -path 'sap_sd/work/*' \
   ! -path 'sapmto/work/*' \
   ! -path 'sapeto/work/*' \
@@ -48,9 +50,13 @@ ls -lh "$OUT"
 
 echo "--- 検算（アーカイブ内 == ディスク上）---"
 echo "svg  : list=$(grep -c '\.svg$' "$LIST")  disk=$(find sap_sd sapmto sapeto sapmts sapvc saporderflow -name '*.svg' -path '*/gui/*' | wc -l | tr -d ' ')"
-echo "html : list=$(grep -c '\.html$' "$LIST")  disk=$(find index.html assets tools sap_sd_jp sap_sd_cn sap_sd sapmto sapeto sapmts sapvc saporderflow -name '*.html' ! -path '*/work/*' | wc -l | tr -d ' ')"
-echo "xlsx : list=$(grep -c '\.xlsx$' "$LIST")  disk=$(find sap_sd_jp sap_sd_cn sap_sd sapmto sapeto sapmts sapvc saporderflow -maxdepth 1 -name '*.xlsx' | wc -l | tr -d ' ')"
+echo "html : list=$(grep -c '\.html$' "$LIST")  disk=$(find index.html assets tools sap_sd_jp sap_sd_cn sap_cn sap_modules_cn sap_sd sapmto sapeto sapmts sapvc saporderflow -name '*.html' ! -path '*/work/*' | wc -l | tr -d ' ')"
+echo "xlsx : list=$(grep -c '\.xlsx$' "$LIST")  disk=$(find sap_sd_jp sap_sd_cn sap_cn sap_modules_cn sap_sd sapmto sapeto sapmts sapvc saporderflow -maxdepth 1 -name '*.xlsx' | wc -l | tr -d ' ')"
 echo "py   : list=$(grep -c '\.py$' "$LIST")"
+echo "sap_cn 画面: list=$(grep -c 'sap_cn/assets/img/.*\.\(png\|jpeg\|jpg\)$' "$LIST")  disk=$(find sap_cn/assets/img -type f | wc -l | tr -d ' ')"
+echo "sap_cn 自绘图: list=$(grep -c 'sap_cn/assets/diagrams/.*\.svg$' "$LIST")  disk=$(find sap_cn/assets/diagrams -name '*.svg' | wc -l | tr -d ' ')"
+echo "sap_modules_cn 画面: list=$(grep -c 'sap_modules_cn/assets/img/.*\.\(png\|jpeg\|jpg\)$' "$LIST")  disk=$(find sap_modules_cn/assets/img -type f | wc -l | tr -d ' ')"
+echo "sap_modules_cn 自绘图: list=$(grep -c 'sap_modules_cn/assets/diagrams/.*\.svg$' "$LIST")  disk=$(find sap_modules_cn/assets/diagrams -name '*.svg' | wc -l | tr -d ' ')"
 echo "sap_sd_jp 画面: list=$(grep -c 'sap_sd_jp/assets/img/.*\.\(png\|jpeg\|jpg\)$' "$LIST")  disk=$(find sap_sd_jp/assets/img -type f | wc -l | tr -d ' ')"
 echo "sap_sd_cn 画面: list=$(grep -c 'sap_sd_cn/assets/img/.*\.\(png\|jpeg\|jpg\)$' "$LIST")  disk=$(find sap_sd_cn/assets/img -type f | wc -l | tr -d ' ')"
 echo "除外確認 → mp4=$(grep -c '\.mp4$' "$LIST" || true)  docx=$(grep -c 'S4\.docx$' "$LIST" || true)  docx_extract=$(grep -c 'docx_extract' "$LIST" || true)  gui_png=$(grep -c 'assets/gui_png' "$LIST" || true)  pdf=$(grep -c '題用画面集\.pdf\|講義用画面集\.pdf' "$LIST" || true)"

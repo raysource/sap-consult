@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>端到端流程 · SAP MM 培训课程</title>
+<meta name="description" content="SAP MM（物料管理）培训课程：概念与定位 → 组织结构（工厂/库存地点/采购组织/采购组）→ 主数据（物料/供应商/采购信息记录）→ 端到端采购流程（请购·采购订单·收货·发票校验·付款）→ 分步操作手顺 → SPRO 配置（42 个任务）→ 实训与自测。截图取自教材《S4.docx》的真实 SAP GUI 画面。">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mod.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MM</span><span class="txt">培训课程</span></a>
+    <nav class="main">
+      <a href="index.html" title="课程地图与学习路线">首页</a>
+      <a href="concept.html" title="MM 是什么、三大职能、五类凭证">概念</a>
+      <a href="org.html" title="企业结构 / 采购结构 / 计划与评估结构">组织</a>
+      <a href="master.html" title="物料 / 供应商 / 采购信息记录">主数据</a>
+      <a class="active" href="flow.html" title="端到端采购流程与单据流">流程</a>
+      <a href="purchase.html" title="请购 · 采购订单 · 货源与信息记录">采购</a>
+      <a href="inventory.html" title="收货 · 发货 · 转储 · 移动类型与库存总览">库存</a>
+      <a href="invoice.html" title="MIRO · 差异与容差 · 冻结发票下达 · 三单匹配">发票校验</a>
+      <a href="config.html" title="SPRO 配置路线（42 个任务）">配置</a>
+      <a href="practice.html" title="动手任务与完成基准">实训</a>
+      <a href="instructor.html" title="课时 / 板书 / 必问 / 评分">讲师</a>
+      <a href="worksheet.html" title="记入表（可打印）">学员</a>
+      <a href="quiz.html" title="30 题自评（合格 75%）">自测</a>
+      <a href="glossary.html" title="中英对照 / T-code / 常用表">术语</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page">
+<article>
+<p class="breadcrumb"><a href="index.html">课程地图</a> / <span>端到端流程</span></p>
+<div class="filterbar modsw"><a class="chip on" href="../mm/index.html" title="SAP MM 培训课程">MM 物料管理</a><a class="chip" href="../pp/index.html" title="SAP PP 培训课程">PP 生产计划</a><a class="chip" href="../fi/index.html" title="SAP FI 培训课程">FI 财务会计</a><a class="chip" href="../co/index.html" title="SAP CO 培训课程">CO 管理会计</a><a class="chip" href="../index.html" title="四个模块的总体视图与学习路线">总览</a></div>
+<h1>端到端流程</h1>
+<p class="kicker">从需求到付款（P2P）：泳道图、单据流与记账影响</p>
+<p class="lead">端到端采购流程（P2P, Procure to Pay）：需求 → 请购 → 采购订单 → 收货 → 发票校验 → 付款。看这张泳道图时只盯两件事：<b>每一步谁在动、产生什么凭证</b>；<b>哪一步才真正改变库存和会计</b>。</p>
+<div class="toc"><a href="#swim">泳道图</a><a href="#steps">六步单据流</a><a href="#fi">记账影响</a><a href="#order">顺序错误会怎样</a><a href="#shots">教材画面</a></div>
+<h2 id="swim">泳道图：谁在动、动什么</h2>
+<figure class="dia wide"><a class="zoom" href="../assets/diagrams/mm/p2p.svg"><img src="../assets/diagrams/mm/p2p.svg" alt="P2P 泳道图：需求部门 / 采购部 / 仓库 / 财务 / 系统" loading="lazy"></a><figcaption><span class="n">自绘泳道图</span><span class="cap">P2P 泳道图：需求部门 / 采购部 / 仓库 / 财务 / 系统</span><span class="src">本站自绘 SVG</span></figcaption></figure>
+<h2 id="steps">六步单据流（每一步的 T-code 与产出）</h2>
+<figure class="dia wide"><a class="zoom" href="../assets/diagrams/mm/docflow.svg"><img src="../assets/diagrams/mm/docflow.svg" alt="单据流：采购申请 → 采购订单 → 物料凭证 → 发票凭证 → 会计凭证 → 付款" loading="lazy"></a><figcaption><span class="n">自绘流程图</span><span class="cap">单据流：采购申请 → 采购订单 → 物料凭证 → 发票凭证 → 会计凭证 → 付款</span><span class="src">本站自绘 SVG</span></figcaption></figure>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>#</th><th>动作</th><th>T-code（教材任务）</th><th>产生的凭证</th><th>库存</th><th>会计</th></tr></thead><tbody><tr><td>1</td><td>需求部门提采购申请</td><td><code>ME51N</code>（任务 36）</td><td>采购申请</td><td>—</td><td>—</td></tr><tr><td>2</td><td>采购员转成采购订单</td><td><code>ME21N</code>（任务 37，可参照请购）</td><td>采购订单</td><td>—</td><td>—（承诺）</td></tr><tr><td>3</td><td>仓库收货过账</td><td><code>MIGO</code>（任务 38，移动类型 101）</td><td>物料凭证 <b>+ 会计凭证</b></td><td><b>+</b> 非限制库存</td><td>借：存货 / 贷：GR/IR 材料采购</td></tr><tr><td>4</td><td>发票校验（三单匹配）</td><td><code>MIRO</code>（任务 39）</td><td>发票凭证 <b>+ 会计凭证</b></td><td>—</td><td>借：GR/IR / 贷：应付账款（+ 进项税）</td></tr><tr><td>5</td><td>差异检查与冻结发票下达</td><td><code>MRBR</code>（任务 40）</td><td>释放阻塞状态</td><td>—</td><td>下达后才允许付款</td></tr><tr><td>6</td><td>付款（FI 侧）</td><td><code>F-53</code>/<code>F110</code>（FI 站）</td><td>会计凭证</td><td>—</td><td>借：应付账款 / 贷：银行存款</td></tr></tbody></table></div>
+<div class="note tip"><span class="t">「什么时候可以没有收货」</span>教材演示的是标准的<b>基于收货的发票校验</b>（GR-based IV）：必须先收货再开发票。也有不基于收货的采购（如服务采购、计划协议），但那样 GR/IR 的中间科目逻辑会不同 —— 换到自己系统时先查采购订单项目的「发票校验标识」（<code>EKPO-WEPOS</code>）。</div>
+<h2 id="fi">记账影响：MM 的三组自动记账科目</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>事务键</th><th>管什么</th><th>教材科目</th><th>什么时候用</th></tr></thead><tbody><tr><td><code>BSX</code></td><td>存货记账 —— 找「存货科目」</td><td><code>12430101</code> 存货-产成品（另有 12310101 等）</td><td>所有物料移动都会带一行存货分录（教材任务 28 S4–S6）</td></tr><tr><td><code>WRX</code></td><td>GR/IR 清算科目（材料采购）</td><td><code>12010101</code> 材料采购-GR/IR</td><td>收货与发票校验的对手科目</td></tr><tr><td><code>GBB</code></td><td>库存记账的冲销输入（费用/成本侧）</td><td>VBR <code>41010101</code> 生产成本-原材料消耗；VAX <code>54010201/54010101</code> 主营业务成本；PRD <code>54010301</code> 采购价差；DIF <code>54010401</code> 生产订单差异</td><td>按移动类型 + 移动类型 + 科目修改码细分（BSX 是借方那一行，GBB 是对方那一行）</td></tr></tbody></table></div>
+<div class="box ok"><b class="t">一句话记住 BSX 与 GBB 的分工</b><p>同一张物料凭证，<b>BSX 决定存货科目</b>（借），<b>GBB 决定对方科目</b>（贷：消耗/成本/差异）。所以「存货科目 = 评估分组代码/评估范围 + 评估类」，「对方科目 = 移动类型 + 科目修改码（VBR/VAX/VBO/VNG…）」。</p><p>配置入口：<code>OBYC</code>（教材任务 28 就是它），先跑 <b>模拟</b>（模拟按钮里输入物料/工厂/移动类型，系统会告诉你它要哪个键）。</p></div>
+<h2 id="order">顺序错误会怎样（教学现场真实会遇到的）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>做错的事</th><th>系统的反应</th><th>正确做法</th></tr></thead><tbody><tr><td>没维护信息记录就想让订单自动带价</td><td>价格空，回车报错或需要手输</td><td>先 <code>ME11</code> 建信息记录（或直接手输价格并接受无货源）</td></tr><tr><td>物料没有评估类就收货</td><td>收货报错「评估类未维护」</td><td>MM02 在会计 1 视图补评估类 3000（教材任务 22 的提示）</td></tr><tr><td>发票数量 > 收货数量</td><td>抛出差错/警告（受容差 B1/B2、发票容差控制）</td><td>先补收货，或在容差内放行；超容差 → 发票被冻结 → MRBR 下达</td></tr><tr><td>先开发票再收货（GR-based IV）</td><td>MIRO 找不到收货行，无法匹配</td><td>先 MIGO 收货，再 MIRO</td></tr><tr><td>收货时选错库存地点</td><td>库位库存变动、物料凭证不可轻易改</td><td>用 <code>MBST</code> 冲销该物料凭证，重新收货（不要直接改凭证）</td></tr><tr><td>已经收货的订单想改数量</td><td>系统按「订单历史」检查，超量可能被拒</td><td>改前先看订单的收货/发票历史（ME23N → 采购订单历史）</td></tr></tbody></table></div>
+<h2 id="shots">教材画面（流程主线）</h2>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/mm/t34/01_1_image726.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t34/01_1_image726.png" width="288" height="505" alt="任务 34 MD03 运行 MRP（单层）产生需求" loading="lazy"></a><figcaption><span class="n">画面 1</span><span class="cap">任务 34 MD03 运行 MRP（单层）产生需求</span><span class="src">教材《S4.docx》· MM 任务 34 运行物料需求计划 · 原图 01_1_image726.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t35/03_1_image738.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t35/03_1_image738.png" width="1155" height="334" alt="任务 35 MD04 库存/需求清单：动态供需平衡" loading="lazy"></a><figcaption><span class="n">画面 2</span><span class="cap">任务 35 MD04 库存/需求清单：动态供需平衡</span><span class="src">教材《S4.docx》· MM 任务 35 显示库存/需求清单 · 原图 03_1_image738.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t36/04_1_image742.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t36/04_1_image742.png" width="1097" height="348" alt="任务 36 ME51N 采购申请" loading="lazy"></a><figcaption><span class="n">画面 3</span><span class="cap">任务 36 ME51N 采购申请</span><span class="src">教材《S4.docx》· MM 任务 36 新建采购申请 · 原图 04_1_image742.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t37/06_1_image751.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t37/06_1_image751.png" width="1157" height="364" alt="任务 37 ME21N 采购订单（参照请购、供应商 10000000）" loading="lazy"></a><figcaption><span class="n">画面 4</span><span class="cap">任务 37 ME21N 采购订单（参照请购、供应商 10000000）</span><span class="src">教材《S4.docx》· MM 任务 37 新建采购订单 · 原图 06_1_image751.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t38/04_1_image758.jpeg" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t38/04_1_image758.jpeg" width="1401" height="924" alt="任务 38 MIGO 收货（101，生成 FI 凭证）" loading="lazy"></a><figcaption><span class="n">画面 5</span><span class="cap">任务 38 MIGO 收货（101，生成 FI 凭证）</span><span class="src">教材《S4.docx》· MM 任务 38 创建采购收货 · 原图 04_1_image758.jpeg</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t39/03_1_image764.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t39/03_1_image764.png" width="985" height="759" alt="任务 39 MIRO 发票校验（三单匹配）" loading="lazy"></a><figcaption><span class="n">画面 6</span><span class="cap">任务 39 MIRO 发票校验（三单匹配）</span><span class="src">教材《S4.docx》· MM 任务 39 输入采购发票 · 原图 03_1_image764.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t41/01_1_image770.jpeg" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t41/01_1_image770.jpeg" width="472" height="422" alt="任务 41 MIR4 显示发票与会计凭证" loading="lazy"></a><figcaption><span class="n">画面 7</span><span class="cap">任务 41 MIR4 显示发票与会计凭证</span><span class="src">教材《S4.docx》· MM 任务 41 显示发票和会计凭证 · 原图 01_1_image770.jpeg</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t42/01_1_image774.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t42/01_1_image774.png" width="396" height="451" alt="任务 42 MMBE 库存总览" loading="lazy"></a><figcaption><span class="n">画面 8</span><span class="cap">任务 42 MMBE 库存总览</span><span class="src">教材《S4.docx》· MM 任务 42 显示库存物料 · 原图 01_1_image774.png</span></figcaption></figure></div>
+</article>
+</main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <h5>SAP MM 培训课程</h5>
+        <p>物料管理：采购 · 库存 · 发票校验</p>
+        <p>课程总览：<a href="../index.html">SAP 模块培训课程（MM · PP · FI · CO）</a></p>
+      </div>
+      <div>
+        <h5>课程板块</h5>
+        <p><a href="concept.html">概念</a> · <a href="org.html">组织</a> ·
+        <a href="master.html">主数据</a> · <a href="flow.html">流程</a> ·
+        <a href="purchase.html">采购</a> · <a href="config.html">配置</a></p>
+      </div>
+      <div>
+        <h5>课堂配套</h5>
+        <p><a href="practice.html">实训任务</a> · <a href="instructor.html">讲师版</a> ·
+        <a href="worksheet.html">学员版</a> · <a href="quiz.html">自测</a> ·
+        <a href="glossary.html">术语表</a></p>
+      </div>
+      <div>
+        <h5>看图说话</h5>
+        <p>截图取自教材《S4.docx》的真实 SAP GUI 画面（中文界面，保留原文件名可回查）；
+        流程图、结构图、思维导图为本站自绘 SVG。标准值随版本/行业方案而异，
+        页面标注的「在自系统里怎么确认」请在自己的系统里核对。</p>
+        <p>其他模块：<a href="../pp/index.html">PP 生产计划</a> · <a href="../fi/index.html">FI 财务会计</a> · <a href="../co/index.html">CO 管理会计</a> · </p>
+      </div>
+    </div>
+    <p class="copy">© <span data-year>2026</span> SAP MM 培训课程 · 静态站点，可离线使用</p>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/mod.js"></script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自测（30 题） · SAP MM 培训课程</title>
+<meta name="description" content="SAP MM（物料管理）培训课程：概念与定位 → 组织结构（工厂/库存地点/采购组织/采购组）→ 主数据（物料/供应商/采购信息记录）→ 端到端采购流程（请购·采购订单·收货·发票校验·付款）→ 分步操作手顺 → SPRO 配置（42 个任务）→ 实训与自测。截图取自教材《S4.docx》的真实 SAP GUI 画面。">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mod.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MM</span><span class="txt">培训课程</span></a>
+    <nav class="main">
+      <a href="index.html" title="课程地图与学习路线">首页</a>
+      <a href="concept.html" title="MM 是什么、三大职能、五类凭证">概念</a>
+      <a href="org.html" title="企业结构 / 采购结构 / 计划与评估结构">组织</a>
+      <a href="master.html" title="物料 / 供应商 / 采购信息记录">主数据</a>
+      <a href="flow.html" title="端到端采购流程与单据流">流程</a>
+      <a href="purchase.html" title="请购 · 采购订单 · 货源与信息记录">采购</a>
+      <a href="inventory.html" title="收货 · 发货 · 转储 · 移动类型与库存总览">库存</a>
+      <a href="invoice.html" title="MIRO · 差异与容差 · 冻结发票下达 · 三单匹配">发票校验</a>
+      <a href="config.html" title="SPRO 配置路线（42 个任务）">配置</a>
+      <a href="practice.html" title="动手任务与完成基准">实训</a>
+      <a href="instructor.html" title="课时 / 板书 / 必问 / 评分">讲师</a>
+      <a href="worksheet.html" title="记入表（可打印）">学员</a>
+      <a class="active" href="quiz.html" title="30 题自评（合格 75%）">自测</a>
+      <a href="glossary.html" title="中英对照 / T-code / 常用表">术语</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page">
+<article>
+<p class="breadcrumb"><a href="index.html">课程地图</a> / <span>自测（30 题）</span></p>
+<div class="filterbar modsw"><a class="chip on" href="../mm/index.html" title="SAP MM 培训课程">MM 物料管理</a><a class="chip" href="../pp/index.html" title="SAP PP 培训课程">PP 生产计划</a><a class="chip" href="../fi/index.html" title="SAP FI 培训课程">FI 财务会计</a><a class="chip" href="../co/index.html" title="SAP CO 培训课程">CO 管理会计</a><a class="chip" href="../index.html" title="四个模块的总体视图与学习路线">总览</a></div>
+<h1>自测（30 题）</h1>
+<p class="kicker">概念 5 · 组织 5 · 主数据 6 · 流程 8 · 配置 3 · 集成 3（合格 75%）</p>
+<p class="lead">30 题，覆盖概念 / 组织 / 主数据 / 流程 / 配置 / 集成六类。点击选项即时判分，每题都有解说。<b>合格线：≥75%（23 题）</b>，并且 <a href="practice.html">五个实训</a>的完成基准全部打勾。</p>
+<p class="muted">分布：概念 5 · 组织 5 · 主数据 6 · 流程 8 · 配置 3 · 集成 3</p>
+<p>建议先做一遍不看答案，再看解说；错题回到对应页面重读（题目里的关键字可以直接用页面上的术语搜索）。</p>
+<div class="quiz-q" data-answer="A">
+<div class="q-meta"><span class="tag gray">概念</span></div>
+<h4>1. MM 模块的核心产出是什么？</h4>
+<div class="opts"><div class="opt" data-key="A">采购凭证、物料凭证、发票凭证（并在 FI 生成会计凭证）</div><div class="opt" data-key="B">会计凭证与财务报表</div><div class="opt" data-key="C">生产订单与工艺路线</div><div class="opt" data-key="D">销售订单与发票</div></div>
+<div class="explain"><b>答案 A。</b>MM 产出业务凭证（请购/订单/物料凭证/发票凭证），会计凭证是系统按自动记账规则「顺带」生成的 —— 但它是会计凭证的直接来源。</div>
+</div>
+<div class="quiz-q" data-answer="C">
+<div class="q-meta"><span class="tag gray">概念</span></div>
+<h4>2. 哪一步才真正改变库存数量？</h4>
+<div class="opts"><div class="opt" data-key="A">保存采购申请</div><div class="opt" data-key="B">保存采购订单</div><div class="opt" data-key="C">收货过账（移动类型 101）</div><div class="opt" data-key="D">发票校验 MIRO</div></div>
+<div class="explain"><b>答案 C。</b>请购与订单都不动库存；收货过账生成物料凭证，库存才变；发票校验只管钱。</div>
+</div>
+<div class="quiz-q" data-answer="D">
+<div class="q-meta"><span class="tag gray">概念</span></div>
+<h4>3. GR/IR 科目是做什么用的？</h4>
+<div class="opts"><div class="opt" data-key="A">记录存货价值</div><div class="opt" data-key="B">记录采购价格差异</div><div class="opt" data-key="C">应付账款科目</div><div class="opt" data-key="D">收货与发票之间的暂估清算中间科目</div></div>
+<div class="explain"><b>答案 D。</b>收货时贷 GR/IR，发票校验时借 GR/IR —— 它是「货到」与「票到」之间的桥；一直不平说明有未开票的收货或有问题的发票。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">概念</span></div>
+<h4>4. MM 里的「评估范围」通常等于哪个组织单位？</h4>
+<div class="opts"><div class="opt" data-key="A">公司代码</div><div class="opt" data-key="B">工厂</div><div class="opt" data-key="C">采购组织</div><div class="opt" data-key="D">库存地点</div></div>
+<div class="explain"><b>答案 B。</b>物料价值按工厂（评估范围）计算；多个工厂可用「评估分组代码」归组统一维护记账规则（教材 CN01）。</div>
+</div>
+<div class="quiz-q" data-answer="C">
+<div class="q-meta"><span class="tag gray">概念</span></div>
+<h4>5. 下列哪一项<b>不属于</b> MM 的职能？</h4>
+<div class="opts"><div class="opt" data-key="A">采购（请购与采购订单）</div><div class="opt" data-key="B">库存管理与移动类型</div><div class="opt" data-key="C">销售定价与报价</div><div class="opt" data-key="D">后勤发票校验</div></div>
+<div class="explain"><b>答案 C。</b>销售定价属于 SD；MM 是「买进来、存住、算清花了多少钱」。</div>
+</div>
+<div class="quiz-q" data-answer="C">
+<div class="q-meta"><span class="tag gray">组织</span></div>
+<h4>6. 教材中「颐宁采购组织」的组织代码是？</h4>
+<div class="opts"><div class="opt" data-key="A">C999</div><div class="opt" data-key="B">P999</div><div class="opt" data-key="C">Y999</div><div class="opt" data-key="D">PG1</div></div>
+<div class="explain"><b>答案 C。</b>C999 是公司代码、P999 是工厂、Y999 是采购组织、PG1/PG2 是采购组。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">组织</span></div>
+<h4>7. 「给公司代码分配工厂」是教材的第几个任务？</h4>
+<div class="opts"><div class="opt" data-key="A">任务 01</div><div class="opt" data-key="B">任务 06</div><div class="opt" data-key="C">任务 08</div><div class="opt" data-key="D">任务 20</div></div>
+<div class="explain"><b>答案 B。</b>任务 01 建工厂、任务 06 把工厂分配给公司代码（P999 → C999）、任务 08 把工厂分配给采购组织（Y999 ↔ P999，多对多）。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">组织</span></div>
+<h4>8. 采购组 PG1 / PG2 表示什么？</h4>
+<div class="opts"><div class="opt" data-key="A">两个不同的采购组织</div><div class="opt" data-key="B">采购组织内部负责采购的人员/小组</div><div class="opt" data-key="C">两种采购订单类型</div><div class="opt" data-key="D">两个工厂</div></div>
+<div class="explain"><b>答案 B。</b>采购组织 Y999 负责谈条件、下订单；采购组 PG1（原材料和运营供应）/ PG2（贸易商品）是其中具体负责的分组。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">组织</span></div>
+<h4>9. 评估分组代码 CN01 的作用是什么？</h4>
+<div class="opts"><div class="opt" data-key="A">给工厂编号</div><div class="opt" data-key="B">把多个评估范围（工厂）归组，统一维护自动记账规则</div><div class="opt" data-key="C">区分采购组织</div><div class="opt" data-key="D">定义库存地点</div></div>
+<div class="explain"><b>答案 B。</b>教材任务 19/20：激活「按评估分组代码」定义科目，把 P999 归入 CN01，以后新增工厂只归组就能继承记账规则。</div>
+</div>
+<div class="quiz-q" data-answer="C">
+<div class="q-meta"><span class="tag gray">组织</span></div>
+<h4>10. 物料的库存地点视图属于哪一层的数据？</h4>
+<div class="opts"><div class="opt" data-key="A">一般数据（跨公司）</div><div class="opt" data-key="B">工厂层</div><div class="opt" data-key="C">库存地点层</div><div class="opt" data-key="D">销售组织层</div></div>
+<div class="explain"><b>答案 C。</b>库存地点视图存在表 MARD（工厂+库位）；工厂层是 MARC/MBEW，一般数据是 MARA。任务 12 可以让收货时自动创建库位视图。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">主数据</span></div>
+<h4>11. 物料类型 ROH 的典型特征是什么？</h4>
+<div class="opts"><div class="opt" data-key="A">自制产品，必须有销售视图</div><div class="opt" data-key="B">只能外购，通常没有销售视图</div><div class="opt" data-key="C">不能有库存</div><div class="opt" data-key="D">只能按标准价评估</div></div>
+<div class="explain"><b>答案 B。</b>教材任务 22 的画面特意指出：ROH 没有销售视图，采购类型为 F（只能外购）。</div>
+</div>
+<div class="quiz-q" data-answer="C">
+<div class="q-meta"><span class="tag gray">主数据</span></div>
+<h4>12. 收货时报「评估类未维护」，应该去哪里补？</h4>
+<div class="opts"><div class="opt" data-key="A">基本数据 1</div><div class="opt" data-key="B">采购视图</div><div class="opt" data-key="C">会计 1（工厂层）视图</div><div class="opt" data-key="D">库存地点视图</div></div>
+<div class="explain"><b>答案 C。</b>评估类在工厂层的「会计 1」视图（表 MBEW），教材任务 22 提示原书此处有误、原材料应为 <b>3000</b>。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">主数据</span></div>
+<h4>13. 价格控制 V 与 S 的区别是什么？</h4>
+<div class="opts"><div class="opt" data-key="A">V 是标准价、S 是移动平均价</div><div class="opt" data-key="B">V 是移动平均价、S 是标准价</div><div class="opt" data-key="C">两者一样，只是叫法不同</div><div class="opt" data-key="D">V 用于外购、S 用于自制，与价格无关</div></div>
+<div class="explain"><b>答案 B。</b>V = 移动平均价（采购价影响存货价值）；S = 标准价（价差进采购价差 PRD 科目）。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">主数据</span></div>
+<h4>14. 采购信息记录的唯一性键是？</h4>
+<div class="opts"><div class="opt" data-key="A">物料 + 工厂</div><div class="opt" data-key="B">物料 + 供应商 + 采购组织</div><div class="opt" data-key="C">供应商 + 公司代码</div><div class="opt" data-key="D">采购组织 + 采购组</div></div>
+<div class="explain"><b>答案 B。</b>ME11 的键是「物料 × 供应商 × 采购组织」，它同时承担货源与价格条件两个角色。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">主数据</span></div>
+<h4>15. 给已存在的供应商补维护「采购数据」用哪个事务码？</h4>
+<div class="opts"><div class="opt" data-key="A">FK01</div><div class="opt" data-key="B">MK01</div><div class="opt" data-key="C">ME11</div><div class="opt" data-key="D">XK01</div></div>
+<div class="explain"><b>答案 B。</b>MK01 维护供应商的采购组织层数据（一般数据与公司代码数据由 FI 的 FK01/XK01 建）。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+<div class="q-meta"><span class="tag gray">主数据</span></div>
+<h4>16. 物料主数据里的「采购类型 F」表示什么？</h4>
+<div class="opts"><div class="opt" data-key="A">只能外购</div><div class="opt" data-key="B">只能自制</div><div class="opt" data-key="C">既可不外购也不自制</div><div class="opt" data-key="D">是工厂代码</div></div>
+<div class="explain"><b>答案 A。</b>F = 外部采购，E = 自制；教材任务 22 的画面写「F 代表只能从外采购」。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>17. 创建采购申请的标准事务码是？</h4>
+<div class="opts"><div class="opt" data-key="A">ME21N</div><div class="opt" data-key="B">ME51N</div><div class="opt" data-key="C">ME11</div><div class="opt" data-key="D">MB1A</div></div>
+<div class="explain"><b>答案 B。</b>ME51N 建采购申请、ME21N 建采购订单、ME11 建信息记录。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>18. 要「参照已有采购申请」创建采购订单，正确做法是？</h4>
+<div class="opts"><div class="opt" data-key="A">ME21N 里用「凭证概览」把请购拖进订单</div><div class="opt" data-key="B">先复制请购到剪贴板再手输</div><div class="opt" data-key="C">只能由 MRP 自动转换</div><div class="opt" data-key="D">用 ME59N 才能转</div></div>
+<div class="explain"><b>答案 A。</b>教材任务 37 就是这么做的：凭证概览（小花键）→ 选择我的采购申请 → 采用。</div>
+</div>
+<div class="quiz-q" data-answer="C">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>19. 采购订单收货（101）会生成哪些凭证？</h4>
+<div class="opts"><div class="opt" data-key="A">只有物料凭证</div><div class="opt" data-key="B">只有会计凭证</div><div class="opt" data-key="C">物料凭证 + 会计凭证</div><div class="opt" data-key="D">发票凭证 + 会计凭证</div></div>
+<div class="explain"><b>答案 C。</b>物料凭证（MKPF/MSEG）记库存变动，会计凭证（BKPF/BSEG）记「借存货/贷 GR/IR」。</div>
+</div>
+<div class="quiz-q" data-answer="C">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>20. 在 MIGO 里想查看收货牵动的会计凭证，应该看哪里？</h4>
+<div class="opts"><div class="opt" data-key="A">项目明细的「数量」页</div><div class="opt" data-key="B">抬头菜单的「检查」</div><div class="opt" data-key="C">「文件信息」页的 FI 凭证</div><div class="opt" data-key="D">退出 MIGO 后用 MB03 才能看</div></div>
+<div class="explain"><b>答案 C。</b>教材任务 38 后半段正是切到「文件信息」页点 FI 凭证看分录。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>21. 发票校验里的「三单匹配」指哪三单？</h4>
+<div class="opts"><div class="opt" data-key="A">请购、订单、收货</div><div class="opt" data-key="B">采购订单、收货、发票</div><div class="opt" data-key="C">订单、发票、付款</div><div class="opt" data-key="D">请购、发票、付款</div></div>
+<div class="explain"><b>答案 B。</b>数量对收货、价格对订单、税额对订单税码；不一致就按容差处理。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>22. 发票被系统冻结后，用哪个事务码下达？</h4>
+<div class="opts"><div class="opt" data-key="A">MR8M</div><div class="opt" data-key="B">MRBR</div><div class="opt" data-key="C">MIR4</div><div class="opt" data-key="D">MB5S</div></div>
+<div class="explain"><b>答案 B。</b>MRBR 下达冻结发票；MR8M 是取消/冲销发票，MIR4 是显示发票，MB5S 看 GR/IR 余额。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>23. 移动类型 261 表示什么动作？</h4>
+<div class="opts"><div class="opt" data-key="A">采购订单收货</div><div class="opt" data-key="B">对生产订单发货（领料）</div><div class="opt" data-key="C">库位间转储</div><div class="opt" data-key="D">销售发货过账</div></div>
+<div class="explain"><b>答案 B。</b>261 = 对生产订单发料（借生产成本-原材料消耗 41010101）；101 采购收货、311 库位转储、601 销售发货。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>24. 想随时回答「这个物料现在还有多少」，用哪个事务码？</h4>
+<div class="opts"><div class="opt" data-key="A">MD04</div><div class="opt" data-key="B">MMBE</div><div class="opt" data-key="C">MM60</div><div class="opt" data-key="D">MB51</div></div>
+<div class="explain"><b>答案 B。</b>MMBE 库存总览（按工厂/库位/库存类型）；MD04 是供需清单、MM60 是物料清单、MB51 是物料凭证清单。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">配置</span></div>
+<h4>25. OBYC 配置的是什么？</h4>
+<div class="opts"><div class="opt" data-key="A">采购订单的价格条件</div><div class="opt" data-key="B">物料移动时如何自动找到会计科目</div><div class="opt" data-key="C">物料类型的属性</div><div class="opt" data-key="D">供应商的付款条件</div></div>
+<div class="explain"><b>答案 B。</b>OBYC 是自动记账科目确定：BSX 存货科目、WRX GR/IR、GBB 对方科目（VBR/VAX/PRD/DIF 等）。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">配置</span></div>
+<h4>26. 教材任务 14「维护 MM 公司代码的初始期间」是为了解决什么？</h4>
+<div class="opts"><div class="opt" data-key="A">物料编码用什么规则</div><div class="opt" data-key="B">物料账按月开账，上线时需要设定初始期间导入期初库存</div><div class="opt" data-key="C">采购订单的编号范围</div><div class="opt" data-key="D">税码缺省值</div></div>
+<div class="explain"><b>答案 B。</b>MM 期间只能逐月往后开；初始期间一般设在上线前的那个月，在其中导入期末库存余额。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">配置</span></div>
+<h4>27. 评估控制里激活「评估分组代码活动」的意义是？</h4>
+<div class="opts"><div class="opt" data-key="A">禁止定义科目</div><div class="opt" data-key="B">允许按评估范围分组统一定义记账规则，避免一个工厂一套规则</div><div class="opt" data-key="C">强制按公司代码定义科目</div><div class="opt" data-key="D">决定移动类型</div></div>
+<div class="explain"><b>答案 B。</b>教材任务 19/20 的逻辑：有了分组，新增工厂只要归组就继承记账规则。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">集成</span></div>
+<h4>28. 收货时「存货科目」是由什么决定的？</h4>
+<div class="opts"><div class="opt" data-key="A">物料类型 + 物料组</div><div class="opt" data-key="B">评估范围（或评估分组代码）+ 评估类 + 移动类型（BSX）</div><div class="opt" data-key="C">采购组织 + 采购组</div><div class="opt" data-key="D">供应商的统驭科目</div></div>
+<div class="explain"><b>答案 B。</b>BSX 决定存货科目，键是评估范围/分组 + 评估类；所以评估类填错，收货就记到错误科目（或直接报错）。</div>
+</div>
+<div class="quiz-q" data-answer="C">
+<div class="q-meta"><span class="tag gray">集成</span></div>
+<h4>29. 生产领料（261）的对方科目在教材里是哪个？</h4>
+<div class="opts"><div class="opt" data-key="A">12430101 存货-产成品</div><div class="opt" data-key="B">12010101 材料采购-GR/IR</div><div class="opt" data-key="C">41010101 生产成本-原材料消耗</div><div class="opt" data-key="D">54010301 主营业务成本-采购价差</div></div>
+<div class="explain"><b>答案 C。</b>GBB 的 VBR（生产）对应 41010101；VAX 对应主营业务成本、PRD 对应采购价差（教材任务 28）。</div>
+</div>
+<div class="quiz-q" data-answer="C">
+<div class="q-meta"><span class="tag gray">集成</span></div>
+<h4>30. MM 与 SD 的交接发生在哪一步？</h4>
+<div class="opts"><div class="opt" data-key="A">创建销售订单</div><div class="opt" data-key="B">创建交货单</div><div class="opt" data-key="C">发货过账（PGI，移动类型 601）</div><div class="opt" data-key="D">创建发票</div></div>
+<div class="explain"><b>答案 C。</b>发货过账减少库存并生成物料凭证 + 会计凭证（借主营业务成本/贷存货）；SD 站有完整流程。</div>
+</div>
+</article>
+</main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <h5>SAP MM 培训课程</h5>
+        <p>物料管理：采购 · 库存 · 发票校验</p>
+        <p>课程总览：<a href="../index.html">SAP 模块培训课程（MM · PP · FI · CO）</a></p>
+      </div>
+      <div>
+        <h5>课程板块</h5>
+        <p><a href="concept.html">概念</a> · <a href="org.html">组织</a> ·
+        <a href="master.html">主数据</a> · <a href="flow.html">流程</a> ·
+        <a href="purchase.html">采购</a> · <a href="config.html">配置</a></p>
+      </div>
+      <div>
+        <h5>课堂配套</h5>
+        <p><a href="practice.html">实训任务</a> · <a href="instructor.html">讲师版</a> ·
+        <a href="worksheet.html">学员版</a> · <a href="quiz.html">自测</a> ·
+        <a href="glossary.html">术语表</a></p>
+      </div>
+      <div>
+        <h5>看图说话</h5>
+        <p>截图取自教材《S4.docx》的真实 SAP GUI 画面（中文界面，保留原文件名可回查）；
+        流程图、结构图、思维导图为本站自绘 SVG。标准值随版本/行业方案而异，
+        页面标注的「在自系统里怎么确认」请在自己的系统里核对。</p>
+        <p>其他模块：<a href="../pp/index.html">PP 生产计划</a> · <a href="../fi/index.html">FI 财务会计</a> · <a href="../co/index.html">CO 管理会计</a> · </p>
+      </div>
+    </div>
+    <p class="copy">© <span data-year>2026</span> SAP MM 培训课程 · 静态站点，可离线使用</p>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/mod.js"></script>
+</body>
+</html>

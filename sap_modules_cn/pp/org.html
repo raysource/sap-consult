@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>组织结构 · SAP PP 培训课程</title>
+<meta name="description" content="SAP PP（生产计划）培训课程：概念与定位 → 组织结构（工厂/工作中心/能力/生产调度员）→ 主数据（物料 MRP 视图/BOM/工艺路线/工作中心/生产版本）→ 端到端流程（独立需求 → MRP 展开 → 计划订单 → 生产订单 → 发料·确认·收货 → 成本与差异结算）→ 分步操作手顺 → SPRO 配置（51 个任务）→ 实训与自测。截图取自教材《S4.docx》的真实 SAP GUI 画面。">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mod.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">PP</span><span class="txt">培训课程</span></a>
+    <nav class="main">
+      <a href="index.html" title="课程地图与学习路线">首页</a>
+      <a href="concept.html" title="PP 是什么、四段闭环、对象与凭证">概念</a>
+      <a class="active" href="org.html" title="工厂 / 调度员 / 工作中心 / 能力">组织</a>
+      <a href="master.html" title="BOM / 工艺路线 / 工作中心 / MRP 视图">主数据</a>
+      <a href="flow.html" title="端到端计划到成本流程">流程</a>
+      <a href="planning.html" title="需求管理 · MRP · MD04 · 订单转换">计划</a>
+      <a href="execution.html" title="下达 · 发料 · 工单确认 · 收货">执行</a>
+      <a href="cost.html" title="标准成本 CK11N/CK24 · 订单成本 · 差异结算">成本</a>
+      <a href="config.html" title="SPRO 配置路线（51 个任务）">配置</a>
+      <a href="practice.html" title="动手任务与完成基准">实训</a>
+      <a href="instructor.html" title="课时 / 板书 / 必问 / 评分">讲师</a>
+      <a href="worksheet.html" title="记入表（可打印）">学员</a>
+      <a href="quiz.html" title="30 题自评（合格 75%）">自测</a>
+      <a href="glossary.html" title="中英对照 / T-code / 常用表">术语</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page">
+<article>
+<p class="breadcrumb"><a href="index.html">课程地图</a> / <span>组织结构</span></p>
+<div class="filterbar modsw"><a class="chip" href="../mm/index.html" title="SAP MM 培训课程">MM 物料管理</a><a class="chip on" href="../pp/index.html" title="SAP PP 培训课程">PP 生产计划</a><a class="chip" href="../fi/index.html" title="SAP FI 培训课程">FI 财务会计</a><a class="chip" href="../co/index.html" title="SAP CO 培训课程">CO 管理会计</a><a class="chip" href="../index.html" title="四个模块的总体视图与学习路线">总览</a></div>
+<h1>组织结构</h1>
+<p class="kicker">工厂 / 成本控制范围 / 生产调度员 / 工作中心 / 能力 —— 先给数据定坐标</p>
+<p class="lead">PP 的组织数据分三层看：<b>公司代码 → 工厂</b>（财务与生产场所）、<b>工厂内的资源</b>（工作中心、能力、生产调度员、生产计划参数文件）、<b>与外部的接口</b>（成本控制范围、库存地点、采购组织——后两者在 MM 教材里建）。教材 PP 的任务 01–13 基本都在给这些「格子」赋值，顺序反了后面会互相报错。</p>
+<div class="toc"><a href="#tree">三层结构</a><a href="#ent">工厂与生产场所</a><a href="#res">工厂内的资源</a><a href="#avail">可用性检查结构</a><a href="#effect">组织数据决定什么</a><a href="#shots">教材画面</a></div>
+<h2 id="tree">三层结构一张图</h2>
+<figure class="dia wide"><a class="zoom" href="../assets/diagrams/pp/org.svg"><img src="../assets/diagrams/pp/org.svg" alt="PP 的组织结构：公司代码 / 成本控制范围 → 工厂 P999 → 资源（调度员、工作中心、能力）与参数文件" loading="lazy"></a><figcaption><span class="n">自绘组织结构图</span><span class="cap">PP 的组织结构：公司代码 / 成本控制范围 → 工厂 P999 → 资源（调度员、工作中心、能力）与参数文件</span><span class="src">本站自绘 SVG</span></figcaption></figure>
+<h2 id="ent">① 工厂与生产场所（Enterprise / Plant）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>对象</th><th>教材值</th><th>教材任务</th><th>PP 里决定什么</th></tr></thead><tbody><tr><td><b>公司代码</b> Company Code</td><td><code>C999</code> 颐宁（画面名称：颐宁机械有限公司）</td><td>（FI 侧建）</td><td>会计凭证落在哪套账上；与成本控制范围同码</td></tr><tr><td><b>工厂</b> Plant</td><td><code>P999</code> 颐宁机械工厂</td><td>任务 02/08 等大量任务都按工厂维护</td><td>生产订单、工作中心、BOM 可用性、成本核算的边界；在 MM 里同时是<b>评估范围</b></td></tr><tr><td><b>成本控制范围</b> Controlling Area</td><td><code>C999</code></td><td>任务 13 工作中心的成本核算页里显示</td><td>作业类型、成本中心、订单结算都挂在它下面</td></tr><tr><td><b>成本中心</b> Cost Center</td><td><code>1001</code> Workshops</td><td>任务 13 画面（工作中心链接到它）</td><td>工作中心的费用归集地与作业价格（KP26）的承担者</td></tr><tr><td><b>库存地点</b> Storage Location</td><td><code>0001</code>（原材料收货）· <code>0003</code>（贸易商品运输库）</td><td>任务 40（收货）、任务 50（看库位）</td><td>产成品与原材料收货/发货落到哪个库位</td></tr><tr><td><b>物料</b></td><td><code>F999-100</code> 铸钢泵 170-230 · <code>T999-100</code> 贸易商品 · <code>R999-100</code>…<code>R999-500</code></td><td>任务 16/22 等</td><td>计划与成本核算的对象</td></tr></tbody></table></div>
+<div class="note tip"><span class="t">怎么在自己系统里看</span>工厂清单：<code>OX10</code>；工厂里的库存地点：<code>OX09</code>；公司代码 <code>OX02</code>；成本控制范围在 CO 侧（<code>OKKP</code>）。工作中心所在工厂在 <code>CR03</code> 里按「工作中心 + 工厂」查。</div>
+<h2 id="res">② 工厂内的资源（教材任务 01–13）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>对象</th><th>教材任务</th><th>含义</th><th>决定什么</th></tr></thead><tbody><tr><td><b>生产计划参数文件</b> Production Scheduling Profile <code>000001</code></td><td>任务 01</td><td>把一整套排程行为打包的参数文件（教材用复制 1000 工厂的方法带出）</td><td>创建生产订单时如何排程。教材原文：它可以分配给物料（物料主数据的工作排程屏幕）或生产调度员（后台），<b>分配给物料的优先级更高</b></td></tr><tr><td><b>生产调度员</b> Production Scheduler <code>999</code></td><td>任务 02</td><td>在生产作业控制中对某类物料的责任归属（教材值：P999 | 999 | 生产调度员颐宁 | 000001）</td><td>物料主数据 MRP 视图里的默认值；按调度员筛选订单与参数</td></tr><tr><td><b>工作中心</b> Work Center <code>9991</code>–<code>9996</code></td><td>任务 12/13</td><td>执行工序的资源：9991 物料准备、9992 切割、9993 油漆、9994 预装配、9995 装配、9996 校验和交付</td><td>工序在哪儿做、用哪套标准值公式、能力需求怎么算、成本进哪个成本中心</td></tr><tr><td><b>能力</b> Capacity（<code>LABOR</code> 人工工时 · 机器工时）</td><td>任务 10/11</td><td>工厂层统一维护的能力，供各工作中心共享（教材特意说明「颐宁公司的各人工工作中心的资源是共享的」）</td><td>能力可用量与负荷、有限排程（打勾的能力才参与可用性检查）</td></tr><tr><td><b>工作中心负责人</b> Person Responsible</td><td>任务 08</td><td>教材只定义了一个负责人（颐宁工作中心负责人）</td><td>工作中心主数据里的责任人字段</td></tr><tr><td><b>控制码</b> Control Key <code>ZKM1</code></td><td>任务 09</td><td>控制工序要执行哪些业务功能（排程、能力需求、打印工票、返工、成本、确认方式、内外协）</td><td>工艺路线里每个工序的默认控制码（教材 9991–9996 都用 ZKM1）</td></tr></tbody></table></div>
+<h2 id="avail">③ 可用性检查结构（教材任务 29–31）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>对象</th><th>教材值</th><th>含义</th></tr></thead><tbody><tr><td>可用性<b>检查组</b></td><td><code>02</code>（用系统预设的）</td><td>按物料分组，决定检查时要看哪些库存与移动（任务 29）</td></tr><tr><td>可用性<b>检查范围</b></td><td><code>02</code> 检查组 + <code>PP</code> 检查规则（双击进入维护）</td><td>定义哪些库存（例如质检库存算可用、安全库存不算）与哪些收发货参与检查（任务 30）</td></tr><tr><td>可用性<b>检查控制</b></td><td><code>PP01</code> / <code>PP02</code>（复制模板工厂 0001 的两行）</td><td>按订单类型决定何时自动检查物料 / PRT / 产能的可用性（任务 31）</td></tr><tr><td>物料主数据里的分配</td><td>MRP 视图的「可用性检查组」</td><td>任务 16 的生产计划视图里就能看到这个字段</td></tr></tbody></table></div>
+<div class="note warn"><span class="t">教材的结论要背下来</span>颐宁工厂的标准生产订单 <code>PP01</code> 在<b>创建时不自动</b>检查三种可用性（物料 / PRT / 产能），但这<b>并不禁止</b>手工触发可用性检查 —— 「不自动」和「不允许」是两件事（任务 31 原话）。</div>
+<h2 id="effect">组织数据决定了什么（背下来这一张）</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>问题</th><th>答案由谁决定</th></tr></thead><tbody><tr><td>这张生产订单在哪个工厂、由谁负责？</td><td>工厂 P999 + 生产调度员 999 + 物料主数据的 MRP 视图</td></tr><tr><td>排程日期怎么算出来的？</td><td>生产计划参数文件 / 排程参数（任务 01/03）+ 工艺路线的标准值与公式</td></tr><tr><td>这个工序要报工吗、要算成本吗？</td><td>工艺路线工序上的控制码 <code>ZKM1</code>（任务 09）</td></tr><tr><td>能力需求怎么算、能不能做有限排程？</td><td>工作中心 + 能力（任务 10/11/12）+ 能力类别 002 工时</td></tr><tr><td>作业成本进哪个成本中心、什么价格？</td><td>工作中心链接的成本中心（<code>1001</code>）+ CO 的作业价格 <code>KP26</code></td></tr><tr><td>创建/下达订单时要不要检查库存？</td><td>可用性检查组 02 + 检查规则 PP + 检查控制 PP01（任务 29–31）</td></tr><tr><td>销售订单要不要消耗独立需求？</td><td>物料主数据 MRP3 视图的<b>计划策略组</b> 40（任务 32）</td></tr></tbody></table></div>
+<h2 id="shots">教材画面（组织与后台参数）</h2>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/pp/t01/01_1_image777.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t01/01_1_image777.png" width="347" height="468" alt="任务 01 定义生产计划参数文件（复制 1000 工厂）" loading="lazy"></a><figcaption><span class="n">画面 1</span><span class="cap">任务 01 定义生产计划参数文件（复制 1000 工厂）</span><span class="src">教材《S4.docx》· PP 任务 01 定义生产计划参数文件 · 原图 01_1_image777.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t02/01_1_image783.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t02/01_1_image783.png" width="345" height="419" alt="任务 02 定义生产调度员 999 / P999" loading="lazy"></a><figcaption><span class="n">画面 2</span><span class="cap">任务 02 定义生产调度员 999 / P999</span><span class="src">教材《S4.docx》· PP 任务 02 定义生产调度员 · 原图 01_1_image783.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t09/03_1_image809.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t09/03_1_image809.png" width="646" height="499" alt="任务 09 控制码 ZKM1 颐宁工作中心控制码" loading="lazy"></a><figcaption><span class="n">画面 3</span><span class="cap">任务 09 控制码 ZKM1 颐宁工作中心控制码</span><span class="src">教材《S4.docx》· PP 任务 09 定义工作中心的控制码 · 原图 03_1_image809.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t10/02_1_image814.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t10/02_1_image814.png" width="598" height="665" alt="任务 10 人工工时能力：能力类别 002 工时、能力 LABOR" loading="lazy"></a><figcaption><span class="n">画面 4</span><span class="cap">任务 10 人工工时能力：能力类别 002 工时、能力 LABOR</span><span class="src">教材《S4.docx》· PP 任务 10 新建人工工时能力 · 原图 02_1_image814.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t12/17_1_image838.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t12/17_1_image838.png" width="600" height="530" alt="任务 12 工作中心 9996 校验和交付（人工工时）" loading="lazy"></a><figcaption><span class="n">画面 5</span><span class="cap">任务 12 工作中心 9996 校验和交付（人工工时）</span><span class="src">教材《S4.docx》· PP 任务 12 新建人工工时类别工作中心 · 原图 17_1_image838.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t13/06_1_image848.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t13/06_1_image848.png" width="621" height="628" alt="任务 13 工作中心 9994 预装配（机器工时，链接成本中心 1001）" loading="lazy"></a><figcaption><span class="n">画面 6</span><span class="cap">任务 13 工作中心 9994 预装配（机器工时，链接成本中心 1001）</span><span class="src">教材《S4.docx》· PP 任务 13 新建机器工时类别工作中心 · 原图 06_1_image848.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t30/03_1_image965.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t30/03_1_image965.png" width="673" height="632" alt="任务 30 可用性检查范围：检查组 02 + 检查规则 PP" loading="lazy"></a><figcaption><span class="n">画面 7</span><span class="cap">任务 30 可用性检查范围：检查组 02 + 检查规则 PP</span><span class="src">教材《S4.docx》· PP 任务 30 定义可用性检查范围 · 原图 03_1_image965.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t31/02_1_image968.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t31/02_1_image968.png" width="600" height="524" alt="任务 31 可用性检查控制：复制工厂 0001 的 PP01/PP02" loading="lazy"></a><figcaption><span class="n">画面 8</span><span class="cap">任务 31 可用性检查控制：复制工厂 0001 的 PP01/PP02</span><span class="src">教材《S4.docx》· PP 任务 31 定义可用性检查控制 · 原图 02_1_image968.png</span></figcaption></figure></div>
+<p class="muted">要做这些后台配置，先按 <a href="master.html">主数据页</a> 弄清「哪个字段在哪一层」，再打开 <a href="config.html">配置篇</a> 的任务 01–13 照着做。</p>
+</article>
+</main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <h5>SAP PP 培训课程</h5>
+        <p>生产计划：需求 · 计划 · 执行 · 成本</p>
+        <p>课程总览：<a href="../index.html">SAP 模块培训课程（MM · PP · FI · CO）</a></p>
+      </div>
+      <div>
+        <h5>课程板块</h5>
+        <p><a href="concept.html">概念</a> · <a href="org.html">组织</a> ·
+        <a href="master.html">主数据</a> · <a href="flow.html">流程</a> ·
+        <a href="planning.html">计划</a> · <a href="config.html">配置</a></p>
+      </div>
+      <div>
+        <h5>课堂配套</h5>
+        <p><a href="practice.html">实训任务</a> · <a href="instructor.html">讲师版</a> ·
+        <a href="worksheet.html">学员版</a> · <a href="quiz.html">自测</a> ·
+        <a href="glossary.html">术语表</a></p>
+      </div>
+      <div>
+        <h5>看图说话</h5>
+        <p>截图取自教材《S4.docx》的真实 SAP GUI 画面（中文界面，保留原文件名可回查）；
+        流程图、结构图、思维导图为本站自绘 SVG。标准值随版本/行业方案而异，
+        页面标注的「在自系统里怎么确认」请在自己的系统里核对。</p>
+        <p>其他模块：<a href="../mm/index.html">MM 物料管理</a> · <a href="../fi/index.html">FI 财务会计</a> · <a href="../co/index.html">CO 管理会计</a> · </p>
+      </div>
+    </div>
+    <p class="copy">© <span data-year>2026</span> SAP PP 培训课程 · 静态站点，可离线使用</p>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/mod.js"></script>
+</body>
+</html>

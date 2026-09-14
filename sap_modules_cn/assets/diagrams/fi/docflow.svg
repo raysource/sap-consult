@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 252" width="1280" height="252" role="img" aria-label="记账路线：业务动作 → 会计凭证 → 过账 → 余额 → 报表" font-family="'PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<title>记账路线：业务动作 → 会计凭证 → 过账 → 余额 → 报表</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0a6ed1"/></marker><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#007272"/></marker><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffffff"/></marker><marker id="arback" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M10,0 L0,5 L10,10 z" fill="#b3261e"/></marker></defs>
+<rect width="1280" height="252" fill="#ffffff"/>
+<text x="40.0" y="46.0" font-size="22" fill="#1d2d3e" text-anchor="start" font-weight="700">记账路线：业务动作 → 会计凭证 → 过账 → 余额 → 报表</text>
+<text x="40.0" y="72.0" font-size="12.5" fill="#6b7a8d" text-anchor="start" font-weight="400">教材 FI 的手工动作只有 FB50 / FB70 / FB60 三处，其余由系统或其他模块产生</text>
+<rect x="40.0" y="104.0" width="150.0" height="51.0" rx="9" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.5"/>
+<circle cx="58.0" cy="122.0" r="12" fill="#0a6ed1"/><text x="58.0" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">1</text>
+<text x="76.0" y="127.0" font-size="14" fill="#0a6ed1" text-anchor="start" font-weight="700">业务动作</text>
+<text x="52.0" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">FB50 手工 · MM 收货</text>
+<text x="52.0" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">101 · SD 开票 · PP</text>
+<text x="52.0" y="180.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">发料</text>
+<path d="M 192 130 H 216" fill="none" stroke="#0a6ed1" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="220.0" y="104.0" width="150.0" height="51.0" rx="9" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.5"/>
+<circle cx="238.0" cy="122.0" r="12" fill="#0a6ed1"/><text x="238.0" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">2</text>
+<text x="256.0" y="127.0" font-size="14" fill="#0a6ed1" text-anchor="start" font-weight="700">会计凭证</text>
+<text x="232.0" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">抬头 BKPF + 行项目</text>
+<text x="232.0" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">BSEG，凭证类型定号码</text>
+<text x="232.0" y="180.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">范围</text>
+<path d="M 372 130 H 396" fill="none" stroke="#0a6ed1" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="400.0" y="104.0" width="150.0" height="51.0" rx="9" fill="#fdeae9" stroke="#b3261e" stroke-width="1.5"/>
+<circle cx="418.0" cy="122.0" r="12" fill="#b3261e"/><text x="418.0" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">3</text>
+<text x="436.0" y="127.0" font-size="14" fill="#b3261e" text-anchor="start" font-weight="700">过账</text>
+<text x="412.0" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">读期间开关；这一步才</text>
+<text x="412.0" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">更新余额与未清项</text>
+<path d="M 552 130 H 576" fill="none" stroke="#b3261e" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="580.0" y="104.0" width="150.0" height="51.0" rx="9" fill="#fdf3d7" stroke="#8d6e00" stroke-width="1.5"/>
+<circle cx="598.0" cy="122.0" r="12" fill="#8d6e00"/><text x="598.0" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">4</text>
+<text x="616.0" y="127.0" font-size="14" fill="#8d6e00" text-anchor="start" font-weight="700">余额与未清项</text>
+<text x="592.0" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">FS10N 科目余额 ·</text>
+<text x="592.0" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">FD10N/FK10N</text>
+<text x="592.0" y="180.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">客户供应商余额</text>
+<path d="M 732 130 H 756" fill="none" stroke="#8d6e00" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="760.0" y="104.0" width="150.0" height="51.0" rx="9" fill="#e6f2ec" stroke="#177245" stroke-width="1.5"/>
+<circle cx="778.0" cy="122.0" r="12" fill="#177245"/><text x="778.0" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">5</text>
+<text x="796.0" y="127.0" font-size="14" fill="#177245" text-anchor="start" font-weight="700">收付款清账</text>
+<text x="772.0" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">F-28 收款 / F-53</text>
+<text x="772.0" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">付款：未清项变已清项</text>
+<path d="M 912 130 H 936" fill="none" stroke="#177245" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="940.0" y="104.0" width="150.0" height="51.0" rx="9" fill="#efeaf9" stroke="#5b3fa8" stroke-width="1.5"/>
+<circle cx="958.0" cy="122.0" r="12" fill="#5b3fa8"/><text x="958.0" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">6</text>
+<text x="976.0" y="127.0" font-size="14" fill="#5b3fa8" text-anchor="start" font-weight="700">期末与报表</text>
+<text x="952.0" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">余额表 → 报表结构 →</text>
+<text x="952.0" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">资产负债表/损益表</text>
+<rect x="40.0" y="204.0" width="1200.0" height="34.5" rx="8" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="52.0" y="226.0" font-size="12.5" fill="#0854a0" text-anchor="start" font-weight="400">教材的证据链：任务 20 的凭证 100000000（借 10020101 / 贷 31010101）→ 任务 36 的客户余额 58.000,00 → 任务 42 的科目余额表 → 任务 45 的资产负债表（资产 223.680 / 权益 223.680）。</text>
+</svg>

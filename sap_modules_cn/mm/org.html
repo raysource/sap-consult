@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>组织结构 · SAP MM 培训课程</title>
+<meta name="description" content="SAP MM（物料管理）培训课程：概念与定位 → 组织结构（工厂/库存地点/采购组织/采购组）→ 主数据（物料/供应商/采购信息记录）→ 端到端采购流程（请购·采购订单·收货·发票校验·付款）→ 分步操作手顺 → SPRO 配置（42 个任务）→ 实训与自测。截图取自教材《S4.docx》的真实 SAP GUI 画面。">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mod.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MM</span><span class="txt">培训课程</span></a>
+    <nav class="main">
+      <a href="index.html" title="课程地图与学习路线">首页</a>
+      <a href="concept.html" title="MM 是什么、三大职能、五类凭证">概念</a>
+      <a class="active" href="org.html" title="企业结构 / 采购结构 / 计划与评估结构">组织</a>
+      <a href="master.html" title="物料 / 供应商 / 采购信息记录">主数据</a>
+      <a href="flow.html" title="端到端采购流程与单据流">流程</a>
+      <a href="purchase.html" title="请购 · 采购订单 · 货源与信息记录">采购</a>
+      <a href="inventory.html" title="收货 · 发货 · 转储 · 移动类型与库存总览">库存</a>
+      <a href="invoice.html" title="MIRO · 差异与容差 · 冻结发票下达 · 三单匹配">发票校验</a>
+      <a href="config.html" title="SPRO 配置路线（42 个任务）">配置</a>
+      <a href="practice.html" title="动手任务与完成基准">实训</a>
+      <a href="instructor.html" title="课时 / 板书 / 必问 / 评分">讲师</a>
+      <a href="worksheet.html" title="记入表（可打印）">学员</a>
+      <a href="quiz.html" title="30 题自评（合格 75%）">自测</a>
+      <a href="glossary.html" title="中英对照 / T-code / 常用表">术语</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page">
+<article>
+<p class="breadcrumb"><a href="index.html">课程地图</a> / <span>组织结构</span></p>
+<div class="filterbar modsw"><a class="chip on" href="../mm/index.html" title="SAP MM 培训课程">MM 物料管理</a><a class="chip" href="../pp/index.html" title="SAP PP 培训课程">PP 生产计划</a><a class="chip" href="../fi/index.html" title="SAP FI 培训课程">FI 财务会计</a><a class="chip" href="../co/index.html" title="SAP CO 培训课程">CO 管理会计</a><a class="chip" href="../index.html" title="四个模块的总体视图与学习路线">总览</a></div>
+<h1>组织结构</h1>
+<p class="kicker">公司代码 / 工厂 / 库存地点 / 采购组织 / 采购组 —— 先给数据定坐标</p>
+<p class="lead">组织数据是 SAP 的「坐标系」：它先在后台把公司代码、工厂、采购组织这些「格子」画好，之后每一张主数据和每一张单据都挂在这些格子上。教材的 MM 模块前 8 个任务全在做这件事，顺序不能颠倒。</p>
+<div class="toc"><a href="#tree">三层结构</a><a href="#ent">企业结构</a><a href="#pur">采购结构</a><a href="#assign">分配关系</a><a href="#effect">组织数据决定什么</a><a href="#shots">教材画面</a></div>
+<h2 id="tree">三层结构一张图</h2>
+<figure class="dia wide"><a class="zoom" href="../assets/diagrams/mm/org.svg"><img src="../assets/diagrams/mm/org.svg" alt="MM 的组织结构：企业结构 → 采购结构 → 计划结构，以及它们之间的分配" loading="lazy"></a><figcaption><span class="n">自绘组织结构图</span><span class="cap">MM 的组织结构：企业结构 → 采购结构 → 计划结构，以及它们之间的分配</span><span class="src">本站自绘 SVG</span></figcaption></figure>
+<h2 id="ent">① 企业结构（Enterprise Structure）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>对象</th><th>教材任务</th><th>含义</th><th>MM 里决定什么</th></tr></thead><tbody><tr><td><b>公司代码</b> Company Code <code>C999</code></td><td>（FI 任务 01 建）</td><td>对外出具财务报表的最小法人单位</td><td>会计凭证落在哪套账上</td></tr><tr><td><b>工厂</b> Plant <code>P999</code></td><td>任务 01</td><td>生产/库存的场所；在 MM 中也是<b>评估范围</b>（物料价值按工厂算）</td><td>库存地点、物料评估、自动记账科目（可再归组成评估分组代码）</td></tr><tr><td><b>库存地点</b> Storage Location <code>0001/0002/0003</code></td><td>任务 02</td><td>工厂内具体存放位置（仓库/生产/运输）</td><td>收货、发货、转储时的必填项；物料的库存地点视图</td></tr><tr><td><b>物料组</b> Material Group</td><td>任务 09</td><td>按用途/品类对物料分组，用于统计与采购分析</td><td>物料主数据必填、采购分析维度</td></tr><tr><td><b>MRP 控制者</b> MRP Controller <code>001/002</code></td><td>任务 05</td><td>负责某类物料计划的人/岗位</td><td>物料主数据 MRP 视图的必填项，MD04/MD05 的筛选键</td></tr></tbody></table></div>
+<div class="note tip"><span class="t">怎么在自己系统里看</span>工厂清单：<code>OX10</code>（或 IMG 企业结构 → 定义 → 后勤常规 → 定义、复制、删除、检查工厂）；库存地点：<code>OX09</code>；公司代码 <code>OX02</code>。已分配关系：<code>OX18</code>（工厂→公司代码）、<code>OX01</code>（采购组织→公司代码）。</div>
+<h2 id="pur">② 采购结构（Purchasing Structure）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>对象</th><th>教材任务</th><th>含义</th><th>决定什么</th></tr></thead><tbody><tr><td><b>采购组织</b> Purchasing Organization <code>Y999</code></td><td>任务 03</td><td>为工厂采购、并与供应商谈条件的组织单位（教材：颐宁采购组织）</td><td>采购订单的归属、物料主数据采购视图、信息记录的组织层</td></tr><tr><td><b>采购组</b> Purchasing Group <code>PG1/PG2</code></td><td>任务 04</td><td>采购组织内部「谁负责买」的分组（PG1 原材料和运营供应 / PG2 贸易商品）</td><td>订单、请购、信息记录上的采购组字段（统计与权限）</td></tr></tbody></table></div>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>分配关系</th><th>教材任务</th><th>基数</th><th>含义</th></tr></thead><tbody><tr><td>工厂 → 公司代码</td><td>任务 06</td><td>多对一</td><td>工厂的账落在哪个公司代码（教材：P999 → C999）</td></tr><tr><td>采购组织 → 公司代码</td><td>任务 07</td><td>多对一</td><td>采购组织的采购行为记在哪个公司代码下</td></tr><tr><td>工厂 → 采购组织</td><td>任务 08</td><td>多对多</td><td>哪些采购组织可以为这个工厂采购（教材：Y999 ↔ P999）；一个采购组织可以同时服务几个工厂</td></tr></tbody></table></div>
+<h2 id="assign">③ 计划与评估结构（教材任务 10–21）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>对象</th><th>教材任务</th><th>作用</th></tr></thead><tbody><tr><td>计划边际码（浮点）</td><td>任务 10</td><td>在操作、产前、产后、订单下达各阶段各留 1 天缓冲 —— 防「刚好来不及」</td></tr><tr><td>工厂参数（库存侧）</td><td>任务 11/12</td><td>预留的提前/过期可用天数、是否<b>自动创建</b>物料的库存地点视图</td></tr><tr><td>税务代码缺省值</td><td>任务 13</td><td>发票校验默认带出 13% 增值税（中国税法）</td></tr><tr><td>MM 初始期间</td><td>任务 14</td><td>物料账只能按月开、逐月往后开；上线时设定初始期间（如 2021.12 上线则设为 2021.11）</td></tr><tr><td>工厂参数（MRP 侧）</td><td>任务 15/16/17</td><td>由 0001 模板工厂复制到 P999；激活 MRP；定义 MRP 清单/计划运行的号码范围</td></tr><tr><td>物料类型属性</td><td>任务 18</td><td>HAWA / ROH / FERT 等在各工厂是否更新数量与价值</td></tr><tr><td>评估控制与评估分组代码</td><td>任务 19/20</td><td>允许把工厂归组（评估分组代码 CN01）统一维护自动记账规则</td></tr><tr><td>评估类</td><td>任务 21</td><td>「这个物料记到哪个存货科目」的第二个键（3000 / 3100 / 7920）</td></tr></tbody></table></div>
+<h2 id="effect">组织数据决定了什么（背下来这一张）</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>问题</th><th>答案由谁决定</th></tr></thead><tbody><tr><td>这个物料在哪个工厂有库存、值多少钱？</td><td>工厂（= 评估范围）+ 物料 → 物料评估（MBEW）</td></tr><tr><td>收货物料该记到哪个存货科目？</td><td>评估分组代码/评估范围 + 评估类 + 移动类型 → 自动记账（OBYC）</td></tr><tr><td>这张采购订单属于谁、谁负责？</td><td>采购组织 + 采购组 + 工厂</td></tr><tr><td>发票校验默认什么税码？</td><td>税码缺省值配置（任务 13）+ 供应商/物料税分类</td></tr><tr><td>谁能看到/审批这张请购？</td><td>组织数据 + 权限 + 释放策略</td></tr><tr><td>MRP 跑出来的请购交给谁跟？</td><td>MRP 控制者 + 采购组</td></tr></tbody></table></div>
+<h2 id="shots">教材画面（组织与后台参数）</h2>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/mm/t01/01_1_image524.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t01/01_1_image524.png" width="388" height="410" alt="任务 01 定义工厂（复制 0001）" loading="lazy"></a><figcaption><span class="n">画面 1</span><span class="cap">任务 01 定义工厂（复制 0001）</span><span class="src">教材《S4.docx》· MM 任务 01 创建工厂 · 原图 01_1_image524.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t02/04_1_image534.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t02/04_1_image534.png" width="377" height="252" alt="任务 02 维护仓储地点" loading="lazy"></a><figcaption><span class="n">画面 2</span><span class="cap">任务 02 维护仓储地点</span><span class="src">教材《S4.docx》· MM 任务 02 创建库存地点 · 原图 04_1_image534.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t03/03_1_image537.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t03/03_1_image537.png" width="365" height="249" alt="任务 03 维护采购组织 Y999" loading="lazy"></a><figcaption><span class="n">画面 3</span><span class="cap">任务 03 维护采购组织 Y999</span><span class="src">教材《S4.docx》· MM 任务 03 创建采购组织 · 原图 03_1_image537.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t04/03_1_image540.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t04/03_1_image540.png" width="630" height="205" alt="任务 04 创建采购组 PG1/PG2" loading="lazy"></a><figcaption><span class="n">画面 4</span><span class="cap">任务 04 创建采购组 PG1/PG2</span><span class="src">教材《S4.docx》· MM 任务 04 创建采购组 · 原图 03_1_image540.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t05/03_1_image544.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t05/03_1_image544.png" width="539" height="504" alt="任务 05 定义 MRP 控制者 001/002" loading="lazy"></a><figcaption><span class="n">画面 5</span><span class="cap">任务 05 定义 MRP 控制者 001/002</span><span class="src">教材《S4.docx》· MM 任务 05 定义MRP 控制者 · 原图 03_1_image544.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t06/03_1_image547.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t06/03_1_image547.png" width="636" height="179" alt="任务 06 给公司代码分配工厂（C999 ← P999）" loading="lazy"></a><figcaption><span class="n">画面 6</span><span class="cap">任务 06 给公司代码分配工厂（C999 ← P999）</span><span class="src">教材《S4.docx》· MM 任务 06 分配工厂到公司代码 · 原图 03_1_image547.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t07/03_1_image550.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t07/03_1_image550.png" width="638" height="179" alt="任务 07 给公司代码分配采购组织" loading="lazy"></a><figcaption><span class="n">画面 7</span><span class="cap">任务 07 给公司代码分配采购组织</span><span class="src">教材《S4.docx》· MM 任务 07 分配采购组织到公司代码 · 原图 03_1_image550.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t08/02_1_image553.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t08/02_1_image553.png" width="617" height="210" alt="任务 08 给工厂分配采购组织（Y999 ↔ P999）" loading="lazy"></a><figcaption><span class="n">画面 8</span><span class="cap">任务 08 给工厂分配采购组织（Y999 ↔ P999）</span><span class="src">教材《S4.docx》· MM 任务 08 分配工厂到采购组织 · 原图 02_1_image553.png</span></figcaption></figure></div>
+<p class="muted">要做这些后台配置，先按 <a href="concept.html#star">概念页</a> 弄清组织层，再打开 <a href="config.html">配置篇</a> 的任务 01–08 照着做。</p>
+</article>
+</main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <h5>SAP MM 培训课程</h5>
+        <p>物料管理：采购 · 库存 · 发票校验</p>
+        <p>课程总览：<a href="../index.html">SAP 模块培训课程（MM · PP · FI · CO）</a></p>
+      </div>
+      <div>
+        <h5>课程板块</h5>
+        <p><a href="concept.html">概念</a> · <a href="org.html">组织</a> ·
+        <a href="master.html">主数据</a> · <a href="flow.html">流程</a> ·
+        <a href="purchase.html">采购</a> · <a href="config.html">配置</a></p>
+      </div>
+      <div>
+        <h5>课堂配套</h5>
+        <p><a href="practice.html">实训任务</a> · <a href="instructor.html">讲师版</a> ·
+        <a href="worksheet.html">学员版</a> · <a href="quiz.html">自测</a> ·
+        <a href="glossary.html">术语表</a></p>
+      </div>
+      <div>
+        <h5>看图说话</h5>
+        <p>截图取自教材《S4.docx》的真实 SAP GUI 画面（中文界面，保留原文件名可回查）；
+        流程图、结构图、思维导图为本站自绘 SVG。标准值随版本/行业方案而异，
+        页面标注的「在自系统里怎么确认」请在自己的系统里核对。</p>
+        <p>其他模块：<a href="../pp/index.html">PP 生产计划</a> · <a href="../fi/index.html">FI 财务会计</a> · <a href="../co/index.html">CO 管理会计</a> · </p>
+      </div>
+    </div>
+    <p class="copy">© <span data-year>2026</span> SAP MM 培训课程 · 静态站点，可离线使用</p>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/mod.js"></script>
+</body>
+</html>

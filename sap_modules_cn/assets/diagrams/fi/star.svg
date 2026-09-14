@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 780" width="1280" height="780" role="img" aria-label="FI 与 MM / SD / PP / CO 的交接" font-family="'PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<title>FI 与 MM / SD / PP / CO 的交接</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0a6ed1"/></marker><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#007272"/></marker><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffffff"/></marker><marker id="arback" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M10,0 L0,5 L10,10 z" fill="#b3261e"/></marker></defs>
+<rect width="1280" height="780" fill="#ffffff"/>
+<text x="40.0" y="46.0" font-size="22" fill="#1d2d3e" text-anchor="start" font-weight="700">FI 与 MM / SD / PP / CO 的交接</text>
+<text x="40.0" y="72.0" font-size="12.5" fill="#6b7a8d" text-anchor="start" font-weight="400">双向箭头：箭头指向谁 = 谁拿到东西；标签写清「它给我们 / 我们给它」</text>
+<line x1="794.0" y1="400.0" x2="869.0" y2="400.0" stroke="#007272" stroke-width="1.8" marker-end="url(#ar)" marker-start="url(#arback)"/>
+<rect x="865.0" y="340.0" width="330.0" height="120.0" rx="9" fill="#e6f2f2" stroke="#007272" stroke-width="1.4"/>
+<text x="877.0" y="364.0" font-size="14" fill="#007272" text-anchor="start" font-weight="700">MM 物料管理</text>
+<text x="877.0" y="384.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">它给我们：总账科目主数据、自动记账科目、容差组、付款</text>
+<text x="877.0" y="400.0" font-size="11.5" fill="#6b7a8d" text-anchor="start" font-weight="400">我们给它：收货（101）与发票校验（MIRO）自动生成的会</text>
+<text x="877.0" y="416.0" font-size="11.5" fill="#6b7a8d" text-anchor="start" font-weight="400">计凭证</text>
+<line x1="794.0" y1="400.0" x2="754.8" y2="612.1" stroke="#0a6ed1" stroke-width="1.8" marker-end="url(#ar)" marker-start="url(#arback)"/>
+<rect x="750.8" y="552.1" width="330.0" height="120.0" rx="9" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.4"/>
+<text x="762.8" y="576.1" font-size="14" fill="#0a6ed1" text-anchor="start" font-weight="700">SD 销售与分销</text>
+<text x="762.8" y="596.1" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">它给我们：客户主数据（公司代码层）、收入科目、税码、</text>
+<text x="762.8" y="612.1" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">信用范围</text>
+<text x="762.8" y="628.1" font-size="11.5" fill="#6b7a8d" text-anchor="start" font-weight="400">我们给它：开票产生的应收、收入与销项税凭证</text>
+<line x1="486.0" y1="400.0" x2="525.2" y2="612.1" stroke="#5b3fa8" stroke-width="1.8" marker-end="url(#ar)" marker-start="url(#arback)"/>
+<rect x="199.2" y="552.1" width="330.0" height="120.0" rx="9" fill="#efeaf9" stroke="#5b3fa8" stroke-width="1.4"/>
+<text x="211.2" y="576.1" font-size="14" fill="#5b3fa8" text-anchor="start" font-weight="700">PP 生产计划</text>
+<text x="211.2" y="596.1" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">它给我们：生产成本科目、成本要素（科目表集成时自动创</text>
+<text x="211.2" y="612.1" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">建）</text>
+<text x="211.2" y="628.1" font-size="11.5" fill="#6b7a8d" text-anchor="start" font-weight="400">我们给它：生产订单发料（261）与产成品收货、订单结算</text>
+<text x="211.2" y="644.1" font-size="11.5" fill="#6b7a8d" text-anchor="start" font-weight="400">的凭证</text>
+<line x1="486.0" y1="400.0" x2="411.0" y2="400.0" stroke="#8d6e00" stroke-width="1.8" marker-end="url(#ar)" marker-start="url(#arback)"/>
+<rect x="85.0" y="340.0" width="330.0" height="120.0" rx="9" fill="#fdf3d7" stroke="#8d6e00" stroke-width="1.4"/>
+<text x="97.0" y="364.0" font-size="14" fill="#8d6e00" text-anchor="start" font-weight="700">CO 管理会计</text>
+<text x="97.0" y="384.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">它给我们：总账科目与成本要素、费用科目属性</text>
+<text x="97.0" y="400.0" font-size="11.5" fill="#6b7a8d" text-anchor="start" font-weight="400">我们给它：分配/分摊/结算实时过账回</text>
+<text x="97.0" y="416.0" font-size="11.5" fill="#6b7a8d" text-anchor="start" font-weight="400">FI（成本中心的对方科目）</text>
+<rect x="490.0" y="325.0" width="300.0" height="150.0" rx="14" fill="#0854a0" stroke="#0854a0" stroke-width="1.4"/>
+<text x="640.0" y="382.0" font-size="26" fill="#ffffff" text-anchor="middle" font-weight="700">SAP FI</text>
+<text x="640.0" y="410.0" font-size="15" fill="#dbeafd" text-anchor="middle" font-weight="400">财务会计</text>
+<text x="640.0" y="436.0" font-size="12" fill="#a9cdf3" text-anchor="middle" font-weight="400" font-family="'SF Mono',Menlo,Consolas,monospace">Financial Accounting</text>
+<rect x="40.0" y="730.0" width="1200.0" height="34.5" rx="8" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="52.0" y="752.0" font-size="12.5" fill="#0854a0" text-anchor="start" font-weight="400">记住一句话：FI 不产生业务，它接住业务 —— MM 收货、SD 开票、PP 发料、CO 结算都会在 FI 生成会计凭证；所以看一张凭证先问「这是谁的动作引起的」。</text>
+</svg>

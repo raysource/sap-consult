@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念与定位 · SAP CO 培训课程</title>
+<meta name="description" content="SAP CO（管理会计）培训课程：概念与定位（CO 与 FI 的分工）→ 组织结构（成本控制范围/标准层次/成本中心组）→ 主数据（成本要素/作业类型/统计指标/结算参数文件）→ 成本流（费用归集 → 重过账 → 分配分摊 → 结算 → 报表）+ 内部订单与产品成本 → 分步操作手顺 → SPRO 配置（34 个任务）→ 实训与自测。截图取自教材《S4.docx》的真实 SAP GUI 画面。">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mod.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">CO</span><span class="txt">培训课程</span></a>
+    <nav class="main">
+      <a href="index.html" title="课程地图与学习路线">首页</a>
+      <a class="active" href="concept.html" title="CO 是什么、成本要素、与 FI 的分工">概念</a>
+      <a href="org.html" title="成本控制范围 / 标准层次 / 成本中心组">组织</a>
+      <a href="master.html" title="成本要素 / 成本中心 / 作业类型 / 统计指标">主数据</a>
+      <a href="flow.html" title="成本流与月结顺序">流程</a>
+      <a href="cca.html" title="成本要素 · 作业价格 · 重过账 · 分配与分摊">成本中心</a>
+      <a href="io.html" title="KO04 建单 · 归集费用 · KO88 结算">内部订单</a>
+      <a href="pc.html" title="CK11N/CK24 标准成本 · 订单成本 · 差异">产品成本</a>
+      <a href="config.html" title="SPRO 配置路线（34 个任务）">配置</a>
+      <a href="practice.html" title="动手任务与完成基准">实训</a>
+      <a href="instructor.html" title="课时 / 板书 / 必问 / 评分">讲师</a>
+      <a href="worksheet.html" title="记入表（可打印）">学员</a>
+      <a href="quiz.html" title="30 题自评（合格 75%）">自测</a>
+      <a href="glossary.html" title="中英对照 / T-code / 常用表">术语</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page">
+<article>
+<p class="breadcrumb"><a href="index.html">课程地图</a> / <span>概念与定位</span></p>
+<div class="filterbar modsw"><a class="chip" href="../mm/index.html" title="SAP MM 培训课程">MM 物料管理</a><a class="chip" href="../pp/index.html" title="SAP PP 培训课程">PP 生产计划</a><a class="chip" href="../fi/index.html" title="SAP FI 培训课程">FI 财务会计</a><a class="chip on" href="../co/index.html" title="SAP CO 培训课程">CO 管理会计</a><a class="chip" href="../index.html" title="四个模块的总体视图与学习路线">总览</a></div>
+<h1>概念与定位</h1>
+<p class="kicker">CO 是什么：四大子模块、成本要素与成本对象、与 FI 的分工</p>
+<p class="lead">先回答三个问题：CO 到底管什么？它产出什么凭证？它的边界在哪里。</p>
+<div class="toc"><a href="#def">一句话定义</a><a href="#func">四大子模块</a><a href="#docs">成本要素与对象清单</a><a href="#chain">成本流一张图</a><a href="#star">与邻居模块的分界</a><a href="#mistakes">12 个常见误解</a><a href="#shots">教材画面</a></div>
+<h2 id="def">一句话定义</h2>
+<div class="box info"><b class="t">CO = Controlling（管理会计）</b><p>管「企业内部的钱花在哪里」：<b>哪个成本中心花了多少（成本中心会计）、哪个项目花了多少（内部订单/项目）、这批货的成本是多少（产品成本）、哪个业务赚钱（获利能力分析）</b>。</p><p>CO 与 FI 用的是同一批原始数据，但目的不同：FI 面向外部报表（资产负债表、利润表），讲究科目与会计期间；CO 面向内部管理，讲究<b>成本对象</b>（成本中心、内部订单、生产订单）与<b>成本流</b>（费用从哪来、到哪去）。所以 CO 里既有「和 FI 科目一一对应的初级成本要素」，也有「只存在于 CO 的次级成本要素」。</p></div>
+<figure class="shot"><a class="zoom" href="../assets/img/co/t16/01_1_image432.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t16/01_1_image432.png" width="693" height="738" alt="成本中心：实际/计划/差异报表 —— CO 最常用的「这个部门花了多少」画面（任务 16）" loading="lazy"></a><figcaption><span class="n">画面 1</span><span class="cap">成本中心：实际/计划/差异报表 —— CO 最常用的「这个部门花了多少」画面（任务 16）</span><span class="src">教材《S4.docx》· CO 任务 16 运行成本中心报表 · 原图 01_1_image432.png</span></figcaption></figure>
+<h2 id="func">四大子模块</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>子模块</th><th>管什么</th><th>教材覆盖</th><th>典型事务码</th></tr></thead><tbody><tr><td><b>成本中心会计 CO-OM-CCA</b></td><td>成本要素、成本中心与标准层次、作业类型与作业价格、统计指标、重过账、分配与分摊、成本中心报表</td><td><b>本教材的主线（任务 01–26）</b></td><td><code>KA01</code> · <code>KL01</code> · <code>KP26</code> · <code>KB61</code> · <code>KSV5</code> · <code>KSU5</code></td></tr><tr><td><b>内部订单 CO-OM-OPA</b></td><td>订单类型与编号范围、订单归集费用、结算规则与结算参数文件、结算到成本中心等接收方</td><td><b>任务 27–34</b></td><td><code>KO04</code> · <code>KO88</code> · <code>KOB1</code></td></tr><tr><td><b>产品成本核算 CO-PC</b></td><td>物料标准成本估算（CK11N/CK24）、成本核算变式、生产订单成本与差异、实际成本核算</td><td><b>教材 CO 未演示</b>（作业价格与结算机制在 CCA/IO 里有对应画面）</td><td><code>CK11N</code> · <code>CK24</code> · <code>KO88</code></td></tr><tr><td><b>获利能力分析 CO-PA</b></td><td>按产品/客户/区域分析收入与成本（毛利分析）</td><td><b>教材未演示</b>（SD 站有销售侧流程）</td><td><code>KE30</code> 等</td></tr></tbody></table></div>
+<div class="note tip"><span class="t">教材的重点在哪里</span>这本教材的 CO 只讲了两条线：<b>成本中心会计</b>（任务 01–26，含分配与分摊）与<b>内部订单</b>（任务 27–34，含结算）。产品成本与获利能力分析只出现在它处 —— 教材任务 05 提到 41010901「生产成本－生产订单差异」用的是成本要素类别 「22 外部结算」，那就是生产订单结算留下的接口；本站 <a href="pc.html">产品成本篇</a> 把这条接口讲清楚，并标注哪些功能教材没演示。</div>
+<h2 id="docs">成本要素与成本对象清单：谁产生、用什么事务码</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>对象/凭证</th><th>谁产生</th><th>事务码</th><th>它的作用</th><th>对 FI 的影响</th></tr></thead><tbody><tr><td>初级成本要素 Primary Cost Element</td><td>管理会计（会计人员）</td><td><code>KA01</code>（任务 05）</td><td>与 FI 的损益类科目一一对应，是「费用进入 CO」的唯一通道</td><td>不产生凭证；它是科目在 CO 里的身份</td></tr><tr><td>次级成本要素 Secondary Cost Element</td><td>管理会计（会计人员）</td><td><code>KA06</code>（任务 06）</td><td>只在 CO 内部使用：作业分配（43 类）、分摊（42 类）、结算（21/22 类）</td><td>FI 里没有对应科目，不产生会计凭证</td></tr><tr><td>成本中心 / 成本中心组</td><td>管理会计</td><td><code>OKEON</code>（任务 04）</td><td>费用归集的最小责任单位（2001 财务部…）</td><td>无</td></tr><tr><td>作业类型与作业价格 Activity Type / Price</td><td>管理会计</td><td><code>KL01</code> · <code>KP26</code>（任务 10/12）</td><td>把成本中心的成本按「工时/机时」转换出去（LAB/MAC/SET）</td><td>无（内部计价）</td></tr><tr><td>统计指标 Statistical Key Figure</td><td>管理会计</td><td><code>KK01</code> · <code>KB31N</code>（任务 18/19）</td><td>记录面积/人数等非金额指标，作为分配与分摊的比例基数</td><td>无</td></tr><tr><td>CO 凭证 CO Document</td><td>系统（CO 过账时自动）</td><td><code>KB61</code> 重过账 · <code>KSV5</code> 分配 · <code>KSU5</code> 分摊 · <code>KO88</code> 结算</td><td>记录成本对象之间的成本流动；<b>分配与分摊不产生 FI 凭证</b></td><td>一般不产生（结算到固定总账科目时才产生）</td></tr><tr><td>费用凭证（带成本对象）</td><td>财务（会计人员）</td><td><code>FB60</code>（任务 14）· <code>FB50</code>（任务 15/32）</td><td>供应商发票/总账凭证，行项目上填成本中心或内部订单</td><td><b>产生</b> FI 会计凭证，同时把费用送进 CO</td></tr></tbody></table></div>
+<div class="note warn"><span class="t">最容易混的一点</span>「费用进了总账」不等于「费用进了成本中心」：<code>FB50</code>/<code>FB60</code> 的行项目上如果没填成本中心或内部订单（账户分配），这笔费用在 CO 里查不到 —— 教材任务 14/15 之所以天天在用，就是因为<b>成本对象的填写</b>才是 CO 的入口。</div>
+<h2 id="chain">成本流一张图</h2>
+<figure class="dia wide"><a class="zoom" href="../assets/diagrams/co/costchain.svg"><img src="../assets/diagrams/co/costchain.svg" alt="成本流：FI 费用 → 初级成本要素 → 成本中心/内部订单 → 重过账 / 分配 / 分摊 / 结算 → 报表" loading="lazy"></a><figcaption><span class="n">自绘流程图</span><span class="cap">成本流：FI 费用 → 初级成本要素 → 成本中心/内部订单 → 重过账 / 分配 / 分摊 / 结算 → 报表</span><span class="src">本站自绘 SVG</span></figcaption></figure>
+<h2 id="star">与邻居模块的分界</h2>
+<figure class="dia wide"><a class="zoom" href="../assets/diagrams/co/star.svg"><img src="../assets/diagrams/co/star.svg" alt="CO 的四个接口方向（本图与首页同一张）：谁给 CO 送成本、CO 给谁出结果" loading="lazy"></a><figcaption><span class="n">自绘集成图</span><span class="cap">CO 的四个接口方向（本图与首页同一张）：谁给 CO 送成本、CO 给谁出结果</span><span class="src">本站自绘 SVG</span></figcaption></figure>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>情况</th><th>该找谁</th></tr></thead><tbody><tr><td>要建会计科目、看资产负债表/利润表</td><td>FI（<code>FS00</code> 建科目，CO 只认损益类科目）</td></tr><tr><td>要在采购订单上填成本中心（费用类采购）</td><td>MM 的账户分配（<code>ME21N</code> 项目明细 → 账户分配）</td></tr><tr><td>要看物料标准成本、跑成本估算</td><td>CO-PC（<code>CK11N</code>/<code>CK24</code>，教材 CO 未演示）</td></tr><tr><td>要看生产订单成本与差异</td><td>CO 里的生产订单（<code>KO88</code>/差异科目 41010901），PP 侧负责建单与报工</td></tr><tr><td>要按客户/产品看毛利</td><td>CO-PA（教材未演示）</td></tr><tr><td>要改供应商发票的科目分录</td><td>FI（<code>FB60</code>），CO 只看它带来的成本对象</td></tr></tbody></table></div>
+<h2 id="mistakes">12 个常见误解</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>#</th><th>常见说法</th><th>实际上</th></tr></thead><tbody><tr><td>1</td><td>「CO 是另外一套账」</td><td>不是。CO 与 FI 共用数据：初级成本要素就是 FI 的损益类科目，费用凭证只有一张；CO 额外做的是「把这些费用分给成本对象」。</td></tr><tr><td>2</td><td>「费用记到成本中心就自动进产品成本了」</td><td>中间要经过作业价格（<code>KP26</code>）与结算；产品成本核算（CK11N/CK24）教材 CO 模块未演示，那是 CO-PC 的活。</td></tr><tr><td>3</td><td>「分配和分摊是一回事」</td><td>分配（<code>KSV5</code>）搬的是<b>初级成本要素</b>，成本形态不变（2006 的租金还是租金）；分摊（<code>KSU5</code>）用的是<b>次级成本要素</b>，接收方看到的是「电费分摊 802010」这类内部项目（教材任务 23 的原话）。</td></tr><tr><td>4</td><td>「改成本对象要冲销财务凭证」</td><td>不用。教材任务 17 用 <code>KB61</code> 重过账，把 90000 房租从 2001 改到 2006，FI 凭证不动 —— 这就是 CO「只管内部分配」的典型例子。</td></tr><tr><td>5</td><td>「成本控制范围就是公司代码」</td><td>不是同一个概念：成本控制范围是 CO 的边界，可以包含多个公司代码；教材里是一对一（都用 C999），所以看起来一样。</td></tr><tr><td>6</td><td>「统计指标是金额」</td><td>统计指标（<code>KK01</code>）只记数量：面积 480 M2、人数 10 人。金额是按它作基数、由分配规则算出来的。</td></tr><tr><td>7</td><td>「没有统计指标也能按面积分租金」</td><td>不能。接收方的追踪因素必须是一个真实的基数：统计指标实际值、固定百分比、或者权重（教材任务 20 用 RENT 实际统计值，任务 23 用固定百分比 75%/25%）。</td></tr><tr><td>8</td><td>「成本中心可以随便删」</td><td>有事务数据的成本中心不能删，一般用「锁定」或标记删除；标准层次里的节点结构也会影响上卷报表。</td></tr><tr><td>9</td><td>「内部订单只是记流水」</td><td>内部订单是完整的成本对象：有订单类型、预算（教材未演示）、结算规则，期末必须结算（<code>KO88</code>），否则订单上挂着余额。</td></tr><tr><td>10</td><td>「订单结算只能结算到成本中心」</td><td>接收方可以是成本中心、总账科目、资产、其他订单/WBS 等；教材演示的是「市场活动订单 → 各成本中心按份额」，份额在结算规则里维护。</td></tr><tr><td>11</td><td>「跑完分配分摊，FI 里的费用就变了」</td><td>不会。分配与分摊只在 CO 内产生 CO 凭证，FI 的费用凭证与科目余额完全不变；变的只是「这笔钱挂在哪个成本对象上」。</td></tr><tr><td>12</td><td>「CO 的表不用看」</td><td>查问题几乎都落到表：<code>CSKA/CSKB</code> 成本要素、<code>CSKS/CSKT</code> 成本中心、<code>COBK/COEP</code> CO 凭证抬头/行项目、<code>AUFK</code> 订单主数据、<code>COKL</code> 循环。</td></tr></tbody></table></div>
+<h2 id="shots">教材画面（先建立整体印象）</h2>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/co/t04/01_1_image331.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t04/01_1_image331.png" width="284" height="480" alt="任务 04 成本中心标准层次：HQ 总部与 MFG 制造部" loading="lazy"></a><figcaption><span class="n">画面 2</span><span class="cap">任务 04 成本中心标准层次：HQ 总部与 MFG 制造部</span><span class="src">教材《S4.docx》· CO 任务 04 维护成本中心组和成本中心 · 原图 01_1_image331.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/co/t05/02_1_image353.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t05/02_1_image353.png" width="439" height="307" alt="任务 05 KA01 建初级成本要素（55020141 管理费用-租金）" loading="lazy"></a><figcaption><span class="n">画面 3</span><span class="cap">任务 05 KA01 建初级成本要素（55020141 管理费用-租金）</span><span class="src">教材《S4.docx》· CO 任务 05 新建初级成本要素 · 原图 02_1_image353.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/co/t12/03_1_image414.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t12/03_1_image414.png" width="933" height="257" alt="任务 12 KP26 维护作业价格（MAC / SET）" loading="lazy"></a><figcaption><span class="n">画面 4</span><span class="cap">任务 12 KP26 维护作业价格（MAC / SET）</span><span class="src">教材《S4.docx》· CO 任务 12 设置作业输出价格 · 原图 03_1_image414.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/co/t14/01_1_image425.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t14/01_1_image425.png" width="359" height="413" alt="任务 14 FB60 输入房租发票 90000 元 → 成本中心 2001" loading="lazy"></a><figcaption><span class="n">画面 5</span><span class="cap">任务 14 FB60 输入房租发票 90000 元 → 成本中心 2001</span><span class="src">教材《S4.docx》· CO 任务 14 输入费用供应商发票 · 原图 01_1_image425.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/co/t21/02_1_image457.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t21/02_1_image457.png" width="643" height="333" alt="任务 21 KSV5 执行分配循环 DRENT" loading="lazy"></a><figcaption><span class="n">画面 6</span><span class="cap">任务 21 KSV5 执行分配循环 DRENT</span><span class="src">教材《S4.docx》· CO 任务 21 分配 · 原图 02_1_image457.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/co/t26/02_1_image477.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t26/02_1_image477.png" width="881" height="327" alt="任务 26 分摊后报表：802010 电费分摊 25,500 落在 MFG" loading="lazy"></a><figcaption><span class="n">画面 7</span><span class="cap">任务 26 分摊后报表：802010 电费分摊 25,500 落在 MFG</span><span class="src">教材《S4.docx》· CO 任务 26 显示成本中心分摊到的电费 · 原图 02_1_image477.png</span></figcaption></figure></div>
+</article>
+</main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <h5>SAP CO 培训课程</h5>
+        <p>管理会计：成本中心 · 内部订单 · 产品成本</p>
+        <p>课程总览：<a href="../index.html">SAP 模块培训课程（MM · PP · FI · CO）</a></p>
+      </div>
+      <div>
+        <h5>课程板块</h5>
+        <p><a href="concept.html">概念</a> · <a href="org.html">组织</a> ·
+        <a href="master.html">主数据</a> · <a href="flow.html">流程</a> ·
+        <a href="cca.html">成本中心</a> · <a href="config.html">配置</a></p>
+      </div>
+      <div>
+        <h5>课堂配套</h5>
+        <p><a href="practice.html">实训任务</a> · <a href="instructor.html">讲师版</a> ·
+        <a href="worksheet.html">学员版</a> · <a href="quiz.html">自测</a> ·
+        <a href="glossary.html">术语表</a></p>
+      </div>
+      <div>
+        <h5>看图说话</h5>
+        <p>截图取自教材《S4.docx》的真实 SAP GUI 画面（中文界面，保留原文件名可回查）；
+        流程图、结构图、思维导图为本站自绘 SVG。标准值随版本/行业方案而异，
+        页面标注的「在自系统里怎么确认」请在自己的系统里核对。</p>
+        <p>其他模块：<a href="../mm/index.html">MM 物料管理</a> · <a href="../pp/index.html">PP 生产计划</a> · <a href="../fi/index.html">FI 财务会计</a> · </p>
+      </div>
+    </div>
+    <p class="copy">© <span data-year>2026</span> SAP CO 培训课程 · 静态站点，可离线使用</p>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/mod.js"></script>
+</body>
+</html>

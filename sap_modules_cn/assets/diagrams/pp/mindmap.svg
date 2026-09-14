@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1420 620" width="1420" height="620" role="img" aria-label="SAP PP 知识地图 — 从需求到成本" font-family="'PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<title>SAP PP 知识地图 — 从需求到成本</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0a6ed1"/></marker><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#007272"/></marker><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffffff"/></marker><marker id="arback" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M10,0 L0,5 L10,10 z" fill="#b3261e"/></marker></defs>
+<rect width="1420" height="620" fill="#ffffff"/>
+<text x="40.0" y="46.0" font-size="22" fill="#1d2d3e" text-anchor="start" font-weight="700">SAP PP 知识地图 — 从需求到成本</text>
+<text x="40.0" y="72.0" font-size="12.5" fill="#6b7a8d" text-anchor="start" font-weight="400">六大板块：概念 → 组织 → 主数据 → 流程 → 操作手顺 → 配置与集成（本站自绘 SVG）</text>
+<path d="M 560 342 C 500 342, 560 165, 502 165" fill="none" stroke="#0a6ed1" stroke-width="2"/>
+<path d="M 560 342 C 500 342, 560 315, 502 315" fill="none" stroke="#007272" stroke-width="2"/>
+<path d="M 560 342 C 500 342, 560 474, 502 474" fill="none" stroke="#177245" stroke-width="2"/>
+<path d="M 860 342 C 920 342, 860 174, 918 174" fill="none" stroke="#b3261e" stroke-width="2"/>
+<path d="M 860 342 C 920 342, 860 315, 918 315" fill="none" stroke="#8d6e00" stroke-width="2"/>
+<path d="M 860 342 C 920 342, 860 483, 918 483" fill="none" stroke="#5b3fa8" stroke-width="2"/>
+<rect x="40.0" y="108.0" width="460.0" height="114.0" rx="9" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.4"/>
+<rect x="40.0" y="108.0" width="4.5" height="114.0" rx="2" fill="#0a6ed1" stroke="#0a6ed1" stroke-width="1.4"/>
+<text x="54.0" y="132.0" font-size="15" fill="#0a6ed1" text-anchor="start" font-weight="700">① 概念与定位</text>
+<text x="54.0" y="152.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">四段闭环：需求管理 → 物料需求计划 → 生产执行 → 产品成本</text>
+<text x="54.0" y="170.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">PP 产出的是对象：独立需求、计划订单、生产订单、采购申请、预留、确认</text>
+<text x="54.0" y="188.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">MRP 不产生正式订单，只产生计划订单与采购申请；要人转换一次</text>
+<text x="54.0" y="206.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">边界：买是 MM、卖是 SD、账是 FI、成本分析是 CO</text>
+<rect x="40.0" y="240.0" width="460.0" height="150.0" rx="9" fill="#e6f2f2" stroke="#007272" stroke-width="1.4"/>
+<rect x="40.0" y="240.0" width="4.5" height="150.0" rx="2" fill="#007272" stroke="#007272" stroke-width="1.4"/>
+<text x="54.0" y="264.0" font-size="15" fill="#007272" text-anchor="start" font-weight="700">② 组织结构</text>
+<text x="54.0" y="284.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">工厂 P999 颐宁机械工厂 · 成本控制范围 C999 · 成本中心 1001 Workshops</text>
+<text x="54.0" y="302.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">生产调度员 999 颐宁 · 生产计划参数文件 000001（分配给物料时优先级更高）</text>
+<text x="54.0" y="320.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">工作中心 9991 物料准备 / 9992 切割 / 9993 油漆 / 9994 预装配 / 9995 装配</text>
+<text x="54.0" y="338.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">/ 9996 校验和交付</text>
+<text x="54.0" y="356.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">能力：人工工时 LABOR（能力类别 002 工时）+ 机器工时，在工厂层共享</text>
+<text x="54.0" y="374.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">可用性检查：检查组 02 + 检查规则 PP，检查控制 PP01 / PP02</text>
+<rect x="40.0" y="408.0" width="460.0" height="132.0" rx="9" fill="#e6f2ec" stroke="#177245" stroke-width="1.4"/>
+<rect x="40.0" y="408.0" width="4.5" height="132.0" rx="2" fill="#177245" stroke="#177245" stroke-width="1.4"/>
+<text x="54.0" y="432.0" font-size="15" fill="#177245" text-anchor="start" font-weight="700">③ 主数据</text>
+<text x="54.0" y="452.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">物料：MRP 视图（PD / 批量 / 安全库存）+ 生产计划视图（MMF1）</text>
+<text x="54.0" y="470.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">BOM（CS01）：MRP 展开的基础；CS15 反查用途；项目类别 L</text>
+<text x="54.0" y="488.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">工艺路线（CA01）：工序 × 工作中心 × 控制码 ZKM1；组 + 组计数器</text>
+<text x="54.0" y="506.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">计划策略组 40：按库存生产，销售订单消耗独立需求</text>
+<text x="54.0" y="524.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">成本视图：评估类 7920、价格控制 S、成本核算批量 10 PC</text>
+<rect x="920.0" y="108.0" width="460.0" height="132.0" rx="9" fill="#fdeae9" stroke="#b3261e" stroke-width="1.4"/>
+<rect x="920.0" y="108.0" width="4.5" height="132.0" rx="2" fill="#b3261e" stroke="#b3261e" stroke-width="1.4"/>
+<text x="934.0" y="132.0" font-size="15" fill="#b3261e" text-anchor="start" font-weight="700">④ 端到端流程</text>
+<text x="934.0" y="152.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">MD61 独立需求（周计划，从今天排到下月末）</text>
+<text x="934.0" y="170.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">MD02 单项多层 MRP：BOM 展开 → 计划订单 + 采购申请</text>
+<text x="934.0" y="188.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">MD04 里转换：计划订单 → 生产订单；采购申请 → 采购订单</text>
+<text x="934.0" y="206.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">CO02 下达 → MB1A 发料 261 → CO11N 确认 → MIGO 收货 101</text>
+<text x="934.0" y="224.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">CO03 看订单成本 → CO02 技术性完成 → KO88 结算 → KKBC_ORD 报表</text>
+<rect x="920.0" y="258.0" width="460.0" height="114.0" rx="9" fill="#fdf3d7" stroke="#8d6e00" stroke-width="1.4"/>
+<rect x="920.0" y="258.0" width="4.5" height="114.0" rx="2" fill="#8d6e00" stroke="#8d6e00" stroke-width="1.4"/>
+<text x="934.0" y="282.0" font-size="15" fill="#8d6e00" text-anchor="start" font-weight="700">⑤ 操作手顺（三篇）</text>
+<text x="934.0" y="302.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">计划篇：MD61 填周需求、MD02 看结果、MD04 里做转换</text>
+<text x="934.0" y="320.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">执行篇：CO02 绿旗下达、MB1A 到订单发料、CO11N 按工序报工</text>
+<text x="934.0" y="338.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">成本篇：CK11N 算、CK24 先标记后发布、MM03 核对价格</text>
+<text x="934.0" y="356.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">公共动作：检查 → 保存 → 看消息 → 记下号码（实训要交的就是它）</text>
+<rect x="920.0" y="390.0" width="460.0" height="186.0" rx="9" fill="#efeaf9" stroke="#5b3fa8" stroke-width="1.4"/>
+<rect x="920.0" y="390.0" width="4.5" height="186.0" rx="2" fill="#5b3fa8" stroke="#5b3fa8" stroke-width="1.4"/>
+<text x="934.0" y="414.0" font-size="15" fill="#5b3fa8" text-anchor="start" font-weight="700">⑥ 配置与集成</text>
+<text x="934.0" y="434.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">SPRO 八组 51 个任务：基础参数 → 主数据 → 工艺路线 → 成本核算 → 计划运行 →</text>
+<text x="934.0" y="452.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">执行结算</text>
+<text x="934.0" y="470.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">成本三件套：成本构成结构 Z1、估价变式 001/007、成本核算变式 PPC1</text>
+<text x="934.0" y="488.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">计划三件套：计划策略组 40、独立需求计划、MRP</text>
+<text x="934.0" y="506.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">参数（批量/安全库存/提前期）</text>
+<text x="934.0" y="524.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">集成必背：发料 261 进材料成本、报工进作业成本、收货按标准价计产出</text>
+<text x="934.0" y="542.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">与邻居：MM（采购与库存）· CO（作业价格与结算）· SD（需求消耗）·</text>
+<text x="934.0" y="560.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">FI（凭证）</text>
+<rect x="560.0" y="258.0" width="300.0" height="168.0" rx="16" fill="#0854a0" stroke="#0854a0" stroke-width="1.4"/>
+<text x="710.0" y="300.0" font-size="30" fill="#ffffff" text-anchor="middle" font-weight="700">SAP PP</text>
+<text x="710.0" y="332.0" font-size="17" fill="#dbeafd" text-anchor="middle" font-weight="400">生产计划</text>
+<text x="710.0" y="360.0" font-size="12" fill="#a9cdf3" text-anchor="middle" font-weight="400" font-family="'SF Mono',Menlo,Consolas,monospace">Production Planning</text>
+<text x="710.0" y="388.0" font-size="11.5" fill="#a9cdf3" text-anchor="middle" font-weight="400">需求 · 计划 · 执行 · 成本</text>
+</svg>

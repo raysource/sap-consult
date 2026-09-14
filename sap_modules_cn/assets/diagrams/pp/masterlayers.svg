@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 862" width="1280" height="862" role="img" aria-label="PP 主数据的五个层次" font-family="'PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<title>PP 主数据的五个层次</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0a6ed1"/></marker><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#007272"/></marker><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffffff"/></marker><marker id="arback" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M10,0 L0,5 L10,10 z" fill="#b3261e"/></marker></defs>
+<rect width="1280" height="862" fill="#ffffff"/>
+<text x="40.0" y="46.0" font-size="22" fill="#1d2d3e" text-anchor="start" font-weight="700">PP 主数据的五个层次</text>
+<text x="40.0" y="72.0" font-size="12.5" fill="#6b7a8d" text-anchor="start" font-weight="400">从一般数据到成本核算配置：哪一层缺字段，MRP 或成本核算就会卡住</text>
+<rect x="40.0" y="104.0" width="1200.0" height="134.0" rx="12" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="58.0" y="132.0" font-size="15.5" fill="#0a6ed1" text-anchor="start" font-weight="700">① 一般层（跨工厂）· 表 MARA</text>
+<text x="286.9" y="132.0" font-size="12" fill="#6b7a8d" text-anchor="start" font-weight="400">决定可选视图与编号范围</text>
+<rect x="58.0" y="150.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="70.0" y="171.0" font-size="13.5" fill="#0a6ed1" text-anchor="start" font-weight="700">物料基本数据</text>
+<text x="70.0" y="188.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">物料类型 FERT / ROH / HAWA</text>
+<text x="70.0" y="205.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">基本单位、物料组</text>
+<rect x="352.5" y="150.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="364.5" y="171.0" font-size="13.5" fill="#0a6ed1" text-anchor="start" font-weight="700">物料描述</text>
+<text x="364.5" y="188.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">描述、重量体积、行业部门</text>
+<rect x="647.0" y="150.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="659.0" y="171.0" font-size="13.5" fill="#0a6ed1" text-anchor="start" font-weight="700">编号范围</text>
+<text x="659.0" y="188.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">内部/外部给号由物料类型决定</text>
+<rect x="941.5" y="150.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="953.5" y="171.0" font-size="13.5" fill="#0a6ed1" text-anchor="start" font-weight="700">跨工厂状态</text>
+<text x="953.5" y="188.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">工厂级状态与删除标识的默认值</text>
+<rect x="40.0" y="254.0" width="1200.0" height="134.0" rx="12" fill="#e6f2f2" stroke="#007272" stroke-width="1.2"/>
+<text x="58.0" y="282.0" font-size="15.5" fill="#007272" text-anchor="start" font-weight="700">② 工厂层（MRP 与生产计划）· 表 MARC</text>
+<text x="354.6" y="282.0" font-size="12" fill="#6b7a8d" text-anchor="start" font-weight="400">MRP 的输入全在这一层</text>
+<rect x="58.0" y="300.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#007272" stroke-width="1.2"/>
+<text x="70.0" y="321.0" font-size="13.5" fill="#007272" text-anchor="start" font-weight="700">MRP 视图</text>
+<text x="70.0" y="338.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">MRP 类型 PD、批量、安全库存</text>
+<text x="70.0" y="355.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">MRP 控制者、可用性检查组 02</text>
+<rect x="352.5" y="300.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#007272" stroke-width="1.2"/>
+<text x="364.5" y="321.0" font-size="13.5" fill="#007272" text-anchor="start" font-weight="700">MRP3 计划策略</text>
+<text x="364.5" y="338.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">计划策略组 40：销售订单消耗 PIR</text>
+<rect x="647.0" y="300.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#007272" stroke-width="1.2"/>
+<text x="659.0" y="321.0" font-size="13.5" fill="#007272" text-anchor="start" font-weight="700">生产计划 / 工作排程</text>
+<text x="659.0" y="338.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">生产计划参数文件 000001（任务 16）</text>
+<text x="659.0" y="355.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">生产调度员 999</text>
+<rect x="941.5" y="300.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#007272" stroke-width="1.2"/>
+<text x="953.5" y="321.0" font-size="13.5" fill="#007272" text-anchor="start" font-weight="700">会计 1 / 成本 1</text>
+<text x="953.5" y="338.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">评估类 7920、价格控制 S</text>
+<text x="953.5" y="355.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">成本核算批量 10 PC</text>
+<rect x="40.0" y="404.0" width="1200.0" height="134.0" rx="12" fill="#e6f2ec" stroke="#177245" stroke-width="1.2"/>
+<text x="58.0" y="432.0" font-size="15.5" fill="#177245" text-anchor="start" font-weight="700">③ 生产对象层（PP 专有）</text>
+<text x="250.2" y="432.0" font-size="12" fill="#6b7a8d" text-anchor="start" font-weight="400">计划展开与成本核算都要吃它们</text>
+<rect x="58.0" y="450.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#177245" stroke-width="1.2"/>
+<text x="70.0" y="471.0" font-size="13.5" fill="#177245" text-anchor="start" font-weight="700">BOM（CS01）</text>
+<text x="70.0" y="488.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">组件 + 数量 + 项目类别 L</text>
+<text x="70.0" y="505.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">MRP 展开的基础（任务 06）</text>
+<rect x="352.5" y="450.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#177245" stroke-width="1.2"/>
+<text x="364.5" y="471.0" font-size="13.5" fill="#177245" text-anchor="start" font-weight="700">工艺路线（CA01）</text>
+<text x="364.5" y="488.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">工序 × 工作中心 × 控制码 ZKM1</text>
+<text x="364.5" y="505.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">组 + 组计数器</text>
+<rect x="647.0" y="450.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#177245" stroke-width="1.2"/>
+<text x="659.0" y="471.0" font-size="13.5" fill="#177245" text-anchor="start" font-weight="700">工作中心（CR01）</text>
+<text x="659.0" y="488.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">9991–9996，链接成本中心 1001</text>
+<rect x="941.5" y="450.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#177245" stroke-width="1.2"/>
+<text x="953.5" y="471.0" font-size="13.5" fill="#177245" text-anchor="start" font-weight="700">能力（CR11）</text>
+<text x="953.5" y="488.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">LABOR 人工工时 + 机器工时</text>
+<text x="953.5" y="505.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">能力类别 002 工时</text>
+<rect x="40.0" y="554.0" width="1200.0" height="134.0" rx="12" fill="#fdf3d7" stroke="#8d6e00" stroke-width="1.2"/>
+<text x="58.0" y="582.0" font-size="15.5" fill="#8d6e00" text-anchor="start" font-weight="700">④ 参数与检查层（任务 01–13、29–31）</text>
+<text x="352.5" y="582.0" font-size="12" fill="#6b7a8d" text-anchor="start" font-weight="400">缺一个都会在很后面才报错</text>
+<rect x="58.0" y="600.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#8d6e00" stroke-width="1.2"/>
+<text x="70.0" y="621.0" font-size="13.5" fill="#8d6e00" text-anchor="start" font-weight="700">生产计划参数文件 000001</text>
+<text x="70.0" y="638.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">排程行为；分配给物料时优先</text>
+<rect x="352.5" y="600.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#8d6e00" stroke-width="1.2"/>
+<text x="364.5" y="621.0" font-size="13.5" fill="#8d6e00" text-anchor="start" font-weight="700">生产调度员 999</text>
+<text x="364.5" y="638.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">责任归属与筛选键</text>
+<rect x="647.0" y="600.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#8d6e00" stroke-width="1.2"/>
+<text x="659.0" y="621.0" font-size="13.5" fill="#8d6e00" text-anchor="start" font-weight="700">控制码 ZKM1</text>
+<text x="659.0" y="638.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">决定排程、能力需求、成本与确认</text>
+<rect x="941.5" y="600.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#8d6e00" stroke-width="1.2"/>
+<text x="953.5" y="621.0" font-size="13.5" fill="#8d6e00" text-anchor="start" font-weight="700">可用性检查</text>
+<text x="953.5" y="638.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">检查组 02 + 检查规则 PP</text>
+<text x="953.5" y="655.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">检查控制 PP01 / PP02</text>
+<rect x="40.0" y="704.0" width="1200.0" height="134.0" rx="12" fill="#efeaf9" stroke="#5b3fa8" stroke-width="1.2"/>
+<text x="58.0" y="732.0" font-size="15.5" fill="#5b3fa8" text-anchor="start" font-weight="700">⑤ 成本核算配置层（任务 17–21）</text>
+<text x="307.9" y="732.0" font-size="12" fill="#6b7a8d" text-anchor="start" font-weight="400">标准成本的三块拼图</text>
+<rect x="58.0" y="750.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#5b3fa8" stroke-width="1.2"/>
+<text x="70.0" y="771.0" font-size="13.5" fill="#5b3fa8" text-anchor="start" font-weight="700">成本构成结构 Z1</text>
+<text x="70.0" y="788.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">成本组件与成本要素区间</text>
+<text x="70.0" y="805.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">分配给公司代码、工厂与变式</text>
+<rect x="352.5" y="750.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#5b3fa8" stroke-width="1.2"/>
+<text x="364.5" y="771.0" font-size="13.5" fill="#5b3fa8" text-anchor="start" font-weight="700">估价变式 001 / 007</text>
+<text x="364.5" y="788.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">001 物料计划；007 订单实际成本</text>
+<rect x="647.0" y="750.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#5b3fa8" stroke-width="1.2"/>
+<text x="659.0" y="771.0" font-size="13.5" fill="#5b3fa8" text-anchor="start" font-weight="700">日期控制</text>
+<text x="659.0" y="788.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">成本核算取哪个日期的价格</text>
+<rect x="941.5" y="750.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#5b3fa8" stroke-width="1.2"/>
+<text x="953.5" y="771.0" font-size="13.5" fill="#5b3fa8" text-anchor="start" font-weight="700">数量结构控制 PC01</text>
+<text x="953.5" y="788.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">如何选取 BOM 与工艺路线</text>
+</svg>

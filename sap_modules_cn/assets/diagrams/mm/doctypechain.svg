@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 252" width="1280" height="252" role="img" aria-label="单据与凭证流：从请购到付款" font-family="'PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<title>单据与凭证流：从请购到付款</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0a6ed1"/></marker><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#007272"/></marker><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffffff"/></marker><marker id="arback" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M10,0 L0,5 L10,10 z" fill="#b3261e"/></marker></defs>
+<rect width="1280" height="252" fill="#ffffff"/>
+<text x="40.0" y="46.0" font-size="22" fill="#1d2d3e" text-anchor="start" font-weight="700">单据与凭证流：从请购到付款</text>
+<text x="40.0" y="72.0" font-size="12.5" fill="#6b7a8d" text-anchor="start" font-weight="400">箭头方向 = 凭证的「参照关系」；括号里是该步产生的凭证与记账影响</text>
+<rect x="40.0" y="104.0" width="159.8" height="51.0" rx="9" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.5"/>
+<circle cx="58.0" cy="122.0" r="12" fill="#0a6ed1"/><text x="58.0" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">1</text>
+<text x="76.0" y="127.0" font-size="14" fill="#0a6ed1" text-anchor="start" font-weight="700">采购申请 ME51N</text>
+<text x="52.0" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">内部需求，无供应商无价</text>
+<text x="52.0" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">格</text>
+<path d="M 202 130 H 226" fill="none" stroke="#0a6ed1" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="229.8" y="104.0" width="159.8" height="51.0" rx="9" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.5"/>
+<circle cx="247.8" cy="122.0" r="12" fill="#0a6ed1"/><text x="247.8" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">2</text>
+<text x="265.8" y="127.0" font-size="14" fill="#0a6ed1" text-anchor="start" font-weight="700">采购订单 ME21N</text>
+<text x="241.8" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">对供应商的承诺（价格/数</text>
+<text x="241.8" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">量/交期）</text>
+<path d="M 392 130 H 416" fill="none" stroke="#0a6ed1" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="419.5" y="104.0" width="175.6" height="51.0" rx="9" fill="#fdeae9" stroke="#b3261e" stroke-width="1.5"/>
+<circle cx="437.5" cy="122.0" r="12" fill="#b3261e"/><text x="437.5" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">3</text>
+<text x="455.5" y="127.0" font-size="14" fill="#b3261e" text-anchor="start" font-weight="700">物料凭证 MIGO 101</text>
+<text x="431.5" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">库存</text>
+<text x="431.5" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">+物料凭证；FI：借存货/贷</text>
+<text x="431.5" y="180.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">GR-IR</text>
+<path d="M 597 130 H 621" fill="none" stroke="#b3261e" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="625.1" y="104.0" width="150.0" height="51.0" rx="9" fill="#fdf3d7" stroke="#8d6e00" stroke-width="1.5"/>
+<circle cx="643.1" cy="122.0" r="12" fill="#8d6e00"/><text x="643.1" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">4</text>
+<text x="661.1" y="127.0" font-size="14" fill="#8d6e00" text-anchor="start" font-weight="700">发票凭证 MIRO</text>
+<text x="637.1" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">三单匹配；FI：借</text>
+<text x="637.1" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">GR-IR/贷应付</text>
+<path d="M 777 130 H 801" fill="none" stroke="#8d6e00" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="805.1" y="104.0" width="150.0" height="51.0" rx="9" fill="#e6f2ec" stroke="#177245" stroke-width="1.5"/>
+<circle cx="823.1" cy="122.0" r="12" fill="#177245"/><text x="823.1" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">5</text>
+<text x="841.1" y="127.0" font-size="14" fill="#177245" text-anchor="start" font-weight="700">会计凭证 FB03</text>
+<text x="817.1" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">两张凭证的最终落点（B</text>
+<text x="817.1" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">KPF/BSEG）</text>
+<path d="M 957 130 H 981" fill="none" stroke="#177245" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="985.1" y="104.0" width="167.8" height="51.0" rx="9" fill="#efeaf9" stroke="#5b3fa8" stroke-width="1.5"/>
+<circle cx="1003.1" cy="122.0" r="12" fill="#5b3fa8"/><text x="1003.1" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">6</text>
+<text x="1021.1" y="127.0" font-size="14" fill="#5b3fa8" text-anchor="start" font-weight="700">付款 F-53 / F110</text>
+<text x="997.1" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">FI 侧清账：借应付/贷银行</text>
+<rect x="40.0" y="204.0" width="1200.0" height="34.5" rx="8" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="52.0" y="226.0" font-size="12.5" fill="#0854a0" text-anchor="start" font-weight="400">「收货」与「发票」都各自生成一张会计凭证，GR/IR 科目就是它们之间的桥梁：收货先挂上，发票校验把它冲平；一直不平就说明有未开票的收货或有问题的发票。</text>
+</svg>

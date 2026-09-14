@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自测（30 题） · SAP PP 培训课程</title>
+<meta name="description" content="SAP PP（生产计划）培训课程：概念与定位 → 组织结构（工厂/工作中心/能力/生产调度员）→ 主数据（物料 MRP 视图/BOM/工艺路线/工作中心/生产版本）→ 端到端流程（独立需求 → MRP 展开 → 计划订单 → 生产订单 → 发料·确认·收货 → 成本与差异结算）→ 分步操作手顺 → SPRO 配置（51 个任务）→ 实训与自测。截图取自教材《S4.docx》的真实 SAP GUI 画面。">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mod.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">PP</span><span class="txt">培训课程</span></a>
+    <nav class="main">
+      <a href="index.html" title="课程地图与学习路线">首页</a>
+      <a href="concept.html" title="PP 是什么、四段闭环、对象与凭证">概念</a>
+      <a href="org.html" title="工厂 / 调度员 / 工作中心 / 能力">组织</a>
+      <a href="master.html" title="BOM / 工艺路线 / 工作中心 / MRP 视图">主数据</a>
+      <a href="flow.html" title="端到端计划到成本流程">流程</a>
+      <a href="planning.html" title="需求管理 · MRP · MD04 · 订单转换">计划</a>
+      <a href="execution.html" title="下达 · 发料 · 工单确认 · 收货">执行</a>
+      <a href="cost.html" title="标准成本 CK11N/CK24 · 订单成本 · 差异结算">成本</a>
+      <a href="config.html" title="SPRO 配置路线（51 个任务）">配置</a>
+      <a href="practice.html" title="动手任务与完成基准">实训</a>
+      <a href="instructor.html" title="课时 / 板书 / 必问 / 评分">讲师</a>
+      <a href="worksheet.html" title="记入表（可打印）">学员</a>
+      <a class="active" href="quiz.html" title="30 题自评（合格 75%）">自测</a>
+      <a href="glossary.html" title="中英对照 / T-code / 常用表">术语</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page">
+<article>
+<p class="breadcrumb"><a href="index.html">课程地图</a> / <span>自测（30 题）</span></p>
+<div class="filterbar modsw"><a class="chip" href="../mm/index.html" title="SAP MM 培训课程">MM 物料管理</a><a class="chip on" href="../pp/index.html" title="SAP PP 培训课程">PP 生产计划</a><a class="chip" href="../fi/index.html" title="SAP FI 培训课程">FI 财务会计</a><a class="chip" href="../co/index.html" title="SAP CO 培训课程">CO 管理会计</a><a class="chip" href="../index.html" title="四个模块的总体视图与学习路线">总览</a></div>
+<h1>自测（30 题）</h1>
+<p class="kicker">概念 5 · 组织 5 · 主数据 6 · 流程 8 · 配置 3 · 集成 3（合格 75%）</p>
+<p class="lead">30 题，覆盖概念 / 组织 / 主数据 / 流程 / 配置 / 集成六类。点击选项即时判分，每题都有解说。<b>合格线：≥75%（23 题）</b>，并且 <a href="practice.html">五个实训</a>的完成基准全部打勾。</p>
+<p class="muted">分布：概念 5 · 组织 5 · 主数据 6 · 流程 8 · 配置 3 · 集成 3</p>
+<p>建议先做一遍不看答案，再看解说；错题回到对应页面重读（题目里的关键字可以直接用页面上的术语搜索）。</p>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">概念</span></div>
+<h4>1. PP 模块的四段闭环是什么？</h4>
+<div class="opts"><div class="opt" data-key="A">概念 → 组织 → 主数据 → 流程</div><div class="opt" data-key="B">需求管理 → 物料需求计划 → 生产执行 → 产品成本</div><div class="opt" data-key="C">采购 → 库存 → 发票校验 → 付款</div><div class="opt" data-key="D">计划 → 预算 → 核算 → 报表</div></div>
+<div class="explain"><b>答案 B。</b>PP 管的是「需求从哪来、造多少什么时候造、车间怎么干、最后花了多少钱」，对应需求管理（MD61）、MRP（MD02/MD04）、生产执行（CO02/MB1A/CO11N/MIGO）与产品成本（CK11N/CK24/CO03/KO88）。</div>
+</div>
+<div class="quiz-q" data-answer="C">
+<div class="q-meta"><span class="tag gray">概念</span></div>
+<h4>2. 下列哪个动作才真正让产成品的库存数量增加？</h4>
+<div class="opts"><div class="opt" data-key="A">保存独立需求计划</div><div class="opt" data-key="B">运行 MRP 产生计划订单</div><div class="opt" data-key="C">对生产订单收货（移动类型 101）</div><div class="opt" data-key="D">做工单确认</div></div>
+<div class="explain"><b>答案 C。</b>独立需求与计划订单都不动库存；确认只报工（不倒冲时不动物料）；只有对生产订单收货（<code>MIGO</code>，101）才让产成品入库。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+<div class="q-meta"><span class="tag gray">概念</span></div>
+<h4>3. 独立需求（PIR）与 MRP 展开出的非独立需求（DepReq）的区别是什么？</h4>
+<div class="opts"><div class="opt" data-key="A">前者来自计划或销售需求，后者由上层 BOM 展开产生且考虑提前期</div><div class="opt" data-key="B">前者有价格，后者没有价格</div><div class="opt" data-key="C">前者是会计凭证，后者是报表</div><div class="opt" data-key="D">两者完全一样，只是名称不同</div></div>
+<div class="explain"><b>答案 A。</b>教材任务 33 的说明与任务 36 的画面都体现了这一点：产成品的需求是独立需求，原材料的 DepReq 是针对产成品 F999-100 展开出来的，日期还考虑了生产提前期。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">概念</span></div>
+<h4>4. 教材明确说生产订单采用状态管理，创建好之后还不能执行 —— 必须先做什么？</h4>
+<div class="opts"><div class="opt" data-key="A">先对订单收货</div><div class="opt" data-key="B">先下达订单</div><div class="opt" data-key="C">先做期末结算</div><div class="opt" data-key="D">先技术性完成</div></div>
+<div class="explain"><b>答案 B。</b>教材任务 42 的原话：生产订单采用状态管理，只有把它下达后它才能被执行（才会释放预留、才能发料/报工/收货）。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">概念</span></div>
+<h4>5. PP 与 CO 最重要的集成点是什么？</h4>
+<div class="opts"><div class="opt" data-key="A">采购订单与发票校验</div><div class="opt" data-key="B">产品成本：标准成本估算与订单实际成本、差异结算</div><div class="opt" data-key="C">库存盘点</div><div class="opt" data-key="D">销售定价与折扣</div></div>
+<div class="explain"><b>答案 B。</b>教材任务 17 的原话是「产品成本是 PP 和 CO 最重要的集成」：BOM + 工艺路线算出标准成本，报工与发料形成订单实际成本，最后用 KO88 结算差异。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">组织</span></div>
+<h4>6. 教材里产成品「铸钢泵 170-230」所在的工厂代码是？</h4>
+<div class="opts"><div class="opt" data-key="A">C999</div><div class="opt" data-key="B">P999</div><div class="opt" data-key="C">Y999</div><div class="opt" data-key="D">0001</div></div>
+<div class="explain"><b>答案 B。</b>C999 是公司代码（颐宁公司），P999 是工厂（颐宁机械工厂），0001 是库存地点，Y999 是 MM 教材里的采购组织。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">组织</span></div>
+<h4>7. 生产调度员（Production Scheduler）在物料主数据的哪个视图里维护？</h4>
+<div class="opts"><div class="opt" data-key="A">基本数据 1</div><div class="opt" data-key="B">MRP 视图</div><div class="opt" data-key="C">会计 1 视图</div><div class="opt" data-key="D">销售视图</div></div>
+<div class="explain"><b>答案 B。</b>生产调度员、MRP 类型、批量、安全库存、可用性检查组都在工厂层的 MRP 视图（表 MARC）；教材任务 02 定义 999 生产调度员颐宁，任务 16 的画面里能看到这个字段。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+<div class="q-meta"><span class="tag gray">组织</span></div>
+<h4>8. 教材任务 01 说生产计划参数文件可以分配给物料或生产调度员，哪一方优先级更高？</h4>
+<div class="opts"><div class="opt" data-key="A">物料</div><div class="opt" data-key="B">生产调度员</div><div class="opt" data-key="C">两者相同，按字母顺序</div><div class="opt" data-key="D">由工厂决定</div></div>
+<div class="explain"><b>答案 A。</b>教材原文：生产计划参数文件可以分配给物料（物料主数据中的工作排程屏幕）或者生产计划调度员（后台配置），其中分配给物料主数据的生产计划参数文件具有更高的优先级。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+<div class="q-meta"><span class="tag gray">组织</span></div>
+<h4>9. 工作中心 9994 预装配的成本核算页里链接的成本中心是？</h4>
+<div class="opts"><div class="opt" data-key="A">1001 Workshops</div><div class="opt" data-key="B">0001 仓库</div><div class="opt" data-key="C">PG1 原材料</div><div class="opt" data-key="D">999 调度员</div></div>
+<div class="explain"><b>答案 A。</b>教材任务 13 的画面显示成本控制范围 C999（颐宁机械有限公司）、成本中心 1001 Workshops；作业类型（准备/机器/工时）的价格由 CO 的 KP26 维护。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">组织</span></div>
+<h4>10. 教材里「检查组 02 + 检查规则 PP」这个组合定义在可用性检查的哪个对象上？</h4>
+<div class="opts"><div class="opt" data-key="A">检查组</div><div class="opt" data-key="B">检查范围</div><div class="opt" data-key="C">检查控制</div><div class="opt" data-key="D">工作中心</div></div>
+<div class="explain"><b>答案 B。</b>任务 29 定义检查组（用系统预设的 02）；任务 30 定义检查范围（02 检查组 + PP 检查规则，定义哪些库存与移动参与检查）；任务 31 定义检查控制（按订单类型决定何时自动检查）。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">主数据</span></div>
+<h4>11. 教材任务 06 的原话是「物料需求计划 MRP 最主要的基础是」什么？</h4>
+<div class="opts"><div class="opt" data-key="A">工作中心</div><div class="opt" data-key="B">BOM（物料清单）</div><div class="opt" data-key="C">工艺路线</div><div class="opt" data-key="D">成本构成结构</div></div>
+<div class="explain"><b>答案 B。</b>BOM 决定 MRP 能展开出哪些组件需求；成本核算是它的第二个用户。教材用 <code>CS01</code> 创建、项目类别都用 L（库存项目）。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+<div class="q-meta"><span class="tag gray">主数据</span></div>
+<h4>12. SAP 的工艺路线是靠什么编号的？</h4>
+<div class="opts"><div class="opt" data-key="A">组编码 + 组计数器</div><div class="opt" data-key="B">物料号 + 工厂</div><div class="opt" data-key="C">工作中心 + 工序号</div><div class="opt" data-key="D">订单类型 + 工厂</div></div>
+<div class="explain"><b>答案 A。</b>教材任务 14 的说明：工艺路线通过组编码和组计数器两者来编号，组计数器可以定义一个产品的多条工艺路线（例如按批量大小），教材只维护了一条。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">主数据</span></div>
+<h4>13. CK11N 画面里的成本核算批量 10 PC 是从哪来的？</h4>
+<div class="opts"><div class="opt" data-key="A">在 CK11N 里手工输入</div><div class="opt" data-key="B">产成品主数据的成本视图 1</div><div class="opt" data-key="C">BOM 抬头的字段</div><div class="opt" data-key="D">工艺路线的标准值</div></div>
+<div class="explain"><b>答案 B。</b>教材任务 22：成本核算批量 10 PC 是从产成品主数据的成本视图 1 中传递过来的。所以单位成本 = 25,386.58 ÷ 10 ≈ 2,538.66。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">主数据</span></div>
+<h4>14. 事务码 <code>CS15</code> 是做什么用的？</h4>
+<div class="opts"><div class="opt" data-key="A">创建 BOM</div><div class="opt" data-key="B">物料所用处清单（BOM 反查）</div><div class="opt" data-key="C">拆分工序</div><div class="opt" data-key="D">显示库存</div></div>
+<div class="explain"><b>答案 B。</b>CS15 是所用处清单：从「这个料」反查「它被用来造什么」。教材任务 07 用它确认罩壳被用于物料 F999-100 的生产。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">主数据</span></div>
+<h4>15. 教材给产成品维护的计划策略组 40 表示什么？</h4>
+<div class="opts"><div class="opt" data-key="A">按单生产，完全由销售订单驱动</div><div class="opt" data-key="B">按库存生产，计划依据是独立需求，但销售订单会消耗独立需求</div><div class="opt" data-key="C">不做计划，只按实际订单生产</div><div class="opt" data-key="D">只用于贸易商品，不用于产成品</div></div>
+<div class="explain"><b>答案 B。</b>教材任务 32 的说明：40 是按库存生产的策略，计划依据是计划部门维护的独立需求计划，销售订单仍然有影响 —— 它会消耗独立需求，消耗完之后的订单需求会增加生产计划。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">主数据</span></div>
+<h4>16. 教材画面里产成品 F999-100 的评估类和价格控制是？</h4>
+<div class="opts"><div class="opt" data-key="A">评估类 3000 / 价格控制 V</div><div class="opt" data-key="B">评估类 7920 / 价格控制 S</div><div class="opt" data-key="C">评估类 3100 / 价格控制 S</div><div class="opt" data-key="D">评估类 7920 / 价格控制 V</div></div>
+<div class="explain"><b>答案 B。</b>教材任务 26 的画面显示：评估类 7920、价格控制 S（标准价）、标准价格 2,538.66、货币 RMB。评估类决定存货科目，价格控制决定差异怎么记。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>17. 创建独立需求计划（周需求）用哪个事务码？</h4>
+<div class="opts"><div class="opt" data-key="A">MD61</div><div class="opt" data-key="B">MD02</div><div class="opt" data-key="C">MD04</div><div class="opt" data-key="D">CK11N</div></div>
+<div class="explain"><b>答案 A。</b><code>MD61</code> 建独立需求（计划区间 + 周期 W）；MD02 跑 MRP、MD04 看供需清单、CK11N 算成本。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>18. MD05 与 MD04 的区别是什么？</h4>
+<div class="opts"><div class="opt" data-key="A">MD05 是动态的，MD04 是静态的</div><div class="opt" data-key="B">MD05 是上次 MRP 运行的静态清单（有运行时间戳），MD04 是动态的库存/需求清单</div><div class="opt" data-key="C">MD05 只能看原材料，MD04 只能看产成品</div><div class="opt" data-key="D">两者完全一样</div></div>
+<div class="explain"><b>答案 B。</b>教材任务 34 特意让学生注意 MD05 屏幕上方的时间戳；任务 35 则说明库存/需求清单是动态的，已经将新创建的独立需求显示出来。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>19. MD02 的「单项，多层」表示什么？</h4>
+<div class="opts"><div class="opt" data-key="A">只跑一个物料，并往下展开它所有 BOM 层级</div><div class="opt" data-key="B">跑工厂里所有物料</div><div class="opt" data-key="C">只跑一层物料</div><div class="opt" data-key="D">只计算成本不产生需求</div></div>
+<div class="explain"><b>答案 A。</b>教材任务 36 用的就是「单项，多层」：对产成品 F999-100 跑一次，系统按 BOM 逐层展开，产出计划订单与原材料的需求。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>20. 把计划订单转换成生产订单，教材是在哪里做的？</h4>
+<div class="opts"><div class="opt" data-key="A">MD01 全厂 MRP 运行里</div><div class="opt" data-key="B">MD04 库存/需求清单里，双击计划订单后点「生产订单」</div><div class="opt" data-key="C">CO01 里手工新建</div><div class="opt" data-key="D">CK11N 成本估算里</div></div>
+<div class="explain"><b>答案 B。</b>教材任务 37：在 MD04 里双击计划订单行，看计划订单信息，在下方按钮里点「生产订单」完成转换，然后后退。同样的方法转换其他计划订单。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>21. 对生产订单发料（领料）用哪一组事务码与移动类型？</h4>
+<div class="opts"><div class="opt" data-key="A"><code>MIGO</code> / 101</div><div class="opt" data-key="B"><code>MB1A</code> / 261</div><div class="opt" data-key="C"><code>MB1B</code> / 311</div><div class="opt" data-key="D"><code>CO11N</code> / 261</div></div>
+<div class="explain"><b>答案 B。</b>MB1A + 261 = 对生产订单发货：点「到订单」输入订单号与工厂，系统自动带出尚未发货的组件；311 是库位转储、101 是收货。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>22. CO11N 这个事务码的作用是什么？</h4>
+<div class="opts"><div class="opt" data-key="A">下达生产订单</div><div class="opt" data-key="B">工单确认（报工）</div><div class="opt" data-key="C">结算订单差异</div><div class="opt" data-key="D">显示订单成本</div></div>
+<div class="explain"><b>答案 B。</b>CO11N 是工单确认：按工序填写产出与工时，系统据此把作业成本计入订单；下达是 CO02、结算 KO88、看成本是 CO03。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>23. 对生产订单做完工收货用哪个事务码与移动类型？</h4>
+<div class="opts"><div class="opt" data-key="A"><code>CO02</code> / 261</div><div class="opt" data-key="B"><code>MIGO</code>（订单的 GR）/ 101</div><div class="opt" data-key="C"><code>MB1B</code> / 311</div><div class="opt" data-key="D"><code>MIRO</code> / ——</div></div>
+<div class="explain"><b>答案 B。</b>教材任务 45 用 <code>MIGO</code> 对生产订单收货（画面标题是「订单的 GR」），移动类型 101；产成品入库，按标准价把产出贷记到订单上。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>24. 生产订单的差异结算用哪个事务码？</h4>
+<div class="opts"><div class="opt" data-key="A"><code>KO88</code></div><div class="opt" data-key="B"><code>CO03</code></div><div class="opt" data-key="C"><code>CK24</code></div><div class="opt" data-key="D"><code>KKBC_ORD</code></div></div>
+<div class="explain"><b>答案 A。</b>KO88 是生产订单差异结算（单个处理）；CO03 显示订单成本、CK24 做价格更新、KKBC_ORD 是成本报表。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">配置</span></div>
+<h4>25. 控制码 ZKM1 控制的是什么？</h4>
+<div class="opts"><div class="opt" data-key="A">物料编码规则</div><div class="opt" data-key="B">工序要执行哪些业务功能（排程、能力需求、打印工票、成本、确认方式、内外协）</div><div class="opt" data-key="C">库存地点的可用性</div><div class="opt" data-key="D">采购订单的价格条件</div></div>
+<div class="explain"><b>答案 B。</b>教材任务 09 的说明：控制码控制工艺路线中某个工序需要执行的业务功能，以及 SAP 如何处理这个工序；教材的 9991–9996 都用 ZKM1。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">配置</span></div>
+<h4>26. 数量结构控制（PC01）里的「数量结构」指的是什么？</h4>
+<div class="opts"><div class="opt" data-key="A">库存数量与订单数量</div><div class="opt" data-key="B">BOM 与工艺路线</div><div class="opt" data-key="C">能力需求量</div><div class="opt" data-key="D">成本组件的数量</div></div>
+<div class="explain"><b>答案 B。</b>教材任务 20 的原话：在 SAP 中和产品成本相关的场合谈「数量结构」，其实就是指 BOM 和工艺路线，数量结构控制主要控制系统如何选取它们用于成本核算。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+<div class="q-meta"><span class="tag gray">配置</span></div>
+<h4>27. 教材任务 12 在维护工作中心的成本核算页时无法继续，原因是 CO 模块没完成哪个配置？</h4>
+<div class="opts"><div class="opt" data-key="A"><code>KP26</code> 作业类型价格</div><div class="opt" data-key="B"><code>OBYC</code> 自动记账</div><div class="opt" data-key="C"><code>OKTZ</code> 成本构成结构</div><div class="opt" data-key="D"><code>OMJJ</code> 移动类型</div></div>
+<div class="explain"><b>答案 A。</b>教材原文：此处活动类型由于在 CO 模块未完成 KP26，故无法继续。作业类型没有价格，报工就算不出作业成本。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">集成</span></div>
+<h4>28. 发料 261（MB1A）对会计的影响是什么？</h4>
+<div class="opts"><div class="opt" data-key="A">借 存货 / 贷 GR-IR</div><div class="opt" data-key="B">借 生产成本-原材料消耗 / 贷 存货</div><div class="opt" data-key="C">借 应付账款 / 贷 银行存款</div><div class="opt" data-key="D">不产生会计凭证</div></div>
+<div class="explain"><b>答案 B。</b>发料把原材料的价值从存货转出、记入生产订单（消耗科目）；借 GR-IR 贷应付是发票校验，借存货贷 GR-IR 是采购收货。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+<div class="q-meta"><span class="tag gray">集成</span></div>
+<h4>29. 对生产订单收货（101）在订单上是什么效果？</h4>
+<div class="opts"><div class="opt" data-key="A">按产成品的标准价把产出贷记到订单上</div><div class="opt" data-key="B">按实际成本贷记到订单上</div><div class="opt" data-key="C">不产生任何金额</div><div class="opt" data-key="D">直接减少订单的计划成本</div></div>
+<div class="explain"><b>答案 A。</b>产成品按<b>标准价格</b>入库，同时以同样的金额贷记订单（产出）。借方（实际成本）与贷方（产出）的差额就是订单差异，由 KO88 结算。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">集成</span></div>
+<h4>30. 教材任务 48 的 KO88 画面提示了什么，说明什么问题？</h4>
+<div class="opts"><div class="opt" data-key="A">提示订单未下达</div><div class="opt" data-key="B">提示需要维护发送者的结算规则，说明这套数据的结算规则没配齐</div><div class="opt" data-key="C">提示库存不足</div><div class="opt" data-key="D">提示成本核算变式不存在</div></div>
+<div class="explain"><b>答案 B。</b>教材画面里出现结算规则相关的提示：订单的成本要结到哪（差异科目/成本对象）必须先定义结算规则，这一步属于 CO 的期末结算配置。</div>
+</div>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/pp/t35/02_1_image988.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t35/02_1_image988.png" width="716" height="521" alt="常考画面：MD04 动态供需清单（任务 35）" loading="lazy"></a><figcaption><span class="n">画面 1</span><span class="cap">常考画面：MD04 动态供需清单（任务 35）</span><span class="src">教材《S4.docx》· PP 任务 35 显示库存/需求清单 · 原图 02_1_image988.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t42/04_1_image1036.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t42/04_1_image1036.png" width="597" height="803" alt="常考画面：CO02 下达的绿旗与状态（任务 42）" loading="lazy"></a><figcaption><span class="n">画面 2</span><span class="cap">常考画面：CO02 下达的绿旗与状态（任务 42）</span><span class="src">教材《S4.docx》· PP 任务 42 下达生产订单 · 原图 04_1_image1036.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t43/08_1_image1046.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t43/08_1_image1046.png" width="738" height="557" alt="常考画面：发料 261 的会计凭证（任务 43）" loading="lazy"></a><figcaption><span class="n">画面 3</span><span class="cap">常考画面：发料 261 的会计凭证（任务 43）</span><span class="src">教材《S4.docx》· PP 任务 43 对生产订单发货 · 原图 08_1_image1046.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t22/02_1_image921.jpeg" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t22/02_1_image921.jpeg" width="1461" height="665" alt="常考画面：CK11N 的成本构成（任务 22）" loading="lazy"></a><figcaption><span class="n">画面 4</span><span class="cap">常考画面：CK11N 的成本构成（任务 22）</span><span class="src">教材《S4.docx》· PP 任务 22 新建产品成本估算 · 原图 02_1_image921.jpeg</span></figcaption></figure></div>
+</article>
+</main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <h5>SAP PP 培训课程</h5>
+        <p>生产计划：需求 · 计划 · 执行 · 成本</p>
+        <p>课程总览：<a href="../index.html">SAP 模块培训课程（MM · PP · FI · CO）</a></p>
+      </div>
+      <div>
+        <h5>课程板块</h5>
+        <p><a href="concept.html">概念</a> · <a href="org.html">组织</a> ·
+        <a href="master.html">主数据</a> · <a href="flow.html">流程</a> ·
+        <a href="planning.html">计划</a> · <a href="config.html">配置</a></p>
+      </div>
+      <div>
+        <h5>课堂配套</h5>
+        <p><a href="practice.html">实训任务</a> · <a href="instructor.html">讲师版</a> ·
+        <a href="worksheet.html">学员版</a> · <a href="quiz.html">自测</a> ·
+        <a href="glossary.html">术语表</a></p>
+      </div>
+      <div>
+        <h5>看图说话</h5>
+        <p>截图取自教材《S4.docx》的真实 SAP GUI 画面（中文界面，保留原文件名可回查）；
+        流程图、结构图、思维导图为本站自绘 SVG。标准值随版本/行业方案而异，
+        页面标注的「在自系统里怎么确认」请在自己的系统里核对。</p>
+        <p>其他模块：<a href="../mm/index.html">MM 物料管理</a> · <a href="../fi/index.html">FI 财务会计</a> · <a href="../co/index.html">CO 管理会计</a> · </p>
+      </div>
+    </div>
+    <p class="copy">© <span data-year>2026</span> SAP PP 培训课程 · 静态站点，可离线使用</p>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/mod.js"></script>
+</body>
+</html>

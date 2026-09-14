@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 408" width="1400" height="408" role="img" aria-label="P2P 泳道图：谁在动、动什么" font-family="'PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<title>P2P 泳道图：谁在动、动什么</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0a6ed1"/></marker><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#007272"/></marker><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffffff"/></marker><marker id="arback" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M10,0 L0,5 L10,10 z" fill="#b3261e"/></marker></defs>
+<rect width="1400" height="408" fill="#ffffff"/>
+<text x="40.0" y="46.0" font-size="22" fill="#1d2d3e" text-anchor="start" font-weight="700">P2P 泳道图：谁在动、动什么</text>
+<text x="40.0" y="72.0" font-size="12.5" fill="#6b7a8d" text-anchor="start" font-weight="400">教材 MM 任务 36–41 覆盖了除「付款」外的全部环节（付款在 FI）</text>
+<rect x="40.0" y="106.0" width="1320.0" height="46.0" rx="8" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="52.0" y="134.0" font-size="13" fill="#0854a0" text-anchor="start" font-weight="700">步骤 / 角色</text>
+<text x="287.5" y="127.0" font-size="12.5" fill="#1d2d3e" text-anchor="middle" font-weight="700">① 需求</text>
+<text x="287.5" y="144.0" font-size="11" fill="#6b7a8d" text-anchor="middle" font-weight="400">需要买什么</text>
+<text x="482.5" y="127.0" font-size="12.5" fill="#1d2d3e" text-anchor="middle" font-weight="700">② 请购</text>
+<text x="482.5" y="144.0" font-size="11" fill="#6b7a8d" text-anchor="middle" font-weight="400">ME51N</text>
+<text x="677.5" y="127.0" font-size="12.5" fill="#1d2d3e" text-anchor="middle" font-weight="700">③ 采购订单</text>
+<text x="677.5" y="144.0" font-size="11" fill="#6b7a8d" text-anchor="middle" font-weight="400">ME21N</text>
+<text x="872.5" y="127.0" font-size="12.5" fill="#1d2d3e" text-anchor="middle" font-weight="700">④ 收货</text>
+<text x="872.5" y="144.0" font-size="11" fill="#6b7a8d" text-anchor="middle" font-weight="400">MIGO 101</text>
+<text x="1067.5" y="127.0" font-size="12.5" fill="#1d2d3e" text-anchor="middle" font-weight="700">⑤ 发票校验</text>
+<text x="1067.5" y="144.0" font-size="11" fill="#6b7a8d" text-anchor="middle" font-weight="400">MIRO</text>
+<text x="1262.5" y="127.0" font-size="12.5" fill="#1d2d3e" text-anchor="middle" font-weight="700">⑥ 付款</text>
+<text x="1262.5" y="144.0" font-size="11" fill="#6b7a8d" text-anchor="middle" font-weight="400">FI</text>
+<rect x="40.0" y="152.0" width="1320.0" height="54.0" rx="6" fill="#ffffff" stroke="#0a6ed1" stroke-width="1.1"/>
+<rect x="40.0" y="152.0" width="150.0" height="54.0" rx="6" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.1"/>
+<text x="52.0" y="176.0" font-size="13" fill="#0a6ed1" text-anchor="start" font-weight="700">需求部门</text>
+<text x="200.0" y="174.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">提出需求（手工或由 MRP 产生）</text>
+<line x1="385.0" y1="152.0" x2="385.0" y2="206.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="395.0" y="174.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">填请购：物料/数量/交货日期/工</text>
+<text x="395.0" y="190.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">厂</text>
+<line x1="580.0" y1="152.0" x2="580.0" y2="206.0" stroke="#d9e1e8" stroke-width="1"/>
+<line x1="775.0" y1="152.0" x2="775.0" y2="206.0" stroke="#d9e1e8" stroke-width="1"/>
+<line x1="970.0" y1="152.0" x2="970.0" y2="206.0" stroke="#d9e1e8" stroke-width="1"/>
+<line x1="1165.0" y1="152.0" x2="1165.0" y2="206.0" stroke="#d9e1e8" stroke-width="1"/>
+<rect x="40.0" y="206.0" width="1320.0" height="54.0" rx="6" fill="#ffffff" stroke="#007272" stroke-width="1.1"/>
+<rect x="40.0" y="206.0" width="150.0" height="54.0" rx="6" fill="#e6f2f2" stroke="#007272" stroke-width="1.1"/>
+<text x="52.0" y="230.0" font-size="13" fill="#007272" text-anchor="start" font-weight="700">采购部</text>
+<line x1="385.0" y1="206.0" x2="385.0" y2="260.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="395.0" y="228.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">审批/释放请购</text>
+<line x1="580.0" y1="206.0" x2="580.0" y2="260.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="590.0" y="228.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">参照请购建订单：供应商、价格、</text>
+<text x="590.0" y="244.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">交期</text>
+<line x1="775.0" y1="206.0" x2="775.0" y2="260.0" stroke="#d9e1e8" stroke-width="1"/>
+<line x1="970.0" y1="206.0" x2="970.0" y2="260.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="980.0" y="228.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">核对发票与订单差异</text>
+<line x1="1165.0" y1="206.0" x2="1165.0" y2="260.0" stroke="#d9e1e8" stroke-width="1"/>
+<rect x="40.0" y="260.0" width="1320.0" height="40.0" rx="6" fill="#ffffff" stroke="#177245" stroke-width="1.1"/>
+<rect x="40.0" y="260.0" width="150.0" height="40.0" rx="6" fill="#e6f2ec" stroke="#177245" stroke-width="1.1"/>
+<text x="52.0" y="284.0" font-size="13" fill="#177245" text-anchor="start" font-weight="700">仓库</text>
+<line x1="385.0" y1="260.0" x2="385.0" y2="300.0" stroke="#d9e1e8" stroke-width="1"/>
+<line x1="580.0" y1="260.0" x2="580.0" y2="300.0" stroke="#d9e1e8" stroke-width="1"/>
+<line x1="775.0" y1="260.0" x2="775.0" y2="300.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="785.0" y="282.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">收货过账：物料凭证 + 库存增加</text>
+<line x1="970.0" y1="260.0" x2="970.0" y2="300.0" stroke="#d9e1e8" stroke-width="1"/>
+<line x1="1165.0" y1="260.0" x2="1165.0" y2="300.0" stroke="#d9e1e8" stroke-width="1"/>
+<rect x="40.0" y="300.0" width="1320.0" height="40.0" rx="6" fill="#ffffff" stroke="#8d6e00" stroke-width="1.1"/>
+<rect x="40.0" y="300.0" width="150.0" height="40.0" rx="6" fill="#fdf3d7" stroke="#8d6e00" stroke-width="1.1"/>
+<text x="52.0" y="324.0" font-size="13" fill="#8d6e00" text-anchor="start" font-weight="700">财务</text>
+<line x1="385.0" y1="300.0" x2="385.0" y2="340.0" stroke="#d9e1e8" stroke-width="1"/>
+<line x1="580.0" y1="300.0" x2="580.0" y2="340.0" stroke="#d9e1e8" stroke-width="1"/>
+<line x1="775.0" y1="300.0" x2="775.0" y2="340.0" stroke="#d9e1e8" stroke-width="1"/>
+<line x1="970.0" y1="300.0" x2="970.0" y2="340.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="980.0" y="322.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">MIRO</text>
+<text x="980.0" y="338.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">录发票、处理冻结（MRBR）</text>
+<line x1="1165.0" y1="300.0" x2="1165.0" y2="340.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="1175.0" y="322.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">付款清账：借应付/贷银行</text>
+<rect x="40.0" y="340.0" width="1320.0" height="54.0" rx="6" fill="#ffffff" stroke="#b3261e" stroke-width="1.1"/>
+<rect x="40.0" y="340.0" width="150.0" height="54.0" rx="6" fill="#fdeae9" stroke="#b3261e" stroke-width="1.1"/>
+<text x="52.0" y="364.0" font-size="13" fill="#b3261e" text-anchor="start" font-weight="700">系统（凭证）</text>
+<text x="200.0" y="362.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">需求/请购需求</text>
+<line x1="385.0" y1="340.0" x2="385.0" y2="394.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="395.0" y="362.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">采购申请</text>
+<line x1="580.0" y1="340.0" x2="580.0" y2="394.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="590.0" y="362.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">采购订单</text>
+<line x1="775.0" y1="340.0" x2="775.0" y2="394.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="785.0" y="362.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">物料凭证 + 会计凭证（借存货/贷</text>
+<text x="785.0" y="378.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">GR-IR）</text>
+<line x1="970.0" y1="340.0" x2="970.0" y2="394.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="980.0" y="362.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">发票凭证 + 会计凭证（借</text>
+<text x="980.0" y="378.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">GR-IR/贷应付）</text>
+<line x1="1165.0" y1="340.0" x2="1165.0" y2="394.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="1175.0" y="362.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">会计凭证（清应付）</text>
+</svg>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>成本流（端到端） · SAP CO 培训课程</title>
+<meta name="description" content="SAP CO（管理会计）培训课程：概念与定位（CO 与 FI 的分工）→ 组织结构（成本控制范围/标准层次/成本中心组）→ 主数据（成本要素/作业类型/统计指标/结算参数文件）→ 成本流（费用归集 → 重过账 → 分配分摊 → 结算 → 报表）+ 内部订单与产品成本 → 分步操作手顺 → SPRO 配置（34 个任务）→ 实训与自测。截图取自教材《S4.docx》的真实 SAP GUI 画面。">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mod.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">CO</span><span class="txt">培训课程</span></a>
+    <nav class="main">
+      <a href="index.html" title="课程地图与学习路线">首页</a>
+      <a href="concept.html" title="CO 是什么、成本要素、与 FI 的分工">概念</a>
+      <a href="org.html" title="成本控制范围 / 标准层次 / 成本中心组">组织</a>
+      <a href="master.html" title="成本要素 / 成本中心 / 作业类型 / 统计指标">主数据</a>
+      <a class="active" href="flow.html" title="成本流与月结顺序">流程</a>
+      <a href="cca.html" title="成本要素 · 作业价格 · 重过账 · 分配与分摊">成本中心</a>
+      <a href="io.html" title="KO04 建单 · 归集费用 · KO88 结算">内部订单</a>
+      <a href="pc.html" title="CK11N/CK24 标准成本 · 订单成本 · 差异">产品成本</a>
+      <a href="config.html" title="SPRO 配置路线（34 个任务）">配置</a>
+      <a href="practice.html" title="动手任务与完成基准">实训</a>
+      <a href="instructor.html" title="课时 / 板书 / 必问 / 评分">讲师</a>
+      <a href="worksheet.html" title="记入表（可打印）">学员</a>
+      <a href="quiz.html" title="30 题自评（合格 75%）">自测</a>
+      <a href="glossary.html" title="中英对照 / T-code / 常用表">术语</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page">
+<article>
+<p class="breadcrumb"><a href="index.html">课程地图</a> / <span>成本流（端到端）</span></p>
+<div class="filterbar modsw"><a class="chip" href="../mm/index.html" title="SAP MM 培训课程">MM 物料管理</a><a class="chip" href="../pp/index.html" title="SAP PP 培训课程">PP 生产计划</a><a class="chip" href="../fi/index.html" title="SAP FI 培训课程">FI 财务会计</a><a class="chip on" href="../co/index.html" title="SAP CO 培训课程">CO 管理会计</a><a class="chip" href="../index.html" title="四个模块的总体视图与学习路线">总览</a></div>
+<h1>成本流（端到端）</h1>
+<p class="kicker">费用归集 → 重过账 → 分配 → 分摊 → 结算 → 报表：泳道图与每月月结顺序</p>
+<p class="lead">CO 的成本流（教材的任务 14–34 就是它）：费用先<b>归集</b>到成本中心或内部订单 → 记错的用<b>重过账</b>改指 → 录好<b>统计指标</b>作基数 → <b>分配</b>（初级成本要素）与<b>分摊</b>（次级成本要素）把费用分给接收方 → 内部订单<b>结算</b>到各成本中心 → 报表上看结果。看这张泳道图时只盯两件事：<b>每一步谁在动</b>、<b>这一步的成本形态变没变</b>。</p>
+<div class="toc"><a href="#swim">月结泳道图</a><a href="#steps">九步顺序</a><a href="#docs">产生什么凭证</a><a href="#ways">分配 / 分摊 / 结算的差别</a><a href="#order">顺序错误会怎样</a><a href="#shots">教材画面</a></div>
+<h2 id="swim">月结泳道图：谁在动、动什么</h2>
+<figure class="dia wide"><a class="zoom" href="../assets/diagrams/co/monthclose.svg"><img src="../assets/diagrams/co/monthclose.svg" alt="CO 月结泳道图：财务 / 成本会计 / 业务部门 / 系统（CO 凭证）" loading="lazy"></a><figcaption><span class="n">自绘泳道图</span><span class="cap">CO 月结泳道图：财务 / 成本会计 / 业务部门 / 系统（CO 凭证）</span><span class="src">本站自绘 SVG</span></figcaption></figure>
+<h2 id="steps">九步顺序（每一步的 T-code 与产出）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>#</th><th>动作</th><th>T-code（教材任务）</th><th>产生的凭证 / 数据</th><th>成本形态</th><th>FI 有会计凭证吗</th></tr></thead><tbody><tr><td>1</td><td>把费用记到成本中心（房租房费发票）</td><td><code>FB60</code>（任务 14）· <code>FB50</code>（任务 15）</td><td>FI 会计凭证 + CO 里的成本行</td><td>初级成本要素（租金/电费）</td><td><b>有</b></td></tr><tr><td>2</td><td>看成本中心实际/计划/差异报表</td><td>报表：成本中心：实际/计划/差异（任务 16）</td><td>报表数据（无凭证）</td><td>—</td><td>—</td></tr><tr><td>3</td><td>记错的成本对象用重过账改指</td><td><code>KB61</code>（任务 17）</td><td>CO 凭证（成本中心 2001 → 2006）</td><td>还是初级成本要素</td><td>无（不动 FI）</td></tr><tr><td>4</td><td>录入统计指标实际值（面积）</td><td><code>KB31N</code>（任务 19）</td><td>统计指标凭证（RENT = 480 / 520 / … M2）</td><td>数量，不是金额</td><td>无</td></tr><tr><td>5</td><td><b>分配</b>：按统计指标分租金</td><td><code>KSV5</code>（任务 20 定义 / 21 执行）</td><td>CO 凭证（循环 DRENT，发送者 1 / 接受者 6）</td><td><b>不变</b>（仍是 55020141 管理费用-租金）</td><td>无</td></tr><tr><td>6</td><td><b>分摊</b>：按固定百分比分电费</td><td><code>KSU5</code>（任务 23 定义 / 24-25 执行）</td><td>CO 凭证（循环 AUTILI，1001 75% / 1002 25%）</td><td><b>改变</b>（变成 802010 电费分摊）</td><td>无</td></tr><tr><td>7</td><td>内部订单归集费用</td><td><code>FB50</code>（任务 32，行项目填订单 500000）</td><td>FI 会计凭证 + 订单上的成本</td><td>初级成本要素</td><td><b>有</b></td></tr><tr><td>8</td><td>内部订单结算到各成本中心</td><td><code>KO88</code>（任务 33）</td><td>结算凭证（分配结构 A1 → 结算成本要素 803010）</td><td>次级成本要素（21 类）</td><td>无</td></tr><tr><td>9</td><td>回报表看结果</td><td>成本中心报表（任务 22 / 26 / 34）</td><td>报表数据</td><td>—</td><td>—</td></tr></tbody></table></div>
+<div class="note tip"><span class="t">一句话记住这九步的分工</span>前四步是<b>准备</b>（钱记进来、基数录进去），中间三步是<b>搬成本</b>（重过账 = 改对象、分配 = 搬初级要素、分摊 = 换成次级要素再搬），最后两步是<b>收口</b>（订单清零、报表出数）。顺序错了不会报错，但报表会「看起来对、其实不对」。</div>
+<h2 id="docs">产生什么凭证：CO 凭证 vs FI 凭证</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>事务键</th><th>管什么</th><th>教材里的位置</th><th>什么时候用</th></tr></thead><tbody><tr><td>FI 会计凭证 <code>BKPF/BSEG</code></td><td>总账/应付/银行的实际记账</td><td>任务 14 房租 90000、任务 15 电费 25500、任务 32 订单费用</td><td>费用第一次进入系统时（唯一会动 FI 的一步）</td></tr><tr><td>CO 凭证 <code>COBK/COEP</code></td><td>成本对象之间的成本流动</td><td>任务 17 <code>KB61</code>、任务 21 <code>KSV5</code>、任务 24 <code>KSU5</code>、任务 33 <code>KO88</code></td><td>重过账、分配、分摊、结算、作业分配、间接费用分摊</td></tr><tr><td>统计指标凭证 <code>COSL/COSS</code></td><td>统计指标数量的输入</td><td>任务 19 <code>KB31N</code>（RENT 面积）</td><td>每月录入基数时</td></tr><tr><td>结算凭证</td><td>订单/项目余额结转的凭证（结算成本要素）</td><td>任务 33（订单 500000 → 各成本中心）</td><td>期末结算时；教材提示「无错误，运行已经完成」</td></tr></tbody></table></div>
+<div class="box ok"><b class="t">为什么分配与分摊「不产生会计凭证」</b><p>因为它们只在管理会计内部搬运成本：钱已经在 FI 里记过账了，分配/分摊只是回答「这笔钱算在哪个部门的账上」。所以跑完 <code>KSV5</code>/<code>KSU5</code> 后：<b>总账余额不变、成本中心报表变了</b>。</p><p>反过来说，如果结算的接收方是「固定总账科目」（接收方类别 <code>G/L</code>），系统就会生成一张 FI 凭证（把成本性质转成财务口径）—— 教材演示的是结算到成本中心（接收方类别 <code>CTR</code>），属于纯 CO 过账。</p></div>
+<h2 id="ways">分配 / 分摊 / 结算：三种「搬成本」的区别</h2>
+<figure class="dia wide"><a class="zoom" href="../assets/diagrams/co/movemethods.svg"><img src="../assets/diagrams/co/movemethods.svg" alt="分配 KSV5 · 分摊 KSU5 · 结算 KO88 的对比：发送方、接收方、成本要素形态" loading="lazy"></a><figcaption><span class="n">自绘规则卡</span><span class="cap">分配 KSV5 · 分摊 KSU5 · 结算 KO88 的对比：发送方、接收方、成本要素形态</span><span class="src">本站自绘 SVG</span></figcaption></figure>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>比较项</th><th>分配 Distribution（KSV5）</th><th>分摊 Assessment（KSU5）</th><th>结算 Settlement（KO88）</th></tr></thead><tbody><tr><td>教材任务</td><td>任务 20 定义 / 21 执行</td><td>任务 23 定义 / 24、25 执行</td><td>任务 33 执行</td></tr><tr><td>成本要素</td><td>只搬<b>初级</b>成本要素（55020141 租金）</td><td>用<b>次级</b>成本要素（802010 电费分摊），可配分配结构做多对一</td><td>用结算成本要素（803010），来自分配结构 A1</td></tr><tr><td>接收方基数</td><td>统计指标 RENT 的实际统计值（可按期间）</td><td>固定百分比（1001 75% / 1002 25%）或权重</td><td>结算规则里的份额（手工百分比，合计必须 100%）</td></tr><tr><td>发送方</td><td>成本中心 2006（带成本要素 55020141）</td><td>成本中心 2006（带成本要素 41050121 电费）</td><td>内部订单 500000（整单余额）</td></tr><tr><td>接收方</td><td>成本中心组 HQ</td><td>成本中心组 MFG（1001 / 1002）</td><td>8 个成本中心（按份额）</td></tr><tr><td>发送方最后的样子</td><td>发送方成本被清空（留一行对冲）</td><td>发送方被次级成本要素清空</td><td>订单余额清零（结算后订单无余额）</td></tr></tbody></table></div>
+<h2 id="order">顺序错误会怎样（教学现场真实会遇到的）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>做错的事</th><th>系统的反应</th><th>正确做法</th></tr></thead><tbody><tr><td>统计指标还没录，就跑分配</td><td>分配跑出来是 0（没有基数），或报表上看不到接收方金额</td><td>先 <code>KB31N</code> 录 RENT 实际值，再 <code>KSV5</code></td></tr><tr><td>分配循环还没定义就执行 KSV5</td><td>画面里选不到循环，报「循环不存在」</td><td>先在「期末结账 → 当前设置 → 定义分配」建循环（任务 20）</td></tr><tr><td>期间选错（执行分配的会计期间）</td><td>成本被搬到别的月份，当月报表没变化</td><td>期间填当月（教材提示原话）；注意凭证日期与期间要一致</td></tr><tr><td>费用记错成本中心又不重过账</td><td>部门报表失真，分配基数也跟着错</td><td>用 <code>KB61</code> 重过账改指（任务 17），不要冲销 FI 凭证</td></tr><tr><td>用分摊去搬初级成本要素</td><td>接收方看到的是「XX 分摊」而看不到原始成本要素，无法追溯</td><td>要保留原始成本要素用<b>分配</b>；要换形态用<b>分摊</b></td></tr><tr><td>跳过结算直接关账</td><td>内部订单上还挂着余额，成本没到最终对象</td><td>先 <code>KO88</code> 结算（任务 33），再出报表（任务 34）</td></tr><tr><td>分配/分摊跑两次</td><td>成本被重复搬一次，接收方金额翻倍</td><td>重跑前先看 CO 凭证（<code>KSB1</code> 行项目或循环的执行日志）确认是否跑过</td></tr></tbody></table></div>
+<h2 id="shots">教材画面（成本流主线）</h2>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/co/t14/01_1_image425.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t14/01_1_image425.png" width="359" height="413" alt="任务 14 FB60 房租发票 90000 元 → 成本中心 2001" loading="lazy"></a><figcaption><span class="n">画面 1</span><span class="cap">任务 14 FB60 房租发票 90000 元 → 成本中心 2001</span><span class="src">教材《S4.docx》· CO 任务 14 输入费用供应商发票 · 原图 01_1_image425.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/co/t16/02_1_image433.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t16/02_1_image433.png" width="616" height="410" alt="任务 16 报表选择：控制范围 C999 / 财年 2021 / 成本中心 2001" loading="lazy"></a><figcaption><span class="n">画面 2</span><span class="cap">任务 16 报表选择：控制范围 C999 / 财年 2021 / 成本中心 2001</span><span class="src">教材《S4.docx》· CO 任务 16 运行成本中心报表 · 原图 02_1_image433.png</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="../assets/img/co/t17/03_1_image438.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t17/03_1_image438.png" width="215" height="46" alt="任务 17 KB61 重过账：把 90000 租金改指到 2006" loading="lazy"></a><figcaption><span class="n">画面 3</span><span class="cap">任务 17 KB61 重过账：把 90000 租金改指到 2006</span><span class="src">教材《S4.docx》· CO 任务 17 成本中心数据重过帐 · 原图 03_1_image438.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/co/t19/02_1_image447.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t19/02_1_image447.png" width="913" height="550" alt="任务 19 KB31N 录入 RENT 各成本中心面积" loading="lazy"></a><figcaption><span class="n">画面 4</span><span class="cap">任务 19 KB31N 录入 RENT 各成本中心面积</span><span class="src">教材《S4.docx》· CO 任务 19 输入统计指标数量 · 原图 02_1_image447.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/co/t20/05_1_image454.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t20/05_1_image454.png" width="640" height="466" alt="任务 20 分配循环的接收方追踪因素（统计指标 RENT）" loading="lazy"></a><figcaption><span class="n">画面 5</span><span class="cap">任务 20 分配循环的接收方追踪因素（统计指标 RENT）</span><span class="src">教材《S4.docx》· CO 任务 20 定义分配循环 · 原图 05_1_image454.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/co/t23/05_1_image469.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t23/05_1_image469.png" width="608" height="368" alt="任务 23 分摊循环：发送方 2006 / 接收方 MFG（75% 与 25%）" loading="lazy"></a><figcaption><span class="n">画面 6</span><span class="cap">任务 23 分摊循环：发送方 2006 / 接收方 MFG（75% 与 25%）</span><span class="src">教材《S4.docx》· CO 任务 23 定义分摊循环 · 原图 05_1_image469.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/co/t31/06_1_image509.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t31/06_1_image509.png" width="738" height="414" alt="任务 31 订单 500000 的结算规则（各成本中心份额）" loading="lazy"></a><figcaption><span class="n">画面 7</span><span class="cap">任务 31 订单 500000 的结算规则（各成本中心份额）</span><span class="src">教材《S4.docx》· CO 任务 31 创建内部订单 · 原图 06_1_image509.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/co/t33/02_1_image518.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t33/02_1_image518.png" width="610" height="430" alt="任务 33 KO88 结算执行结果（无错误，运行已完成）" loading="lazy"></a><figcaption><span class="n">画面 8</span><span class="cap">任务 33 KO88 结算执行结果（无错误，运行已完成）</span><span class="src">教材《S4.docx》· CO 任务 33 内部订单的结算 · 原图 02_1_image518.png</span></figcaption></figure></div>
+</article>
+</main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <h5>SAP CO 培训课程</h5>
+        <p>管理会计：成本中心 · 内部订单 · 产品成本</p>
+        <p>课程总览：<a href="../index.html">SAP 模块培训课程（MM · PP · FI · CO）</a></p>
+      </div>
+      <div>
+        <h5>课程板块</h5>
+        <p><a href="concept.html">概念</a> · <a href="org.html">组织</a> ·
+        <a href="master.html">主数据</a> · <a href="flow.html">流程</a> ·
+        <a href="cca.html">成本中心</a> · <a href="config.html">配置</a></p>
+      </div>
+      <div>
+        <h5>课堂配套</h5>
+        <p><a href="practice.html">实训任务</a> · <a href="instructor.html">讲师版</a> ·
+        <a href="worksheet.html">学员版</a> · <a href="quiz.html">自测</a> ·
+        <a href="glossary.html">术语表</a></p>
+      </div>
+      <div>
+        <h5>看图说话</h5>
+        <p>截图取自教材《S4.docx》的真实 SAP GUI 画面（中文界面，保留原文件名可回查）；
+        流程图、结构图、思维导图为本站自绘 SVG。标准值随版本/行业方案而异，
+        页面标注的「在自系统里怎么确认」请在自己的系统里核对。</p>
+        <p>其他模块：<a href="../mm/index.html">MM 物料管理</a> · <a href="../pp/index.html">PP 生产计划</a> · <a href="../fi/index.html">FI 财务会计</a> · </p>
+      </div>
+    </div>
+    <p class="copy">© <span data-year>2026</span> SAP CO 培训课程 · 静态站点，可离线使用</p>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/mod.js"></script>
+</body>
+</html>

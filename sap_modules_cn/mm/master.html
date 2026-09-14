@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>主数据 · SAP MM 培训课程</title>
+<meta name="description" content="SAP MM（物料管理）培训课程：概念与定位 → 组织结构（工厂/库存地点/采购组织/采购组）→ 主数据（物料/供应商/采购信息记录）→ 端到端采购流程（请购·采购订单·收货·发票校验·付款）→ 分步操作手顺 → SPRO 配置（42 个任务）→ 实训与自测。截图取自教材《S4.docx》的真实 SAP GUI 画面。">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mod.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MM</span><span class="txt">培训课程</span></a>
+    <nav class="main">
+      <a href="index.html" title="课程地图与学习路线">首页</a>
+      <a href="concept.html" title="MM 是什么、三大职能、五类凭证">概念</a>
+      <a href="org.html" title="企业结构 / 采购结构 / 计划与评估结构">组织</a>
+      <a class="active" href="master.html" title="物料 / 供应商 / 采购信息记录">主数据</a>
+      <a href="flow.html" title="端到端采购流程与单据流">流程</a>
+      <a href="purchase.html" title="请购 · 采购订单 · 货源与信息记录">采购</a>
+      <a href="inventory.html" title="收货 · 发货 · 转储 · 移动类型与库存总览">库存</a>
+      <a href="invoice.html" title="MIRO · 差异与容差 · 冻结发票下达 · 三单匹配">发票校验</a>
+      <a href="config.html" title="SPRO 配置路线（42 个任务）">配置</a>
+      <a href="practice.html" title="动手任务与完成基准">实训</a>
+      <a href="instructor.html" title="课时 / 板书 / 必问 / 评分">讲师</a>
+      <a href="worksheet.html" title="记入表（可打印）">学员</a>
+      <a href="quiz.html" title="30 题自评（合格 75%）">自测</a>
+      <a href="glossary.html" title="中英对照 / T-code / 常用表">术语</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page">
+<article>
+<p class="breadcrumb"><a href="index.html">课程地图</a> / <span>主数据</span></p>
+<div class="filterbar modsw"><a class="chip on" href="../mm/index.html" title="SAP MM 培训课程">MM 物料管理</a><a class="chip" href="../pp/index.html" title="SAP PP 培训课程">PP 生产计划</a><a class="chip" href="../fi/index.html" title="SAP FI 培训课程">FI 财务会计</a><a class="chip" href="../co/index.html" title="SAP CO 培训课程">CO 管理会计</a><a class="chip" href="../index.html" title="四个模块的总体视图与学习路线">总览</a></div>
+<h1>主数据</h1>
+<p class="kicker">物料主数据（视图 × 组织层）· 供应商（三层）· 采购信息记录</p>
+<p class="lead">MM 的主数据只有三样，但每一样都分层：<b>物料</b>（按视图 × 组织层拆）、<b>供应商</b>（一般/公司代码/采购组织三层）、<b>采购信息记录</b>（物料 × 供应商 × 采购组织）。搞清「哪个字段在哪一层、决定什么」，后面的流程才不会卡在报错上。</p>
+<div class="toc"><a href="#layers">物料主数据的层级</a><a href="#views">视图清单</a><a href="#mtype">物料类型</a><a href="#fields">关键字段</a><a href="#vendor">供应商主数据</a><a href="#info">采购信息记录</a><a href="#shots">教材画面</a></div>
+<h2 id="layers">物料主数据是「分层 + 分视图」的</h2>
+<figure class="dia wide"><a class="zoom" href="../assets/diagrams/mm/masterview.svg"><img src="../assets/diagrams/mm/masterview.svg" alt="物料主数据的组织层与视图：基本数据跨公司、工厂层、库存地点层" loading="lazy"></a><figcaption><span class="n">自绘结构图</span><span class="cap">物料主数据的组织层与视图：基本数据跨公司、工厂层、库存地点层</span><span class="src">本站自绘 SVG</span></figcaption></figure>
+<div class="box info"><b class="t">为什么收货时报「未维护评估类」</b><p>物料主数据不是一张表，而是按<b>组织层</b>分别存储（<code>MARA</code> 一般 / <code>MARC</code> 工厂 / <code>MARD</code> 库存地点 / <code>MBEW</code> 评估）。你在工厂 P999 收货，系统要读 <code>MBEW</code> 里的评估类和价格 —— 如果建物料时没维护「会计 1」视图的评估类，收货就过不去。教材任务 22 特别提示：原书此处有误，原材料的评估类应为 <b>3000</b>。</p></div>
+<h2 id="views">视图清单（MM01 / MMR1 / MMH1 / MMF1）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>视图</th><th>组织层</th><th>关键字段（教材值）</th><th>影响哪些流程</th></tr></thead><tbody><tr><td>基本数据 1 / 2</td><td>跨组织</td><td>物料类型 ROH/HAWA/FERT、行业部门、基本单位、物料组（任务 09）</td><td>决定后面哪些视图可选；物料组是统计与采购分析维度</td></tr><tr><td>采购 Purchasing</td><td>工厂</td><td>采购类型 <code>F</code>（只能外购，任务 22 画面）、采购组 PG1、采购批量 EX</td><td>采购订单能否用这个物料；批量决定 MRP 建议量</td></tr><tr><td>MRP 1–4</td><td>工厂</td><td>MRP 类型 <code>PD</code>、MRP 控制者 001、批量 EX、安全库存 100、计划边际码</td><td>MRP 运行（MD03/MD02）是否产生请购、什么时候产生</td></tr><tr><td>一般/工厂库存 Storage</td><td>库存地点</td><td>库存地点 0001/0002/0003（任务 12 可自动创建）</td><td>收货/发货能不能选这个库位</td></tr><tr><td>会计 1 / 成本 1</td><td>工厂（评估范围）</td><td>评估类 3000、价格控制 <code>V</code>（移动平均价）/ <code>S</code>（标准价）</td><td>自动记账找哪个存货科目（BSX）；价格控制决定差异怎么记</td></tr><tr><td>销售 Sales</td><td>销售组织/渠道</td><td>（ROH 没有销售视图 —— 任务 22 画面特意指出）</td><td>SD 能不能卖这个物料</td></tr></tbody></table></div>
+<div class="note tip"><span class="t">价格控制 V / S 的取舍（教材原文提示）</span><b>V = 移动平均价</b>：每次收货按实际采购价重算平均价，采购价差直接进存货价值；<b>S = 标准价</b>：价格固定，采购价与标准价的差额进<b>采购价差（PRD）</b>科目。教材的产成品用 S（先 CK11N/CK24 估算标准成本，见 PP 站），原材料一般用 V。</div>
+<h2 id="mtype">物料类型（Material Type）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>物料类型</th><th>名称</th><th>教材用途</th><th>特点</th></tr></thead><tbody><tr><td><code>ROH</code></td><td>原材料</td><td>罩壳 R999-100、飞轮、管轴、支撑架、金属片</td><td>外购；无销售视图；评估类 3000</td></tr><tr><td><code>HAWA</code></td><td>贸易商品</td><td>T999-100 高速增压涡轮泵（外购转卖）</td><td>外购也可销售；评估类 3000；数量/价值更新（任务 18 演示）</td></tr><tr><td><code>FERT</code></td><td>产成品</td><td>铸钢泵 170-230（自制品，PP 站生产）</td><td>自制；有销售视图；成本核算批量 10（任务 24）</td></tr><tr><td><code>HALB</code></td><td>半成品</td><td>（教材未用，标准类型）</td><td>自制/外购均可</td></tr></tbody></table></div>
+<div class="note tip"><span class="t">怎么确认自己系统的物料类型</span><code>OMS2</code> 可查物料类型的数量/价值更新设置；建物料时事务码 <code>MM01</code> 里点 F4 看可选类型；物料类型决定「可选视图」和「编号范围」，改类型要慎重（会影响已有库存的账）。</div>
+<h2 id="fields">建物料时最该盯住的 8 个字段</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>字段</th><th>在哪层</th><th>教材值</th><th>填错的后果</th></tr></thead><tbody><tr><td>物料类型</td><td>一般</td><td>ROH / HAWA / FERT</td><td>视图不对、账不对，且不容易改</td></tr><tr><td>物料组</td><td>一般</td><td>三个物料组（任务 09）</td><td>采购分析取不到数</td></tr><tr><td>采购类型 F / E</td><td>工厂</td><td>F（外购）</td><td>自制件属性错，MRP 会产生生产订单而非请购</td></tr><tr><td>MRP 类型 PD</td><td>工厂</td><td>PD = MRP</td><td>不会自动产生需求，MD04 一片空白</td></tr><tr><td>批量 EX</td><td>工厂</td><td>EX 按批订货量</td><td>建议量不符合实际采购习惯</td></tr><tr><td>安全库存</td><td>工厂</td><td>100 件</td><td>MRP 不补货，缺料风险</td></tr><tr><td>评估类</td><td>工厂（评估）</td><td>3000</td><td>收货失败或记到错误存货科目</td></tr><tr><td>价格控制</td><td>工厂（评估）</td><td>V 移动平均 / S 标准</td><td>差异跑到错误科目（PRD/DIF）</td></tr></tbody></table></div>
+<h2 id="vendor">供应商主数据（三层）与 MK01</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>层</th><th>组织层</th><th>内容</th><th>T-code</th></tr></thead><tbody><tr><td>一般数据</td><td>跨公司</td><td>名称、地址、税号、银行</td><td><code>FK01</code>/<code>XK01</code>（FI 建）</td></tr><tr><td>公司代码数据</td><td>公司代码</td><td>对账科目、付款条件、付款方式（财务用）</td><td>同上</td></tr><tr><td><b>采购数据</b></td><td>采购组织</td><td>采购组、付款条件、INCOTERMS、合作伙伴</td><td><code>MK01</code>（教材任务 26）</td></tr></tbody></table></div>
+<div class="note info"><span class="t">教材场景</span>红星轴承厂（供应商 <code>10000000</code>）在 FI 里已经有一般数据与公司代码数据；要用采购功能，只需补维护<b>采购数据</b>（MK01）。另两个供应商 10000001、20000000 同样维护。→ 这正是「同一主数据被 MM 与 FI 共用」的最好例子。</div>
+<h2 id="info">采购信息记录（ME11）：货源的价格与交期</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>字段</th><th>教材值（管轴 R999-300 → 红星轴承厂）</th><th>影响</th></tr></thead><tbody><tr><td>标准订单数量</td><td>50 件</td><td>采购订单默认数量</td></tr><tr><td>净价</td><td>1700 元 / 件</td><td>采购订单默认价格；没有信息记录就要手输</td></tr><tr><td>交货时间</td><td>3 天</td><td>订单的建议交货日期</td></tr><tr><td>采购组</td><td>PG1（原材料和运营供应）</td><td>订单默认采购组</td></tr></tbody></table></div>
+<ol class="oplist" start="1"><li class="">信息记录 = 「物料 × 供应商 × 采购组织」的价格与条件，是<b>货源</b>与定价的默认来源。</li><li class="">维护：<code>ME11</code> 创建 / <code>ME12</code> 修改 / <code>ME13</code> 显示；批量查：<code>ME1M</code>（按物料）或 <code>ME1L</code>（按供应商）。</li><li class="">教材任务 27 的后半段用 <code>MM02</code> 回改了某个物料信息（教材原文如此），实际项目里信息记录的价格改动走 ME12（会留下条件历史）。</li><li class="">没有信息记录也能下订单，但价格要手输，且不好统计 —— 这是「有没有货源管理」的分界。</li></ol>
+<h2 id="shots">教材画面（主数据）</h2>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/mm/t22/03_1_image614.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t22/03_1_image614.png" width="346" height="707" alt="任务 22 建原材料：物料类型 ROH 决定没有销售视图" loading="lazy"></a><figcaption><span class="n">画面 1</span><span class="cap">任务 22 建原材料：物料类型 ROH 决定没有销售视图</span><span class="src">教材《S4.docx》· MM 任务 22 新建原材料主数据 · 原图 03_1_image614.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t22/06_1_image622.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t22/06_1_image622.png" width="631" height="689" alt="任务 22 采购视图 / MRP 视图：采购类型 F、批量 EX、安全库存 100" loading="lazy"></a><figcaption><span class="n">画面 2</span><span class="cap">任务 22 采购视图 / MRP 视图：采购类型 F、批量 EX、安全库存 100</span><span class="src">教材《S4.docx》· MM 任务 22 新建原材料主数据 · 原图 06_1_image622.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t22/09_1_image625.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t22/09_1_image625.png" width="657" height="604" alt="任务 22 会计 1 视图：评估类 3000（原书此处有误）" loading="lazy"></a><figcaption><span class="n">画面 3</span><span class="cap">任务 22 会计 1 视图：评估类 3000（原书此处有误）</span><span class="src">教材《S4.docx》· MM 任务 22 新建原材料主数据 · 原图 09_1_image625.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t24/01_1_image639.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t24/01_1_image639.png" width="362" height="481" alt="任务 24 建产成品（成本核算批量 10）" loading="lazy"></a><figcaption><span class="n">画面 4</span><span class="cap">任务 24 建产成品（成本核算批量 10）</span><span class="src">教材《S4.docx》· MM 任务 24 新建产成品主数据 · 原图 01_1_image639.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t26/01_1_image652.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t26/01_1_image652.png" width="367" height="512" alt="任务 26 MK01 维护供应商采购数据 10000000" loading="lazy"></a><figcaption><span class="n">画面 5</span><span class="cap">任务 26 MK01 维护供应商采购数据 10000000</span><span class="src">教材《S4.docx》· MM 任务 26 创建供应商采购数据 · 原图 01_1_image652.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t27/03_1_image663.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t27/03_1_image663.png" width="607" height="667" alt="任务 27 ME11 信息记录采购组织数据 1" loading="lazy"></a><figcaption><span class="n">画面 6</span><span class="cap">任务 27 ME11 信息记录采购组织数据 1</span><span class="src">教材《S4.docx》· MM 任务 27 新建采购信息记录 · 原图 03_1_image663.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t25/01_1_image649.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t25/01_1_image649.png" width="341" height="577" alt="任务 25 MM60 物料清单" loading="lazy"></a><figcaption><span class="n">画面 7</span><span class="cap">任务 25 MM60 物料清单</span><span class="src">教材《S4.docx》· MM 任务 25 显示物料主记录清单 · 原图 01_1_image649.png</span></figcaption></figure></div>
+</article>
+</main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <h5>SAP MM 培训课程</h5>
+        <p>物料管理：采购 · 库存 · 发票校验</p>
+        <p>课程总览：<a href="../index.html">SAP 模块培训课程（MM · PP · FI · CO）</a></p>
+      </div>
+      <div>
+        <h5>课程板块</h5>
+        <p><a href="concept.html">概念</a> · <a href="org.html">组织</a> ·
+        <a href="master.html">主数据</a> · <a href="flow.html">流程</a> ·
+        <a href="purchase.html">采购</a> · <a href="config.html">配置</a></p>
+      </div>
+      <div>
+        <h5>课堂配套</h5>
+        <p><a href="practice.html">实训任务</a> · <a href="instructor.html">讲师版</a> ·
+        <a href="worksheet.html">学员版</a> · <a href="quiz.html">自测</a> ·
+        <a href="glossary.html">术语表</a></p>
+      </div>
+      <div>
+        <h5>看图说话</h5>
+        <p>截图取自教材《S4.docx》的真实 SAP GUI 画面（中文界面，保留原文件名可回查）；
+        流程图、结构图、思维导图为本站自绘 SVG。标准值随版本/行业方案而异，
+        页面标注的「在自系统里怎么确认」请在自己的系统里核对。</p>
+        <p>其他模块：<a href="../pp/index.html">PP 生产计划</a> · <a href="../fi/index.html">FI 财务会计</a> · <a href="../co/index.html">CO 管理会计</a> · </p>
+      </div>
+    </div>
+    <p class="copy">© <span data-year>2026</span> SAP MM 培训课程 · 静态站点，可离线使用</p>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/mod.js"></script>
+</body>
+</html>

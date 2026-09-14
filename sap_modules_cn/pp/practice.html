@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>实训：五个动手任务 · SAP PP 培训课程</title>
+<meta name="description" content="SAP PP（生产计划）培训课程：概念与定位 → 组织结构（工厂/工作中心/能力/生产调度员）→ 主数据（物料 MRP 视图/BOM/工艺路线/工作中心/生产版本）→ 端到端流程（独立需求 → MRP 展开 → 计划订单 → 生产订单 → 发料·确认·收货 → 成本与差异结算）→ 分步操作手顺 → SPRO 配置（51 个任务）→ 实训与自测。截图取自教材《S4.docx》的真实 SAP GUI 画面。">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mod.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">PP</span><span class="txt">培训课程</span></a>
+    <nav class="main">
+      <a href="index.html" title="课程地图与学习路线">首页</a>
+      <a href="concept.html" title="PP 是什么、四段闭环、对象与凭证">概念</a>
+      <a href="org.html" title="工厂 / 调度员 / 工作中心 / 能力">组织</a>
+      <a href="master.html" title="BOM / 工艺路线 / 工作中心 / MRP 视图">主数据</a>
+      <a href="flow.html" title="端到端计划到成本流程">流程</a>
+      <a href="planning.html" title="需求管理 · MRP · MD04 · 订单转换">计划</a>
+      <a href="execution.html" title="下达 · 发料 · 工单确认 · 收货">执行</a>
+      <a href="cost.html" title="标准成本 CK11N/CK24 · 订单成本 · 差异结算">成本</a>
+      <a href="config.html" title="SPRO 配置路线（51 个任务）">配置</a>
+      <a class="active" href="practice.html" title="动手任务与完成基准">实训</a>
+      <a href="instructor.html" title="课时 / 板书 / 必问 / 评分">讲师</a>
+      <a href="worksheet.html" title="记入表（可打印）">学员</a>
+      <a href="quiz.html" title="30 题自评（合格 75%）">自测</a>
+      <a href="glossary.html" title="中英对照 / T-code / 常用表">术语</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page">
+<article>
+<p class="breadcrumb"><a href="index.html">课程地图</a> / <span>实训：五个动手任务</span></p>
+<div class="filterbar modsw"><a class="chip" href="../mm/index.html" title="SAP MM 培训课程">MM 物料管理</a><a class="chip on" href="../pp/index.html" title="SAP PP 培训课程">PP 生产计划</a><a class="chip" href="../fi/index.html" title="SAP FI 培训课程">FI 财务会计</a><a class="chip" href="../co/index.html" title="SAP CO 培训课程">CO 管理会计</a><a class="chip" href="../index.html" title="四个模块的总体视图与学习路线">总览</a></div>
+<h1>实训：五个动手任务</h1>
+<p class="kicker">做什么 · 完成基准 · 常见错误 · 对应画面</p>
+<p class="lead">五个实训任务，覆盖「组织与主数据 → 需求计划 → MRP 与转换 → 生产执行 → 成本与结算」的完整链条。每个任务都有：做什么、完成基准（打勾）、常见错误、对应教材画面。<b>没有 SAP 环境也能做前面两步的「纸上推演」</b>，后面三步需要可用的系统。</p>
+<div class="note tip"><span class="t">环境准备清单</span>① 可登录的 SAP 系统（含 PP 与 CO 的显示权限）；② 已建好工厂/工作中心/BOM/工艺路线（或使用课程提供的沙箱数据）；③ 能执行 MD61/MD02 与创建生产订单的权限；④ 打印 <a href="worksheet.html">学员记入表</a> 用来记单据号与成本数。达不到时：用 <a href="config.html">配置页</a> 的画面做「看图说话」——让学生指出每一步在哪个字段、会产生什么凭证。</div>
+<div class="toc"><a href="#p1">实训 1 读组织与主数据</a><a href="#p2">实训 2 需求计划</a><a href="#p3">实训 3 MRP 与转换</a><a href="#p4">实训 4 生产执行</a><a href="#p5">实训 5 成本与结算</a></div>
+<h2 id="p1">实训 1：画出组织与主数据的骨架（约 40 分钟）</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>做什么</th><th>完成基准</th><th>对应画面</th></tr></thead><tbody><tr><td>画出「公司代码 → 工厂 → 工作中心 / 能力 / 调度员」的层级图</td><td>图上有教材场景值（C999 / P999 / 9991–9996 / 999 / 000001 / 1001）</td><td><a href="config.html#t01">任务 01</a>–<a href="config.html#t13">13</a></td></tr><tr><td>写出 F999-100 的 BOM 组件与工艺路线工序（含工作中心与并行工序）</td><td>能说出 5 个组件、6 道工序，以及「油漆罩壳」为什么是并行的</td><td><a href="config.html#t06">任务 06</a> / <a href="config.html#t14">14</a></td></tr><tr><td>说出物料 MRP 视图里 6 个必填字段及其影响</td><td>MRP 类型 PD、批量、安全库存、调度员 999、可用性检查组 02、计划策略组 40</td><td><a href="master.html#fields">主数据页字段表</a></td></tr></tbody></table></div>
+<h2 id="p2">实训 2：创建独立需求并观察供需（约 40 分钟）</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>做什么</th><th>完成基准</th><th>对应画面</th></tr></thead><tbody><tr><td>用 ME51N 以外的 PP 入口建独立需求：<code>MD61</code> 给 F999-100 排 4 周需求</td><td>记下物料/工厂/版本/计划区间；能在 <code>MD04</code> 里看到 PIR 行</td><td><a href="config.html#t33">任务 33</a></td></tr><tr><td>对比 <code>MD05</code> 与 <code>MD04</code></td><td>能指出「哪个有时间戳、哪个是静态的」，并说明原因</td><td><a href="planning.html#sec34">计划篇第 3 节</a></td></tr><tr><td>对自己的贸易商品重复一遍</td><td>两个物料都能在 MD04 看到独立需求</td><td><a href="config.html#t33">任务 33</a></td></tr></tbody></table></div>
+<div class="note warn"><span class="t">最常见的失败点</span>MD61 里把日期区间填错（教材是从今天排到下月末、按周 W），结果 MD04 里什么都看不到。先核对区间与版本 00，再怀疑系统。</div>
+<h2 id="p3">实训 3：跑 MRP 并做两次转换（约 60 分钟）</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>做什么</th><th>完成基准</th><th>对应画面</th></tr></thead><tbody><tr><td>用 <code>MD02</code>「单项，多层」对产成品跑一次 MRP</td><td>退出前勾「显示结果」看结果；记下计划订单号；原材料出现 DepReq</td><td><a href="config.html#t36">任务 36</a></td></tr><tr><td>在 <code>MD04</code> 把计划订单转成生产订单</td><td>记下生产订单号（教材是 1000013）；能看到状态与工序</td><td><a href="config.html#t37">任务 37</a></td></tr><tr><td>在 <code>MD04</code> 把采购申请转成采购订单</td><td>记下采购订单号、供应商、净价；用「建立订单结构」看到组件树</td><td><a href="config.html#t39">任务 39</a></td></tr><tr><td>用 <code>COOIS</code> 看订单清单</td><td>能按工厂/物料筛出自己的订单</td><td><a href="config.html#t38">任务 38</a></td></tr></tbody></table></div>
+<h2 id="p4">实训 4：生产执行（下达 → 发料 → 报工 → 收货）（约 60 分钟）</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>做什么</th><th>完成基准</th><th>对应画面</th></tr></thead><tbody><tr><td><code>CO02</code> 下达生产订单（收货页先勾「收货」）</td><td>状态出现下达、系统提示「下达已执行」</td><td><a href="config.html#t42">任务 42</a></td></tr><tr><td><code>MB1A</code> 移动类型 261 对订单发料</td><td>记下物料凭证号；组件「已发货数量」增加</td><td><a href="config.html#t43">任务 43</a></td></tr><tr><td><code>CO11N</code> 对至少一道工序报工（含并行工序）</td><td>确认凭证号；订单实际成本里出现作业成本（若 KP26 已维护）</td><td><a href="config.html#t44">任务 44</a></td></tr><tr><td><code>MIGO</code> 对生产订单收货（101）</td><td>产成品库存增加；记下物料凭证与会计凭证号</td><td><a href="config.html#t45">任务 45</a></td></tr><tr><td><code>CO02</code> 做技术性完成</td><td>状态出现 TECO；再发料会被拒绝</td><td><a href="config.html#t47">任务 47</a></td></tr></tbody></table></div>
+<div class="note tip"><span class="t">怎么知道「会计凭证长什么样」</span>发料与收货都会生成会计凭证。看两处：① <code>MIGO</code>/<code>MB1A</code> 的「文件信息」页；② 物料凭证显示 <code>MB03</code> 里的「FI 凭证」按钮。教材任务 43 就是双击会计凭证看分录。</div>
+<h2 id="p5">实训 5：成本与差异（约 50 分钟）</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>做什么</th><th>完成基准</th><th>对应画面</th></tr></thead><tbody><tr><td>用 <code>CK11N</code> 对 F999-100 做一次成本估算</td><td>记下批量 10 PC、货物制造成本、折算单位成本（教材 25,386.58 / 2,538.66）</td><td><a href="config.html#t22">任务 22</a></td></tr><tr><td>用 <code>CK24</code> 标记，再用 <code>MM03</code> 看未来价格</td><td>能指出「标记只改未来期间，标准价还没变」</td><td><a href="config.html#t23">任务 23</a>/<a href="config.html#t24">24</a></td></tr><tr><td>用 <code>CK24</code> 发布，再看 <code>MM03</code> 的标准价格</td><td>标准价格更新为估算的单位成本</td><td><a href="config.html#t25">任务 25</a>/<a href="config.html#t26">26</a></td></tr><tr><td>用 <code>CO03</code> 看订单成本，指出差异的方向</td><td>能说清「借方是实际成本、贷方是产出、余额就是差异」</td><td><a href="config.html#t46">任务 46</a></td></tr><tr><td>用 <code>KO88</code> 结算（能跑通最好，跑不通要说明缺什么）</td><td>能指出缺失项（通常是结算规则），并说出在哪维护</td><td><a href="config.html#t48">任务 48</a>/<a href="config.html#t49">49</a></td></tr></tbody></table></div>
+<div class="box ok"><b class="t">交作业</b>把五个实训里记录的<b>号码与数值</b>填进 <a href="worksheet.html">学员记入表</a>：组织与主数据值 → 独立需求 → 计划订单/生产订单 → 物料凭证/会计凭证 → 成本估算与订单差异。讲师按 <a href="instructor.html#grade">讲师版评分标准</a> 打分。</div>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/pp/t33/04_1_image978.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t33/04_1_image978.png" width="588" height="461" alt="任务 33：把周需求填进去（实训 2）" loading="lazy"></a><figcaption><span class="n">画面 1</span><span class="cap">任务 33：把周需求填进去（实训 2）</span><span class="src">教材《S4.docx》· PP 任务 33 创建物料的独立需求计划 · 原图 04_1_image978.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t36/05_1_image996.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t36/05_1_image996.png" width="852" height="825" alt="任务 36：MRP 结果里双击物料看细项（实训 3）" loading="lazy"></a><figcaption><span class="n">画面 2</span><span class="cap">任务 36：MRP 结果里双击物料看细项（实训 3）</span><span class="src">教材《S4.docx》· PP 任务 36 运行物料需求计划 · 原图 05_1_image996.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t42/04_1_image1036.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t42/04_1_image1036.png" width="597" height="803" alt="任务 42：点绿旗下达（实训 4）" loading="lazy"></a><figcaption><span class="n">画面 3</span><span class="cap">任务 42：点绿旗下达（实训 4）</span><span class="src">教材《S4.docx》· PP 任务 42 下达生产订单 · 原图 04_1_image1036.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t45/01_1_image1057.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t45/01_1_image1057.png" width="398" height="468" alt="任务 45：按生产订单收货（实训 4）" loading="lazy"></a><figcaption><span class="n">画面 4</span><span class="cap">任务 45：按生产订单收货（实训 4）</span><span class="src">教材《S4.docx》· PP 任务 45 对生产订单收货 · 原图 01_1_image1057.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t22/02_1_image921.jpeg" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t22/02_1_image921.jpeg" width="1461" height="665" alt="任务 22：CK11N 的成本结果（实训 5）" loading="lazy"></a><figcaption><span class="n">画面 5</span><span class="cap">任务 22：CK11N 的成本结果（实训 5）</span><span class="src">教材《S4.docx》· PP 任务 22 新建产品成本估算 · 原图 02_1_image921.jpeg</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t46/01_1_image1059.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t46/01_1_image1059.png" width="651" height="676" alt="任务 46：CO03 看订单成本与余额（实训 5）" loading="lazy"></a><figcaption><span class="n">画面 6</span><span class="cap">任务 46：CO03 看订单成本与余额（实训 5）</span><span class="src">教材《S4.docx》· PP 任务 46 显示生产订单的成本 · 原图 01_1_image1059.png</span></figcaption></figure></div>
+</article>
+</main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <h5>SAP PP 培训课程</h5>
+        <p>生产计划：需求 · 计划 · 执行 · 成本</p>
+        <p>课程总览：<a href="../index.html">SAP 模块培训课程（MM · PP · FI · CO）</a></p>
+      </div>
+      <div>
+        <h5>课程板块</h5>
+        <p><a href="concept.html">概念</a> · <a href="org.html">组织</a> ·
+        <a href="master.html">主数据</a> · <a href="flow.html">流程</a> ·
+        <a href="planning.html">计划</a> · <a href="config.html">配置</a></p>
+      </div>
+      <div>
+        <h5>课堂配套</h5>
+        <p><a href="practice.html">实训任务</a> · <a href="instructor.html">讲师版</a> ·
+        <a href="worksheet.html">学员版</a> · <a href="quiz.html">自测</a> ·
+        <a href="glossary.html">术语表</a></p>
+      </div>
+      <div>
+        <h5>看图说话</h5>
+        <p>截图取自教材《S4.docx》的真实 SAP GUI 画面（中文界面，保留原文件名可回查）；
+        流程图、结构图、思维导图为本站自绘 SVG。标准值随版本/行业方案而异，
+        页面标注的「在自系统里怎么确认」请在自己的系统里核对。</p>
+        <p>其他模块：<a href="../mm/index.html">MM 物料管理</a> · <a href="../fi/index.html">FI 财务会计</a> · <a href="../co/index.html">CO 管理会计</a> · </p>
+      </div>
+    </div>
+    <p class="copy">© <span data-year>2026</span> SAP PP 培训课程 · 静态站点，可离线使用</p>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/mod.js"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 661" width="1280" height="661" role="img" aria-label="物料主数据：组织层 × 视图" font-family="'PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<title>物料主数据：组织层 × 视图</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0a6ed1"/></marker><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#007272"/></marker><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffffff"/></marker><marker id="arback" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M10,0 L0,5 L10,10 z" fill="#b3261e"/></marker></defs>
+<rect width="1280" height="661" fill="#ffffff"/>
+<text x="40.0" y="46.0" font-size="22" fill="#1d2d3e" text-anchor="start" font-weight="700">物料主数据：组织层 × 视图</text>
+<text x="40.0" y="72.0" font-size="12.5" fill="#6b7a8d" text-anchor="start" font-weight="400">同一个物料，按组织层存在不同表里；收货读不到评估类，就是因为工厂层没维护</text>
+<rect x="40.0" y="104.0" width="1200.0" height="117.0" rx="12" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="58.0" y="132.0" font-size="15.5" fill="#0a6ed1" text-anchor="start" font-weight="700">① 一般数据（跨公司代码）· 表 MARA</text>
+<text x="333.4" y="132.0" font-size="12" fill="#6b7a8d" text-anchor="start" font-weight="400">物料类型 ROH/HAWA/FERT · 物料组 · 计量单位</text>
+<rect x="58.0" y="150.0" width="221.6" height="59.0" rx="8" fill="#ffffff" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="70.0" y="171.0" font-size="13.5" fill="#0a6ed1" text-anchor="start" font-weight="700">基本数据 1</text>
+<text x="70.0" y="188.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">物料类型、物料组、基本单位</text>
+<rect x="293.6" y="150.0" width="221.6" height="59.0" rx="8" fill="#ffffff" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="305.6" y="171.0" font-size="13.5" fill="#0a6ed1" text-anchor="start" font-weight="700">基本数据 2</text>
+<text x="305.6" y="188.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">重量/体积、EAN 条码</text>
+<rect x="529.2" y="150.0" width="221.6" height="59.0" rx="8" fill="#ffffff" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="541.2" y="171.0" font-size="13.5" fill="#0a6ed1" text-anchor="start" font-weight="700">行业部门</text>
+<text x="541.2" y="188.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">行业（机械）决定字段可选集</text>
+<rect x="764.8" y="150.0" width="221.6" height="59.0" rx="8" fill="#ffffff" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="776.8" y="171.0" font-size="13.5" fill="#0a6ed1" text-anchor="start" font-weight="700">物料组</text>
+<text x="776.8" y="188.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">任务 09 建的三组，统计维度</text>
+<rect x="1000.4" y="150.0" width="221.6" height="59.0" rx="8" fill="#ffffff" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="1012.4" y="171.0" font-size="13.5" fill="#0a6ed1" text-anchor="start" font-weight="700">编号范围</text>
+<text x="1012.4" y="188.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">内/外部给号由物料类型决定</text>
+<rect x="40.0" y="237.0" width="1200.0" height="134.0" rx="12" fill="#e6f2f2" stroke="#007272" stroke-width="1.2"/>
+<text x="58.0" y="265.0" font-size="15.5" fill="#007272" text-anchor="start" font-weight="700">② 工厂层（= 评估范围）· 表 MARC / MBEW</text>
+<text x="380.8" y="265.0" font-size="12" fill="#6b7a8d" text-anchor="start" font-weight="400">收货、MRP、评估都在这一层</text>
+<rect x="58.0" y="283.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#007272" stroke-width="1.2"/>
+<text x="70.0" y="304.0" font-size="13.5" fill="#007272" text-anchor="start" font-weight="700">采购视图</text>
+<text x="70.0" y="321.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">采购类型 F（只能外购）</text>
+<text x="70.0" y="338.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">采购组 PG1、批量 EX</text>
+<rect x="352.5" y="283.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#007272" stroke-width="1.2"/>
+<text x="364.5" y="304.0" font-size="13.5" fill="#007272" text-anchor="start" font-weight="700">MRP 1–4</text>
+<text x="364.5" y="321.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">MRP 类型 PD、MRP 控制者 001</text>
+<text x="364.5" y="338.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">安全库存 100、计划边际码</text>
+<rect x="647.0" y="283.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#007272" stroke-width="1.2"/>
+<text x="659.0" y="304.0" font-size="13.5" fill="#007272" text-anchor="start" font-weight="700">会计 1 / 成本 1</text>
+<text x="659.0" y="321.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">评估类 3000、价格控制 V/S</text>
+<text x="659.0" y="338.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">标准价、移动平均价</text>
+<rect x="941.5" y="283.0" width="280.5" height="76.0" rx="8" fill="#ffffff" stroke="#007272" stroke-width="1.2"/>
+<text x="953.5" y="304.0" font-size="13.5" fill="#007272" text-anchor="start" font-weight="700">工厂库存参数</text>
+<text x="953.5" y="321.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">库存地点视图的创建方式</text>
+<text x="953.5" y="338.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">（任务 12 可自动创建）</text>
+<rect x="40.0" y="387.0" width="1200.0" height="117.0" rx="12" fill="#e6f2ec" stroke="#177245" stroke-width="1.2"/>
+<text x="58.0" y="415.0" font-size="15.5" fill="#177245" text-anchor="start" font-weight="700">③ 库存地点层 · 表 MARD</text>
+<text x="245.4" y="415.0" font-size="12" fill="#6b7a8d" text-anchor="start" font-weight="400">库存地点视图：决定这个库位能不能选</text>
+<rect x="58.0" y="433.0" width="280.5" height="59.0" rx="8" fill="#ffffff" stroke="#177245" stroke-width="1.2"/>
+<text x="70.0" y="454.0" font-size="13.5" fill="#177245" text-anchor="start" font-weight="700">0001 仓库</text>
+<text x="70.0" y="471.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">成品/原料存放</text>
+<rect x="352.5" y="433.0" width="280.5" height="59.0" rx="8" fill="#ffffff" stroke="#177245" stroke-width="1.2"/>
+<text x="364.5" y="454.0" font-size="13.5" fill="#177245" text-anchor="start" font-weight="700">0002 生产</text>
+<text x="364.5" y="471.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">车间线边库</text>
+<rect x="647.0" y="433.0" width="280.5" height="59.0" rx="8" fill="#ffffff" stroke="#177245" stroke-width="1.2"/>
+<text x="659.0" y="454.0" font-size="13.5" fill="#177245" text-anchor="start" font-weight="700">0003 运输</text>
+<text x="659.0" y="471.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">待发/在途</text>
+<rect x="941.5" y="433.0" width="280.5" height="59.0" rx="8" fill="#ffffff" stroke="#177245" stroke-width="1.2"/>
+<text x="953.5" y="454.0" font-size="13.5" fill="#177245" text-anchor="start" font-weight="700">自动创建</text>
+<text x="953.5" y="471.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">任务 12：收货时自动建视图</text>
+<rect x="40.0" y="520.0" width="1200.0" height="117.0" rx="12" fill="#fdf3d7" stroke="#8d6e00" stroke-width="1.2"/>
+<text x="58.0" y="548.0" font-size="15.5" fill="#8d6e00" text-anchor="start" font-weight="700">④ 其他视图</text>
+<text x="149.9" y="548.0" font-size="12" fill="#6b7a8d" text-anchor="start" font-weight="400">按物料类型不同而不同</text>
+<rect x="58.0" y="566.0" width="280.5" height="59.0" rx="8" fill="#ffffff" stroke="#8d6e00" stroke-width="1.2"/>
+<text x="70.0" y="587.0" font-size="13.5" fill="#8d6e00" text-anchor="start" font-weight="700">销售视图</text>
+<text x="70.0" y="604.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">ROH 没有销售视图（任务 22 画面）</text>
+<rect x="352.5" y="566.0" width="280.5" height="59.0" rx="8" fill="#ffffff" stroke="#8d6e00" stroke-width="1.2"/>
+<text x="364.5" y="587.0" font-size="13.5" fill="#8d6e00" text-anchor="start" font-weight="700">质量管理</text>
+<text x="364.5" y="604.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">质检视图（QM 模块）</text>
+<rect x="647.0" y="566.0" width="280.5" height="59.0" rx="8" fill="#ffffff" stroke="#8d6e00" stroke-width="1.2"/>
+<text x="659.0" y="587.0" font-size="13.5" fill="#8d6e00" text-anchor="start" font-weight="700">批次管理</text>
+<text x="659.0" y="604.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">需要行业方案支持</text>
+<rect x="941.5" y="566.0" width="280.5" height="59.0" rx="8" fill="#ffffff" stroke="#8d6e00" stroke-width="1.2"/>
+<text x="953.5" y="587.0" font-size="13.5" fill="#8d6e00" text-anchor="start" font-weight="700">预测 Forecast</text>
+<text x="953.5" y="604.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">基于消费的计划用</text>
+</svg>

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1420 602" width="1420" height="602" role="img" aria-label="SAP FI 知识地图 — 从总体到局部" font-family="'PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<title>SAP FI 知识地图 — 从总体到局部</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0a6ed1"/></marker><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#007272"/></marker><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffffff"/></marker><marker id="arback" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M10,0 L0,5 L10,10 z" fill="#b3261e"/></marker></defs>
+<rect width="1420" height="602" fill="#ffffff"/>
+<text x="40.0" y="46.0" font-size="22" fill="#1d2d3e" text-anchor="start" font-weight="700">SAP FI 知识地图 — 从总体到局部</text>
+<text x="40.0" y="72.0" font-size="12.5" fill="#6b7a8d" text-anchor="start" font-weight="400">六大板块：概念 → 组织 → 主数据 → 流程 → 操作手顺 → 配置与集成（本站自绘 SVG）</text>
+<path d="M 560 333 C 500 333, 560 165, 502 165" fill="none" stroke="#0a6ed1" stroke-width="2"/>
+<path d="M 560 333 C 500 333, 560 306, 502 306" fill="none" stroke="#007272" stroke-width="2"/>
+<path d="M 560 333 C 500 333, 560 474, 502 474" fill="none" stroke="#177245" stroke-width="2"/>
+<path d="M 860 333 C 920 333, 860 174, 918 174" fill="none" stroke="#b3261e" stroke-width="2"/>
+<path d="M 860 333 C 920 333, 860 315, 918 315" fill="none" stroke="#8d6e00" stroke-width="2"/>
+<path d="M 860 333 C 920 333, 860 456, 918 456" fill="none" stroke="#5b3fa8" stroke-width="2"/>
+<rect x="40.0" y="108.0" width="460.0" height="114.0" rx="9" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.4"/>
+<rect x="40.0" y="108.0" width="4.5" height="114.0" rx="2" fill="#0a6ed1" stroke="#0a6ed1" stroke-width="1.4"/>
+<text x="54.0" y="132.0" font-size="15" fill="#0a6ed1" text-anchor="start" font-weight="700">① 概念与定位</text>
+<text x="54.0" y="152.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">FI 管什么：把业务动作变成会计凭证，产出资产负债表与损益表</text>
+<text x="54.0" y="170.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">四大职能：总账 GL · 应收 AR · 应付 AP · 报表与期末（外加资产会计 AA）</text>
+<text x="54.0" y="188.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">边界：买是 MM、卖是 SD、造是 PP、成本分析是 CO</text>
+<text x="54.0" y="206.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">凭证大多不是 FI 手工录的 —— MM 收货、SD 开票、CO 结算都在往 FI 送凭证</text>
+<rect x="40.0" y="240.0" width="460.0" height="132.0" rx="9" fill="#e6f2f2" stroke="#007272" stroke-width="1.4"/>
+<rect x="40.0" y="240.0" width="4.5" height="132.0" rx="2" fill="#007272" stroke="#007272" stroke-width="1.4"/>
+<text x="54.0" y="264.0" font-size="15" fill="#007272" text-anchor="start" font-weight="700">② 组织结构</text>
+<text x="54.0" y="284.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">公司代码 C999 颐宁机械有限公司（上海、RMB）</text>
+<text x="54.0" y="302.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">会计科目表 A999（科目号 8 位）· 会计年度变式 ZF（12 + 4 特殊期间）</text>
+<text x="54.0" y="320.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">信贷控制范围 C999（与公司代码多对一）</text>
+<text x="54.0" y="338.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">记账期间变式 P999 · 字段状态变式 Z001（含 5 个字段状态组）</text>
+<text x="54.0" y="356.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">分配：科目表/会计年度/信贷/期间/字段状态 都要落到公司代码上</text>
+<rect x="40.0" y="390.0" width="460.0" height="168.0" rx="9" fill="#e6f2ec" stroke="#177245" stroke-width="1.4"/>
+<rect x="40.0" y="390.0" width="4.5" height="168.0" rx="2" fill="#177245" stroke="#177245" stroke-width="1.4"/>
+<text x="54.0" y="414.0" font-size="15" fill="#177245" text-anchor="start" font-weight="700">③ 主数据</text>
+<text x="54.0" y="434.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">总账科目两层：科目表层 SKA1 + 公司代码层 SKB1（FS00）</text>
+<text x="54.0" y="452.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">科目组 RAA/BSA/PLA 管科目本身；字段状态组 ZEXP/ZGBS/ZMMA/ZRAA/ZREV</text>
+<text x="54.0" y="470.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400"> 管凭证字段</text>
+<text x="54.0" y="488.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">客户 10000000 远东造船厂（统驭科目 11310101、排序码 001）</text>
+<text x="54.0" y="506.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">供应商 10000000 红星轴承厂 / 30000002 京通运输公司（统驭科目</text>
+<text x="54.0" y="524.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">21210101）</text>
+<text x="54.0" y="542.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">账户组 K001·K002·G001–G003 与编号范围 Z1/Z2/Z3</text>
+<rect x="920.0" y="108.0" width="460.0" height="132.0" rx="9" fill="#fdeae9" stroke="#b3261e" stroke-width="1.4"/>
+<rect x="920.0" y="108.0" width="4.5" height="132.0" rx="2" fill="#b3261e" stroke="#b3261e" stroke-width="1.4"/>
+<text x="934.0" y="132.0" font-size="15" fill="#b3261e" text-anchor="start" font-weight="700">④ 记账流程</text>
+<text x="934.0" y="152.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">业务动作（FB50 手工 / MM 收货 / SD 开票）→ 会计凭证（BKPF/BSEG）</text>
+<text x="934.0" y="170.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">过账：这一步才更新余额与未清项（预制不算）</text>
+<text x="934.0" y="188.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">余额与未清项：FS10N 科目余额 · FD10N/FK10N 客户供应商余额</text>
+<text x="934.0" y="206.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">收付款清账：F-28 收款 / F-53 付款把未清项变已清项</text>
+<text x="934.0" y="224.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">报表：科目余额表 → 财务报表版本 → 资产负债表与损益表</text>
+<rect x="920.0" y="258.0" width="460.0" height="114.0" rx="9" fill="#fdf3d7" stroke="#8d6e00" stroke-width="1.4"/>
+<rect x="920.0" y="258.0" width="4.5" height="114.0" rx="2" fill="#8d6e00" stroke="#8d6e00" stroke-width="1.4"/>
+<text x="934.0" y="282.0" font-size="15" fill="#8d6e00" text-anchor="start" font-weight="700">⑤ 操作手顺（三篇）</text>
+<text x="934.0" y="302.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">总账：FS00 建科目 → FB50 录凭证 → S_alr_87012326 清点 → FS10N 看余额</text>
+<text x="934.0" y="320.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">应收应付：FB70/FB60 发票 → F-28/F-53 收付款与清账 → FD10N/FK10N 余额</text>
+<text x="934.0" y="338.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">期末报表：期间开关（S_ALR_87003642）→ 余额表 → 报表结构 → 资产负债表</text>
+<text x="934.0" y="356.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">公共动作：检查/模拟 → 保存 → 看消息 → 记下凭证号（实训要交的就是它）</text>
+<rect x="920.0" y="390.0" width="460.0" height="132.0" rx="9" fill="#efeaf9" stroke="#5b3fa8" stroke-width="1.4"/>
+<rect x="920.0" y="390.0" width="4.5" height="132.0" rx="2" fill="#5b3fa8" stroke="#5b3fa8" stroke-width="1.4"/>
+<text x="934.0" y="414.0" font-size="15" fill="#5b3fa8" text-anchor="start" font-weight="700">⑥ 配置与集成</text>
+<text x="934.0" y="434.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">SPRO 45 个任务：组织 → 科目准备 → 科目 → 凭证与期间 → 余额 → 报表结构</text>
+<text x="934.0" y="452.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">必背三条：科目组管科目、字段状态组管凭证、统驭科目管明细如何汇总</text>
+<text x="934.0" y="470.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">容差两条线：雇员容差组（凭证金额）· 应收应付容差组（收付款差异）</text>
+<text x="934.0" y="488.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">报表结构：财务报表版本把科目范围映射成报表项目（P&amp;L 结果自动轧差）</text>
+<text x="934.0" y="506.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">集成：MM 收货/发票、SD 开票、PP 发料收货、CO 分配结算都过账到 FI</text>
+<rect x="560.0" y="249.0" width="300.0" height="168.0" rx="16" fill="#0854a0" stroke="#0854a0" stroke-width="1.4"/>
+<text x="710.0" y="291.0" font-size="30" fill="#ffffff" text-anchor="middle" font-weight="700">SAP FI</text>
+<text x="710.0" y="323.0" font-size="17" fill="#dbeafd" text-anchor="middle" font-weight="400">财务会计</text>
+<text x="710.0" y="351.0" font-size="12" fill="#a9cdf3" text-anchor="middle" font-weight="400" font-family="'SF Mono',Menlo,Consolas,monospace">Financial Accounting</text>
+<text x="710.0" y="379.0" font-size="11.5" fill="#a9cdf3" text-anchor="middle" font-weight="400">凭证 · 余额 · 报表</text>
+</svg>

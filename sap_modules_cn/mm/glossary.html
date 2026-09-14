@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>术语与 T-code 速查 · SAP MM 培训课程</title>
+<meta name="description" content="SAP MM（物料管理）培训课程：概念与定位 → 组织结构（工厂/库存地点/采购组织/采购组）→ 主数据（物料/供应商/采购信息记录）→ 端到端采购流程（请购·采购订单·收货·发票校验·付款）→ 分步操作手顺 → SPRO 配置（42 个任务）→ 实训与自测。截图取自教材《S4.docx》的真实 SAP GUI 画面。">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mod.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MM</span><span class="txt">培训课程</span></a>
+    <nav class="main">
+      <a href="index.html" title="课程地图与学习路线">首页</a>
+      <a href="concept.html" title="MM 是什么、三大职能、五类凭证">概念</a>
+      <a href="org.html" title="企业结构 / 采购结构 / 计划与评估结构">组织</a>
+      <a href="master.html" title="物料 / 供应商 / 采购信息记录">主数据</a>
+      <a href="flow.html" title="端到端采购流程与单据流">流程</a>
+      <a href="purchase.html" title="请购 · 采购订单 · 货源与信息记录">采购</a>
+      <a href="inventory.html" title="收货 · 发货 · 转储 · 移动类型与库存总览">库存</a>
+      <a href="invoice.html" title="MIRO · 差异与容差 · 冻结发票下达 · 三单匹配">发票校验</a>
+      <a href="config.html" title="SPRO 配置路线（42 个任务）">配置</a>
+      <a href="practice.html" title="动手任务与完成基准">实训</a>
+      <a href="instructor.html" title="课时 / 板书 / 必问 / 评分">讲师</a>
+      <a href="worksheet.html" title="记入表（可打印）">学员</a>
+      <a href="quiz.html" title="30 题自评（合格 75%）">自测</a>
+      <a class="active" href="glossary.html" title="中英对照 / T-code / 常用表">术语</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page">
+<article>
+<p class="breadcrumb"><a href="index.html">课程地图</a> / <span>术语与 T-code 速查</span></p>
+<div class="filterbar modsw"><a class="chip on" href="../mm/index.html" title="SAP MM 培训课程">MM 物料管理</a><a class="chip" href="../pp/index.html" title="SAP PP 培训课程">PP 生产计划</a><a class="chip" href="../fi/index.html" title="SAP FI 培训课程">FI 财务会计</a><a class="chip" href="../co/index.html" title="SAP CO 培训课程">CO 管理会计</a><a class="chip" href="../index.html" title="四个模块的总体视图与学习路线">总览</a></div>
+<h1>术语与 T-code 速查</h1>
+<p class="kicker">中英对照 · 事务码 · 常用表 · 教材任务总索引</p>
+<p class="lead">术语中英对照（教学用中文说法 + SAP 原生名称）、事务码速查、常用表 —— 上课随时回来查。</p>
+<div class="toc"><a href="#terms">术语中英对照</a><a href="#tc">事务码速查</a><a href="#tables">常用表</a><a href="#tasks">教材任务总索引</a></div>
+<h2 id="terms">术语中英对照（42 条）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>中文</th><th>English / SAP 名称</th><th>说明</th></tr></thead><tbody><tr><td>物料管理</td><td><code>MM · Materials Management</code></td><td>采购、库存、发票校验三大职能的总称</td></tr><tr><td>采购申请</td><td><code>Purchase Requisition (PR)</code></td><td>内部需求凭证，无供应商无价格；ME51N</td></tr><tr><td>采购订单</td><td><code>Purchase Order (PO)</code></td><td>对供应商的承诺凭证；ME21N</td></tr><tr><td>框架协议</td><td><code>Outline Agreement</code></td><td>合同（Contract）与计划协议（Scheduling Agreement）</td></tr><tr><td>货源清单</td><td><code>Source List</code></td><td>为物料指定可采购的供应商与有效期；ME01</td></tr><tr><td>配额协议</td><td><code>Quota Arrangement</code></td><td>在多个货源之间按比例分配采购量；MEQ1</td></tr><tr><td>采购信息记录</td><td><code>Purchasing Info Record</code></td><td>物料×供应商×采购组织的价格与条件；ME11</td></tr><tr><td>采购组织</td><td><code>Purchasing Organization</code></td><td>谈条件、下订单的组织单位（教材 Y999）</td></tr><tr><td>采购组</td><td><code>Purchasing Group</code></td><td>采购组织内负责具体采购的人/组（教材 PG1/PG2）</td></tr><tr><td>工厂</td><td><code>Plant</code></td><td>生产与库存场所，在 MM 里同时是评估范围（教材 P999）</td></tr><tr><td>库存地点</td><td><code>Storage Location</code></td><td>工厂内的存放位置（教材 0001 仓库 / 0002 生产 / 0003 运输）</td></tr><tr><td>评估范围</td><td><code>Valuation Area</code></td><td>物料价值计算的边界，通常＝工厂</td></tr><tr><td>评估分组代码</td><td><code>Valuation Grouping Code</code></td><td>把多个评估范围归组，统一维护自动记账（教材 CN01）</td></tr><tr><td>评估类</td><td><code>Valuation Class</code></td><td>决定存货科目的物料侧分类（教材 3000/3100/7920）</td></tr><tr><td>科目修改码</td><td><code>Account Modification</code></td><td>GBB 中细分对方科目的代码（VBR/VAX/VBO/VNG…）</td></tr><tr><td>自动记账</td><td><code>Automatic Account Determination</code></td><td>物料移动自动找会计科目的配置；OBYC</td></tr><tr><td>移动类型</td><td><code>Movement Type</code></td><td>定义库存移动的方向与记账方式（101/261/301…）；OMJJ</td></tr><tr><td>物料凭证</td><td><code>Material Document</code></td><td>库存变动的原始凭证（MKPF/MSEG）</td></tr><tr><td>会计凭证</td><td><code>Accounting Document</code></td><td>物料凭证牵动的 FI 凭证（BKPF/BSEG）</td></tr><tr><td>收货</td><td><code>Goods Receipt (GR)</code></td><td>订单收货过账（101），增加库存并挂 GR/IR</td></tr><tr><td>发票校验</td><td><code>Logistics Invoice Verification (LIV)</code></td><td>三单匹配与差异处理；MIRO</td></tr><tr><td>GR/IR</td><td><code>Goods Receipt / Invoice Receipt</code></td><td>收货与发票之间的暂估清算中间科目（WRX）</td></tr><tr><td>三单匹配</td><td><code>3-way match</code></td><td>采购订单 ↔ 收货 ↔ 发票的数量金额比对</td></tr><tr><td>容差</td><td><code>Tolerance</code></td><td>允许的差异范围；超限触发警告/错误/冻结</td></tr><tr><td>发票冻结</td><td><code>Invoice Block</code></td><td>校验不通过时自动阻塞付款，需 MRBR 下达</td></tr><tr><td>物料类型</td><td><code>Material Type</code></td><td>决定视图、编号范围与更新方式（ROH/HAWA/FERT…）</td></tr><tr><td>物料组</td><td><code>Material Group</code></td><td>按品类对物料分组，统计与采购分析维度</td></tr><tr><td>MRP 类型</td><td><code>MRP Type</code></td><td>物料计划方法（教材用 PD = MRP）</td></tr><tr><td>MRP 控制者</td><td><code>MRP Controller</code></td><td>负责物料计划的人/岗位（教材 001/002）</td></tr><tr><td>批量</td><td><code>Lot Size</code></td><td>决定 MRP 建议量的规则（教材 EX = 按批订货量）</td></tr><tr><td>计划边际码</td><td><code>Planning Margin / Float</code></td><td>各计划阶段预留的缓冲时间</td></tr><tr><td>安全库存</td><td><code>Safety Stock</code></td><td>为应对波动保留的最低库存（教材 100 件）</td></tr><tr><td>移动平均价</td><td><code>Moving Average Price</code></td><td>价格控制 V，收货价影响存货价值</td></tr><tr><td>标准价</td><td><code>Standard Price</code></td><td>价格控制 S，价差进 PRD 差异科目</td></tr><tr><td>采购价差</td><td><code>Purchase Price Variance (PRD)</code></td><td>标准价物料的实际采购价与标准价之差</td></tr><tr><td>库存总览</td><td><code>Stock Overview</code></td><td>按物料/工厂/库位看各库存类型数量；MMBE</td></tr><tr><td>库存/需求清单</td><td><code>Stock/Requirements List</code></td><td>动态供需平衡视图；MD04</td></tr><tr><td>盘点</td><td><code>Physical Inventory</code></td><td>账实核对：MI01/MI04/MI07</td></tr><tr><td>统驭科目</td><td><code>Reconciliation Account</code></td><td>供应商/客户在总账的对应科目（FI 侧）</td></tr><tr><td>供应商主数据</td><td><code>Vendor Master</code></td><td>一般/公司代码/采购组织三层；MK01 维护采购数据</td></tr><tr><td>增值税进项税</td><td><code>Input Tax</code></td><td>采购发票税额（中国 13%）</td></tr><tr><td>期末结账</td><td><code>Period-End Closing</code></td><td>MM 期间关闭（MMPV）与 GR/IR 清理（MR11）</td></tr></tbody></table></div>
+<h2 id="tc">事务码速查</h2>
+<h3>教材出现的事务码（13 个）</h3>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>T-code</th><th>教材任务</th><th>索引</th></tr></thead><tbody><tr><td>FS00</td><td>将存货科目设置为只能自动记帐</td><td><a href="config.html#t29">任务 29</a></td></tr><tr><td>MD03</td><td>运行物料需求计划</td><td><a href="config.html#t34">任务 34</a></td></tr><tr><td>MD04</td><td>显示库存/需求清单</td><td><a href="config.html#t35">任务 35</a></td></tr><tr><td>ME11</td><td>新建采购信息记录</td><td><a href="config.html#t27">任务 27</a></td></tr><tr><td>ME21N</td><td>新建采购订单</td><td><a href="config.html#t37">任务 37</a></td></tr><tr><td>ME51N</td><td>新建采购申请</td><td><a href="config.html#t36">任务 36</a></td></tr><tr><td>MIGO</td><td>创建采购收货</td><td><a href="config.html#t38">任务 38</a></td></tr><tr><td>MIRO</td><td>输入采购发票</td><td><a href="config.html#t39">任务 39</a></td></tr><tr><td>MK01</td><td>创建供应商采购数据</td><td><a href="config.html#t26">任务 26</a></td></tr><tr><td>MM02</td><td>新建采购信息记录</td><td><a href="config.html#t27">任务 27</a></td></tr><tr><td>MM60</td><td>显示物料主记录清单</td><td><a href="config.html#t25">任务 25</a></td></tr><tr><td>MMBE</td><td>显示库存物料</td><td><a href="config.html#t42">任务 42</a></td></tr><tr><td>MRBR</td><td>下达冻结发票</td><td><a href="config.html#t40">任务 40</a></td></tr></tbody></table></div>
+<h3>本模块常用事务码（含教材未演示的）</h3>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>T-code</th><th>用途</th></tr></thead><tbody><tr><td><code>MM01/MM02/MM03</code></td><td>物料主数据 创建/修改/显示（一般）</td></tr><tr><td><code>MMR1/MMH1/MMF1</code></td><td>按类型建物料：原材料 / 贸易商品 / 产成品</td></tr><tr><td><code>MM60</code></td><td>物料清单（主数据清点）</td></tr><tr><td><code>MK01/MK02/MK03</code></td><td>供应商采购数据 创建/修改/显示</td></tr><tr><td><code>ME11/ME12/ME13</code></td><td>采购信息记录 创建/修改/显示</td></tr><tr><td><code>ME1M/ME1L</code></td><td>信息记录清单（按物料 / 按供应商）</td></tr><tr><td><code>ME51N/ME52N/ME53N</code></td><td>采购申请 创建/修改/显示</td></tr><tr><td><code>ME5A</code></td><td>采购申请清单</td></tr><tr><td><code>ME21N/ME22N/ME23N</code></td><td>采购订单 创建/修改/显示</td></tr><tr><td><code>ME2M/ME2L/ME2N</code></td><td>采购订单清单（按物料/供应商/订单号）</td></tr><tr><td><code>ME31K/ME31L</code></td><td>合同 / 计划协议（框架协议）</td></tr><tr><td><code>MIGO</code></td><td>货物移动统一入口（收货 A01 / 显示 A04 / 发货 A07 / 转储 A08）</td></tr><tr><td><code>MB1A/MB1B/MB1C</code></td><td>发货 / 转储 / 收货（旧事务码，MIGO 的前身）</td></tr><tr><td><code>MB51/MB52/MB03</code></td><td>物料凭证清单 / 物料凭证显示</td></tr><tr><td><code>MBST</code></td><td>冲销物料凭证</td></tr><tr><td><code>MMBE</code></td><td>库存总览</td></tr><tr><td><code>MD03/MD02/MD01</code></td><td>MRP 运行：单层 / 多层 / 再生</td></tr><tr><td><code>MD04/MD05</code></td><td>库存需求清单 / MRP 清单</td></tr><tr><td><code>MMPV</code></td><td>关闭物料期间（MM 期末）</td></tr><tr><td><code>MI01/MI04/MI07</code></td><td>盘点：创建凭证 / 录入结果 / 过账差异</td></tr><tr><td><code>MI20/MIS1</code></td><td>盘点差异清单</td></tr><tr><td><code>MIRO/MIR4/MIR6/MIR7</code></td><td>发票校验：输入 / 显示 / 显示清单 / 修改</td></tr><tr><td><code>MRBR</code></td><td>下达冻结发票</td></tr><tr><td><code>MR8M</code></td><td>取消发票（冲销）</td></tr><tr><td><code>MB5S/MR11</code></td><td>GR/IR 余额清单 / 清理小额差异</td></tr><tr><td><code>OBYC</code></td><td>自动记账科目确定（BSX/WRX/GBB）</td></tr><tr><td><code>OMJJ</code></td><td>移动类型参数（字段/更新控制）</td></tr><tr><td><code>OMR6</code></td><td>容差：发票校验</td></tr><tr><td><code>OX10/OX09/OX02</code></td><td>工厂 / 库存地点 / 公司代码（后台定义）</td></tr><tr><td><code>OX18/OX01</code></td><td>工厂→公司代码 / 采购组织→公司代码（分配）</td></tr></tbody></table></div>
+<h2 id="tables">常用表（查问题用）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>表</th><th>内容</th></tr></thead><tbody><tr><td><code>MARA / MAKT</code></td><td>物料一般数据 / 物料描述</td></tr><tr><td><code>MARC</code></td><td>物料工厂数据（MRP、采购视图）</td></tr><tr><td><code>MARD</code></td><td>物料的库存地点数据</td></tr><tr><td><code>MBEW</code></td><td>物料评估（评估类、价格控制、价格）</td></tr><tr><td><code>MVKE</code></td><td>物料销售数据</td></tr><tr><td><code>EINA / EINE</code></td><td>采购信息记录：一般数据 / 采购组织数据</td></tr><tr><td><code>EKKO / EKPO</code></td><td>采购凭证抬头 / 行项目（含采购订单）</td></tr><tr><td><code>EKES / EKBE</code></td><td>订单确认 / 订单历史（收货、发票历史）</td></tr><tr><td><code>MKPF / MSEG</code></td><td>物料凭证抬头 / 行项目</td></tr><tr><td><code>RBKP / RSEG</code></td><td>发票凭证抬头 / 行项目</td></tr><tr><td><code>BKPF / BSEG</code></td><td>会计凭证抬头 / 行项目</td></tr><tr><td><code>LFA1 / LFB1 / LFM1</code></td><td>供应商：一般 / 公司代码 / 采购组织数据</td></tr><tr><td><code>T023 / T134</code></td><td>物料组 / 物料类型</td></tr><tr><td><code>T001K / T001W</code></td><td>工厂的评估范围关联 / 工厂（含地址与 MRP 参数）</td></tr></tbody></table></div>
+<h2 id="tasks">教材任务总索引（42 个）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>任务</th><th>标题</th><th>IMG 路径 / 前台路径</th><th>截图</th></tr></thead><tbody><tr><td><a href="config.html#t01">01</a></td><td>创建工厂</td><td>企业结构 → 定义 → 后勤常规 → 定义、复制、删除、检查工厂</td><td>3</td></tr><tr><td><a href="config.html#t02">02</a></td><td>创建库存地点</td><td>企业结构 → 定义 → 物料管理 → 维护仓储地点</td><td>4</td></tr><tr><td><a href="config.html#t03">03</a></td><td>创建采购组织</td><td>企业结构 → 定义 → 物料管理 → 维护采购组织</td><td>3</td></tr><tr><td><a href="config.html#t04">04</a></td><td>创建采购组</td><td>物料管理 → 采购 → 创建采购组</td><td>3</td></tr><tr><td><a href="config.html#t05">05</a></td><td>定义MRP 控制者</td><td>生产 → 物料需求计划 → 主数据 → 定义 MRP 控制者</td><td>3</td></tr><tr><td><a href="config.html#t06">06</a></td><td>分配工厂到公司代码</td><td>企业结构 → 分配 → "后勤-常规" → 给公司代码分配工厂</td><td>3</td></tr><tr><td><a href="config.html#t07">07</a></td><td>分配采购组织到公司代码</td><td>企业结构 → 分配 → 物料管理 → 给公司代码分配采购组织</td><td>3</td></tr><tr><td><a href="config.html#t08">08</a></td><td>分配工厂到采购组织</td><td>企业结构 → 分配 → 物料管理 → 给工厂分配采购组织</td><td>2</td></tr><tr><td><a href="config.html#t09">09</a></td><td>定义物料组</td><td>后勤常规 → 物料主记录 → 设置关键字段 → 定义物料组</td><td>3</td></tr><tr><td><a href="config.html#t10">10</a></td><td>定义计划边际码</td><td>物料管理 → 基于消费的计划 → 计划 → 定义浮点（计划毛利码）</td><td>2</td></tr><tr><td><a href="config.html#t11">11</a></td><td>维护工厂和库存相关的工厂参数－库存预留</td><td>物料管理 → 库存管理和实际库存 → 工厂参数</td><td>3</td></tr><tr><td><a href="config.html#t12">12</a></td><td>维护和库存相关的工厂参数－自动创建物料的库存地点视图</td><td>物料管理 → 库存管理和实际库存 → 发货/转储记帐 → 自动建立库存地点</td><td>2</td></tr><tr><td><a href="config.html#t13">13</a></td><td>维护税务代码的缺省值</td><td>物料管理 → 后勤发票校验 → 收入发票 → 维护税代码的缺省值</td><td>3</td></tr><tr><td><a href="config.html#t14">14</a></td><td>维护公司代码下物料管理的初始期间</td><td>后勤常规 → 物料主记录 → 基本设置 → 维护物料管理的公司代码</td><td>2</td></tr><tr><td><a href="config.html#t15">15</a></td><td>维护和物料需求计划相关的工厂参数</td><td>物料管理 → 基于消费的计划 → 工厂参数 → 执行工厂参数总体维护</td><td>8</td></tr><tr><td><a href="config.html#t16">16</a></td><td>激活物料需求计划</td><td>物料管理 → 基于消费的计划 → 计划 → 激活物料需求计划</td><td>3</td></tr><tr><td><a href="config.html#t17">17</a></td><td>定义计划运行的号码范围</td><td>物料管理 → 基于消费的计划 → 号码范围 → 定义计划运行的号码范围</td><td>4</td></tr><tr><td><a href="config.html#t18">18</a></td><td>定义物料类型的属性</td><td>后勤常规 → 物料主数据 → 基本设置 → 物料类型 → 定义物料类型的属性</td><td>3</td></tr><tr><td><a href="config.html#t19">19</a></td><td>定义评估控制</td><td>物料管理 → 评估和科目设置 → 科目确定 → 无向导的科目定义 → 定义评估控制</td><td>1</td></tr><tr><td><a href="config.html#t20">20</a></td><td>将评估范围集合分组</td><td>物料管理 → 评估和科目设置 → 科目确定 → 无向导的科目确定 → 将评估范围群集分组</td><td>2</td></tr><tr><td><a href="config.html#t21">21</a></td><td>定义评估类</td><td>物料管理 → 评估和科目设置 → 科目确定 → 无向导的科目确定 → 定义评估类</td><td>3</td></tr><tr><td><a href="config.html#t22">22</a></td><td>新建原材料主数据</td><td>后勤 → 物料管理 → 物料主数据 → 物料 → 创建（特殊） → MMR1 原材料</td><td>9</td></tr><tr><td><a href="config.html#t23">23</a></td><td>新建贸易商品主数据</td><td>后勤 → 物料管理 → 物料主数据 → 物料 → 创建（特殊） → MMH1-贸易货物</td><td>5</td></tr><tr><td><a href="config.html#t24">24</a></td><td>新建产成品主数据</td><td>后勤 → 物料管理 → 物料主数据 → 物料 → 创建（特殊） → MMF1-成品</td><td>4</td></tr><tr><td><a href="config.html#t25">25</a></td><td>显示物料主记录清单</td><td>后勤 → 物料管理 → 物料主记录 → 其他 → MM60-物料清单</td><td>1</td></tr><tr><td><a href="config.html#t26">26</a></td><td>创建供应商采购数据</td><td>后勤 → 物料管理 → 采购 → 主数据 → 供应商 → 采购-MK01 创建</td><td>5</td></tr><tr><td><a href="config.html#t27">27</a></td><td>新建采购信息记录</td><td>后勤 → 物料管理 → 采购 → 主数据 → 信息记录 → ME11 创建</td><td>9</td></tr><tr><td><a href="config.html#t28">28</a></td><td>维护物料管理的自动记帐</td><td>物料管理 → 评估和科目设置 → 科目确定 → 无向导的科目确定 → 配置自动记帐</td><td>13</td></tr><tr><td><a href="config.html#t29">29</a></td><td>将存货科目设置为只能自动记帐</td><td>会计核算 → 财务会计 → 总账 → 主记录 → 总账科目 → 单个处理 → FS00 集中的</td><td>2</td></tr><tr><td><a href="config.html#t30">30</a></td><td>设置采购价格差异的容差限制</td><td>物料管理 → 采购 → 采购订单 → 设置价格差异的容差限制</td><td>3</td></tr><tr><td><a href="config.html#t31">31</a></td><td>设置收货的容差限制</td><td>物料管理 → 库存管理和实际库存 → 收货 → 设置容差限制</td><td>4</td></tr><tr><td><a href="config.html#t32">32</a></td><td>设置发票冻结的容差限制</td><td>物料管理 → 后勤发票校验 → 发票冻结 → 设置容差限制</td><td>6</td></tr><tr><td><a href="config.html#t33">33</a></td><td>维护项目金额检查</td><td>物料管理 → 后勤发票校验 → 发票冻结 → 项目金额检查 → 激活项目金额检查</td><td>3</td></tr><tr><td><a href="config.html#t34">34</a></td><td>运行物料需求计划</td><td>后勤 → 物料管理 → 物料需求计划（MRP） → 物料需求计划 → 计划 → MD03 单层</td><td>4</td></tr><tr><td><a href="config.html#t35">35</a></td><td>显示库存/需求清单</td><td>后勤 → 生产 → 物料需求计划 → 评估 → MD04-库存/需求清单</td><td>3</td></tr><tr><td><a href="config.html#t36">36</a></td><td>新建采购申请</td><td>后勤 → 物料管理 → 采购--采购申请 → ME51N → 创建</td><td>6</td></tr><tr><td><a href="config.html#t37">37</a></td><td>新建采购订单</td><td>后勤 → 物料管理 → 采购 → 采购订单 → 创建 → ME21N → 已知供应商/供应工厂</td><td>8</td></tr><tr><td><a href="config.html#t38">38</a></td><td>创建采购收货</td><td>后勤 → 物料管理 → 库存管理 → 货物移动 → 收货 → 对采购订单 → 采购订单的 GR（MIGO）</td><td>7</td></tr><tr><td><a href="config.html#t39">39</a></td><td>输入采购发票</td><td>后勤 → 物料管理 → 后勤发票校验 → 凭证输入 → MIRO 输入发票</td><td>4</td></tr><tr><td><a href="config.html#t40">40</a></td><td>下达冻结发票</td><td>后勤 → 物料管理 → 后勤发票校验 → 进一步处理 → MRBR 下达冻结发票</td><td>2</td></tr><tr><td><a href="config.html#t41">41</a></td><td>显示发票和会计凭证</td><td>后勤 → 物料管理 → 后勤发票校验 → 进一步处理 → MIR4 显示发票凭证</td><td>4</td></tr><tr><td><a href="config.html#t42">42</a></td><td>显示库存物料</td><td>后勤 → 物料管理 → 库存管理 → 环境 → 库存 → MMBE → 库存总览</td><td>3</td></tr></tbody></table></div>
+</article>
+</main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <h5>SAP MM 培训课程</h5>
+        <p>物料管理：采购 · 库存 · 发票校验</p>
+        <p>课程总览：<a href="../index.html">SAP 模块培训课程（MM · PP · FI · CO）</a></p>
+      </div>
+      <div>
+        <h5>课程板块</h5>
+        <p><a href="concept.html">概念</a> · <a href="org.html">组织</a> ·
+        <a href="master.html">主数据</a> · <a href="flow.html">流程</a> ·
+        <a href="purchase.html">采购</a> · <a href="config.html">配置</a></p>
+      </div>
+      <div>
+        <h5>课堂配套</h5>
+        <p><a href="practice.html">实训任务</a> · <a href="instructor.html">讲师版</a> ·
+        <a href="worksheet.html">学员版</a> · <a href="quiz.html">自测</a> ·
+        <a href="glossary.html">术语表</a></p>
+      </div>
+      <div>
+        <h5>看图说话</h5>
+        <p>截图取自教材《S4.docx》的真实 SAP GUI 画面（中文界面，保留原文件名可回查）；
+        流程图、结构图、思维导图为本站自绘 SVG。标准值随版本/行业方案而异，
+        页面标注的「在自系统里怎么确认」请在自己的系统里核对。</p>
+        <p>其他模块：<a href="../pp/index.html">PP 生产计划</a> · <a href="../fi/index.html">FI 财务会计</a> · <a href="../co/index.html">CO 管理会计</a> · </p>
+      </div>
+    </div>
+    <p class="copy">© <span data-year>2026</span> SAP MM 培训课程 · 静态站点，可离线使用</p>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/mod.js"></script>
+</body>
+</html>

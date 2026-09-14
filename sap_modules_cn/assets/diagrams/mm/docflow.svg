@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 252" width="1280" height="252" role="img" aria-label="六步单据流：每一步的 T-code 与产出" font-family="'PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<title>六步单据流：每一步的 T-code 与产出</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0a6ed1"/></marker><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#007272"/></marker><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffffff"/></marker><marker id="arback" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M10,0 L0,5 L10,10 z" fill="#b3261e"/></marker></defs>
+<rect width="1280" height="252" fill="#ffffff"/>
+<text x="40.0" y="46.0" font-size="22" fill="#1d2d3e" text-anchor="start" font-weight="700">六步单据流：每一步的 T-code 与产出</text>
+<text x="40.0" y="72.0" font-size="12.5" fill="#6b7a8d" text-anchor="start" font-weight="400">教材任务 34–42 就是按这条线走了一遍（含 MRP 自动产生需求）</text>
+<rect x="40.0" y="104.0" width="150.0" height="51.0" rx="9" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.5"/>
+<circle cx="58.0" cy="122.0" r="12" fill="#0a6ed1"/><text x="58.0" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">1</text>
+<text x="76.0" y="127.0" font-size="14" fill="#0a6ed1" text-anchor="start" font-weight="700">MD03 跑 MRP</text>
+<text x="52.0" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">安全库存缺口 →</text>
+<text x="52.0" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">采购申请</text>
+<path d="M 192 130 H 216" fill="none" stroke="#0a6ed1" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="220.0" y="104.0" width="150.0" height="51.0" rx="9" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.5"/>
+<circle cx="238.0" cy="122.0" r="12" fill="#0a6ed1"/><text x="238.0" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">2</text>
+<text x="256.0" y="127.0" font-size="14" fill="#0a6ed1" text-anchor="start" font-weight="700">MD04 看供需</text>
+<text x="232.0" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">动态库存/需求清单，可</text>
+<text x="232.0" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">直接转请购</text>
+<path d="M 372 130 H 396" fill="none" stroke="#0a6ed1" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="400.0" y="104.0" width="221.3" height="51.0" rx="9" fill="#e6f2f2" stroke="#007272" stroke-width="1.5"/>
+<circle cx="418.0" cy="122.0" r="12" fill="#007272"/><text x="418.0" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">3</text>
+<text x="436.0" y="127.0" font-size="14" fill="#007272" text-anchor="start" font-weight="700">ME51N 请购 / ME21N 订单</text>
+<text x="412.0" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">参照创建，供应商 10000000</text>
+<path d="M 623 130 H 647" fill="none" stroke="#007272" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="651.3" y="104.0" width="150.0" height="51.0" rx="9" fill="#fdeae9" stroke="#b3261e" stroke-width="1.5"/>
+<circle cx="669.3" cy="122.0" r="12" fill="#b3261e"/><text x="669.3" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">4</text>
+<text x="687.3" y="127.0" font-size="14" fill="#b3261e" text-anchor="start" font-weight="700">MIGO 收货 101</text>
+<text x="663.3" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">库位 0001；物料凭证 +</text>
+<text x="663.3" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">FI 凭证</text>
+<path d="M 803 130 H 827" fill="none" stroke="#b3261e" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="831.3" y="104.0" width="150.0" height="51.0" rx="9" fill="#fdf3d7" stroke="#8d6e00" stroke-width="1.5"/>
+<circle cx="849.3" cy="122.0" r="12" fill="#8d6e00"/><text x="849.3" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">5</text>
+<text x="867.3" y="127.0" font-size="14" fill="#8d6e00" text-anchor="start" font-weight="700">MIRO 发票</text>
+<text x="843.3" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">余额归零即匹配；超容</text>
+<text x="843.3" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">差冻结</text>
+<path d="M 983 130 H 1007" fill="none" stroke="#8d6e00" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="1011.3" y="104.0" width="150.0" height="51.0" rx="9" fill="#e6f2ec" stroke="#177245" stroke-width="1.5"/>
+<circle cx="1029.3" cy="122.0" r="12" fill="#177245"/><text x="1029.3" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">6</text>
+<text x="1047.3" y="127.0" font-size="14" fill="#177245" text-anchor="start" font-weight="700">MRBR / MIR4</text>
+<text x="1023.3" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">下达冻结发票、看后续</text>
+<text x="1023.3" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">会计凭证</text>
+<rect x="40.0" y="204.0" width="1200.0" height="34.5" rx="8" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="52.0" y="226.0" font-size="12.5" fill="#0854a0" text-anchor="start" font-weight="400">实训交作业要交的就是这条线上的「号码」：请购号、订单号、物料凭证号、发票号、会计凭证号 —— 有号码才证明真的跑过。</text>
+</svg>

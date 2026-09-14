@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念与定位 · SAP FI 培训课程</title>
+<meta name="description" content="SAP FI（财务会计）培训课程：概念与定位 → 组织结构（公司/公司代码/科目表/会计年度/信贷控制范围）→ 主数据（总账科目/科目组/字段状态/客户与供应商主数据）→ 端到端记账流程（业务凭证 → 会计凭证 → 余额与报表）+ 应收应付循环（发票·收款·付款）→ 期末（记账期间·资产负债表结构·报表）→ 分步操作手顺 → SPRO 配置（45 个任务）→ 实训与自测。截图取自教材《S4.docx》的真实 SAP GUI 画面。">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mod.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">FI</span><span class="txt">培训课程</span></a>
+    <nav class="main">
+      <a href="index.html" title="课程地图与学习路线">首页</a>
+      <a class="active" href="concept.html" title="FI 是什么、凭证从哪来、边界在哪">概念</a>
+      <a href="org.html" title="公司代码 / 科目表 / 会计年度 / 信贷 / 期间 / 字段状态">组织</a>
+      <a href="master.html" title="总账科目 / 客户 / 供应商主数据">主数据</a>
+      <a href="flow.html" title="端到端记账流程与凭证流">流程</a>
+      <a href="gl.html" title="FB50 凭证 · FS00 科目 · FS10N 余额">总账</a>
+      <a href="arap.html" title="FB70/FB60 发票 · F-28/F-53 收付款 · 客户供应商余额">应收应付</a>
+      <a href="close.html" title="记账期间 · 报表结构 · 资产负债表与损益表">期末报表</a>
+      <a href="config.html" title="SPRO 配置路线（45 个任务）">配置</a>
+      <a href="practice.html" title="动手任务与完成基准">实训</a>
+      <a href="instructor.html" title="课时 / 板书 / 必问 / 评分">讲师</a>
+      <a href="worksheet.html" title="记入表（可打印）">学员</a>
+      <a href="quiz.html" title="30 题自评（合格 75%）">自测</a>
+      <a href="glossary.html" title="中英对照 / T-code / 常用表">术语</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page">
+<article>
+<p class="breadcrumb"><a href="index.html">课程地图</a> / <span>概念与定位</span></p>
+<div class="filterbar modsw"><a class="chip" href="../mm/index.html" title="SAP MM 培训课程">MM 物料管理</a><a class="chip" href="../pp/index.html" title="SAP PP 培训课程">PP 生产计划</a><a class="chip on" href="../fi/index.html" title="SAP FI 培训课程">FI 财务会计</a><a class="chip" href="../co/index.html" title="SAP CO 培训课程">CO 管理会计</a><a class="chip" href="../index.html" title="四个模块的总体视图与学习路线">总览</a></div>
+<h1>概念与定位</h1>
+<p class="kicker">FI 是什么：四大职能、凭证从哪来、与邻居模块的分界</p>
+<p class="lead">先回答三个问题：FI 到底管什么？账是从哪来的？它的边界在哪里。</p>
+<div class="toc"><a href="#def">一句话定义</a><a href="#func">四大职能</a><a href="#docs">凭证与对象清单</a><a href="#rule">借贷与凭证类型</a><a href="#chain">记账的路线图</a><a href="#star">与邻居模块的分界</a><a href="#mistakes">12 个常见误解</a><a href="#shots">教材画面</a></div>
+<h2 id="def">一句话定义</h2>
+<div class="box info"><b class="t">FI = Financial Accounting（财务会计）</b><p>管「企业的账」：把已经发生的业务动作变成<b>会计凭证</b>，记到总账科目与客户/供应商明细上，最后产出<b>资产负债表与损益表</b>。</p><p>它和 CO（管理会计）的分工是：FI 对<b>外</b>（法定报表、税务、债权债务），CO 对<b>内</b>（成本、费用归属、内部考核）；两者共用一套总账科目，CO 的分配/分摊/结算会实时过账回 FI。</p><p>教学提醒：FI 的凭证绝大多数不是会计人员手工录的 —— 教材里手工录的只有 <code>FB50</code>（实收资本 2.800,00）、<code>FB70</code>（客户发票 58.000）、<code>FB60</code>（供应商发票）这几笔，其余都来自其他模块或系统自动结转。</p></div>
+<figure class="shot"><a class="zoom" href="../assets/img/fi/t20/04_1_image163.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t20/04_1_image163.png" width="721" height="344" alt="会计凭证的样子（FB03）：借 10020101 银行存款-工行 2.800,00 / 贷 31010101 实收资本 2.800,00，凭证号 100000000、公司代码 C999、期间 3" loading="lazy"></a><figcaption><span class="n">画面 1</span><span class="cap">会计凭证的样子（FB03）：借 10020101 银行存款-工行 2.800,00 / 贷 31010101 实收资本 2.800,00，凭证号 100000000、公司代码 C999、期间 3</span><span class="src">教材《S4.docx》· FI 任务 20 输入总帐科目凭证 · 原图 04_1_image163.png</span></figcaption></figure>
+<h2 id="func">四大职能</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>职能</th><th>管什么</th><th>典型前台事务</th><th>产出</th></tr></thead><tbody><tr><td><b>总账 GL</b><br>General Ledger</td><td>会计科目表与总账科目主数据、手工凭证、科目余额、期间开关、留存收益结转、财务报表版本</td><td><code>FS00</code> 建/改科目 · <code>FB50</code> 录凭证 · <code>FS10N</code> 看余额 · <code>FB03</code> 查凭证</td><td>总账科目余额、科目余额表、资产负债表/损益表</td></tr><tr><td><b>应收账款 AR</b><br>Accounts Receivable</td><td>客户主数据、客户发票、收款与清账、客户余额与账龄（催款）</td><td><code>FD01</code> 建客户 · <code>FB70</code> 发票 · <code>F-28</code> 收款 · <code>FD10N</code> 客户余额</td><td>客户未清项/已清项、客户余额报表</td></tr><tr><td><b>应付账款 AP</b><br>Accounts Payable</td><td>供应商主数据、供应商发票、付款与清账、供应商余额</td><td><code>FK01</code> 建供应商 · <code>FB60</code> 发票 · <code>F-53</code> 付款 · <code>FK10N</code> 供应商余额</td><td>供应商未清项/已清项、付款凭证</td></tr><tr><td><b>报表与期末</b><br>Reporting & Closing</td><td>凭证号码范围、记账期间变式与开账关账、容差组、报表结构（财务报表版本）</td><td><code>S_ALR_87003642</code> 未清/已结过账期间 · <code>S_ALR_87012276</code> 科目余额 · 资产负债表/损益表</td><td>对外财务报表、期末结转</td></tr><tr><td><b>资产会计 AA</b><br>Asset Accounting</td><td>固定资产主数据、折旧、资产报表（教材未演示，标准模块）</td><td>（教材未演示；常见事务码 <code>AS01</code>/<code>AB01</code>）</td><td>资产明细账与折旧凭证</td></tr></tbody></table></div>
+<h2 id="docs">凭证与对象清单（谁产生、T-code、影响什么）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>对象/凭证</th><th>谁产生</th><th>教材里的 T-code</th><th>它影响什么</th></tr></thead><tbody><tr><td>总账科目主数据</td><td>会计人员（后台准备 + 前台 FS00）</td><td><code>FS00</code></td><td>决定这个科目能不能手工记、字段必输项、是否统驭科目</td></tr><tr><td>客户主数据</td><td>会计人员（教材任务 29/30）</td><td><code>FD01</code></td><td>客户明细账、统驭科目 11310101、付款条件与清账方式</td></tr><tr><td>供应商主数据</td><td>会计人员（教材任务 31）</td><td><code>FK01</code></td><td>供应商明细账、统驭科目 21210101</td></tr><tr><td>会计凭证</td><td>手工（FB50/FB70/FB60）或系统自动（MM/SD/CO）</td><td><code>FB50</code> · <code>FB03</code></td><td>更新科目余额与未清项；凭证号来自号码范围（教材任务 15 复制到 C999）</td></tr><tr><td>客户/供应商行项目</td><td>系统（过账时自动拆分到明细）</td><td><code>FD10N</code> · <code>FK10N</code></td><td>未清项 → 通过收款/付款「清账」变成已清项</td></tr><tr><td>科目余额表</td><td>系统（读取汇总表）</td><td><code>S_ALR_87012276</code>（任务 42）</td><td>期末对账与报表的取数基础</td></tr><tr><td>财务报表版本</td><td>会计人员配置（任务 44）</td><td>IMG 路径（见配置篇）</td><td>把科目范围映射成报表项目，决定资产负债表/损益表长什么样</td></tr></tbody></table></div>
+<h2 id="rule">借、贷与凭证类型（读凭证的三把钥匙）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>概念</th><th>教学说法</th><th>教材里的证据</th></tr></thead><tbody><tr><td>借方/贷方</td><td>资产与费用增加记借方，负债、权益与收入增加记贷方；SAP 里同一张凭证借贷合计必须相等（余额划不平就存不了盘）</td><td>任务 20：借 10020101 银行存款 / 贷 31010101 实收资本，两行都是 2.800,00</td></tr><tr><td>凭证类型</td><td>决定凭证的号码范围、字段状态与允许的业务（SA 总账 / DR 客户发票 / DZ 客户收款 / KR 供应商发票 / KZ 供应商付款）</td><td>任务 39 的付款凭证画面显示凭证类型 <code>KZ</code>；其余类型教材未逐屏演示，按标准类型</td></tr><tr><td>记账码</td><td>行项目里的两位代码（如 40 借方总账、50 贷方总账、001/002 客户、25 供应商），决定字段状态与过账键</td><td>任务 20 画面：40 = 借 10020101、50 = 贷 31010101；任务 39 画面：50 = 贷 0010020111、25 = 借供应商</td></tr><tr><td>科目号的前导零</td><td>SAP 内部按 10 位存科目号，前导零只是显示格式：<code>0010020111</code> 就是科目 <code>10020101</code></td><td>任务 39 付款画面显示 0010020111（银行存款-中行），教学时按 8 位科目号读</td></tr><tr><td>过账期间</td><td>凭证的「过账日期」落在哪个期间就更新哪个期间；期间关了就记不进去</td><td>任务 18 前台看「未清过帐期间和已结过帐期间」，P999 变式 + 期间 1–12 与 13–16 特殊期间</td></tr></tbody></table></div>
+<div class="note warn"><span class="t">教材里的两个「数字坑」（讲课务必点出来）</span>① 任务 20 正文写「收到 2 800 000 的实收资本」，而 FB03 画面显示 <code>2.800,00</code> —— SAP 用点做千位分隔、逗号做小数点，所以画面数值是 2 800.00 元，教学以画面为准；② 任务 21 的正文把「显示总账科目余额 FS10N」和「定义税务科目（销项税 MWS → 21710102）」混在同一个任务里，其实是两件事，讲课时要拆开。</div>
+<h2 id="chain">记账的路线图</h2>
+<figure class="dia wide"><a class="zoom" href="../assets/diagrams/fi/docflow.svg"><img src="../assets/diagrams/fi/docflow.svg" alt="记账路线：业务动作 → 会计凭证（BKPF/BSEG）→ 过账 → 余额与未清项 → 报表" loading="lazy"></a><figcaption><span class="n">自绘流程图</span><span class="cap">记账路线：业务动作 → 会计凭证（BKPF/BSEG）→ 过账 → 余额与未清项 → 报表</span><span class="src">本站自绘 SVG</span></figcaption></figure>
+<h2 id="star">与邻居模块的分界</h2>
+<figure class="dia wide"><a class="zoom" href="../assets/diagrams/fi/star.svg"><img src="../assets/diagrams/fi/star.svg" alt="FI 的四个接口方向（本图与首页同一张）：谁把凭证送进来、FI 给谁什么数据" loading="lazy"></a><figcaption><span class="n">自绘集成图</span><span class="cap">FI 的四个接口方向（本图与首页同一张）：谁把凭证送进来、FI 给谁什么数据</span><span class="src">本站自绘 SVG</span></figcaption></figure>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>情况</th><th>该找谁</th></tr></thead><tbody><tr><td>物料收进来了，想看它记到哪个存货科目</td><td>MM 的 OBYC 配置（BSX），FI 只负责科目主数据</td></tr><tr><td>客户欠款、账龄、催款单</td><td>FI 的 AR（FD10N / FBL5N / 客户余额报表）</td></tr><tr><td>要改销售价格、交货期、开票</td><td>SD；FI 只管开票后的应收与收入科目</td></tr><tr><td>费用要分到成本中心、看计划实际差异</td><td>CO（FI 的凭证是它的数据来源）</td></tr><tr><td>银行对账、现金头寸</td><td>FI 的银行/现金科目（教材用 10010101 现金、10020101 银行存款）</td></tr><tr><td>固定资产折旧、资产报表</td><td>FI-AA（教材未演示）</td></tr><tr><td>要开放/关闭一个会计期间</td><td>FI 的记账期间变式与前台期间设置（任务 16–18）</td></tr></tbody></table></div>
+<h2 id="mistakes">12 个常见误解</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>#</th><th>常见说法</th><th>实际上</th></tr></thead><tbody><tr><td>1</td><td>「收货、开票了就自动有会计凭证」</td><td>只有在科目确定（MM 的 OBYC、SD 的收入科目）配好、总账科目主数据也存在时才会自动生成；采购订单本身不动账。</td></tr><tr><td>2</td><td>「会计凭证是 FI 产生的」</td><td>绝大多数凭证是<b>别处</b>产生的：MM 收货/发票校验、SD 开票、PP 领料收货、CO 结算。FI 手工录的只有总账凭证与客户/供应商发票（FB50/FB70/FB60）。</td></tr><tr><td>3</td><td>「总账科目建个号就行」</td><td>总账科目分<b>科目表层</b>（表 SKA1，跨公司代码）与<b>公司代码层</b>（表 SKB1）：字段状态组、统驭科目、只能自动记帐都在公司代码层，不维护就等于没配。</td></tr><tr><td>4</td><td>「科目组和字段状态组是一回事」</td><td>不是：<b>科目组</b>控制科目本身（哪些字段可输、编号范围），<b>字段状态组</b>控制凭证里的辅助核算项是否必输/可选/隐藏。教材任务 07 原文特别强调这一点。</td></tr><tr><td>5</td><td>「统驭科目随便改」</td><td>客户/供应商的明细只有在<b>统驭科目</b>上才汇总进总账（11310101 应收 / 21210101 应付）；有数据后再改会连带历史余额，必须先咨询顾问。</td></tr><tr><td>6</td><td>「10020101 和 0010020111 是两个科目」</td><td>是同一个：SAP 按 10 位存科目号，前导零只是显示。教材任务 39 的付款画面就显示 0010020111。</td></tr><tr><td>7</td><td>「凭证保存了就是过账了」</td><td><code>FB50</code> 可以只<b>预制</b>（暂存草稿），也可以直接保存过账；只有过账才更新余额（教材任务 20 画面自己写明了这一点）。</td></tr><tr><td>8</td><td>「录错了删掉重来」</td><td>已过账凭证不能删除，只能冲销（<code>FB08</code>）或反向记账；这也是内部控制的底线。</td></tr><tr><td>9</td><td>「什么时候都能记账」</td><td>记账期间变式（教材 P999）控制开关，关掉的期间不允许再过账；任务 18 就是前台看/改这个开关。</td></tr><tr><td>10</td><td>「有科目余额就是有利润」</td><td>利润要靠<b>财务报表版本</b>（任务 44）把损益科目范围汇总成报表项目，「P&L 结果 / 净值结果：利润·亏损」是系统预定义项目，自动算资产负债表的轧差。</td></tr><tr><td>11</td><td>「容差组是 MM 的事」</td><td>FI 自己也有两套：<b>雇员容差组</b>（任务 19，限制单张凭证/单笔未清项金额）与<b>应收应付容差组</b>（任务 22，控制收付款差异）。</td></tr><tr><td>12</td><td>「报表数字不对也看不出来」</td><td>资产负债表不平（资产 ≠ 负债 + 所有者权益）通常就是留存收益科目（任务 09）或报表项目科目范围（任务 44）没配好 —— 先查这两处，再查未过账的预制凭证。</td></tr></tbody></table></div>
+<h2 id="shots">教材画面（建立整体印象）</h2>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/fi/t01/03_1_image9.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t01/03_1_image9.png" width="348" height="299" alt="任务 01 公司代码 C999 颐宁机械有限公司（城市上海）" loading="lazy"></a><figcaption><span class="n">画面 2</span><span class="cap">任务 01 公司代码 C999 颐宁机械有限公司（城市上海）</span><span class="src">教材《S4.docx》· FI 任务 01 创建公司代码 · 原图 03_1_image9.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/fi/t06/03_1_image20.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t06/03_1_image20.png" width="398" height="377" alt="任务 06 科目组 A999 RAA 统驭科目 11300000–21699999" loading="lazy"></a><figcaption><span class="n">画面 3</span><span class="cap">任务 06 科目组 A999 RAA 统驭科目 11300000–21699999</span><span class="src">教材《S4.docx》· FI 任务 06 定义科目组及输入控制 · 原图 03_1_image20.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/fi/t07/06_1_image33.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t07/06_1_image33.png" width="274" height="408" alt="任务 07 字段状态组：ZEXP/ZGBS/ZMMA/ZRAA/ZREV" loading="lazy"></a><figcaption><span class="n">画面 4</span><span class="cap">任务 07 字段状态组：ZEXP/ZGBS/ZMMA/ZRAA/ZREV</span><span class="src">教材《S4.docx》· FI 任务 07 定义字段状态变式 · 原图 06_1_image33.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/fi/t20/04_1_image163.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t20/04_1_image163.png" width="721" height="344" alt="任务 20 会计凭证：借 10020101 / 贷 31010101" loading="lazy"></a><figcaption><span class="n">画面 5</span><span class="cap">任务 20 会计凭证：借 10020101 / 贷 31010101</span><span class="src">教材《S4.docx》· FI 任务 20 输入总帐科目凭证 · 原图 04_1_image163.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/fi/t32/01_2_image230.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t32/01_2_image230.png" width="751" height="600" alt="任务 32 客户发票 FB70（含税销售额 58.000）" loading="lazy"></a><figcaption><span class="n">画面 6</span><span class="cap">任务 32 客户发票 FB70（含税销售额 58.000）</span><span class="src">教材《S4.docx》· FI 任务 32 输入客户发票 · 原图 01_2_image230.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/fi/t44/19_1_image306.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t44/19_1_image306.png" width="510" height="898" alt="任务 44 报表项目的科目范围 10010101–10019999（D = 借方归入）" loading="lazy"></a><figcaption><span class="n">画面 7</span><span class="cap">任务 44 报表项目的科目范围 10010101–10019999（D = 借方归入）</span><span class="src">教材《S4.docx》· FI 任务 44 定义资产负债表和损益表结构 · 原图 19_1_image306.png</span></figcaption></figure></div>
+</article>
+</main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <h5>SAP FI 培训课程</h5>
+        <p>财务会计：总账 · 应收 · 应付 · 报表</p>
+        <p>课程总览：<a href="../index.html">SAP 模块培训课程（MM · PP · FI · CO）</a></p>
+      </div>
+      <div>
+        <h5>课程板块</h5>
+        <p><a href="concept.html">概念</a> · <a href="org.html">组织</a> ·
+        <a href="master.html">主数据</a> · <a href="flow.html">流程</a> ·
+        <a href="gl.html">总账</a> · <a href="config.html">配置</a></p>
+      </div>
+      <div>
+        <h5>课堂配套</h5>
+        <p><a href="practice.html">实训任务</a> · <a href="instructor.html">讲师版</a> ·
+        <a href="worksheet.html">学员版</a> · <a href="quiz.html">自测</a> ·
+        <a href="glossary.html">术语表</a></p>
+      </div>
+      <div>
+        <h5>看图说话</h5>
+        <p>截图取自教材《S4.docx》的真实 SAP GUI 画面（中文界面，保留原文件名可回查）；
+        流程图、结构图、思维导图为本站自绘 SVG。标准值随版本/行业方案而异，
+        页面标注的「在自系统里怎么确认」请在自己的系统里核对。</p>
+        <p>其他模块：<a href="../mm/index.html">MM 物料管理</a> · <a href="../pp/index.html">PP 生产计划</a> · <a href="../co/index.html">CO 管理会计</a> · </p>
+      </div>
+    </div>
+    <p class="copy">© <span data-year>2026</span> SAP FI 培训课程 · 静态站点，可离线使用</p>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/mod.js"></script>
+</body>
+</html>

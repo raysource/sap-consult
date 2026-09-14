@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>主数据 · SAP PP 培训课程</title>
+<meta name="description" content="SAP PP（生产计划）培训课程：概念与定位 → 组织结构（工厂/工作中心/能力/生产调度员）→ 主数据（物料 MRP 视图/BOM/工艺路线/工作中心/生产版本）→ 端到端流程（独立需求 → MRP 展开 → 计划订单 → 生产订单 → 发料·确认·收货 → 成本与差异结算）→ 分步操作手顺 → SPRO 配置（51 个任务）→ 实训与自测。截图取自教材《S4.docx》的真实 SAP GUI 画面。">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mod.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">PP</span><span class="txt">培训课程</span></a>
+    <nav class="main">
+      <a href="index.html" title="课程地图与学习路线">首页</a>
+      <a href="concept.html" title="PP 是什么、四段闭环、对象与凭证">概念</a>
+      <a href="org.html" title="工厂 / 调度员 / 工作中心 / 能力">组织</a>
+      <a class="active" href="master.html" title="BOM / 工艺路线 / 工作中心 / MRP 视图">主数据</a>
+      <a href="flow.html" title="端到端计划到成本流程">流程</a>
+      <a href="planning.html" title="需求管理 · MRP · MD04 · 订单转换">计划</a>
+      <a href="execution.html" title="下达 · 发料 · 工单确认 · 收货">执行</a>
+      <a href="cost.html" title="标准成本 CK11N/CK24 · 订单成本 · 差异结算">成本</a>
+      <a href="config.html" title="SPRO 配置路线（51 个任务）">配置</a>
+      <a href="practice.html" title="动手任务与完成基准">实训</a>
+      <a href="instructor.html" title="课时 / 板书 / 必问 / 评分">讲师</a>
+      <a href="worksheet.html" title="记入表（可打印）">学员</a>
+      <a href="quiz.html" title="30 题自评（合格 75%）">自测</a>
+      <a href="glossary.html" title="中英对照 / T-code / 常用表">术语</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page">
+<article>
+<p class="breadcrumb"><a href="index.html">课程地图</a> / <span>主数据</span></p>
+<div class="filterbar modsw"><a class="chip" href="../mm/index.html" title="SAP MM 培训课程">MM 物料管理</a><a class="chip on" href="../pp/index.html" title="SAP PP 培训课程">PP 生产计划</a><a class="chip" href="../fi/index.html" title="SAP FI 培训课程">FI 财务会计</a><a class="chip" href="../co/index.html" title="SAP CO 培训课程">CO 管理会计</a><a class="chip" href="../index.html" title="四个模块的总体视图与学习路线">总览</a></div>
+<h1>主数据</h1>
+<p class="kicker">物料 MRP 视图 · BOM · 工艺路线 · 工作中心 · 能力 · 计划策略组</p>
+<p class="lead">PP 的主数据是「一物四件套」：<b>物料主数据</b>（MRP 视图与生产计划视图）、<b>BOM</b>（要什么料，MRP 展开的基础）、<b>工艺路线 + 工作中心</b>（怎么做，谁来做）、<b>能力</b>（做多久）。搞清它们的组织层与相互引用，后面的流程才不会卡住。</p>
+<div class="toc"><a href="#layers">主数据分层</a><a href="#mrpview">物料 MRP / 生产计划视图</a><a href="#bom">BOM</a><a href="#routing">工艺路线与工序</a><a href="#wc">工作中心与能力</a><a href="#strategy">计划策略组</a><a href="#fields">关键字段填错的后果</a><a href="#other">教材未演示的功能</a><a href="#shots">教材画面</a></div>
+<h2 id="layers">主数据分层一张图</h2>
+<figure class="dia wide"><a class="zoom" href="../assets/diagrams/pp/masterlayers.svg"><img src="../assets/diagrams/pp/masterlayers.svg" alt="PP 主数据的五个层次：一般层 / 工厂层 / 生产对象层 / 计划参数层 / 成本核算层" loading="lazy"></a><figcaption><span class="n">自绘结构图</span><span class="cap">PP 主数据的五个层次：一般层 / 工厂层 / 生产对象层 / 计划参数层 / 成本核算层</span><span class="src">本站自绘 SVG</span></figcaption></figure>
+<h2 id="mrpview">① 物料主数据：PP 要看哪些视图</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>视图</th><th>组织层</th><th>PP 关心的字段（教材值）</th><th>影响什么</th></tr></thead><tbody><tr><td>基本数据 1/2</td><td>跨工厂</td><td>物料类型 <code>FERT</code>（产成品）/ <code>ROH</code>（原材料）/ <code>HAWA</code>（贸易商品）、物料组、基本单位</td><td>决定可选视图与编号范围</td></tr><tr><td><b>MRP 1–4</b></td><td>工厂</td><td>MRP 类型（<code>PD</code> = MRP）、MRP 控制者、批量、安全库存、计划边际码、可用性检查组 02、生产调度员 999</td><td>MRP 运行是否产生需求、什么时候产生、检查库存的方式</td></tr><tr><td><b>MRP 3（计划策略）</b></td><td>工厂</td><td>计划策略组 <code>40</code>（任务 32 维护）</td><td>销售订单会不会消耗独立需求 —— SD 与 PP 最重要的集成参数</td></tr><tr><td><b>生产计划 / 工作排程</b></td><td>工厂</td><td>生产计划参数文件、生产调度员（任务 16 用 <code>MMF1</code> 补维护）</td><td>生产订单创建时的排程行为。教材原文：参数文件<b>分配给物料时优先级高于分配给调度员</b></td></tr><tr><td>会计 1 / 成本 1</td><td>工厂（评估范围）</td><td>评估类 <code>7920</code>（产成品）、价格控制 <code>S</code>、标准价格</td><td>自动记账找哪个存货科目；标准价决定订单产出与差异怎么算</td></tr></tbody></table></div>
+<div class="note tip"><span class="t">为什么任务 16 要单独补一次物料主数据</span>教材 PP 任务 16 的原话是：「MM 中，我们没有维护产成品的<b>生产计划视图</b>」。主数据是分模块、分视图维护的：MM 教材建了采购/MRP/会计视图，PP 教材补生产计划视图（<code>MMF1</code>，物料类型 FERT 的专用入口）。在自己系统里可以用 <code>MM02</code> 直接选中这个视图维护。</div>
+<h2 id="bom">② BOM（物料清单，<code>CS01</code>）</h2>
+<div class="box info"><b class="t">教材原话：物料需求计划 MRP 最主要的基础是 BOM</b><p>任务 06 用 <code>CS01</code> 给产成品建 BOM：抬头填物料与工厂，项目概览里逐行填<b>组件物料 + 数量 + 项目类别</b>。教材的做法是「项目类别都用 L（库存项目）」。教材画面里 F999-100 铸钢泵 170-230 的组件是罩壳、金属片、飞轮、管轴、支撑架。</p><p>BOM 的两个方向：正向看「一个产成品要哪些料」（<code>CS03</code> 显示）；反向查「这个料被谁用」（<code>CS15</code> 所用处清单，任务 07 —— 教材用它确认罩壳被用于 F999-100 的生产）。</p></div>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>字段 / 概念</th><th>教材值</th><th>说明</th></tr></thead><tbody><tr><td>BOM 用途 Usage</td><td>1（生产）</td><td>决定这个 BOM 用于生产订单还是成本核算</td></tr><tr><td>替代 BOM / 版本</td><td>（教材未演示）</td><td>同一个物料多套 BOM 时按用途+替代序号区分</td></tr><tr><td>组件数量与单位</td><td>画面录入</td><td>MRP 按 BOM 用量展开非独立需求</td></tr><tr><td>项目类别 Item Category</td><td><code>L</code> 库存项目</td><td>决定该行是否产生库存需求与预留</td></tr><tr><td>有效期</td><td>教材未特意维护</td><td>BOM 有日期区间；成本核算按成本核算日期选取</td></tr></tbody></table></div>
+<h2 id="routing">③ 工艺路线（<code>CA01</code>）：怎么做、在哪做</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>要素</th><th>教材值 / 演示</th><th>含义</th></tr></thead><tbody><tr><td>组 + 组计数器</td><td>工艺路线靠「组编码 + 组计数器」两者编号</td><td>组计数器可以让一个产品有多条工艺路线（例如按批量大小）；教材只维护一条</td></tr><tr><td>工序 Operations</td><td><code>0010</code> 准备罩壳和金属片 · <code>0020</code> 切割金属片 · <code>0030</code> 预装配 · <code>0040</code> 装配 · <code>0050</code> 检验和交付</td><td>每道工序挂一个工作中心、一个控制码 <code>ZKM1</code>，并带标准值（准备/机器/人工工时）</td></tr><tr><td>工作中心</td><td><code>9991</code> 物料准备 · <code>9992</code> 切割 · <code>9994</code> 预装配 · <code>9995</code> 装配 · <code>9996</code> 校验和交付</td><td>工序在哪个资源上执行；决定能力需求与作业成本</td></tr><tr><td>顺序 Sequences / 并行</td><td>标准顺序 + 并行顺序 <code>0010</code> <code>9993</code> 油漆罩壳</td><td>「油漆罩壳」与「切割金属片」并行执行；分录工序与返回工序（返回 0030）由画面定义</td></tr><tr><td>状态 Status</td><td>教材画面显示状态 <code>4</code>（可进行各项业务）</td><td>工艺路线的可执行状态；未释放的工艺路线不能在订单里用</td></tr><tr><td>组件分配 Component Allocation</td><td>把 BOM 组件分配到具体工序（任务 14 后半段）</td><td>决定「哪道工序领哪几种料」，也决定倒冲在哪个工序发生</td></tr><tr><td>拆分 Split</td><td>任务 15：在「所需分解」前打勾后保存</td><td>把一个工序的数量分到几条并行线执行</td></tr></tbody></table></div>
+<div class="note tip"><span class="t">任务 14 里的一条重要提示</span>教材在维护工艺路线时提示「由于前序未将 LAB 与工作中心关联，此处会提示」—— 意思是能力（<code>LABOR</code>）当时还没分配给工作中心。这类<b>跨任务的前后依赖</b>是 PP 配置最容易漏的地方：配置任务之间不是彼此独立的，漏一步往往在很后面才报警。</div>
+<h2 id="wc">④ 工作中心（<code>CR01</code>）与能力（<code>CR11</code>）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>要素</th><th>教材值</th><th>说明</th></tr></thead><tbody><tr><td>工作中心编号/名称</td><td><code>9991</code> 物料准备 … <code>9996</code> 校验和交付</td><td>工厂 P999 下；人工工时 4 个（9991/9992/9995/9996）+ 机器工时 2 个（9993 油漆/9994 预装配）</td></tr><tr><td>类别 Category</td><td>按人工工时 / 机器工时划分</td><td>决定可用的能力类别与标准值字段</td></tr><tr><td>负责人 Person Responsible</td><td>颐宁工作中心负责人（只定义 1 个）</td><td>任务 08</td></tr><tr><td>缺省控制码</td><td><code>ZKM1</code>；计量单位 <code>MIN</code> 分</td><td>任务 12 步骤 05：ZKM1 是之前定义的缺省控制码，MIN 指分钟</td></tr><tr><td>能力 Capacity</td><td><code>LABOR</code> 颐宁人工工时能力（能力类别 <code>002</code> 工时）+ 机器工时能力</td><td>工厂层统一核算，再分配给各工作中心；单项能力数量、能力利用率（教材提示：100 = 100% 可有效利用）</td></tr><tr><td>公式 Formulas</td><td><code>SAP001</code> 生产:准备时间 · <code>SAP003</code> 生产:工时 · <code>SAP005/006/007</code> 作业需求</td><td>决定标准值如何换算成时间与能力需求</td></tr><tr><td>成本核算页</td><td>成本控制范围 <code>C999</code>、成本中心 <code>1001</code> Workshops</td><td>作业类型（准备/机器/工时）→ 作业价格由 CO 的 <code>KP26</code> 维护</td></tr></tbody></table></div>
+<div class="note warn"><span class="t">教材任务 12 的「卡点」</span>教材在给工作中心维护成本核算页时明说：<b>因为 CO 模块未完成 KP26（作业类型价格），此处无法继续</b>。这不是教材写错，而是真实项目里的分工：工作中心由 PP 建，作业价格由 CO 维护，两边不做完就取不到作业成本。学到这里要能指出「缺哪一步」。</div>
+<h2 id="strategy">⑤ 计划策略组（Planning Strategy Group，任务 32）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>策略</th><th>教材说明</th><th>结果</th></tr></thead><tbody><tr><td><code>40</code>（按库存生产，教材用于 F999-100）</td><td>生产计划的依据是计划部门维护的<b>独立需求计划</b>；但销售订单对计划仍有影响 ——销售订单会<b>消耗</b>独立需求；当销售订单超过计划量时，多出的部分会增加生产计划</td><td>计划以 PIR 为主，销售订单只做消耗</td></tr><tr><td>（教材未演示）策略 10 / 20 / 30 / 50 等</td><td>标准策略里 10 是按库存生产（PIR 不消耗）、20 是按单生产、30 是 PIR 与销售订单并行按最大值、50 是无最终装配的计划</td><td>换到自己的系统先看物料 MRP3 视图的策略组，再用 <code>OPPS</code> 查策略定义</td></tr></tbody></table></div>
+<ol class="oplist" start="1"><li class="">计划策略组在<b>物料主数据 MRP3 视图</b>维护，是「销售和生产在计划上怎么衔接」的开关。</li><li class="">教材任务 32 的另一个动作是把 <code>T999-100</code>（贸易商品）也维护一遍同样的策略。</li><li class="">策略组下面还有需求类、需求类型（决定 PIR 与销售订单的消耗关系），查配置用 <code>OPPS</code>（计划策略）。</li></ol>
+<h2 id="fields">关键字段填错的后果（建主数据时盯住这些）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>字段</th><th>在哪</th><th>教材值</th><th>填错的后果</th></tr></thead><tbody><tr><td>物料类型</td><td>物料一般层</td><td><code>FERT</code> 产成品 · <code>ROH</code> 原材料 · <code>HAWA</code> 贸易商品</td><td>视图不对、能不能自制不对，且不容易改</td></tr><tr><td>MRP 类型</td><td>MRP 视图（工厂）</td><td><code>PD</code> = MRP</td><td>MRP 不产生需求，MD04 一片空白</td></tr><tr><td>计划策略组</td><td>MRP3 视图（工厂）</td><td><code>40</code></td><td>销售订单不消耗独立需求，计划与实际脱节</td></tr><tr><td>可用性检查组</td><td>MRP 视图（工厂）</td><td><code>02</code></td><td>可用性检查报「检查组未定义」或检查范围不符</td></tr><tr><td>生产调度员</td><td>MRP 视图（工厂）</td><td><code>999</code></td><td>按调度员筛订单时取不到数；排程参数取不到默认值</td></tr><tr><td>生产计划参数文件</td><td>物料的工作排程屏幕（任务 16）</td><td><code>000001</code></td><td>优先级：物料 > 调度员；不维护就取调度员或工厂的缺省</td></tr><tr><td>评估类</td><td>会计 1（工厂）</td><td><code>7920</code>（产成品）</td><td>收货/发料找错存货科目或直接报错</td></tr><tr><td>价格控制</td><td>会计 1（成本 1）</td><td><code>S</code> 标准价（产成品）</td><td>用 V 的话，订单产出与差异逻辑完全不同</td></tr><tr><td>控制码</td><td>工艺路线工序</td><td><code>ZKM1</code></td><td>工序不排程、不产生能力需求、不算成本</td></tr></tbody></table></div>
+<h2 id="other">⑥ 教材未演示、但项目必用的主数据功能</h2>
+<p>下面这些是标准 PP 里一定会用到、但教材这套数据没有逐屏演示的对象。上课时用一句话讲清它们「解决什么问题」，让学生在自己的系统里用 F1/F4 与 <code>CA03</code>/<code>CS03</code> 去确认。</p>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>对象 / 功能</th><th>解决什么问题</th><th>在哪看</th></tr></thead><tbody><tr><td>生产版本 Production Version（教材未演示）</td><td>一个物料有多套 BOM + 工艺路线组合时，用生产版本固定「按哪一套生产」，订单与成本核算都按它选取</td><td><code>C223</code> 创建；物料主数据 MRP4 视图可挂生产版本</td></tr><tr><td>替代 BOM / 替代工艺路线（教材未演示）</td><td>同一物料在不同批量或不同时期用不同结构；工艺路线用组计数器区分（教材只讲了一条）</td><td><code>CS03</code> 看 BOM 的替代序号；<code>CA03</code> 看组计数器</td></tr><tr><td>参考工序集 / 工序库（教材未演示）</td><td>把常用工序做成模板，新建工艺路线时直接引用，减少重复维护</td><td><code>CA11</code> 参考工序集</td></tr><tr><td>工厂日历 / 班次（教材未演示）</td><td>排程要避开休息日与停产日，能力可用量按班次计算</td><td>工厂日历 <code>SCAL</code>；工作中心的能力页可挂班次</td></tr><tr><td>批次管理与批次确定（教材未演示）</td><td>原材料/半成品按批次追溯（食品、医药、汽车件常见）</td><td>物料主数据同时选「批次管理」视图；<code>MSC1N</code> 建批次</td></tr><tr><td>物料状态 / 工艺路线状态控制（教材未演示）</td><td>临时禁止某个物料或某条工艺路线被订单引用</td><td>物料状态在 <code>MM02</code> 基本数据 1；工艺路线状态在 <code>CA02</code> 抬头</td></tr></tbody></table></div>
+<h2 id="shots">教材画面（主数据）</h2>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/pp/t06/03_1_image799.jpeg" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t06/03_1_image799.jpeg" width="1215" height="452" alt="任务 06 CS01 建 BOM：项目类别 L（库存项目）" loading="lazy"></a><figcaption><span class="n">画面 1</span><span class="cap">任务 06 CS01 建 BOM：项目类别 L（库存项目）</span><span class="src">教材《S4.docx》· PP 任务 06 新建物料清单 · 原图 03_1_image799.jpeg</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t07/04_1_image803.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t07/04_1_image803.png" width="879" height="217" alt="任务 07 CS15 所用处清单：罩壳用于 F999-100" loading="lazy"></a><figcaption><span class="n">画面 2</span><span class="cap">任务 07 CS15 所用处清单：罩壳用于 F999-100</span><span class="src">教材《S4.docx》· PP 任务 07 显示物料所用处清单 · 原图 04_1_image803.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t14/03_1_image852.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t14/03_1_image852.png" width="1183" height="466" alt="任务 14 CA01 工艺路线：组 + 组计数器" loading="lazy"></a><figcaption><span class="n">画面 3</span><span class="cap">任务 14 CA01 工艺路线：组 + 组计数器</span><span class="src">教材《S4.docx》· PP 任务 14 新建工艺路线 · 原图 03_1_image852.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t15/03_1_image871.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t15/03_1_image871.png" width="1084" height="530" alt="任务 15 CA02 拆分工序" loading="lazy"></a><figcaption><span class="n">画面 4</span><span class="cap">任务 15 CA02 拆分工序</span><span class="src">教材《S4.docx》· PP 任务 15 拆分工序 · 原图 03_1_image871.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t16/03_1_image877.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t16/03_1_image877.png" width="543" height="248" alt="任务 16 MMF1 补产成品的生产计划视图" loading="lazy"></a><figcaption><span class="n">画面 5</span><span class="cap">任务 16 MMF1 补产成品的生产计划视图</span><span class="src">教材《S4.docx》· PP 任务 16 新建产产品的生产计划视图 · 原图 03_1_image877.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t32/03_1_image973.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t32/03_1_image973.png" width="543" height="275" alt="任务 32 MM02 维护计划策略组 40" loading="lazy"></a><figcaption><span class="n">画面 6</span><span class="cap">任务 32 MM02 维护计划策略组 40</span><span class="src">教材《S4.docx》· PP 任务 32 维护物料主数据的计划策略组 · 原图 03_1_image973.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t12/16_1_image835.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t12/16_1_image835.png" width="610" height="646" alt="任务 12 工作中心成本核算页（作业类型待 KP26）" loading="lazy"></a><figcaption><span class="n">画面 7</span><span class="cap">任务 12 工作中心成本核算页（作业类型待 KP26）</span><span class="src">教材《S4.docx》· PP 任务 12 新建人工工时类别工作中心 · 原图 16_1_image835.png</span></figcaption></figure></div>
+</article>
+</main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <h5>SAP PP 培训课程</h5>
+        <p>生产计划：需求 · 计划 · 执行 · 成本</p>
+        <p>课程总览：<a href="../index.html">SAP 模块培训课程（MM · PP · FI · CO）</a></p>
+      </div>
+      <div>
+        <h5>课程板块</h5>
+        <p><a href="concept.html">概念</a> · <a href="org.html">组织</a> ·
+        <a href="master.html">主数据</a> · <a href="flow.html">流程</a> ·
+        <a href="planning.html">计划</a> · <a href="config.html">配置</a></p>
+      </div>
+      <div>
+        <h5>课堂配套</h5>
+        <p><a href="practice.html">实训任务</a> · <a href="instructor.html">讲师版</a> ·
+        <a href="worksheet.html">学员版</a> · <a href="quiz.html">自测</a> ·
+        <a href="glossary.html">术语表</a></p>
+      </div>
+      <div>
+        <h5>看图说话</h5>
+        <p>截图取自教材《S4.docx》的真实 SAP GUI 画面（中文界面，保留原文件名可回查）；
+        流程图、结构图、思维导图为本站自绘 SVG。标准值随版本/行业方案而异，
+        页面标注的「在自系统里怎么确认」请在自己的系统里核对。</p>
+        <p>其他模块：<a href="../mm/index.html">MM 物料管理</a> · <a href="../fi/index.html">FI 财务会计</a> · <a href="../co/index.html">CO 管理会计</a> · </p>
+      </div>
+    </div>
+    <p class="copy">© <span data-year>2026</span> SAP PP 培训课程 · 静态站点，可离线使用</p>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/mod.js"></script>
+</body>
+</html>

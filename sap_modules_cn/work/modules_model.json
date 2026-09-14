@@ -1,0 +1,9254 @@
+{
+ "fi": {
+  "code": "fi",
+  "title": "财务会计 FI",
+  "tasks": [
+   {
+    "no": 1,
+    "title": "创建公司代码",
+    "anchor": "t01",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "国家 CN",
+      "after": 1
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：我们现在创建一家公司，并展开创建的此家公司的业务，我们创建的此家公司为颐宁机械有限公司。\n公司代码描述的是一个完整的会计实体.有资产负债表等",
+      "imgs": [
+       "fi/t01/01_1_image7.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "公司名称 颐宁机械有限公司城市 上海\n输入上述公司信息，如下图所示，输入完毕点击保存按钮",
+      "imgs": [
+       "fi/t01/03_1_image9.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "企业结构 → 定义 → 财务会计 → 编辑/复制/删除/检查公司代码、编辑公司代码数据选择编辑公司代码数据",
+    "tcodes": [],
+    "values": [
+     {
+      "k": "公司代码",
+      "v": "C999"
+     },
+     {
+      "k": "货币",
+      "v": "RMB"
+     },
+     {
+      "k": "语言",
+      "v": "ZH"
+     }
+    ],
+    "fb": null,
+    "nimg": 2
+   },
+   {
+    "no": 2,
+    "title": "创建会计科目表",
+    "anchor": "t02",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "帐目表 A999",
+      "after": 2
+     },
+     {
+      "kind": "info",
+      "text": "说明 颐宁机械有限公司会计科目表维护语言",
+      "after": 2
+     },
+     {
+      "kind": "tip",
+      "text": "成本控制集成 自动创建成本要素",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：创建会计科目表是进行会计部分设置最基础的工作，不同的公司代码可以分配给不同的会计科目表,关系是多对一，路径如下图，我们从头开始设置。",
+      "imgs": [
+       "fi/t02/01_1_image10.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "财务会计新－总帐会计新－总帐科目－主数据－总账科目-准备－编辑科目表清单按下图进行创建，创建完毕后点击保存按钮",
+      "imgs": [
+       "fi/t02/02_1_image11.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "财务会计新 → 总帐会计新 → 总帐科目 → 主数据 → 总账科目-准备 → 编辑科目表清单按下图进行创建，创建完毕后点击保存按钮",
+    "tcodes": [],
+    "values": [
+     {
+      "k": "总帐科目号长度",
+      "v": "8"
+     }
+    ],
+    "fb": null,
+    "nimg": 2
+   },
+   {
+    "no": 3,
+    "title": "定义会计年度变式",
+    "anchor": "t03",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "解释：会计年度变式将用于后续的财务操作，会计年度变式表明过账期间和特殊期间的数目，即在哪些期间进行过账",
+      "imgs": [
+       "fi/t03/01_1_image12.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "财务会计－财务会计的全局设置－会计年度－分类账－会计年度和过账期间－维护会计年度变式（维护缩短的会计年度）点击新建按钮新条目",
+      "imgs": [
+       "fi/t03/02_1_image13.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "财务会计 → 财务会计的全局设置 → 会计年度 → 分类账 → 会计年度和过账期间 → 维护会计年度变式（维护缩短的会计年度）点击新建按钮新条目",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 2
+   },
+   {
+    "no": 4,
+    "title": "创建信贷控制范围",
+    "anchor": "t04",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "C999 颐宁信贷控制范围",
+      "after": 2
+     },
+     {
+      "kind": "tip",
+      "text": "RMB",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：信贷范围用于管理在进行信用控制时，信用在哪个范围内起作用。它是 SAP 销售和应收帐款模块中用于控制信用风险的组织结构.公司代码和信贷控制范围是多对一关系。",
+      "note": true,
+      "imgs": [
+       "fi/t04/01_1_image14.png"
+      ]
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t04/02_1_image15.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "企业结构 → 定义 → 财务会计 → 定义信贷控制范围创建如下信息：",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 2
+   },
+   {
+    "no": 5,
+    "title": "维护公司代码的全局参数",
+    "anchor": "t05",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "帐目表 A999公司",
+      "after": 2
+     },
+     {
+      "kind": "tip",
+      "text": "国家表/科目财务管理范围",
+      "after": 2
+     },
+     {
+      "kind": "tip",
+      "text": "信贷控制范围 C999 会计年度变式 ZF",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：公司代码全局参数用于设置创建公司的帐目表，信贷控制范围，会计年度变式等。主要输入公司代码的全局参数,把上面的三个组织结构分配给公司代码。",
+      "imgs": [
+       "fi/t05/01_1_image16.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "财务会计－财务会计的全局设置－公司代码－输入全局参数",
+      "imgs": [
+       "fi/t05/02_1_image17.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "财务会计 → 财务会计的全局设置 → 公司代码 → 输入全局参数",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 2
+   },
+   {
+    "no": 6,
+    "title": "定义科目组及输入控制",
+    "anchor": "t06",
+    "desc": [
+     "双击进入会计科目表 A999 组 BSA",
+     "资产负债类科目",
+     "A999 BSA 资产负债类科目 10000000 39999999",
+     "A999 PLA 损益类科目 40000000 59999999"
+    ],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "解释：用于创建科目组，并进行输入控制，即在输入科目时，哪些字段允许输入，哪些字段隐藏等。科目组是将性质类似的科目分类，主要维护前台会计科目主数据。(统驭科目--字 段状态组--凭证输入)。",
+      "imgs": [
+       "fi/t06/01_1_image18.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "财务会计－总帐会计－总帐科目－主数据－准备－定义科目组",
+      "imgs": [
+       "fi/t06/02_1_image19.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "A999 RAA 统驭科目 11300000 21699999\n双击 BSA 进入",
+      "imgs": [
+       "fi/t06/03_1_image20.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "双击科目控制",
+      "note": true,
+      "imgs": [
+       "fi/t06/04_1_image21.png"
+      ]
+     },
+     {
+      "caption": "双击凭证输入",
+      "imgs": [
+       "fi/t06/05_1_image22.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "双击进入 PLA",
+      "imgs": [
+       "fi/t06/06_1_image23.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "进入账户管理",
+      "imgs": [
+       "fi/t06/07_1_image24.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t06/08_1_image25.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "进入统驭科目",
+      "imgs": [
+       "fi/t06/09_1_image26.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "财务会计 → 总帐会计 → 总帐科目 → 主数据 → 准备 → 定义科目组",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 9
+   },
+   {
+    "no": 7,
+    "title": "定义字段状态变式",
+    "anchor": "t07",
+    "desc": [
+     "新建如下组"
+    ],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "双击 ZGBS",
+      "after": 6
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：字段状态变式是分配给公司代码的一项重要参数,在字段状态变式中罗列了很多字段状态组,而字段状态组是会计科目中的一个重要参数.它控制在输入一张会计记帐凭证时,该科目的那些辅助核算项目是必须输入的,哪些是不允许输入的,哪些是可以选择的",
+      "note": true,
+      "imgs": [
+       "fi/t07/01_1_image27.png"
+      ]
+     },
+     {
+      "caption": "重点:科目组是控制科目中的参数,字段状态组是控制凭证中的辅助核算项",
+      "imgs": [
+       "fi/t07/02_1_image28.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "财务会计(新)－财务会计全局设置(新) — 字段－定义字段状态变式",
+      "imgs": [
+       "fi/t07/03_1_image29.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "Z001 公司代码 C999 字段状态组",
+      "imgs": [
+       "fi/t07/04_1_image30.png",
+       "fi/t07/04_2_image31.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "双击字段状态组",
+      "note": true,
+      "imgs": [
+       "fi/t07/05_1_image32.png"
+      ]
+     },
+     {
+      "caption": "ZEXP 费用科目\nZGBS 一般资产负债科目 ZMMA 材料采购科目（GR/IR） ZRAA 统驭科目-应收/应付 ZREV 收入科目",
+      "imgs": [
+       "fi/t07/06_1_image33.png",
+       "fi/t07/06_2_image34.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t07/07_1_image35.png",
+       "fi/t07/07_2_image36.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "双击ZMMA",
+      "note": true,
+      "imgs": [
+       "fi/t07/08_1_image37.png",
+       "fi/t07/08_2_image38.png",
+       "fi/t07/08_3_image39.png",
+       "fi/t07/08_4_image40.png",
+       "fi/t07/08_3_image39.png",
+       "fi/t07/08_4_image40.png"
+      ]
+     },
+     {
+      "caption": "系统会提示“不一致的字段状态，参加帮助文本”回车即可返回",
+      "imgs": [
+       "fi/t07/09_1_image43.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "双击 ZREV",
+      "note": true,
+      "imgs": [
+       "fi/t07/10_1_image44.png",
+       "fi/t07/10_2_image45.png"
+      ]
+     }
+    ],
+    "subs": [],
+    "path": "财务会计(新) → 财务会计全局设置(新) → 字段 → 定义字段状态变式",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 19
+   },
+   {
+    "no": 8,
+    "title": "向字段状态变式分配公司代码",
+    "anchor": "t08",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "解释:先分配给公司代码,以后可以把字段信息分配给会计科目",
+      "imgs": [
+       "fi/t08/01_1_image46.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t08/02_1_image47.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "财务会计 → 财务会计全局设置 → 凭证 → 行项目 → 控制 → 向字段状态变式分配公司代码",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 2
+   },
+   {
+    "no": 9,
+    "title": "定义存留收益科目",
+    "anchor": "t09",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "warn",
+      "text": "解释：SAP 总账在年结时可以自动结转本年利润或未分配利润，也就是说系统自动将利润表科目余额转入资产负债表科目中的本年利润或未分配利润。这里是定义转入的科目。SAP称之为留存收益科目。在项目实施中有两种处理方式：一是设置为\"本年利润科目\"，这样所有的损益表科目的余额都会自动转入本年利润科目，而利润分配表中的科目视同资产负债表科目，结转未分配利润用于手工凭证处理；另一种是设置为\"未分配利润科目\"，这样所有的损益表科目和所有利润分配表科目的余额都要自动传入未分配利润科目而利润分配表中的科目视同损益表科目，不需要定义本年利润科目，也不存在本年利润结转，本年利润的金额通过损益表报表反映。",
+      "after": 0
+     },
+     {
+      "kind": "tip",
+      "text": "系统提示“… 未建立” 回车即可通过",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "财务会计(新)－总帐会计(新)－主数据－总帐科目－准备－定义留存收益科目",
+      "imgs": [
+       "fi/t09/01_1_image48.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "X 410901X 410901",
+      "imgs": [
+       "fi/t09/02_1_image49.png",
+       "fi/t09/02_2_image50.png",
+       "fi/t09/02_3_image51.png",
+       "fi/t09/02_1_image49.png",
+       "fi/t09/02_2_image50.png",
+       "fi/t09/02_3_image51.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "财务会计(新) → 总帐会计(新) → 主数据 → 总帐科目 → 准备 → 定义留存收益科目",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 7
+   },
+   {
+    "no": 10,
+    "title": "新建一般资产负债科目",
+    "anchor": "t10",
+    "desc": [
+     "点击新建科目按钮（带模板按钮边上那个按钮）帐目表: A999 = 颐宁机械有限公司会计科目表总帐帐号 科目名称",
+     "10010101 现金",
+     "10020101 银行存款－工商银行上海分行南京西路支行",
+     "10020111 银行存款－中国银行上海分行淮海中路支行 3101968",
+     "12110101 存货－原材料",
+     "12310101 存货－贸易商品",
+     "12430101 存货－产成品"
+    ],
+    "notes": [
+     {
+      "kind": "info",
+      "text": "解释：在前台创建资产负债类科目。定义资产负债类会计科目。在 SAP 中,会计科目的定义分为两层：科目表层和公司代码层。比如：一个集团企业可以定义一套会计科目表，但是下面的每个公司代码，从中选择哪些科目，这些科目的各项参数又是可以自己决定的，从而达到集中和灵活兼顾的效果。定义总帐科目：科目表层和公司代码层。科目组和会计科目表相关，和公司代码无关。字段状态组和公司代码相关。在这里，新建立了 C999 公司代码下的 10 张总帐会计科目。",
+      "after": 0
+     },
+     {
+      "kind": "tip",
+      "text": "31410101 利润分配－未分配利润",
+      "after": 2
+     },
+     {
+      "kind": "tip",
+      "text": "31010101 实收资本",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "事务代码：FS00",
+      "imgs": [
+       "fi/t10/01_1_image55.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t10/02_1_image56.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "21710102 未交税金 → 增值税 → 销项税额",
+    "tcodes": [
+     "FS00"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 2
+   },
+   {
+    "no": 11,
+    "title": "新建统驭科目－应收/应付",
+    "anchor": "t11",
+    "desc": [
+     "解释：这也是创建一些总账会计科目。不同的是这些科目，如应收帐和应付账款会有相应的明细分类账模块。如客户账户，供应商账户。业务入账只能记入这些明细分类账中，通过集成自动更新总账，而不能直接记入总账。这样杜绝了明细分类账和总账不付的情况发生。这些总账科目就为统驭科目。"
+    ],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "其他总账科目创建如现金总账的创建",
+      "note": true,
+      "imgs": [
+       "fi/t11/01_1_image57.png",
+       "fi/t11/01_2_image58.png"
+      ]
+     },
+     {
+      "caption": "创建应收账款 FS00 11310101",
+      "note": true,
+      "imgs": [
+       "fi/t11/02_1_image59.png",
+       "fi/t11/02_2_image60.png",
+       "fi/t11/02_3_image61.png"
+      ]
+     },
+     {
+      "caption": "创建应付科目\n21210101 应付帐款",
+      "imgs": [
+       "fi/t11/03_1_image62.png",
+       "fi/t11/03_2_image63.png",
+       "fi/t11/03_3_image66.png",
+       "fi/t11/03_1_image62.png",
+       "fi/t11/03_2_image63.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": null,
+    "tcodes": [
+     "FS00"
+    ],
+    "values": [
+     {
+      "k": "事务代码",
+      "v": "FS00"
+     }
+    ],
+    "fb": null,
+    "nimg": 10
+   },
+   {
+    "no": 12,
+    "title": "新建材料采购科目",
+    "anchor": "t12",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "解释:材料采购科目也是创建一个总账会计科目。这个科目需要\"逐笔逐清\"的中间过渡科目--材料采购科目。也叫 GR/IR(收货/收发票)。在收货时系统自动生成会计凭证。借:库存 贷:材料采购.而收发票时，系统也自动生成会计凭证。 借:材料采购，贷:应付账款.两边的\"材料采购\" 凭证行相互匹配的过程叫\"清账\"，对上的叫\"已清项\"，对不上的叫\"未清项\"，未清项反映了货或者发票有一方未到。这是个风险点，其他需要用\"清账\"来管理的科目大多是一些中间过渡科目，如银行未达科目。或者是反映债权债务(但又不用应付应收模块管理)科目，如长期借款。客户和供应商明细账就是采用清账来管理的。\n创建材料采购－GR/IR 科目",
+      "imgs": [
+       "fi/t12/01_1_image67.png",
+       "fi/t12/01_2_image68.png",
+       "fi/t12/01_3_image69.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": null,
+    "tcodes": [
+     "FS00"
+    ],
+    "values": [
+     {
+      "k": "事务代码",
+      "v": "FS00"
+     }
+    ],
+    "fb": null,
+    "nimg": 3
+   },
+   {
+    "no": 13,
+    "title": "新建损益科目",
+    "anchor": "t13",
+    "desc": [
+     "解释：损益类科目的特点是在做年结的时候，损益类科目的年末余额会结转到\"未分配利润",
+     "\"(或者本年利润)科目的年初余额。而他们自己的年初余额清为 0。",
+     "创建损益科目"
+    ],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "51010101 主营业务收入-自制产品",
+      "note": true,
+      "imgs": [
+       "fi/t13/01_1_image70.png",
+       "fi/t13/01_2_image71.png",
+       "fi/t13/01_3_image72.png",
+       "fi/t13/01_1_image70.png",
+       "fi/t13/01_2_image71.png",
+       "fi/t13/01_3_image72.png"
+      ]
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t13/02_1_image76.png",
+       "fi/t13/02_2_image77.png",
+       "fi/t13/02_1_image76.png",
+       "fi/t13/02_2_image77.png"
+      ]
+     },
+     {
+      "caption": "创建生产成本－原材料消耗\n41010101",
+      "imgs": [
+       "fi/t13/03_1_image80.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "创建生产成本－订单差异 41010901",
+      "imgs": [
+       "fi/t13/04_1_image81.png",
+       "fi/t13/04_2_image82.png",
+       "fi/t13/04_3_image83.png",
+       "fi/t13/04_1_image81.png",
+       "fi/t13/04_2_image82.png",
+       "fi/t13/04_3_image83.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t13/05_1_image87.png",
+       "fi/t13/05_2_image88.png",
+       "fi/t13/05_3_image89.png",
+       "fi/t13/05_1_image87.png",
+       "fi/t13/05_2_image88.png",
+       "fi/t13/05_3_image89.png"
+      ]
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t13/06_1_image93.png",
+       "fi/t13/06_2_image94.png"
+      ]
+     },
+     {
+      "caption": "创建制造费用－工资 41050101",
+      "imgs": [
+       "fi/t13/07_1_image95.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t13/08_1_image96.png"
+      ]
+     },
+     {
+      "caption": "创建制造费用－电费 41050121",
+      "imgs": [
+       "fi/t13/09_1_image97.png",
+       "fi/t13/09_2_image98.png",
+       "fi/t13/09_1_image97.png",
+       "fi/t13/09_2_image98.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t13/10_1_image101.png",
+       "fi/t13/10_2_image102.png"
+      ]
+     },
+     {
+      "caption": "创建主营业务收入－贸易商品 51010201",
+      "imgs": [
+       "fi/t13/11_1_image103.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t13/12_1_image104.png",
+       "fi/t13/12_2_image105.png"
+      ]
+     },
+     {
+      "caption": "创建主营业务收入－自制产品 54010101",
+      "imgs": [
+       "fi/t13/13_1_image106.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t13/14_1_image107.png",
+       "fi/t13/14_2_image108.png"
+      ]
+     },
+     {
+      "caption": "创建主营业务成本－贸易商品 54010201",
+      "imgs": [
+       "fi/t13/15_1_image109.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t13/16_1_image110.png",
+       "fi/t13/16_2_image111.png"
+      ]
+     },
+     {
+      "caption": "创建主营成本－采购价差 54010301",
+      "imgs": [
+       "fi/t13/17_1_image112.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t13/18_1_image113.png",
+       "fi/t13/18_2_image114.png"
+      ]
+     },
+     {
+      "caption": "创建主营业务成本－生产订单差异 54010401",
+      "imgs": [
+       "fi/t13/19_1_image115.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t13/20_1_image116.png",
+       "fi/t13/20_2_image117.png"
+      ]
+     },
+     {
+      "caption": "创建销售费用－运费 55010101",
+      "imgs": [
+       "fi/t13/21_1_image118.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t13/22_1_image119.png",
+       "fi/t13/22_2_image120.png"
+      ]
+     },
+     {
+      "caption": "创建销售费用－市场费用 55010111",
+      "imgs": [
+       "fi/t13/23_1_image121.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t13/24_1_image122.png",
+       "fi/t13/24_2_image123.png"
+      ]
+     },
+     {
+      "caption": "创建管理费用－工资 55020101",
+      "imgs": [
+       "fi/t13/25_1_image124.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t13/26_1_image125.png",
+       "fi/t13/26_2_image126.png"
+      ]
+     },
+     {
+      "caption": "创建管理费用－折旧 55020111",
+      "imgs": [
+       "fi/t13/27_1_image127.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t13/28_1_image128.png",
+       "fi/t13/28_2_image129.png"
+      ]
+     },
+     {
+      "caption": "创建管理费用－电话费 55020121",
+      "imgs": [
+       "fi/t13/29_1_image130.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t13/30_1_image131.png",
+       "fi/t13/30_2_image132.png"
+      ]
+     },
+     {
+      "caption": "创建管理费用－办公用品 55020131",
+      "imgs": [
+       "fi/t13/31_1_image133.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t13/32_1_image134.png",
+       "fi/t13/32_2_image135.png"
+      ]
+     },
+     {
+      "caption": "创建管理费用－租金 55020141",
+      "imgs": [
+       "fi/t13/33_1_image136.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t13/34_1_image137.png",
+       "fi/t13/34_2_image138.png"
+      ]
+     },
+     {
+      "caption": "创建管理费用－其他 55029101",
+      "imgs": [
+       "fi/t13/35_1_image139.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t13/36_1_image140.png",
+       "fi/t13/36_2_image141.png"
+      ]
+     }
+    ],
+    "subs": [],
+    "path": null,
+    "tcodes": [
+     "FS00"
+    ],
+    "values": [
+     {
+      "k": "事务代码",
+      "v": "FS00"
+     }
+    ],
+    "fb": null,
+    "nimg": 72
+   },
+   {
+    "no": 14,
+    "title": "显示科目汇总",
+    "anchor": "t14",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "S_alr_87012326",
+      "after": 1
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：创建上述步骤中创建的会计科目",
+      "imgs": [
+       "fi/t14/01_1_image143.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": null,
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 1
+   },
+   {
+    "no": 15,
+    "title": "复制凭证号码范围到公司代码",
+    "anchor": "t15",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "财务会计(新)－财务会计全局设置(新)－凭证－凭证号范围－复制到公司代码",
+      "note": true,
+      "imgs": [
+       "fi/t15/01_1_image144.png",
+       "fi/t15/01_2_image145.png"
+      ]
+     },
+     {
+      "caption": "解释：SAP 中对于凭证等需号码的单据，均需要用号码范围来进行管理。通常号码范围设置好之后即可分配到各自使用的范围内。\n输入源公司(0001)及目标公司(C999)",
+      "imgs": [
+       "fi/t15/02_1_image146.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击是",
+      "imgs": [
+       "fi/t15/03_1_image147.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t15/04_1_image148.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "财务会计(新) → 财务会计全局设置(新) → 凭证 → 凭证号范围 → 复制到公司代码",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 5
+   },
+   {
+    "no": 16,
+    "title": "定义记帐期间变式",
+    "anchor": "t16",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "warn",
+      "text": "解释：这是用来对凭证的开关。已经关掉的会计期间就不允许对凭证进行更改。多个公司代码可以被统一控制开账和关帐。先给各个公司代码赋予记账期间变式参数。",
+      "after": 1
+     },
+     {
+      "kind": "tip",
+      "text": "P999 颐宁记账期间变式",
+      "after": 1
+     }
+    ],
+    "steps": [
+     {
+      "caption": "财务会计(新)－财务会计全局设置(新)－分类账－会计年度和过账期间－过账期间-定义未清过账期间变式",
+      "note": true,
+      "imgs": [
+       "fi/t16/01_1_image149.png",
+       "fi/t16/01_2_image150.png"
+      ]
+     }
+    ],
+    "subs": [],
+    "path": "财务会计(新) → 财务会计全局设置(新) → 分类账 → 会计年度和过账期间 → 过账期间-定义未清过账期间变式",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 2
+   },
+   {
+    "no": 17,
+    "title": "将记帐期间变式分配给公司代码",
+    "anchor": "t17",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "P999",
+      "after": 1
+     }
+    ],
+    "steps": [
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t17/01_1_image151.png",
+       "fi/t17/01_2_image152.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [
+     {
+      "kind": "head",
+      "level": 6,
+      "text": "财务会计(新)－财务会计全局设置(新)－分类账－会计年度和过账期间－过账期间-将变式分配给公司代码"
+     }
+    ],
+    "path": "财务会计(新) → 财务会计全局设置(新) → 分类账 → 会计年度和过账期间 → 过账期间-将变式分配给公司代码",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 2
+   },
+   {
+    "no": 18,
+    "title": "设置记帐期间(前台)",
+    "anchor": "t18",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "S_ALR_87003642",
+      "after": 0
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释:完成开帐和关帐，通常作为月结的一个环节。\n会计核算－财务会计－总帐－环境－当前设置－未清过帐期间和已结过帐期间",
+      "imgs": [
+       "fi/t18/01_1_image153.png",
+       "fi/t18/01_2_image154.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "P999 +/A/D/K/S 1-12 期间 2006 年 13－16 期间，+/A/D/K/S 分别代表如下含义",
+      "imgs": [
+       "fi/t18/02_1_image155.png",
+       "fi/t18/02_2_image156.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "会计核算 → 财务会计 → 总帐 → 环境 → 当前设置 → 未清过帐期间和已结过帐期间",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 4
+   },
+   {
+    "no": 19,
+    "title": "定义过帐容差组",
+    "anchor": "t19",
+    "desc": [
+     "解释：设置对会计人员出凭证的一些限定,比如：单笔凭证的金额不能超过多少，"
+    ],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "财务会计(新)－财务会计的全局设置(新)－凭证－容差组－定义雇员的容差组",
+      "note": true,
+      "imgs": [
+       "fi/t19/01_1_image157.png",
+       "fi/t19/01_2_image158.png"
+      ]
+     },
+     {
+      "caption": "单笔未清项(如发票)的金额不能超过多少。我们把这些条件设置在容差组里,再给会计人员分配容差组\n复制一条",
+      "imgs": [
+       "fi/t19/02_1_image159.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "财务会计(新) → 财务会计的全局设置(新) → 凭证 → 容差组 → 定义雇员的容差组",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 3
+   },
+   {
+    "no": 20,
+    "title": "输入总帐科目凭证",
+    "anchor": "t20",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "解释:：在总帐中输入会计凭证，记录我们收到 2 800 000 的实收资本，存入工商银行账户。事务代码 FB50",
+      "imgs": [
+       "fi/t20/01_1_image160.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "10020101 31010101\n输入不同公司的凭证可点击公司代码按钮",
+      "imgs": [
+       "fi/t20/02_1_image161.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t20/03_1_image162.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "可预制，也可以直接保存后过账（下图为FB03查询得到的结果）",
+      "note": true,
+      "imgs": [
+       "fi/t20/04_1_image163.png"
+      ]
+     }
+    ],
+    "subs": [],
+    "path": null,
+    "tcodes": [
+     "FB50",
+     "FB03"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 4
+   },
+   {
+    "no": 21,
+    "title": "显示总帐科目余额",
+    "anchor": "t21",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "事务代码 FS10N",
+      "imgs": [
+       "fi/t21/01_1_image164.png",
+       "fi/t21/01_2_image165.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t21/02_1_image166.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "1、 维护自动税收过帐",
+      "imgs": [
+       "fi/t21/03_1_image167.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "定义销项税",
+      "imgs": [
+       "fi/t21/04_1_image168.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "双击销项税，定义销项税",
+      "imgs": [
+       "fi/t21/05_1_image169.png",
+       "fi/t21/05_2_image170.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击保存按钮，输入 21710102",
+      "imgs": [
+       "fi/t21/06_1_image171.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t21/07_1_image172.png",
+       "fi/t21/07_2_image173.png",
+       "fi/t21/07_3_image174.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后台 财务会计(新) → 财务会计的全局设置(新) → 销售/购置税 → 过帐 → 定义税务科目",
+    "tcodes": [
+     "FS10N"
+    ],
+    "values": [
+     {
+      "k": "定义进项税",
+      "v": "21710101"
+     }
+    ],
+    "fb": null,
+    "nimg": 11
+   },
+   {
+    "no": 22,
+    "title": "定义应收应付容差组",
+    "anchor": "t22",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "解释：对于和客户或供应商的收付业务，我们可以定义一些控制条件。比如对某类客户的收款差异不能超过 100 元，或发票的 0.1%等。容差组是分配给每个客户和供应商的主数据。\n财务会计(新)－应收账目和应付账目－业务交易－对外支付－付款－手工对外支付－定义容差组",
+      "imgs": [
+       "fi/t22/01_1_image175.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "复制 0001 的",
+      "imgs": [
+       "fi/t22/02_1_image176.png",
+       "fi/t22/02_2_image177.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "财务会计(新) → 应收账目和应付账目 → 业务交易 → 对外支付 → 付款 → 手工对外支付 → 定义容差组",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 3
+   },
+   {
+    "no": 23,
+    "title": "定义供应商账号组",
+    "anchor": "t23",
+    "desc": [
+     "解释：供应商是按照账户组来管理的，如原料供应商，贸易产品供应商等。供应商主数据信息分三个层次：一般数据，公司代码数据和采购数据。"
+    ],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "同理创建其他的组（复制方式创建）",
+      "after": 7
+     }
+    ],
+    "steps": [
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t23/01_1_image178.png",
+       "fi/t23/01_2_image179.png",
+       "fi/t23/01_1_image178.png",
+       "fi/t23/01_2_image179.png"
+      ]
+     },
+     {
+      "caption": "G001组 原材料，对其设置 G002组 贸易商品供应商 G003组 费用供应商\n财务会计－应收账目和应付账目－供应商账号－主数据－供应商主数据创建准备－定义带有屏幕格式的账户组（供应商）",
+      "imgs": [
+       "fi/t23/02_1_image182.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "双击基础数据",
+      "imgs": [
+       "fi/t23/03_1_image183.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "双击地址",
+      "imgs": [
+       "fi/t23/04_1_image184.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "双击公司代码数据",
+      "imgs": [
+       "fi/t23/05_1_image185.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "双击账户管理",
+      "imgs": [
+       "fi/t23/06_1_image186.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "双击支付交易",
+      "imgs": [
+       "fi/t23/07_1_image187.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "拷贝 G002 G003",
+      "imgs": [
+       "fi/t23/08_1_image188.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "财务会计 → 应收账目和应付账目 → 供应商账号 → 主数据 → 供应商主数据创建准备 → 定义带有屏幕格式的账户组（供应商）",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 11
+   },
+   {
+    "no": 24,
+    "title": "定义供应商账户编号范围",
+    "anchor": "t24",
+    "desc": [
+     "点击间隔 点击间隔＋,点击三次，一次维护",
+     "Z1 10000000 19999999"
+    ],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "财务会计－应收账目和应付账目－供应商账户－主数据－供应商主记录创建准备－创建供应商账户编号范围",
+      "note": true,
+      "imgs": [
+       "fi/t24/01_1_image189.png"
+      ]
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t24/02_1_image190.png",
+       "fi/t24/02_2_image191.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t24/03_1_image192.png"
+      ]
+     },
+     {
+      "caption": "Z2 20000000 29999999\nZ3 30000000 39999999",
+      "imgs": [
+       "fi/t24/04_1_image193.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t24/05_1_image194.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "财务会计 → 应收账目和应付账目 → 供应商账户 → 主数据 → 供应商主记录创建准备 → 创建供应商账户编号范围",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 6
+   },
+   {
+    "no": 25,
+    "title": "分配供应商编号范围",
+    "anchor": "t25",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "财务会计－应收账目和应付账目－供应商账户－主数据－供应商主记录创建准备－供应商账户组分配编号范围",
+      "imgs": [
+       "fi/t25/01_1_image195.png",
+       "fi/t25/01_2_image196.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "财务会计 → 应收账目和应付账目 → 供应商账户 → 主数据 → 供应商主记录创建准备 → 供应商账户组分配编号范围",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 2
+   },
+   {
+    "no": 26,
+    "title": "定义客户账户组",
+    "anchor": "t26",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "双击地址",
+      "after": 4
+     }
+    ],
+    "steps": [
+     {
+      "caption": "财务会计(新)－应收账款和应付账款－客户账户－主数据－创建客户主记录准备－定义带有格式的账户组（客户）",
+      "imgs": [
+       "fi/t26/01_1_image197.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "创建新条目",
+      "imgs": [
+       "fi/t26/02_1_image198.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "K001 订货方-颐宁",
+      "imgs": [
+       "fi/t26/03_1_image199.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "双击基本信息",
+      "imgs": [
+       "fi/t26/04_1_image200.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t26/05_1_image201.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "拷贝 K001",
+      "note": true,
+      "imgs": [
+       "fi/t26/06_1_image202.png",
+       "fi/t26/06_2_image203.png",
+       "fi/t26/06_3_image204.png"
+      ]
+     },
+     {
+      "caption": "K002 收货方-颐宁\n退回后，双击公司代码数据",
+      "imgs": [
+       "fi/t26/07_1_image205.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "双击账户管理",
+      "imgs": [
+       "fi/t26/08_1_image206.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "财务会计(新) → 应收账款和应付账款 → 客户账户 → 主数据 → 创建客户主记录准备 → 定义带有格式的账户组（客户）",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 10
+   },
+   {
+    "no": 27,
+    "title": "定义客户账户编号",
+    "anchor": "t27",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "财务会计(新)－应收账款和应付账款－客户账户－主数据－创建客户主记录准备－创建客户账户编号范围",
+      "imgs": [
+       "fi/t27/01_1_image207.png",
+       "fi/t27/01_2_image208.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "Z1 10000000 19999999",
+      "note": true,
+      "imgs": [
+       "fi/t27/02_1_image209.png"
+      ]
+     },
+     {
+      "caption": "Z2 20000000 29999999",
+      "imgs": [
+       "fi/t27/03_1_image210.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t27/04_1_image211.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "财务会计(新) → 应收账款和应付账款 → 客户账户 → 主数据 → 创建客户主记录准备 → 创建客户账户编号范围",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 5
+   },
+   {
+    "no": 28,
+    "title": "分配客户编号范围",
+    "anchor": "t28",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "后台",
+      "after": 0
+     }
+    ],
+    "steps": [
+     {
+      "caption": "财务会计(新)－应收账款和应付账款－客户账户－主数据－创建客户主记录准备－分配客户账户编号范围",
+      "imgs": [
+       "fi/t28/01_1_image212.png",
+       "fi/t28/01_2_image213.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "财务会计(新) → 应收账款和应付账款 → 客户账户 → 主数据 → 创建客户主记录准备 → 分配客户账户编号范围",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 2
+   },
+   {
+    "no": 29,
+    "title": "新建订货方主数据",
+    "anchor": "t29",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "建立三个客户:远东造船长, 新益汽轮机场.威力工贸公司 事务代码 FD01",
+      "imgs": [
+       "fi/t29/01_1_image214.png",
+       "fi/t29/01_2_image215.png",
+       "fi/t29/01_3_image216.png",
+       "fi/t29/01_2_image215.png",
+       "fi/t29/01_3_image216.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "统驭科目 11310101 排序码 001",
+      "note": true,
+      "imgs": [
+       "fi/t29/02_1_image219.png",
+       "fi/t29/02_2_image220.png"
+      ]
+     },
+     {
+      "caption": "远东造船厂",
+      "imgs": [
+       "fi/t29/03_1_image221.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t29/04_1_image222.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": null,
+    "tcodes": [
+     "FD01"
+    ],
+    "values": [
+     {
+      "k": "再创建一个威力国贸公司",
+      "v": "100000002"
+     }
+    ],
+    "fb": null,
+    "nimg": 9
+   },
+   {
+    "no": 30,
+    "title": "新建收货方主数据",
+    "anchor": "t30",
+    "desc": [
+     "FD01"
+    ],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "远东造船厂第三分公司",
+      "after": 0
+     },
+     {
+      "kind": "tip",
+      "text": "远东造船厂第三分公司作为收货方来维护 系统编号：20000000",
+      "after": 0
+     }
+    ],
+    "steps": [],
+    "subs": [],
+    "path": null,
+    "tcodes": [
+     "FD01"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 0
+   },
+   {
+    "no": 31,
+    "title": "新建供应商主数据",
+    "anchor": "t31",
+    "desc": [
+     "原料供应商--红星轴承厂，长平铁工厂，",
+     "公司代码依次如下(付款条件为001)："
+    ],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "红星：10000000 长平铁工厂：10000001思普机械设备进出口有限公司：20000000",
+      "after": 1
+     },
+     {
+      "kind": "tip",
+      "text": "上海电力:30000000 佳音地产公司：30000001 京通运输公司：30000002",
+      "after": 1
+     }
+    ],
+    "steps": [
+     {
+      "caption": "贸易商品供应商--思普机械设备进出口有限公司 费用供应商---上海市电力公司，佳音房地产有限公司，京通运输公司\nFK01",
+      "imgs": [
+       "fi/t31/01_1_image223.png",
+       "fi/t31/01_2_image224.png",
+       "fi/t31/01_3_image225.png",
+       "fi/t31/01_1_image223.png",
+       "fi/t31/01_2_image224.png",
+       "fi/t31/01_3_image225.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "会计核算 → 财务会计 → 供应商 → 主记录",
+    "tcodes": [
+     "FK01"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 6
+   },
+   {
+    "no": 32,
+    "title": "输入客户发票",
+    "anchor": "t32",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "模拟",
+      "after": 1
+     }
+    ],
+    "steps": [
+     {
+      "caption": "卖给远东造船厂一批货物，含税销售额 58000 需要录入相应的会计凭证\nFB70",
+      "imgs": [
+       "fi/t32/01_1_image229.png",
+       "fi/t32/01_2_image230.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t32/02_1_image231.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": null,
+    "tcodes": [
+     "FB70"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 3
+   },
+   {
+    "no": 33,
+    "title": "收到客户全额还款",
+    "anchor": "t33",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t33/01_1_image232.png"
+      ]
+     },
+     {
+      "caption": "解释：全额则只需要清账,而部分还款则需要先清掉原来的帐单,再把剩余的金额生成另外一张单\n会计－财务会计－应收帐款－凭证输入－F-28 收款",
+      "imgs": [
+       "fi/t33/02_1_image233.png",
+       "fi/t33/02_2_image234.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "模拟",
+      "imgs": [
+       "fi/t33/03_1_image235.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t33/04_1_image236.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 财务会计 → 应收帐款 → 凭证输入 → F-28 收款",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 5
+   },
+   {
+    "no": 34,
+    "title": "收到客户部分还款",
+    "anchor": "t34",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "F-28 做该部分之前 需要用FB70做一张客户发票，金额为164800",
+      "after": 0
+     },
+     {
+      "kind": "tip",
+      "text": "点击剩余项目",
+      "after": 1
+     },
+     {
+      "kind": "tip",
+      "text": "返回后保存",
+      "after": 4
+     }
+    ],
+    "steps": [
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t34/01_1_image237.png",
+       "fi/t34/02_1_image238.png",
+       "fi/t34/03_1_image239.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "光标放到剩余项，双击",
+      "imgs": [
+       "fi/t34/04_1_image240.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "模拟",
+      "imgs": [
+       "fi/t34/05_1_image241.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "双击凭证 002 行",
+      "imgs": [
+       "fi/t34/06_1_image242.png",
+       "fi/t34/06_2_image243.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": null,
+    "tcodes": [
+     "FB70"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 7
+   },
+   {
+    "no": 35,
+    "title": "显示应收帐款余额",
+    "anchor": "t35",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "会计－财务会计－应收帐款－信息系统－应收帐款会计核算报表－客户余额—s_alr_87012172",
+      "imgs": [
+       "fi/t35/01_1_image244.png",
+       "fi/t35/01_2_image245.png",
+       "fi/t35/01_1_image244.png",
+       "fi/t35/01_2_image245.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 财务会计 → 应收帐款 → 信息系统 → 应收帐款会计核算报表 → 客户余额 → s_alr_87012172",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 4
+   },
+   {
+    "no": 36,
+    "title": "显示客户余额",
+    "anchor": "t36",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "会计－财务会计－应收帐款－账户－FD10N",
+      "imgs": [
+       "fi/t36/01_1_image249.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t36/02_1_image250.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 财务会计 → 应收帐款 → 账户 → FD10N",
+    "tcodes": [
+     "FD10N"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 2
+   },
+   {
+    "no": 37,
+    "title": "收到供应商发票",
+    "anchor": "t37",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "会计－财务会计－应付帐款－凭证输入－FB60 发票",
+      "note": true,
+      "imgs": [
+       "fi/t37/01_1_image251.png",
+       "fi/t37/01_2_image252.png",
+       "fi/t37/01_3_image255.png",
+       "fi/t37/01_1_image251.png",
+       "fi/t37/01_2_image252.png"
+      ]
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 财务会计 → 应付帐款 → 凭证输入 → FB60 发票",
+    "tcodes": [
+     "FB60"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 5
+   },
+   {
+    "no": 38,
+    "title": "模拟",
+    "anchor": "t38",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t38/01_1_image257.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": null,
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 1
+   },
+   {
+    "no": 39,
+    "title": "向供应商付款",
+    "anchor": "t39",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "模拟",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "会计－财务会计－应付帐款－凭证输入－付款－F-53 过帐",
+      "imgs": [
+       "fi/t39/01_1_image258.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t39/02_1_image259.png",
+       "fi/t39/03_1_image260.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 财务会计 → 应付帐款 → 凭证输入 → 付款 → F-53 过帐",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 3
+   },
+   {
+    "no": 40,
+    "title": "显示应付帐款余额",
+    "anchor": "t40",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t40/01_1_image261.png",
+       "fi/t40/01_2_image262.png",
+       "fi/t40/01_3_image263.png"
+      ]
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 财务会计 → 应付帐款 → 信息系统 → 应付科目会计核算报表 → s_alr_87012082",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 3
+   },
+   {
+    "no": 41,
+    "title": "显示供应商余额",
+    "anchor": "t41",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "双击第3行的行项目",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "会计－财务会计－应付帐款－账户－FK10N－显示余额",
+      "imgs": [
+       "fi/t41/01_1_image264.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t41/02_1_image265.png",
+       "fi/t41/02_2_image266.png",
+       "fi/t41/02_1_image265.png",
+       "fi/t41/02_2_image266.png",
+       "fi/t41/03_1_image269.png",
+       "fi/t41/04_1_image270.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 财务会计 → 应付帐款 → 账户 → FK10N → 显示余额",
+    "tcodes": [
+     "FK10N"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 7
+   },
+   {
+    "no": 42,
+    "title": "总帐科目余额汇总表",
+    "anchor": "t42",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "s_alr_87012276",
+      "after": 0
+     }
+    ],
+    "steps": [
+     {
+      "caption": "会计－财务会计－总帐－信息系统－总帐报表(新)－科目余额－常规－总帐科目余额－",
+      "imgs": [
+       "fi/t42/01_1_image271.png",
+       "fi/t42/01_2_image272.png",
+       "fi/t42/01_1_image271.png",
+       "fi/t42/01_2_image272.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t42/02_1_image275.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 财务会计 → 总帐 → 信息系统 → 总帐报表(新) → 科目余额 → 常规 → 总帐科目余额",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 5
+   },
+   {
+    "no": 43,
+    "title": "将收入科目设置为只能自动记帐",
+    "anchor": "t43",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "FS00",
+      "after": 0
+     }
+    ],
+    "steps": [
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t43/01_1_image276.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t43/02_1_image277.png",
+       "fi/t43/02_2_image278.png",
+       "fi/t43/02_3_image279.png",
+       "fi/t43/02_1_image277.png",
+       "fi/t43/02_2_image278.png",
+       "fi/t43/02_3_image279.png"
+      ]
+     }
+    ],
+    "subs": [],
+    "path": null,
+    "tcodes": [
+     "FS00"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 7
+   },
+   {
+    "no": 44,
+    "title": "定义资产负债表和损益表结构",
+    "anchor": "t44",
+    "desc": [
+     "11 流动资产",
+     "1131 应收账款",
+     "1201存货",
+     "120101 材料采购",
+     "121101 存货-原材料",
+     "123101 存货-贸易商品",
+     "124301 存货-产成品",
+     "1001 货币资金",
+     "21 负债",
+     "212101 应付账款",
+     "217101 未交税金",
+     "31 所有者权益",
+     "3101 实收资本",
+     "5 损益及利润分配表",
+     "51 主营业务利润",
+     "5101 主营业务收入",
+     "510102 主营业务利润-贸易商品",
+     "5401 主营业务成本",
+     "5402 主营业务税金及附加",
+     "55 费用",
+     "5501 销售费用",
+     "5502 管理费用",
+     "5503 财务费用",
+     "57 所得税",
+     "58 利润分配",
+     "59 本年净增未分配利润",
+     "6 P+L P＋L 结果分配账户",
+     "选择 100101 现金，点击分配会计科目",
+     "11 流动资产",
+     "1001 货币资金",
+     "100101 现金",
+     "0010010101 现金",
+     "100201 银行存款",
+     "1131 应收账款",
+     "1201 存货",
+     "120101 材料采购",
+     "121101 存货-原材料",
+     "123101 存货-贸易商品",
+     "21 负债",
+     "2101 流动负债",
+     "217101 未交税金",
+     "21710101 未交增值税-进项税额",
+     "21710102 未交增值税-销项税额",
+     "2222 长期负债",
+     "31 所有者权益",
+     "3101 实收资本",
+     "3141 期初未分配利润",
+     "5 损益及利润分配表",
+     "51 主营业务利润",
+     "5101 主营业务收入",
+     "510101 主营业务利润-自制",
+     "510102 主营业务利润-贸易商品",
+     "5401 主营业务成本",
+     "540101 主营业务成本-自制",
+     "540102 主营业务成本-贸易商品",
+     "5402 主营业务税金及附加",
+     "55 费用",
+     "5501 销售费用",
+     "5502 管理费用",
+     "0055020101 管理费用－工资",
+     "0055020111 管理费用－折旧",
+     "0055020121 管理费用－电话费",
+     "0055020131 管理费用－办公用品",
+     "0055020141 管理费用－租金",
+     "0055029101 管理费用－其他",
+     "5503 财务费用",
+     "57 所得税",
+     "58 利润分配"
+    ],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "双击资产",
+      "after": 4
+     },
+     {
+      "kind": "tip",
+      "text": "21 负债",
+      "after": 9
+     },
+     {
+      "kind": "tip",
+      "text": "2101 流动负债",
+      "after": 11
+     },
+     {
+      "kind": "tip",
+      "text": "P&L 结果也是系统预定义的报表项目，它自动计算损益表和利润分配表的轧差数，实质上也是“本年净增未分配利润”。",
+      "after": 16
+     },
+     {
+      "kind": "tip",
+      "text": "510101 主营业务利润-自制",
+      "after": 17
+     },
+     {
+      "kind": "tip",
+      "text": "A999 0010010101 - 0010019999 X X",
+      "after": 20
+     },
+     {
+      "kind": "tip",
+      "text": "212101 应付账款",
+      "after": 21
+     },
+     {
+      "kind": "tip",
+      "text": "540103 主营业务成本-差异结算",
+      "after": 22
+     }
+    ],
+    "steps": [
+     {
+      "caption": "财务会计－总帐会计－业务往来－结算－编制凭证－定义会计报表版本",
+      "imgs": [
+       "fi/t44/01_1_image283.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t44/02_1_image284.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "新的分录",
+      "imgs": [
+       "fi/t44/03_1_image285.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击会计报表项目",
+      "imgs": [
+       "fi/t44/04_1_image286.png",
+       "fi/t44/04_2_image287.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t44/05_1_image288.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "填写如下：",
+      "note": true,
+      "imgs": [
+       "fi/t44/06_1_image289.png"
+      ]
+     },
+     {
+      "caption": "选择颐宁公司财务报表版本，点击创建项目 8 损益及利润分配表",
+      "imgs": [
+       "fi/t44/07_1_image290.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "选中资产，点击创建项目",
+      "imgs": [
+       "fi/t44/08_1_image291.png",
+       "fi/t44/08_2_image292.png",
+       "fi/t44/08_1_image291.png",
+       "fi/t44/08_2_image292.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "15 固定资产\n18 无形及递延资产",
+      "imgs": [
+       "fi/t44/09_1_image295.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "选中负债及所有者权益，点击创建项目",
+      "imgs": [
+       "fi/t44/10_1_image296.png",
+       "fi/t44/10_2_image297.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "100101 现金\n100201 银行存款",
+      "imgs": [
+       "fi/t44/11_1_image298.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "21710101 未交增值税-进项税额\n21710102 未交增值税-销项税额",
+      "imgs": [
+       "fi/t44/12_1_image299.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "3141 期初未分配利润\n3142 本年净增未分配利润",
+      "imgs": [
+       "fi/t44/13_1_image300.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "选中净值结果：亏损，调整到 3142 下",
+      "note": true,
+      "imgs": [
+       "fi/t44/14_1_image301.png",
+       "fi/t44/14_2_image302.png"
+      ]
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t44/15_1_image303.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "净值结果：利润和亏损两个系统预定义的报表项目会自动计算资产负债表的轧差数，实质上就是本年净增（或净减）的未分配利润数",
+      "imgs": [
+       "fi/t44/16_1_image304.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t44/16_1_image304.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t44/18_1_image305.png"
+      ]
+     },
+     {
+      "caption": "10010101 10019999\nD 指如果科目余额在借方，就归入这个报表项目",
+      "imgs": [
+       "fi/t44/19_1_image306.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "1 资产 资产",
+      "imgs": [
+       "fi/t44/20_1_image307.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "124301 存货-产成品\nA9990012430101 - 0012439999 X X",
+      "imgs": [
+       "fi/t44/21_1_image308.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "3142 本年净增未分配利润\n7 净值结果：亏损 净值结果：亏损",
+      "imgs": [
+       "fi/t44/22_1_image309.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "59 本年净增未分配利润\n6 P+L P＋L 结果",
+      "imgs": [
+       "fi/t44/23_1_image310.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "财务会计 → 总帐会计 → 业务往来 → 结算 → 编制凭证 → 定义会计报表版本",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 29
+   },
+   {
+    "no": 45,
+    "title": "运行资产负债表",
+    "anchor": "t45",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "",
+      "imgs": [
+       "fi/t45/01_1_image311.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "fi/t45/02_1_image312.png"
+      ]
+     },
+     {
+      "caption": "10 代表本位币",
+      "imgs": [
+       "fi/t45/03_1_image313.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 财务会计 → 总分类帐 → 信息系统 → 总帐报表 → 资产负债表/损益表/现金流 → 常规 → 计划/实际比较 → 年度计划/实际比较",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 3
+   }
+  ]
+ },
+ "co": {
+  "code": "co",
+  "title": "管理会计 CO",
+  "tasks": [
+   {
+    "no": 1,
+    "title": "创建成本控制范围",
+    "anchor": "t01",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "企业结构－定义－控制－维护成本控制范围",
+      "imgs": [
+       "co/t01/01_1_image314.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "弹出选择框 选择维护成本控制范围",
+      "note": true,
+      "imgs": [
+       "co/t01/02_1_image315.png"
+      ]
+     },
+     {
+      "caption": "点击新条目,录入公司代码C999",
+      "imgs": [
+       "co/t01/03_1_image316.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "co/t01/04_1_image317.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "企业结构 → 定义 → 控制 → 维护成本控制范围",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 4
+   },
+   {
+    "no": 2,
+    "title": "将公司代码分配给成本控制范围",
+    "anchor": "t02",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "将 C999 添加到成本控制范围",
+      "after": 4
+     }
+    ],
+    "steps": [
+     {
+      "caption": "",
+      "imgs": [
+       "co/t02/01_1_image318.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "TCODE代码：OX19",
+      "imgs": [
+       "co/t02/02_1_image319.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "选中 C999，双击公司代码设置",
+      "imgs": [
+       "co/t02/03_1_image320.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击新条目",
+      "imgs": [
+       "co/t02/04_1_image321.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "企业结构 → 分配 → 控制 → 把公司代码分配给成本控制范围",
+    "tcodes": [
+     "OX19"
+    ],
+    "values": [],
+    "fb": "后台",
+    "nimg": 4
+   },
+   {
+    "no": 3,
+    "title": "维护成本控制范围",
+    "anchor": "t03",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "保存后，点击返回，选中 C999，双击“激活组建/控制标识”",
+      "after": 4
+     },
+     {
+      "kind": "tip",
+      "text": "会计年度是从…年的概念，将来如果配置没有变化，不需要每年都维护",
+      "after": 6
+     }
+    ],
+    "steps": [
+     {
+      "caption": "控制－一般控制－组织结构－维护成本控制范围",
+      "note": true,
+      "imgs": [
+       "co/t03/01_1_image322.png"
+      ]
+     },
+     {
+      "caption": "弹出选择活动，点击维护成本控制范围",
+      "imgs": [
+       "co/t03/02_1_image323.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "双击 C999，维护基本数据",
+      "imgs": [
+       "co/t03/03_1_image324.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "co/t03/04_1_image325.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "系统会提示 C999 成本中心标准层次不存在，点击是。",
+      "imgs": [
+       "co/t03/05_1_image326.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击新条目，输入起始财年，比如2021年。",
+      "imgs": [
+       "co/t03/06_1_image327.png",
+       "co/t03/06_2_image328.png",
+       "co/t03/06_1_image327.png",
+       "co/t03/06_2_image328.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "控制 → 一般控制 → 组织结构 → 维护成本控制范围",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 9
+   },
+   {
+    "no": 4,
+    "title": "维护成本中心组和成本中心",
+    "anchor": "t04",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "创建其他的成本中心",
+      "after": 6
+     }
+    ],
+    "steps": [
+     {
+      "caption": "会计核算－控制－成本中心会计－主数据－标准层次－OKEON-更改",
+      "imgs": [
+       "co/t04/01_1_image331.png",
+       "co/t04/01_2_image332.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击保存就不用每次进来输入成本控制范围了",
+      "note": true,
+      "imgs": [
+       "co/t04/02_1_image333.png",
+       "co/t04/02_2_image334.png",
+       "co/t04/02_1_image333.png",
+       "co/t04/02_2_image334.png"
+      ]
+     },
+     {
+      "caption": "点击保存，选中C999,然后如下图操作",
+      "imgs": [
+       "co/t04/03_1_image337.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "选择较低组，进入如下页面",
+      "note": true,
+      "imgs": [
+       "co/t04/04_1_image338.png"
+      ]
+     },
+     {
+      "caption": "再创建一个总部",
+      "imgs": [
+       "co/t04/05_1_image339.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "选择 MFG，选择新建成本中心，输入如下字段，并保存，黄色警告，可以略过。",
+      "imgs": [
+       "co/t04/06_1_image340.jpeg",
+       "co/t04/06_2_image341.png",
+       "co/t04/06_1_image340.jpeg",
+       "co/t04/06_2_image341.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "co/t04/07_1_image344.jpeg",
+       "co/t04/08_1_image345.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "co/t04/09_1_image346.png",
+       "co/t04/09_2_image347.png",
+       "co/t04/09_3_image348.png"
+      ]
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "co/t04/10_1_image349.png",
+       "co/t04/10_2_image350.png"
+      ]
+     }
+    ],
+    "subs": [],
+    "path": "会计核算 → 控制 → 成本中心会计 → 主数据 → 标准层次 → OKEON-更改",
+    "tcodes": [
+     "OKEON"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 20
+   },
+   {
+    "no": 5,
+    "title": "新建初级成本要素",
+    "anchor": "t05",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "重复上述步骤，所有损益类科目都是初级成本要素，除了 41010901 生产成本－生产订单差异的成本要素类别是 “ 22 外部结算”，其他所有初级成本要素的类别都是 “ 1 初级成本/成本降低产生的利润”",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "CO 用“成本要素”来管理成本流，成本要素和财务会计里的科目类似\n会计－控制－成本中心会计－主数据－成本要素－单个处理－KA01-创建初级成本",
+      "imgs": [
+       "co/t05/01_1_image352.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "lu41010101",
+      "imgs": [
+       "co/t05/02_1_image353.png",
+       "co/t05/02_2_image354.png",
+       "co/t05/02_1_image353.png",
+       "co/t05/02_2_image354.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "解释“41010901 生产成本－生产订单差异”是生产订单结算产生的，是管理会计计算初结果后，使用一种特殊的成本要素类别“22 外部结算”。",
+      "imgs": [
+       "co/t05/03_1_image357.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "co/t05/04_1_image358.png",
+       "co/t05/04_2_image359.png",
+       "co/t05/04_3_image362.png",
+       "co/t05/04_4_image363.png",
+       "co/t05/04_1_image358.png",
+       "co/t05/04_2_image359.png"
+      ]
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "co/t05/05_1_image364.png",
+       "co/t05/05_2_image365.png",
+       "co/t05/05_3_image366.png",
+       "co/t05/05_4_image367.png"
+      ]
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "co/t05/06_1_image368.png",
+       "co/t05/06_2_image369.png",
+       "co/t05/06_3_image372.png",
+       "co/t05/06_4_image373.png",
+       "co/t05/06_1_image368.png",
+       "co/t05/06_2_image369.png"
+      ]
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "co/t05/07_1_image374.png",
+       "co/t05/07_2_image375.png",
+       "co/t05/07_3_image378.png",
+       "co/t05/07_4_image379.png",
+       "co/t05/07_1_image374.png",
+       "co/t05/07_2_image375.png"
+      ]
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "co/t05/08_1_image380.png",
+       "co/t05/09_1_image381.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 控制 → 成本中心会计 → 主数据 → 成本要素 → 单个处理 → KA01-创建初级成本",
+    "tcodes": [
+     "KA01"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 30
+   },
+   {
+    "no": 6,
+    "title": "建立次级成本要素",
+    "anchor": "t06",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "会计－控制－成本中心会计－主数据－成本要素－单个处理－KA06-创建次级成本",
+      "imgs": [
+       "co/t06/01_1_image382.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "co/t06/02_1_image383.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "co/t06/03_1_image384.png",
+       "co/t06/03_2_image385.png",
+       "co/t06/03_3_image386.png"
+      ]
+     },
+     {
+      "caption": "43 是和内部作业相关的成本要素",
+      "imgs": [
+       "co/t06/04_1_image387.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "co/t06/05_1_image388.png",
+       "co/t06/06_1_image389.png",
+       "co/t06/06_2_image390.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 控制 → 成本中心会计 → 主数据 → 成本要素 → 单个处理 → KA06-创建次级成本",
+    "tcodes": [
+     "KA06"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 9
+   },
+   {
+    "no": 7,
+    "title": "新建成本要素组",
+    "anchor": "t07",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "我们可以将公司的成本要素按层次结构来管理，这种成本要素组可用根据需要定义任意多个会计－控制－成本要素会计－主数据－成本要素组－KAH1 创建",
+      "imgs": [
+       "co/t07/01_1_image391.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "co/t07/02_1_image392.png",
+       "co/t07/03_1_image393.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "点击较低层次",
+      "imgs": [
+       "co/t07/04_1_image394.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "选中 PRI 点击成本要素键",
+      "note": true,
+      "imgs": [
+       "co/t07/05_1_image395.png",
+       "co/t07/05_2_image396.png"
+      ]
+     }
+    ],
+    "subs": [],
+    "path": "我们可以将公司的成本要素按层次结构来管理，这种成本要素组可用根据需要定义任意多个会计 → 控制 → 成本要素会计 → 主数据 → 成本要素组 → KAH1 创建",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 6
+   },
+   {
+    "no": 8,
+    "title": "更改初级成本要素",
+    "anchor": "t08",
+    "desc": [],
+    "notes": [],
+    "steps": [],
+    "subs": [],
+    "path": null,
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 0
+   },
+   {
+    "no": 9,
+    "title": "",
+    "anchor": "t09",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "co/t09/01_1_image398.png",
+       "co/t09/01_2_image399.png",
+       "co/t09/01_3_image400.png",
+       "co/t09/01_4_image401.png"
+      ]
+     }
+    ],
+    "subs": [],
+    "path": null,
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 4
+   },
+   {
+    "no": 10,
+    "title": "新建作业类型",
+    "anchor": "t10",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "co/t10/01_1_image403.png",
+       "co/t10/01_2_image404.png",
+       "co/t10/01_3_image407.png",
+       "co/t10/01_1_image403.png",
+       "co/t10/01_2_image404.png"
+      ]
+     },
+     {
+      "caption": "会计－控制－成本中心会计－主数据－作业类型－单个处理－KL01-创建",
+      "imgs": [
+       "co/t10/02_1_image408.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 控制 → 成本中心会计 → 主数据 → 作业类型 → 单个处理 → KL01-创建",
+    "tcodes": [
+     "KL01"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 6
+   },
+   {
+    "no": 11,
+    "title": "新建作业类型组",
+    "anchor": "t11",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "",
+      "imgs": [
+       "co/t11/01_1_image409.png",
+       "co/t11/01_2_image410.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "点击作业类型按钮",
+      "imgs": [
+       "co/t11/02_1_image411.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 控制 → 成本中心会计 → 主数据 → 作业类型组 → KLH1-创建",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 3
+   },
+   {
+    "no": 12,
+    "title": "设置作业输出价格",
+    "anchor": "t12",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "co/t12/01_1_image412.png"
+      ]
+     },
+     {
+      "caption": "会计核算－控制－成本中心会计－计划－作业输出/价格－KP26－更改",
+      "imgs": [
+       "co/t12/02_1_image413.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击工具栏上的概览屏幕(F5)",
+      "imgs": [
+       "co/t12/03_1_image414.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "co/t12/04_1_image415.png"
+      ]
+     },
+     {
+      "caption": "点击保存，回到如下页面，继续维护机器工时",
+      "imgs": [
+       "co/t12/05_1_image416.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "保存，返回继续维护 SET",
+      "imgs": [
+       "co/t12/06_1_image417.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "co/t12/07_1_image418.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "会计核算 → 控制 → 成本中心会计 → 计划 → 作业输出/价格 → KP26 → 更改",
+    "tcodes": [
+     "KP26"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 7
+   },
+   {
+    "no": 13,
+    "title": "维护成本控制凭证的编号范围",
+    "anchor": "t13",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "控制－一般控制－组织结构－维护成本控制凭证的编号范围",
+      "note": true,
+      "imgs": [
+       "co/t13/01_1_image419.png",
+       "co/t13/01_2_image420.png"
+      ]
+     },
+     {
+      "caption": "点击复制键",
+      "imgs": [
+       "co/t13/02_1_image421.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "co/t13/03_1_image422.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "直接复制，程序显示不能复制，点击组菜单，点击维护组",
+      "imgs": [
+       "co/t13/04_1_image423.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "co/t13/05_1_image424.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "控制 → 一般控制 → 组织结构 → 维护成本控制凭证的编号范围",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 6
+   },
+   {
+    "no": 14,
+    "title": "输入费用供应商发票",
+    "anchor": "t14",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "FB60",
+      "after": 0
+     },
+     {
+      "kind": "tip",
+      "text": "点击保存按钮，将会出现凭证被保存的提示。",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：颐宁公司收到佳音地产公司房租发票一张，金额为 90000，这里我们需把这笔费用计入 2001 财务部成本中心",
+      "imgs": [
+       "co/t14/01_1_image425.png",
+       "co/t14/01_2_image426.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "发票日期 2021年3月17日过帐日期 2021年3月17日金额 90000",
+      "imgs": [
+       "co/t14/02_1_image427.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": null,
+    "tcodes": [
+     "FB60"
+    ],
+    "values": [
+     {
+      "k": "供应商",
+      "v": "30000001"
+     },
+     {
+      "k": "总帐科目",
+      "v": "55020141"
+     },
+     {
+      "k": "凭证货币计的金额",
+      "v": "90000"
+     },
+     {
+      "k": "成本中心",
+      "v": "2001"
+     }
+    ],
+    "fb": null,
+    "nimg": 3
+   },
+   {
+    "no": 15,
+    "title": "输入普通费用发票",
+    "anchor": "t15",
+    "desc": [
+     "凭证日期 今天记帐日期 今天",
+     "总帐科目 41050121 D/C 借方"
+    ],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "凭证抬头文本 11 月电费",
+      "after": 1
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：颐宁公司又支付了一笔 25500 元的电费，这笔电费被记录到了 2006 行政部成本中心。这里我们用一般的总账凭证的方式输入这张凭证",
+      "imgs": [
+       "co/t15/01_1_image428.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "总帐科目 10020111 D/C 贷方\n原书截图有误，贷方不能录入成本中心",
+      "imgs": [
+       "co/t15/02_1_image429.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击模拟 点击保存",
+      "imgs": [
+       "co/t15/03_1_image430.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "保存",
+      "imgs": [
+       "co/t15/04_1_image431.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 财务会计 → 总分类帐 → 过帐 → FB50 输入总帐科目凭证",
+    "tcodes": [
+     "FB50"
+    ],
+    "values": [
+     {
+      "k": "凭证货币计的金额",
+      "v": "25500"
+     },
+     {
+      "k": "成本中心",
+      "v": "2006"
+     },
+     {
+      "k": "凭证货币计的金额",
+      "v": "25500"
+     }
+    ],
+    "fb": null,
+    "nimg": 4
+   },
+   {
+    "no": 16,
+    "title": "运行成本中心报表",
+    "anchor": "t16",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "会计－控制－成本中心会计－信息系统－成本中心会计的报表－计划/实际比较－成本中心：实际/计划/差异",
+      "imgs": [
+       "co/t16/01_1_image432.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "co/t16/02_1_image433.png",
+       "co/t16/03_1_image434.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 控制 → 成本中心会计 → 信息系统 → 成本中心会计的报表 → 计划/实际比较 → 成本中心：实际/计划/差异",
+    "tcodes": [],
+    "values": [
+     {
+      "k": "成本控制范围",
+      "v": "C999"
+     },
+     {
+      "k": "会计年度",
+      "v": "2006"
+     },
+     {
+      "k": "开始期间",
+      "v": "1"
+     },
+     {
+      "k": "终止期间",
+      "v": "12"
+     },
+     {
+      "k": "计划版本",
+      "v": "0"
+     },
+     {
+      "k": "成本中心价值",
+      "v": "2001"
+     },
+     {
+      "k": "点击闹钟运行或者按",
+      "v": "F8"
+     }
+    ],
+    "fb": null,
+    "nimg": 3
+   },
+   {
+    "no": 17,
+    "title": "成本中心数据重过帐",
+    "anchor": "t17",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "可以看到成本中心 2001 下的租金已经转到了 2006",
+      "after": 5
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：90000 元的房租被错误的记录到了 2001 财务部成本中心，我们不必冲销财务凭证。只需要在管理会计中做“重过账”重新将其指定到 2006 行政部成本中心",
+      "imgs": [
+       "co/t17/01_1_image435.png",
+       "co/t17/01_2_image436.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "运行",
+      "imgs": [
+       "co/t17/02_1_image437.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "在这个屏幕里，我们将这笔费用重新指定到 2006 行政部成本中心，然后 点击保存CTRL+S",
+      "imgs": [
+       "co/t17/03_1_image438.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "重新查询报表",
+      "imgs": [
+       "co/t17/04_1_image439.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "co/t17/05_1_image440.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 控制 → 成本中心会计 → 实际记账 → 重过账行项目 → KB61 输入",
+    "tcodes": [
+     "KB61"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 6
+   },
+   {
+    "no": 18,
+    "title": "新建统计指标",
+    "anchor": "t18",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "录入如下数据，保存",
+      "after": 1
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：颐宁公司决定使用各成本中心占地面积来分配房租费用。在 SAP 管理会计中，类似占地面积等非财务指标,可以用“ 统计指标” 来记录。这里我们建立一个物业租金面积的统计指标。\n会计－控制－成本中心会计－主数据－统计指标－单个处理－KK01-创建",
+      "imgs": [
+       "co/t18/01_1_image441.png",
+       "co/t18/01_2_image442.png",
+       "co/t18/01_1_image441.png",
+       "co/t18/01_2_image442.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "co/t18/02_1_image445.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 控制 → 成本中心会计 → 主数据 → 统计指标 → 单个处理 → KK01-创建",
+    "tcodes": [
+     "KK01"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 5
+   },
+   {
+    "no": 19,
+    "title": "输入统计指标数量",
+    "anchor": "t19",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "会计－控制－成本中心会计－实际记账－统计指标－KB31N-输入",
+      "imgs": [
+       "co/t19/01_1_image446.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "co/t19/02_1_image447.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "保存",
+      "imgs": [
+       "co/t19/03_1_image448.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 控制 → 成本中心会计 → 实际记账 → 统计指标 → KB31N-输入",
+    "tcodes": [
+     "KB31N"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 3
+   },
+   {
+    "no": 20,
+    "title": "定义分配循环",
+    "anchor": "t20",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "info",
+      "text": "解释：发送方将成本发送出去，接收方接收成本，所以这个分配规则的发送方是 2006 行政部，成本中心的 55020141 管理费用-租金成本要素，接收方是 HQ 总部成本中心组中的各成本中心",
+      "after": 4
+     },
+     {
+      "kind": "info",
+      "text": "解释：接收方追踪因素是指在多个接收方之间按什么标准分配成本，所以我们的规则是按照",
+      "after": 5
+     },
+     {
+      "kind": "tip",
+      "text": "RENT 物业租金面积统计指标的实际统计值分配成本。",
+      "after": 5
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：颐宁公司确定的分配房租费用的规则是将记录到 2006 行政部成本中心的所有房租费用按照总部各成本中心的占地面积分配给各成本中心。制造部的工作地点不在这个办公物业中，所以不需要承担房租费用。现在我们把这个分配规则定义在 SAP 管理会计中，SAP 称为“分配循环”",
+      "imgs": [
+       "co/t20/01_1_image449.png",
+       "co/t20/01_2_image450.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "co/t20/02_1_image451.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "在一个循环里，可以维护很多个分配标准，每个分配标准称为一个“段”，我们点击增加段",
+      "imgs": [
+       "co/t20/03_1_image452.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "在段表头，我们定义一些概览参数。发送方将成本发送出去，接收方接收成本。点击发送方/接收方",
+      "imgs": [
+       "co/t20/04_1_image453.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击接收方追踪因素",
+      "imgs": [
+       "co/t20/05_1_image454.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 控制 → 成本中心会计 → 期末结账 → 当前设置 → 定义分配",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 6
+   },
+   {
+    "no": 21,
+    "title": "分配",
+    "anchor": "t21",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "期间填当月，指执行分配的期间",
+      "after": 1
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：完成了前面的准备工作，接下来要在这个月的月结时，将房租成本分配给了各成本中心\n会计－控制－成本中心会计－期末结账－单一功能－分配－KSV5 分配",
+      "imgs": [
+       "co/t21/01_1_image455.png",
+       "co/t21/01_2_image456.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "解释：在这个屏幕中，我们填写执行分配的会计期间，我们可以一次运行几个分配循环，只需要将他们填写在下方的清单里即可。\n点击运行",
+      "imgs": [
+       "co/t21/02_1_image457.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 控制 → 成本中心会计 → 期末结账 → 单一功能 → 分配 → KSV5 分配",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 3
+   },
+   {
+    "no": 22,
+    "title": "显示成本中心分配到的租金",
+    "anchor": "t22",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "co/t22/01_1_image458.png"
+      ]
+     },
+     {
+      "caption": "会计－控制－成本中心会计－信息系统－成本中心会计的报表－计划/实际比较－成本中心：实际/计划/差异",
+      "imgs": [
+       "co/t22/02_1_image459.png",
+       "co/t22/02_2_image460.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击左边各成本中心，可查看到各成本中心分配到的房租费用",
+      "imgs": [
+       "co/t22/03_1_image461.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 控制 → 成本中心会计 → 信息系统 → 成本中心会计的报表 → 计划/实际比较 → 成本中心：实际/计划/差异",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 4
+   },
+   {
+    "no": 23,
+    "title": "定义分摊循环",
+    "anchor": "t23",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "info",
+      "text": "解释：前面的房租费用分配，分配前后成本流的形态，也就是房租费用并没有发生变化，所以分配是一种对初级成本要素的分配，但在有些情况下，分摊前后的成本流形态 发生了变化。比如行政部门发生各种费用，但是以“行政管理费”的形式分摊给其他的成本中心，再比如工厂食堂成本中心发生各种费用，但是它就以食堂费的形式分摊给其他的成本中心，这时候接收方比如财务部成本中心看到的不是食堂里发生的电费水费材料费人工费等，而是看到分摊给它的食堂费是多少，这种食堂费或行政管理费就是我们前面讲的次级成本要素，在 SAP 中称为分摊，它和前面的分配含义不同。",
+      "after": 0
+     },
+     {
+      "kind": "tip",
+      "text": "这里表明，1001 及 1002 各占的比例",
+      "after": 5
+     },
+     {
+      "kind": "tip",
+      "text": "填写完毕，点击保存即可",
+      "after": 5
+     }
+    ],
+    "steps": [
+     {
+      "caption": "在本例里我们使用802010 电费作为次级成本要素来分摊41050121 电费初级成本要素为了说明在分摊中成本流的形态发生了怎样的变化。本例不是实际的场景\n会计－控制－成本中心会计－期末结账－当前设置－定义评估",
+      "imgs": [
+       "co/t23/01_1_image462.png",
+       "co/t23/01_2_image463.png",
+       "co/t23/01_1_image462.png",
+       "co/t23/01_2_image463.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "解释：和分配类似，我们首先需要把分摊的规则定义在“分摊循环”里，在这个屏幕里，我们给分摊循环起一个编码，并说明他的有效开始时间",
+      "imgs": [
+       "co/t23/02_1_image466.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "在一个循环里可以维护很多分摊标准，每个分摊标准称为一个段。点击增加段",
+      "imgs": [
+       "co/t23/03_1_image467.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "解释：和分配不同，分摊中成本流转使用的是次级成本要素，所以在这个屏幕里需要指定相关的次级成本要素。我们既可以像现在这样指定一个固定的分摊成本要素，也可以建立一种从原始的初级成本要素到分摊成本要素的对应关系，SAP 称之为分配结构（屏幕中分摊成本要素的下方）此外，本例中我们使用“固定百分比”的规则在接收方中分摊成本。",
+      "note": true,
+      "imgs": [
+       "co/t23/04_1_image468.png"
+      ]
+     },
+     {
+      "caption": "发送方是 2006 行政部成本中心的 41050121 成本要素，接收方是 MFG 制造部成本中心的各成本中心",
+      "imgs": [
+       "co/t23/05_1_image469.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 控制 → 成本中心会计 → 期末结账 → 当前设置 → 定义评估",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 8
+   },
+   {
+    "no": 24,
+    "title": "分摊",
+    "anchor": "t24",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "完成了准备工作，我们来执行这个分摊循环",
+      "imgs": [
+       "co/t24/01_1_image470.png",
+       "co/t24/01_2_image471.png",
+       "co/t24/01_1_image470.png",
+       "co/t24/01_2_image471.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 控制 → 成本中心会计 → 期末结账 → 单一功能 → 分配 → KSU5-分配",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 4
+   },
+   {
+    "no": 25,
+    "title": "点击执行",
+    "anchor": "t25",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "",
+      "imgs": [
+       "co/t25/01_1_image474.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": null,
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 1
+   },
+   {
+    "no": 26,
+    "title": "显示成本中心分摊到的电费",
+    "anchor": "t26",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "info",
+      "text": "注意：我们显示的 802010 电费分摊是一个次级成本要素，它是公司内部成本流转使用的，是财务会计中没有的科目",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "co/t26/01_1_image475.png",
+       "co/t26/01_2_image476.png"
+      ]
+     },
+     {
+      "caption": "会计－控制－成本中心会计－信息系统－成本中心会计的报表－计划/实际比较－成本中心：实际/计划/差异",
+      "imgs": [
+       "co/t26/02_1_image477.png",
+       "co/t26/02_2_image478.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 控制 → 成本中心会计 → 信息系统 → 成本中心会计的报表 → 计划/实际比较 → 成本中心：实际/计划/差异",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 4
+   },
+   {
+    "no": 27,
+    "title": "创建内部订单类型并维护编号范围",
+    "anchor": "t27",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "点击保存",
+      "after": 4
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：颐宁公司将要举行 “ 国内用户大会” 为了这次市场推广活动，公司会发生很多费用，我们希望能对这次活动单独核算费用，而不是在成本中心各种费用中。公司中类似的“ 项目”还有很多，在 SAP 管理会计中我们可以用“内部订单”来管理这些项目。项目有各种类型，如市场类的，研发类的，工会活动类的等等。",
+      "imgs": [
+       "co/t27/01_1_image479.png",
+       "co/t27/01_2_image480.png",
+       "co/t27/01_3_image481.png",
+       "co/t27/01_1_image479.png",
+       "co/t27/01_2_image480.png",
+       "co/t27/01_3_image481.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "co/t27/02_1_image485.png",
+       "co/t27/02_2_image486.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "保存后，点击编号范围区间",
+      "imgs": [
+       "co/t27/03_1_image487.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "将光标选中“未分配的”里的 PMKT 市场活动，点击然后 勾上市场和广告需求。订单前面的方框，再点击",
+      "note": true,
+      "imgs": [
+       "co/t27/04_1_image488.png"
+      ]
+     }
+    ],
+    "subs": [],
+    "path": "点击新条目点击新条目后台 → 控制 → 内部订单 → 订单主数据 → 定义订单类型",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 10
+   },
+   {
+    "no": 28,
+    "title": "维护内部订单的结算参数文件",
+    "anchor": "t28",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "解释：为了举行“国内用户大会”公司创建了“市场活动”订单类型，其中结算参数文件选择的是系统中已经有的 100，本步骤中，我们来检查结算参数文件 100 的设置",
+      "imgs": [
+       "co/t28/01_1_image490.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "双击“维护结算参数文件”",
+      "note": true,
+      "imgs": [
+       "co/t28/02_1_image491.png"
+      ]
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "co/t28/03_1_image492.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "双击“结算参数文件100”，\n如果没有，则点击新条目，然后回头修改上一步的参结算参数文件，当时我们选择的为20",
+      "imgs": [
+       "co/t28/04_1_image493.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "后台 → 控制 → 内部订单 → 实际过账 → 结算 → 维护结算参数文件",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 4
+   },
+   {
+    "no": 29,
+    "title": "维护内部订单结算的分配结构",
+    "anchor": "t29",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "info",
+      "text": "解释：公司创建了“市场活动”订单类型，其中结算参数文件是 100。在结算参数文件 100中选择的分配结构是 AI -> CO 分配结构，本步骤中，我们来维护 A1 分配结构",
+      "after": 0
+     },
+     {
+      "kind": "tip",
+      "text": "点击左边的“结算成本要素”",
+      "after": 4
+     }
+    ],
+    "steps": [
+     {
+      "caption": "后台－控制－内部订单－实际过账－结算－维护分配结构",
+      "imgs": [
+       "co/t29/01_1_image494.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "co/t29/02_1_image495.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "双击分配",
+      "imgs": [
+       "co/t29/03_1_image496.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "选中 001 行，然后点击左边的源文件，如果没有001，则点击新的条目，双击左边的“源”",
+      "imgs": [
+       "co/t29/04_1_image497.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "co/t29/05_1_image498.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "点击新条目",
+      "imgs": [
+       "co/t29/06_1_image499.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "后台 → 控制 → 内部订单 → 实际过账 → 结算 → 维护分配结构",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 6
+   },
+   {
+    "no": 30,
+    "title": "维护结算凭证编号范围",
+    "anchor": "t30",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "看到已经分配了点击保存",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "后台－控制－内部订单－实际过账－结算－维护结算凭证编号范围",
+      "note": true,
+      "imgs": [
+       "co/t30/01_1_image500.png",
+       "co/t30/01_2_image501.png"
+      ]
+     },
+     {
+      "caption": "解释：对于 颐宁公司国内用户大会发生的费用，我们将通过创建市场活动类型内部订单来举行归集，然后结算到各个成本中心中去，结算完成时会产生相应的结算凭证。本步骤中我们将对结算凭证维护编号范围。\n屏幕上方的是已经分配了号码范围的成本控制对象。成本控制对象 C999 还未分配。在未分配栏中选中 C999，点击 ，在标准会计凭证框内打勾，然后点击元素/组按钮 ，未找到用下图的01代替",
+      "imgs": [
+       "co/t30/02_1_image502.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "后台 → 控制 → 内部订单 → 实际过账 → 结算 → 维护结算凭证编号范围",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 3
+   },
+   {
+    "no": 31,
+    "title": "创建内部订单",
+    "anchor": "t31",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "会计－控制－内部订单－主数据－KO04-订单管理员",
+      "note": true,
+      "imgs": [
+       "co/t31/01_1_image503.png"
+      ]
+     },
+     {
+      "caption": "解释：我们已经创建了市场活动订单类型，我们将在此类型下创建内部订单来归集国内用户大会发生的费用。",
+      "imgs": [
+       "co/t31/02_1_image504.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击新建",
+      "imgs": [
+       "co/t31/03_1_image505.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "然后点击保存然后点击保存",
+      "imgs": [
+       "co/t31/04_1_image506.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击结算规则",
+      "note": true,
+      "imgs": [
+       "co/t31/05_1_image507.png",
+       "co/t31/05_2_image508.png"
+      ]
+     },
+     {
+      "caption": "录入上述信息并回车，得到如下结果：",
+      "imgs": [
+       "co/t31/06_1_image509.png",
+       "co/t31/06_2_image510.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击修改按钮，然后点击屏幕右方的控制数据",
+      "imgs": [
+       "co/t31/07_1_image511.png",
+       "co/t31/07_2_image512.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 控制 → 内部订单 → 主数据 → KO04-订单管理员",
+    "tcodes": [
+     "KO04"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 10
+   },
+   {
+    "no": 32,
+    "title": "输入内部订单费用发票",
+    "anchor": "t32",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "解释：\n会计核算－财务会计－总帐－凭证录入－FB50-输入总账科目凭证",
+      "imgs": [
+       "co/t32/01_1_image513.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "co/t32/02_1_image514.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "点击模拟",
+      "imgs": [
+       "co/t32/03_1_image515.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击保存",
+      "note": true,
+      "imgs": [
+       "co/t32/04_1_image516.png"
+      ]
+     }
+    ],
+    "subs": [],
+    "path": "会计核算 → 财务会计 → 总帐 → 凭证录入 → FB50-输入总账科目凭证",
+    "tcodes": [
+     "FB50"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 4
+   },
+   {
+    "no": 33,
+    "title": "内部订单的结算",
+    "anchor": "t33",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "warn",
+      "text": "无错误，运行已经完成",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：颐宁公司举办了国内用户大会，并为此创建了内部订单来归集发生的费用。本步骤中我们将把订单中归集的费用结算到各个成本中心中去。\n控制－内部订单－单一功能－结算－KO88-单个处理",
+      "imgs": [
+       "co/t33/01_1_image517.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "co/t33/02_1_image518.png",
+       "co/t33/03_1_image519.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "控制 → 内部订单 → 单一功能 → 结算 → KO88-单个处理",
+    "tcodes": [
+     "KO88"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 3
+   },
+   {
+    "no": 34,
+    "title": "显示内部订单的结算结果",
+    "anchor": "t34",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "会计－控制－成本中心会计－信息系统－成本中心会计的报表－计划/实际比较－成本中心：实际/计划/差异",
+      "imgs": [
+       "co/t34/01_1_image520.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "co/t34/02_1_image521.png",
+       "co/t34/02_2_image522.png"
+      ]
+     },
+     {
+      "caption": "点击各成本中心查看报表",
+      "imgs": [
+       "co/t34/03_1_image523.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 控制 → 成本中心会计 → 信息系统 → 成本中心会计的报表 → 计划/实际比较 → 成本中心：实际/计划/差异",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 4
+   }
+  ]
+ },
+ "mm": {
+  "code": "mm",
+  "title": "物料管理 MM",
+  "tasks": [
+   {
+    "no": 1,
+    "title": "创建工厂",
+    "anchor": "t01",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t01/01_1_image524.png",
+       "mm/t01/01_2_image525.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "双击定义工厂",
+      "imgs": [
+       "mm/t01/02_1_image526.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "选择 0001，点击复制",
+      "imgs": [
+       "mm/t01/03_1_image527.png",
+       "mm/t01/03_2_image528.png",
+       "mm/t01/03_1_image527.png",
+       "mm/t01/03_2_image528.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "企业结构 → 定义 → 后勤常规 → 定义、复制、删除、检查工厂",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 7
+   },
+   {
+    "no": 2,
+    "title": "创建库存地点",
+    "anchor": "t02",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "0003 运输",
+      "after": 4
+     },
+     {
+      "kind": "tip",
+      "text": "0001 仓库",
+      "after": 4
+     },
+     {
+      "kind": "tip",
+      "text": "0002 生产",
+      "after": 4
+     }
+    ],
+    "steps": [
+     {
+      "caption": "企业结构－定义－物料管理－维护仓储地点",
+      "imgs": [
+       "mm/t02/01_1_image531.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t02/02_1_image532.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "回车",
+      "imgs": [
+       "mm/t02/03_1_image533.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击新条目",
+      "imgs": [
+       "mm/t02/04_1_image534.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "企业结构 → 定义 → 物料管理 → 维护仓储地点",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 4
+   },
+   {
+    "no": 3,
+    "title": "创建采购组织",
+    "anchor": "t03",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "Y999 颐宁采购组织",
+      "after": 3
+     }
+    ],
+    "steps": [
+     {
+      "caption": "企业结构－定义－物料管理－维护采购组织",
+      "imgs": [
+       "mm/t03/01_1_image535.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t03/02_1_image536.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "点击新条目",
+      "imgs": [
+       "mm/t03/03_1_image537.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "企业结构 → 定义 → 物料管理 → 维护采购组织",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 3
+   },
+   {
+    "no": 4,
+    "title": "创建采购组",
+    "anchor": "t04",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "PG1 原材料和运营供应",
+      "after": 3
+     },
+     {
+      "kind": "tip",
+      "text": "PG2 贸易商品",
+      "after": 3
+     }
+    ],
+    "steps": [
+     {
+      "caption": "物料管理－采购－创建采购组",
+      "note": true,
+      "imgs": [
+       "mm/t04/01_1_image538.png"
+      ]
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t04/02_1_image539.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "点击新条目",
+      "imgs": [
+       "mm/t04/03_1_image540.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "物料管理 → 采购 → 创建采购组",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 3
+   },
+   {
+    "no": 5,
+    "title": "定义MRP 控制者",
+    "anchor": "t05",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "MRP 控制者 002 贸易商品",
+      "after": 3
+     }
+    ],
+    "steps": [
+     {
+      "caption": "生产－物料需求计划－主数据－定义 MRP 控制者",
+      "note": true,
+      "imgs": [
+       "mm/t05/01_1_image541.png",
+       "mm/t05/01_2_image542.png"
+      ]
+     },
+     {
+      "caption": "点击新条目",
+      "imgs": [
+       "mm/t05/02_1_image543.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "MRP 控制者 001 自制品",
+      "imgs": [
+       "mm/t05/03_1_image544.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "生产 → 物料需求计划 → 主数据 → 定义 MRP 控制者",
+    "tcodes": [],
+    "values": [
+     {
+      "k": "工厂",
+      "v": "P999"
+     },
+     {
+      "k": "工厂",
+      "v": "P999"
+     }
+    ],
+    "fb": "后台",
+    "nimg": 4
+   },
+   {
+    "no": 6,
+    "title": "分配工厂到公司代码",
+    "anchor": "t06",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "企业结构－分配－\"后勤-常规\"－给公司代码分配工厂",
+      "imgs": [
+       "mm/t06/01_1_image545.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t06/02_1_image546.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "点击新条目，选择 C999，选择P999工厂，点击保存按钮",
+      "note": true,
+      "imgs": [
+       "mm/t06/03_1_image547.png"
+      ]
+     }
+    ],
+    "subs": [],
+    "path": "企业结构 → 分配 → \"后勤-常规\" → 给公司代码分配工厂",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 3
+   },
+   {
+    "no": 7,
+    "title": "分配采购组织到公司代码",
+    "anchor": "t07",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "mm/t07/01_1_image548.png"
+      ]
+     },
+     {
+      "caption": "解释:一个采购组织可以同时负责几个工厂的采购后台\n企业结构－分配－物料管理－给公司代码分配采购组织",
+      "imgs": [
+       "mm/t07/02_1_image549.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "选择 C999 点击保存按钮",
+      "imgs": [
+       "mm/t07/03_1_image550.png",
+       "mm/t07/03_2_image551.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "企业结构 → 分配 → 物料管理 → 给公司代码分配采购组织",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 4
+   },
+   {
+    "no": 8,
+    "title": "分配工厂到采购组织",
+    "anchor": "t08",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "点击确认后，点击保存按钮",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "企业结构－分配－物料管理－给工厂分配采购组织",
+      "note": true,
+      "imgs": [
+       "mm/t08/01_1_image552.png"
+      ]
+     },
+     {
+      "caption": "采购选择 Y999，工厂选择P999 点击保存采购选择 Y999，工厂选择P999 点击保存点击新条目",
+      "imgs": [
+       "mm/t08/02_1_image553.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "企业结构 → 分配 → 物料管理 → 给工厂分配采购组织",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 2
+   },
+   {
+    "no": 9,
+    "title": "定义物料组",
+    "anchor": "t09",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "后勤常规－物料主记录－设置关键字段－定义物料组",
+      "note": true,
+      "imgs": [
+       "mm/t09/01_1_image554.png"
+      ]
+     },
+     {
+      "caption": "解释：物料需要按三个组来统计分析，在维护物料主数据的时候，需要分配物料组后台",
+      "imgs": [
+       "mm/t09/02_1_image555.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击新条目，新增 三个物料组",
+      "imgs": [
+       "mm/t09/03_1_image556.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [
+     {
+      "kind": "table",
+      "rows": [
+       [
+        "0001",
+        "原材料"
+       ],
+       [
+        "0002",
+        "产成品"
+       ],
+       [
+        "0003",
+        "贸易商品"
+       ]
+      ],
+      "imgs": []
+     }
+    ],
+    "path": "后勤常规 → 物料主记录 → 设置关键字段 → 定义物料组",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 3
+   },
+   {
+    "no": 10,
+    "title": "定义计划边际码",
+    "anchor": "t10",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "info",
+      "text": "解释：此公司在作物料计划时，除了按正常的采购和生产时间，还规定在操作、产前、产后和订单下达各阶段预留 1 天的缓冲时间。这个规则定义在 “ 计划边际码” 中，分配给各种物料（在物料主数据）中",
+      "after": 0
+     }
+    ],
+    "steps": [
+     {
+      "caption": "物料管理－基于消费的计划－计划－定义浮点（计划毛利码）",
+      "imgs": [
+       "mm/t10/01_1_image557.png",
+       "mm/t10/01_2_image558.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击新条目",
+      "imgs": [
+       "mm/t10/02_1_image559.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "物料管理 → 基于消费的计划 → 计划 → 定义浮点（计划毛利码）",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 3
+   },
+   {
+    "no": 11,
+    "title": "维护工厂和库存相关的工厂参数－库存预留",
+    "anchor": "t11",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "选择许可的移动，指是否允许对预留货物进行货物移动的控制 允许移动的天数，指比预留计划使用日期提前 30 天允许使用预留",
+      "after": 3
+     },
+     {
+      "kind": "tip",
+      "text": "保持期间，指预留计划使用日期过去 30 天内，预留仍可以使用",
+      "after": 3
+     }
+    ],
+    "steps": [
+     {
+      "caption": "工厂中有非常多的控制参数，比如在库存管理中，对物料可以通过预留号进行预留，比如预留给生产订单或销售订单。在此工厂里，对库存的预留允许比计划日期提前一个月使用，同时过期 1 个月以内的预留仍然可以使用",
+      "imgs": [
+       "mm/t11/01_1_image560.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t11/02_1_image561.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "点击新条目",
+      "imgs": [
+       "mm/t11/03_1_image562.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "物料管理 → 库存管理和实际库存 → 工厂参数",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 3
+   },
+   {
+    "no": 12,
+    "title": "维护和库存相关的工厂参数－自动创建物料的库存地点视图",
+    "anchor": "t12",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "物料主数据是按不同视图来维护的，如会计视图、采购视图等，其中库存地点视图可以选择在物料移动的时候，比如第一次收货的时候，由系统自动创建物料的库存地点视图",
+      "after": 0
+     },
+     {
+      "kind": "tip",
+      "text": "选择 P999，点击自动创建库存地点",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "在本工厂里，对具体哪个物料可以存放在哪个库存地点没有硬性规定，根据情况任何物料在三个库存地点存放都有可能",
+      "imgs": [
+       "mm/t12/01_1_image563.png",
+       "mm/t12/01_2_image564.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "只有当一个工厂和正在操作的物料移动类型都允许时，系统才会自动创建物料的库存地点视图。对于移动类型，我们保留系统的标准设置。点击工厂。",
+      "imgs": [
+       "mm/t12/02_1_image565.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "物料管理 → 库存管理和实际库存 → 发货/转储记帐 → 自动建立库存地点",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 3
+   },
+   {
+    "no": 13,
+    "title": "维护税务代码的缺省值",
+    "anchor": "t13",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "物料管理－后勤发票校验－收入发票－维护税代码的缺省值\n在此公司里的采购发票大多数是 13％的增值税发票(中国税法 13%,5%,还分进项税和销项税)，所以这里设置为缺省值方便发票校验，当然缺省值在作业务操作时时可以更改的。",
+      "imgs": [
+       "mm/t13/01_1_image566.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t13/02_1_image567.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "点击新条目",
+      "imgs": [
+       "mm/t13/03_1_image568.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "物料管理 → 后勤发票校验 → 收入发票 → 维护税代码的缺省值",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 3
+   },
+   {
+    "no": 14,
+    "title": "维护公司代码下物料管理的初始期间",
+    "anchor": "t14",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "年填写本年，月填写本月，Abp 打开，指同时打开上个月的库存帐",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "物料管理在 SAP 中只能开当前月的帐，或者之多当月和上个月的帐，而且开帐只允许一个月一个月的向后开，所以在一开始我们要设定一个初始期间。一般初始期间设置为上线前的那个月，比如 2021年 12 月上线，就设定初始期间为 2021 年 11 月，在 11 月中导入期末库存余额。",
+      "imgs": [
+       "mm/t14/01_1_image569.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t14/02_1_image570.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤常规 → 物料主记录 → 基本设置 → 维护物料管理的公司代码",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 2
+   },
+   {
+    "no": 15,
+    "title": "维护和物料需求计划相关的工厂参数",
+    "anchor": "t15",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "前面我们维护了库存相关的工厂参数。本步骤中，我们要维护和物料需求计划 MRP 相关的工厂参数，由于涉及参数太多，我们采用复制 0001 工厂再更改",
+      "imgs": [
+       "mm/t15/01_1_image571.png",
+       "mm/t15/01_2_image572.png",
+       "mm/t15/01_1_image571.png",
+       "mm/t15/01_2_image572.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击创建",
+      "imgs": [
+       "mm/t15/02_1_image575.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t15/03_1_image576.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "点击复制键",
+      "imgs": [
+       "mm/t15/04_1_image577.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "系统显示，0001 的参数已经拷贝至 P999，接下来将不合适的参数改掉，点击维护按钮点击维护",
+      "note": true,
+      "imgs": [
+       "mm/t15/05_1_image578.png",
+       "mm/t15/05_2_image579.png",
+       "mm/t15/05_3_image580.png",
+       "mm/t15/05_4_image583.png",
+       "mm/t15/05_2_image579.png",
+       "mm/t15/05_3_image580.png"
+      ]
+     },
+     {
+      "caption": "点击维护按钮\n“维护”表示已经维护了，“ 初始”代表尚未维护，点击号码范围键，进入：",
+      "imgs": [
+       "mm/t15/06_1_image584.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "相关物料需求计划的号码范围已经全部维护，点击退回键，点击浮动",
+      "imgs": [
+       "mm/t15/07_1_image585.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "如图所示，其余复制的都删除掉。删除之后的最终结果如下：",
+      "imgs": [
+       "mm/t15/08_1_image586.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "物料管理 → 基于消费的计划 → 工厂参数 → 执行工厂参数总体维护",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 16
+   },
+   {
+    "no": 16,
+    "title": "激活物料需求计划",
+    "anchor": "t16",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "物料管理－基于消费的计划－计划－激活物料需求计划",
+      "note": true,
+      "imgs": [
+       "mm/t16/01_1_image587.png"
+      ]
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t16/02_1_image588.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "点击物料需求计划，选中 P999 行，勾上激活需求计划栏的方框，点击保存。",
+      "imgs": [
+       "mm/t16/03_1_image589.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "物料管理 → 基于消费的计划 → 计划 → 激活物料需求计划",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 3
+   },
+   {
+    "no": 17,
+    "title": "定义计划运行的号码范围",
+    "anchor": "t17",
+    "desc": [
+     "解释：在复制物料需求计划相关的工厂参数时，编号范围一起复制了，确认 MRP 中所有的对象都分配了号码范围(01)。"
+    ],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "P999 工厂选择 01 号码范围",
+      "after": 4
+     }
+    ],
+    "steps": [
+     {
+      "caption": "物料管理－基于消费的计划－号码范围－定义计划运行的号码范围",
+      "note": true,
+      "imgs": [
+       "mm/t17/01_1_image590.png",
+       "mm/t17/01_2_image591.png",
+       "mm/t17/01_1_image590.png",
+       "mm/t17/01_2_image591.png"
+      ]
+     },
+     {
+      "caption": "解释：屏幕中每一行是一种 MRP 相关的凭证，间隔按钮里是编号间隔的定义，编号范围按钮里是分配编号间隔。\n点击 MRP 清单号码范围的间隔按钮，进入",
+      "imgs": [
+       "mm/t17/02_1_image594.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击修改间隔，进入",
+      "imgs": [
+       "mm/t17/03_1_image595.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "系统中已经有一个号码范围间隔，我们将使用间隔 01\n退出，点击 MRP 清单号码范围的编号范围，进入：",
+      "imgs": [
+       "mm/t17/04_1_image596.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "物料管理 → 基于消费的计划 → 号码范围 → 定义计划运行的号码范围",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 7
+   },
+   {
+    "no": 18,
+    "title": "定义物料类型的属性",
+    "anchor": "t18",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "选中P999中的数量更新及值更新",
+      "after": 3
+     },
+     {
+      "kind": "info",
+      "text": "解释：我们可以定义一种物料类型，在某个工厂里可以是“无价值库存”，即只记录数量，不更新价值，或者是“无数量库存”。",
+      "after": 3
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：物料类型是定义物料主数据最重要的一个参数，它决定了各类物料主数据需要维护哪些信息和参数，物料主数据的编号范围等。颐宁公司决定使用 SAP 的标准物料类型，如 HAWA 贸易商品，ROH 原材料，FERT 产成品。",
+      "imgs": [
+       "mm/t18/01_1_image597.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t18/02_1_image598.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "解释：屏幕的右方是目前系统中已经有的物料类型清单，左侧是分层维护物料类型的参数，双击相关的物料类型可以进入第一层：“ 物料类型” 参数定义。我们不改变系统标准的设置，我们维护第二层，物料类型在各工厂“数量/价值更新”。\n选择物料类型“HAWA”贸易货物，双击左栏的“数量/价值更新”进入如下：",
+      "imgs": [
+       "mm/t18/03_1_image599.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "后勤常规 → 物料主数据 → 基本设置 → 物料类型 → 定义物料类型的属性",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 3
+   },
+   {
+    "no": 19,
+    "title": "定义评估控制",
+    "anchor": "t19",
+    "desc": [
+     "解释：物料管理和财务会计最大的集成点是自动记账，也就是 MM 中的物料移动会自动产生相应的会计凭证。本步骤和随后的两个步骤是为了定义自动记账做准备，而自动记账则在4.28维护物料管理的自动记账中定义。"
+    ],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "此图里我们可以选择激活按 “ 评估分组代码活动” 来定义科目，还是不激活（也就是只能按一个一个工厂一个一个地定义科目），在此我们选择“评估分组代码活动”",
+      "after": 1
+     }
+    ],
+    "steps": [
+     {
+      "caption": "为了使之具有更大的灵活性，在各自工厂自动记账规则是可以不同的。但是如果一个集团公司有很多工厂，而它们的记账规则又是一样的，那一个一个地维护岂不是非常麻烦？而且也不好维护，容易出错，所以 SAP 允许将工厂集合成“组”来统一定义记账规则，工厂在记账规则中被定义为“评估范围”，而它的组被称为“评估分组代码”。本步骤中，我们将明确是否允许这样分组定义记账规则。下一个步骤是将“评估范围”归并到“评估分组代码”\n物料管理－评估和科目设置－科目确定－无向导的科目定义－定义评估控制",
+      "imgs": [
+       "mm/t19/01_1_image600.png",
+       "mm/t19/01_2_image601.png",
+       "mm/t19/01_1_image600.png",
+       "mm/t19/01_2_image601.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "物料管理 → 评估和科目设置 → 科目确定 → 无向导的科目定义 → 定义评估控制",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 4
+   },
+   {
+    "no": 20,
+    "title": "将评估范围集合分组",
+    "anchor": "t20",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "解释：紧跟上个步骤，我们将“颐宁机械工厂”评估范围（或工厂），归入一个我们称之为 “ CN01 ” 的评估分组代码。将来自动记账规则的定义就是按 “ CN01 ” 来定义的。如果颐宁公司增加一个工厂，只需要将它们分配给“CN01”就可以自动记账了，而不必再定义一套记账规则。",
+      "imgs": [
+       "mm/t20/01_1_image604.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "在 P999 输入 CN01",
+      "imgs": [
+       "mm/t20/02_1_image605.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "物料管理 → 评估和科目设置 → 科目确定 → 无向导的科目确定 → 将评估范围群集分组",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 2
+   },
+   {
+    "no": 21,
+    "title": "定义评估类",
+    "anchor": "t21",
+    "desc": [
+     "准的评估类，主要有三个“3000 原材料”，“ 3100 贸易商品”，“ 7920 成品”。本步骤主要"
+    ],
+    "notes": [
+     {
+      "kind": "info",
+      "text": "解释：除了工厂，另一个会决定不同的会计科目的因素是物料本身，所以我们在物料主数 据中会需要定义一个 “ 评估类”参数，通过“评估类”来决定会计科目。在本次我们使用的标",
+      "after": 0
+     },
+     {
+      "kind": "info",
+      "text": "解释：可以增、删、改、复制评估类，评估类旁边的“账户分类参考”是对评估类的分组。 “账户分类参考”本身在上图“账户分类参考”按钮中维护，而我们通过前一个屏幕的 “ 物料类型/账户分类参考”按钮将“账户分类参考”分配给各物料类型。",
+      "after": 3
+     },
+     {
+      "kind": "tip",
+      "text": "可以看到 FERT、HAWA 和 ROH 都已经存在，点击返回。",
+      "after": 3
+     }
+    ],
+    "steps": [
+     {
+      "caption": "就是检查系统标准的评估类，并检查这些评估类被分配给了合适的物料类型，将来在物料主数据维护时，保证只有合适的评估类可以被某类型的物料选用\n物料管理－评估和科目设置－科目确定－无向导的科目确定－定义评估类",
+      "imgs": [
+       "mm/t21/01_1_image606.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击评估类点击评估类",
+      "imgs": [
+       "mm/t21/02_1_image607.png",
+       "mm/t21/02_2_image608.png",
+       "mm/t21/02_1_image607.png",
+       "mm/t21/02_2_image608.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "可以看到 3000、3100、7920 都已经存在，返回，点击“物料类型/账户分类参考”",
+      "note": true,
+      "imgs": [
+       "mm/t21/03_1_image611.png"
+      ]
+     }
+    ],
+    "subs": [],
+    "path": "物料管理 → 评估和科目设置 → 科目确定 → 无向导的科目确定 → 定义评估类",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 6
+   },
+   {
+    "no": 22,
+    "title": "新建原材料主数据",
+    "anchor": "t22",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "输入事务代码 MMR1 进入如下页面： R999-100 罩壳",
+      "after": 1
+     },
+     {
+      "kind": "warn",
+      "text": "批量：采购批量大小的确定原则是一个非常复杂的问题，SAP 提供了非常灵活的工具，必然按期间的，动态的，固定的 GROFF 法，补货至最大库存的等等，这里我们选择 EX（直接按批订货量），逐批确定的方法，即按照具体需求量大小，结合最大最小批量等因素确定本次批量大小的方法。",
+      "after": 6
+     },
+     {
+      "kind": "tip",
+      "text": "V 代表按移动平均价计价，S 代表以标准成本计价。",
+      "after": 9
+     },
+     {
+      "kind": "tip",
+      "text": "价格单位：当单价特别小的时候，可以按 10 个，100 个价格单位计价，以提高价格精度。移动平均价：这里填的是初始价格，将来的移动平均价是系统自动计算的。",
+      "after": 9
+     },
+     {
+      "kind": "tip",
+      "text": "物料R999-200飞轮评估类型为3000物料R999-300管轴评估类型为3000物料物料R999-400 R999-500支撑架金属片单位是M2评估类型为3000评估类型为3000物料R999-200飞轮评估类型为3000物料R999-300管轴评估类型为3000物料物料R999-400 R999-500支撑架金属片单位是M2评估类型为3000评估类型为3000依次创建 R999-200---R999-500",
+      "after": 9
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：颐宁公司主要的原材料有，飞轮、管轴等，我们要新建这些原材料主数据\n后勤－物料管理－物料主数据－物料－创建（特殊）－MMR1 原材料",
+      "imgs": [
+       "mm/t22/01_1_image612.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t22/02_1_image613.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "物料类型决定了哪些视图是可维护的，如下 ROH 就没有销售视图",
+      "imgs": [
+       "mm/t22/03_1_image614.png",
+       "mm/t22/03_2_image615.png",
+       "mm/t22/03_3_image616.png",
+       "mm/t22/03_1_image614.png",
+       "mm/t22/03_2_image615.png",
+       "mm/t22/03_3_image616.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击回车",
+      "imgs": [
+       "mm/t22/04_1_image620.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "回车进入采购视图",
+      "note": true,
+      "imgs": [
+       "mm/t22/05_1_image621.png"
+      ]
+     },
+     {
+      "caption": "回车进入 MRP1 视图",
+      "imgs": [
+       "mm/t22/06_1_image622.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "MRP 类型：SAP 内置了八大类物料计划的方法，如重订货点计划，基于预测的计划，时间阶段计划，MRP，MPS，零售补货计划，无 MRP，无 MRP BOM 展开等。根据这八大类方法，可以在后台配置中定义具体的 MRP 类型“PD(物料需求计划) ”。实际项目中还需要特别区分 MPS 和MRP 的关系。",
+      "imgs": [
+       "mm/t22/07_1_image623.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "物料类型决定了物料是自生产还是外采购，这里的 F 代表只能从外采购，100 代表 100 件安全库存\n按回车进入 MRP3 视图",
+      "imgs": [
+       "mm/t22/08_1_image624.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "可用性检查是否有足够的库存来支持生产。主要有按期间需求和按单独需求两类，但是检查的规则在 SAP 中有灵活的配置。\n按回车进入“会计 1”视图 ,此处一定要维护评估类，原书有误，原材料的评估类为3000",
+      "imgs": [
+       "mm/t22/09_1_image625.png",
+       "mm/t22/09_2_image626.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [
+     {
+      "kind": "head",
+      "level": 6,
+      "text": "前台"
+     }
+    ],
+    "path": "后勤 → 物料管理 → 物料主数据 → 物料 → 创建（特殊） → MMR1 原材料",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 15
+   },
+   {
+    "no": 23,
+    "title": "新建贸易商品主数据",
+    "anchor": "t23",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "mm/t23/01_1_image627.png",
+       "mm/t23/01_2_image628.png",
+       "mm/t23/01_3_image629.png",
+       "mm/t23/01_4_image632.png",
+       "mm/t23/01_2_image628.png",
+       "mm/t23/01_3_image629.png"
+      ]
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "mm/t23/02_1_image633.png"
+      ]
+     },
+     {
+      "caption": "颐宁公司除了自己生产泵以外，还经销其他厂家的高速增压涡轮泵。前台\n后勤－物料管理－物料主数据－物料－创建（特殊）－MMH1-贸易货物",
+      "imgs": [
+       "mm/t23/03_1_image634.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "mm/t23/04_1_image635.png",
+       "mm/t23/04_2_image636.png",
+       "mm/t23/04_3_image637.png"
+      ]
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t23/05_1_image638.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 物料管理 → 物料主数据 → 物料 → 创建（特殊） → MMH1-贸易货物",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 12
+   },
+   {
+    "no": 24,
+    "title": "新建产成品主数据",
+    "anchor": "t24",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "成本核算批量，指以 10 个为标准批量来核算成本",
+      "after": 4
+     }
+    ],
+    "steps": [
+     {
+      "caption": "颐宁公司生产的产品是“铸钢泵 170-230 ” 前台",
+      "imgs": [
+       "mm/t24/01_1_image639.png",
+       "mm/t24/01_2_image640.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "mm/t24/02_1_image641.png",
+       "mm/t24/02_2_image642.png",
+       "mm/t24/02_3_image643.png"
+      ]
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "mm/t24/03_1_image644.png",
+       "mm/t24/03_2_image645.png",
+       "mm/t24/03_3_image646.png"
+      ]
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t24/04_1_image647.png",
+       "mm/t24/05_1_image648.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 物料管理 → 物料主数据 → 物料 → 创建（特殊） → MMF1-成品",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 10
+   },
+   {
+    "no": 25,
+    "title": "显示物料主记录清单",
+    "anchor": "t25",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "mm/t25/01_1_image649.png",
+       "mm/t25/01_2_image650.png",
+       "mm/t25/01_3_image651.png"
+      ]
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 物料管理 → 物料主记录 → 其他 → MM60-物料清单",
+    "tcodes": [
+     "MM60"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 3
+   },
+   {
+    "no": 26,
+    "title": "创建供应商采购数据",
+    "anchor": "t26",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "解释：红星轴承厂是原材料供应商，在未使用 SAP 物料管理模块时，我们已经在财务中维护了它的主数据，但当时只维护了一般数据和公司代码数据（和财务相关的），现在我们要使用采购功能来管理他的采购行为，只需要维护它的采购数据。\n后勤－物料管理－采购－主数据－供应商－采购-MK01 创建",
+      "imgs": [
+       "mm/t26/01_1_image652.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "10000000",
+      "note": true,
+      "imgs": [
+       "mm/t26/02_1_image653.png",
+       "mm/t26/02_2_image654.png",
+       "mm/t26/02_1_image653.png",
+       "mm/t26/02_2_image654.png"
+      ]
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t26/03_1_image657.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "mm/t26/04_1_image658.png"
+      ]
+     },
+     {
+      "caption": "同时将其他供应商维护好，10000001，20000000",
+      "imgs": [
+       "mm/t26/05_1_image659.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 物料管理 → 采购 → 主数据 → 供应商 → 采购-MK01 创建",
+    "tcodes": [
+     "MK01"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 8
+   },
+   {
+    "no": 27,
+    "title": "新建采购信息记录",
+    "anchor": "t27",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "第三个物料的采购信息记录",
+      "after": 6
+     },
+     {
+      "kind": "tip",
+      "text": "第四个物料的采购信息记录",
+      "after": 6
+     }
+    ],
+    "steps": [
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "mm/t27/01_1_image660.png"
+      ]
+     },
+     {
+      "caption": "解释：颐宁向红星采购管轴，一般标准订单数量 50 件，净价 1700 元/件，3 天内交货，由采购组 PG1 负责。\n后勤－物料管理－采购－主数据－信息记录－ME11 创建",
+      "imgs": [
+       "mm/t27/02_1_image661.png",
+       "mm/t27/02_2_image662.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "解释：屏幕中显示的是维护一些和采购组织无关的一般数据，如供应商数据，原产地数据，单位转换等。\n点击采购组织数据 1 键，出现如下屏幕：",
+      "imgs": [
+       "mm/t27/03_1_image663.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "同样的方法把 R999-100－R999-500 及 T999-100 创建",
+      "note": true,
+      "imgs": [
+       "mm/t27/04_1_image664.png",
+       "mm/t27/04_2_image665.png",
+       "mm/t27/04_1_image664.png",
+       "mm/t27/04_2_image665.png"
+      ]
+     },
+     {
+      "caption": "第二个物料的采购信息记录",
+      "imgs": [
+       "mm/t27/05_1_image668.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t27/06_1_image669.png",
+       "mm/t27/07_1_image670.png",
+       "mm/t27/08_1_image671.png",
+       "mm/t27/09_1_image672.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "通过事务代码MM02更正",
+      "imgs": [
+       "mm/t27/10_1_image673.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "第五个物料的采购信息记录",
+      "imgs": [
+       "mm/t27/11_1_image674.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t27/12_1_image675.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 物料管理 → 采购 → 主数据 → 信息记录 → ME11 创建",
+    "tcodes": [
+     "ME11",
+     "MM02"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 16
+   },
+   {
+    "no": 28,
+    "title": "维护物料管理的自动记帐",
+    "anchor": "t28",
+    "desc": [
+     "12110101 存货－原材料",
+     "12310101 存货－贸易商品",
+     "AUF 是和生产完工入库相关的，41010801 生产成本－产成品产出"
+    ],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "如果出现一个屏幕不是下面的屏幕，点击取消即可。这个屏幕不一定会出现的，原因是有时候系统中其他的公司代码的配置不完整造成的，点击取消就行了。",
+      "after": 1
+     },
+     {
+      "kind": "tip",
+      "text": "12010101 材料采购－GR/IR点击返回",
+      "after": 8
+     },
+     {
+      "kind": "tip",
+      "text": "VBR 是和生产发货相关的，41010101 生产成本－原材料消耗点击保存，返回按钮。",
+      "after": 11
+     },
+     {
+      "kind": "tip",
+      "text": "54010301 主营业务成本－采购价差",
+      "after": 13
+     },
+     {
+      "kind": "tip",
+      "text": "54010401 主营业务成本－生产订单差异",
+      "after": 13
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：主数据维护好了，在开始业务之前，还有一些必须的系统配置要做，本步骤就是设置 SAP 中最为重要的集成配置之一，即物料移动在 SAP 中如何自动找到会计科目完成自动记帐。它的准备工作在 1.19、1.20、1.21 中已经维护好了。\n物料管理－评估和科目设置－科目确定－无向导的科目确定－配置自动记帐",
+      "imgs": [
+       "mm/t28/01_1_image676.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t28/02_1_image677.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "解释：“ 科目分配” 按钮中是正式的科目分配工作，但是对于初学者来 “ 模拟” 按钮很重要，在模拟按钮中你可以输入物料、工厂、移动类型等，系统会提示你在“科目分配”中如何定义科目。\n点击“科目分配”",
+      "imgs": [
+       "mm/t28/03_1_image678.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "双击“存货记帐 BSX”行，弹出如下屏幕：",
+      "note": true,
+      "imgs": [
+       "mm/t28/04_1_image679.png",
+       "mm/t28/04_2_image680.png"
+      ]
+     },
+     {
+      "caption": "解释：屏幕中科目分配被按“事务”分类。我们首先定义存货记帐。因为物料移动总和存货科目相关，所以凭证中总有一行是存货科目行，我们定义系统如何确定存货科目。\n解释：在这个屏幕中，我们明确存货科目是否受“评估修改”和“评估级别”的影响，这里我们选择受这两者的影响。",
+      "imgs": [
+       "mm/t28/05_1_image681.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "12430101 存货－产成品\n屏幕中显示的是我们定义的各种存货科目，保存后点击返回。",
+      "imgs": [
+       "mm/t28/06_1_image682.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "解释：物料采购会涉及材料采购科目（GR/IR）这是在“WRX”中维护的。 双击事务“货物发票清算科目 WRX”行，进入如下屏幕",
+      "imgs": [
+       "mm/t28/07_1_image683.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t28/08_1_image684.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "点击保存",
+      "imgs": [
+       "mm/t28/09_1_image685.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "解释：和物料移动相关的会计凭证除了库存这一行，对应的那行的会计科目在 “ GBB”中维护，必然生产成本、主营业务成本等。\n双击事务“库存记帐的冲销输入 GBB 行”，进入如下屏幕",
+      "imgs": [
+       "mm/t28/10_1_image686.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t28/11_1_image687.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "VAX是和销售出库相关的，54010201 主营业务成本－贸易商品\n54010101 主营业务成本－自制产品",
+      "imgs": [
+       "mm/t28/12_1_image688.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t28/13_1_image689.png",
+       "mm/t28/14_1_image690.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "物料管理 → 评估和科目设置 → 科目确定 → 无向导的科目确定 → 配置自动记帐",
+    "tcodes": [],
+    "values": [
+     {
+      "k": "进入",
+      "v": "PRD"
+     }
+    ],
+    "fb": "后台",
+    "nimg": 15
+   },
+   {
+    "no": 29,
+    "title": "将存货科目设置为只能自动记帐",
+    "anchor": "t29",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "检查 12310101 和 12430101，也设置自动记帐",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "会计核算－财务会计－总账－主记录－总账科目－单个处理－FS00 集中的",
+      "note": true,
+      "imgs": [
+       "mm/t29/01_1_image691.png",
+       "mm/t29/01_2_image692.png"
+      ]
+     },
+     {
+      "caption": "解释：启用物料管理后，有些会计科目是通过集成自动记帐的，在会计科目主数据中需要设置条目为“只能自动记帐”\n选择“创建/银行/利息”，如图所示：12110101",
+      "imgs": [
+       "mm/t29/02_1_image693.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "会计核算 → 财务会计 → 总账 → 主记录 → 总账科目 → 单个处理 → FS00 集中的",
+    "tcodes": [
+     "FS00"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 3
+   },
+   {
+    "no": 30,
+    "title": "设置采购价格差异的容差限制",
+    "anchor": "t30",
+    "desc": [
+     "解释：SAP 在处理采购订单时，会检查采购订单中的价格和物料主数据中的成本价格差异有多大，同时也会检查采购订单中的现金折扣是否可接受。如果差异超过一定的容差，系统将发出警告消息或者报错消息。不同的容差检查存放在“容差码”中，容差码“PE ” 是检 查价格的，“ SE ” 是检查现金折扣的。"
+    ],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "物料管理－采购－采购订单－设置价格差异的容差限制",
+      "note": true,
+      "imgs": [
+       "mm/t30/01_1_image694.png",
+       "mm/t30/01_2_image695.png",
+       "mm/t30/01_1_image694.png",
+       "mm/t30/01_2_image695.png"
+      ]
+     },
+     {
+      "caption": "解释：屏幕中已经有公司维护了，我们采用复制模板公司 0001 公司的方法。选中 0001 公司，TlKy（容差码）为 PE 的价格差异，采购行，复制。\n解释：容差分上限和下限，同时绝对差异和百分比差异只要有一个超出就认为容差被超出了。",
+      "imgs": [
+       "mm/t30/02_1_image698.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "重复上述方法，复制容差限制 SE 最大现金贴现减少（采购）到公司代码 C999",
+      "imgs": [
+       "mm/t30/03_1_image699.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "物料管理 → 采购 → 采购订单 → 设置价格差异的容差限制",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 6
+   },
+   {
+    "no": 31,
+    "title": "设置收货的容差限制",
+    "anchor": "t31",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "mm/t31/01_1_image700.png"
+      ]
+     },
+     {
+      "caption": "解释：SAP 允许采购订单定价数量单位和采购订单数量单位不同，比如采购订单数量是按件，但是定价是按公斤。在这种情况下，当收货时，两种单位的数量都需要输入。在收货时，系统会检查定价数量和采购订单中的差异，容差码 “ B1 ” 被超出会发出错误信息，“ B2 ” 被超出时会发出警告消息。这里我们采用复制模板公司 0001 的方式建立颐宁公司的收货容差限制。\n物料管理－库存管理和实际库存－收货－设置容差限制",
+      "imgs": [
+       "mm/t31/02_1_image701.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "选中 B1、B2 复制，修改公司名称为C999，然后回车姐",
+      "imgs": [
+       "mm/t31/03_1_image702.png",
+       "mm/t31/03_2_image703.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t31/04_1_image704.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "物料管理 → 库存管理和实际库存 → 收货 → 设置容差限制",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 5
+   },
+   {
+    "no": 32,
+    "title": "设置发票冻结的容差限制",
+    "anchor": "t32",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "info",
+      "text": "解释：SAP 在发票校验时会做大量检查，如果校验不通过发票就会冻结。因此发票检验的容差配置最为丰富，容差码也最多。系统一共有 14 个容差码，负责各种不同目的的检查。这里主要用复制的方法。",
+      "after": 0
+     }
+    ],
+    "steps": [
+     {
+      "caption": "物料管理－后勤发票校验－发票冻结－设置容差限制",
+      "imgs": [
+       "mm/t32/01_1_image705.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "mm/t32/02_1_image706.png",
+       "mm/t32/02_2_image707.png",
+       "mm/t32/02_3_image708.png"
+      ]
+     },
+     {
+      "caption": "屏幕中显示的是已经存在的容差控制的公司代码清单。\n选择公司代码 0110，TlKy 为 AN、AP、BD、BR、BW、DQ、DW、KW、PP、PS、ST、VP",
+      "imgs": [
+       "mm/t32/03_1_image709.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "mm/t32/04_1_image710.png",
+       "mm/t32/04_2_image711.png",
+       "mm/t32/04_3_image712.png",
+       "mm/t32/04_4_image716.png",
+       "mm/t32/04_1_image710.png",
+       "mm/t32/04_2_image711.png",
+       "mm/t32/04_3_image712.png"
+      ]
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "mm/t32/05_1_image717.png",
+       "mm/t32/05_2_image718.png",
+       "mm/t32/05_1_image717.png",
+       "mm/t32/05_2_image718.png"
+      ]
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t32/06_1_image721.png",
+       "mm/t32/07_1_image722.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "物料管理 → 后勤发票校验 → 发票冻结 → 设置容差限制",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 18
+   },
+   {
+    "no": 33,
+    "title": "维护项目金额检查",
+    "anchor": "t33",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "物料管理－后勤发票校验－发票冻结－项目金额检查－激活项目金额检查",
+      "note": true,
+      "imgs": [
+       "mm/t33/01_1_image723.png"
+      ]
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t33/02_1_image724.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "点击新条目，将颐宁公司添加进来",
+      "imgs": [
+       "mm/t33/03_1_image725.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "物料管理 → 后勤发票校验 → 发票冻结 → 项目金额检查 → 激活项目金额检查",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 3
+   },
+   {
+    "no": 34,
+    "title": "运行物料需求计划",
+    "anchor": "t34",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "后勤－物料管理－物料需求计划（MRP）－物料需求计划－计划－MD03 单层",
+      "note": true,
+      "imgs": [
+       "mm/t34/01_1_image726.png",
+       "mm/t34/01_2_image727.png"
+      ]
+     },
+     {
+      "caption": "解释：现在颐宁机械工厂里各种物料的库存都是 0，但是很多物料都要求有安全库存，现在来运行一下 MRP，看一下结果。由于 BOM 要等到生产计划模块维护，现在不能按 BOM 展开，所以是单层计划\n回车后，系统会提示检查参数，再次回车",
+      "imgs": [
+       "mm/t34/02_1_image728.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t34/03_1_image729.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "同样的方法对 T999-100、R999-100、R999-200、R999-300、R999-400、R999-500 运行计划",
+      "imgs": [
+       "mm/t34/04_1_image730.png",
+       "mm/t34/04_2_image731.png",
+       "mm/t34/04_3_image732.png",
+       "mm/t34/04_4_image733.png",
+       "mm/t34/04_5_image734.png",
+       "mm/t34/04_6_image735.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 物料管理 → 物料需求计划（MRP） → 物料需求计划 → 计划 → MD03 单层",
+    "tcodes": [
+     "MD03"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 10
+   },
+   {
+    "no": 35,
+    "title": "显示库存/需求清单",
+    "anchor": "t35",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "回车后进入如下页面",
+      "after": 3
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：上个 MRP 的运行是定期进行的，例如每天晚上，他的结果在系统中也是静态保存的。要看动态的物料的供需平衡清单，需要到 SAP“库存/需求清单”中来显示\n后勤－生产－物料需求计划－评估－MD04-库存/需求清单",
+      "imgs": [
+       "mm/t35/01_1_image736.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t35/02_1_image737.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "这个页面和 MRP 运行结果类似，但是它可以动态运行，数据反应的是当前供需的情况。运行后采购申请可生成，也可手工生成。",
+      "note": true,
+      "imgs": [
+       "mm/t35/03_1_image738.png"
+      ]
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 生产 → 物料需求计划 → 评估 → MD04-库存/需求清单",
+    "tcodes": [
+     "MD04"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 3
+   },
+   {
+    "no": 36,
+    "title": "新建采购申请",
+    "anchor": "t36",
+    "desc": [
+     "解释：MRP 运行的结果是对原材料的采购申请和对产成品的计划订单，所以生成计划和采购的流程衔接是采购申请的创建。在 PP 模块的学习中我们将根据 MRP 产生的采购申请直接来创建采购订单。现在我们的流程从手工新建采购申请开始。本步骤中，颐宁公司的计划"
+    ],
+    "notes": [
+     {
+      "kind": "info",
+      "text": "解释：采购申请的屏幕主要包含最上方的 “ 单据类型和单据号” 行和抬头信息。项目概览信息和项目明细信息三层。点击左侧按钮可展开或收起输入界面。",
+      "after": 2
+     },
+     {
+      "kind": "tip",
+      "text": "点击保存，提示如下：",
+      "after": 5
+     }
+    ],
+    "steps": [
+     {
+      "caption": "部门手工填制采购申请，申请采购一批原材料和贸易商品前台\n后勤－物料管理－采购--采购申请－ME51N－创建",
+      "imgs": [
+       "mm/t36/01_1_image739.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "第一次进入页面会有帮助，可关闭",
+      "imgs": [
+       "mm/t36/02_1_image740.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击项目概览按钮，进入如下页面：",
+      "imgs": [
+       "mm/t36/03_1_image741.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "在项目概览里，输入申请采购的物料，数量，交货日期和交货工厂等信息，录入如下：",
+      "imgs": [
+       "mm/t36/04_1_image742.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击回车键，各个明细行会被展开",
+      "imgs": [
+       "mm/t36/05_1_image743.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t36/06_1_image744.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 物料管理 → 采购--采购申请 → ME51N → 创建",
+    "tcodes": [
+     "ME51N"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 6
+   },
+   {
+    "no": 37,
+    "title": "新建采购订单",
+    "anchor": "t37",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "解释：根据计划部门的采购申请，采购部门需要向供应商采购，这其中有一个“货源确定”的问题，即向哪个供应商采购。SAP 有多种货源确定的方式。在我们的例子里，我们采用人为选择供应商的方式，即由采购部门在创建采购订单的时候，手工录入供应商\n后勤－物料管理－采购－采购订单－创建－ME21N－已知供应商/供应工厂",
+      "imgs": [
+       "mm/t37/01_1_image745.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "新建采购订单和采购申请页面类似，但是凭证类型不同，而且多了供应商字段点击凭证概览打开键，出现如下屏幕",
+      "imgs": [
+       "mm/t37/02_1_image746.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击左栏小花键，如下左图，然后选择我的采购申请，如下右边的图",
+      "note": true,
+      "imgs": [
+       "mm/t37/03_1_image747.png",
+       "mm/t37/03_2_image748.png"
+      ]
+     },
+     {
+      "caption": "解释：凭证概览是方便操作人员的各种工具。我们可以用各种方法来查找采购订单，采购申请，框架协议等，这里我们选择自己创建的采购申请。\n选择左侧的采购申请点击采用按钮（采购申请上部类似复制的按钮，小花按钮边上的按钮）",
+      "imgs": [
+       "mm/t37/04_1_image749.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "回车后，如下图所示",
+      "note": true,
+      "imgs": [
+       "mm/t37/05_1_image750.jpeg"
+      ]
+     },
+     {
+      "caption": "输入采购组织 Y999，供应商 10000000\n点击项目概览，如下图所示",
+      "imgs": [
+       "mm/t37/06_1_image751.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t37/07_1_image752.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "此处应该是原材料的采购，可将 T999-100 删除。点击保存即可生成相应的采购订单。",
+      "imgs": [
+       "mm/t37/08_1_image753.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 物料管理 → 采购 → 采购订单 → 创建 → ME21N → 已知供应商/供应工厂",
+    "tcodes": [
+     "ME21N"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 9
+   },
+   {
+    "no": 38,
+    "title": "创建采购收货",
+    "anchor": "t38",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "后勤－物料管理－库存管理－货物移动－收货－对采购订单－采购订单的 GR（MIGO）",
+      "note": true,
+      "imgs": [
+       "mm/t38/01_1_image754.png",
+       "mm/t38/01_2_image755.png"
+      ]
+     },
+     {
+      "caption": "解释：上一步我们创建了采购订单，现在供应商把货送到了，我们需要办理收货前台\n解释：上图就是采购订单收货的屏幕，屏幕右上方输入采购订单号和工厂，屏幕中间是物料凭证的行总揽，屏幕下方是个收货行的明细，屏幕的左方是你自己处理过的采购订单和物料凭证的历史。我们来输入采购订单号",
+      "imgs": [
+       "mm/t38/02_1_image756.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t38/03_1_image757.jpeg"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "采购订单行的明细被自动复制到了屏幕下方，我们在行项目明细的屏幕中填写相关信息。输入库存地点 001，注意，每一行都要做相同的操作",
+      "note": true,
+      "imgs": [
+       "mm/t38/04_1_image758.jpeg"
+      ]
+     },
+     {
+      "caption": "勾上项目确定选项（左下角），点击保存按钮，保存之前最好点个检查，看看是否有误",
+      "imgs": [
+       "mm/t38/05_1_image759.jpeg"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "将屏幕上方的收货改为显示A04，点击回车，然后将标签页切换到文件信息",
+      "imgs": [
+       "mm/t38/06_1_image760.jpeg"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "在文件信息页，点击 FI 凭证，可以看到凭证的信息",
+      "imgs": [
+       "mm/t38/07_1_image761.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 物料管理 → 库存管理 → 货物移动 → 收货 → 对采购订单 → 采购订单的 GR（MIGO）",
+    "tcodes": [
+     "MIGO"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 8
+   },
+   {
+    "no": 39,
+    "title": "输入采购发票",
+    "anchor": "t39",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "在PO参考里面，按照下图输入采购订单，然后点击回车。",
+      "after": 1
+     },
+     {
+      "kind": "tip",
+      "text": "点击保存，如果出现超过容差的情况，发票会冻结",
+      "after": 4
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：供应商的采购发票随后送到前台\n后勤－物料管理－后勤发票校验－凭证输入－MIRO 输入发票",
+      "imgs": [
+       "mm/t39/01_1_image762.png",
+       "fi/t20/02_1_image161.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t39/02_1_image763.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "先选中计算税额，按回车键，将余额处的金额拷贝在金额处，点击回车",
+      "imgs": [
+       "mm/t39/03_1_image764.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t39/04_1_image765.jpeg"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 物料管理 → 后勤发票校验 → 凭证输入 → MIRO 输入发票",
+    "tcodes": [
+     "MIRO"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 5
+   },
+   {
+    "no": 40,
+    "title": "下达冻结发票",
+    "anchor": "t40",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "info",
+      "text": "解释：被冻结的发票可以经过相关管理人员检查后手工下达。前台",
+      "after": 0
+     },
+     {
+      "kind": "tip",
+      "text": "选中后点击小绿旗，然后保存",
+      "after": 2
+     },
+     {
+      "kind": "tip",
+      "text": "这样发票就被下达了。",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "后勤－物料管理－后勤发票校验－进一步处理－MRBR 下达冻结发票",
+      "imgs": [
+       "mm/t40/01_1_image766.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t40/02_1_image767.jpeg",
+       "mm/t40/03_1_image768.jpeg",
+       "mm/t40/04_1_image769.jpeg"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 物料管理 → 后勤发票校验 → 进一步处理 → MRBR 下达冻结发票",
+    "tcodes": [
+     "MRBR"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 4
+   },
+   {
+    "no": 41,
+    "title": "显示发票和会计凭证",
+    "anchor": "t41",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "点击后续凭证，出现会计凭证概览",
+      "after": 3
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：发票校验也会自动生成会计凭证，本步骤进一步展示前面输入的发票及产生的凭证前台\n后勤－物料管理－后勤发票校验－进一步处理－MIR4 显示发票凭证",
+      "imgs": [
+       "mm/t41/01_1_image770.jpeg"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t41/02_1_image771.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "选择显示凭证",
+      "imgs": [
+       "mm/t41/03_1_image772.jpeg"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t41/04_1_image773.jpeg"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 物料管理 → 后勤发票校验 → 进一步处理 → MIR4 显示发票凭证",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 4
+   },
+   {
+    "no": 42,
+    "title": "显示库存物料",
+    "anchor": "t42",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "后勤－物料管理－库存管理－环境－库存－MMBE－库存总览",
+      "imgs": [
+       "mm/t42/01_1_image774.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "mm/t42/02_1_image775.jpeg"
+      ]
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "mm/t42/03_1_image776.jpeg"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 物料管理 → 库存管理 → 环境 → 库存 → MMBE → 库存总览",
+    "tcodes": [
+     "MMBE"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 3
+   }
+  ]
+ },
+ "pp": {
+  "code": "pp",
+  "title": "生产计划 PP（Production Plan）",
+  "tasks": [
+   {
+    "no": 1,
+    "title": "定义生产计划参数文件",
+    "anchor": "t01",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "点击进入",
+      "after": 1
+     },
+     {
+      "kind": "info",
+      "text": "解释：采用复制的方法，复制 1000 工厂，000001 生产计划参数文件。",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "生产计划 参数文件可以分配给物料（物料主数据中的工作排程屏幕）或者生产计划员\n（后台配置）。其中分配给物料主数据的生产计划参数文件具有更高的优先级。在创建生产订单时生产计划参数将复制生产订单或流程订单",
+      "imgs": [
+       "pp/t01/01_1_image777.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t01/02_1_image778.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "生产 → 商店底价控制 → 主数据 → 定义生产计划参数文件",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 2
+   },
+   {
+    "no": 2,
+    "title": "定义生产调度员",
+    "anchor": "t02",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "点击新条目，进入",
+      "after": 1
+     },
+     {
+      "kind": "tip",
+      "text": "P999 | 999| 生产调度员颐宁 | 000001",
+      "after": 1
+     }
+    ],
+    "steps": [
+     {
+      "caption": "通过在物料主数据中将生产调度员分配给物料，我们可以定义在生产作业控制中对某种物料的责任归属\n生产－商店底价控制－主数据－定义生产调度员",
+      "imgs": [
+       "pp/t02/01_1_image783.png",
+       "pp/t02/01_2_image784.png",
+       "pp/t02/01_1_image783.png",
+       "pp/t02/01_2_image784.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "生产 → 商店底价控制 → 主数据 → 定义生产调度员",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 4
+   },
+   {
+    "no": 3,
+    "title": "维护和生产排程相关的生产订单参数",
+    "anchor": "t03",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "生产－商店底价控制－工序－计划－为生产订单定义计划参数",
+      "note": true,
+      "imgs": [
+       "pp/t03/01_1_image787.png"
+      ]
+     },
+     {
+      "caption": "维护的这些参数将影响生产订单排程的各种操作和计算",
+      "imgs": [
+       "pp/t03/02_1_image788.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击新条目",
+      "imgs": [
+       "pp/t03/03_1_image789.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "生产 → 商店底价控制 → 工序 → 计划 → 为生产订单定义计划参数",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 3
+   },
+   {
+    "no": 4,
+    "title": "维护和订单类型相关的生产订单参数",
+    "anchor": "t04",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "维护的这些参数将影响生产订单排程的各种操作和计算",
+      "imgs": [
+       "pp/t04/01_1_image790.png",
+       "pp/t04/01_2_image791.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击新条目",
+      "imgs": [
+       "pp/t04/02_1_image792.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "原书中结果分析码为FERT",
+      "note": true,
+      "imgs": [
+       "pp/t04/03_1_image793.png"
+      ]
+     }
+    ],
+    "subs": [],
+    "path": "生产 → 商店底价控制 → 主数据 → 订单 → 定义订单类型相关参数",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 4
+   },
+   {
+    "no": 5,
+    "title": "维护和确认相关的生产订单参数",
+    "anchor": "t05",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "确认是生产订单管理中的一项工作，它既可以是针对整个订单的，也可以是针对工序的，它是由负责人员认可或填写订单的产出、时间等信息，并由系统执行检查、倒冲等操作的过程。",
+      "imgs": [
+       "pp/t05/01_1_image794.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t05/02_1_image795.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "点击新条目",
+      "imgs": [
+       "pp/t05/03_1_image796.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "生产 → 商店底价控制 → 工序 → 确认 → 定义确认参数",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 3
+   },
+   {
+    "no": 6,
+    "title": "新建物料清单",
+    "anchor": "t06",
+    "desc": [
+     "R999-100罩壳1PCR999-200飞轮1PCR999-300管轴1PCR999-400支撑架1PCR999-500金属片0.60M2R999-100罩壳1PCR999-200飞轮1PCR999-300管轴1PCR999-400支撑架1PCR999-500金属片0.60M2F999-100 P999 1"
+    ],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "物料需求计划 MRP 最主要的基础是 BOM，我们现在来维护一个BOM",
+      "after": 0
+     }
+    ],
+    "steps": [
+     {
+      "caption": "后勤－生产－主数据－物料清单－物料 BOM — CS01 新建",
+      "imgs": [
+       "pp/t06/01_1_image797.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t06/02_1_image798.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "项目类别都用L,库存项目\n录入 上述数据，点击保存即可",
+      "imgs": [
+       "pp/t06/03_1_image799.jpeg"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 生产 → 主数据 → 物料清单 → 物料 BOM → CS01 新建",
+    "tcodes": [
+     "CS01"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 3
+   },
+   {
+    "no": 7,
+    "title": "显示物料所用处清单",
+    "anchor": "t07",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "BOM 是从生产成品或半成品需要多少组件的角度，有时候我们也是要查询某个材料的用途是什么，它是被用来制造什么产成品或半成品的，这可称为“反查清单”",
+      "after": 0
+     },
+     {
+      "kind": "tip",
+      "text": "这个报告显示了罩壳被用于物料 F999-100 的生产中",
+      "after": 4
+     }
+    ],
+    "steps": [
+     {
+      "caption": "后勤－生产－主数据－物料清单－报告－调用清单—所用处清单 CS15-物料",
+      "imgs": [
+       "pp/t07/01_1_image800.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t07/02_1_image801.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "点击下一屏，如下图所示",
+      "imgs": [
+       "pp/t07/03_1_image802.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击 F8 运行，如下",
+      "imgs": [
+       "pp/t07/04_1_image803.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 生产 → 主数据 → 物料清单 → 报告 → 调用清单 → 所用处清单 CS15-物料",
+    "tcodes": [
+     "CS15"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 4
+   },
+   {
+    "no": 8,
+    "title": "定义工作中心负责人",
+    "anchor": "t08",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "点击新条目，",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：颐宁公司有 “ 物料准备”，“ 切割” 这样一些工作中心，生产产成品 “ 铸钢泵 170-230 ” 需要以一定的次序在这些工作中心执行各道工序，SAP 称之为“工艺路线”。这些我们在之后维护。本步骤中，我们需要为各工作中心在后台定义一些负责人，这些负责人都会分配到工作中心的主数据中。为简化，我们只定义了一个工作中心负责人。\n生产－基本数据－工作中心－通用数据－确定负责人",
+      "imgs": [
+       "pp/t08/01_1_image804.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t08/02_1_image805.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "P999 999 颐宁工作中心负责人",
+      "imgs": [
+       "pp/t08/03_1_image806.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "生产 → 基本数据 → 工作中心 → 通用数据 → 确定负责人",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 3
+   },
+   {
+    "no": 9,
+    "title": "定义工作中心的控制码",
+    "anchor": "t09",
+    "desc": [
+     "点击新条目"
+    ],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "确定能力需求 成本",
+      "after": 3
+     },
+     {
+      "kind": "tip",
+      "text": "确认 2 确认可能但不必需",
+      "after": 3
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：这个控制码控制着工艺路线中的某个工序需要执行的业务功能，以及 SAP 如何处理这个工序。比如这个工序是否需要排程、是否需要产生产能需求、是否需要打印公票、是否需要返工工序、是否需要计算成本、是否和如何进行确认、是内部还是外部处理。\n生产－基本数据－工作中心－工艺路径数据－定义控制码",
+      "imgs": [
+       "pp/t09/01_1_image807.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t09/02_1_image808.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "控制码 ZKM1 颐宁工作中心控制码调度",
+      "note": true,
+      "imgs": [
+       "pp/t09/03_1_image809.png"
+      ]
+     }
+    ],
+    "subs": [],
+    "path": "生产 → 基本数据 → 工作中心 → 工艺路径数据 → 定义控制码",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 3
+   },
+   {
+    "no": 10,
+    "title": "新建人工工时能力",
+    "anchor": "t10",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "单项能力数量，指能分割使用的单项能力有 10 个。比如，如果颐宁公司总是以班组为单位管理的，这里就是班组的数量。如果是以单个工人调配的，那这里就是工人的数量。这里需要和后面工艺路线的定义保持定义上的一致。",
+      "after": 2
+     },
+     {
+      "kind": "tip",
+      "text": "能力利用 100 指 100%能有效利用。",
+      "after": 2
+     },
+     {
+      "kind": "tip",
+      "text": "和有限计划有关。指在作有限排程的时候，系统需要将这种能力的可用数量和负载数量考虑进去。只有这里打勾的能力才会在能力可用性检查中被考虑。",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：颐宁公司的各人工工作中心的资源是共享的，它们的生产能力是可以调配使用的，所以我们在这个步骤将统一核算整个工厂的人工工时能力，在后面的步骤中，当新建人工工时类别的工作中心时，我们将通用人工工时能力分配给它们。当然能力也可以定义在工作中心这一层。\n后勤－生产－主数据－工作中心－能力－CR11-创建",
+      "imgs": [
+       "pp/t10/01_1_image810.png",
+       "pp/t10/01_2_image811.png",
+       "pp/t10/01_1_image810.png",
+       "pp/t10/01_2_image811.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "Labor 只是定义，002 是工时",
+      "imgs": [
+       "pp/t10/02_1_image814.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 生产 → 主数据 → 工作中心 → 能力 → CR11-创建",
+    "tcodes": [
+     "CR11"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 5
+   },
+   {
+    "no": 11,
+    "title": "新建机器工时能力",
+    "anchor": "t11",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "解释：和人工工时能力类似，颐宁公司的各机器工作中心的资源也是共享的。后勤－生产－主数据－工作中心－能力－CR11-创建",
+      "imgs": [
+       "pp/t11/01_1_image815.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t11/02_1_image816.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "解释：和人工工时能力类似，颐宁公司的各机器工作中心的资源也是共享的。后勤 → 生产 → 主数据 → 工作中心 → 能力 → CR11-创建",
+    "tcodes": [
+     "CR11"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 2
+   },
+   {
+    "no": 12,
+    "title": "新建人工工时类别工作中心",
+    "anchor": "t12",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "info",
+      "text": "解释：颐宁公司有 “ 物料准备”，“ 切割”，“ 装配”，“ 校验和交付” 这样四个以人工工时为主的工作中心。",
+      "after": 0
+     },
+     {
+      "kind": "tip",
+      "text": "点击默认值",
+      "after": 3
+     }
+    ],
+    "steps": [
+     {
+      "caption": "后勤－生产－主数据－工作中心－工作中心－CR01-创建",
+      "imgs": [
+       "pp/t12/01_1_image817.png",
+       "pp/t12/01_2_image818.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "回车后如下所示",
+      "note": true,
+      "imgs": [
+       "pp/t12/02_1_image819.png",
+       "pp/t12/02_2_image820.png"
+      ]
+     },
+     {
+      "caption": "将工时选择为必须维护",
+      "imgs": [
+       "pp/t12/03_1_image821.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t12/04_1_image822.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "ZKM1 是我们在之前定义的缺省控制码\nMIN 是指分钟点击调度",
+      "imgs": [
+       "pp/t12/05_1_image823.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击成本核算",
+      "note": true,
+      "imgs": [
+       "pp/t12/06_1_image824.png"
+      ]
+     },
+     {
+      "caption": "此处活动类型由于在 CO 模块未完成 KP26，故无法继续接下来定义切割",
+      "imgs": [
+       "pp/t12/07_1_image825.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "pp/t12/08_1_image826.png"
+      ]
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t12/09_1_image827.png",
+       "pp/t12/10_1_image828.png",
+       "pp/t12/11_1_image829.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "pp/t12/12_1_image830.png",
+       "pp/t12/12_2_image831.png"
+      ]
+     },
+     {
+      "caption": "9995 装配",
+      "imgs": [
+       "pp/t12/13_1_image832.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "pp/t12/14_1_image833.png"
+      ]
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t12/15_1_image834.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "pp/t12/16_1_image835.png",
+       "pp/t12/16_2_image836.png",
+       "pp/t12/16_3_image837.png"
+      ]
+     },
+     {
+      "caption": "9996 校验和交付",
+      "imgs": [
+       "pp/t12/17_1_image838.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 生产 → 主数据 → 工作中心 → 工作中心 → CR01-创建",
+    "tcodes": [
+     "CR01",
+     "KP26"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 22
+   },
+   {
+    "no": 13,
+    "title": "新建机器工时类别工作中心",
+    "anchor": "t13",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "创建预装配工作中心 9994",
+      "after": 3
+     }
+    ],
+    "steps": [
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t13/01_1_image839.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "pp/t13/02_1_image840.png",
+       "pp/t13/02_2_image841.png",
+       "pp/t13/02_3_image842.png"
+      ]
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t13/03_1_image843.png",
+       "pp/t13/04_1_image844.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "pp/t13/05_1_image845.png",
+       "pp/t13/05_2_image846.png",
+       "pp/t13/05_3_image847.png"
+      ]
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t13/06_1_image848.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "颐宁公司有“油漆”，“ 预装配”这样两个以机器工时为主的工作中心，本步骤中逐个创建后勤 → 生产 → 主数据 → 工作中心 → 工作中心 → CR01-创建",
+    "tcodes": [
+     "CR01"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 10
+   },
+   {
+    "no": 14,
+    "title": "新建工艺路线",
+    "anchor": "t14",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "00109991P999ZKM1准备罩壳和金属片00209992P999ZKM1切割金属片00309994P999ZKM1预装配00409995P999ZKM1装配00509996P999ZKM1检验和交付00109991P999ZKM1准备罩壳和金属片00209992P999ZKM1切割金属片00309994P999ZKM1预装配00409995P999ZKM1装配00509996P999ZKM1检验和交付状态 4 指可以进行各项业务点击工序",
+      "after": 2
+     },
+     {
+      "kind": "tip",
+      "text": "由于前序未将 LAB 与工作中心关联，此处会提示",
+      "after": 4
+     },
+     {
+      "kind": "info",
+      "text": "解释：定义完工序，下面我们来定义各种原料分别在哪个工序投料。这个屏幕是该产品的",
+      "after": 14
+     },
+     {
+      "kind": "info",
+      "text": "解释：继续物料的分配，最终结果如下，最后点击保存",
+      "after": 17
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：颐宁公司有 “ 物料准备”，“ 切割”，“ 装配”，“ 校验和交付” 这样四个以人工工时为主的工作中心。",
+      "imgs": [
+       "pp/t14/01_1_image849.png",
+       "pp/t14/01_2_image850.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t14/02_1_image851.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "组计数器：SAP 中工艺路线是通过组编码和组计数器两者来编号的。组计数器可以定义一个产品的多条工艺路线。比如当不同的批量大小时可以用不同的工艺路线。我们这里只维护一条工艺路线。",
+      "imgs": [
+       "pp/t14/03_1_image852.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击回车后，或者双击 0010 工序后",
+      "imgs": [
+       "pp/t14/04_1_image853.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t14/05_1_image854.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "点击顺序",
+      "imgs": [
+       "pp/t14/06_1_image855.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t14/07_1_image856.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "解释：我们看到现在我们为工艺路线定义了一条“标准顺序”，也就是刚才各道工序。但是在生产“铸钢泵 170-300”的过程中，“ 油漆罩壳”的工序是和上面的切割金属片并行的。下面我们来定义这个并行的顺序。点击新建按钮",
+      "imgs": [
+       "pp/t14/08_1_image857.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t14/09_1_image858.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "回车后",
+      "note": true,
+      "imgs": [
+       "pp/t14/10_1_image859.png"
+      ]
+     },
+     {
+      "caption": "分工序 10 指完成 0010 工序后开始该并行作业\n返回工序指完成该并行工序后，返回 0030 工序点击序列",
+      "imgs": [
+       "pp/t14/11_1_image860.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "0010 9993 P999 ZKM1 油漆罩壳",
+      "note": true,
+      "imgs": [
+       "pp/t14/12_1_image861.png"
+      ]
+     },
+     {
+      "caption": "我们看到已经新建了个并行顺序，下面来具体定义该并行顺序选中“顺序 1”行，点击工序\n双击行项目，工序为0010，或者回车",
+      "imgs": [
+       "pp/t14/13_1_image862.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击组件分配",
+      "imgs": [
+       "pp/t14/14_1_image863.jpeg"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "BOM 组件",
+      "imgs": [
+       "pp/t14/15_1_image864.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "解释：我们可以直接填入投料的工序，也可以从清单中选择工序点击工序活动清单",
+      "imgs": [
+       "pp/t14/16_1_image865.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "从屏幕可以看出，工序 20 和工序 10 是平行的。选择工序 10，点击确认",
+      "imgs": [
+       "pp/t14/17_1_image866.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t14/18_1_image867.png",
+       "pp/t14/19_1_image868.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 生产 → 主数据 → 工艺路线 → 工艺路线 → 标准工艺路线 → CA01-创建",
+    "tcodes": [
+     "CA01"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 20
+   },
+   {
+    "no": 15,
+    "title": "拆分工序",
+    "anchor": "t15",
+    "desc": [
+     "解释：颐宁公司的人工类产能和机器产能都是由 10 组产能单位构成的。我们需要在产成品的工艺路线中决定，生产订单是在一个产能单位上顺序生产，还是要将生产订单的数量拆分到各产能单位上生产。这个控制参数是在各工序上的，它会影响订单排程的时间。本步骤中，我们将工艺路线中的所有工序都设定为需要按产能单位拆分"
+    ],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "在拆分，选择所需分解，点击保存，不过我们还需要更改其他工序点击顺序",
+      "after": 3
+     },
+     {
+      "kind": "tip",
+      "text": "在“所需分解”前的方框打勾，保存",
+      "after": 4
+     }
+    ],
+    "steps": [
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "pp/t15/01_1_image869.png"
+      ]
+     },
+     {
+      "caption": "后勤－生产－主数据－工艺路线－工艺路线—标准工艺路线－CA02-更改\n点击工序进入如下页面",
+      "imgs": [
+       "pp/t15/02_1_image870.jpeg"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "双击“工序 0010 ”，进入",
+      "imgs": [
+       "pp/t15/03_1_image871.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t15/04_1_image872.png",
+       "pp/t15/05_1_image873.png",
+       "pp/t15/06_1_image874.jpeg"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 生产 → 主数据 → 工艺路线 → 工艺路线 → 标准工艺路线 → CA02-更改",
+    "tcodes": [
+     "CA02"
+    ],
+    "values": [
+     {
+      "k": "双击顺序",
+      "v": "1"
+     },
+     {
+      "k": "双击工序",
+      "v": "0010"
+     }
+    ],
+    "fb": null,
+    "nimg": 6
+   },
+   {
+    "no": 16,
+    "title": "新建产产品的生产计划视图",
+    "anchor": "t16",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "后勤－生产－主数据－物料主数据－物料－创建（特殊）－MMF1-成品",
+      "note": true,
+      "imgs": [
+       "pp/t16/01_1_image875.png"
+      ]
+     },
+     {
+      "caption": "解释：MM 中，我们没有维护产成品的生产计划视图。\n选择工作计划视图",
+      "imgs": [
+       "pp/t16/02_1_image876.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t16/03_1_image877.png",
+       "pp/t16/04_1_image878.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 生产 → 主数据 → 物料主数据 → 物料 → 创建（特殊） → MMF1-成品",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 4
+   },
+   {
+    "no": 17,
+    "title": "定义成本构成结构",
+    "anchor": "t17",
+    "desc": [
+     "选中 Z1，双击左栏的“带有属性的成本组件”。",
+     "解释：",
+     "控制成本份额。可变成本。只有可变成本会在产品成本估算中显示",
+     "选中 Z1 选择有效，然后双击左栏“带有属性的成本组件”"
+    ],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "++++ ++++ ++++ 01.01.2021 Z1 颐宁成本组件结构",
+      "after": 6
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：颐宁公司生产的“铸钢泵 170-230”的 BOM 和工艺路线已经在系统里维护，接下 来我们可以计算该产成品的标准成本了。产品成本是 PP 和 CO 最重要的集成。本步骤我们需要在后台配置和产品成本有关的一个重要参数：“ 成本构成结构”。在成本结构中我们定义颐宁公司的产品成本是如何构成的，各成本构成和成本要素的关系怎样的，并且将成本构成结构分配给工厂",
+      "imgs": [
+       "pp/t17/01_1_image879.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t17/02_1_image880.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "解释：该屏幕的左侧是维护“成本构成结构”参数的各层次。现在我们在最上层，因此屏幕的右侧是目前系统中已经有的成本构成结构的清单。我们要定义一个新的成本构成结构。点击新条目",
+      "imgs": [
+       "pp/t17/03_1_image881.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "在弹出框中，点击新条目",
+      "note": true,
+      "imgs": [
+       "pp/t17/04_1_image882.png"
+      ]
+     },
+     {
+      "caption": "汇总成本组件。指该成本组件的成本将被汇总到更高一层的产品的该成本组件成本中双击左栏“设置-成本组件-成本要素区间”\n点击新条目",
+      "imgs": [
+       "pp/t17/05_1_image883.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "双击左栏“设置-组织-成本构成格式”",
+      "imgs": [
+       "pp/t17/06_1_image884.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "解释：我们在这里将我们新建的成本构成结构分配给相关的公司代码，工厂，成本核算变式和一定的有效期\n按新条目",
+      "imgs": [
+       "pp/t17/07_1_image885.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "我们回到成本构成结构定义的最上层，然后激活该成本构成结构，即勾选有效",
+      "imgs": [
+       "pp/t17/08_1_image886.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "pp/t17/09_1_image887.png"
+      ]
+     },
+     {
+      "caption": "解释，我们刚才只定义了该成本构成结构中的一个成本组件，现在我们接着将机器工时，人工工时和准备工时成本分别定义成三个成本组件\n点击新条目",
+      "imgs": [
+       "pp/t17/10_1_image888.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "双击左栏“成本组件结构”用同样的办法吧 030，040 设置好。",
+      "imgs": [
+       "pp/t17/11_1_image889.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t17/12_1_image890.png",
+       "pp/t17/13_1_image891.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "完成后，点击返回，",
+      "note": true,
+      "imgs": [
+       "pp/t17/14_1_image892.png",
+       "pp/t17/14_2_image893.png"
+      ]
+     },
+     {
+      "caption": "双击左栏的“成本组件结构”\n将除 Z1 外的成本结构组件的有效勾都去掉，保存。",
+      "imgs": [
+       "pp/t17/15_1_image894.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "控制 → 产品成本控制 → 产品成本计划 → 物料成本核算的基本设置 → 定义成本构成结构",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 16
+   },
+   {
+    "no": 18,
+    "title": "定义估计变式",
+    "anchor": "t18",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "估价变式。点击返回键。双击 007，设置如下",
+      "after": 3
+     },
+     {
+      "kind": "tip",
+      "text": "点击新条目",
+      "after": 5
+     }
+    ],
+    "steps": [
+     {
+      "caption": "控制－产品成本控制－产品成本计划－带数量结构的成本估算－成本核算变式：组件－定义评估变式",
+      "note": true,
+      "imgs": [
+       "pp/t18/01_1_image895.png"
+      ]
+     },
+     {
+      "caption": "解释：在产品成本核算中，最重要的参数是“成本核算变式”，我们将在 21 学到。成本核算变式又是由定义成本核算不同方面的较小的参数构成的，其中本步骤是与定义物料、作业、外包、外部加工、间接费用等的估价标准相关的，SAP 称之为评估变式",
+      "imgs": [
+       "pp/t18/02_1_image896.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "解释：我们利用系统已经有的估价变式\n双击“评估变式：001 ”，进入",
+      "imgs": [
+       "pp/t18/03_1_image897.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "估价变式 001 是系统预设的物料计划估价变式。我们将在以后的操作中使用 001 作为物料",
+      "imgs": [
+       "pp/t18/04_1_image898.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "007 将被用于订单实际成本的计算中。我们也来查看一下它的配置。点击评估变式/工厂",
+      "imgs": [
+       "pp/t18/05_1_image899.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t18/06_1_image900.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "点击两次返回，然后点击保存",
+      "imgs": [
+       "pp/t18/07_1_image901.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "控制 → 产品成本控制 → 产品成本计划 → 带数量结构的成本估算 → 成本核算变式：组件 → 定义评估变式",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 7
+   },
+   {
+    "no": 19,
+    "title": "定义日期控制",
+    "anchor": "t19",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "解释：日期控制也是成本核算变式中的一个参数。它控制成本核算中和日期相关的内容。后台",
+      "imgs": [
+       "pp/t19/01_1_image902.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t19/02_1_image903.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "点击新条目",
+      "imgs": [
+       "pp/t19/03_1_image904.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "控制 → 产品成本控制 → 产品成本计划 → 带数量结构的成本估算 → 成本核算变式：组件 → 定义日期控制",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 3
+   },
+   {
+    "no": 20,
+    "title": "定义数量结构控制",
+    "anchor": "t20",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "点击 PC01 左边的新建",
+      "after": 2
+     },
+     {
+      "kind": "tip",
+      "text": "点击新条目",
+      "after": 3
+     },
+     {
+      "kind": "tip",
+      "text": "保存",
+      "after": 4
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：“ 数量结构控制” 也是成本核算变式中的一个参数，在 SAP 中在和产品成本相关的场\n合谈到“数量结构”，其实就是指 BOM 和工艺路线，所以数量结构控制主要是控制系统如何选取 BOM 和工艺路线用于成本核算。",
+      "imgs": [
+       "pp/t20/01_1_image905.png",
+       "pp/t20/01_2_image906.png",
+       "pp/t20/01_1_image905.png",
+       "pp/t20/01_2_image906.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "双击 PC01 行",
+      "imgs": [
+       "pp/t20/02_1_image909.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t20/03_1_image910.png",
+       "pp/t20/04_1_image911.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "点击路径",
+      "imgs": [
+       "pp/t20/05_1_image912.jpeg"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "控制 → 产品成本控制 → 产品成本计划 → 带数量结构的成本估算 → 成本核算变式：组件 → 定义数量结构控制",
+    "tcodes": [
+     "PC01"
+    ],
+    "values": [],
+    "fb": "后台",
+    "nimg": 8
+   },
+   {
+    "no": 21,
+    "title": "定义成本核算变式",
+    "anchor": "t21",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "控制－产品成本控制生产－产品成本计划－带数量结构的成本估算－定义成本核算变式",
+      "imgs": [
+       "pp/t21/01_1_image913.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "复制 PPC1 并修改",
+      "imgs": [
+       "pp/t21/02_1_image914.jpeg"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击更新",
+      "note": true,
+      "imgs": [
+       "pp/t21/03_1_image915.jpeg"
+      ]
+     }
+    ],
+    "subs": [],
+    "path": "控制 → 产品成本控制生产 → 产品成本计划 → 带数量结构的成本估算 → 定义成本核算变式",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 3
+   },
+   {
+    "no": 22,
+    "title": "新建产品成本估算",
+    "anchor": "t22",
+    "desc": [
+     "解释：一般企业的“成本核算日期从”为下月初，这里未来进行计算改为操作当日，其余日期保持不变，点击回车键进入"
+    ],
+    "notes": [
+     {
+      "kind": "info",
+      "text": "注意：核对你的成本计算结果是否和屏幕上的一致，并分析这个结果是怎么产生的，同时将这个结果写下来。",
+      "after": 1
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：颐宁公司现在要根据产成品“铸钢泵 170-230”的 BOM 和工艺路线来技术更精确的产品成本，来取代原来在物料主数据中的估算的标准成本。\n会计核算－控制－产品成本控制－产品成本计划－物料成本核算－带数量结构的成本核算－CK11N 创建",
+      "imgs": [
+       "pp/t22/01_1_image916.png",
+       "pp/t22/01_2_image917.png",
+       "pp/t22/01_3_image918.jpeg",
+       "pp/t22/01_2_image917.png",
+       "pp/t22/01_3_image918.jpeg"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "解释：这就是该产成品的成本核算。屏幕左边是该产品的组件结构，右侧中部是不同视图的成本。我们主要使用的是“制造成本”。右侧下部是按项目明细的成本明细分析，我们可以看到按各道工序成本累加。我们可以通过相关菜单切换到成本构成分析。\n成本核算批量 10PC 是从产成品主数据的成本视图 1 中传递过来的。点击保存出现",
+      "imgs": [
+       "pp/t22/02_1_image921.jpeg"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t22/03_1_image922.png",
+       "pp/t22/03_2_image923.png",
+       "pp/t22/03_1_image922.png",
+       "pp/t22/03_2_image923.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "会计核算 → 控制 → 产品成本控制 → 产品成本计划 → 物料成本核算 → 带数量结构的成本核算 → CK11N 创建",
+    "tcodes": [
+     "CK11N"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 10
+   },
+   {
+    "no": 23,
+    "title": "标记价格",
+    "anchor": "t23",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "此时价格已经更新，",
+      "after": 4
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：这个步骤 SAP 称为“标记价格”，我们将把前面一个步骤的产成品价格估算“标记”成物料主数据中的“未来价格”",
+      "imgs": [
+       "pp/t23/01_1_image926.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击允许发布",
+      "imgs": [
+       "pp/t23/02_1_image927.png",
+       "pp/t23/02_2_image928.png",
+       "pp/t23/02_3_image931.png",
+       "pp/t23/02_1_image927.png",
+       "pp/t23/02_2_image928.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击保存后出现如下页面",
+      "imgs": [
+       "pp/t23/03_1_image932.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "解释：颐宁公司的账本月被打开，点击退回，点击 F8,如下图，再按返回如下图",
+      "imgs": [
+       "pp/t23/04_1_image933.png",
+       "pp/t23/04_2_image934.png",
+       "pp/t23/04_3_image937.png",
+       "pp/t23/04_1_image933.png",
+       "pp/t23/04_2_image934.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "会计核算 → 控制 → 产品成本控制 → 产品成本计划 → 物料成本核算 → CK24-价格更新",
+    "tcodes": [
+     "CK24"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 12
+   },
+   {
+    "no": 24,
+    "title": "显示产成品的将来计划价格",
+    "anchor": "t24",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "解释：本步骤中，我们将到铸钢泵 170-230 的主数据中去看价格标记的结果新价格将被更新为将来的计划价格。\n后勤－物料管理－物料主数据－物料－显示－MM03-显示当前",
+      "imgs": [
+       "pp/t24/01_1_image938.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "pp/t24/02_1_image939.png",
+       "pp/t24/02_2_image940.png",
+       "pp/t24/02_1_image939.png",
+       "pp/t24/02_2_image940.png"
+      ]
+     },
+     {
+      "caption": "此处应该显示计划价格 2538.66",
+      "imgs": [
+       "pp/t24/03_1_image943.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 物料管理 → 物料主数据 → 物料 → 显示 → MM03-显示当前",
+    "tcodes": [
+     "MM03"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 6
+   },
+   {
+    "no": 25,
+    "title": "发布价格",
+    "anchor": "t25",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "此页面本来会显示标准价格 3072（本应该是 4440.32 检查）",
+      "after": 2
+     },
+     {
+      "kind": "info",
+      "text": "解释：如果该产成品有库存存在，系统还会自动生产会计凭证。颐宁公司在系统中现在还没有产成品库存，所以只是更新标准价格。",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：此步将未来价格发布，这样系统将更新产成品的标准成本。前台\n会计－控制－产品成本控制－产品成本计划－物料成本核算－CK24-价格更新",
+      "imgs": [
+       "pp/t25/01_1_image944.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击发布点击 F8",
+      "imgs": [
+       "pp/t25/02_1_image945.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 控制 → 产品成本控制 → 产品成本计划 → 物料成本核算 → CK24-价格更新",
+    "tcodes": [
+     "CK24"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 2
+   },
+   {
+    "no": 26,
+    "title": "显示产成品已发布的计划价格",
+    "anchor": "t26",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "点击当前，可以看到物料成本估算",
+      "after": 3
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：依然到产成品的物料主数据中去查看刚才价格发布的效果。后勤－物料管理－物料主数据－物料－显示－MM03-显示当前",
+      "imgs": [
+       "pp/t26/01_1_image946.png",
+       "pp/t26/01_2_image947.png",
+       "pp/t26/01_1_image946.png",
+       "pp/t26/01_2_image947.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t26/02_1_image950.png",
+       "pp/t26/03_1_image951.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "应该标准价格会是 4440.32（原因同前步骤）",
+      "imgs": [
+       "pp/t26/04_1_image952.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t26/05_1_image953.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "解释：依然到产成品的物料主数据中去查看刚才价格发布的效果。后勤 → 物料管理 → 物料主数据 → 物料 → 显示 → MM03-显示当前",
+    "tcodes": [
+     "MM03"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 8
+   },
+   {
+    "no": 27,
+    "title": "定义实际成本核算的估价变式",
+    "anchor": "t27",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "解释：前面我们计算并发布了产成品的标准成本，在本步骤中我们将为生产订单的实际成本估算分配估价变式。",
+      "imgs": [
+       "pp/t27/01_1_image954.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t27/02_1_image955.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "以上是已经分配了生产订单实际成本估价变式的工厂清单，点击新条目",
+      "imgs": [
+       "pp/t27/03_1_image956.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "控制 → 产成品成本控制 → 成本对象控制 → 按订单划分的产品成本 → 定义订单交货的货物接收评估",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 3
+   },
+   {
+    "no": 28,
+    "title": "定义在制品结果分析版本",
+    "anchor": "t28",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "选择 C999 进入维护，这里是在产品结果分析的详细屏幕，当中的按钮是可以展开详细维护的。为了简便起见，我们只作简单的维护。",
+      "after": 3
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：在本教程使用的离散式生产模式下，我们按生产订单来管理生产，对于月末未完工的生产订单，系统是将生产订单的实际成本余额转作在制品。同时，我们也可以对在制品进行结果分析来分析到目前位置生产订单的效率，这个概念和 SAP 中项目管理等的结果分析是一致的。在本步骤中我们定义一个简单的在制品结果分析版本。",
+      "imgs": [
+       "pp/t28/01_1_image957.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t28/02_1_image958.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "点击新条目",
+      "imgs": [
+       "pp/t28/03_1_image959.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t28/04_1_image960.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "控制 → 产品成本控制 → 成本对象控制 → 按订单划分的产品成本 → 期末结算 → 在产品 → 定义结果分析版本",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 4
+   },
+   {
+    "no": 29,
+    "title": "定义可用性检查",
+    "anchor": "t29",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "这里我们使用 02，用系统预设的",
+      "after": 1
+     }
+    ],
+    "steps": [
+     {
+      "caption": "生产－商店底价控制－工序－可用性检查－定义检查组",
+      "imgs": [
+       "pp/t29/01_1_image961.png",
+       "pp/t29/01_2_image962.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "生产 → 商店底价控制 → 工序 → 可用性检查 → 定义检查组",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 2
+   },
+   {
+    "no": 30,
+    "title": "定义可用性检查范围",
+    "anchor": "t30",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "info",
+      "text": "解释：这里定义了哪些库存，哪些向内或向外的物料移动是包含在检查范围内的等等，比如质检库存是包含在可用物料内的，而安全库存是不包含的，等等",
+      "after": 3
+     }
+    ],
+    "steps": [
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "pp/t30/01_1_image963.png"
+      ]
+     },
+     {
+      "caption": "解释：此步中，我们根据物料主数据中的 “ 可用性检查组” 和生产订单类型中的 “ 检查规则”确定了可用性检查的范围。。\n生产－商店底价控制－工序－可用性检查－定义检查范围",
+      "imgs": [
+       "pp/t30/02_1_image964.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "和本教材相关的组合是“02 检查组”和“PP 检查规则”双击",
+      "imgs": [
+       "pp/t30/03_1_image965.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "生产 → 商店底价控制 → 工序 → 可用性检查 → 定义检查范围",
+    "tcodes": [],
+    "values": [],
+    "fb": "后台",
+    "nimg": 3
+   },
+   {
+    "no": 31,
+    "title": "定义可用性检查控制",
+    "anchor": "t31",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "解释：在颐宁公司对于标准生产订单类型 PP01，我们是否需要在订单创建或下达的时候自动检查物料的可用性、PRT（生产资源和工具）的可用性、产能的可用性，以及检查规则等后台",
+      "imgs": [
+       "pp/t31/01_1_image966.png",
+       "pp/t31/01_2_image967.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "用复制模板 0001 的方式维护颐宁工厂，选中工厂 0001，类型PP01 、PP02两行复制",
+      "imgs": [
+       "pp/t31/02_1_image968.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t31/03_1_image969.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "解释：我们没有在颐宁工厂的标准生产订单 PP01 创建的时候自动检查三种可用性，但是这并不禁止我们手工出发可用性检查",
+      "imgs": [
+       "pp/t31/04_1_image970.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "生产 → 商店底价控制 → 工序 → 可用性检查 → 定义检查控制",
+    "tcodes": [
+     "PP01",
+     "PP02"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 5
+   },
+   {
+    "no": 32,
+    "title": "维护物料主数据的计划策略组",
+    "anchor": "t32",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "info",
+      "text": "解释：“ 计划策略组” 可以说是销售和分销 SD 以及 PP 最重要的集成参数，它决定了销售和生产在计划上的衔接。这个参数是维护在物料主数据 MRP3 视图中的，SAP 在这个领域展现了强大的灵活性，这既体现在丰富的可选的不同的生产组件层面上维护的。",
+      "after": 0
+     },
+     {
+      "kind": "tip",
+      "text": "40 首先它是按库存生产的，生产计划的依据是计划部门维护的独立需求计划，但是销售订单对于计划仍然是有影响的，销售订单会消耗独立需求计划。当销售订单消耗完独立需求计划时，多出计划的订单需求将增加生产计划。这种策略在按库存生产（非按单生产的）组装生产中比较多，但是和生产量非常巨大的，同样是按库存生产的日用品又不一样",
+      "after": 3
+     },
+     {
+      "kind": "tip",
+      "text": "重复同样的方法，维护 T999-100",
+      "after": 3
+     }
+    ],
+    "steps": [
+     {
+      "caption": "后勤－生产－主数据－物料主数据－更改－MM02-立即",
+      "imgs": [
+       "pp/t32/01_1_image971.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "pp/t32/02_1_image972.png"
+      ]
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t32/03_1_image973.png",
+       "pp/t32/04_1_image974.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 生产 → 主数据 → 物料主数据 → 更改 → MM02-立即",
+    "tcodes": [
+     "MM02"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 4
+   },
+   {
+    "no": 33,
+    "title": "创建物料的独立需求计划",
+    "anchor": "t33",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "info",
+      "text": "解释：本教材中生产计划模块的流程起点是创建产成品和贸易商品的周需求计划，之所以称为独立需求计划是因为这个需求不是像半成品或原材料的需求是来自于上一层产成品的需求的，而半成品和原材料的来自于上层的需求被称之为非独立需求。",
+      "after": 0
+     }
+    ],
+    "steps": [
+     {
+      "caption": "后勤－生产－生产计划编制－需求管理－已计划的独立需求－MD61-创建",
+      "imgs": [
+       "pp/t33/01_1_image975.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "pp/t33/02_1_image976.png"
+      ]
+     },
+     {
+      "caption": "解释：填写从今天到下月末，创建月的周计划，回车后",
+      "imgs": [
+       "pp/t33/03_1_image977.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "具体数据可自行输入，保存后再输入 T999-100 的周独立需求计划",
+      "imgs": [
+       "pp/t33/04_1_image978.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t33/05_1_image979.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 生产 → 生产计划编制 → 需求管理 → 已计划的独立需求 → MD61-创建",
+    "tcodes": [
+     "MD61"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 5
+   },
+   {
+    "no": 34,
+    "title": "显示MRP 清单",
+    "anchor": "t34",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "由于没有运行 MRP，所以独立需求计划的数据没有传递过来，MRP 清单的数据是静态的，必须要到 MRP 运行后才会发生数值的变化。点击回退显示 T999-100 的MRP 清单",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：在运行 MRP 之前，先让我们来显示一下 MRP 清单。现在显示的是上次 MRP 运行的静态数据。\n后勤－生产－物料需求计划－评估－MD05-MRP 清单",
+      "imgs": [
+       "pp/t34/01_1_image980.png",
+       "pp/t34/01_2_image981.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t34/02_1_image982.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "此处显示的上次运行 MRP 后的结果，请注意屏幕上方的时间戳。",
+      "imgs": [
+       "pp/t34/03_1_image983.jpeg"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 生产 → 物料需求计划 → 评估 → MD05-MRP 清单",
+    "tcodes": [
+     "MD05"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 4
+   },
+   {
+    "no": 35,
+    "title": "显示库存/需求清单",
+    "anchor": "t35",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "切换 F999-100",
+      "after": 2
+     },
+     {
+      "kind": "info",
+      "text": "注意，这里没有时间戳，库存需求清单中已经将独立需求计划的数据传递了过来。库存需求清单是动态变化的。",
+      "after": 3
+     }
+    ],
+    "steps": [
+     {
+      "caption": "后勤－生产－物料需求计划－评估－MD04-库存/需求清单",
+      "note": true,
+      "imgs": [
+       "pp/t35/01_1_image984.png",
+       "pp/t35/01_2_image985.png",
+       "pp/t35/01_1_image984.png",
+       "pp/t35/01_2_image985.png"
+      ]
+     },
+     {
+      "caption": "解释：作为比较，我们来显示一下“库存/需求清单”。“ 库存/需求清单”是动态的，它显示的是当前某种物料的需求和供给的情况，并且已经将新创建的独立需求显示出来。",
+      "imgs": [
+       "pp/t35/02_1_image988.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t35/03_1_image989.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 生产 → 物料需求计划 → 评估 → MD04-库存/需求清单",
+    "tcodes": [
+     "MD04"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 6
+   },
+   {
+    "no": 36,
+    "title": "运行物料需求计划",
+    "anchor": "t36",
+    "desc": [
+     "000000000xx库存 xx.xx.2021"
+    ],
+    "notes": [
+     {
+      "kind": "info",
+      "text": "解释：这是产成品铸钢泵 170-230 MRP 运行的结果，我们可以看到对于每一项独立需求都安排了相应的计划订单。同时针对安全库存的旧的计划订单由于开始时间是在过去被修改到可行的时间",
+      "after": 4
+     },
+     {
+      "kind": "tip",
+      "text": "查 看 完 后 ， 在 保 存 前 显 示结 果的 方框 前打 勾， 按回 车键 重新运行 MRP",
+      "after": 5
+     }
+    ],
+    "steps": [
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "pp/t36/01_1_image990.png",
+       "pp/t36/01_2_image991.png"
+      ]
+     },
+     {
+      "caption": "解释：本步骤将由系统自动按照 BOM 来展开物料需求后勤－生产－物料需求计划－计划－MD02-单项，多层",
+      "imgs": [
+       "pp/t36/02_1_image992.png",
+       "pp/t36/02_2_image993.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t36/03_1_image994.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "双击 F999-100，进入",
+      "imgs": [
+       "pp/t36/04_1_image995.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "000000000xx/库存 xx.xx.2021\n回退，双击物料 R999-100",
+      "imgs": [
+       "pp/t36/05_1_image996.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "我们可以看到，对于原材料来说，生成了许多非独立需求 DepReq，这些非独立需求是针对产成品 F999-100的 ，这些非独立需求的日期考虑了生产提前期。针对这些需求系统生成了新的计划订单，于此同时，原来的采购申请也被修改了日期。\n18.05.2021 PurRqs 0010000020/00010 14.05.2021",
+      "imgs": [
+       "pp/t36/06_1_image997.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "pp/t36/07_1_image998.png"
+      ]
+     },
+     {
+      "caption": "重复上述方法，对 T999-100 运行 MRP",
+      "imgs": [
+       "pp/t36/08_1_image999.png",
+       "pp/t36/08_2_image1000.png",
+       "pp/t36/08_1_image999.png",
+       "pp/t36/08_2_image1000.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t36/09_1_image1003.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "解释：本步骤将由系统自动按照 BOM 来展开物料需求后勤 → 生产 → 物料需求计划 → 计划 → MD02-单项，多层",
+    "tcodes": [
+     "MD02"
+    ],
+    "values": [
+     {
+      "k": "都修改到了",
+      "v": "15.05.2007"
+     }
+    ],
+    "fb": null,
+    "nimg": 14
+   },
+   {
+    "no": 37,
+    "title": "将计划订单转换为生产订单",
+    "anchor": "t37",
+    "desc": [
+     "解释：计划订单中的内容被复制到了屏幕中的生产订单创建中。这时系统根据产成品的工艺路线重新安排了排程计划，确定了完成日期，"
+    ],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "点击保存",
+      "after": 4
+     },
+     {
+      "kind": "tip",
+      "text": "同样的方法把其他计划订单也转化为生产订单",
+      "after": 4
+     }
+    ],
+    "steps": [
+     {
+      "caption": "后勤－生产－物料需求计划－评估－MD04-库存/需求清单",
+      "note": true,
+      "imgs": [
+       "pp/t37/01_1_image1004.png"
+      ]
+     },
+     {
+      "caption": "解释：MRP 运行有两个主要结果：一个是对产成品生成计划订单，另外一个是对原材料产生采购申请。本步骤中我们将产成品的计划订单转换成正式的生产订单。\n我们可以在此清单中直接完成转换的操作",
+      "imgs": [
+       "pp/t37/02_1_image1005.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "解释：屏幕中显示的是该计划订单的主要信息，在下方的一排按钮可以执行各种转换操作，我们将该计划订单转换成生产订单，点击生产订单键，点后退",
+      "imgs": [
+       "pp/t37/03_1_image1006.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t37/04_1_image1007.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 生产 → 物料需求计划 → 评估 → MD04-库存/需求清单",
+    "tcodes": [
+     "MD04"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 4
+   },
+   {
+    "no": 38,
+    "title": "显示生产订单清单",
+    "anchor": "t38",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "info",
+      "text": "解释：在这里我们看到了生产订单的清单。清单中是生产订单最主要的一些信息。这个清单并不是一个报表，从这个清单我们可以进行很多操作，比如更改生产订单、显示订单、打印生产订单等等。",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：这一步我们到信息系统中去查看颐宁公司新的生产订单的清单。前台",
+      "imgs": [
+       "pp/t38/01_1_image1008.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t38/02_1_image1009.png",
+       "pp/t38/02_2_image1010.png",
+       "pp/t38/02_1_image1009.png",
+       "pp/t38/02_2_image1010.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 生产 → 车间现场控制 → 信息系统 → COOIS-订单信息系统",
+    "tcodes": [
+     "COOIS"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 5
+   },
+   {
+    "no": 39,
+    "title": "将采购申请转换为采购订单",
+    "anchor": "t39",
+    "desc": [
+     "解释：这是采购订单创建的屏幕，屏幕左侧是我们选中的采购申请号，右侧是采购订单创建的标准屏幕",
+     "输入供应商 10000001 长平铁工厂，采购组织 Y999 公司代码 C999，采购组 PG1",
+     "点击采用按钮，点击保存。",
+     "同样的方法把其他采购申请都转换为采购订单。",
+     "采购申请转换为采购订单，供应商和物料间 的关系参照供应商和物料之间的关系。"
+    ],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "具体位置如下图：",
+      "after": 3
+     },
+     {
+      "kind": "info",
+      "text": "解释：这时，屏幕下侧变成了原材料罩壳的库存需求清单，我们可以看到来自于产成品的非独立需求 DepReq ,随着产成品生产订单的创建转换成了订单预留 OrdRes。现在我们将采购申请转换成采购订单",
+      "after": 6
+     },
+     {
+      "kind": "tip",
+      "text": "同样通过 MD04 将 R999-200、R999-300、R999-400 和 R999-500 以及贸易商品 T999-100 的",
+      "after": 8
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：此步骤将 MRP 生成的对于原材料的采购申请转换为采购订单。前台\n后勤－生产－物料需求计划－评估－MD04-库存/需求清单",
+      "imgs": [
+       "pp/t39/01_1_image1013.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t39/02_1_image1014.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "我们仍然在库存需求清单中完成采购申请的转换",
+      "imgs": [
+       "pp/t39/03_1_image1015.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "可以看到，上步骤转换的生产订单也显示出来了。点击建立订单结构按钮",
+      "imgs": [
+       "pp/t39/04_1_image1016.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t39/05_1_image1017.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "屏幕左侧出现了针对产成品的第一个生产订单 1000000的组建树，右侧依然是产成品的库存需求清单\n双击原材料 R999-200，进入",
+      "imgs": [
+       "pp/t39/06_1_image1018.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "双击采购申请 PurRqs 0010000021/00010，进入",
+      "imgs": [
+       "pp/t39/07_1_image1019.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击采购订单，进入",
+      "imgs": [
+       "pp/t39/08_1_image1020.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "R999-500 10000000\nT999-100 20000000 PG2",
+      "imgs": [
+       "pp/t39/09_1_image1021.jpeg"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "pp/t39/10_1_image1022.jpeg",
+       "pp/t39/10_2_image1023.jpeg"
+      ]
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "pp/t39/11_1_image1024.jpeg"
+      ]
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t39/12_1_image1025.jpeg"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 生产 → 物料需求计划 → 评估 → MD04-库存/需求清单",
+    "tcodes": [
+     "MD04"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 13
+   },
+   {
+    "no": 40,
+    "title": "对采购订单收货",
+    "anchor": "t40",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "此外对贸易商品库存地点为 0003",
+      "after": 2
+     },
+     {
+      "kind": "tip",
+      "text": "点击采用，将同一供应商的货物一次收了，记得勾上项目确定，库存地点为0001，采用同样的方法把原材料都收了，",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "后勤－物料管理－库存管理－货物移动－收货－对采购订单－采购订单的 GR（MIGO）",
+      "imgs": [
+       "pp/t40/01_1_image1026.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t40/02_1_image1027.jpeg"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 物料管理 → 库存管理 → 货物移动 → 收货 → 对采购订单 → 采购订单的 GR（MIGO）",
+    "tcodes": [
+     "MIGO"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 2
+   },
+   {
+    "no": 41,
+    "title": "输入采购发票",
+    "anchor": "t41",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "解释：这一步我们为前面的采购订单输入采购发票，并执行发票校验。前台\n后勤－物料管理－后勤发票校验－凭证输入－MIRO-输入发票",
+      "imgs": [
+       "pp/t41/01_1_image1028.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "pp/t41/02_1_image1029.png"
+      ]
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t41/03_1_image1030.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "重复同样的办法，对所有前面的采购订单进行发票预制运行事务代码 MRBR 下达冻结发票",
+      "imgs": [
+       "pp/t41/04_1_image1031.jpeg"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击批准发票 F9（绿色小旗帜）",
+      "imgs": [
+       "pp/t41/05_1_image1032.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 物料管理 → 后勤发票校验 → 凭证输入 → MIRO-输入发票",
+    "tcodes": [
+     "MIRO",
+     "MRBR"
+    ],
+    "values": [],
+    "fb": null,
+    "nimg": 5
+   },
+   {
+    "no": 42,
+    "title": "下达生产订单",
+    "anchor": "t42",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "在收货页，要把收货勾上勾",
+      "after": 3
+     }
+    ],
+    "steps": [
+     {
+      "caption": "后勤－生产－生产控制－订单－CO02-更改",
+      "note": true,
+      "imgs": [
+       "pp/t42/01_1_image1033.png"
+      ]
+     },
+     {
+      "caption": "解释：和内部订单类似生产订单也是采用 “ 状态管理” 的，前面创建的生产订单还不能执行，只有在我们将它下达后，它才能被执行",
+      "imgs": [
+       "pp/t42/02_1_image1034.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t42/03_1_image1035.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "点击屏幕上方的状态，行显示了这张生产订单目前的状态，可以点击旁边的 i 按钮查看其状态 点击绿色旗帜下达生产订单，屏幕下方出现提示，下达已执行，点击保存，使用同样的方法下达其他生产订单",
+      "imgs": [
+       "pp/t42/04_1_image1036.png",
+       "pp/t42/04_2_image1037.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t42/05_1_image1038.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 生产 → 生产控制 → 订单 → CO02-更改",
+    "tcodes": [
+     "CO02"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 6
+   },
+   {
+    "no": 43,
+    "title": "对生产订单发货",
+    "anchor": "t43",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "点击会计凭证",
+      "after": 6
+     },
+     {
+      "kind": "tip",
+      "text": "退回，重复同样的办法，对其余已经下达的生产订单发货",
+      "after": 8
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：产成品铸钢泵 170-230 的生产订单下达后就可以开始生产订单的执行，本步骤我们给生产订单发原材料。\n后勤－物料管理－库存管理－货物移动－MB1A-发货",
+      "imgs": [
+       "pp/t43/01_1_image1039.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "回车",
+      "note": true,
+      "imgs": [
+       "pp/t43/02_1_image1040.png"
+      ]
+     },
+     {
+      "caption": "点击到订单，输入生产订单号及工厂",
+      "imgs": [
+       "pp/t43/03_1_image1041.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "系统自动将订单中尚未发货的物料复制过来，点击保存",
+      "imgs": [
+       "pp/t43/04_1_image1042.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击发货菜单---显示",
+      "imgs": [
+       "pp/t43/05_1_image1043.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "回车后看到",
+      "imgs": [
+       "pp/t43/06_1_image1044.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t43/07_1_image1045.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "双击会计凭证，如下",
+      "imgs": [
+       "pp/t43/08_1_image1046.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 物料管理 → 库存管理 → 货物移动 → MB1A-发货",
+    "tcodes": [],
+    "values": [],
+    "fb": "前台",
+    "nimg": 8
+   },
+   {
+    "no": 44,
+    "title": "工单确认",
+    "anchor": "t44",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "重复上述办法，对工序 20、30、40 和 50 进行报工。产成品 F999-100 共有六道工序，分别为 10、20、30、40、50 出对工序已经改动了计划人工工时外，其余都保留系统自动带出的计划值。",
+      "after": 5
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：本步骤是生产订单的执行过程，对于已经完成的各道工序进行逐个的确认和报工，我们称之为工票确认或计工单。",
+      "imgs": [
+       "pp/t44/01_1_image1047.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "按回车",
+      "imgs": [
+       "pp/t44/02_1_image1048.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "点击货物移动",
+      "note": true,
+      "imgs": [
+       "pp/t44/03_1_image1049.png"
+      ]
+     },
+     {
+      "caption": "点击回车后，如下所示",
+      "note": true,
+      "imgs": [
+       "pp/t44/04_1_image1050.png",
+       "pp/t44/04_2_image1051.png"
+      ]
+     },
+     {
+      "caption": "这里我们看到产成品尚未完工收获，点击保存按钮，继续对其他工序进行确认，这次我们选择并行的工序，油漆罩壳\n点击货物移动，单击保存",
+      "imgs": [
+       "pp/t44/05_1_image1052.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t44/06_1_image1053.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "pp/t44/07_1_image1054.png",
+       "pp/t44/07_2_image1055.png"
+      ]
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t44/08_1_image1056.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 生产 → 生产控制 → 确认 → 回车 → 用于操作 → CO11N-计工单",
+    "tcodes": [
+     "CO11N"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 10
+   },
+   {
+    "no": 45,
+    "title": "对生产订单收货",
+    "anchor": "t45",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "这个屏幕和采购收货类似，只是我们只需要填写的是生产订单(1000013)的编号。（记得在订单上收货页把收货的勾勾上）",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：产品铸钢泵 170-230 的生产经过各道工序的加工后正式完工，本步骤进行订单完工收货",
+      "imgs": [
+       "pp/t45/01_1_image1057.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t45/02_1_image1058.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 物料管理 → 库存管理 → 货物移动 → 收货 → 订单的 GR（MIGO） MIGO_GO",
+    "tcodes": [
+     "MIGO"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 2
+   },
+   {
+    "no": 46,
+    "title": "显示生产订单的成本",
+    "anchor": "t46",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t46/01_1_image1059.png",
+       "pp/t46/02_1_image1060.png",
+       "pp/t46/02_2_image1061.jpeg",
+       "pp/t46/02_1_image1060.png",
+       "pp/t46/02_2_image1061.jpeg"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 生产 → 生产控制 → 订单 → CO03-显示",
+    "tcodes": [
+     "CO03"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 5
+   },
+   {
+    "no": 47,
+    "title": "对生产订单技术性完成",
+    "anchor": "t47",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "查看状态",
+      "after": 1
+     }
+    ],
+    "steps": [
+     {
+      "caption": "解释：生产订单有四种系统标准状：创建、下达、技术性完成和关闭。当生产订单和生产相关的各项操作完成后应该将生产订单作技术性完成，但是这时候我们仍然可以做诸如订单结算等特殊的操作，当所有的操作都完成后，我们才将订单关闭。\n后勤－生产－生产控制－订单－CO02-更改",
+      "imgs": [
+       "pp/t47/01_1_image1064.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t47/02_1_image1065.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 生产 → 生产控制 → 订单 → CO02-更改",
+    "tcodes": [
+     "CO02"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 2
+   },
+   {
+    "no": 48,
+    "title": "生产订单差异结算",
+    "anchor": "t48",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "解释：46 的时候我们发现该生产订单的实际成本中有余额，这就意味着投入高过产出，我们称之为生产订单的差异，从会计角度来讲，生产订单差异需要做结算。\n会计－控制－产品成本控制－成本对象控制－按订单划分的产品成本－期末结算－单一功能－KO88 单个处理",
+      "imgs": [
+       "pp/t48/01_1_image1066.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t48/02_1_image1067.png"
+      ],
+      "mergeable": true
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 控制 → 产品成本控制 → 成本对象控制 → 按订单划分的产品成本 → 期末结算 → 单一功能 → KO88 单个处理",
+    "tcodes": [
+     "KO88"
+    ],
+    "values": [],
+    "fb": "前台",
+    "nimg": 2
+   },
+   {
+    "no": 49,
+    "title": "生产订单成本报表显示",
+    "anchor": "t49",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "info",
+      "text": "解释：这一步我们到信息系统中去查看生产订单的成本报表前台",
+      "after": 1
+     }
+    ],
+    "steps": [
+     {
+      "caption": "会计－控制－产品成本控制－成本对象控制－按订单划分的产品成本－信息系统－按订单的产品成本报表－详细的报表－KKBC_ORD-用于订单",
+      "note": true,
+      "imgs": [
+       "pp/t49/01_1_image1068.png",
+       "pp/t49/01_2_image1069.jpeg"
+      ]
+     }
+    ],
+    "subs": [],
+    "path": "会计 → 控制 → 产品成本控制 → 成本对象控制 → 按订单划分的产品成本 → 信息系统 → 按订单的产品成本报表 → 详细的报表 → KKBC_ORD-用于订单",
+    "tcodes": [],
+    "values": [],
+    "fb": null,
+    "nimg": 2
+   },
+   {
+    "no": 50,
+    "title": "显示库存清单",
+    "anchor": "t50",
+    "desc": [],
+    "notes": [],
+    "steps": [
+     {
+      "caption": "后勤－生产－物料需求计划－评估－MD04 库存需求清单",
+      "note": true,
+      "imgs": [
+       "pp/t50/01_1_image1070.png",
+       "pp/t50/01_2_image1071.png"
+      ]
+     },
+     {
+      "caption": "解释：完成了生产，查看一下库存需求清单，来看看产成品的需求和供给的平衡状态。前台",
+      "imgs": [
+       "pp/t50/02_1_image1072.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "",
+      "imgs": [
+       "pp/t50/03_1_image1073.png"
+      ],
+      "mergeable": true
+     },
+     {
+      "caption": "同样的方法，查看 T999-100",
+      "imgs": [
+       "pp/t50/04_1_image1074.png"
+      ],
+      "mergeable": false
+     },
+     {
+      "caption": "T999-100 全在 0003 运输库中",
+      "note": true,
+      "imgs": [
+       "pp/t50/05_1_image1075.png"
+      ]
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 生产 → 物料需求计划 → 评估 → MD04 库存需求清单",
+    "tcodes": [
+     "MD04"
+    ],
+    "values": [
+     {
+      "k": "双击",
+      "v": "Stock"
+     }
+    ],
+    "fb": null,
+    "nimg": 6
+   },
+   {
+    "no": 51,
+    "title": "存货移库",
+    "anchor": "t51",
+    "desc": [],
+    "notes": [
+     {
+      "kind": "tip",
+      "text": "完成后点击保存",
+      "after": 2
+     }
+    ],
+    "steps": [
+     {
+      "caption": "",
+      "note": true,
+      "imgs": [
+       "pp/t51/01_1_image1076.png"
+      ]
+     },
+     {
+      "caption": "解释：PP 的步骤都已经完成，最后我们将部分产成品的库存从生产仓库移存到销售运输仓库，。\n后勤－物料管理－库存管理－货物移动－MB1B-转移记账",
+      "imgs": [
+       "pp/t51/02_1_image1077.png"
+      ],
+      "mergeable": false
+     }
+    ],
+    "subs": [],
+    "path": "后勤 → 物料管理 → 库存管理 → 货物移动 → MB1B-转移记账",
+    "tcodes": [],
+    "values": [],
+    "fb": "前台",
+    "nimg": 2
+   }
+  ]
+ }
+}

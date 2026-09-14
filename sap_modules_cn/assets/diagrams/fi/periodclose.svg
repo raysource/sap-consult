@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 348" width="1280" height="348" role="img" aria-label="期末序列：从号码范围到资产负债表" font-family="'PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<title>期末序列：从号码范围到资产负债表</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0a6ed1"/></marker><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#007272"/></marker><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffffff"/></marker><marker id="arback" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M10,0 L0,5 L10,10 z" fill="#b3261e"/></marker></defs>
+<rect width="1280" height="348" fill="#ffffff"/>
+<text x="40.0" y="46.0" font-size="22" fill="#1d2d3e" text-anchor="start" font-weight="700">期末序列：从号码范围到资产负债表</text>
+<text x="40.0" y="72.0" font-size="12.5" fill="#6b7a8d" text-anchor="start" font-weight="400">教材 FI 任务 15–19、42–45 的顺序；先管时间，再对余额，最后出报表</text>
+<rect x="40.0" y="104.0" width="150.0" height="51.0" rx="9" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.5"/>
+<circle cx="58.0" cy="122.0" r="12" fill="#0a6ed1"/><text x="58.0" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">1</text>
+<text x="76.0" y="127.0" font-size="14" fill="#0a6ed1" text-anchor="start" font-weight="700">凭证号码范围</text>
+<text x="52.0" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">0001 → C999（任务</text>
+<text x="52.0" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">15）</text>
+<path d="M 192 130 H 216" fill="none" stroke="#0a6ed1" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="220.0" y="104.0" width="150.0" height="51.0" rx="9" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.5"/>
+<circle cx="238.0" cy="122.0" r="12" fill="#0a6ed1"/><text x="238.0" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">2</text>
+<text x="256.0" y="127.0" font-size="14" fill="#0a6ed1" text-anchor="start" font-weight="700">记账期间变式</text>
+<text x="232.0" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">P999；分配给公司代码</text>
+<text x="232.0" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">（任务 16/17）</text>
+<path d="M 372 130 H 396" fill="none" stroke="#0a6ed1" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="400.0" y="104.0" width="150.0" height="51.0" rx="9" fill="#e6f2f2" stroke="#007272" stroke-width="1.5"/>
+<circle cx="418.0" cy="122.0" r="12" fill="#007272"/><text x="418.0" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">3</text>
+<text x="436.0" y="127.0" font-size="14" fill="#007272" text-anchor="start" font-weight="700">前台开关期间</text>
+<text x="412.0" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">S_ALR_87003642：开</text>
+<text x="412.0" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">账与关账（任务 18）</text>
+<path d="M 552 130 H 576" fill="none" stroke="#007272" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="580.0" y="104.0" width="150.0" height="51.0" rx="9" fill="#e6f2f2" stroke="#007272" stroke-width="1.5"/>
+<circle cx="598.0" cy="122.0" r="12" fill="#007272"/><text x="598.0" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">4</text>
+<text x="616.0" y="127.0" font-size="14" fill="#007272" text-anchor="start" font-weight="700">容差与核对</text>
+<text x="592.0" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">雇员容差组（19）/</text>
+<text x="592.0" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">应收应付容差组（22）</text>
+<path d="M 732 130 H 756" fill="none" stroke="#007272" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="760.0" y="104.0" width="150.0" height="51.0" rx="9" fill="#fdf3d7" stroke="#8d6e00" stroke-width="1.5"/>
+<circle cx="778.0" cy="122.0" r="12" fill="#8d6e00"/><text x="778.0" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">5</text>
+<text x="796.0" y="127.0" font-size="14" fill="#8d6e00" text-anchor="start" font-weight="700">科目余额表</text>
+<text x="772.0" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">S_ALR_87012276：C99</text>
+<text x="772.0" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">9 / 2021 / 期间</text>
+<text x="772.0" y="180.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">1–16（任务 42）</text>
+<path d="M 912 130 H 936" fill="none" stroke="#8d6e00" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="940.0" y="104.0" width="150.0" height="51.0" rx="9" fill="#efeaf9" stroke="#5b3fa8" stroke-width="1.5"/>
+<circle cx="958.0" cy="122.0" r="12" fill="#5b3fa8"/><text x="958.0" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">6</text>
+<text x="976.0" y="127.0" font-size="14" fill="#5b3fa8" text-anchor="start" font-weight="700">报表结构</text>
+<text x="952.0" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">会计报表版本 +</text>
+<text x="952.0" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">报表项目科目范围（任</text>
+<text x="952.0" y="180.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">务 44）</text>
+<path d="M 1092 130 h 14 V 164 H 20 V 226 h -14" fill="none" stroke="#5b3fa8" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+<rect x="40.0" y="200.0" width="150.0" height="51.0" rx="9" fill="#e6f2ec" stroke="#177245" stroke-width="1.5"/>
+<circle cx="58.0" cy="218.0" r="12" fill="#177245"/><text x="58.0" y="222.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">7</text>
+<text x="76.0" y="223.0" font-size="14" fill="#177245" text-anchor="start" font-weight="700">资产负债表</text>
+<text x="52.0" y="242.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">资产 223.680 / 权益</text>
+<text x="52.0" y="259.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">223.680（任务 45）</text>
+<rect x="40.0" y="300.0" width="1200.0" height="34.5" rx="8" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="52.0" y="322.0" font-size="12.5" fill="#0854a0" text-anchor="start" font-weight="400">关账的边界：关掉的期间不允许再记账与修改，但之前的凭证仍可查询；报表能不能出数，取决于留存收益科目（任务 09）与报表项目科目范围（任务 44）。</text>
+</svg>

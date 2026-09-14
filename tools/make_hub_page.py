@@ -25,6 +25,15 @@ SITES = [
     ("sap_sd_cn", "SAP S/4HANA 中文实训站（全模块手册・原文中文）", "中文",
      "教材文档 S4.docx（425 页・実機スクリーンショット 1385 枚）準拠の中国語站。FI / CO / MM / PP / SD の 6 大模块・222 任務の手顺＋実機画面。"
      "画面は生成図ではなく原文档の実機截图。T-code 速查・排錯・任務索引・讲师版/学员版/自测 付き。"),
+    ("sap_cn", "SAP SD 培训课程（从概念到流程 / 总体到局部）", "SD 课程",
+     "SD 专项课程站（16 页）：概念 → 组织结构 → 主数据 → 定价 → 端到端流程（询价·报价·订单·交货·发货·开票·收款）→ 配置（48 任务）→ 分析 → 实训。"
+     "每个环节配真实 SAP GUI 中文界面截图（269 张，取自教材 S4.docx 的 SD 模块与准备章）与自绘的流程图/结构图/思维导图（7 张）。"
+     "讲师版・学员记入表・30 题自测・术语/T-code 速查・Excel 8 表付き。"),
+    ("sap_modules_cn", "SAP 全模块培训课件（MM / PP / FI / CO）", "全模块课程",
+     "中文的 MM / PP / FI / CO 四模块课程（各 14 页 ＋ 总览页）：概念 → 组织结构 → 主数据 → 端到端流程 → "
+     "三篇操作手顺（含教材全部 172 个任务的 IMG 路径与逐步画面）→ SPRO 配置 → 实训 → 讲师版/学员版/30 题自测/术语。"
+     "画面全部取自教材 S4.docx 的这四个模块（940 张真实 SAP GUI 中文界面截图，保留原图文件名可回查），"
+     "另有 32 张自绘 SVG（思维导图 / 组织树 / 数据结构 / 流程图 / 泳道图 / 集成图 / 决定链）。"),
     ("sap_sd", "SD 受注処理（Sales Order Processing）", "SD",
      "録画（SAP Education Unit 14）準拠。伝票データの 4 つの源泉・販売エリア導出・出荷プラントの優先順位・明細カテゴリ決定・変更時の再決定・Sales Summary（VC/2）。受注の「読み方」の土台。"),
     ("sapmto", "SD 受注生産（MTO）", "MTO",
@@ -38,7 +47,7 @@ SITES = [
     ("saporderflow", "受注形態の横断比較（講義）", "CMP",
      "MTS / MTO / ETO / ATO / VC を 9 维度で比較。E vs Q の STEP 対照表（同一受注を 2 通りで走らせる）と VC 概観。"),
 ]
-ORDER = ["sap_sd_jp", "sap_sd_cn", "sap_sd", "sapmto", "sapeto", "sapmts", "sapvc", "saporderflow"]
+ORDER = ["sap_sd_jp", "sap_sd_cn", "sap_cn", "sap_modules_cn", "sap_sd", "sapmto", "sapeto", "sapmts", "sapvc", "saporderflow"]
 
 
 def count(site):
@@ -196,15 +205,17 @@ table.tbl.wide td a { color: #0a4f9e; }
 <h2 id="route">推荐学习路线</h2>
 <ol class="steps">
   <li><b>⓪ SAP S/4HANA 日本語実習サイト（sap_sd_jp）</b>——<b>日本語で読める全モジュール手順サイト</b>：FI / CO / MM / PP / SD の 6 大モジュール・222 タスクの手順と実機画面。画面は中国語インターフェースのため、各ステップに「原文（中国語）」の折りたたみと用語対照表を用意。先にここで「どの設定ポイントがあるか」の地図を持っておくと、以下の各站が速い。（中国語の原文で読みたい場合は <b>sap_sd_cn</b> が同一教材の原文版。）</li>
-  <li><b>① SD 受注処理（sap_sd）</b>——先看录像（SAP Education Unit 14）配套的受注处理站：值从哪来（主数据／既存伝票／Customizing／ABAP）、出荷プラント的优先顺序、明細カテゴリ决定、变更时的再决定。后面的每一站都建立在这里。</li>
-  <li><b>② MTO（sapmto）</b>——接着把「决定链」和受注在庫 E 吃下来。这是所有形态的基准，之后每个形态都拿它对照。</li>
-  <li><b>③ ETO（sapeto）</b>——同一件受注换成「案件（WBS）＋ プロジェクト在庫 Q」再走一遍，体会月末处理（進捗 → 結果分析 → 決済）的差别。</li>
-  <li><b>④ 横断比较（saporderflow）</b>——E 与 Q 的 STEP 对照表 + 9 维度矩阵，把 ②③ 的经验整理成「选型判断」。</li>
-  <li><b>⑤ MTS（sapmts）</b>——换成预测驱动（PIR・自由在庫・標準原価），理解「受注 vs 見込」的分界。</li>
-  <li><b>⑥ VC（sapvc）</b>——最后学「构成引擎」：1 品目表现多种规格，靠依存关系控制 BOM 与价格。</li>
+  <li><b>① SD 培训课程（sap_cn）</b>——<b>中文的 SD 专项课程</b>：从概念（为什么 SD 会这样设计）到端到端流程（询价·报价·订单·交货·发货过账·开票·收款）、再到 48 个配置任务。每个环节都配真实 SAP GUI 中文界面截图与自绘的思维导图/流程图/结构图，可当「上台讲课的底稿」直接用（讲师版・学员记入表・30 题自测・Excel 8 表）。</li>
+  <li><b>①' 全模块培训课件（sap_modules_cn）</b>——中文的 <b>MM / PP / FI / CO 四模块课程</b>（每模块 14 页）：概念 → 组织结构 → 主数据 → 端到端流程 → 三篇操作手顺（教材全部 172 个任务逐个走查，含 IMG 路径与原始画面）→ SPRO 配置 → 实训 → 讲师版/学员版/自测/术语。与 ① sap_cn（SD）合起来，就是「除 SD 以外的模块」的课件。</li>
+  <li><b>② SD 受注処理（sap_sd）</b>——先看录像（SAP Education Unit 14）配套的受注处理站：值从哪来（主数据／既存伝票／Customizing／ABAP）、出荷プラント的优先顺序、明細カテゴリ决定、变更时的再决定。后面的每一站都建立在这里。</li>
+  <li><b>③ MTO（sapmto）</b>——接着把「决定链」和受注在庫 E 吃下来。这是所有形态的基准，之后每个形态都拿它对照。</li>
+  <li><b>④ ETO（sapeto）</b>——同一件受注换成「案件（WBS）＋ プロジェクト在庫 Q」再走一遍，体会月末处理（進捗 → 結果分析 → 決済）的差别。</li>
+  <li><b>⑤ 横断比较（saporderflow）</b>——E 与 Q 的 STEP 对照表 + 9 维度矩阵，把 ②③ 的经验整理成「选型判断」。</li>
+  <li><b>⑥ MTS（sapmts）</b>——换成预测驱动（PIR・自由在庫・標準原価），理解「受注 vs 見込」的分界。</li>
+  <li><b>⑦ VC（sapvc）</b>——最后学「构成引擎」：1 品目表现多种规格，靠依存关系控制 BOM 与价格。</li>
 </ol>
 <div class="box info"><b class="t">按角色的短路线</b>
-<b>SD 担当</b>：sap_sd の全体（受注・変更・照会・出荷/請求）＋ 各站の concept ＋ 练习①〜③。<br>
+<b>SD 担当</b>：<b>sap_cn</b>（中文课程：概念 → 流程 → 配置，可当讲课底稿）＋ sap_sd の全体（受注・変更・照会・出荷/請求）＋ 各站の concept ＋ 练习①〜③。<br>
 <b>PP 担当</b>：各站的 concept ＋ 练习②〜④（MRP・指図・入出庫）。<br>
 <b>CO / 管理会計</b>：ETO 的①〜⑤（予算・可用性管理・結果分析・決済）＋ MTS の標準原価と差異。<br>
 <b>要件定義・コンサル</b>：saporderflow の横断比较 ＋ 各站の 讲师版（采分点・必出 Q&A）＋ 故障対照表。</div>
@@ -234,8 +245,8 @@ python3 tools/verify_all_sites.py
 ③ python3 tools/swap_gui_images.py &lt;site&gt; --apply</pre>
 
 <h2 id="stance">立場と注意</h2>
-<div class="box ok"><b class="t">sap_sd_jp / sap_sd_cn の画面は実機スクリーンショット</b>
-この 2 站の画面は教材 Word 文档（S4.docx）から抽出した<b>実機のスクリーンショット</b>（中国語インターフェースの SAP GUI）です。sap_sd_jp はその日本語版（本文は日本語、画面は中国語のまま＋原文併記）、sap_sd_cn は原文の中国語版です。他の 6 站は下記のとおり生成した画面イメージです。</div>
+<div class="box ok"><b class="t">sap_sd_jp / sap_sd_cn / sap_modules_cn / sap_cn の画面は実機スクリーンショット</b>
+これらの站の画面は教材 Word 文档（S4.docx）から抽出した<b>実機のスクリーンショット</b>（中国語インターフェースの SAP GUI）です。sap_sd_jp はその日本語版（本文は日本語、画面は中国語のまま＋原文併記）、sap_sd_cn は原文の中国語版、sap_modules_cn は同じ教材の MM / PP / FI / CO 四模块を中文课程化したもの（各モジュール 14 页）、sap_cn はその SD 部分の中文课程です。残りの站（sap_sd / sapmto / sapeto / sapmts / sapvc / saporderflow）は下記のとおり生成した画面イメージです。</div>
 <div class="box warn"><b class="t">画面イメージについて</b>
 各ステップの画像は <b>SAP GUI の標準レイアウトを再現した図</b>で、<b>実機のスクリーンショットではありません</b>。
 フィールド名・順序・ボタン位置はリリースとカスタマイズで変わります。各ページの「自システムでの確認」に確認用の T-code と表を書いています。</div>

@@ -1,0 +1,31 @@
+{
+ "code": "mm",
+ "pages": 14,
+ "tasks": 42,
+ "steps": 168,
+ "tcodes": 13,
+ "config_groups": 6,
+ "diagrams": 8,
+ "shots": 301,
+ "uniqueshots": 226,
+ "quiz": 30,
+ "diagrams_used": 9,
+ "shots_total": 301,
+ "html_bytes": 285372,
+ "files": [
+  "concept.html",
+  "config.html",
+  "flow.html",
+  "glossary.html",
+  "index.html",
+  "instructor.html",
+  "inventory.html",
+  "invoice.html",
+  "master.html",
+  "org.html",
+  "practice.html",
+  "purchase.html",
+  "quiz.html",
+  "worksheet.html"
+ ]
+}

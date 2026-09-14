@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>主数据 · SAP FI 培训课程</title>
+<meta name="description" content="SAP FI（财务会计）培训课程：概念与定位 → 组织结构（公司/公司代码/科目表/会计年度/信贷控制范围）→ 主数据（总账科目/科目组/字段状态/客户与供应商主数据）→ 端到端记账流程（业务凭证 → 会计凭证 → 余额与报表）+ 应收应付循环（发票·收款·付款）→ 期末（记账期间·资产负债表结构·报表）→ 分步操作手顺 → SPRO 配置（45 个任务）→ 实训与自测。截图取自教材《S4.docx》的真实 SAP GUI 画面。">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mod.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">FI</span><span class="txt">培训课程</span></a>
+    <nav class="main">
+      <a href="index.html" title="课程地图与学习路线">首页</a>
+      <a href="concept.html" title="FI 是什么、凭证从哪来、边界在哪">概念</a>
+      <a href="org.html" title="公司代码 / 科目表 / 会计年度 / 信贷 / 期间 / 字段状态">组织</a>
+      <a class="active" href="master.html" title="总账科目 / 客户 / 供应商主数据">主数据</a>
+      <a href="flow.html" title="端到端记账流程与凭证流">流程</a>
+      <a href="gl.html" title="FB50 凭证 · FS00 科目 · FS10N 余额">总账</a>
+      <a href="arap.html" title="FB70/FB60 发票 · F-28/F-53 收付款 · 客户供应商余额">应收应付</a>
+      <a href="close.html" title="记账期间 · 报表结构 · 资产负债表与损益表">期末报表</a>
+      <a href="config.html" title="SPRO 配置路线（45 个任务）">配置</a>
+      <a href="practice.html" title="动手任务与完成基准">实训</a>
+      <a href="instructor.html" title="课时 / 板书 / 必问 / 评分">讲师</a>
+      <a href="worksheet.html" title="记入表（可打印）">学员</a>
+      <a href="quiz.html" title="30 题自评（合格 75%）">自测</a>
+      <a href="glossary.html" title="中英对照 / T-code / 常用表">术语</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page">
+<article>
+<p class="breadcrumb"><a href="index.html">课程地图</a> / <span>主数据</span></p>
+<div class="filterbar modsw"><a class="chip" href="../mm/index.html" title="SAP MM 培训课程">MM 物料管理</a><a class="chip" href="../pp/index.html" title="SAP PP 培训课程">PP 生产计划</a><a class="chip on" href="../fi/index.html" title="SAP FI 培训课程">FI 财务会计</a><a class="chip" href="../co/index.html" title="SAP CO 培训课程">CO 管理会计</a><a class="chip" href="../index.html" title="四个模块的总体视图与学习路线">总览</a></div>
+<h1>主数据</h1>
+<p class="kicker">总账科目（两层）· 科目组与字段状态组 · 客户与供应商（三层 + 统驭科目）</p>
+<p class="lead">FI 的主数据只有三样，但每一样都分层：<b>总账科目</b>（科目表层 / 公司代码层）、<b>客户</b>（一般 / 公司代码 / 销售数据）、<b>供应商</b>（一般 / 公司代码 / 采购数据）。另外还有两类「参数型主数据」必须一起理解：<b>科目组</b>与<b>字段状态组</b>。</p>
+<div class="toc"><a href="#layers">总账科目的两层</a><a href="#groups">科目组与字段状态组</a><a href="#accounts">教材建成的科目清单</a><a href="#fields">关键字段与填错的后果</a><a href="#bp">客户与供应商主数据</a><a href="#view">常用的查询事务码</a><a href="#shots">教材画面</a></div>
+<h2 id="layers">总账科目是「两层 + 分视图」的</h2>
+<figure class="dia wide"><a class="zoom" href="../assets/diagrams/fi/masterview.svg"><img src="../assets/diagrams/fi/masterview.svg" alt="总账科目与业务伙伴主数据的层级：科目表层跨公司代码、公司代码层决定能否记账；客户/供应商三层结构" loading="lazy"></a><figcaption><span class="n">自绘结构图</span><span class="cap">总账科目与业务伙伴主数据的层级：科目表层跨公司代码、公司代码层决定能否记账；客户/供应商三层结构</span><span class="src">本站自绘 SVG</span></figcaption></figure>
+<div class="box info"><b class="t">为什么 FS00 里有两列状态（科目表 / 公司代码）</b><p>总账科目不是一条记录，而是<b>两层</b>：<code>SKA1</code> 科目表层（科目号、名称、科目组、科目表）与 <code>SKB1</code> 公司代码层（字段状态组、统驭科目、只能自动记帐、货币、税务类型）。FS00 的按钮条上「科目表」与「公司代码」两列，就是让你分别维护这两层。</p><p>常见故障：只建了科目表层没建公司代码层 → 凭证里能选到科目，但一过账就报错（该科目未在公司代码下维护）。</p></div>
+<h2 id="groups">科目组与字段状态组（教材任务 06、07 的主角）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>概念</th><th>控制什么</th><th>教材值</th><th>什么时候用到</th></tr></thead><tbody><tr><td><b>科目组</b> Account Group</td><td>科目<b>本身</b>的字段状态与编号范围：哪些字段必输/可选/隐藏，新科目号是否内部给号</td><td><code>RAA</code> 统驭科目（11300000–21699999）· <code>BSA</code> 资产负债 · PLA 损益</td><td>FS00 创建科目时选科目组；科目组属于科目表层（与公司代码无关）</td></tr><tr><td><b>字段状态组</b> Field Status Group</td><td>凭证<b>行项目</b>的辅助核算项：业务范围、成本中心、订单、税基等是必输/可选/隐藏</td><td><code>ZEXP</code> 费用科目 · <code>ZGBS</code> 一般资产负债科目 · <code>ZMMA</code> 材料采购（GR/IR）· <code>ZRAA</code> 统驭科目-应收/应付 · <code>ZREV</code> 收入科目</td><td>FS00 的「创建/银行/利息」页签里选字段状态组；它属于公司代码层</td></tr></tbody></table></div>
+<div class="note warn"><span class="t">教材的原文重点（任务 07 第 2 步）</span>「科目组是控制<b>科目</b>中的参数，字段状态组是控制<b>凭证</b>中的辅助核算项」——考试与面试都爱问这一句。另外任务 07 第 9 步系统会提示「不一致的字段状态，参加帮助文本」，回车即可返回，不影响配置结果。</div>
+<h2 id="accounts">教材在 C999 下建成的科目（任务 10–13，共 28 个）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>科目号</th><th>科目名称</th><th>科目组/字段状态组（教材）</th><th>用在哪个环节</th></tr></thead><tbody><tr><td><code>10010101</code></td><td>现金</td><td>一般资产负债科目（ZGBS）</td><td>现金业务、报表项目「货币资金」</td></tr><tr><td><code>10020101</code></td><td>银行存款-工行 / 中行（画面分录里显示 0010020111）</td><td>一般资产负债科目</td><td>任务 20 实收资本入账、任务 39 付款的贷方</td></tr><tr><td><code>11310101</code></td><td>应收账款（客户统驭科目）</td><td>统驭类科目组 RAA（ZRAA）</td><td>所有客户的明细汇总到这里（任务 11、29）</td></tr><tr><td><code>12010101</code></td><td>材料采购-GR/IR（中间过渡科目）</td><td>材料采购科目组（ZMMA）</td><td>MM 收货与发票校验的对手科目（任务 12）</td></tr><tr><td><code>12430101</code></td><td>存货-产成品</td><td>一般资产负债科目（ZGBS）</td><td>MM 收货的借方科目、报表项目「存货」</td></tr><tr><td><code>21210101</code></td><td>应付账款（供应商统驭科目）</td><td>统驭类科目组 RAA（ZRAA）</td><td>所有供应商的明细汇总到这里（任务 11、31）</td></tr><tr><td><code>21710101</code> / <code>21710102</code></td><td>未交税金-进项税额 / 销项税额</td><td>一般资产负债科目</td><td>自动税务过账（任务 21 定义销项税 MWS → 21710102）</td></tr><tr><td><code>31010101</code></td><td>实收资本</td><td>一般资产负债科目</td><td>任务 20 凭证的贷方</td></tr><tr><td><code>31410101</code></td><td>利润分配-未分配利润</td><td>一般资产负债科目</td><td>年结与报表项目</td></tr><tr><td><code>410901</code></td><td>留存收益科目（画面 410901X / 410901）</td><td>（任务 09 单独定义）</td><td>年结时损益科目余额转入的科目</td></tr><tr><td><code>41010101</code> / <code>41010901</code></td><td>生产成本-原材料消耗 / 生产成本-订单差异</td><td>损益类科目（PLA）</td><td>PP 领料与订单差异（MM/PP 的 GBB 对方科目）</td></tr><tr><td><code>41050101</code> / <code>41050121</code></td><td>制造费用-工资 / 制造费用-电费</td><td>损益类科目</td><td>CO 的费用归集</td></tr><tr><td><code>51010101</code> / <code>51010201</code></td><td>主营业务收入-自制产品 / 贸易商品</td><td>收入科目（ZREV，任务 43 设为只能自动记帐）</td><td>SD 开票的收入贷方</td></tr><tr><td><code>54010101</code> · <code>54010201</code> · <code>54010301</code> · <code>54010401</code></td><td>主营业务成本-自制 / 贸易商品 / 采购价差 / 生产订单差异</td><td>损益类科目</td><td>成本结转与差异（采购价差 54010301、订单差异 54010401）</td></tr><tr><td><code>55010101</code> · <code>55010111</code> · <code>55020101</code> · <code>55020111</code> · <code>55020121</code> · <code>55020131</code> · <code>55020141</code> · <code>55029101</code></td><td>销售费用-运费 / 市场费用；管理费用-工资 / 折旧 / 电话费 / 办公用品 / 租金 / 其他</td><td>损益类科目（ZEXP 费用科目）</td><td>费用类手工凭证与 CO 分摊</td></tr></tbody></table></div>
+<div class="note tip"><span class="t">怎么在自己系统里清点科目</span>科目清单/汇总：教材任务 14 用 <code>S_alr_87012326</code> 显示科目汇总；单科目显示用 <code>FS00</code> 或 <code>FS03</code>；总账行项目用 <code>FBL3N</code>（经典）或 <code>FAGLL03</code>（新，教材未演示）。</div>
+<h2 id="fields">建科目/客户/供应商时最该盯住的 8 个字段</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>字段</th><th>在哪一层</th><th>教材值/示例</th><th>填错的后果</th></tr></thead><tbody><tr><td>科目组</td><td>科目表层（SKA1）</td><td>RAA / BSA / PLA</td><td>字段状态与编号范围不对，后面很难改（有数据后基本不能改）</td></tr><tr><td>字段状态组</td><td>公司代码层（SKB1）</td><td>ZGBS / ZRAA / ZREV / ZMMA / ZEXP</td><td>凭证录入时该要的不给输、不该要的强制输（辅助核算项乱）</td></tr><tr><td>统驭科目 Reconciliation Account</td><td>公司代码层（SKB1）</td><td>客户 11310101 / 供应商 21210101</td><td>客户/供应商明细不汇总到正确科目，资产负债表应收账款/应付账款错位</td></tr><tr><td>只能自动记帐</td><td>公司代码层（SKB1）</td><td>任务 43：51010101 收入科目打勾</td><td>不勾 → 有人能手工记收入；勾了以后手工记 SA 会被拒（这正是内部控制）</td></tr><tr><td>货币</td><td>公司代码层</td><td>RMB（教材环境）</td><td>凭证货币与公司代码货币不一致时要换算，报表口径会变</td></tr><tr><td>税务类型 / 税码</td><td>公司代码层 + 凭证行</td><td>未交税金 21710101/21710102（任务 21）</td><td>自动税务过账找不到科目，进项/销项税额记不平</td></tr><tr><td>客户编号范围 / 账户组</td><td>客户主数据（任务 26/27/28）</td><td>Z1 10000000–19999999 · Z2 20000000–29999999</td><td>编号给错组，客户号落在错误的区间，后续报表与权限都乱</td></tr><tr><td>排序码 Sort Key</td><td>客户/供应商公司代码层（任务 29）</td><td>001（教材画面写「统驭科目 11310101 排序码 001」）</td><td>分配字段（如发票号）带不到行项目，清账时看不出是哪笔业务</td></tr></tbody></table></div>
+<h2 id="bp">客户与供应商主数据（三层）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>层</th><th>组织层</th><th>内容</th><th>教材任务与 T-code</th></tr></thead><tbody><tr><td>一般数据</td><td>跨公司代码</td><td>名称、地址、税号、银行、沟通方式</td><td>客户 <code>FD01</code>（任务 29/30）· 供应商 <code>FK01</code>（任务 31）</td></tr><tr><td>公司代码数据</td><td>公司代码 C999</td><td>统驭科目 11310101/21210101、付款条件、排序码、容差组、清账方式</td><td>同上；教材画面里「统驭科目 11310101 排序码 001」就是这一层</td></tr><tr><td>销售/采购数据</td><td>销售范围 / 采购组织</td><td>（客户：销售数据；供应商：采购数据，由 MM 的 <code>MK01</code> 维护）</td><td>教材 FI 部分未演示这一层</td></tr></tbody></table></div>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>教材里的业务伙伴</th><th>号码</th><th>用途</th></tr></thead><tbody><tr><td>远东造船厂（订货方）</td><td><code>10000000</code></td><td>任务 32 开客户发票 58.000；任务 36 FD10N 显示余额</td></tr><tr><td>新益汽轮机厂 / 威力工贸公司</td><td>同一 Z1 区间</td><td>任务 29 一并建成，用于对比订货方与收货方</td></tr><tr><td>远东造船厂第三分公司（收货方）</td><td><code>20000000</code></td><td>任务 30；归 Z2 编号范围</td></tr><tr><td>红星轴承厂</td><td><code>10000000</code></td><td>任务 31；MM 侧的采购供应商</td></tr><tr><td>长平铁工厂 / 思普机械设备进出口有限公司</td><td><code>10000001</code> / <code>20000000</code></td><td>任务 31</td></tr><tr><td>上海市电力公司 / 佳音地产公司 / 京通运输公司</td><td><code>30000000</code> / <code>30000001</code> / <code>30000002</code></td><td>任务 31（费用供应商）；京通运输公司是任务 41 FK10N 与 F-53 付款的对象</td></tr></tbody></table></div>
+<div class="note info"><span class="t">注意 FI 与 MM 共用同一批业务伙伴</span>教材 MM 模块里的供应商 10000000 红星轴承厂，在 FI 里是同一张主数据：FI 负责一般数据与公司代码数据（<code>FK01</code>），MM 补采购数据（<code>MK01</code>）。客户同理：FI 建公司代码层，SD 补销售层。</div>
+<h2 id="view">常用的查询事务码（查主数据与明细）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>想看什么</th><th>T-code</th><th>说明</th></tr></thead><tbody><tr><td>总账科目主数据（两层一起）</td><td><code>FS00</code> / <code>FS03</code></td><td>显示模式可以同时看科目表层与公司代码层</td></tr><tr><td>科目表层 / 公司代码层单独维护</td><td><code>FSP0</code> / <code>FSS0</code></td><td>教材未演示；项目上常用它们批量补字段</td></tr><tr><td>总账科目余额</td><td><code>FS10N</code></td><td>任务 21；新版本是 <code>FAGLB03</code>（教材未演示）</td></tr><tr><td>总账科目行项目</td><td><code>FBL3N</code> / <code>FAGLL03</code></td><td>教材未演示；查凭证流最常用</td></tr><tr><td>客户余额 / 行项目</td><td><code>FD10N</code> / <code>FBL5N</code></td><td>任务 36 用 FD10N</td></tr><tr><td>供应商余额 / 行项目</td><td><code>FK10N</code> / <code>FBL1N</code></td><td>任务 41 用 FK10N</td></tr><tr><td>客户/供应商主数据</td><td><code>FD03</code> / <code>FK03</code></td><td>显示模式</td></tr></tbody></table></div>
+<h2 id="shots">教材画面（主数据）</h2>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/fi/t06/02_1_image19.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t06/02_1_image19.png" width="589" height="381" alt="任务 06 定义科目组（A999 科目表）" loading="lazy"></a><figcaption><span class="n">画面 1</span><span class="cap">任务 06 定义科目组（A999 科目表）</span><span class="src">教材《S4.docx》· FI 任务 06 定义科目组及输入控制 · 原图 02_1_image19.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/fi/t06/09_1_image26.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t06/09_1_image26.png" width="587" height="344" alt="任务 06 科目组 RAA 的统驭科目数据（11300000–21699999）" loading="lazy"></a><figcaption><span class="n">画面 2</span><span class="cap">任务 06 科目组 RAA 的统驭科目数据（11300000–21699999）</span><span class="src">教材《S4.docx》· FI 任务 06 定义科目组及输入控制 · 原图 09_1_image26.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/fi/t07/06_1_image33.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t07/06_1_image33.png" width="274" height="408" alt="任务 07 字段状态组清单：ZEXP / ZGBS / ZMMA / ZRAA / ZREV" loading="lazy"></a><figcaption><span class="n">画面 3</span><span class="cap">任务 07 字段状态组清单：ZEXP / ZGBS / ZMMA / ZRAA / ZREV</span><span class="src">教材《S4.docx》· FI 任务 07 定义字段状态变式 · 原图 06_1_image33.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/fi/t09/02_1_image49.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t09/02_1_image49.png" width="333" height="221" alt="任务 09 定义留存收益科目（画面值 410901）" loading="lazy"></a><figcaption><span class="n">画面 4</span><span class="cap">任务 09 定义留存收益科目（画面值 410901）</span><span class="src">教材《S4.docx》· FI 任务 09 定义存留收益科目 · 原图 02_1_image49.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/fi/t29/01_1_image214.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t29/01_1_image214.png" width="387" height="517" alt="任务 29 FD01 新建订货方主数据（远东造船厂）" loading="lazy"></a><figcaption><span class="n">画面 5</span><span class="cap">任务 29 FD01 新建订货方主数据（远东造船厂）</span><span class="src">教材《S4.docx》· FI 任务 29 新建订货方主数据 · 原图 01_1_image214.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/fi/t31/01_1_image223.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t31/01_1_image223.png" width="1031" height="358" alt="任务 31 FK01 新建供应商主数据（红星 10000000 等）" loading="lazy"></a><figcaption><span class="n">画面 6</span><span class="cap">任务 31 FK01 新建供应商主数据（红星 10000000 等）</span><span class="src">教材《S4.docx》· FI 任务 31 新建供应商主数据 · 原图 01_1_image223.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/fi/t43/01_1_image276.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t43/01_1_image276.png" width="614" height="667" alt="任务 43 收入科目 51010101 勾选「只能自动记帐」（字段状态组 ZREV）" loading="lazy"></a><figcaption><span class="n">画面 7</span><span class="cap">任务 43 收入科目 51010101 勾选「只能自动记帐」（字段状态组 ZREV）</span><span class="src">教材《S4.docx》· FI 任务 43 将收入科目设置为只能自动记帐 · 原图 01_1_image276.png</span></figcaption></figure></div>
+</article>
+</main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <h5>SAP FI 培训课程</h5>
+        <p>财务会计：总账 · 应收 · 应付 · 报表</p>
+        <p>课程总览：<a href="../index.html">SAP 模块培训课程（MM · PP · FI · CO）</a></p>
+      </div>
+      <div>
+        <h5>课程板块</h5>
+        <p><a href="concept.html">概念</a> · <a href="org.html">组织</a> ·
+        <a href="master.html">主数据</a> · <a href="flow.html">流程</a> ·
+        <a href="gl.html">总账</a> · <a href="config.html">配置</a></p>
+      </div>
+      <div>
+        <h5>课堂配套</h5>
+        <p><a href="practice.html">实训任务</a> · <a href="instructor.html">讲师版</a> ·
+        <a href="worksheet.html">学员版</a> · <a href="quiz.html">自测</a> ·
+        <a href="glossary.html">术语表</a></p>
+      </div>
+      <div>
+        <h5>看图说话</h5>
+        <p>截图取自教材《S4.docx》的真实 SAP GUI 画面（中文界面，保留原文件名可回查）；
+        流程图、结构图、思维导图为本站自绘 SVG。标准值随版本/行业方案而异，
+        页面标注的「在自系统里怎么确认」请在自己的系统里核对。</p>
+        <p>其他模块：<a href="../mm/index.html">MM 物料管理</a> · <a href="../pp/index.html">PP 生产计划</a> · <a href="../co/index.html">CO 管理会计</a> · </p>
+      </div>
+    </div>
+    <p class="copy">© <span data-year>2026</span> SAP FI 培训课程 · 静态站点，可离线使用</p>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/mod.js"></script>
+</body>
+</html>

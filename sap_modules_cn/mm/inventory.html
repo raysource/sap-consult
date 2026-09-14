@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>流程② 库存管理 · SAP MM 培训课程</title>
+<meta name="description" content="SAP MM（物料管理）培训课程：概念与定位 → 组织结构（工厂/库存地点/采购组织/采购组）→ 主数据（物料/供应商/采购信息记录）→ 端到端采购流程（请购·采购订单·收货·发票校验·付款）→ 分步操作手顺 → SPRO 配置（42 个任务）→ 实训与自测。截图取自教材《S4.docx》的真实 SAP GUI 画面。">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mod.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MM</span><span class="txt">培训课程</span></a>
+    <nav class="main">
+      <a href="index.html" title="课程地图与学习路线">首页</a>
+      <a href="concept.html" title="MM 是什么、三大职能、五类凭证">概念</a>
+      <a href="org.html" title="企业结构 / 采购结构 / 计划与评估结构">组织</a>
+      <a href="master.html" title="物料 / 供应商 / 采购信息记录">主数据</a>
+      <a href="flow.html" title="端到端采购流程与单据流">流程</a>
+      <a href="purchase.html" title="请购 · 采购订单 · 货源与信息记录">采购</a>
+      <a class="active" href="inventory.html" title="收货 · 发货 · 转储 · 移动类型与库存总览">库存</a>
+      <a href="invoice.html" title="MIRO · 差异与容差 · 冻结发票下达 · 三单匹配">发票校验</a>
+      <a href="config.html" title="SPRO 配置路线（42 个任务）">配置</a>
+      <a href="practice.html" title="动手任务与完成基准">实训</a>
+      <a href="instructor.html" title="课时 / 板书 / 必问 / 评分">讲师</a>
+      <a href="worksheet.html" title="记入表（可打印）">学员</a>
+      <a href="quiz.html" title="30 题自评（合格 75%）">自测</a>
+      <a href="glossary.html" title="中英对照 / T-code / 常用表">术语</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page">
+<article>
+<p class="breadcrumb"><a href="index.html">课程地图</a> / <span>流程② 库存管理</span></p>
+<div class="filterbar modsw"><a class="chip on" href="../mm/index.html" title="SAP MM 培训课程">MM 物料管理</a><a class="chip" href="../pp/index.html" title="SAP PP 培训课程">PP 生产计划</a><a class="chip" href="../fi/index.html" title="SAP FI 培训课程">FI 财务会计</a><a class="chip" href="../co/index.html" title="SAP CO 培训课程">CO 管理会计</a><a class="chip" href="../index.html" title="四个模块的总体视图与学习路线">总览</a></div>
+<h1>流程② 库存管理</h1>
+<p class="kicker">收货 MIGO（101）· 物料凭证与会计凭证 · 移动类型 · MMBE · 盘点</p>
+<p class="lead">库存管的是「物料在企业内部怎么动」：收货、发货、转储、盘点，而每一次动都由<b>移动类型</b>决定它怎么记账。教材 MM 任务 38（收货 101）与任务 42（MMBE 库存总览）是这一篇的现场。</p>
+<div class="toc"><a href="#pre">教学场景</a><a href="#sec38">手顺 收货 MIGO（101）</a><a href="#sec42">库存总览 MMBE</a><a href="#movetypes">移动类型表</a><a href="#extra">转储与发货（标准功能）</a><a href="#count">盘点</a><a href="#errors">常见错误</a></div>
+<h2 id="pre">教学场景</h2>
+<div class="box info"><b class="t">收货过账同时写两张表、生成两类凭证</b><p>① <b>物料凭证</b>（<code>MKPF</code> 抬头 + <code>MSEG</code> 行）：记录物料、数量、工厂、库位、移动类型、批次；库存数量随之变化。</p><p>② <b>会计凭证</b>（<code>BKPF</code> + <code>BSEG</code>）：按自动记账规则（BSX/WRX）生成「借：存货 / 贷：GR/IR 材料采购」。</p><p>两张凭证互相有链接 —— 在 MIGO 里看「FI 凭证」，在 <code>MB03</code> 里看物料凭证，在 <code>FB03</code> 里看会计凭证，都能互相跳转。</p></div>
+<h2 id="sec38">手顺 收货 MIGO（移动类型 101）</h2>
+<div class="taskblk"><div class="steph" id="t38"><span class="no">任务 38</span><h3>创建采购收货</h3><span class="tc">MIGO</span></div><div class="note tip"><span class="t">教学要点</span>教材现场：供应商送货到仓，用 MIGO 按采购订单收货。右上输采购订单号与工厂 → 系统把订单行复制到下方 → 逐行填库存地点（教材画面 001，对应任务 02 建的 0001 仓库）→ 勾选「项目确定」→ 检查 → 保存 → 在「文件信息」页点 FI 凭证查看会计凭证。</div><div class="pathline" data-copy="后勤 → 物料管理 → 库存管理 → 货物移动 → 收货 → 对采购订单 → 采购订单的 GR（MIGO）"><b>IMG 路径（教材后台菜单）</b>后勤 → 物料管理 → 库存管理 → 货物移动 → 收货 → 对采购订单 → 采购订单的 GR（MIGO）</div><ol class="tasksteps"><li><p class="stepcap">后勤－物料管理－库存管理－货物移动－收货－对采购订单－采购订单的 GR（MIGO）</p><div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/mm/t38/01_1_image754.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t38/01_1_image754.png" width="411" height="433" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 1</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 38 创建采购收货 · 原图 01_1_image754.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t38/01_2_image755.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t38/01_2_image755.png" width="1295" height="546" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 2</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 38 创建采购收货 · 原图 01_2_image755.png</span></figcaption></figure></div></li><li><p class="stepcap">解释：上一步我们创建了采购订单，现在供应商把货送到了，我们需要办理收货前台<br>解释：上图就是采购订单收货的屏幕，屏幕右上方输入采购订单号和工厂，屏幕中间是物料凭证的行总揽，屏幕下方是个收货行的明细，屏幕的左方是你自己处理过的采购订单和物料凭证的历史。我们来输入采购订单号</p><figure class="shot narrow"><a class="zoom" href="../assets/img/mm/t38/02_1_image756.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t38/02_1_image756.png" width="882" height="114" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 3</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 38 创建采购收货 · 原图 02_1_image756.png</span></figcaption></figure></li><li><figure class="shot"><a class="zoom" href="../assets/img/mm/t38/03_1_image757.jpeg" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t38/03_1_image757.jpeg" width="1304" height="526" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 4</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 38 创建采购收货 · 原图 03_1_image757.jpeg</span></figcaption></figure></li><li><p class="stepcap">采购订单行的明细被自动复制到了屏幕下方，我们在行项目明细的屏幕中填写相关信息。输入库存地点 001，注意，每一行都要做相同的操作</p><figure class="shot"><a class="zoom" href="../assets/img/mm/t38/04_1_image758.jpeg" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t38/04_1_image758.jpeg" width="1401" height="924" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 5</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 38 创建采购收货 · 原图 04_1_image758.jpeg</span></figcaption></figure></li><li><p class="stepcap">勾上项目确定选项（左下角），点击保存按钮，保存之前最好点个检查，看看是否有误</p><figure class="shot"><a class="zoom" href="../assets/img/mm/t38/05_1_image759.jpeg" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t38/05_1_image759.jpeg" width="1320" height="955" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 6</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 38 创建采购收货 · 原图 05_1_image759.jpeg</span></figcaption></figure></li><li><p class="stepcap">将屏幕上方的收货改为显示A04，点击回车，然后将标签页切换到文件信息</p><figure class="shot"><a class="zoom" href="../assets/img/mm/t38/06_1_image760.jpeg" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t38/06_1_image760.jpeg" width="1351" height="788" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 7</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 38 创建采购收货 · 原图 06_1_image760.jpeg</span></figcaption></figure></li><li><p class="stepcap">在文件信息页，点击 FI 凭证，可以看到凭证的信息</p><figure class="shot"><a class="zoom" href="../assets/img/mm/t38/07_1_image761.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t38/07_1_image761.png" width="753" height="584" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 8</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 38 创建采购收货 · 原图 07_1_image761.png</span></figcaption></figure></li></ol></div>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>MIGO 的操作码</th><th>含义</th><th>教材使用</th></tr></thead><tbody><tr><td>A01</td><td>收货（对采购订单/生产订单）</td><td>任务 38 使用</td></tr><tr><td>A02</td><td>退货（对采购订单）</td><td>—</td></tr><tr><td>A03</td><td>取消（冲销）</td><td>—</td></tr><tr><td>A04</td><td>显示（不改数据）</td><td>任务 38 后半段切到 A04 看 FI 凭证</td></tr><tr><td>A07</td><td>发货（领料/销售出库）</td><td>PP 任务 43 用 MB1A 261</td></tr><tr><td>A08</td><td>转储（库位/工厂之间）</td><td>PP 任务 51 用 MB1B</td></tr></tbody></table></div>
+<h2 id="sec42">库存总览 MMBE</h2>
+<div class="taskblk"><div class="steph" id="t42"><span class="no">任务 42</span><h3>显示库存物料</h3><span class="tc">MMBE</span></div><div class="note tip"><span class="t">教学要点</span>MMBE 是回答「这个料还有多少」的标准画面：按工厂/库位/批次展开，分「非限制 / 质检 / 冻结 / 在途 / 已分配」等库存类型看。</div><div class="pathline" data-copy="后勤 → 物料管理 → 库存管理 → 环境 → 库存 → MMBE → 库存总览"><b>IMG 路径（教材后台菜单）</b>后勤 → 物料管理 → 库存管理 → 环境 → 库存 → MMBE → 库存总览</div><ol class="tasksteps"><li><p class="stepcap">后勤－物料管理－库存管理－环境－库存－MMBE－库存总览</p><figure class="shot"><a class="zoom" href="../assets/img/mm/t42/01_1_image774.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t42/01_1_image774.png" width="396" height="451" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 9</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 42 显示库存物料 · 原图 01_1_image774.png</span></figcaption></figure></li><li><figure class="shot"><a class="zoom" href="../assets/img/mm/t42/02_1_image775.jpeg" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t42/02_1_image775.jpeg" width="742" height="836" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 10</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 42 显示库存物料 · 原图 02_1_image775.jpeg</span></figcaption></figure></li><li><figure class="shot"><a class="zoom" href="../assets/img/mm/t42/03_1_image776.jpeg" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t42/03_1_image776.jpeg" width="1178" height="544" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 11</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 42 显示库存物料 · 原图 03_1_image776.jpeg</span></figcaption></figure></li></ol></div>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>看什么</th><th>在哪一行</th><th>说明</th></tr></thead><tbody><tr><td>非限制使用库存 Unrestricted</td><td>可用库存</td><td>MRP 与 ATP 用的就是这一列</td></tr><tr><td>质检库存 Quality Inspection</td><td>收货到质检库位时产生</td><td>质检合格后再转非限制（321）</td></tr><tr><td>冻结库存 Blocked</td><td>不可用</td><td>需要解冻才可用</td></tr><tr><td>订单库存 / 特别库存</td><td>客户/项目专用</td><td>SD 的 MTO、PS 的项目库存（见 SD 站）</td></tr><tr><td>库存总值</td><td>评估值</td><td>按工厂（评估范围）的移动平均价或标准价计算</td></tr></tbody></table></div>
+<h2 id="movetypes">移动类型表（教材出现 + 必须知道的）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>移动类型</th><th>动作</th><th>库存影响</th><th>会计影响（教材科目见任务 28）</th></tr></thead><tbody><tr><td><code>101</code></td><td>采购订单收货</td><td>+ 非限制库存</td><td>借 存货（BSX 12430101 等）/ 贷 GR/IR（WRX 12010101）</td></tr><tr><td><code>102</code></td><td>收货冲销</td><td>− 库存</td><td>反向凭证</td></tr><tr><td><code>103</code></td><td>收货到「收货冻结」库存</td><td>在途/冻结</td><td>会计上先不记或记 GR/IR 暂存</td></tr><tr><td><code>105</code></td><td>103 的后续转入</td><td>转为非限制</td><td>此时才真正记账</td></tr><tr><td><code>201</code></td><td>对成本中心发货</td><td>− 库存</td><td>借 费用（GBB-VBR/VB0）</td></tr><tr><td><code>261</code></td><td>对生产订单发货（领料）</td><td>− 库存</td><td>借 生产成本-原材料消耗（41010101，VBR）</td></tr><tr><td><code>301</code></td><td>工厂间转储（一步）</td><td>此厂减、彼厂增</td><td>同一公司代码内一般不产生 FI 凭证，但评估价不同会产生</td></tr><tr><td><code>311</code></td><td>库存地点间转储</td><td>库位变动</td><td>不产生 FI 凭证</td></tr><tr><td><code>561</code></td><td>期初库存导入</td><td>+ 库存</td><td>借 存货 / 贷 期初科目</td></tr><tr><td><code>601</code></td><td>销售发货（PGI）</td><td>− 库存</td><td>借 主营业务成本 / 贷 存货（SD 站详解）</td></tr></tbody></table></div>
+<div class="note tip"><span class="t">怎么查一个移动类型的记账规则</span>用 <code>OBYC</code> 的<b>模拟</b>按钮：输入移动类型、物料、工厂，系统告诉你它会读哪个事务键（BSX/WRX/GBB+科目修改码）；再在 <code>OMJJ</code> 里看这个移动类型允许的字段和是否更新数量/价值。</div>
+<h2 id="extra">转储与发货（教材未逐屏演示、但项目必用）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>场景</th><th>T-code</th><th>移动类型</th><th>注意</th></tr></thead><tbody><tr><td>库位之间转储</td><td><code>MB1B</code></td><td>311</td><td>最简单，不产生 FI 凭证</td></tr><tr><td>工厂之间转储（一步法）</td><td><code>MB1B</code></td><td>301</td><td>跨公司代码会产生 FI 凭证（内部购销）</td></tr><tr><td>工厂之间转储（两步法）</td><td><code>MB1B</code> / <code>MBST</code></td><td>303/305</td><td>先在发出厂做在途，再在接收厂收货</td></tr><tr><td>对成本中心/内部订单发货</td><td><code>MB1A</code></td><td>201</td><td>费用直接进成本中心或订单（CO 站用到）</td></tr><tr><td>对生产订单发货</td><td><code>MB1A</code> / MIGO</td><td>261</td><td>PP 站任务 43</td></tr><tr><td>销售发货（PGI）</td><td><code>VL02N</code></td><td>601</td><td>SD 站详解</td></tr></tbody></table></div>
+<h2 id="count">盘点（Physical Inventory）</h2>
+<ol class="steps"><li>创建盘点凭证 <code>MI01</code>（选工厂/库位/物料，冻结账面）</li><li>打印盘点表 <code>MI21</code>（或按行 <code>MI04</code> 直接录）</li><li>录入盘点结果 <code>MI04</code>（实际数量）</li><li>差异分析 <code>MI20</code>（账面 vs 实盘）</li><li>过账差异 <code>MI07</code>（生成盘点差异凭证，借贷走盘点差异科目）</li><li>查差异清单 <code>MI20</code>/<code>MIS1</code></li></ol>
+<div class="note warn"><span class="t">盘点差异过账后不可直接改</span>差异凭证同样是物料凭证 + 会计凭证，要修正只能再冲销/调整 —— 所以 <code>MI07</code> 前一定要在 MI20 把差异看清楚。</div>
+<h2 id="errors">常见错误与排查</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>症状</th><th>原因</th><th>处理</th></tr></thead><tbody><tr><td>MIGO 收货报「没有找到采购订单行」</td><td>订单已删除/已交货完成/工厂不符</td><td>ME23N 看订单状态（ELIKZ）与工厂</td></tr><tr><td>保存报「科目未定义」</td><td>OBYC 里 BSX/GBB 缺该评估类或移动类型的科目</td><td>OBYC 模拟定位缺哪个键，补配（任务 28）</td></tr><tr><td>库存数量对不上</td><td>存在未过账的收货/发货，或选错库位</td><td><code>MB51</code> 按物料+工厂拉移动清单（含移动类型与库位）</td></tr><tr><td>想改已过账的收货</td><td>物料凭证不能改</td><td>用 <code>MBST</code> 冲销，再重新收货</td></tr><tr><td>期初库存导不进去</td><td>MM 期间未开（任务 14）</td><td>MMPV/后台维护 MM 公司代码期间，逐月开账</td></tr></tbody></table></div>
+</article>
+</main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <h5>SAP MM 培训课程</h5>
+        <p>物料管理：采购 · 库存 · 发票校验</p>
+        <p>课程总览：<a href="../index.html">SAP 模块培训课程（MM · PP · FI · CO）</a></p>
+      </div>
+      <div>
+        <h5>课程板块</h5>
+        <p><a href="concept.html">概念</a> · <a href="org.html">组织</a> ·
+        <a href="master.html">主数据</a> · <a href="flow.html">流程</a> ·
+        <a href="purchase.html">采购</a> · <a href="config.html">配置</a></p>
+      </div>
+      <div>
+        <h5>课堂配套</h5>
+        <p><a href="practice.html">实训任务</a> · <a href="instructor.html">讲师版</a> ·
+        <a href="worksheet.html">学员版</a> · <a href="quiz.html">自测</a> ·
+        <a href="glossary.html">术语表</a></p>
+      </div>
+      <div>
+        <h5>看图说话</h5>
+        <p>截图取自教材《S4.docx》的真实 SAP GUI 画面（中文界面，保留原文件名可回查）；
+        流程图、结构图、思维导图为本站自绘 SVG。标准值随版本/行业方案而异，
+        页面标注的「在自系统里怎么确认」请在自己的系统里核对。</p>
+        <p>其他模块：<a href="../pp/index.html">PP 生产计划</a> · <a href="../fi/index.html">FI 财务会计</a> · <a href="../co/index.html">CO 管理会计</a> · </p>
+      </div>
+    </div>
+    <p class="copy">© <span data-year>2026</span> SAP MM 培训课程 · 静态站点，可离线使用</p>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/mod.js"></script>
+</body>
+</html>

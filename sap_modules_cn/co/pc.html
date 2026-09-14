@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>流程③ 产品成本 · SAP CO 培训课程</title>
+<meta name="description" content="SAP CO（管理会计）培训课程：概念与定位（CO 与 FI 的分工）→ 组织结构（成本控制范围/标准层次/成本中心组）→ 主数据（成本要素/作业类型/统计指标/结算参数文件）→ 成本流（费用归集 → 重过账 → 分配分摊 → 结算 → 报表）+ 内部订单与产品成本 → 分步操作手顺 → SPRO 配置（34 个任务）→ 实训与自测。截图取自教材《S4.docx》的真实 SAP GUI 画面。">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mod.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">CO</span><span class="txt">培训课程</span></a>
+    <nav class="main">
+      <a href="index.html" title="课程地图与学习路线">首页</a>
+      <a href="concept.html" title="CO 是什么、成本要素、与 FI 的分工">概念</a>
+      <a href="org.html" title="成本控制范围 / 标准层次 / 成本中心组">组织</a>
+      <a href="master.html" title="成本要素 / 成本中心 / 作业类型 / 统计指标">主数据</a>
+      <a href="flow.html" title="成本流与月结顺序">流程</a>
+      <a href="cca.html" title="成本要素 · 作业价格 · 重过账 · 分配与分摊">成本中心</a>
+      <a href="io.html" title="KO04 建单 · 归集费用 · KO88 结算">内部订单</a>
+      <a class="active" href="pc.html" title="CK11N/CK24 标准成本 · 订单成本 · 差异">产品成本</a>
+      <a href="config.html" title="SPRO 配置路线（34 个任务）">配置</a>
+      <a href="practice.html" title="动手任务与完成基准">实训</a>
+      <a href="instructor.html" title="课时 / 板书 / 必问 / 评分">讲师</a>
+      <a href="worksheet.html" title="记入表（可打印）">学员</a>
+      <a href="quiz.html" title="30 题自评（合格 75%）">自测</a>
+      <a href="glossary.html" title="中英对照 / T-code / 常用表">术语</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page">
+<article>
+<p class="breadcrumb"><a href="index.html">课程地图</a> / <span>流程③ 产品成本</span></p>
+<div class="filterbar modsw"><a class="chip" href="../mm/index.html" title="SAP MM 培训课程">MM 物料管理</a><a class="chip" href="../pp/index.html" title="SAP PP 培训课程">PP 生产计划</a><a class="chip" href="../fi/index.html" title="SAP FI 培训课程">FI 财务会计</a><a class="chip on" href="../co/index.html" title="SAP CO 培训课程">CO 管理会计</a><a class="chip" href="../index.html" title="四个模块的总体视图与学习路线">总览</a></div>
+<h1>流程③ 产品成本</h1>
+<p class="kicker">作业价格如何进产品成本 · 订单结算与差异 41010901 · 教材未演示的 CK11N/CK24</p>
+<p class="lead">产品成本核算（CO-PC）回答「这批货的成本是多少、差异是多少」。要特别说明：<b>教材的 CO 模块没有演示产品成本的功能</b>（没有 CK11N/CK24 的任务），所以本页的任务不是照抄教材，而是把已演示的机制接起来 —— 作业类型与作业价格（<code>KL01</code>/<code>KP26</code>）、内部订单结算（<code>KO88</code>）、以及教材任务 05 提到的那条接口：成本要素 <code>41010901</code> 生产成本－生产订单差异（成本要素类别 <b>22 外部结算</b>）。哪些是教材画面、哪些是标准功能，本页逐条标注。</p>
+<div class="toc"><a href="#ways">三条主线</a><a href="#sec12">教材已演示的接口：作业价格</a><a href="#sec05">教材已演示的接口：差异成本要素</a><a href="#settle">结算机制</a><a href="#tcode">关键事务码与对象</a><a href="#gap">教材未演示清单</a><a href="#errors">常见错误</a><a href="#chain">与 PP / MM 的关系</a></div>
+<h2 id="ways">产品成本的三条主线</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>主线</th><th>做什么</th><th>教材 CO 覆盖情况</th><th>关键事务码</th></tr></thead><tbody><tr><td><b>① 成本估算（事前）</b></td><td>按 BOM + 工艺路线算出物料的标准成本（标准价 S 的物料必须做），发布后更新物料主数据的标准价</td><td><b>教材 CO 未演示</b>（PP 站有成本核算批量 10 的物料画面；<code>CK11N</code>/<code>CK24</code> 属标准功能）</td><td><code>CK11N</code> · <code>CK24</code> · <code>CK40N</code> · <code>CK13N</code></td></tr><tr><td><b>② 订单成本（事中）</b></td><td>生产订单归集料（261 领料）、工（报工 × 作业价格）、费（间接费用分摊），收货时按标准价/计划价入库</td><td><b>机制在教材里有</b>：作业类型与作业价格（任务 10/12）、结算与结算成本要素（任务 33 的同类机制）</td><td><code>CO01</code> · <code>CO11N</code> · <code>KKBC_ORD</code> · <code>MB31</code></td></tr><tr><td><b>③ 差异与期末（事后）</b></td><td>算订单差异（投入 − 产出），结算差异到成本要素 41010901 生产成本－生产订单差异，再跑实际成本核算（物料账）</td><td><b>教材任务 05 提到接口</b>：41010901 的类别是「22 外部结算」</td><td><code>KKS1</code> · <code>KKS2</code> · <code>CO88</code> · <code>CKMLCP</code></td></tr></tbody></table></div>
+<div class="box warn"><b class="t">本页的「教材未演示」标注怎么读</b><p>凡是标注「教材未演示」的，表示这本《S4.docx》的 CO 模块里<b>没有对应的任务与画面</b>；本站给出的是标准功能的事务码与做法，供后续进阶使用。带「画面 N」编号的图仍然是教材原书的真实截图（来自其它任务），用来证明<b>同一套机制</b>在教材环境里确实跑得起来（例如作业价格、结算凭证、结算成本要素）。</p></div>
+<h2 id="act">教材已演示的接口 ①：作业类型与作业价格（任务 10/12）</h2>
+<div class="taskblk"><div class="steph" id="sec12"><span class="no">任务 12</span><h3>设置作业输出价格</h3><span class="tc">KP26</span></div><div class="note tip"><span class="t">教学要点</span>任务 12 是教材里与产品成本最直接相关的一段手顺：给成本中心 1001 维护作业类型的计划作业量与价格（MAC 固定 460.00 / 可变 170.00，SET 固定 300.00，计划作业量各 19,200 H）。生产订单报工时，系统就是按这些价格把「工」的成本算进产品成本的 —— 价格错，产品成本就错。</div><div class="pathline" data-copy="会计核算 → 控制 → 成本中心会计 → 计划 → 作业输出/价格 → KP26 → 更改"><b>IMG 路径（教材后台菜单）</b>会计核算 → 控制 → 成本中心会计 → 计划 → 作业输出/价格 → KP26 → 更改</div><ol class="tasksteps"><li><figure class="shot"><a class="zoom" href="../assets/img/co/t12/01_1_image412.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t12/01_1_image412.png" width="324" height="465" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 1</span><span class="cap"></span><span class="src">教材《S4.docx》· CO 任务 12 设置作业输出价格 · 原图 01_1_image412.png</span></figcaption></figure></li><li><p class="stepcap">会计核算－控制－成本中心会计－计划－作业输出/价格－KP26－更改</p><figure class="shot"><a class="zoom" href="../assets/img/co/t12/02_1_image413.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t12/02_1_image413.png" width="613" height="818" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 2</span><span class="cap"></span><span class="src">教材《S4.docx》· CO 任务 12 设置作业输出价格 · 原图 02_1_image413.png</span></figcaption></figure></li><li><p class="stepcap">点击工具栏上的概览屏幕(F5)</p><figure class="shot"><a class="zoom" href="../assets/img/co/t12/03_1_image414.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t12/03_1_image414.png" width="933" height="257" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 3</span><span class="cap"></span><span class="src">教材《S4.docx》· CO 任务 12 设置作业输出价格 · 原图 03_1_image414.png</span></figcaption></figure></li><li><figure class="shot"><a class="zoom" href="../assets/img/co/t12/04_1_image415.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t12/04_1_image415.png" width="580" height="407" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 4</span><span class="cap"></span><span class="src">教材《S4.docx》· CO 任务 12 设置作业输出价格 · 原图 04_1_image415.png</span></figcaption></figure></li></ol></div>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>作业价格在成本流里的作用</th><th>说明</th></tr></thead><tbody><tr><td>成本中心 → 生产订单</td><td>报工（PP 侧的工时确认）按「作业类型 × 价格」把成本从成本中心搬到订单上</td></tr><tr><td>对方项目</td><td>作业分配用 43 类次级成本要素：教材里的 <code>801020</code> 机器时间分配、<code>801030</code> 准备时间分配</td></tr><tr><td>计划价 vs 实际价</td><td>教材用 <code>KP26</code> 手工维护计划价；月末用实际作业量重算实际价属标准功能（<code>KSS2</code>/<code>KSII</code>，教材未演示）</td></tr><tr><td>没维护价格会怎样</td><td>作业分配金额为 0 → 产品只吸收到材料成本，成本被低估</td></tr></tbody></table></div>
+<h2 id="sec05">教材已演示的接口 ②：差异成本要素 41010901（任务 05）</h2>
+<div class="taskblk"><div class="steph" id="t05"><span class="no">任务 05</span><h3>新建初级成本要素</h3><span class="tc">KA01</span></div><div class="note tip"><span class="t">教学要点</span>任务 05 里有一句全站最关键的提示：「所有损益类科目都是初级成本要素，除了 41010901 生产成本－生产订单差异的成本要素类别是『22 外部结算』，其他所有初级成本要素的类别都是『1 初级成本/成本降低产生的利润』」。这句话说明：生产订单结算产生的差异，在 CO 里用一个专门的成本要素来承接 —— 它就是产品成本与成本中心会计之间的接口。</div><div class="pathline" data-copy="会计 → 控制 → 成本中心会计 → 主数据 → 成本要素 → 单个处理 → KA01-创建初级成本"><b>IMG 路径（教材后台菜单）</b>会计 → 控制 → 成本中心会计 → 主数据 → 成本要素 → 单个处理 → KA01-创建初级成本</div><ol class="tasksteps"><li><p class="stepcap">CO 用“成本要素”来管理成本流，成本要素和财务会计里的科目类似<br>会计－控制－成本中心会计－主数据－成本要素－单个处理－KA01-创建初级成本</p><figure class="shot"><a class="zoom" href="../assets/img/co/t05/01_1_image352.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t05/01_1_image352.png" width="313" height="521" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 5</span><span class="cap"></span><span class="src">教材《S4.docx》· CO 任务 05 新建初级成本要素 · 原图 01_1_image352.png</span></figcaption></figure></li><li><p class="stepcap">lu41010101</p><div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/co/t05/02_1_image353.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t05/02_1_image353.png" width="439" height="307" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 6</span><span class="cap"></span><span class="src">教材《S4.docx》· CO 任务 05 新建初级成本要素 · 原图 02_1_image353.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/co/t05/02_2_image354.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t05/02_2_image354.png" width="557" height="523" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 7</span><span class="cap"></span><span class="src">教材《S4.docx》· CO 任务 05 新建初级成本要素 · 原图 02_2_image354.png</span></figcaption></figure></div><div class="note tip"><span class="t">原书提示</span>重复上述步骤，所有损益类科目都是初级成本要素，除了 41010901 生产成本－生产订单差异的成本要素类别是 “ 22 外部结算”，其他所有初级成本要素的类别都是 “ 1 初级成本/成本降低产生的利润”</div></li><li><p class="stepcap">解释“41010901 生产成本－生产订单差异”是生产订单结算产生的，是管理会计计算初结果后，使用一种特殊的成本要素类别“22 外部结算”。</p><figure class="shot"><a class="zoom" href="../assets/img/co/t05/03_1_image357.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t05/03_1_image357.png" width="578" height="461" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 8</span><span class="cap"></span><span class="src">教材《S4.docx》· CO 任务 05 新建初级成本要素 · 原图 03_1_image357.png</span></figcaption></figure></li><li><div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/co/t05/04_1_image358.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t05/04_1_image358.png" width="605" height="448" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 9</span><span class="cap"></span><span class="src">教材《S4.docx》· CO 任务 05 新建初级成本要素 · 原图 04_1_image358.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/co/t05/04_2_image359.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t05/04_2_image359.png" width="588" height="571" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 10</span><span class="cap"></span><span class="src">教材《S4.docx》· CO 任务 05 新建初级成本要素 · 原图 04_2_image359.png</span></figcaption></figure></div></li></ol></div>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>成本要素</th><th>类别</th><th>它在产品成本里扮演什么角色</th></tr></thead><tbody><tr><td><code>41010901</code> 生产成本－生产订单差异</td><td><code>22</code> 外部结算</td><td>订单结算/差异结算的落点：订单实际成本与产出（标准价入库）的差额最终记在这里</td></tr><tr><td><code>801020</code> 机器时间分配 · <code>801030</code> 准备时间分配</td><td><code>43</code> 内部作业</td><td>作业成本从成本中心流向订单的通道（作业类型 KL01 上指定）</td></tr><tr><td><code>802010</code> 电费分摊</td><td><code>42</code> 分摊</td><td>间接费用分摊进成本对象（教材任务 23 用的就是这一类）</td></tr><tr><td><code>803010</code>（内部订单结算用）</td><td><code>21</code> 内部结算</td><td>结算到成本中心时使用的次级成本要素（教材任务 29/33）</td></tr></tbody></table></div>
+<div class="note warn"><span class="t">成本要素类别不是随便选的</span>类别决定「这个成本要素能往哪过账」：22 类只能在结算时用，43 类只能在作业分配时用。教材里每一个新建的次级成本要素都对应一种用途 —— 这也是为什么教材要你一个个建、而不是复制。类别细节可在 <code>KA06</code> 的 F4 帮助里看到（教材未展开讲）。</div>
+<h2 id="settle">结算机制：从订单到接收方（教材任务 29/33 的同类机制）</h2>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/co/t29/06_1_image499.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t29/06_1_image499.png" width="763" height="245" alt="任务 29 分配结构 A1 的结算成本要素 803010（接收方类型 CTR）" loading="lazy"></a><figcaption><span class="n">画面 11</span><span class="cap">任务 29 分配结构 A1 的结算成本要素 803010（接收方类型 CTR）</span><span class="src">教材《S4.docx》· CO 任务 29 维护内部订单结算的分配结构 · 原图 06_1_image499.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/co/t28/04_1_image493.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t28/04_1_image493.png" width="694" height="646" alt="任务 28 结算参数文件（决定接收方类别与分配结构）" loading="lazy"></a><figcaption><span class="n">画面 12</span><span class="cap">任务 28 结算参数文件（决定接收方类别与分配结构）</span><span class="src">教材《S4.docx》· CO 任务 28 维护内部订单的结算参数文件 · 原图 04_1_image493.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/co/t31/06_1_image509.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t31/06_1_image509.png" width="738" height="414" alt="任务 31 订单结算规则：按成本中心维护份额" loading="lazy"></a><figcaption><span class="n">画面 13</span><span class="cap">任务 31 订单结算规则：按成本中心维护份额</span><span class="src">教材《S4.docx》· CO 任务 31 创建内部订单 · 原图 06_1_image509.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/co/t33/02_1_image518.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t33/02_1_image518.png" width="610" height="430" alt="任务 33 KO88 结算执行：无错误，运行已经完成" loading="lazy"></a><figcaption><span class="n">画面 14</span><span class="cap">任务 33 KO88 结算执行：无错误，运行已经完成</span><span class="src">教材《S4.docx》· CO 任务 33 内部订单的结算 · 原图 02_1_image518.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/co/t34/02_1_image521.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t34/02_1_image521.png" width="1152" height="785" alt="任务 34 结算结果：接收方成本中心报表上出现结算进来的成本" loading="lazy"></a><figcaption><span class="n">画面 15</span><span class="cap">任务 34 结算结果：接收方成本中心报表上出现结算进来的成本</span><span class="src">教材《S4.docx》· CO 任务 34 显示内部订单的结算结果 · 原图 02_1_image521.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/co/t26/02_1_image477.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/co/t26/02_1_image477.png" width="881" height="327" alt="任务 26 次级成本要素在接收方报表里的样子（802010 电费分摊）" loading="lazy"></a><figcaption><span class="n">画面 16</span><span class="cap">任务 26 次级成本要素在接收方报表里的样子（802010 电费分摊）</span><span class="src">教材《S4.docx》· CO 任务 26 显示成本中心分摊到的电费 · 原图 02_1_image477.png</span></figcaption></figure></div>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>结算的目标对象</th><th>接收方类别</th><th>教材是否演示</th><th>说明</th></tr></thead><tbody><tr><td>成本中心</td><td><code>CTR</code></td><td>演示（任务 31/33）</td><td>份额制，合计 100%</td></tr><tr><td>总账科目 / 成本要素</td><td><code>G/L</code> / <code>FXA</code></td><td>未演示</td><td>结到固定科目时会生成 FI 凭证 —— 这时 CO 与 FI 又交汇了</td></tr><tr><td>资产（在建工程）</td><td><code>FXA</code></td><td>未演示</td><td>项目型支出资本化的常用做法</td></tr><tr><td>其他订单 / WBS 元素</td><td><code>ORD</code> / <code>WBS</code></td><td>未演示</td><td>内部订单之间、订单与项目之间的成本传递</td></tr><tr><td>生产订单 / 产品成本收集器</td><td><code>ORD</code> / <code>WBS</code>（<code>CO88</code> 批量）</td><td>未演示（PP 站有生产订单画面）</td><td>生产订单结算走同样的分配结构机制</td></tr></tbody></table></div>
+<h2 id="tcode">关键事务码与对象（教材未演示的用「未演示」标出）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>事务码</th><th>用途</th><th>教材 CO 是否演示</th></tr></thead><tbody><tr><td><code>CK11N</code></td><td>创建物料成本估算（单个物料，带成本核算变式）</td><td>未演示</td></tr><tr><td><code>CK24</code></td><td>标记/发布标准成本（把估算结果更新到物料主数据）</td><td>未演示</td></tr><tr><td><code>CK40N</code></td><td>成本核算运行（批量跑一批物料）</td><td>未演示</td></tr><tr><td><code>CK13N</code></td><td>显示成本估算结果（看成本构成/成本组件）</td><td>未演示</td></tr><tr><td><code>KKBC_ORD</code></td><td>订单成本分析（生产订单/内部订单的成本报表）</td><td>未演示</td></tr><tr><td><code>KO88</code></td><td>结算单个订单（内部订单；生产订单同样用它）</td><td>演示（任务 33，对象是内部订单）</td></tr><tr><td><code>KKS1</code> / <code>KKS2</code></td><td>订单差异计算（单个 / 批量）</td><td>未演示</td></tr><tr><td><code>CO88</code></td><td>批量结算生产订单</td><td>未演示</td></tr><tr><td><code>CKMLCP</code></td><td>实际成本核算（物料账：期末把实际成本分摊到物料）</td><td>未演示</td></tr><tr><td><code>KP26</code></td><td>维护作业输出价格（产品成本里「工」的单价）</td><td>演示（任务 12）</td></tr><tr><td><code>KA06</code></td><td>建次级成本要素（作业/分摊/结算要素）</td><td>演示（任务 06）</td></tr><tr><td><code>CS01</code> / <code>CA01</code></td><td>BOM / 工艺路线（成本估算的输入）</td><td>未演示（属 PP）</td></tr></tbody></table></div>
+<div class="pathline" data-copy="控制 → 产品成本核算 → 成本核算变式 → 定义成本核算变式（每个变式指定：成本核算类型、估价变式、日期控制、数量结构控制）"><b>成本核算变式（IMG，教材未演示）</b>控制 → 产品成本核算 → 成本核算变式 → 定义成本核算变式（每个变式指定：成本核算类型、估价变式、日期控制、数量结构控制）</div>
+<h2 id="gap">教材未演示、但项目必用（明确清单）</h2>
+<ol class="oplist" start="1"><li class="">物料标准成本估算与发布：<code>CK11N</code>（估）→ <code>CK24</code>（标记/发布）→ 物料主数据价格控制为 <code>S</code> 时才会真正生效；成本核算变式与估价变式都在 IMG 里配。</li><li class="">生产订单成本：订单归集 261 领料、报工（作业价格）、间接费用，收货按标准价入库；成本分析用 <code>KKBC_ORD</code>（教材未演示）。</li><li class="">订单差异与结算：<code>KKS1/KKS2</code> 算差异 → <code>CO88</code> 结算 → 差异进<code>41010901</code>（教材只提了这个成本要素本身）。</li><li class="">实际成本核算（物料账 <code>CKMLCP</code>）与价格差异分摊：把期间实际成本分摊到物料，让「实际成本」落到存货与销售成本上。</li><li class="">间接费用管理（CO-OM-CCA 的成本中心计划 <code>KP06</code>、作业价格重估 <code>KSS2</code>/<code>KSII</code>、间接费用分摊表 <code>KSU1</code> 等）：教材只演示了分配与分摊。</li><li class="">获利能力分析（CO-PA）与利润中心会计：教材完全未涉及。</li></ol>
+<h2 id="errors">常见错误与排查（迁移到项目环境时最常踩的）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>症状</th><th>原因</th><th>处理</th></tr></thead><tbody><tr><td>产品只吸收了材料成本、没有工和费</td><td>作业类型没维护价格（<code>KP26</code>），或成本中心没有作业</td><td>给成本中心维护计划作业量与价格（任务 12 的做法）</td></tr><tr><td>订单结算报「没有分配结构」</td><td>结算参数文件没挂分配结构，或生产订单所用参数文件缺结算成本要素</td><td>对照内部订单的配置链（任务 28/29）逐项检查</td></tr><tr><td>差异不知道去哪了</td><td>差异被结到差异成本要素后没有进报表，或物料价格控制是 <code>V</code></td><td>看 <code>41010901</code> 的行项目（<code>KOB1</code>）；标准价物料才走差异科目</td></tr><tr><td>CK11N 报「没有找到 BOM/工艺路线」</td><td>物料没建 BOM（CS01）或工艺路线（CA01）</td><td>先补 PP 侧主数据（教材 PP 站有画面）</td></tr><tr><td>CK24 发布后物料价格没变</td><td>只做了「标记」没有「发布」，或已过账期间不许改价</td><td>确认发布成功；跨期价格要在允许的期间内发布</td></tr></tbody></table></div>
+<h2 id="chain">与 PP / MM 的关系</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>接口</th><th>谁提供</th><th>CO 侧看到什么</th></tr></thead><tbody><tr><td>物料价格控制</td><td>MM 物料主数据（会计 1 视图）：<code>V</code> 移动平均价 / <code>S</code> 标准价</td><td>S 的物料才有「标准成本」与差异；V 的物料差异直接进存货价值</td></tr><tr><td>BOM / 工艺路线</td><td>PP（<code>CS01</code>/<code>CA01</code>）</td><td>成本估算的输入（料与工序）</td></tr><tr><td>生产订单 / 报工</td><td>PP（<code>CO01</code>/<code>CO11N</code>）</td><td>订单是 CO 的成本对象：归集料工费、结算差异</td></tr><tr><td>领料（261）与产成品入库</td><td>MM / PP（<code>MB1A</code>/<code>MIGO</code>）</td><td>订单上的材料成本行与产出（按标准价入库的贷方）</td></tr><tr><td>差异科目 41010901</td><td>CO（订单结算）</td><td>生产成本－生产订单差异（类别 22 外部结算，教材任务 05 提到）</td></tr></tbody></table></div>
+</article>
+</main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <h5>SAP CO 培训课程</h5>
+        <p>管理会计：成本中心 · 内部订单 · 产品成本</p>
+        <p>课程总览：<a href="../index.html">SAP 模块培训课程（MM · PP · FI · CO）</a></p>
+      </div>
+      <div>
+        <h5>课程板块</h5>
+        <p><a href="concept.html">概念</a> · <a href="org.html">组织</a> ·
+        <a href="master.html">主数据</a> · <a href="flow.html">流程</a> ·
+        <a href="cca.html">成本中心</a> · <a href="config.html">配置</a></p>
+      </div>
+      <div>
+        <h5>课堂配套</h5>
+        <p><a href="practice.html">实训任务</a> · <a href="instructor.html">讲师版</a> ·
+        <a href="worksheet.html">学员版</a> · <a href="quiz.html">自测</a> ·
+        <a href="glossary.html">术语表</a></p>
+      </div>
+      <div>
+        <h5>看图说话</h5>
+        <p>截图取自教材《S4.docx》的真实 SAP GUI 画面（中文界面，保留原文件名可回查）；
+        流程图、结构图、思维导图为本站自绘 SVG。标准值随版本/行业方案而异，
+        页面标注的「在自系统里怎么确认」请在自己的系统里核对。</p>
+        <p>其他模块：<a href="../mm/index.html">MM 物料管理</a> · <a href="../pp/index.html">PP 生产计划</a> · <a href="../fi/index.html">FI 财务会计</a> · </p>
+      </div>
+    </div>
+    <p class="copy">© <span data-year>2026</span> SAP CO 培训课程 · 静态站点，可离线使用</p>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/mod.js"></script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自测（30 题） · SAP FI 培训课程</title>
+<meta name="description" content="SAP FI（财务会计）培训课程：概念与定位 → 组织结构（公司/公司代码/科目表/会计年度/信贷控制范围）→ 主数据（总账科目/科目组/字段状态/客户与供应商主数据）→ 端到端记账流程（业务凭证 → 会计凭证 → 余额与报表）+ 应收应付循环（发票·收款·付款）→ 期末（记账期间·资产负债表结构·报表）→ 分步操作手顺 → SPRO 配置（45 个任务）→ 实训与自测。截图取自教材《S4.docx》的真实 SAP GUI 画面。">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mod.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">FI</span><span class="txt">培训课程</span></a>
+    <nav class="main">
+      <a href="index.html" title="课程地图与学习路线">首页</a>
+      <a href="concept.html" title="FI 是什么、凭证从哪来、边界在哪">概念</a>
+      <a href="org.html" title="公司代码 / 科目表 / 会计年度 / 信贷 / 期间 / 字段状态">组织</a>
+      <a href="master.html" title="总账科目 / 客户 / 供应商主数据">主数据</a>
+      <a href="flow.html" title="端到端记账流程与凭证流">流程</a>
+      <a href="gl.html" title="FB50 凭证 · FS00 科目 · FS10N 余额">总账</a>
+      <a href="arap.html" title="FB70/FB60 发票 · F-28/F-53 收付款 · 客户供应商余额">应收应付</a>
+      <a href="close.html" title="记账期间 · 报表结构 · 资产负债表与损益表">期末报表</a>
+      <a href="config.html" title="SPRO 配置路线（45 个任务）">配置</a>
+      <a href="practice.html" title="动手任务与完成基准">实训</a>
+      <a href="instructor.html" title="课时 / 板书 / 必问 / 评分">讲师</a>
+      <a href="worksheet.html" title="记入表（可打印）">学员</a>
+      <a class="active" href="quiz.html" title="30 题自评（合格 75%）">自测</a>
+      <a href="glossary.html" title="中英对照 / T-code / 常用表">术语</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page">
+<article>
+<p class="breadcrumb"><a href="index.html">课程地图</a> / <span>自测（30 题）</span></p>
+<div class="filterbar modsw"><a class="chip" href="../mm/index.html" title="SAP MM 培训课程">MM 物料管理</a><a class="chip" href="../pp/index.html" title="SAP PP 培训课程">PP 生产计划</a><a class="chip on" href="../fi/index.html" title="SAP FI 培训课程">FI 财务会计</a><a class="chip" href="../co/index.html" title="SAP CO 培训课程">CO 管理会计</a><a class="chip" href="../index.html" title="四个模块的总体视图与学习路线">总览</a></div>
+<h1>自测（30 题）</h1>
+<p class="kicker">概念 5 · 组织 5 · 主数据 6 · 流程 8 · 配置 3 · 集成 3（合格 75%）</p>
+<p class="lead">30 题，覆盖概念 / 组织 / 主数据 / 流程 / 配置 / 集成六类。点击选项即时判分，每题都有解说。<b>合格线：≥75%（23 题）</b>，并且 <a href="practice.html">五个实训</a>的完成基准全部打勾。</p>
+<p class="muted">分布：概念 5 · 组织 5 · 主数据 6 · 流程 8 · 配置 3 · 集成 3</p>
+<p>建议先做一遍不看答案，再看解说；错题回到对应页面重读（题目里的关键字可以直接用页面上的术语搜索）。</p>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">概念</span></div>
+<h4>1. FI（财务会计）最终产出的是什么？</h4>
+<div class="opts"><div class="opt" data-key="A">采购订单与物料凭证</div><div class="opt" data-key="B">会计凭证与财务报表（资产负债表、损益表）</div><div class="opt" data-key="C">生产订单与工艺路线</div><div class="opt" data-key="D">销售订单与交货单</div></div>
+<div class="explain"><b>答案 B。</b>FI 把业务动作变成会计凭证，最终产出对外财务报表；采购订单/物料凭证是 MM 的、生产订单是 PP 的、销售订单是 SD 的。</div>
+</div>
+<div class="quiz-q" data-answer="C">
+<div class="q-meta"><span class="tag gray">概念</span></div>
+<h4>2. 下列哪一项不属于 FI 的组件（子模块）？</h4>
+<div class="opts"><div class="opt" data-key="A">总账（GL）</div><div class="opt" data-key="B">应收账款（AR）</div><div class="opt" data-key="C">物料需求计划（MRP）</div><div class="opt" data-key="D">应付账款（AP）</div></div>
+<div class="explain"><b>答案 C。</b>MRP 属于 PP（生产计划）；FI 由总账、应收、应付、资产会计与报表构成，教材覆盖的是前三者与报表。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">概念</span></div>
+<h4>3. SAP 里「总账科目」为什么要分两层维护？</h4>
+<div class="opts"><div class="opt" data-key="A">为了区分借方和贷方</div><div class="opt" data-key="B">科目表层跨公司代码、公司代码层决定能否记账与字段规则</div><div class="opt" data-key="C">因为一个科目要有两个编号</div><div class="opt" data-key="D">为了区分本币与外币</div></div>
+<div class="explain"><b>答案 B。</b>科目表层（SKA1）存科目号/名称/科目组，公司代码层（SKB1）存字段状态组、统驭科目、只能自动记帐；教材任务 10 原文就强调「科目组和公司代码无关、字段状态组和公司代码相关」。</div>
+</div>
+<div class="quiz-q" data-answer="C">
+<div class="q-meta"><span class="tag gray">概念</span></div>
+<h4>4. 「预制（Park）」与「过账（Post）」的区别是什么？</h4>
+<div class="opts"><div class="opt" data-key="A">预制会更新余额，过账不会</div><div class="opt" data-key="B">两者完全一样，只是按钮不同</div><div class="opt" data-key="C">预制只是草稿不改余额，过账才更新余额与未清项</div><div class="opt" data-key="D">预制是删除凭证的中间状态</div></div>
+<div class="explain"><b>答案 C。</b>教材任务 20 原文写「可预制，也可以直接保存后过账」；只有过账才更新科目余额，所以只预制的凭证在 FS10N 里查不到金额。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">概念</span></div>
+<h4>5. 已过账的会计凭证录错了，正确做法是？</h4>
+<div class="opts"><div class="opt" data-key="A">直接删除凭证</div><div class="opt" data-key="B">用冲销（如 FB08）或反向记账</div><div class="opt" data-key="C">在数据库里改金额</div><div class="opt" data-key="D">新建一个公司代码重来</div></div>
+<div class="explain"><b>答案 B。</b>已过账凭证不能删除，只能冲销或反向记账 —— 这是内部控制的底线；（FB08 冲销教材未演示，属于标准功能）。</div>
+</div>
+<div class="quiz-q" data-answer="C">
+<div class="q-meta"><span class="tag gray">组织</span></div>
+<h4>6. 教材里建的公司代码及其描述是？</h4>
+<div class="opts"><div class="opt" data-key="A">A999 颐宁会计科目表</div><div class="opt" data-key="B">P999 颐宁机械工厂</div><div class="opt" data-key="C">C999 颐宁机械有限公司</div><div class="opt" data-key="D">Y999 颐宁采购组织</div></div>
+<div class="explain"><b>答案 C。</b>任务 01 建 C999 颐宁机械有限公司（城市上海、货币 RMB、语言 ZH）；A999 是会计科目表、P999 是（MM 的）工厂、Y999 是采购组织。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">组织</span></div>
+<h4>7. 会计科目表 A999 与公司代码 C999 的关系是？</h4>
+<div class="opts"><div class="opt" data-key="A">一对一</div><div class="opt" data-key="B">多对一（一个科目表可分配给多个公司代码）</div><div class="opt" data-key="C">多对多</div><div class="opt" data-key="D">没有关系</div></div>
+<div class="explain"><b>答案 B。</b>任务 02 原文：「不同的公司代码可以分配给不同的会计科目表，关系是多对一」；科目表在科目表层，公司代码只是选择用它。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+<div class="q-meta"><span class="tag gray">组织</span></div>
+<h4>8. 教材建的会计年度变式是哪一个？</h4>
+<div class="opts"><div class="opt" data-key="A">ZF</div><div class="opt" data-key="B">P999</div><div class="opt" data-key="C">Z001</div><div class="opt" data-key="D">C999</div></div>
+<div class="explain"><b>答案 A。</b>任务 03 建会计年度变式 ZF；P999 是记账期间变式、Z001 是字段状态变式、C999 是公司代码与信贷控制范围。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">组织</span></div>
+<h4>9. 课本里的信贷控制范围（C999 颐宁信贷控制范围）主要作用是什么？</h4>
+<div class="opts"><div class="opt" data-key="A">决定凭证号码范围</div><div class="opt" data-key="B">控制信用风险的边界，公司代码与它是多对一关系</div><div class="opt" data-key="C">决定科目号长度</div><div class="opt" data-key="D">控制折旧方法</div></div>
+<div class="explain"><b>答案 B。</b>任务 04 原文：信贷范围用于管理信用控制在哪个范围内起作用，它是销售与应收账款用来控制信用风险的组织结构，公司代码和信贷控制范围是多对一。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">组织</span></div>
+<h4>10. 记账期间变式（P999）解决的问题是？</h4>
+<div class="opts"><div class="opt" data-key="A">决定凭证记到哪个科目</div><div class="opt" data-key="B">控制哪些会计期间允许过账（开账/关账）</div><div class="opt" data-key="C">决定客户编号范围</div><div class="opt" data-key="D">决定报表项目</div></div>
+<div class="explain"><b>答案 B。</b>任务 16 原文：这是用来对凭证的「开关」，已经关掉的期间不允许对凭证进行更改，多个公司代码可以被统一控制开账和关账。</div>
+</div>
+<div class="quiz-q" data-answer="C">
+<div class="q-meta"><span class="tag gray">主数据</span></div>
+<h4>11. 「科目组」和「字段状态组」的分工是？</h4>
+<div class="opts"><div class="opt" data-key="A">科目组控制凭证字段，字段状态组控制科目字段</div><div class="opt" data-key="B">两者完全等价</div><div class="opt" data-key="C">科目组控制科目本身（字段与编号范围），字段状态组控制凭证里的辅助核算项</div><div class="opt" data-key="D">科目组属于公司代码层，字段状态组属于科目表层</div></div>
+<div class="explain"><b>答案 C。</b>任务 07 原文：「科目组是控制科目中的参数，字段状态组是控制凭证中的辅助核算项」；且科目组属科目表层（与公司代码无关），字段状态组属公司代码层。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">主数据</span></div>
+<h4>12. 收货时报某科目「未在公司代码下维护」，应该怎么补？</h4>
+<div class="opts"><div class="opt" data-key="A">在科目表层补名称</div><div class="opt" data-key="B">用 FS00/FSS0 补公司代码层（字段状态组、货币等）</div><div class="opt" data-key="C">改科目号</div><div class="opt" data-key="D">重新建一张科目表</div></div>
+<div class="explain"><b>答案 B。</b>科目必须先有公司代码层数据（SKB1）才能在 C999 记账；只在科目表层建过、没切到公司代码列保存，就是典型症状。</div>
+</div>
+<div class="quiz-q" data-answer="C">
+<div class="q-meta"><span class="tag gray">主数据</span></div>
+<h4>13. 教材里客户和供应商的明细汇总到哪两个统驭科目？</h4>
+<div class="opts"><div class="opt" data-key="A">10020101 银行存款 / 31010101 实收资本</div><div class="opt" data-key="B">51010101 收入 / 55020101 管理费用</div><div class="opt" data-key="C">11310101 应收账款 / 21210101 应付账款</div><div class="opt" data-key="D">12010101 材料采购 / 410901 留存收益</div></div>
+<div class="explain"><b>答案 C。</b>任务 11 建这两个统驭科目；任务 29 建客户时在公司代码层填统驭科目 11310101、排序码 001。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">主数据</span></div>
+<h4>14. 任务 12 建的「材料采购科目」为什么被称为中间过渡科目？</h4>
+<div class="opts"><div class="opt" data-key="A">它是存货科目</div><div class="opt" data-key="B">收货时贷它、发票校验时借它，两边配对形成已清项/未清项</div><div class="opt" data-key="C">它只用于固定资产</div><div class="opt" data-key="D">它是税金科目</div></div>
+<div class="explain"><b>答案 B。</b>教材原文：收货时 借存货/贷材料采购，收发票时 借材料采购/贷应付账款；两边凭证行相互匹配叫清账，对不上的叫未清项（反映货或票有一方未到）。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">主数据</span></div>
+<h4>15. 客户账户组 K001 / K002 分别是什么？</h4>
+<div class="opts"><div class="opt" data-key="A">K001 收货方 / K002 订货方</div><div class="opt" data-key="B">K001 订货方-颐宁 / K002 收货方-颐宁</div><div class="opt" data-key="C">两个编号范围</div><div class="opt" data-key="D">两个科目组</div></div>
+<div class="explain"><b>答案 B。</b>任务 26 定义客户账户组 K001 订货方-颐宁、K002 收货方-颐宁（拷贝方式建）；账户组决定字段屏幕格式与编号范围（Z1 / Z2）。编号范围是另一件事（任务 27/28）。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">主数据</span></div>
+<h4>16. 在客户主数据的公司代码层填「排序码 001」的作用是？</h4>
+<div class="opts"><div class="opt" data-key="A">决定客户编号</div><div class="opt" data-key="B">决定行项目「分配」字段自动带出什么内容（如发票号）</div><div class="opt" data-key="C">决定付款方式</div><div class="opt" data-key="D">决定客户所在的信贷范围</div></div>
+<div class="explain"><b>答案 B。</b>教材任务 29 画面写「统驭科目 11310101 排序码 001」；排序码决定清账时行项目的分配字段带出什么信息，便于核对是哪笔业务。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>17. 教材里录入总账凭证（实收资本）用的 T-code 是？</h4>
+<div class="opts"><div class="opt" data-key="A">FB50</div><div class="opt" data-key="B">FB70</div><div class="opt" data-key="C">FB60</div><div class="opt" data-key="D">FB03</div></div>
+<div class="explain"><b>答案 A。</b>FB50 录总账凭证（任务 20）；FB70 是客户发票、FB60 是供应商发票、FB03 是显示凭证。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>18. 教材凭证 100000000 的分录是？</h4>
+<div class="opts"><div class="opt" data-key="A">借 31010101 / 贷 10020101</div><div class="opt" data-key="B">借 10020101 银行存款 / 贷 31010101 实收资本</div><div class="opt" data-key="C">借 11310101 / 贷 51010101</div><div class="opt" data-key="D">借 21710102 / 贷 10020101</div></div>
+<div class="explain"><b>答案 B。</b>任务 20 记录收到实收资本存入工商银行账户：借 10020101 银行存款、贷 31010101 实收资本，各 2.800,00（读 SAP 数字：点=千位、逗号=小数）；凭证日期与过账日期都是 03.03.2021，落在 2021 财年第 3 期间。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>19. 客户发票 FB70 在客户账户上产生什么？</h4>
+<div class="opts"><div class="opt" data-key="A">只是记录，不影响余额</div><div class="opt" data-key="B">借客户（应收账款增加）/ 贷收入 + 销项税</div><div class="opt" data-key="C">贷客户 / 借收入</div><div class="opt" data-key="D">借银行存款 / 贷客户</div></div>
+<div class="explain"><b>答案 B。</b>任务 32 卖给远东造船厂含税 58.000：客户余额增加（FD10N 期间 3 借方 58.000,00），收入科目 51010101 与销项税 21710102 记贷方。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>20. F-28 收款的核心动作是？</h4>
+<div class="opts"><div class="opt" data-key="A">清账：把收款与未清发票配对，使未清项变已清项</div><div class="opt" data-key="B">只登记一笔收入</div><div class="opt" data-key="C">改客户的统驭科目</div><div class="opt" data-key="D">打印对账单</div></div>
+<div class="explain"><b>答案 A。</b>教材任务 33 原文：全额则只需要清账，而部分还款则需要先清掉原来的账单、再把剩余的金额生成另外一张单。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>21. 部分收款时「剩余项目」是什么意思？</h4>
+<div class="opts"><div class="opt" data-key="A">系统自动生成的贷项凭证</div><div class="opt" data-key="B">显示还有多少未收/未清金额，需要继续跟踪</div><div class="opt" data-key="C">客户的多余付款</div><div class="opt" data-key="D">容差科目的余额</div></div>
+<div class="explain"><b>答案 B。</b>任务 34 提示：做之前先用 FB70 做一张 164800 的发票，在 F-28 里双击「剩余项目」查看剩余并保存 —— 剩余金额继续作为未清项挂账。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>22. 显示客户余额与供应商余额分别用哪个事务码？</h4>
+<div class="opts"><div class="opt" data-key="A">FS10N / FS10N</div><div class="opt" data-key="B">FD10N / FK10N</div><div class="opt" data-key="C">FK10N / FD10N</div><div class="opt" data-key="D">FD03 / FK03</div></div>
+<div class="explain"><b>答案 B。</b>FD10N 显示客户余额（任务 36）、FK10N 显示供应商余额（任务 41）；FS10N 是总账科目余额（任务 21），FD03/FK03 是显示主数据。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>23. 任务 39 的付款凭证画面里，供应商一侧的金额与方向是？</h4>
+<div class="opts"><div class="opt" data-key="A">贷供应商 5.600,00</div><div class="opt" data-key="B">借供应商 5.600,00（冲减应付账款）</div><div class="opt" data-key="C">贷银行存款 5.600,00</div><div class="opt" data-key="D">借银行存款 5.600,00</div></div>
+<div class="explain"><b>答案 B。</b>画面行项目：50 = 贷 0010020111 银行存款-中行 5.600,00-；25 = 借 0030000002 京通运输公司 5.600,00（凭证类型 KZ、期间 3）。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+<div class="q-meta"><span class="tag gray">流程</span></div>
+<h4>24. 显示总账科目余额的标准事务码是？</h4>
+<div class="opts"><div class="opt" data-key="A">FS10N</div><div class="opt" data-key="B">FD10N</div><div class="opt" data-key="C">FK10N</div><div class="opt" data-key="D">MMBE</div></div>
+<div class="explain"><b>答案 A。</b>FS10N 显示总账科目余额（任务 21）；新总账版本是 FAGLB03（教材未演示）；MMBE 是 MM 的库存总览。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">配置</span></div>
+<h4>25. 「定义存留收益科目」（教材任务 09）的作用是什么？</h4>
+<div class="opts"><div class="opt" data-key="A">定义现金科目</div><div class="opt" data-key="B">年结时把损益表科目余额自动结转到资产负债表科目</div><div class="opt" data-key="C">定义客户的统驭科目</div><div class="opt" data-key="D">定义税务科目</div></div>
+<div class="explain"><b>答案 B。</b>教材任务 09 用 410901 定义留存收益科目：可以设成「本年利润科目」或「未分配利润科目」两种处理方式，系统在年结时自动结转。</div>
+</div>
+<div class="quiz-q" data-answer="A">
+<div class="q-meta"><span class="tag gray">配置</span></div>
+<h4>26. 任务 15「复制凭证号码范围到公司代码」要输入哪两个公司？</h4>
+<div class="opts"><div class="opt" data-key="A">源公司 0001 → 目标公司 C999</div><div class="opt" data-key="B">源公司 C999 → 目标公司 0001</div><div class="opt" data-key="C">源公司 A999 → 目标公司 P999</div><div class="opt" data-key="D">不需要输公司，只输年度</div></div>
+<div class="explain"><b>答案 A。</b>教材原文：输入源公司（0001）及目标公司（C999）；没有号码范围就录不了凭证，所以这一条通常放在主数据之前做。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">配置</span></div>
+<h4>27. 任务 44 里「P&L 结果」与「净值结果：利润/亏损」是做什么用的？</h4>
+<div class="opts"><div class="opt" data-key="A">用来定义科目号的长度</div><div class="opt" data-key="B">系统预定义的报表项目，自动计算资产负债表的轧差数（本年净增/净减的未分配利润）</div><div class="opt" data-key="C">用来定义客户编号范围</div><div class="opt" data-key="D">用来控制过账期间</div></div>
+<div class="explain"><b>答案 B。</b>教材任务 44 原文：净值结果（利润/亏损）两个系统预定义的报表项目会自动计算资产负债表的轧差数，实质上就是本年净增（或净减）的未分配利润数；教材把它调整到 3142 下。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">集成</span></div>
+<h4>28. 应收/应付在主数据侧与总账衔接的字段是？</h4>
+<div class="opts"><div class="opt" data-key="A">排序码</div><div class="opt" data-key="B">统驭科目（教材 11310101 / 21210101）</div><div class="opt" data-key="C">付款条件</div><div class="opt" data-key="D">账户组</div></div>
+<div class="explain"><b>答案 B。</b>统驭科目把客户/供应商明细汇总进总账；排序码只决定行项目分配字段带什么，账户组决定屏幕格式与编号范围。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">集成</span></div>
+<h4>29. 收入科目设为「只能自动记帐」后，会有什么效果？</h4>
+<div class="opts"><div class="opt" data-key="A">所有凭证都不能记这个科目</div><div class="opt" data-key="B">手工记账被拒绝，收入只能由系统自动过账（如 SD 开票）产生</div><div class="opt" data-key="C">该科目不参与报表</div><div class="opt" data-key="D">该科目自动变成统驭科目</div></div>
+<div class="explain"><b>答案 B。</b>任务 43 给 51010101 收入科目打勾，就是禁止人工调整收入；这是内部控制的标准动作（自动记账的业务如开票仍然可以过账）。</div>
+</div>
+<div class="quiz-q" data-answer="B">
+<div class="q-meta"><span class="tag gray">集成</span></div>
+<h4>30. MM 的收货（101）在 FI 里生成什么？</h4>
+<div class="opts"><div class="opt" data-key="A">不生成会计凭证</div><div class="opt" data-key="B">借存货 / 贷 GR-IR 材料采购 12010101 的会计凭证</div><div class="opt" data-key="C">借应付账款 / 贷银行存款</div><div class="opt" data-key="D">只生成物料凭证</div></div>
+<div class="explain"><b>答案 B。</b>这就是 MM 与 FI 的接口（MM 站任务 38 的画面里能看到 FI 凭证）；发票校验再 借 GR-IR / 贷应付账款，两次过账把材料采购科目冲平。</div>
+</div>
+</article>
+</main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <h5>SAP FI 培训课程</h5>
+        <p>财务会计：总账 · 应收 · 应付 · 报表</p>
+        <p>课程总览：<a href="../index.html">SAP 模块培训课程（MM · PP · FI · CO）</a></p>
+      </div>
+      <div>
+        <h5>课程板块</h5>
+        <p><a href="concept.html">概念</a> · <a href="org.html">组织</a> ·
+        <a href="master.html">主数据</a> · <a href="flow.html">流程</a> ·
+        <a href="gl.html">总账</a> · <a href="config.html">配置</a></p>
+      </div>
+      <div>
+        <h5>课堂配套</h5>
+        <p><a href="practice.html">实训任务</a> · <a href="instructor.html">讲师版</a> ·
+        <a href="worksheet.html">学员版</a> · <a href="quiz.html">自测</a> ·
+        <a href="glossary.html">术语表</a></p>
+      </div>
+      <div>
+        <h5>看图说话</h5>
+        <p>截图取自教材《S4.docx》的真实 SAP GUI 画面（中文界面，保留原文件名可回查）；
+        流程图、结构图、思维导图为本站自绘 SVG。标准值随版本/行业方案而异，
+        页面标注的「在自系统里怎么确认」请在自己的系统里核对。</p>
+        <p>其他模块：<a href="../mm/index.html">MM 物料管理</a> · <a href="../pp/index.html">PP 生产计划</a> · <a href="../co/index.html">CO 管理会计</a> · </p>
+      </div>
+    </div>
+    <p class="copy">© <span data-year>2026</span> SAP FI 培训课程 · 静态站点，可离线使用</p>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/mod.js"></script>
+</body>
+</html>

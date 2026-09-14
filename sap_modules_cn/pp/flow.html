@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>端到端流程 · SAP PP 培训课程</title>
+<meta name="description" content="SAP PP（生产计划）培训课程：概念与定位 → 组织结构（工厂/工作中心/能力/生产调度员）→ 主数据（物料 MRP 视图/BOM/工艺路线/工作中心/生产版本）→ 端到端流程（独立需求 → MRP 展开 → 计划订单 → 生产订单 → 发料·确认·收货 → 成本与差异结算）→ 分步操作手顺 → SPRO 配置（51 个任务）→ 实训与自测。截图取自教材《S4.docx》的真实 SAP GUI 画面。">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mod.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">PP</span><span class="txt">培训课程</span></a>
+    <nav class="main">
+      <a href="index.html" title="课程地图与学习路线">首页</a>
+      <a href="concept.html" title="PP 是什么、四段闭环、对象与凭证">概念</a>
+      <a href="org.html" title="工厂 / 调度员 / 工作中心 / 能力">组织</a>
+      <a href="master.html" title="BOM / 工艺路线 / 工作中心 / MRP 视图">主数据</a>
+      <a class="active" href="flow.html" title="端到端计划到成本流程">流程</a>
+      <a href="planning.html" title="需求管理 · MRP · MD04 · 订单转换">计划</a>
+      <a href="execution.html" title="下达 · 发料 · 工单确认 · 收货">执行</a>
+      <a href="cost.html" title="标准成本 CK11N/CK24 · 订单成本 · 差异结算">成本</a>
+      <a href="config.html" title="SPRO 配置路线（51 个任务）">配置</a>
+      <a href="practice.html" title="动手任务与完成基准">实训</a>
+      <a href="instructor.html" title="课时 / 板书 / 必问 / 评分">讲师</a>
+      <a href="worksheet.html" title="记入表（可打印）">学员</a>
+      <a href="quiz.html" title="30 题自评（合格 75%）">自测</a>
+      <a href="glossary.html" title="中英对照 / T-code / 常用表">术语</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page">
+<article>
+<p class="breadcrumb"><a href="index.html">课程地图</a> / <span>端到端流程</span></p>
+<div class="filterbar modsw"><a class="chip" href="../mm/index.html" title="SAP MM 培训课程">MM 物料管理</a><a class="chip on" href="../pp/index.html" title="SAP PP 培训课程">PP 生产计划</a><a class="chip" href="../fi/index.html" title="SAP FI 培训课程">FI 财务会计</a><a class="chip" href="../co/index.html" title="SAP CO 培训课程">CO 管理会计</a><a class="chip" href="../index.html" title="四个模块的总体视图与学习路线">总览</a></div>
+<h1>端到端流程</h1>
+<p class="kicker">从独立需求到差异结算：泳道图、单据流与库存/成本影响</p>
+<p class="lead">端到端流程一句话：<b>需求（MD61）→ 计划（MD02 展开 → 计划订单/采购申请）→ 执行（生产订单下达 → 发料 → 报工 → 收货）→ 成本（标准成本、订单成本、差异结算）</b>。看这张泳道图时只盯两件事：每一步谁在动、动出什么凭证；哪一步才真正改变库存和成本。</p>
+<div class="toc"><a href="#swim">泳道图</a><a href="#steps">八步单据流</a><a href="#mrp">MRP 一跑系统做了什么</a><a href="#effect">库存与成本影响</a><a href="#order">顺序错误会怎样</a><a href="#shots">教材画面</a></div>
+<h2 id="swim">泳道图：谁在动、动什么</h2>
+<figure class="dia wide"><a class="zoom" href="../assets/diagrams/pp/shopfloor.svg"><img src="../assets/diagrams/pp/shopfloor.svg" alt="生产计划到执行到结算的泳道图：计划员 / 车间 / 仓库 / 成本会计 / 系统" loading="lazy"></a><figcaption><span class="n">自绘泳道图</span><span class="cap">生产计划到执行到结算的泳道图：计划员 / 车间 / 仓库 / 成本会计 / 系统</span><span class="src">本站自绘 SVG</span></figcaption></figure>
+<h2 id="steps">八步单据流（每一步的 T-code 与产出）</h2>
+<figure class="dia wide"><a class="zoom" href="../assets/diagrams/pp/docflow.svg"><img src="../assets/diagrams/pp/docflow.svg" alt="单据流：独立需求 → 计划订单 → 生产订单 → 发料/确认/收货 → 结算凭证" loading="lazy"></a><figcaption><span class="n">自绘流程图</span><span class="cap">单据流：独立需求 → 计划订单 → 生产订单 → 发料/确认/收货 → 结算凭证</span><span class="src">本站自绘 SVG</span></figcaption></figure>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>#</th><th>动作</th><th>T-code（教材任务）</th><th>产生的对象/凭证</th><th>库存</th><th>成本与账</th></tr></thead><tbody><tr><td>1</td><td>计划部门排周需求</td><td><code>MD61</code>（任务 33）</td><td>独立需求计划（PIR）</td><td>—</td><td>—</td></tr><tr><td>2</td><td>运行 MRP，按 BOM 展开</td><td><code>MD02</code>（任务 36）</td><td>计划订单（产成品）+ 采购申请（外购件）+ 非独立需求 DepReq</td><td>—</td><td>—</td></tr><tr><td>3</td><td>看供需平衡，做转换</td><td><code>MD04</code>（任务 35/37/39）</td><td>生产订单 <code>1000013</code>；采购订单（供应商 10000001 等）</td><td>—</td><td>—（承诺）</td></tr><tr><td>4</td><td>对采购订单收货</td><td><code>MIGO</code>（任务 40）</td><td>物料凭证 + 会计凭证</td><td><b>+</b> 原材料</td><td>借存货 / 贷 GR-IR</td></tr><tr><td>5</td><td>下达生产订单</td><td><code>CO02</code>（任务 42）</td><td>订单状态 → 下达；产生预留</td><td>占用可用量</td><td>订单成为成本收集器</td></tr><tr><td>6</td><td>发料（261）</td><td><code>MB1A</code>（任务 43）</td><td>物料凭证 + 会计凭证</td><td><b>−</b> 原材料</td><td>借 生产成本-原材料消耗 / 贷 存货</td></tr><tr><td>7</td><td>工单确认 + 产成品收货（101）</td><td><code>CO11N</code>（任务 44）· <code>MIGO</code>（任务 45）</td><td>确认凭证；物成品收货（物料凭证 + 会计凭证）</td><td><b>+</b> 产成品</td><td>报工带入作业成本；收货按标准价贷记订单产出</td></tr><tr><td>8</td><td>看订单成本 → 技术性完成 → 结算</td><td><code>CO03</code>（46）· <code>CO02</code>（47）· <code>KO88</code>（48）· <code>KKBC_ORD</code>（49）</td><td>结算凭证</td><td>—</td><td>把订单差异结到差异科目/成本对象</td></tr></tbody></table></div>
+<div class="note warn"><span class="t">仓库与车间是两条并行的收货线</span>第 4 步是对<b>采购订单</b>收货（原材料进来），第 7 步是对<b>生产订单</b>收货（产成品入库）。两者都走 <code>MIGO</code>，但操作码不同：采购收货是「收货 → 对采购订单」，生产收货是「收货 → 订单」（教材任务 45 的画面标题就是「订单的 GR」）。教学时要让学生自己说出「这一次收货动的是哪个订单」。</div>
+<h2 id="mrp">MRP 一跑，系统到底做了什么（教学重点）</h2>
+<figure class="dia wide"><a class="zoom" href="../assets/diagrams/pp/mrpchain.svg"><img src="../assets/diagrams/pp/mrpchain.svg" alt="MRP 展开的链条：毛需求 → 减可用库存 → 净需求 → 提前期回排 → BOM 逐层展开 → 计划订单/采购申请" loading="lazy"></a><figcaption><span class="n">自绘流程图</span><span class="cap">MRP 展开的链条：毛需求 → 减可用库存 → 净需求 → 提前期回排 → BOM 逐层展开 → 计划订单/采购申请</span><span class="src">本站自绘 SVG</span></figcaption></figure>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>步骤</th><th>系统在算什么</th><th>教材画面上的证据</th></tr></thead><tbody><tr><td>毛需求 Gross Requirement</td><td>独立需求（PIR）与销售订单需求</td><td>任务 33 建的周需求 + 任务 35 的 DepReq</td></tr><tr><td>可用库存与已确认收货</td><td>库存、采购订单/采购申请的到货、计划订单</td><td>任务 35 MD04 的 Stock / 计划订单 / PurRqs 行</td></tr><tr><td>净需求 Net Requirement</td><td>毛需求 − 可用库存 + 安全库存</td><td>任务 36 的结果：每一项独立需求都安排了计划订单</td></tr><tr><td>提前期与回排</td><td>按工艺路线/主数据的生产提前期把开工日期往前排</td><td>任务 36 原话：非独立需求的日期<b>考虑了生产提前期</b></td></tr><tr><td>BOM 逐层展开</td><td>产成品的组件变成原材料的非独立需求（DepReq）</td><td>任务 36 步骤 06：原材料 R999-100 出现许多针对 F999-100 的 DepReq</td></tr><tr><td>生成元素</td><td>自制件出计划订单、外购件出采购申请（批量与安全库存参与决策）</td><td>任务 37 转生产订单；任务 39 转采购订单</td></tr><tr><td>日期调整</td><td>过去日期的元素被改到可行日期（可勾「显示结果」重新运行）</td><td>任务 36 原书提示：旧计划订单因开始时间在过去被修改到可行时间</td></tr></tbody></table></div>
+<div class="note tip"><span class="t">MRP 的输入都在主数据里</span>MRP 不是「黑盒」：它的输入就是 <a href='master.html#fields'>主数据</a> 里那几个字段（MRP 类型、批量、安全库存、计划边际码、BOM、工艺路线、提前期），输出是计划订单与采购申请。学生 MRP 跑不出结果，八成是主数据缺字段，而不是 MRP 的问题。</div>
+<h2 id="effect">库存与成本影响：PP 涉及的三类凭证与科目</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>业务动作</th><th>移动类型</th><th>库存影响</th><th>成本/会计影响</th></tr></thead><tbody><tr><td>对采购订单收货</td><td><code>101</code></td><td>原材料 <b>+</b> 非限制库存</td><td>物料凭证 + 会计凭证：借存货 / 贷 GR-IR（MM 教材任务 28 的 BSX/WRX 规则）</td></tr><tr><td>对生产订单发货（领料）</td><td><code>261</code></td><td>原材料 <b>−</b> 库存</td><td>借 生产成本-原材料消耗 / 贷 存货 —— 成本进入生产订单</td></tr><tr><td>工单确认（报工）</td><td>—（确认凭证）</td><td>不倒冲时为 0；勾了倒冲则同时发料并倒冲组件</td><td>按工作中心的作业价格把<b>人工/机器/准备工时成本</b>计入订单（作业价格来自 CO 的 KP26）</td></tr><tr><td>对生产订单收货</td><td><code>101</code></td><td>产成品 <b>+</b> 非限制库存</td><td>按产成品的<b>标准价</b>贷记订单产出（订单的贷方）</td></tr><tr><td>存货移库</td><td><code>311</code>（<code>MB1B</code>）</td><td>库位之间搬：生产库 → 运输库</td><td>同一工厂内库位转移，一般不产生 FI 凭证</td></tr><tr><td>订单结算</td><td>—（结算凭证）</td><td>—</td><td>实际成本与产出的差额（差异）结到差异科目/成本对象（任务 48）</td></tr></tbody></table></div>
+<div class="box ok"><b class="t">一句话记住 PP 的成本三段</b><p><b>① 事前</b>：<code>CK11N</code> 按 BOM + 工艺路线算标准成本 → <code>CK24</code> 标记并发布，写进物料的标准价格（任务 22/23/25）。</p><p><b>② 事中</b>：发料（261）与报工把<b>实际成本</b>压在订单的借方；产成品收货按标准价把<b>产出</b>放在订单的贷方（任务 43/44/45）。</p><p><b>③ 事后</b>：借方 > 贷方就是<b>订单差异</b>，<code>CO03</code> 看余额、<code>KO88</code> 结算（任务 46/48）。PP 与 CO 的全部交集都在这三段里。</p></div>
+<h2 id="order">顺序错误会怎样（教学现场真实会遇到的）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>做错的事</th><th>系统的反应</th><th>正确做法</th></tr></thead><tbody><tr><td>还没下达生产订单就发料</td><td>订单未释放，不会有预留，发料取不到组件</td><td>先 <code>CO02</code> 下达（任务 42）</td></tr><tr><td>没给产成品维护生产计划视图就转换计划订单</td><td>转换出的生产订单缺计划参数，排程与能力需求不对</td><td>先 <code>MMF1</code> 维护生产计划视图（任务 16）</td></tr><tr><td>工艺路线里的工作中心还没关联能力</td><td>维护工艺路线时系统提示（任务 14 的原书提示）</td><td>先做任务 10/12 把能力分配给工作中心</td></tr><tr><td>作业价格（KP26）没维护就想看订单成本</td><td>作业成本为 0，订单成本算不准（教材任务 12 的卡点）</td><td>让 CO 先把 KP26 做完，再看 <code>CO03</code></td></tr><tr><td>不先收货就想开采购发票</td><td>MIRO 找不到收货行（基于收货的发票校验）</td><td>先 <code>MIGO</code> 收货（任务 40）</td></tr><tr><td>订单还有在制品就做技术性完成/结算</td><td>差异里混进在制品，结算结果看不懂</td><td>任务 46 看余额 → 任务 47 技术性完成 → 任务 48 结算，顺序不要跳</td></tr><tr><td>结算规则没维护就执行 KO88</td><td>报错「维护发送者的结算规则」（教材任务 48 画面就是红点错误）</td><td>先在 KO02/KO88 维护订单的结算规则（收件人、结算类型、科目）</td></tr></tbody></table></div>
+<h2 id="shots">教材画面（流程主线）</h2>
+<div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/pp/t33/03_1_image977.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t33/03_1_image977.png" width="971" height="240" alt="任务 33 给 F999-100 排周独立需求" loading="lazy"></a><figcaption><span class="n">画面 1</span><span class="cap">任务 33 给 F999-100 排周独立需求</span><span class="src">教材《S4.docx》· PP 任务 33 创建物料的独立需求计划 · 原图 03_1_image977.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t34/03_1_image983.jpeg" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t34/03_1_image983.jpeg" width="1222" height="399" alt="任务 34 MD05 MRP 清单：带时间戳的静态结果" loading="lazy"></a><figcaption><span class="n">画面 2</span><span class="cap">任务 34 MD05 MRP 清单：带时间戳的静态结果</span><span class="src">教材《S4.docx》· PP 任务 34 显示MRP 清单 · 原图 03_1_image983.jpeg</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t35/02_1_image988.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t35/02_1_image988.png" width="716" height="521" alt="任务 35 MD04：独立需求已经传进来（动态）" loading="lazy"></a><figcaption><span class="n">画面 3</span><span class="cap">任务 35 MD04：独立需求已经传进来（动态）</span><span class="src">教材《S4.docx》· PP 任务 35 显示库存/需求清单 · 原图 02_1_image988.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t36/02_1_image992.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t36/02_1_image992.png" width="590" height="695" alt="任务 36 MD02 单项多层运行 MRP" loading="lazy"></a><figcaption><span class="n">画面 4</span><span class="cap">任务 36 MD02 单项多层运行 MRP</span><span class="src">教材《S4.docx》· PP 任务 36 运行物料需求计划 · 原图 02_1_image992.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t38/02_1_image1009.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t38/02_1_image1009.png" width="832" height="807" alt="任务 38 COOIS 看生产订单清单" loading="lazy"></a><figcaption><span class="n">画面 5</span><span class="cap">任务 38 COOIS 看生产订单清单</span><span class="src">教材《S4.docx》· PP 任务 38 显示生产订单清单 · 原图 02_1_image1009.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t40/01_1_image1026.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t40/01_1_image1026.png" width="461" height="553" alt="任务 40 对采购订单收货（MIGO）" loading="lazy"></a><figcaption><span class="n">画面 6</span><span class="cap">任务 40 对采购订单收货（MIGO）</span><span class="src">教材《S4.docx》· PP 任务 40 对采购订单收货 · 原图 01_1_image1026.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t45/01_1_image1057.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t45/01_1_image1057.png" width="398" height="468" alt="任务 45 对生产订单收货（产成品入库）" loading="lazy"></a><figcaption><span class="n">画面 7</span><span class="cap">任务 45 对生产订单收货（产成品入库）</span><span class="src">教材《S4.docx》· PP 任务 45 对生产订单收货 · 原图 01_1_image1057.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/pp/t50/05_1_image1075.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/pp/t50/05_1_image1075.png" width="955" height="451" alt="任务 50 MD04 看库存清单：T999-100 全在 0003 运输库" loading="lazy"></a><figcaption><span class="n">画面 8</span><span class="cap">任务 50 MD04 看库存清单：T999-100 全在 0003 运输库</span><span class="src">教材《S4.docx》· PP 任务 50 显示库存清单 · 原图 05_1_image1075.png</span></figcaption></figure></div>
+</article>
+</main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <h5>SAP PP 培训课程</h5>
+        <p>生产计划：需求 · 计划 · 执行 · 成本</p>
+        <p>课程总览：<a href="../index.html">SAP 模块培训课程（MM · PP · FI · CO）</a></p>
+      </div>
+      <div>
+        <h5>课程板块</h5>
+        <p><a href="concept.html">概念</a> · <a href="org.html">组织</a> ·
+        <a href="master.html">主数据</a> · <a href="flow.html">流程</a> ·
+        <a href="planning.html">计划</a> · <a href="config.html">配置</a></p>
+      </div>
+      <div>
+        <h5>课堂配套</h5>
+        <p><a href="practice.html">实训任务</a> · <a href="instructor.html">讲师版</a> ·
+        <a href="worksheet.html">学员版</a> · <a href="quiz.html">自测</a> ·
+        <a href="glossary.html">术语表</a></p>
+      </div>
+      <div>
+        <h5>看图说话</h5>
+        <p>截图取自教材《S4.docx》的真实 SAP GUI 画面（中文界面，保留原文件名可回查）；
+        流程图、结构图、思维导图为本站自绘 SVG。标准值随版本/行业方案而异，
+        页面标注的「在自系统里怎么确认」请在自己的系统里核对。</p>
+        <p>其他模块：<a href="../mm/index.html">MM 物料管理</a> · <a href="../fi/index.html">FI 财务会计</a> · <a href="../co/index.html">CO 管理会计</a> · </p>
+      </div>
+    </div>
+    <p class="copy">© <span data-year>2026</span> SAP PP 培训课程 · 静态站点，可离线使用</p>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/mod.js"></script>
+</body>
+</html>

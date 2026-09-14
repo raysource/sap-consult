@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 382" width="1400" height="382" role="img" aria-label="FI 端到端泳道图：谁在动、动什么" font-family="'PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<title>FI 端到端泳道图：谁在动、动什么</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0a6ed1"/></marker><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#007272"/></marker><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffffff"/></marker><marker id="arback" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M10,0 L0,5 L10,10 z" fill="#b3261e"/></marker></defs>
+<rect width="1400" height="382" fill="#ffffff"/>
+<text x="40.0" y="46.0" font-size="22" fill="#1d2d3e" text-anchor="start" font-weight="700">FI 端到端泳道图：谁在动、动什么</text>
+<text x="40.0" y="72.0" font-size="12.5" fill="#6b7a8d" text-anchor="start" font-weight="400">教材 FI 的任务 20、32–45 覆盖了录入、余额、收付款清账与报表；收货与开票的自动记账在 MM/SD 站</text>
+<rect x="40.0" y="106.0" width="1320.0" height="46.0" rx="8" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="52.0" y="134.0" font-size="13" fill="#0854a0" text-anchor="start" font-weight="700">步骤 / 角色</text>
+<text x="287.5" y="127.0" font-size="12.5" fill="#1d2d3e" text-anchor="middle" font-weight="700">① 业务动作</text>
+<text x="287.5" y="144.0" font-size="11" fill="#6b7a8d" text-anchor="middle" font-weight="400">FB50 / 收货 101</text>
+<text x="482.5" y="127.0" font-size="12.5" fill="#1d2d3e" text-anchor="middle" font-weight="700">② 会计凭证</text>
+<text x="482.5" y="144.0" font-size="11" fill="#6b7a8d" text-anchor="middle" font-weight="400">BKPF/BSEG</text>
+<text x="677.5" y="127.0" font-size="12.5" fill="#1d2d3e" text-anchor="middle" font-weight="700">③ 过账</text>
+<text x="677.5" y="144.0" font-size="11" fill="#6b7a8d" text-anchor="middle" font-weight="400">期间检查</text>
+<text x="872.5" y="127.0" font-size="12.5" fill="#1d2d3e" text-anchor="middle" font-weight="700">④ 余额与未清项</text>
+<text x="872.5" y="144.0" font-size="11" fill="#6b7a8d" text-anchor="middle" font-weight="400">FS10N/FD10N/FK10N</text>
+<text x="1067.5" y="127.0" font-size="12.5" fill="#1d2d3e" text-anchor="middle" font-weight="700">⑤ 收付款清账</text>
+<text x="1067.5" y="144.0" font-size="11" fill="#6b7a8d" text-anchor="middle" font-weight="400">F-28 / F-53</text>
+<text x="1262.5" y="127.0" font-size="12.5" fill="#1d2d3e" text-anchor="middle" font-weight="700">⑥ 报表</text>
+<text x="1262.5" y="144.0" font-size="11" fill="#6b7a8d" text-anchor="middle" font-weight="400">任务 44/45</text>
+<rect x="40.0" y="152.0" width="1320.0" height="54.0" rx="6" fill="#ffffff" stroke="#0a6ed1" stroke-width="1.1"/>
+<rect x="40.0" y="152.0" width="150.0" height="54.0" rx="6" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.1"/>
+<text x="52.0" y="176.0" font-size="13" fill="#0a6ed1" text-anchor="start" font-weight="700">业务部门</text>
+<text x="200.0" y="174.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">MM 收货 / SD 开票 / PP</text>
+<text x="200.0" y="190.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">发料（教材见 MM 站）</text>
+<line x1="385.0" y1="152.0" x2="385.0" y2="206.0" stroke="#d9e1e8" stroke-width="1"/>
+<line x1="580.0" y1="152.0" x2="580.0" y2="206.0" stroke="#d9e1e8" stroke-width="1"/>
+<line x1="775.0" y1="152.0" x2="775.0" y2="206.0" stroke="#d9e1e8" stroke-width="1"/>
+<line x1="970.0" y1="152.0" x2="970.0" y2="206.0" stroke="#d9e1e8" stroke-width="1"/>
+<line x1="1165.0" y1="152.0" x2="1165.0" y2="206.0" stroke="#d9e1e8" stroke-width="1"/>
+<rect x="40.0" y="206.0" width="1320.0" height="54.0" rx="6" fill="#ffffff" stroke="#007272" stroke-width="1.1"/>
+<rect x="40.0" y="206.0" width="150.0" height="54.0" rx="6" fill="#e6f2f2" stroke="#007272" stroke-width="1.1"/>
+<text x="52.0" y="230.0" font-size="13" fill="#007272" text-anchor="start" font-weight="700">会计人员</text>
+<text x="200.0" y="228.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">FB50 录总账凭证；FB70/FB60</text>
+<text x="200.0" y="244.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">录发票</text>
+<line x1="385.0" y1="206.0" x2="385.0" y2="260.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="395.0" y="228.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">填抬头与行项目（记账码 + 科目 +</text>
+<text x="395.0" y="244.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400"> 金额）</text>
+<line x1="580.0" y1="206.0" x2="580.0" y2="260.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="590.0" y="228.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">保存/过账；可用模拟先检查</text>
+<line x1="775.0" y1="206.0" x2="775.0" y2="260.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="785.0" y="228.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">用 FS10N/FD10N/FK10N</text>
+<text x="785.0" y="244.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">核对余额</text>
+<line x1="970.0" y1="206.0" x2="970.0" y2="260.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="980.0" y="228.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">F-28 收款、F-53 付款并清账</text>
+<line x1="1165.0" y1="206.0" x2="1165.0" y2="260.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="1175.0" y="228.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">定义报表结构、运行资产负债表</text>
+<rect x="40.0" y="260.0" width="1320.0" height="54.0" rx="6" fill="#ffffff" stroke="#b3261e" stroke-width="1.1"/>
+<rect x="40.0" y="260.0" width="150.0" height="54.0" rx="6" fill="#fdeae9" stroke="#b3261e" stroke-width="1.1"/>
+<text x="52.0" y="284.0" font-size="13" fill="#b3261e" text-anchor="start" font-weight="700">系统（自动记账）</text>
+<text x="200.0" y="282.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">MM 收货 101、MIRO</text>
+<text x="200.0" y="298.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">发票校验自动生成凭证</text>
+<line x1="385.0" y1="260.0" x2="385.0" y2="314.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="395.0" y="282.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">生成分录：借存货/贷 GR-IR 等</text>
+<line x1="580.0" y1="260.0" x2="580.0" y2="314.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="590.0" y="282.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">按记账期间变式判断期间是否开</text>
+<line x1="775.0" y1="260.0" x2="775.0" y2="314.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="785.0" y="282.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">更新科目余额、客户/供应商明细</text>
+<text x="785.0" y="298.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">（未清项）</text>
+<line x1="970.0" y1="260.0" x2="970.0" y2="314.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="980.0" y="282.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">清账：未清项 → 已清项</text>
+<line x1="1165.0" y1="260.0" x2="1165.0" y2="314.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="1175.0" y="282.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">按财务报表版本汇总成报表项目</text>
+<rect x="40.0" y="314.0" width="1320.0" height="54.0" rx="6" fill="#ffffff" stroke="#8d6e00" stroke-width="1.1"/>
+<rect x="40.0" y="314.0" width="150.0" height="54.0" rx="6" fill="#fdf3d7" stroke="#8d6e00" stroke-width="1.1"/>
+<text x="52.0" y="338.0" font-size="13" fill="#8d6e00" text-anchor="start" font-weight="700">报表使用者</text>
+<line x1="385.0" y1="314.0" x2="385.0" y2="368.0" stroke="#d9e1e8" stroke-width="1"/>
+<line x1="580.0" y1="314.0" x2="580.0" y2="368.0" stroke="#d9e1e8" stroke-width="1"/>
+<line x1="775.0" y1="314.0" x2="775.0" y2="368.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="785.0" y="336.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">看科目余额表、客户与供应商余额</text>
+<text x="785.0" y="352.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">报表</text>
+<line x1="970.0" y1="314.0" x2="970.0" y2="368.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="980.0" y="336.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">看应收/应付账龄</text>
+<line x1="1165.0" y1="314.0" x2="1165.0" y2="368.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="1175.0" y="336.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">看资产负债表与损益表</text>
+</svg>

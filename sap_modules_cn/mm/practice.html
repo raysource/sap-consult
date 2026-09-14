@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>实训：五个动手任务 · SAP MM 培训课程</title>
+<meta name="description" content="SAP MM（物料管理）培训课程：概念与定位 → 组织结构（工厂/库存地点/采购组织/采购组）→ 主数据（物料/供应商/采购信息记录）→ 端到端采购流程（请购·采购订单·收货·发票校验·付款）→ 分步操作手顺 → SPRO 配置（42 个任务）→ 实训与自测。截图取自教材《S4.docx》的真实 SAP GUI 画面。">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mod.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MM</span><span class="txt">培训课程</span></a>
+    <nav class="main">
+      <a href="index.html" title="课程地图与学习路线">首页</a>
+      <a href="concept.html" title="MM 是什么、三大职能、五类凭证">概念</a>
+      <a href="org.html" title="企业结构 / 采购结构 / 计划与评估结构">组织</a>
+      <a href="master.html" title="物料 / 供应商 / 采购信息记录">主数据</a>
+      <a href="flow.html" title="端到端采购流程与单据流">流程</a>
+      <a href="purchase.html" title="请购 · 采购订单 · 货源与信息记录">采购</a>
+      <a href="inventory.html" title="收货 · 发货 · 转储 · 移动类型与库存总览">库存</a>
+      <a href="invoice.html" title="MIRO · 差异与容差 · 冻结发票下达 · 三单匹配">发票校验</a>
+      <a href="config.html" title="SPRO 配置路线（42 个任务）">配置</a>
+      <a class="active" href="practice.html" title="动手任务与完成基准">实训</a>
+      <a href="instructor.html" title="课时 / 板书 / 必问 / 评分">讲师</a>
+      <a href="worksheet.html" title="记入表（可打印）">学员</a>
+      <a href="quiz.html" title="30 题自评（合格 75%）">自测</a>
+      <a href="glossary.html" title="中英对照 / T-code / 常用表">术语</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page">
+<article>
+<p class="breadcrumb"><a href="index.html">课程地图</a> / <span>实训：五个动手任务</span></p>
+<div class="filterbar modsw"><a class="chip on" href="../mm/index.html" title="SAP MM 培训课程">MM 物料管理</a><a class="chip" href="../pp/index.html" title="SAP PP 培训课程">PP 生产计划</a><a class="chip" href="../fi/index.html" title="SAP FI 培训课程">FI 财务会计</a><a class="chip" href="../co/index.html" title="SAP CO 培训课程">CO 管理会计</a><a class="chip" href="../index.html" title="四个模块的总体视图与学习路线">总览</a></div>
+<h1>实训：五个动手任务</h1>
+<p class="kicker">做什么 · 完成基准 · 常见错误 · 对应画面</p>
+<p class="lead">五个实训任务，覆盖「组织 → 主数据 → 采购 → 库存 → 发票」的完整链条。每个任务都有：做什么、完成基准（打勾）、常见错误、对应教材画面。<b>没有 SAP 环境也能做前面三步的「纸上推演」</b>，第 4、5 步需要可用的系统。</p>
+<div class="note tip"><span class="t">环境准备清单</span>① 可登录的 SAP 系统（含 MM 模块权限）；② 已建好公司代码/工厂/采购组织（或使用课程提供的沙箱组织）；③ 能建物料与供应商主数据的权限；④ 打印 <a href="worksheet.html">学员记入表</a> 用来记单据号。达不到时：用 <a href="config.html">配置页</a> 的画面做「看图说话」——让学生指出每一步在哪个字段、会产生什么凭证。</div>
+<div class="toc"><a href="#p1">实训 1 读组织</a><a href="#p2">实训 2 建主数据</a><a href="#p3">实训 3 采购订单</a><a href="#p4">实训 4 收货与库存</a><a href="#p5">实训 5 发票校验</a></div>
+<h2 id="p1">实训 1：把组织结构画出来并核对（约 30 分钟）</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>做什么</th><th>完成基准</th><th>对应画面</th></tr></thead><tbody><tr><td>画出公司代码→工厂→库存地点、采购组织→采购组的层级图</td><td>图上有教材场景值（C999 / P999 / 0001·0002·0003 / Y999 / PG1·PG2）</td><td><a href="config.html#t01">任务 01</a>–<a href="config.html#t08">08</a></td></tr><tr><td>说出三个分配关系的基数（多对一/多对多）以及配错会怎样</td><td>能解释「一个采购组织可以服务多个工厂」</td><td><a href="org.html#assign">组织页第 3 节</a></td></tr><tr><td>在自己的系统里查出公司代码下有哪些工厂</td><td>给出截图或事务码（OX18 / OX10）</td><td>—</td></tr></tbody></table></div>
+<h2 id="p2">实训 2：建一个原材料与它的货源（约 45 分钟）</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>做什么</th><th>完成基准</th><th>对应画面</th></tr></thead><tbody><tr><td>建物料（物料类型 ROH），维护采购视图、MRP 视图、会计视图</td><td>物料号记录下来；采购类型 F、MRP 类型 PD、评估类已填、价格控制已选</td><td><a href="config.html#t22">任务 22</a></td></tr><tr><td>给该物料建供应商采购数据（MK01）与采购信息记录（ME11）</td><td>信息记录里有净价、标准订单数量、交货时间、采购组</td><td><a href="config.html#t26">26</a> / <a href="config.html#t27">27</a></td></tr><tr><td>用 MM60 查这张主数据</td><td>能在清单里筛出来</td><td><a href="config.html#t25">任务 25</a></td></tr></tbody></table></div>
+<div class="note warn"><span class="t">最常见的失败点</span>建物料时漏了「会计 1」视图的<b>评估类</b> —— 后面收货会直接报错（教材任务 22 专门用一句话提醒：原书此处评估类有误，原材料应为 3000）。</div>
+<h2 id="p3">实训 3：请购 → 采购订单（约 45 分钟）</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>做什么</th><th>完成基准</th><th>对应画面</th></tr></thead><tbody><tr><td>用 ME51N 提一张请购（物料、数量、交货日期、交货工厂）</td><td>记下请购号；能在 ME5A 里查到</td><td><a href="config.html#t36">任务 36</a></td></tr><tr><td>参照请购建 ME21N 采购订单（供应商、采购组织 Y999）</td><td>记下订单号；订单的净价来自信息记录（不用手输）</td><td><a href="config.html#t37">任务 37</a></td></tr><tr><td>看订单历史与状态</td><td>能说出 ELIKZ / 收货历史在哪里看</td><td><a href="purchase.html#fields">采购篇字段表</a></td></tr></tbody></table></div>
+<h2 id="p4">实训 4：收货与库存观察（约 40 分钟）</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>做什么</th><th>完成基准</th><th>对应画面</th></tr></thead><tbody><tr><td>用 MIGO 对订单收货（101），填库存地点</td><td>记下物料凭证号；库存增加</td><td><a href="config.html#t38">任务 38</a></td></tr><tr><td>在 MIGO 的「文件信息」页打开 FI 凭证</td><td>抄下会计凭证号与借贷科目（借存货/贷 GR/IR）</td><td>同上（教材画面）</td></tr><tr><td>用 MMBE 看库存总览</td><td>能区分非限制/质检/冻结库存</td><td><a href="config.html#t42">任务 42</a></td></tr><tr><td>（加分）用 MB51 拉这张物料的移动清单</td><td>能看到 101 这一行及其库位</td><td>—</td></tr></tbody></table></div>
+<h2 id="p5">实训 5：发票校验与冻结处理（约 40 分钟）</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>做什么</th><th>完成基准</th><th>对应画面</th></tr></thead><tbody><tr><td>用 MIRO 录入供应商发票（参照采购订单）</td><td>余额归零；记下发票号</td><td><a href="config.html#t39">任务 39</a></td></tr><tr><td>故意把单价改高 10%，观察结果</td><td>发票被冻结，能说出触发了哪类容差</td><td><a href="invoice.html#tol">发票校验篇容差表</a></td></tr><tr><td>用 MRBR 下达冻结发票</td><td>发票状态变为已下达</td><td><a href="config.html#t40">任务 40</a></td></tr><tr><td>用 MIR4 看后续会计凭证</td><td>抄下 GR/IR 与应付科目的分录</td><td><a href="config.html#t41">任务 41</a></td></tr></tbody></table></div>
+<div class="box ok"><b class="t">交作业</b>把五个实训里记录的<b>号码与科目</b>填进 <a href="worksheet.html">学员记入表</a>：组织值 → 物料号/供应商 → 请购号/订单号 → 物料凭证号 + 会计凭证号 → 发票号 + 分录。讲师按 <a href="instructor.html#grade">讲师版评分标准</a> 打分。</div>
+</article>
+</main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <h5>SAP MM 培训课程</h5>
+        <p>物料管理：采购 · 库存 · 发票校验</p>
+        <p>课程总览：<a href="../index.html">SAP 模块培训课程（MM · PP · FI · CO）</a></p>
+      </div>
+      <div>
+        <h5>课程板块</h5>
+        <p><a href="concept.html">概念</a> · <a href="org.html">组织</a> ·
+        <a href="master.html">主数据</a> · <a href="flow.html">流程</a> ·
+        <a href="purchase.html">采购</a> · <a href="config.html">配置</a></p>
+      </div>
+      <div>
+        <h5>课堂配套</h5>
+        <p><a href="practice.html">实训任务</a> · <a href="instructor.html">讲师版</a> ·
+        <a href="worksheet.html">学员版</a> · <a href="quiz.html">自测</a> ·
+        <a href="glossary.html">术语表</a></p>
+      </div>
+      <div>
+        <h5>看图说话</h5>
+        <p>截图取自教材《S4.docx》的真实 SAP GUI 画面（中文界面，保留原文件名可回查）；
+        流程图、结构图、思维导图为本站自绘 SVG。标准值随版本/行业方案而异，
+        页面标注的「在自系统里怎么确认」请在自己的系统里核对。</p>
+        <p>其他模块：<a href="../pp/index.html">PP 生产计划</a> · <a href="../fi/index.html">FI 财务会计</a> · <a href="../co/index.html">CO 管理会计</a> · </p>
+      </div>
+    </div>
+    <p class="copy">© <span data-year>2026</span> SAP MM 培训课程 · 静态站点，可离线使用</p>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/mod.js"></script>
+</body>
+</html>

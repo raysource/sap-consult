@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1420 566" width="1420" height="566" role="img" aria-label="SAP MM 知识地图 — 从总体到局部" font-family="'PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<title>SAP MM 知识地图 — 从总体到局部</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0a6ed1"/></marker><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#007272"/></marker><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffffff"/></marker><marker id="arback" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M10,0 L0,5 L10,10 z" fill="#b3261e"/></marker></defs>
+<rect width="1420" height="566" fill="#ffffff"/>
+<text x="40.0" y="46.0" font-size="22" fill="#1d2d3e" text-anchor="start" font-weight="700">SAP MM 知识地图 — 从总体到局部</text>
+<text x="40.0" y="72.0" font-size="12.5" fill="#6b7a8d" text-anchor="start" font-weight="400">六大板块：概念 → 组织 → 主数据 → 流程 → 操作手顺 → 配置与集成（本站自绘 SVG）</text>
+<path d="M 560 315 C 500 315, 560 165, 502 165" fill="none" stroke="#0a6ed1" stroke-width="2"/>
+<path d="M 560 315 C 500 315, 560 306, 502 306" fill="none" stroke="#007272" stroke-width="2"/>
+<path d="M 560 315 C 500 315, 560 456, 502 456" fill="none" stroke="#177245" stroke-width="2"/>
+<path d="M 860 315 C 920 315, 860 174, 918 174" fill="none" stroke="#b3261e" stroke-width="2"/>
+<path d="M 860 315 C 920 315, 860 315, 918 315" fill="none" stroke="#8d6e00" stroke-width="2"/>
+<path d="M 860 315 C 920 315, 860 456, 918 456" fill="none" stroke="#5b3fa8" stroke-width="2"/>
+<rect x="40.0" y="108.0" width="460.0" height="114.0" rx="9" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.4"/>
+<rect x="40.0" y="108.0" width="4.5" height="114.0" rx="2" fill="#0a6ed1" stroke="#0a6ed1" stroke-width="1.4"/>
+<text x="54.0" y="132.0" font-size="15" fill="#0a6ed1" text-anchor="start" font-weight="700">① 概念与定位</text>
+<text x="54.0" y="152.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">MM 管什么：采购（买到）· 库存（存住）· 发票校验（花了多少）</text>
+<text x="54.0" y="170.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">五类凭证：采购申请 → 采购订单 → 物料凭证 → 发票凭证 → 会计凭证</text>
+<text x="54.0" y="188.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">边界：卖是 SD、造是 PP、账是 FI、成本分析是 CO</text>
+<text x="54.0" y="206.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">每次物料移动都会「顺带」生成会计凭证 —— 这是 MM 与 FI 的接口</text>
+<rect x="40.0" y="240.0" width="460.0" height="132.0" rx="9" fill="#e6f2f2" stroke="#007272" stroke-width="1.4"/>
+<rect x="40.0" y="240.0" width="4.5" height="132.0" rx="2" fill="#007272" stroke="#007272" stroke-width="1.4"/>
+<text x="54.0" y="264.0" font-size="15" fill="#007272" text-anchor="start" font-weight="700">② 组织结构</text>
+<text x="54.0" y="284.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">企业结构：公司代码 C999 · 工厂 P999 · 库存地点 0001/0002/0003</text>
+<text x="54.0" y="302.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">采购结构：采购组织 Y999 · 采购组 PG1/PG2</text>
+<text x="54.0" y="320.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">计划结构：MRP 控制者 001 自制品 / 002 贸易商品</text>
+<text x="54.0" y="338.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">分配：工厂→公司代码、采购组织→公司代码、工厂↔采购组织（多对多）</text>
+<text x="54.0" y="356.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">评估结构：工厂 = 评估范围，可归组为评估分组代码 CN01</text>
+<rect x="40.0" y="390.0" width="460.0" height="132.0" rx="9" fill="#e6f2ec" stroke="#177245" stroke-width="1.4"/>
+<rect x="40.0" y="390.0" width="4.5" height="132.0" rx="2" fill="#177245" stroke="#177245" stroke-width="1.4"/>
+<text x="54.0" y="414.0" font-size="15" fill="#177245" text-anchor="start" font-weight="700">③ 主数据</text>
+<text x="54.0" y="434.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">物料主数据：一般数据 → 工厂层 → 库存地点层（分视图维护）</text>
+<text x="54.0" y="452.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">物料类型决定视图：ROH 原材料 / HAWA 贸易商品 / FERT 产成品</text>
+<text x="54.0" y="470.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">供应商主数据三层：一般 / 公司代码 / 采购组织（MK01）</text>
+<text x="54.0" y="488.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">采购信息记录 = 物料 × 供应商 × 采购组织的价格与交期（ME11）</text>
+<text x="54.0" y="506.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">关键字段：评估类 3000、价格控制 V/S、MRP 类型 PD、批量 EX</text>
+<rect x="920.0" y="108.0" width="460.0" height="132.0" rx="9" fill="#fdeae9" stroke="#b3261e" stroke-width="1.4"/>
+<rect x="920.0" y="108.0" width="4.5" height="132.0" rx="2" fill="#b3261e" stroke="#b3261e" stroke-width="1.4"/>
+<text x="934.0" y="132.0" font-size="15" fill="#b3261e" text-anchor="start" font-weight="700">④ 端到端流程 P2P</text>
+<text x="934.0" y="152.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">需求 → 请购 ME51N（也可由 MD03 MRP 自动产生）</text>
+<text x="934.0" y="170.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">采购订单 ME21N：参照请购、选供应商、带出信息记录价格</text>
+<text x="934.0" y="188.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">收货 MIGO（101）：库存 + 会计凭证（借存货 / 贷 GR/IR）</text>
+<text x="934.0" y="206.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">发票校验 MIRO：三单匹配，超容差自动冻结</text>
+<text x="934.0" y="224.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">冻结下达 MRBR → 付款（FI）→ GR/IR 冲平</text>
+<rect x="920.0" y="258.0" width="460.0" height="114.0" rx="9" fill="#fdf3d7" stroke="#8d6e00" stroke-width="1.4"/>
+<rect x="920.0" y="258.0" width="4.5" height="114.0" rx="2" fill="#8d6e00" stroke="#8d6e00" stroke-width="1.4"/>
+<text x="934.0" y="282.0" font-size="15" fill="#8d6e00" text-anchor="start" font-weight="700">⑤ 操作手顺（三篇）</text>
+<text x="934.0" y="302.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">采购篇：ME51N 抬头/项目概览、ME21N 凭证概览与参照创建</text>
+<text x="934.0" y="320.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">库存篇：MIGO 操作码、移动类型（101/261/301/311/561）、MMBE</text>
+<text x="934.0" y="338.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">发票校验篇：MIRO 余额归零、14 个容差码、MRBR、MIR4</text>
+<text x="934.0" y="356.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">公共动作：检查→保存→看消息→记录单据号（实训要交的就是它）</text>
+<rect x="920.0" y="390.0" width="460.0" height="132.0" rx="9" fill="#efeaf9" stroke="#5b3fa8" stroke-width="1.4"/>
+<rect x="920.0" y="390.0" width="4.5" height="132.0" rx="2" fill="#5b3fa8" stroke="#5b3fa8" stroke-width="1.4"/>
+<text x="934.0" y="414.0" font-size="15" fill="#5b3fa8" text-anchor="start" font-weight="700">⑥ 配置与集成</text>
+<text x="934.0" y="434.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">SPRO 路线：组织 → 参数 → 评估与科目确定 → 主数据 → 容差 → 业务运行</text>
+<text x="934.0" y="452.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">OBYC：BSX 存货科目 + WRX GR/IR + GBB 对方科目（VBR/VAX/PRD）</text>
+<text x="934.0" y="470.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">容差三条线：采购价差 PE/SE、收货 B1/B2、发票 14 个容差码</text>
+<text x="934.0" y="488.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">集成必背：存货科目 = 评估范围(分组) + 评估类 + 移动类型</text>
+<text x="934.0" y="506.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">与邻居：FI（凭证）· PP（需求/领料）· SD（发货 601）· CO（差异）</text>
+<rect x="560.0" y="231.0" width="300.0" height="168.0" rx="16" fill="#0854a0" stroke="#0854a0" stroke-width="1.4"/>
+<text x="710.0" y="273.0" font-size="30" fill="#ffffff" text-anchor="middle" font-weight="700">SAP MM</text>
+<text x="710.0" y="305.0" font-size="17" fill="#dbeafd" text-anchor="middle" font-weight="400">物料管理</text>
+<text x="710.0" y="333.0" font-size="12" fill="#a9cdf3" text-anchor="middle" font-weight="400" font-family="'SF Mono',Menlo,Consolas,monospace">Materials Management</text>
+<text x="710.0" y="361.0" font-size="11.5" fill="#a9cdf3" text-anchor="middle" font-weight="400">买什么 · 有多少 · 花了多少</text>
+</svg>

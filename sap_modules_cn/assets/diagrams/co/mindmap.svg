@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1420 638" width="1420" height="638" role="img" aria-label="SAP CO 知识地图 — 从总体到局部" font-family="'PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<title>SAP CO 知识地图 — 从总体到局部</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0a6ed1"/></marker><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#007272"/></marker><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffffff"/></marker><marker id="arback" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M10,0 L0,5 L10,10 z" fill="#b3261e"/></marker></defs>
+<rect width="1420" height="638" fill="#ffffff"/>
+<text x="40.0" y="46.0" font-size="22" fill="#1d2d3e" text-anchor="start" font-weight="700">SAP CO 知识地图 — 从总体到局部</text>
+<text x="40.0" y="72.0" font-size="12.5" fill="#6b7a8d" text-anchor="start" font-weight="400">六大板块：概念 → 组织 → 主数据 → 成本流 → 操作手顺 → 配置与集成（本站自绘 SVG）</text>
+<path d="M 560 351 C 500 351, 560 165, 502 165" fill="none" stroke="#0a6ed1" stroke-width="2"/>
+<path d="M 560 351 C 500 351, 560 315, 502 315" fill="none" stroke="#007272" stroke-width="2"/>
+<path d="M 560 351 C 500 351, 560 474, 502 474" fill="none" stroke="#177245" stroke-width="2"/>
+<path d="M 860 351 C 920 351, 860 183, 918 183" fill="none" stroke="#b3261e" stroke-width="2"/>
+<path d="M 860 351 C 920 351, 860 342, 918 342" fill="none" stroke="#8d6e00" stroke-width="2"/>
+<path d="M 860 351 C 920 351, 860 510, 918 510" fill="none" stroke="#5b3fa8" stroke-width="2"/>
+<rect x="40.0" y="108.0" width="460.0" height="114.0" rx="9" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.4"/>
+<rect x="40.0" y="108.0" width="4.5" height="114.0" rx="2" fill="#0a6ed1" stroke="#0a6ed1" stroke-width="1.4"/>
+<text x="54.0" y="132.0" font-size="15" fill="#0a6ed1" text-anchor="start" font-weight="700">① 概念与定位</text>
+<text x="54.0" y="152.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">CO 管什么：成本中心花了多少 · 项目花了多少 · 产品成本 · 哪个业务赚钱</text>
+<text x="54.0" y="170.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">初级成本要素 = FI 损益类科目；次级成本要素只在 CO 内流动</text>
+<text x="54.0" y="188.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">CO 与 FI 分工：FI 记对外账与凭证，CO 记内部成本对象与成本流</text>
+<text x="54.0" y="206.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">分配与分摊只产生 CO 凭证，不动 FI 的科目余额</text>
+<rect x="40.0" y="240.0" width="460.0" height="150.0" rx="9" fill="#e6f2f2" stroke="#007272" stroke-width="1.4"/>
+<rect x="40.0" y="240.0" width="4.5" height="150.0" rx="2" fill="#007272" stroke="#007272" stroke-width="1.4"/>
+<text x="54.0" y="264.0" font-size="15" fill="#007272" text-anchor="start" font-weight="700">② 组织结构</text>
+<text x="54.0" y="284.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">成本控制范围 C999 颐宁机械有限公司（CO 的边界）</text>
+<text x="54.0" y="302.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">公司代码 C999 由 OX19 分配给成本控制范围</text>
+<text x="54.0" y="320.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">标准层次：C999 颐宁成本中心 → HQ 总部 / MFG 制造部</text>
+<text x="54.0" y="338.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">HQ：2001 财务部 · 2002 人力资源 · 2003 销售部 · 2004 市场部 · 2005</text>
+<text x="54.0" y="356.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">采购部 · 2006 行政部</text>
+<text x="54.0" y="374.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">MFG：1001 Workshops（作业价格挂这里）· 1002 Warehouse</text>
+<rect x="40.0" y="408.0" width="460.0" height="132.0" rx="9" fill="#e6f2ec" stroke="#177245" stroke-width="1.4"/>
+<rect x="40.0" y="408.0" width="4.5" height="132.0" rx="2" fill="#177245" stroke="#177245" stroke-width="1.4"/>
+<text x="54.0" y="432.0" font-size="15" fill="#177245" text-anchor="start" font-weight="700">③ 主数据</text>
+<text x="54.0" y="452.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">成本要素：初级 KA01（类别 1）、次级 KA06（43/42/21/22）</text>
+<text x="54.0" y="470.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">成本中心：类别 W/F、有效期、标准层次位置（任务 04）</text>
+<text x="54.0" y="488.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">作业类型 LAB/MAC/SET 与作业价格 KP26（计划 19,200 H）</text>
+<text x="54.0" y="506.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">统计指标 RENT 物业租金面积（M2）—— 分配的比例尺</text>
+<text x="54.0" y="524.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">结算参数文件与分配结构 A1、结算成本要素 803010</text>
+<rect x="920.0" y="108.0" width="460.0" height="150.0" rx="9" fill="#fdeae9" stroke="#b3261e" stroke-width="1.4"/>
+<rect x="920.0" y="108.0" width="4.5" height="150.0" rx="2" fill="#b3261e" stroke="#b3261e" stroke-width="1.4"/>
+<text x="934.0" y="132.0" font-size="15" fill="#b3261e" text-anchor="start" font-weight="700">④ 成本流与月结</text>
+<text x="934.0" y="152.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">归集：FB60 房租 90000 → 2001；FB50 电费 25500 → 2006</text>
+<text x="934.0" y="170.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">纠错：KB61 重过账把房租改指到 2006（不动 FI 凭证）</text>
+<text x="934.0" y="188.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">基数：KB31N 录 RENT 面积（480/520/200/590/310/400 M2）</text>
+<text x="934.0" y="206.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">分配 KSV5：循环 DRENT，2006 → HQ（初级成本要素不变）</text>
+<text x="934.0" y="224.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">分摊 KSU5：循环 AUTILI，→ 1001 75% / 1002 25%（次级 802010）</text>
+<text x="934.0" y="242.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">结算 KO88：内部订单 500000 → 8 个成本中心（结算成本要素 803010）</text>
+<rect x="920.0" y="276.0" width="460.0" height="132.0" rx="9" fill="#fdf3d7" stroke="#8d6e00" stroke-width="1.4"/>
+<rect x="920.0" y="276.0" width="4.5" height="132.0" rx="2" fill="#8d6e00" stroke="#8d6e00" stroke-width="1.4"/>
+<text x="934.0" y="300.0" font-size="15" fill="#8d6e00" text-anchor="start" font-weight="700">⑤ 操作手顺（三篇）</text>
+<text x="934.0" y="320.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">成本中心会计篇：费用归集 → 报表 → 重过账 → 统计指标 → 分配 → 分摊</text>
+<text x="934.0" y="338.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">内部订单篇：订单类型 → 结算配置 → KO04 建单 → 归集 → KO88 结算</text>
+<text x="934.0" y="356.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">产品成本篇：作业价格怎么进订单、差异成本要素 41010901、教材未演示的</text>
+<text x="934.0" y="374.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">CK11N/CK24</text>
+<text x="934.0" y="392.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">公共动作：检查 → 保存 → 看消息 → 记录凭证号（实训要交的就是它）</text>
+<rect x="920.0" y="426.0" width="460.0" height="168.0" rx="9" fill="#efeaf9" stroke="#5b3fa8" stroke-width="1.4"/>
+<rect x="920.0" y="426.0" width="4.5" height="168.0" rx="2" fill="#5b3fa8" stroke="#5b3fa8" stroke-width="1.4"/>
+<text x="934.0" y="450.0" font-size="15" fill="#5b3fa8" text-anchor="start" font-weight="700">⑥ 配置与集成</text>
+<text x="934.0" y="470.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">SPRO 路线：组织 → 主数据 → 作业与价格 → 费用归集 → 分配分摊 →</text>
+<text x="934.0" y="488.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">内部订单与结算</text>
+<text x="934.0" y="506.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">教材 34 个任务按 A–I 九组覆盖（config.html#t01…#t34）</text>
+<text x="934.0" y="524.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">集成必背：费用进 CO 靠「账户分配」；成本流动靠 CO 凭证</text>
+<text x="934.0" y="542.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">与邻居：FI（凭证与科目）· MM（领料与价差）· PP（作业与订单差异）·</text>
+<text x="934.0" y="560.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">SD（收入成本）</text>
+<text x="934.0" y="578.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">教材未演示但必用：预算与可用性控制、产品成本估算、获利能力分析</text>
+<rect x="560.0" y="267.0" width="300.0" height="168.0" rx="16" fill="#0854a0" stroke="#0854a0" stroke-width="1.4"/>
+<text x="710.0" y="309.0" font-size="30" fill="#ffffff" text-anchor="middle" font-weight="700">SAP CO</text>
+<text x="710.0" y="341.0" font-size="17" fill="#dbeafd" text-anchor="middle" font-weight="400">管理会计</text>
+<text x="710.0" y="369.0" font-size="12" fill="#a9cdf3" text-anchor="middle" font-weight="400" font-family="'SF Mono',Menlo,Consolas,monospace">Controlling</text>
+<text x="710.0" y="397.0" font-size="11.5" fill="#a9cdf3" text-anchor="middle" font-weight="400">钱花在哪里 · 花得合不合理</text>
+</svg>

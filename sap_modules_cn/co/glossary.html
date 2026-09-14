@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>术语与 T-code 速查 · SAP CO 培训课程</title>
+<meta name="description" content="SAP CO（管理会计）培训课程：概念与定位（CO 与 FI 的分工）→ 组织结构（成本控制范围/标准层次/成本中心组）→ 主数据（成本要素/作业类型/统计指标/结算参数文件）→ 成本流（费用归集 → 重过账 → 分配分摊 → 结算 → 报表）+ 内部订单与产品成本 → 分步操作手顺 → SPRO 配置（34 个任务）→ 实训与自测。截图取自教材《S4.docx》的真实 SAP GUI 画面。">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mod.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">CO</span><span class="txt">培训课程</span></a>
+    <nav class="main">
+      <a href="index.html" title="课程地图与学习路线">首页</a>
+      <a href="concept.html" title="CO 是什么、成本要素、与 FI 的分工">概念</a>
+      <a href="org.html" title="成本控制范围 / 标准层次 / 成本中心组">组织</a>
+      <a href="master.html" title="成本要素 / 成本中心 / 作业类型 / 统计指标">主数据</a>
+      <a href="flow.html" title="成本流与月结顺序">流程</a>
+      <a href="cca.html" title="成本要素 · 作业价格 · 重过账 · 分配与分摊">成本中心</a>
+      <a href="io.html" title="KO04 建单 · 归集费用 · KO88 结算">内部订单</a>
+      <a href="pc.html" title="CK11N/CK24 标准成本 · 订单成本 · 差异">产品成本</a>
+      <a href="config.html" title="SPRO 配置路线（34 个任务）">配置</a>
+      <a href="practice.html" title="动手任务与完成基准">实训</a>
+      <a href="instructor.html" title="课时 / 板书 / 必问 / 评分">讲师</a>
+      <a href="worksheet.html" title="记入表（可打印）">学员</a>
+      <a href="quiz.html" title="30 题自评（合格 75%）">自测</a>
+      <a class="active" href="glossary.html" title="中英对照 / T-code / 常用表">术语</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page">
+<article>
+<p class="breadcrumb"><a href="index.html">课程地图</a> / <span>术语与 T-code 速查</span></p>
+<div class="filterbar modsw"><a class="chip" href="../mm/index.html" title="SAP MM 培训课程">MM 物料管理</a><a class="chip" href="../pp/index.html" title="SAP PP 培训课程">PP 生产计划</a><a class="chip" href="../fi/index.html" title="SAP FI 培训课程">FI 财务会计</a><a class="chip on" href="../co/index.html" title="SAP CO 培训课程">CO 管理会计</a><a class="chip" href="../index.html" title="四个模块的总体视图与学习路线">总览</a></div>
+<h1>术语与 T-code 速查</h1>
+<p class="kicker">中英对照 · 事务码 · 常用表 · 教材任务总索引</p>
+<p class="lead">术语中英对照（教学用中文说法 + SAP 原生名称）、事务码速查、常用表 —— 上课随时回来查。</p>
+<div class="toc"><a href="#terms">术语中英对照</a><a href="#tc">事务码速查</a><a href="#tables">常用表</a><a href="#tasks">教材任务总索引</a></div>
+<h2 id="terms">术语中英对照（44 条）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>中文</th><th>English / SAP 名称</th><th>说明</th></tr></thead><tbody><tr><td>管理会计</td><td><code>CO · Controlling</code></td><td>面向内部的成本与收益管理；与 FI 共用数据但目的不同</td></tr><tr><td>成本控制范围</td><td><code>Controlling Area (KOKRS)</code></td><td>CO 的组织边界（教材 C999 颐宁机械有限公司），可包含多个公司代码</td></tr><tr><td>成本中心</td><td><code>Cost Center (KOSTL)</code></td><td>费用归集的最小责任单位（教材 2001 财务部…2006 行政部）</td></tr><tr><td>成本中心组 / 标准层次</td><td><code>Cost Center Group / Standard Hierarchy</code></td><td>成本中心的树形结构，报表上卷与循环接收方靠它（OKEON）</td></tr><tr><td>成本要素</td><td><code>Cost Element (KSTAR)</code></td><td>CO 里的「科目」：初级对应 FI 科目，次级只在 CO 内使用</td></tr><tr><td>初级成本要素</td><td><code>Primary Cost Element</code></td><td>与 FI 损益类科目一一对应（类别 1），费用进入 CO 的通道（KA01）</td></tr><tr><td>次级成本要素</td><td><code>Secondary Cost Element</code></td><td>CO 专用：作业 43 类、分摊 42 类、结算 21/22 类（KA06）</td></tr><tr><td>成本要素类别</td><td><code>Cost Element Category (KATYP)</code></td><td>决定成本要素能用在哪些成本对象上（教材 1 / 22 / 43）</td></tr><tr><td>成本要素组</td><td><code>Cost Element Group</code></td><td>把成本要素按层次归组，报表与规则按组选取（KAH1）</td></tr><tr><td>作业类型</td><td><code>Activity Type (LSTAR)</code></td><td>成本中心对外提供的产出：LAB 人工工时 / MAC 机器工时 / SET 准备工时</td></tr><tr><td>作业价格</td><td><code>Activity Price</code></td><td>每单位作业的内部计价（KP26；教材 MAC 460/170、SET 300）</td></tr><tr><td>计划作业量</td><td><code>Planned Activity</code></td><td>作业类型在成本中心的计划产出（教材各 19,200 H）</td></tr><tr><td>统计指标</td><td><code>Statistical Key Figure (STAGR)</code></td><td>面积/人数等非金额指标（教材 RENT，单位 M2），分配的比例基数</td></tr><tr><td>重过账</td><td><code>Reposting</code></td><td>在 CO 内改成本对象而不动 FI 凭证（KB61，教材任务 17）</td></tr><tr><td>分配</td><td><code>Distribution</code></td><td>把初级成本要素按基数分给接收方，成本形态不变（KSV5）</td></tr><tr><td>分摊</td><td><code>Assessment</code></td><td>用次级成本要素把成本分出去，形态改变（KSU5，教材 802010）</td></tr><tr><td>循环 / 段</td><td><code>Cycle / Segment</code></td><td>分配与分摊的规则容器（教材 DRENT / AUTILI，段 RENT / UTILITIES）</td></tr><tr><td>追踪因素</td><td><code>Tracing Factor</code></td><td>决定接收方拿多少：统计指标实际值、固定百分比、权重等</td></tr><tr><td>发送方 / 接收方</td><td><code>Sender / Receiver</code></td><td>成本从哪来、到哪去（发送方可为成本中心/订单，接收方为组或成本对象）</td></tr><tr><td>结算</td><td><code>Settlement</code></td><td>把订单/项目余额结转到接收方（KO88；教材订单 500000 → 各成本中心）</td></tr><tr><td>结算规则</td><td><code>Settlement Rule</code></td><td>决定结给谁、结多少（份额合计必须 100%）</td></tr><tr><td>结算参数文件</td><td><code>Settlement Profile</code></td><td>规定可用接收方类别、分配结构与结算凭证行为（教材画面值 20）</td></tr><tr><td>分配结构</td><td><code>Allocation Structure</code></td><td>把源成本要素归组并指定结算成本要素（教材 A1）</td></tr><tr><td>结算成本要素</td><td><code>Settlement Cost Element</code></td><td>结算时使用的次级成本要素（教材 803010）</td></tr><tr><td>内部订单</td><td><code>Internal Order (AUFNR)</code></td><td>项目型成本对象（教材订单 500000 国内用户大会）</td></tr><tr><td>订单类型</td><td><code>Order Type (AUART)</code></td><td>决定字段状态、编号范围与结算参数文件（教材 PMKT 市场活动）</td></tr><tr><td>订单管理员</td><td><code>Order Manager</code></td><td>简化建单的画面（KO04）</td></tr><tr><td>成本对象</td><td><code>Cost Object</code></td><td>成本中心、内部订单、生产订单、项目等承接成本的对象</td></tr><tr><td>实际成本 / 计划成本</td><td><code>Actual Cost / Plan Cost</code></td><td>报表两列：已过账的 vs 计划（KP06）的</td></tr><tr><td>差异</td><td><code>Variance</code></td><td>实际与计划的差额（报表列，以及订单差异）</td></tr><tr><td>过量/吸收不足</td><td><code>Over/Under Absorption</code></td><td>成本中心吸收（作业分配出去）与投入成本的差额</td></tr><tr><td>承诺</td><td><code>Commitment</code></td><td>采购订单等尚未发生的支出（内部订单可启用承诺管理，教材未演示）</td></tr><tr><td>CO 凭证</td><td><code>CO Document (COBK/COEP)</code></td><td>记录成本对象之间的流动；分配/分摊/结算产生它，不动 FI</td></tr><tr><td>成本控制凭证编号范围</td><td><code>Number Range for CO Documents</code></td><td>CO 凭证的编号区间（教材任务 13）</td></tr><tr><td>账户分配</td><td><code>Account Assignment</code></td><td>费用凭证行项目上的成本对象（成本中心/订单），CO 的入口</td></tr><tr><td>成本中心：实际/计划/差异</td><td><code>Cost Centers: Actual/Plan/Variance</code></td><td>教材最常用的 CO 报表（S_ALR_87013611）</td></tr><tr><td>产品成本核算</td><td><code>Product Costing (CO-PC)</code></td><td>标准成本估算与订单成本（教材 CO 未演示 CK11N/CK24）</td></tr><tr><td>标准成本估算</td><td><code>Standard Cost Estimate</code></td><td>按 BOM + 工艺路线算出的物料成本（CK11N 建、CK24 发布）</td></tr><tr><td>生产订单差异</td><td><code>Production Order Variance</code></td><td>订单投入与产出的差额，教材成本要素 41010901（类别 22 外部结算）</td></tr><tr><td>实际成本核算 / 物料账</td><td><code>Actual Costing / Material Ledger</code></td><td>期末把实际成本分摊到物料（CKMLCP，教材未演示）</td></tr><tr><td>获利能力分析</td><td><code>Profitability Analysis (CO-PA)</code></td><td>按产品/客户/区域分析毛利（教材未演示）</td></tr><tr><td>间接费用</td><td><code>Overhead Cost</code></td><td>不能直接归到产品的成本（管理、行政费用等）</td></tr><tr><td>财年 / 期间</td><td><code>Fiscal Year / Period</code></td><td>CO 过账的时间维度（教材按 2021 年、期间 3 演示）</td></tr><tr><td>成本控制范围货币</td><td><code>Controlling Area Currency</code></td><td>CO 报表的记账货币（教材 CNY）</td></tr></tbody></table></div>
+<h2 id="tc">事务码速查</h2>
+<h3>教材出现的事务码（13 个）</h3>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>T-code</th><th>教材任务</th><th>索引</th></tr></thead><tbody><tr><td>FB50</td><td>输入普通费用发票</td><td><a href="config.html#t15">任务 15</a></td></tr><tr><td>FB50</td><td>输入内部订单费用发票</td><td><a href="config.html#t32">任务 32</a></td></tr><tr><td>FB60</td><td>输入费用供应商发票</td><td><a href="config.html#t14">任务 14</a></td></tr><tr><td>KA01</td><td>新建初级成本要素</td><td><a href="config.html#t05">任务 05</a></td></tr><tr><td>KA06</td><td>建立次级成本要素</td><td><a href="config.html#t06">任务 06</a></td></tr><tr><td>KB31N</td><td>输入统计指标数量</td><td><a href="config.html#t19">任务 19</a></td></tr><tr><td>KB61</td><td>成本中心数据重过帐</td><td><a href="config.html#t17">任务 17</a></td></tr><tr><td>KK01</td><td>新建统计指标</td><td><a href="config.html#t18">任务 18</a></td></tr><tr><td>KL01</td><td>新建作业类型</td><td><a href="config.html#t10">任务 10</a></td></tr><tr><td>KO04</td><td>创建内部订单</td><td><a href="config.html#t31">任务 31</a></td></tr><tr><td>KO88</td><td>内部订单的结算</td><td><a href="config.html#t33">任务 33</a></td></tr><tr><td>KP26</td><td>设置作业输出价格</td><td><a href="config.html#t12">任务 12</a></td></tr><tr><td>OKEON</td><td>维护成本中心组和成本中心</td><td><a href="config.html#t04">任务 04</a></td></tr><tr><td>OX19</td><td>将公司代码分配给成本控制范围</td><td><a href="config.html#t02">任务 02</a></td></tr></tbody></table></div>
+<h3>本模块常用事务码（含教材未演示的）</h3>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>T-code</th><th>用途</th></tr></thead><tbody><tr><td><code>OKKP</code></td><td>维护成本控制范围（IMG：控制 → 一般控制 → 组织结构）</td></tr><tr><td><code>OX19</code></td><td>把公司代码分配给成本控制范围（教材任务 02）</td></tr><tr><td><code>OKEON</code></td><td>维护成本中心标准层次（教材任务 04）</td></tr><tr><td><code>KS01/KS02/KS03</code></td><td>成本中心 创建/修改/显示</td></tr><tr><td><code>KSH1/KSH2/KSH3</code></td><td>成本中心组 创建/修改/显示（非标准层次的组）</td></tr><tr><td><code>KA01/KA02/KA03</code></td><td>初级成本要素 创建/修改/显示（教材任务 05、08）</td></tr><tr><td><code>KA06/KA23</code></td><td>次级成本要素 创建 / 清单</td></tr><tr><td><code>KAH1/KAH2/KAH3</code></td><td>成本要素组 创建/修改/显示（教材任务 07）</td></tr><tr><td><code>KL01/KL02/KL03</code></td><td>作业类型 创建/修改/显示（教材任务 10）</td></tr><tr><td><code>KLH1/KLH2</code></td><td>作业类型组 创建/修改（教材任务 11）</td></tr><tr><td><code>KP26/KP27</code></td><td>维护 / 显示作业输出价格（教材任务 12）</td></tr><tr><td><code>KP06</code></td><td>成本中心计划（教材未演示）</td></tr><tr><td><code>KK01/KK02/KK03</code></td><td>统计指标 创建/修改/显示（教材任务 18）</td></tr><tr><td><code>KB31N</code></td><td>输入统计指标数量（教材任务 19）</td></tr><tr><td><code>KB61/KB11N</code></td><td>重过账行项目 输入（教材任务 17）/ 手工重过账</td></tr><tr><td><code>KSV5/KSU5</code></td><td>分配 / 分摊 执行（教材任务 21、24）</td></tr><tr><td><code>KSV1/KSU1</code></td><td>定义分配循环 / 定义分摊循环（IMG 同路径，教材任务 20、23）</td></tr><tr><td><code>KSB1/KOB1</code></td><td>成本中心实际行项目 / 成本对象行项目（查问题用）</td></tr><tr><td><code>KO04/KO02/KO03</code></td><td>内部订单 建单（订单管理员）/ 修改 / 显示（教材任务 31）</td></tr><tr><td><code>KO88/KO8G</code></td><td>结算单个订单（教材任务 33）/ 批量结算</td></tr><tr><td><code>KOB1/KOB2</code></td><td>订单实际行项目 / 订单可用性（预算控制）</td></tr><tr><td><code>KO22/KO23</code></td><td>订单预算 维护 / 补充（教材未演示）</td></tr><tr><td><code>FB50/FB60</code></td><td>输入总账凭证 / 输入供应商发票（教材任务 15、14、32）</td></tr><tr><td><code>FB03</code></td><td>显示会计凭证</td></tr><tr><td><code>S_ALR_87013611</code></td><td>成本中心：实际/计划/差异（教材任务 16/22/26/34 用的报表）</td></tr><tr><td><code>CK11N/CK24/CK40N</code></td><td>标准成本估算 创建 / 标记与发布 / 批量成本核算（教材未演示）</td></tr><tr><td><code>CK13N</code></td><td>显示成本估算（教材未演示）</td></tr><tr><td><code>KKBC_ORD</code></td><td>订单成本分析（教材未演示）</td></tr><tr><td><code>KKS1/KKS2/CO88</code></td><td>订单差异计算 / 批量差异 / 批量结算（教材未演示）</td></tr><tr><td><code>CKMLCP</code></td><td>实际成本核算（物料账，教材未演示）</td></tr></tbody></table></div>
+<h2 id="tables">常用表（查问题用）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>表</th><th>内容</th></tr></thead><tbody><tr><td><code>TKA01 / TKA02</code></td><td>成本控制范围 / 控制范围↔公司代码</td></tr><tr><td><code>CSKA / CSKB / CSKU</code></td><td>成本要素主数据 / 按控制范围的数据 / 文本</td></tr><tr><td><code>CSKS / CSKT</code></td><td>成本中心主数据 / 文本</td></tr><tr><td><code>CSLA / CSLT</code></td><td>作业类型主数据 / 文本</td></tr><tr><td><code>COBK / COEP / COEJ</code></td><td>CO 凭证抬头 / 行项目（按期间）/ 行项目（按对象）</td></tr><tr><td><code>COSP / COSS</code></td><td>CO 计划 / 实际累计行项目（成本中心报表的数据来源）</td></tr><tr><td><code>AUFK / AFPO</code></td><td>订单主数据（内部订单与生产订单）/ 生产订单行项目</td></tr><tr><td><code>COBRB</code></td><td>结算规则</td></tr><tr><td><code>COKL / COKA</code></td><td>分配/分摊循环的抬头与段</td></tr><tr><td><code>SETHEADER / SETLEAF</code></td><td>组（成本中心组、成本要素组、作业类型组）</td></tr><tr><td><code>MBEW</code></td><td>物料评估（价格控制 V/S、标准价、移动平均价）</td></tr><tr><td><code>TKA03 等 TKA0x</code></td><td>成本控制范围的参数（如版本、期间）</td></tr></tbody></table></div>
+<h2 id="tasks">教材任务总索引（34 个）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>任务</th><th>标题</th><th>IMG 路径 / 前台路径</th><th>截图</th></tr></thead><tbody><tr><td><a href="config.html#t01">01</a></td><td>创建成本控制范围</td><td>企业结构 → 定义 → 控制 → 维护成本控制范围</td><td>4</td></tr><tr><td><a href="config.html#t02">02</a></td><td>将公司代码分配给成本控制范围</td><td>企业结构 → 分配 → 控制 → 把公司代码分配给成本控制范围</td><td>4</td></tr><tr><td><a href="config.html#t03">03</a></td><td>维护成本控制范围</td><td>控制 → 一般控制 → 组织结构 → 维护成本控制范围</td><td>6</td></tr><tr><td><a href="config.html#t04">04</a></td><td>维护成本中心组和成本中心</td><td>会计核算 → 控制 → 成本中心会计 → 主数据 → 标准层次 → OKEON-更改</td><td>9</td></tr><tr><td><a href="config.html#t05">05</a></td><td>新建初级成本要素</td><td>会计 → 控制 → 成本中心会计 → 主数据 → 成本要素 → 单个处理 → KA01-创建初级成本</td><td>8</td></tr><tr><td><a href="config.html#t06">06</a></td><td>建立次级成本要素</td><td>会计 → 控制 → 成本中心会计 → 主数据 → 成本要素 → 单个处理 → KA06-创建次级成本</td><td>5</td></tr><tr><td><a href="config.html#t07">07</a></td><td>新建成本要素组</td><td>我们可以将公司的成本要素按层次结构来管理，这种成本要素组可用根据需要定义任意多个会计 → 控制 → 成本要素会计 → 主数据 → 成本要素组 → KAH1 创建</td><td>4</td></tr><tr><td><a href="config.html#t08">08</a></td><td>更改初级成本要素</td><td>—</td><td>0</td></tr><tr><td><a href="config.html#t09">09</a></td><td>（教材此节标题为空）</td><td>—</td><td>1</td></tr><tr><td><a href="config.html#t10">10</a></td><td>新建作业类型</td><td>会计 → 控制 → 成本中心会计 → 主数据 → 作业类型 → 单个处理 → KL01-创建</td><td>2</td></tr><tr><td><a href="config.html#t11">11</a></td><td>新建作业类型组</td><td>会计 → 控制 → 成本中心会计 → 主数据 → 作业类型组 → KLH1-创建</td><td>2</td></tr><tr><td><a href="config.html#t12">12</a></td><td>设置作业输出价格</td><td>会计核算 → 控制 → 成本中心会计 → 计划 → 作业输出/价格 → KP26 → 更改</td><td>7</td></tr><tr><td><a href="config.html#t13">13</a></td><td>维护成本控制凭证的编号范围</td><td>控制 → 一般控制 → 组织结构 → 维护成本控制凭证的编号范围</td><td>5</td></tr><tr><td><a href="config.html#t14">14</a></td><td>输入费用供应商发票</td><td>—</td><td>2</td></tr><tr><td><a href="config.html#t15">15</a></td><td>输入普通费用发票</td><td>会计 → 财务会计 → 总分类帐 → 过帐 → FB50 输入总帐科目凭证</td><td>4</td></tr><tr><td><a href="config.html#t16">16</a></td><td>运行成本中心报表</td><td>会计 → 控制 → 成本中心会计 → 信息系统 → 成本中心会计的报表 → 计划/实际比较 → 成本中心：实际/计划/差异</td><td>2</td></tr><tr><td><a href="config.html#t17">17</a></td><td>成本中心数据重过帐</td><td>会计 → 控制 → 成本中心会计 → 实际记账 → 重过账行项目 → KB61 输入</td><td>5</td></tr><tr><td><a href="config.html#t18">18</a></td><td>新建统计指标</td><td>会计 → 控制 → 成本中心会计 → 主数据 → 统计指标 → 单个处理 → KK01-创建</td><td>2</td></tr><tr><td><a href="config.html#t19">19</a></td><td>输入统计指标数量</td><td>会计 → 控制 → 成本中心会计 → 实际记账 → 统计指标 → KB31N-输入</td><td>3</td></tr><tr><td><a href="config.html#t20">20</a></td><td>定义分配循环</td><td>会计 → 控制 → 成本中心会计 → 期末结账 → 当前设置 → 定义分配</td><td>5</td></tr><tr><td><a href="config.html#t21">21</a></td><td>分配</td><td>会计 → 控制 → 成本中心会计 → 期末结账 → 单一功能 → 分配 → KSV5 分配</td><td>2</td></tr><tr><td><a href="config.html#t22">22</a></td><td>显示成本中心分配到的租金</td><td>会计 → 控制 → 成本中心会计 → 信息系统 → 成本中心会计的报表 → 计划/实际比较 → 成本中心：实际/计划/差异</td><td>3</td></tr><tr><td><a href="config.html#t23">23</a></td><td>定义分摊循环</td><td>会计 → 控制 → 成本中心会计 → 期末结账 → 当前设置 → 定义评估</td><td>5</td></tr><tr><td><a href="config.html#t24">24</a></td><td>分摊</td><td>会计 → 控制 → 成本中心会计 → 期末结账 → 单一功能 → 分配 → KSU5-分配</td><td>1</td></tr><tr><td><a href="config.html#t25">25</a></td><td>点击执行</td><td>—</td><td>1</td></tr><tr><td><a href="config.html#t26">26</a></td><td>显示成本中心分摊到的电费</td><td>会计 → 控制 → 成本中心会计 → 信息系统 → 成本中心会计的报表 → 计划/实际比较 → 成本中心：实际/计划/差异</td><td>2</td></tr><tr><td><a href="config.html#t27">27</a></td><td>创建内部订单类型并维护编号范围</td><td>点击新条目点击新条目后台 → 控制 → 内部订单 → 订单主数据 → 定义订单类型</td><td>4</td></tr><tr><td><a href="config.html#t28">28</a></td><td>维护内部订单的结算参数文件</td><td>后台 → 控制 → 内部订单 → 实际过账 → 结算 → 维护结算参数文件</td><td>4</td></tr><tr><td><a href="config.html#t29">29</a></td><td>维护内部订单结算的分配结构</td><td>后台 → 控制 → 内部订单 → 实际过账 → 结算 → 维护分配结构</td><td>6</td></tr><tr><td><a href="config.html#t30">30</a></td><td>维护结算凭证编号范围</td><td>后台 → 控制 → 内部订单 → 实际过账 → 结算 → 维护结算凭证编号范围</td><td>2</td></tr><tr><td><a href="config.html#t31">31</a></td><td>创建内部订单</td><td>会计 → 控制 → 内部订单 → 主数据 → KO04-订单管理员</td><td>7</td></tr><tr><td><a href="config.html#t32">32</a></td><td>输入内部订单费用发票</td><td>会计核算 → 财务会计 → 总帐 → 凭证录入 → FB50-输入总账科目凭证</td><td>4</td></tr><tr><td><a href="config.html#t33">33</a></td><td>内部订单的结算</td><td>控制 → 内部订单 → 单一功能 → 结算 → KO88-单个处理</td><td>2</td></tr><tr><td><a href="config.html#t34">34</a></td><td>显示内部订单的结算结果</td><td>会计 → 控制 → 成本中心会计 → 信息系统 → 成本中心会计的报表 → 计划/实际比较 → 成本中心：实际/计划/差异</td><td>3</td></tr></tbody></table></div>
+</article>
+</main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <h5>SAP CO 培训课程</h5>
+        <p>管理会计：成本中心 · 内部订单 · 产品成本</p>
+        <p>课程总览：<a href="../index.html">SAP 模块培训课程（MM · PP · FI · CO）</a></p>
+      </div>
+      <div>
+        <h5>课程板块</h5>
+        <p><a href="concept.html">概念</a> · <a href="org.html">组织</a> ·
+        <a href="master.html">主数据</a> · <a href="flow.html">流程</a> ·
+        <a href="cca.html">成本中心</a> · <a href="config.html">配置</a></p>
+      </div>
+      <div>
+        <h5>课堂配套</h5>
+        <p><a href="practice.html">实训任务</a> · <a href="instructor.html">讲师版</a> ·
+        <a href="worksheet.html">学员版</a> · <a href="quiz.html">自测</a> ·
+        <a href="glossary.html">术语表</a></p>
+      </div>
+      <div>
+        <h5>看图说话</h5>
+        <p>截图取自教材《S4.docx》的真实 SAP GUI 画面（中文界面，保留原文件名可回查）；
+        流程图、结构图、思维导图为本站自绘 SVG。标准值随版本/行业方案而异，
+        页面标注的「在自系统里怎么确认」请在自己的系统里核对。</p>
+        <p>其他模块：<a href="../mm/index.html">MM 物料管理</a> · <a href="../pp/index.html">PP 生产计划</a> · <a href="../fi/index.html">FI 财务会计</a> · </p>
+      </div>
+    </div>
+    <p class="copy">© <span data-year>2026</span> SAP CO 培训课程 · 静态站点，可离线使用</p>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/mod.js"></script>
+</body>
+</html>

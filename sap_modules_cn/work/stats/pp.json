@@ -1,0 +1,31 @@
+{
+ "code": "pp",
+ "pages": 14,
+ "tasks": 51,
+ "steps": 220,
+ "tcodes": 26,
+ "config_groups": 8,
+ "diagrams": 8,
+ "shots": 431,
+ "uniqueshots": 271,
+ "quiz": 30,
+ "diagrams_used": 10,
+ "shots_total": 431,
+ "html_bytes": 386192,
+ "files": [
+  "concept.html",
+  "config.html",
+  "cost.html",
+  "execution.html",
+  "flow.html",
+  "glossary.html",
+  "index.html",
+  "instructor.html",
+  "master.html",
+  "org.html",
+  "planning.html",
+  "practice.html",
+  "quiz.html",
+  "worksheet.html"
+ ]
+}

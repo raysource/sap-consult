@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 348" width="1400" height="348" role="img" aria-label="端到端业务链：四个模块怎么接力" font-family="'PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<title>端到端业务链：四个模块怎么接力</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0a6ed1"/></marker><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#007272"/></marker><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffffff"/></marker><marker id="arback" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M10,0 L0,5 L10,10 z" fill="#b3261e"/></marker></defs>
+<rect width="1400" height="348" fill="#ffffff"/>
+<text x="40.0" y="46.0" font-size="22" fill="#1d2d3e" text-anchor="start" font-weight="700">端到端业务链：四个模块怎么接力</text>
+<text x="40.0" y="72.0" font-size="12.5" fill="#6b7a8d" text-anchor="start" font-weight="400">同一个业务从需求走到报表，交接点就是各模块的边界 —— 也是课程里反复讲的「集成点」</text>
+<rect x="40.0" y="104.0" width="150.0" height="51.0" rx="9" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.5"/>
+<circle cx="58.0" cy="122.0" r="12" fill="#0a6ed1"/><text x="58.0" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">1</text>
+<text x="76.0" y="127.0" font-size="14" fill="#0a6ed1" text-anchor="start" font-weight="700">销售订单 VA01</text>
+<text x="52.0" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">SD：客户要什么、要多</text>
+<text x="52.0" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">少</text>
+<path d="M 192 130 H 216" fill="none" stroke="#0a6ed1" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="220.0" y="104.0" width="156.4" height="51.0" rx="9" fill="#e6f2f2" stroke="#007272" stroke-width="1.5"/>
+<circle cx="238.0" cy="122.0" r="12" fill="#007272"/><text x="238.0" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">2</text>
+<text x="256.0" y="127.0" font-size="14" fill="#007272" text-anchor="start" font-weight="700">需求传递 / MRP</text>
+<text x="232.0" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">PP·MM：需求变成生产</text>
+<text x="232.0" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">与采购需求</text>
+<path d="M 378 130 H 402" fill="none" stroke="#007272" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="406.4" y="104.0" width="159.8" height="51.0" rx="9" fill="#e6f2f2" stroke="#007272" stroke-width="1.5"/>
+<circle cx="424.4" cy="122.0" r="12" fill="#007272"/><text x="424.4" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">3</text>
+<text x="442.4" y="127.0" font-size="14" fill="#007272" text-anchor="start" font-weight="700">采购订单 ME21N</text>
+<text x="418.4" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">MM：买原料（收货 101</text>
+<text x="418.4" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">进库存）</text>
+<path d="M 568 130 H 592" fill="none" stroke="#007272" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="596.2" y="104.0" width="150.0" height="51.0" rx="9" fill="#e6f2f2" stroke="#007272" stroke-width="1.5"/>
+<circle cx="614.2" cy="122.0" r="12" fill="#007272"/><text x="614.2" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">4</text>
+<text x="632.2" y="127.0" font-size="14" fill="#007272" text-anchor="start" font-weight="700">生产订单 CO01</text>
+<text x="608.2" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">PP：领料 261 → 确认 →</text>
+<text x="608.2" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">入库 101</text>
+<path d="M 748 130 H 772" fill="none" stroke="#007272" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="776.2" y="104.0" width="155.5" height="51.0" rx="9" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.5"/>
+<circle cx="794.2" cy="122.0" r="12" fill="#0a6ed1"/><text x="794.2" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">5</text>
+<text x="812.2" y="127.0" font-size="14" fill="#0a6ed1" text-anchor="start" font-weight="700">外向交货 VL01N</text>
+<text x="788.2" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">SD：拣配 → 发货过账 601</text>
+<text x="788.2" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400"> 出库存</text>
+<path d="M 934 130 H 958" fill="none" stroke="#0a6ed1" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="961.7" y="104.0" width="150.0" height="51.0" rx="9" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.5"/>
+<circle cx="979.7" cy="122.0" r="12" fill="#0a6ed1"/><text x="979.7" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">6</text>
+<text x="997.7" y="127.0" font-size="14" fill="#0a6ed1" text-anchor="start" font-weight="700">发票 VF01</text>
+<text x="973.7" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">SD：开票 → 应收账款</text>
+<path d="M 1114 130 H 1138" fill="none" stroke="#0a6ed1" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="1141.7" y="104.0" width="155.8" height="51.0" rx="9" fill="#e6f2ec" stroke="#177245" stroke-width="1.5"/>
+<circle cx="1159.7" cy="122.0" r="12" fill="#177245"/><text x="1159.7" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">7</text>
+<text x="1177.7" y="127.0" font-size="14" fill="#177245" text-anchor="start" font-weight="700">会计凭证 / 报表</text>
+<text x="1153.7" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">FI：总账、应收应付、资</text>
+<text x="1153.7" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">产负债表</text>
+<path d="M 1300 130 h 14 V 164 H 20 V 226 h -14" fill="none" stroke="#177245" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+<rect x="40.0" y="200.0" width="153.0" height="51.0" rx="9" fill="#fdf3d7" stroke="#8d6e00" stroke-width="1.5"/>
+<circle cx="58.0" cy="218.0" r="12" fill="#8d6e00"/><text x="58.0" y="222.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">8</text>
+<text x="76.0" y="223.0" font-size="14" fill="#8d6e00" text-anchor="start" font-weight="700">成本与获利分析</text>
+<text x="52.0" y="242.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">CO：成本中心、订单成本</text>
+<text x="52.0" y="259.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">、差异</text>
+<rect x="40.0" y="300.0" width="1320.0" height="34.5" rx="8" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="52.0" y="322.0" font-size="12.5" fill="#0854a0" text-anchor="start" font-weight="400">读这张图的方法：每一步都在问「这一步谁产生凭证、下一步谁要用」——课程里每个模块的「集成关系」一节，讲的就是这些箭头。</text>
+</svg>

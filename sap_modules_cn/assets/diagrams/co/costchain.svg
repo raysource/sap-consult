@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 348" width="1400" height="348" role="img" aria-label="成本流：费用怎么进来、怎么分出去、最后到哪" font-family="'PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<title>成本流：费用怎么进来、怎么分出去、最后到哪</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0a6ed1"/></marker><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#007272"/></marker><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffffff"/></marker><marker id="arback" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M10,0 L0,5 L10,10 z" fill="#b3261e"/></marker></defs>
+<rect width="1400" height="348" fill="#ffffff"/>
+<text x="40.0" y="46.0" font-size="22" fill="#1d2d3e" text-anchor="start" font-weight="700">成本流：费用怎么进来、怎么分出去、最后到哪</text>
+<text x="40.0" y="72.0" font-size="12.5" fill="#6b7a8d" text-anchor="start" font-weight="400">教材任务 14–34 就是这条链；只有第 1 步（费用归集）会动 FI，其余都在 CO 内完成</text>
+<rect x="40.0" y="104.0" width="209.5" height="51.0" rx="9" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.5"/>
+<circle cx="58.0" cy="122.0" r="12" fill="#0a6ed1"/><text x="58.0" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">1</text>
+<text x="76.0" y="127.0" font-size="14" fill="#0a6ed1" text-anchor="start" font-weight="700">FI 费用凭证 FB60 / FB50</text>
+<text x="52.0" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">费用科目 +</text>
+<text x="52.0" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">成本对象（成本中心/订单）</text>
+<path d="M 252 130 H 276" fill="none" stroke="#0a6ed1" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="279.5" y="104.0" width="150.0" height="51.0" rx="9" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.5"/>
+<circle cx="297.5" cy="122.0" r="12" fill="#0a6ed1"/><text x="297.5" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">2</text>
+<text x="315.5" y="127.0" font-size="14" fill="#0a6ed1" text-anchor="start" font-weight="700">初级成本要素</text>
+<text x="291.5" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">科目在 CO</text>
+<text x="291.5" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">里的身份（类别 1）</text>
+<path d="M 432 130 H 456" fill="none" stroke="#0a6ed1" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="459.5" y="104.0" width="193.8" height="51.0" rx="9" fill="#e6f2f2" stroke="#007272" stroke-width="1.5"/>
+<circle cx="477.5" cy="122.0" r="12" fill="#007272"/><text x="477.5" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">3</text>
+<text x="495.5" y="127.0" font-size="14" fill="#007272" text-anchor="start" font-weight="700">成本中心 2001 / 2006</text>
+<text x="471.5" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">费用归集到责任部门</text>
+<path d="M 655 130 H 679" fill="none" stroke="#007272" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="683.3" y="104.0" width="150.0" height="51.0" rx="9" fill="#fdf3d7" stroke="#8d6e00" stroke-width="1.5"/>
+<circle cx="701.3" cy="122.0" r="12" fill="#8d6e00"/><text x="701.3" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">4</text>
+<text x="719.3" y="127.0" font-size="14" fill="#8d6e00" text-anchor="start" font-weight="700">重过账 KB61</text>
+<text x="695.3" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">记错对象就改指，不动</text>
+<text x="695.3" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">FI</text>
+<path d="M 835 130 H 859" fill="none" stroke="#8d6e00" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="863.3" y="104.0" width="150.0" height="51.0" rx="9" fill="#fdeae9" stroke="#b3261e" stroke-width="1.5"/>
+<circle cx="881.3" cy="122.0" r="12" fill="#b3261e"/><text x="881.3" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">5</text>
+<text x="899.3" y="127.0" font-size="14" fill="#b3261e" text-anchor="start" font-weight="700">分配 KSV5</text>
+<text x="875.3" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">按统计指标分初级成本</text>
+<text x="875.3" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">（DRENT）</text>
+<path d="M 1015 130 H 1039" fill="none" stroke="#b3261e" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="1043.3" y="104.0" width="150.0" height="51.0" rx="9" fill="#fdeae9" stroke="#b3261e" stroke-width="1.5"/>
+<circle cx="1061.3" cy="122.0" r="12" fill="#b3261e"/><text x="1061.3" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">6</text>
+<text x="1079.3" y="127.0" font-size="14" fill="#b3261e" text-anchor="start" font-weight="700">分摊 KSU5</text>
+<text x="1055.3" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">换成次级要素分出去（A</text>
+<text x="1055.3" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">UTILI）</text>
+<path d="M 1195 130 h 14 V 164 H 20 V 226 h -14" fill="none" stroke="#b3261e" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+<rect x="40.0" y="200.0" width="174.1" height="51.0" rx="9" fill="#efeaf9" stroke="#5b3fa8" stroke-width="1.5"/>
+<circle cx="58.0" cy="218.0" r="12" fill="#5b3fa8"/><text x="58.0" y="222.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">7</text>
+<text x="76.0" y="223.0" font-size="14" fill="#5b3fa8" text-anchor="start" font-weight="700">内部订单结算 KO88</text>
+<text x="52.0" y="242.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">订单余额结到各成本中心</text>
+<path d="M 216 226 H 240" fill="none" stroke="#5b3fa8" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="244.1" y="200.0" width="194.0" height="51.0" rx="9" fill="#e6f2ec" stroke="#177245" stroke-width="1.5"/>
+<circle cx="262.1" cy="218.0" r="12" fill="#177245"/><text x="262.1" y="222.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">8</text>
+<text x="280.1" y="223.0" font-size="14" fill="#177245" text-anchor="start" font-weight="700">报表：实际/计划/差异</text>
+<text x="256.1" y="242.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">确认发送方清零、接收方拿到</text>
+<rect x="40.0" y="300.0" width="1320.0" height="34.5" rx="8" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="52.0" y="322.0" font-size="12.5" fill="#0854a0" text-anchor="start" font-weight="400">「发送方清零」是月结做完的标志：成本中心 2006 的租金被分配走、订单 500000 的余额被结算走，报表上这些对象就没有余额了，成本落在真正承担它的部门或产品上。</text>
+</svg>

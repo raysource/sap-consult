@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>流程③ 期末与报表 · SAP FI 培训课程</title>
+<meta name="description" content="SAP FI（财务会计）培训课程：概念与定位 → 组织结构（公司/公司代码/科目表/会计年度/信贷控制范围）→ 主数据（总账科目/科目组/字段状态/客户与供应商主数据）→ 端到端记账流程（业务凭证 → 会计凭证 → 余额与报表）+ 应收应付循环（发票·收款·付款）→ 期末（记账期间·资产负债表结构·报表）→ 分步操作手顺 → SPRO 配置（45 个任务）→ 实训与自测。截图取自教材《S4.docx》的真实 SAP GUI 画面。">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mod.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">FI</span><span class="txt">培训课程</span></a>
+    <nav class="main">
+      <a href="index.html" title="课程地图与学习路线">首页</a>
+      <a href="concept.html" title="FI 是什么、凭证从哪来、边界在哪">概念</a>
+      <a href="org.html" title="公司代码 / 科目表 / 会计年度 / 信贷 / 期间 / 字段状态">组织</a>
+      <a href="master.html" title="总账科目 / 客户 / 供应商主数据">主数据</a>
+      <a href="flow.html" title="端到端记账流程与凭证流">流程</a>
+      <a href="gl.html" title="FB50 凭证 · FS00 科目 · FS10N 余额">总账</a>
+      <a href="arap.html" title="FB70/FB60 发票 · F-28/F-53 收付款 · 客户供应商余额">应收应付</a>
+      <a class="active" href="close.html" title="记账期间 · 报表结构 · 资产负债表与损益表">期末报表</a>
+      <a href="config.html" title="SPRO 配置路线（45 个任务）">配置</a>
+      <a href="practice.html" title="动手任务与完成基准">实训</a>
+      <a href="instructor.html" title="课时 / 板书 / 必问 / 评分">讲师</a>
+      <a href="worksheet.html" title="记入表（可打印）">学员</a>
+      <a href="quiz.html" title="30 题自评（合格 75%）">自测</a>
+      <a href="glossary.html" title="中英对照 / T-code / 常用表">术语</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page">
+<article>
+<p class="breadcrumb"><a href="index.html">课程地图</a> / <span>流程③ 期末与报表</span></p>
+<div class="filterbar modsw"><a class="chip" href="../mm/index.html" title="SAP MM 培训课程">MM 物料管理</a><a class="chip" href="../pp/index.html" title="SAP PP 培训课程">PP 生产计划</a><a class="chip on" href="../fi/index.html" title="SAP FI 培训课程">FI 财务会计</a><a class="chip" href="../co/index.html" title="SAP CO 培训课程">CO 管理会计</a><a class="chip" href="../index.html" title="四个模块的总体视图与学习路线">总览</a></div>
+<h1>流程③ 期末与报表</h1>
+<p class="kicker">记账期间开关 · 余额表 · 只能自动记帐 · 报表结构 · 资产负债表与损益表</p>
+<p class="lead">期末篇回答「这个月还能不能记账、余额对不对、报表怎么出来」：先管住时间（记账期间变式 <code>P999</code> + 前台期间开关），再核对余额（科目余额表 <code>S_ALR_87012276</code>），最后把科目范围映射成报表项目（任务 44）并运行资产负债表（任务 45）。教材 FI 的任务 15–19、42–45 是这一篇的现场。</p>
+<div class="toc"><a href="#pre">教学场景</a><a href="#sec16">手顺① 记账期间变式</a><a href="#sec17">手顺② 期间变式分配给公司代码</a><a href="#sec18">手顺③ 前台开关过账期间</a><a href="#sec42">手顺④ 总账科目余额表</a><a href="#sec43">手顺⑤ 收入科目设为只能自动记帐</a><a href="#sec44">手顺⑥ 定义报表结构</a><a href="#sec45">手顺⑦ 运行资产负债表</a><a href="#checklist">期末清单</a><a href="#errors">常见错误</a></div>
+<h2 id="pre">教学场景</h2>
+<figure class="dia wide"><a class="zoom" href="../assets/diagrams/fi/periodclose.svg"><img src="../assets/diagrams/fi/periodclose.svg" alt="期末序列：号码范围 → 期间变式 → 分配 → 开关期间 → 余额表 → 报表结构 → 资产负债表" loading="lazy"></a><figcaption><span class="n">自绘流程图</span><span class="cap">期末序列：号码范围 → 期间变式 → 分配 → 开关期间 → 余额表 → 报表结构 → 资产负债表</span><span class="src">本站自绘 SVG</span></figcaption></figure>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>前置（关联配置）</th><th>内容</th><th>教材任务</th></tr></thead><tbody><tr><td>凭证号码范围</td><td>源公司 0001 → 目标公司 C999；没有它录不了凭证</td><td>15</td></tr><tr><td>记账期间变式</td><td>P999 颐宁记账期间变式；分配给 C999</td><td>16、17</td></tr><tr><td>期间开关</td><td>前台「未清过帐期间和已结过帐期间」（S_ALR_87003642），画面用 +/A/D/K/S 与期间 1–12、13–16</td><td>18</td></tr><tr><td>容差组</td><td>雇员容差组（限制单张凭证/单笔未清项金额）、应收应付容差组</td><td>19、22</td></tr><tr><td>报表结构</td><td>颐宁公司财务报表版本（画面显示 P999）：资产 / 负债及所有者权益 / P+L 结果（净值结果：利润·亏损）</td><td>44</td></tr><tr><td>环境值</td><td>会计年度 2021；任务 45 运行结果：资产 223.680、权益 223.680、本年利润 220.880</td><td>（教材画面）</td></tr></tbody></table></div>
+<div class="box info"><b class="t">期末的三个动作（先讲框架，再看手顺）</b><p>① <b>管时间</b>：记账期间变式定义变式，前台开关决定哪些期间能过账 —— 关账不是「禁止查」而是「禁止改与记」。多个公司代码可以共用一个变式统一控制。</p><p>② <b>对余额</b>：跑科目余额表（任务 42），把总账余额、客户/供应商余额、MM 的 GR/IR 未清项三者对平；教程任务 41/40 的供应商余额、任务 35/36 的客户余额都要在这里核。</p><p>③ <b>出报表</b>：财务报表版本（任务 44）把科目范围（如 A999 0010010101–0010019999）映射到报表项目；「P&L 结果」「净值结果：利润/亏损」是系统预定义项目，自动算轧差。配置完成后用任务 45 运行资产负债表/损益表。</p></div>
+<h2>手顺① 定义记账期间变式（任务 16）</h2>
+<div class="taskblk"><div class="steph" id="sec16"><span class="no">任务 16</span><h3>定义记帐期间变式</h3></div><div class="note tip"><span class="t">教学要点</span>教材原文：这是用来对凭证的「开关」，已经关掉的会计期间就不允许对凭证进行更改；多个公司代码可以被统一控制开账和关账。教材建的变式是 P999 颐宁记账期间变式。</div><div class="pathline" data-copy="财务会计(新) → 财务会计全局设置(新) → 分类账 → 会计年度和过账期间 → 过账期间-定义未清过账期间变式"><b>IMG 路径（教材后台菜单）</b>财务会计(新) → 财务会计全局设置(新) → 分类账 → 会计年度和过账期间 → 过账期间-定义未清过账期间变式</div><ol class="tasksteps"><li><p class="stepcap">财务会计(新)－财务会计全局设置(新)－分类账－会计年度和过账期间－过账期间-定义未清过账期间变式</p><div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/fi/t16/01_1_image149.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t16/01_1_image149.png" width="519" height="576" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 1</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 16 定义记帐期间变式 · 原图 01_1_image149.png</span></figcaption></figure><figure class="shot narrow"><a class="zoom" href="../assets/img/fi/t16/01_2_image150.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t16/01_2_image150.png" width="398" height="118" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 2</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 16 定义记帐期间变式 · 原图 01_2_image150.png</span></figcaption></figure></div><div class="note warn"><span class="t">注意</span>解释：这是用来对凭证的开关。已经关掉的会计期间就不允许对凭证进行更改。多个公司代码可以被统一控制开账和关帐。先给各个公司代码赋予记账期间变式参数。</div><div class="note tip"><span class="t">原书提示</span>P999 颐宁记账期间变式</div></li></ol></div>
+<h2>手顺② 把记账期间变式分配给公司代码（任务 17）</h2>
+<div class="taskblk"><div class="steph" id="sec17"><span class="no">任务 17</span><h3>将记帐期间变式分配给公司代码</h3></div><div class="note tip"><span class="t">教学要点</span>把 P999 分配给公司代码 C999 —— 只定义变式不分配，前台开关期间是看不到效果的。</div><div class="pathline" data-copy="财务会计(新) → 财务会计全局设置(新) → 分类账 → 会计年度和过账期间 → 过账期间-将变式分配给公司代码"><b>IMG 路径（教材后台菜单）</b>财务会计(新) → 财务会计全局设置(新) → 分类账 → 会计年度和过账期间 → 过账期间-将变式分配给公司代码</div><p class="subheads">教材小节：财务会计(新)－财务会计全局设置(新)－分类账－会计年度和过账期间－过账期间-将变式分配给公司代码</p><ol class="tasksteps"><li><div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/fi/t17/01_1_image151.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t17/01_1_image151.png" width="513" height="485" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 3</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 17 将记帐期间变式分配给公司代码 · 原图 01_1_image151.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/fi/t17/01_2_image152.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t17/01_2_image152.png" width="511" height="446" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 4</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 17 将记帐期间变式分配给公司代码 · 原图 01_2_image152.png</span></figcaption></figure></div><div class="note tip"><span class="t">原书提示</span>P999</div></li></ol></div>
+<h2>手顺③ 前台开关过账期间（任务 18）</h2>
+<div class="taskblk"><div class="steph" id="sec18"><span class="no">任务 18</span><h3>设置记帐期间(前台)</h3></div><div class="note tip"><span class="t">教学要点</span>教材现场：完成开帐和关帐，通常作为月结的一个环节（会计核算 → 财务会计 → 总帐 → 环境 → 当前设置 → 未清过帐期间和已结过帐期间，画面事务码 S_ALR_87003642）。画面里 P999 变式下每个科目类型（+/A/D/K/S）分别对应 1–12 期间与 13–16 特殊期间。</div><div class="pathline" data-copy="会计核算 → 财务会计 → 总帐 → 环境 → 当前设置 → 未清过帐期间和已结过帐期间"><b>IMG 路径（教材后台菜单）</b>会计核算 → 财务会计 → 总帐 → 环境 → 当前设置 → 未清过帐期间和已结过帐期间</div><ol class="tasksteps"><li><p class="stepcap">解释:完成开帐和关帐，通常作为月结的一个环节。<br>会计核算－财务会计－总帐－环境－当前设置－未清过帐期间和已结过帐期间</p><div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/fi/t18/01_1_image153.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t18/01_1_image153.png" width="492" height="725" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 5</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 18 设置记帐期间(前台) · 原图 01_1_image153.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/fi/t18/01_2_image154.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t18/01_2_image154.png" width="361" height="194" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 6</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 18 设置记帐期间(前台) · 原图 01_2_image154.png</span></figcaption></figure></div></li><li><p class="stepcap">P999 +/A/D/K/S 1-12 期间 2006 年 13－16 期间，+/A/D/K/S 分别代表如下含义</p><div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/fi/t18/02_1_image155.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t18/02_1_image155.png" width="171" height="266" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 7</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 18 设置记帐期间(前台) · 原图 02_1_image155.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/fi/t18/02_2_image156.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t18/02_2_image156.png" width="673" height="304" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 8</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 18 设置记帐期间(前台) · 原图 02_2_image156.png</span></figcaption></figure></div></li></ol></div>
+<div class="note info"><span class="t">画面里的 +/A/D/K/S 是什么</span>它们代表不同的科目类型／账户组别（总账、客户、供应商、资产等）在期间控制里的分列。教材画面直接展示了这些列与期间 1–12、13–16，教学时让学生对着自己系统的列标题用 F1 确认即可，不必背字母含义 —— 关键是理解「<b>谁被允许在哪个期间过账</b>」由这张表决定。</div>
+<h2>手顺④ 总账科目余额表（任务 42）</h2>
+<div class="taskblk"><div class="steph" id="sec42"><span class="no">任务 42</span><h3>总帐科目余额汇总表</h3></div><div class="note tip"><span class="t">教学要点</span>总帐科目余额（S_ALR_87012276）是期末对账的主报表：选择条件里可以限定科目区间、公司代码 C999、会计年度 2021、期间 1 到 16，还能勾「包含未清/结账分录」。它回答「每个科目的期初、借方、贷方、期末是多少」。</div><div class="pathline" data-copy="会计 → 财务会计 → 总帐 → 信息系统 → 总帐报表(新) → 科目余额 → 常规 → 总帐科目余额"><b>IMG 路径（教材后台菜单）</b>会计 → 财务会计 → 总帐 → 信息系统 → 总帐报表(新) → 科目余额 → 常规 → 总帐科目余额</div><ol class="tasksteps"><li><p class="stepcap">会计－财务会计－总帐－信息系统－总帐报表(新)－科目余额－常规－总帐科目余额－</p><div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/fi/t42/01_1_image271.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t42/01_1_image271.png" width="473" height="634" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 9</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 42 总帐科目余额汇总表 · 原图 01_1_image271.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/fi/t42/01_2_image272.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t42/01_2_image272.png" width="628" height="547" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 10</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 42 总帐科目余额汇总表 · 原图 01_2_image272.png</span></figcaption></figure></div></li><li><figure class="shot"><a class="zoom" href="../assets/img/fi/t42/02_1_image275.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t42/02_1_image275.png" width="1212" height="636" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 11</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 42 总帐科目余额汇总表 · 原图 02_1_image275.png</span></figcaption></figure></li></ol></div>
+<h2>手顺⑤ 把收入科目设为只能自动记帐（任务 43）</h2>
+<div class="taskblk"><div class="steph" id="sec43"><span class="no">任务 43</span><h3>将收入科目设置为只能自动记帐</h3><span class="tc">FS00</span></div><div class="note tip"><span class="t">教学要点</span>任务 43 用 FS00 打开收入科目 51010101（公司代码 C999），在「创建/银行/利息」页签勾选「只能自动记帐」—— 字段状态组是 ZREV 收入科目。教学价值：这是内部控制的标准动作，收入只允许由 SD 开票自动生成，禁止人工调整。</div><ol class="tasksteps"><li><figure class="shot"><a class="zoom" href="../assets/img/fi/t43/01_1_image276.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t43/01_1_image276.png" width="614" height="667" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 12</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 43 将收入科目设置为只能自动记帐 · 原图 01_1_image276.png</span></figcaption></figure></li><li><div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/fi/t43/02_1_image277.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t43/02_1_image277.png" width="633" height="654" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 13</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 43 将收入科目设置为只能自动记帐 · 原图 02_1_image277.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/fi/t43/02_2_image278.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t43/02_2_image278.png" width="611" height="662" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 14</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 43 将收入科目设置为只能自动记帐 · 原图 02_2_image278.png</span></figcaption></figure></div></li></ol></div>
+<h2>手顺⑥ 定义资产负债表和损益表结构（任务 44）</h2>
+<div class="taskblk"><div class="steph" id="sec44"><span class="no">任务 44</span><h3>定义资产负债表和损益表结构</h3></div><div class="note tip"><span class="t">教学要点</span>任务 44（23 步，教材里第二长的任务）用「定义会计报表版本」把科目映射成报表项目：建立/选择报表版本 → 双击「资产」→ 创建项目（15 固定资产、18 无形及递延资产、124301 存货-产成品，科目范围 A999 0012430101–0012439999）→ 负债及所有者权益（21 负债 / 2101 流动负债 / 100101 现金 / 100201 银行存款 / 212101 应付账款 / 21710101 进项税 / 21710102 销项税 / 3141 期初未分配利润 / 3142 本年净增未分配利润）→ 把「净值结果：亏损」调整到 3142 下。教材原文点出：P&L 结果与净值结果（利润/亏损）是系统预定义项目，自动计算资产负债表的轧差数 —— 实质就是本年净增未分配利润。</div><div class="pathline" data-copy="财务会计 → 总帐会计 → 业务往来 → 结算 → 编制凭证 → 定义会计报表版本"><b>IMG 路径（教材后台菜单）</b>财务会计 → 总帐会计 → 业务往来 → 结算 → 编制凭证 → 定义会计报表版本</div><ol class="tasksteps"><li><p class="stepcap">财务会计－总帐会计－业务往来－结算－编制凭证－定义会计报表版本</p><figure class="shot"><a class="zoom" href="../assets/img/fi/t44/01_1_image283.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t44/01_1_image283.png" width="380" height="464" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 15</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 44 定义资产负债表和损益表结构 · 原图 01_1_image283.png</span></figcaption></figure></li><li><figure class="shot"><a class="zoom" href="../assets/img/fi/t44/02_1_image284.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t44/02_1_image284.png" width="543" height="569" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 16</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 44 定义资产负债表和损益表结构 · 原图 02_1_image284.png</span></figcaption></figure></li><li><p class="stepcap">新的分录</p><figure class="shot"><a class="zoom" href="../assets/img/fi/t44/03_1_image285.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t44/03_1_image285.png" width="361" height="324" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 17</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 44 定义资产负债表和损益表结构 · 原图 03_1_image285.png</span></figcaption></figure></li><li><p class="stepcap">点击会计报表项目</p><div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/fi/t44/04_1_image286.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t44/04_1_image286.png" width="372" height="309" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 18</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 44 定义资产负债表和损益表结构 · 原图 04_1_image286.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/fi/t44/04_2_image287.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t44/04_2_image287.png" width="510" height="247" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 19</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 44 定义资产负债表和损益表结构 · 原图 04_2_image287.png</span></figcaption></figure></div><div class="note tip"><span class="t">原书提示</span>双击资产</div></li><li><figure class="shot"><a class="zoom" href="../assets/img/fi/t44/05_1_image288.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t44/05_1_image288.png" width="396" height="788" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 20</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 44 定义资产负债表和损益表结构 · 原图 05_1_image288.png</span></figcaption></figure></li></ol></div>
+<h2>手顺⑦ 运行资产负债表（任务 45）</h2>
+<div class="taskblk"><div class="steph" id="sec45"><span class="no">任务 45</span><h3>运行资产负债表</h3></div><div class="note tip"><span class="t">教学要点</span>任务 45 运行「资产负债表/损益表/现金流 → 常规 → 计划/实际比较 → 年度计划/实际比较」；教材画面里 10 代表本位币。运行结果可以看到：资产 223.680（货币资金 147.200 + 应收账款 76.480）、负债及所有者权益 223.680、损益及利润分配表 220.880-。</div><div class="pathline" data-copy="会计 → 财务会计 → 总分类帐 → 信息系统 → 总帐报表 → 资产负债表/损益表/现金流 → 常规 → 计划/实际比较 → 年度计划/实际比较"><b>IMG 路径（教材后台菜单）</b>会计 → 财务会计 → 总分类帐 → 信息系统 → 总帐报表 → 资产负债表/损益表/现金流 → 常规 → 计划/实际比较 → 年度计划/实际比较</div><ol class="tasksteps"><li><figure class="shot"><a class="zoom" href="../assets/img/fi/t45/01_1_image311.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t45/01_1_image311.png" width="488" height="572" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 21</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 45 运行资产负债表 · 原图 01_1_image311.png</span></figcaption></figure></li><li><figure class="shot"><a class="zoom" href="../assets/img/fi/t45/02_1_image312.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t45/02_1_image312.png" width="675" height="563" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 22</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 45 运行资产负债表 · 原图 02_1_image312.png</span></figcaption></figure></li><li><p class="stepcap">10 代表本位币</p><figure class="shot"><a class="zoom" href="../assets/img/fi/t45/03_1_image313.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t45/03_1_image313.png" width="1147" height="687" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 23</span><span class="cap"></span><span class="src">教材《S4.docx》· FI 任务 45 运行资产负债表 · 原图 03_1_image313.png</span></figcaption></figure></li></ol></div>
+<div class="note warn"><span class="t">报表数字怎么读（教学重点）</span>① 画面里的 <code>223.680,00-</code> 后面那个减号 = 贷方余额（负债/权益侧）；② 资产负债表能出数的前提是：留存收益科目（任务 09，410901）与报表项目科目范围（任务 44）都配好；③ 资产 ≠ 负债 + 所有者权益 时，先查有没有未过账的预制凭证，再查报表项目范围漏了哪个科目。</div>
+<h2 id="checklist">期末清单（照着打勾）</h2>
+<ol class="steps"><li>① 凭证是否都过账（没有遗留的预制凭证）—— 用 <code>FBV0</code>/凭证清单检查（教材未演示）。</li><li>② 科目余额表（任务 42）与客户/供应商余额（任务 36/41）是否对得上。</li><li>③ GR/IR（材料采购 12010101）是否配平 —— MM 侧的收货与发票校验要配对（见 MM 站）。</li><li>④ 开票/收入科目是否都由系统自动过账（任务 43 的「只能自动记帐」）。</li><li>⑤ 关账：任务 18 前台把已结账期间关掉，防止事后修改。</li><li>⑥ 出报表：任务 44 的报表结构 + 任务 45 运行资产负债表/损益表。</li><li>⑦ （教材未演示、项目必用）自动清账 <code>F.13</code>、自动付款 <code>F110</code>、凭证归档与报表导出。</li></ol>
+<h2 id="errors">常见错误与排查</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>症状</th><th>原因</th><th>处理</th></tr></thead><tbody><tr><td>前台期间设置里看不到 P999 变式</td><td>变式没分配给公司代码</td><td>先做任务 17（过账期间-将变式分配给公司代码）</td></tr><tr><td>期末过账报「期间 xx 已关闭」</td><td>任务 18 的期间开关把该期间关了</td><td>按需打开该期间；确认不是记错日期导致落到已关期间</td></tr><tr><td>科目余额表里某个科目为 0/查不到</td><td>该科目期间内没有凭证；或被限定在科目区间外</td><td>放宽科目区间与期间（1–16），勾「包含未清/结账分录」</td></tr><tr><td>资产负债表出不来数（全 0）</td><td>报表结构（任务 44）还没建项目，或科目范围没填</td><td>按任务 44 建报表项目并绑科目范围（如 A999 0010010101–0010019999）</td></tr><tr><td>资产 ≠ 负债 + 所有者权益</td><td>留存收益科目（410901）没配；或「净值结果：利润/亏损」没调整到 3142 下</td><td>回到任务 09 与任务 44 检查</td></tr><tr><td>收入科目手工记不进去</td><td>任务 43 设置了「只能自动记帐」</td><td>预期行为；改为让 SD 开票自动生成收入凭证</td></tr><tr><td>报表版本选错</td><td>系统里存在多个报表版本（教材画面里显示的是「颐宁公司财务报表版本」）</td><td>运行时按版本名/编号核对（教材画面里 10 = 本位币，别把货币类型当版本号）</td></tr></tbody></table></div>
+<p class="muted">上下游关系：期间与报表结构来自后台配置（<a href="config.html">配置篇</a> D 组任务 15–19 与 J 组任务 42–45），余额对不对则取决于总账（<a href="gl.html">总账篇</a>）与应收应付（<a href="arap.html">应收应付篇</a>）的日常动作。</p>
+</article>
+</main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <h5>SAP FI 培训课程</h5>
+        <p>财务会计：总账 · 应收 · 应付 · 报表</p>
+        <p>课程总览：<a href="../index.html">SAP 模块培训课程（MM · PP · FI · CO）</a></p>
+      </div>
+      <div>
+        <h5>课程板块</h5>
+        <p><a href="concept.html">概念</a> · <a href="org.html">组织</a> ·
+        <a href="master.html">主数据</a> · <a href="flow.html">流程</a> ·
+        <a href="gl.html">总账</a> · <a href="config.html">配置</a></p>
+      </div>
+      <div>
+        <h5>课堂配套</h5>
+        <p><a href="practice.html">实训任务</a> · <a href="instructor.html">讲师版</a> ·
+        <a href="worksheet.html">学员版</a> · <a href="quiz.html">自测</a> ·
+        <a href="glossary.html">术语表</a></p>
+      </div>
+      <div>
+        <h5>看图说话</h5>
+        <p>截图取自教材《S4.docx》的真实 SAP GUI 画面（中文界面，保留原文件名可回查）；
+        流程图、结构图、思维导图为本站自绘 SVG。标准值随版本/行业方案而异，
+        页面标注的「在自系统里怎么确认」请在自己的系统里核对。</p>
+        <p>其他模块：<a href="../mm/index.html">MM 物料管理</a> · <a href="../pp/index.html">PP 生产计划</a> · <a href="../co/index.html">CO 管理会计</a> · </p>
+      </div>
+    </div>
+    <p class="copy">© <span data-year>2026</span> SAP FI 培训课程 · 静态站点，可离线使用</p>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/mod.js"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>流程③ 发票校验 · SAP MM 培训课程</title>
+<meta name="description" content="SAP MM（物料管理）培训课程：概念与定位 → 组织结构（工厂/库存地点/采购组织/采购组）→ 主数据（物料/供应商/采购信息记录）→ 端到端采购流程（请购·采购订单·收货·发票校验·付款）→ 分步操作手顺 → SPRO 配置（42 个任务）→ 实训与自测。截图取自教材《S4.docx》的真实 SAP GUI 画面。">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mod.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">MM</span><span class="txt">培训课程</span></a>
+    <nav class="main">
+      <a href="index.html" title="课程地图与学习路线">首页</a>
+      <a href="concept.html" title="MM 是什么、三大职能、五类凭证">概念</a>
+      <a href="org.html" title="企业结构 / 采购结构 / 计划与评估结构">组织</a>
+      <a href="master.html" title="物料 / 供应商 / 采购信息记录">主数据</a>
+      <a href="flow.html" title="端到端采购流程与单据流">流程</a>
+      <a href="purchase.html" title="请购 · 采购订单 · 货源与信息记录">采购</a>
+      <a href="inventory.html" title="收货 · 发货 · 转储 · 移动类型与库存总览">库存</a>
+      <a class="active" href="invoice.html" title="MIRO · 差异与容差 · 冻结发票下达 · 三单匹配">发票校验</a>
+      <a href="config.html" title="SPRO 配置路线（42 个任务）">配置</a>
+      <a href="practice.html" title="动手任务与完成基准">实训</a>
+      <a href="instructor.html" title="课时 / 板书 / 必问 / 评分">讲师</a>
+      <a href="worksheet.html" title="记入表（可打印）">学员</a>
+      <a href="quiz.html" title="30 题自评（合格 75%）">自测</a>
+      <a href="glossary.html" title="中英对照 / T-code / 常用表">术语</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page">
+<article>
+<p class="breadcrumb"><a href="index.html">课程地图</a> / <span>流程③ 发票校验</span></p>
+<div class="filterbar modsw"><a class="chip on" href="../mm/index.html" title="SAP MM 培训课程">MM 物料管理</a><a class="chip" href="../pp/index.html" title="SAP PP 培训课程">PP 生产计划</a><a class="chip" href="../fi/index.html" title="SAP FI 培训课程">FI 财务会计</a><a class="chip" href="../co/index.html" title="SAP CO 培训课程">CO 管理会计</a><a class="chip" href="../index.html" title="四个模块的总体视图与学习路线">总览</a></div>
+<h1>流程③ 发票校验</h1>
+<p class="kicker">MIRO 三单匹配 · 容差与冻结 · MRBR 下达 · MIR4 凭证 · 与 FI 的衔接</p>
+<p class="lead">发票校验（Logistics Invoice Verification, LIV）是 MM 的最后一环，也是「业务与财务的交汇点」：它拿供应商发票去和<b>采购订单</b>、<b>收货</b>做三单匹配，差一点就可能被冻结。教材 MM 任务 39–41 是这一篇的现场。</p>
+<div class="toc"><a href="#match">三单匹配</a><a href="#sec39">手顺① MIRO 输入发票</a><a href="#sec40">手顺② MRBR 下达冻结发票</a><a href="#sec41">手顺③ MIR4 看凭证</a><a href="#tol">差异与容差</a><a href="#fi">与 FI 的衔接</a><a href="#errors">常见错误</a></div>
+<h2 id="match">三单匹配（3-way match）</h2>
+<figure class="dia wide"><a class="zoom" href="../assets/diagrams/mm/threeway.svg"><img src="../assets/diagrams/mm/threeway.svg" alt="三单匹配：采购订单（价格/数量）↔ 收货（数量）↔ 发票（金额/税额）" loading="lazy"></a><figcaption><span class="n">自绘结构图</span><span class="cap">三单匹配：采购订单（价格/数量）↔ 收货（数量）↔ 发票（金额/税额）</span><span class="src">本站自绘 SVG</span></figcaption></figure>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>匹配对象</th><th>比什么</th><th>不一致会怎样</th></tr></thead><tbody><tr><td>发票 ↔ 采购订单</td><td>单价、价格单位、税码、付款条件</td><td>价格差异（容差码 PE/PS 等）；超容差 → 冻结</td></tr><tr><td>发票 ↔ 收货</td><td>数量（基于收货的发票校验）</td><td>数量差异；超容差 → 冻结或拒绝</td></tr><tr><td>发票 ↔ 采购订单的税额</td><td>税码与税额</td><td>税额差异（容差码 DQ/DW 等）</td></tr></tbody></table></div>
+<h2 id="sec39">手顺① MIRO 输入发票</h2>
+<div class="taskblk"><div class="steph" id="t39"><span class="no">任务 39</span><h3>输入采购发票</h3><span class="tc">MIRO</span></div><div class="note tip"><span class="t">教学要点</span>教材现场：先勾「计算税额」，再回车把「余额」处的金额拷到金额列，使其与订单/收货匹配（余额为 0 才算匹配上）；超容差时发票自动被冻结。</div><div class="pathline" data-copy="后勤 → 物料管理 → 后勤发票校验 → 凭证输入 → MIRO 输入发票"><b>IMG 路径（教材后台菜单）</b>后勤 → 物料管理 → 后勤发票校验 → 凭证输入 → MIRO 输入发票</div><ol class="tasksteps"><li><p class="stepcap">解释：供应商的采购发票随后送到前台<br>后勤－物料管理－后勤发票校验－凭证输入－MIRO 输入发票</p><div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/mm/t39/01_1_image762.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t39/01_1_image762.png" width="315" height="211" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 1</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 39 输入采购发票 · 原图 01_1_image762.png</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/fi/t20/02_1_image161.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/fi/t20/02_1_image161.png" width="228" height="194" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 2</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 20 将评估范围集合分组 · 原图 02_1_image161.png</span></figcaption></figure></div><div class="note tip"><span class="t">原书提示</span>在PO参考里面，按照下图输入采购订单，然后点击回车。</div></li><li><figure class="shot"><a class="zoom" href="../assets/img/mm/t39/02_1_image763.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t39/02_1_image763.png" width="882" height="691" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 3</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 39 输入采购发票 · 原图 02_1_image763.png</span></figcaption></figure></li><li><p class="stepcap">先选中计算税额，按回车键，将余额处的金额拷贝在金额处，点击回车</p><figure class="shot"><a class="zoom" href="../assets/img/mm/t39/03_1_image764.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t39/03_1_image764.png" width="985" height="759" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 4</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 39 输入采购发票 · 原图 03_1_image764.png</span></figcaption></figure></li><li><figure class="shot"><a class="zoom" href="../assets/img/mm/t39/04_1_image765.jpeg" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t39/04_1_image765.jpeg" width="1149" height="941" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 5</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 39 输入采购发票 · 原图 04_1_image765.jpeg</span></figcaption></figure><div class="note tip"><span class="t">原书提示</span>点击保存，如果出现超过容差的情况，发票会冻结</div></li></ol></div>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>字段</th><th>含义</th><th>教材/标准做法</th></tr></thead><tbody><tr><td>业务处理</td><td>发票 / 贷项凭证 / 后续借项</td><td>发票</td></tr><tr><td>采购订单参考</td><td>以哪个订单为基准</td><td>输入采购订单号后回车带出行</td></tr><tr><td>参考（发票号/日期）</td><td>供应商发票号与日期</td><td>供应商发票上的号码（用于重复性检查）</td></tr><tr><td>金额</td><td>发票金额（含税）</td><td>0 差异即匹配；有余额说明数量/价格不一致</td></tr><tr><td>计算税额</td><td>是否由系统算税</td><td>勾上（教材画面）</td></tr><tr><td>收货行 / 选择</td><td>是否按收货行匹配</td><td>GR-based IV 的订单必须先收货</td></tr></tbody></table></div>
+<h2 id="sec40">手顺② MRBR 下达冻结发票</h2>
+<div class="taskblk"><div class="steph" id="t40"><span class="no">任务 40</span><h3>下达冻结发票</h3><span class="tc">MRBR</span></div><div class="note tip"><span class="t">教学要点</span>被冻结的发票要由管理人员检查后手工下达：MRBR 里选中前面「小绿旗」释放；下达后才允许进入付款流程。</div><div class="pathline" data-copy="后勤 → 物料管理 → 后勤发票校验 → 进一步处理 → MRBR 下达冻结发票"><b>IMG 路径（教材后台菜单）</b>后勤 → 物料管理 → 后勤发票校验 → 进一步处理 → MRBR 下达冻结发票</div><ol class="tasksteps"><li><p class="stepcap">后勤－物料管理－后勤发票校验－进一步处理－MRBR 下达冻结发票</p><figure class="shot"><a class="zoom" href="../assets/img/mm/t40/01_1_image766.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t40/01_1_image766.png" width="405" height="548" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 6</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 40 下达冻结发票 · 原图 01_1_image766.png</span></figcaption></figure></li><li><div class="shot-grid"><figure class="shot"><a class="zoom" href="../assets/img/mm/t40/02_1_image767.jpeg" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t40/02_1_image767.jpeg" width="754" height="789" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 7</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 40 下达冻结发票 · 原图 02_1_image767.jpeg</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t40/03_1_image768.jpeg" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t40/03_1_image768.jpeg" width="1848" height="301" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 8</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 40 下达冻结发票 · 原图 03_1_image768.jpeg</span></figcaption></figure><figure class="shot"><a class="zoom" href="../assets/img/mm/t40/04_1_image769.jpeg" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t40/04_1_image769.jpeg" width="1892" height="280" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 9</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 40 下达冻结发票 · 原图 04_1_image769.jpeg</span></figcaption></figure></div><div class="note tip"><span class="t">原书提示</span>选中后点击小绿旗，然后保存</div><div class="note tip"><span class="t">原书提示</span>这样发票就被下达了。</div></li></ol></div>
+<div class="note warn"><span class="t">冻结不是错误，是控制</span>教材任务 32 配置了 <b>14 个容差码</b>（AN、AP、BD、BR、BW、DQ、DW、KW、PP、PS、ST、VP 等），每个码对应一类检查（价格、数量、税额、小差异、日期…）。被冻结说明触发了其中一条 —— 教学上要让学生说出「触发了哪一条、为什么」，而不是只会点下达。</div>
+<h2 id="sec41">手顺③ MIR4 显示发票与会计凭证</h2>
+<div class="taskblk"><div class="steph" id="t41"><span class="no">任务 41</span><h3>显示发票和会计凭证</h3></div><div class="note tip"><span class="t">教学要点</span>MIR4 显示发票凭证本体；点「后续凭证」看它生成的会计凭证概览，这是「MM 动作 → FI 凭证」最直观的证据。</div><div class="pathline" data-copy="后勤 → 物料管理 → 后勤发票校验 → 进一步处理 → MIR4 显示发票凭证"><b>IMG 路径（教材后台菜单）</b>后勤 → 物料管理 → 后勤发票校验 → 进一步处理 → MIR4 显示发票凭证</div><ol class="tasksteps"><li><p class="stepcap">解释：发票校验也会自动生成会计凭证，本步骤进一步展示前面输入的发票及产生的凭证前台<br>后勤－物料管理－后勤发票校验－进一步处理－MIR4 显示发票凭证</p><figure class="shot"><a class="zoom" href="../assets/img/mm/t41/01_1_image770.jpeg" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t41/01_1_image770.jpeg" width="472" height="422" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 10</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 41 显示发票和会计凭证 · 原图 01_1_image770.jpeg</span></figcaption></figure></li><li><figure class="shot"><a class="zoom" href="../assets/img/mm/t41/02_1_image771.png" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t41/02_1_image771.png" width="453" height="170" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 11</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 41 显示发票和会计凭证 · 原图 02_1_image771.png</span></figcaption></figure></li><li><p class="stepcap">选择显示凭证</p><figure class="shot"><a class="zoom" href="../assets/img/mm/t41/03_1_image772.jpeg" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t41/03_1_image772.jpeg" width="1084" height="787" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 12</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 41 显示发票和会计凭证 · 原图 03_1_image772.jpeg</span></figcaption></figure><div class="note tip"><span class="t">原书提示</span>点击后续凭证，出现会计凭证概览</div></li><li><figure class="shot"><a class="zoom" href="../assets/img/mm/t41/04_1_image773.jpeg" title="点击放大（1×~4×，ESC 关闭）"><img src="../assets/img/mm/t41/04_1_image773.jpeg" width="926" height="594" alt="SAP GUI 实机截图" loading="lazy"></a><figcaption><span class="n">画面 13</span><span class="cap"></span><span class="src">教材《S4.docx》· MM 任务 41 显示发票和会计凭证 · 原图 04_1_image773.jpeg</span></figcaption></figure></li></ol></div>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>想看的</th><th>T-code</th><th>说明</th></tr></thead><tbody><tr><td>发票凭证（单张）</td><td><code>MIR4</code></td><td>显示模式；<code>MIR6</code> 可改</td></tr><tr><td>发票折让/冲销</td><td><code>MR8M</code></td><td>取消发票（会产生反向凭证）</td></tr><tr><td>付款申请/催款建议</td><td><code>MRBR</code> 下达后进 FI，<code>F110</code> 自动付款提议</td><td>见 FI 站的应付流程</td></tr><tr><td>GR/IR 未清项</td><td><code>MB5S</code> / <code>MR11</code></td><td>看收货与发票是否配平；MR11 清理小额差异</td></tr></tbody></table></div>
+<h2 id="tol">差异与容差（教学重点）</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>差异类型</th><th>典型容差码</th><th>教材配置任务</th><th>后果</th></tr></thead><tbody><tr><td>采购订单 ↔ 发票金额（价格差异）</td><td>PE、PS</td><td>任务 30（复制模板公司 0001 的 PE/SE）</td><td>超限 → 冻结，需审批下达</td></tr><tr><td>收货数量 ↔ 定价数量（收货容差）</td><td>B1、B2</td><td>任务 31（B1 报错 / B2 警告）</td><td>B1 直接拒绝，B2 只警告</td></tr><tr><td>发票各类差异</td><td>AN、AP、BD、BR、BW、DQ、DW、KW、PP、PS、ST、VP 等 14 个</td><td>任务 32（从 0110 公司复制）</td><td>按容差码性质报错或冻结</td></tr><tr><td>项目金额检查</td><td>（项目金额检查开关）</td><td>任务 33（把公司加进检查清单）</td><td>超项目金额上限的行被检查/冻结</td></tr><tr><td>采购价格差异（记入科目）</td><td>PRD → 54010301 主营业务成本-采购价差</td><td>任务 28（OBYC）</td><td>标准价物料的价格差异进差异科目</td></tr></tbody></table></div>
+<div class="note tip"><span class="t">容差的读法</span>容差有<b>上/下限</b>，且<b>绝对额与百分比只要一个超出</b>就算超容差 —— 这是教材任务 30 的原话。所以「差 200 元但只差 0.1%」也可能被拦。</div>
+<h2 id="fi">与 FI 的衔接</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>MM 动作</th><th>FI 凭证</th><th>科目（教材值）</th></tr></thead><tbody><tr><td>收货 101</td><td>借：存货 / 贷：GR/IR</td><td>12430101 / 12010101</td></tr><tr><td>发票校验</td><td>借：GR/IR / 贷：应付账款（+ 进项税）</td><td>12010101 / 应付 / 增值税</td></tr><tr><td>付款（F-53/F110）</td><td>借：应付账款 / 贷：银行存款</td><td>应付 / 银行</td></tr><tr><td>采购价差</td><td>借/贷：采购价差科目</td><td>54010301（PRD）</td></tr></tbody></table></div>
+<ol class="oplist" start="1"><li class="">发票校验产生的凭证在 FI 里就是普通的会计凭证（<code>FB03</code> 可查，类型通常是 KR/RE）。</li><li class="">GR/IR 是「暂估」科目：只要收货与发票数量金额不一致，它就有余额 —— 月末要跑 <code>MR11</code> 或对账（<code>MB5S</code>）看它是否配平。</li><li class="">付款在 FI（教材 FI 的 FB60/F-53 部分），也可以在 MM 侧发起（<code>MRBR</code> 下达后进 F110）。</li></ol>
+<h2 id="errors">常见错误与排查</h2>
+<div class="tblwrap"><table class="tbl idx"><thead><tr><th>症状</th><th>原因</th><th>处理</th></tr></thead><tbody><tr><td>MIRO 报「找不到要校验的采购订单」</td><td>订单未收货 / 已交货完成 / 工厂不符</td><td>先收货；或检查订单 WEPOS 与 ELIKZ 状态</td></tr><tr><td>发票保存后自动冻结</td><td>触发容差码</td><td>MRBR 看冻结原因 → 与供应商核对 → 下达或改发票</td></tr><tr><td>重复发票无法输入</td><td>参考字段（供应商发票号+日期）重复检查</td><td>核对是否真重复；确需输入要调整参考号</td></tr><tr><td>GR/IR 挂账不平</td><td>收货与发票数量/金额不一致（或漏开票）</td><td><code>MB5S</code>/<code>MR11</code> 分析；能补开票就补，小额差异可 MR11 清理</td></tr></tbody></table></div>
+</article>
+</main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <h5>SAP MM 培训课程</h5>
+        <p>物料管理：采购 · 库存 · 发票校验</p>
+        <p>课程总览：<a href="../index.html">SAP 模块培训课程（MM · PP · FI · CO）</a></p>
+      </div>
+      <div>
+        <h5>课程板块</h5>
+        <p><a href="concept.html">概念</a> · <a href="org.html">组织</a> ·
+        <a href="master.html">主数据</a> · <a href="flow.html">流程</a> ·
+        <a href="purchase.html">采购</a> · <a href="config.html">配置</a></p>
+      </div>
+      <div>
+        <h5>课堂配套</h5>
+        <p><a href="practice.html">实训任务</a> · <a href="instructor.html">讲师版</a> ·
+        <a href="worksheet.html">学员版</a> · <a href="quiz.html">自测</a> ·
+        <a href="glossary.html">术语表</a></p>
+      </div>
+      <div>
+        <h5>看图说话</h5>
+        <p>截图取自教材《S4.docx》的真实 SAP GUI 画面（中文界面，保留原文件名可回查）；
+        流程图、结构图、思维导图为本站自绘 SVG。标准值随版本/行业方案而异，
+        页面标注的「在自系统里怎么确认」请在自己的系统里核对。</p>
+        <p>其他模块：<a href="../pp/index.html">PP 生产计划</a> · <a href="../fi/index.html">FI 财务会计</a> · <a href="../co/index.html">CO 管理会计</a> · </p>
+      </div>
+    </div>
+    <p class="copy">© <span data-year>2026</span> SAP MM 培训课程 · 静态站点，可离线使用</p>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/mod.js"></script>
+</body>
+</html>

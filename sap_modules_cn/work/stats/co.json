@@ -1,0 +1,31 @@
+{
+ "code": "co",
+ "pages": 14,
+ "tasks": 34,
+ "steps": 126,
+ "tcodes": 13,
+ "config_groups": 9,
+ "diagrams": 8,
+ "shots": 288,
+ "uniqueshots": 181,
+ "quiz": 30,
+ "diagrams_used": 9,
+ "shots_total": 288,
+ "html_bytes": 305731,
+ "files": [
+  "cca.html",
+  "concept.html",
+  "config.html",
+  "flow.html",
+  "glossary.html",
+  "index.html",
+  "instructor.html",
+  "io.html",
+  "master.html",
+  "org.html",
+  "pc.html",
+  "practice.html",
+  "quiz.html",
+  "worksheet.html"
+ ]
+}

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 780" width="1280" height="780" role="img" aria-label="PP 与 MM / CO / SD / FI 的交接" font-family="'PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<title>PP 与 MM / CO / SD / FI 的交接</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0a6ed1"/></marker><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#007272"/></marker><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffffff"/></marker><marker id="arback" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M10,0 L0,5 L10,10 z" fill="#b3261e"/></marker></defs>
+<rect width="1280" height="780" fill="#ffffff"/>
+<text x="40.0" y="46.0" font-size="22" fill="#1d2d3e" text-anchor="start" font-weight="700">PP 与 MM / CO / SD / FI 的交接</text>
+<text x="40.0" y="72.0" font-size="12.5" fill="#6b7a8d" text-anchor="start" font-weight="400">双向箭头：箭头指向谁 = 谁拿到东西；标签写清「它给 PP 什么 / PP 给它什么」</text>
+<line x1="794.0" y1="400.0" x2="869.0" y2="400.0" stroke="#177245" stroke-width="1.8" marker-end="url(#ar)" marker-start="url(#arback)"/>
+<rect x="865.0" y="340.0" width="330.0" height="120.0" rx="9" fill="#e6f2ec" stroke="#177245" stroke-width="1.4"/>
+<text x="877.0" y="364.0" font-size="14" fill="#177245" text-anchor="start" font-weight="700">CO 管理会计</text>
+<text x="877.0" y="384.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">它给我们：作业类型与作业价格</text>
+<text x="877.0" y="400.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">KP26、成本中心、结算规则、差异科目</text>
+<text x="877.0" y="416.0" font-size="11.5" fill="#6b7a8d" text-anchor="start" font-weight="400">我们给它：报工工时、订单实际成本与差异、KKBC_ORD</text>
+<text x="877.0" y="432.0" font-size="11.5" fill="#6b7a8d" text-anchor="start" font-weight="400">成本报表</text>
+<line x1="486.0" y1="400.0" x2="525.2" y2="612.1" stroke="#007272" stroke-width="1.8" marker-end="url(#ar)" marker-start="url(#arback)"/>
+<rect x="199.2" y="552.1" width="330.0" height="120.0" rx="9" fill="#e6f2f2" stroke="#007272" stroke-width="1.4"/>
+<text x="211.2" y="576.1" font-size="14" fill="#007272" text-anchor="start" font-weight="700">MM 物料管理</text>
+<text x="211.2" y="596.1" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">它给我们：物料主数据与评估、采购与收货、库存与移动类</text>
+<text x="211.2" y="612.1" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">型</text>
+<text x="211.2" y="628.1" font-size="11.5" fill="#6b7a8d" text-anchor="start" font-weight="400">我们给它：MRP 产生的采购申请、原材料的非独立需求</text>
+<line x1="794.0" y1="400.0" x2="754.8" y2="612.1" stroke="#0a6ed1" stroke-width="1.8" marker-end="url(#ar)" marker-start="url(#arback)"/>
+<rect x="750.8" y="552.1" width="330.0" height="120.0" rx="9" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.4"/>
+<text x="762.8" y="576.1" font-size="14" fill="#0a6ed1" text-anchor="start" font-weight="700">SD 销售与分销</text>
+<text x="762.8" y="596.1" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">它给我们：销售订单需求（消耗独立需求，计划策略</text>
+<text x="762.8" y="612.1" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">40）、交货需求</text>
+<text x="762.8" y="628.1" font-size="11.5" fill="#6b7a8d" text-anchor="start" font-weight="400">我们给它：可用库存与 ATP 可承诺量</text>
+<line x1="486.0" y1="400.0" x2="411.0" y2="400.0" stroke="#8d6e00" stroke-width="1.8" marker-end="url(#ar)" marker-start="url(#arback)"/>
+<rect x="85.0" y="340.0" width="330.0" height="120.0" rx="9" fill="#fdf3d7" stroke="#8d6e00" stroke-width="1.4"/>
+<text x="97.0" y="364.0" font-size="14" fill="#8d6e00" text-anchor="start" font-weight="700">FI 财务会计</text>
+<text x="97.0" y="384.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">它给我们：总账科目、自动记账规则 OBYC、会计期间</text>
+<text x="97.0" y="400.0" font-size="11.5" fill="#6b7a8d" text-anchor="start" font-weight="400">我们给它：发料、收货与结算牵动的会计凭证</text>
+<rect x="490.0" y="325.0" width="300.0" height="150.0" rx="14" fill="#0854a0" stroke="#0854a0" stroke-width="1.4"/>
+<text x="640.0" y="382.0" font-size="26" fill="#ffffff" text-anchor="middle" font-weight="700">SAP PP</text>
+<text x="640.0" y="410.0" font-size="15" fill="#dbeafd" text-anchor="middle" font-weight="400">生产计划</text>
+<text x="640.0" y="436.0" font-size="12" fill="#a9cdf3" text-anchor="middle" font-weight="400" font-family="'SF Mono',Menlo,Consolas,monospace">Production Planning</text>
+<rect x="40.0" y="730.0" width="1200.0" height="34.5" rx="8" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="52.0" y="752.0" font-size="12.5" fill="#0854a0" text-anchor="start" font-weight="400">记住一句话：PP 动的是「计划与工序」，但发料 261、收货 101 与结算都会在 FI 留下会计凭证，并把实际成本交给 CO —— 所以 PP 的主数据（BOM、工艺路线、作业价格）错，成本和差异都会错。</text>
+</svg>

@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 384" width="1400" height="384" role="img" aria-label="CO 月结泳道图：从费用归集到报表确认" font-family="'PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<title>CO 月结泳道图：从费用归集到报表确认</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0a6ed1"/></marker><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#007272"/></marker><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffffff"/></marker><marker id="arback" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M10,0 L0,5 L10,10 z" fill="#b3261e"/></marker></defs>
+<rect width="1400" height="384" fill="#ffffff"/>
+<text x="40.0" y="46.0" font-size="22" fill="#1d2d3e" text-anchor="start" font-weight="700">CO 月结泳道图：从费用归集到报表确认</text>
+<text x="40.0" y="72.0" font-size="12.5" fill="#6b7a8d" text-anchor="start" font-weight="400">教材任务 14–34 覆盖了全部环节；顺序错了不会报错，但报表会「看起来对、其实不对」</text>
+<rect x="40.0" y="106.0" width="1320.0" height="46.0" rx="8" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="52.0" y="134.0" font-size="13" fill="#0854a0" text-anchor="start" font-weight="700">步骤 / 角色</text>
+<text x="263.1" y="127.0" font-size="12.5" fill="#1d2d3e" text-anchor="middle" font-weight="700">① 费用归集</text>
+<text x="263.1" y="144.0" font-size="11" fill="#6b7a8d" text-anchor="middle" font-weight="400">FB60 / FB50</text>
+<text x="409.4" y="127.0" font-size="12.5" fill="#1d2d3e" text-anchor="middle" font-weight="700">② 报表检查</text>
+<text x="409.4" y="144.0" font-size="11" fill="#6b7a8d" text-anchor="middle" font-weight="400">任务 16</text>
+<text x="555.6" y="127.0" font-size="12.5" fill="#1d2d3e" text-anchor="middle" font-weight="700">③ 重过账</text>
+<text x="555.6" y="144.0" font-size="11" fill="#6b7a8d" text-anchor="middle" font-weight="400">KB61</text>
+<text x="701.9" y="127.0" font-size="12.5" fill="#1d2d3e" text-anchor="middle" font-weight="700">④ 统计指标</text>
+<text x="701.9" y="144.0" font-size="11" fill="#6b7a8d" text-anchor="middle" font-weight="400">KB31N</text>
+<text x="848.1" y="127.0" font-size="12.5" fill="#1d2d3e" text-anchor="middle" font-weight="700">⑤ 分配</text>
+<text x="848.1" y="144.0" font-size="11" fill="#6b7a8d" text-anchor="middle" font-weight="400">KSV5</text>
+<text x="994.4" y="127.0" font-size="12.5" fill="#1d2d3e" text-anchor="middle" font-weight="700">⑥ 分摊</text>
+<text x="994.4" y="144.0" font-size="11" fill="#6b7a8d" text-anchor="middle" font-weight="400">KSU5</text>
+<text x="1140.6" y="127.0" font-size="12.5" fill="#1d2d3e" text-anchor="middle" font-weight="700">⑦ 结算</text>
+<text x="1140.6" y="144.0" font-size="11" fill="#6b7a8d" text-anchor="middle" font-weight="400">KO88</text>
+<text x="1286.9" y="127.0" font-size="12.5" fill="#1d2d3e" text-anchor="middle" font-weight="700">⑧ 报表确认</text>
+<text x="1286.9" y="144.0" font-size="11" fill="#6b7a8d" text-anchor="middle" font-weight="400">任务 22/26/34</text>
+<rect x="40.0" y="152.0" width="1320.0" height="54.0" rx="6" fill="#ffffff" stroke="#0a6ed1" stroke-width="1.1"/>
+<rect x="40.0" y="152.0" width="150.0" height="54.0" rx="6" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.1"/>
+<text x="52.0" y="176.0" font-size="13" fill="#0a6ed1" text-anchor="start" font-weight="700">财务 / 会计</text>
+<text x="200.0" y="174.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">FB60 房租 90000 /</text>
+<text x="200.0" y="190.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">FB50 电费 25500</text>
+<line x1="336.2" y1="152.0" x2="336.2" y2="206.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="346.2" y="174.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">看实际成本与部门归口</text>
+<line x1="482.5" y1="152.0" x2="482.5" y2="206.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="492.5" y="174.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">确认该改指的成本中心</text>
+<line x1="628.8" y1="152.0" x2="628.8" y2="206.0" stroke="#d9e1e8" stroke-width="1"/>
+<line x1="775.0" y1="152.0" x2="775.0" y2="206.0" stroke="#d9e1e8" stroke-width="1"/>
+<line x1="921.2" y1="152.0" x2="921.2" y2="206.0" stroke="#d9e1e8" stroke-width="1"/>
+<line x1="1067.5" y1="152.0" x2="1067.5" y2="206.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="1077.5" y="174.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">FB50 把费用记到订单</text>
+<text x="1077.5" y="190.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">500000</text>
+<line x1="1213.8" y1="152.0" x2="1213.8" y2="206.0" stroke="#d9e1e8" stroke-width="1"/>
+<rect x="40.0" y="206.0" width="1320.0" height="54.0" rx="6" fill="#ffffff" stroke="#007272" stroke-width="1.1"/>
+<rect x="40.0" y="206.0" width="150.0" height="54.0" rx="6" fill="#e6f2f2" stroke="#007272" stroke-width="1.1"/>
+<text x="52.0" y="230.0" font-size="13" fill="#007272" text-anchor="start" font-weight="700">成本会计</text>
+<text x="200.0" y="228.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">核对费用科目是不是初</text>
+<text x="200.0" y="244.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">级成本要素</text>
+<line x1="336.2" y1="206.0" x2="336.2" y2="260.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="346.2" y="228.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">确认 C999 / 2021 /</text>
+<text x="346.2" y="244.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">期间 1–12</text>
+<line x1="482.5" y1="206.0" x2="482.5" y2="260.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="492.5" y="228.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">KB61 把 90000 从 2001</text>
+<text x="492.5" y="244.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400"> 改到 2006</text>
+<line x1="628.8" y1="206.0" x2="628.8" y2="260.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="638.8" y="228.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">KK01 建指标 / KB31N</text>
+<text x="638.8" y="244.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">录面积</text>
+<line x1="775.0" y1="206.0" x2="775.0" y2="260.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="785.0" y="228.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">定义 DRENT 后执行分配</text>
+<line x1="921.2" y1="206.0" x2="921.2" y2="260.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="931.2" y="228.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">定义 AUTILI 后执行分摊</text>
+<line x1="1067.5" y1="206.0" x2="1067.5" y2="260.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="1077.5" y="228.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">KO88 结算到各成本中心</text>
+<line x1="1213.8" y1="206.0" x2="1213.8" y2="260.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="1223.8" y="228.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">确认发送方清零、接收</text>
+<text x="1223.8" y="244.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">方有数</text>
+<rect x="40.0" y="260.0" width="1320.0" height="40.0" rx="6" fill="#ffffff" stroke="#177245" stroke-width="1.1"/>
+<rect x="40.0" y="260.0" width="150.0" height="40.0" rx="6" fill="#e6f2ec" stroke="#177245" stroke-width="1.1"/>
+<text x="52.0" y="284.0" font-size="13" fill="#177245" text-anchor="start" font-weight="700">业务部门</text>
+<text x="200.0" y="282.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">提供发票与费用归口</text>
+<line x1="336.2" y1="260.0" x2="336.2" y2="300.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="346.2" y="282.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">确认部门费用是否合理</text>
+<line x1="482.5" y1="260.0" x2="482.5" y2="300.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="492.5" y="282.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">确认成本中心归属</text>
+<line x1="628.8" y1="260.0" x2="628.8" y2="300.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="638.8" y="282.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">提供面积等基数</text>
+<line x1="775.0" y1="260.0" x2="775.0" y2="300.0" stroke="#d9e1e8" stroke-width="1"/>
+<line x1="921.2" y1="260.0" x2="921.2" y2="300.0" stroke="#d9e1e8" stroke-width="1"/>
+<line x1="1067.5" y1="260.0" x2="1067.5" y2="300.0" stroke="#d9e1e8" stroke-width="1"/>
+<line x1="1213.8" y1="260.0" x2="1213.8" y2="300.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="1223.8" y="282.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">确认收到的分摊成本</text>
+<rect x="40.0" y="300.0" width="1320.0" height="70.0" rx="6" fill="#ffffff" stroke="#b3261e" stroke-width="1.1"/>
+<rect x="40.0" y="300.0" width="150.0" height="70.0" rx="6" fill="#fdeae9" stroke="#b3261e" stroke-width="1.1"/>
+<text x="52.0" y="324.0" font-size="13" fill="#b3261e" text-anchor="start" font-weight="700">系统（凭证）</text>
+<text x="200.0" y="322.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">FI 会计凭证（唯一动 FI</text>
+<text x="200.0" y="338.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">的一步）</text>
+<line x1="336.2" y1="300.0" x2="336.2" y2="370.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="346.2" y="322.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">报表数据</text>
+<line x1="482.5" y1="300.0" x2="482.5" y2="370.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="492.5" y="322.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">CO</text>
+<text x="492.5" y="338.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">凭证（初级要素，不动</text>
+<text x="492.5" y="354.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">FI）</text>
+<line x1="628.8" y1="300.0" x2="628.8" y2="370.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="638.8" y="322.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">统计指标凭证</text>
+<line x1="775.0" y1="300.0" x2="775.0" y2="370.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="785.0" y="322.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">CO</text>
+<text x="785.0" y="338.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">凭证（初级成本要素）</text>
+<line x1="921.2" y1="300.0" x2="921.2" y2="370.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="931.2" y="322.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">CO 凭证（次级要素</text>
+<text x="931.2" y="338.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">802010）</text>
+<line x1="1067.5" y1="300.0" x2="1067.5" y2="370.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="1077.5" y="322.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">结算凭证（803010）</text>
+<line x1="1213.8" y1="300.0" x2="1213.8" y2="370.0" stroke="#d9e1e8" stroke-width="1"/>
+<text x="1223.8" y="322.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">报表数据</text>
+</svg>

@@ -1,0 +1,29 @@
+{
+ "modules": {
+  "mm": {
+   "tasks": 42,
+   "steps": 168,
+   "images_on_disk": 225
+  },
+  "pp": {
+   "tasks": 51,
+   "steps": 220,
+   "images_on_disk": 271
+  },
+  "fi": {
+   "tasks": 45,
+   "steps": 181,
+   "images_on_disk": 263
+  },
+  "co": {
+   "tasks": 34,
+   "steps": 126,
+   "images_on_disk": 181
+  }
+ },
+ "images_total": 940,
+ "referenced_by_book": 940,
+ "referenced_missing_on_disk": [],
+ "referenced_missing_count": 0,
+ "unreadable": []
+}

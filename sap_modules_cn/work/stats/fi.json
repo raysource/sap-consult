@@ -1,0 +1,31 @@
+{
+ "code": "fi",
+ "pages": 14,
+ "tasks": 45,
+ "steps": 181,
+ "tcodes": 10,
+ "config_groups": 10,
+ "diagrams": 8,
+ "shots": 391,
+ "uniqueshots": 263,
+ "quiz": 30,
+ "diagrams_used": 10,
+ "shots_total": 391,
+ "html_bytes": 348248,
+ "files": [
+  "arap.html",
+  "close.html",
+  "concept.html",
+  "config.html",
+  "flow.html",
+  "gl.html",
+  "glossary.html",
+  "index.html",
+  "instructor.html",
+  "master.html",
+  "org.html",
+  "practice.html",
+  "quiz.html",
+  "worksheet.html"
+ ]
+}

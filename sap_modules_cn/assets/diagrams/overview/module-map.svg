@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 688" width="1400" height="688" role="img" aria-label="四个模块：输入 → 处理 → 输出" font-family="'PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<title>四个模块：输入 → 处理 → 输出</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0a6ed1"/></marker><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#007272"/></marker><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffffff"/></marker><marker id="arback" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M10,0 L0,5 L10,10 z" fill="#b3261e"/></marker></defs>
+<rect width="1400" height="688" fill="#ffffff"/>
+<text x="40.0" y="46.0" font-size="22" fill="#1d2d3e" text-anchor="start" font-weight="700">四个模块：输入 → 处理 → 输出</text>
+<text x="40.0" y="72.0" font-size="12.5" fill="#6b7a8d" text-anchor="start" font-weight="400">每个模块都按同一套教学结构展开：概念 → 组织 → 主数据 → 流程 → 操作手顺 → 配置 → 实训</text>
+<rect x="40.0" y="106.0" width="1320.0" height="128.0" rx="9" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.4"/>
+<rect x="40.0" y="106.0" width="4.5" height="128.0" rx="2" fill="#0a6ed1" stroke="#0a6ed1" stroke-width="1.4"/>
+<text x="58.0" y="134.0" font-size="15.5" fill="#0a6ed1" text-anchor="start" font-weight="700">MM 物料管理（42 个教材任务）</text>
+<rect x="58.0" y="158.0" width="85.5" height="34.0" rx="8" fill="#ffffff" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="69.0" y="173.5" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">请购 ME51N</text>
+<path d="M 144 169 h 12" fill="none" stroke="#0a6ed1" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="159.5" y="158.0" width="85.5" height="34.0" rx="8" fill="#ffffff" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="170.5" y="173.5" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">订单 ME21N</text>
+<path d="M 246 169 h 12" fill="none" stroke="#0a6ed1" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="261.0" y="158.0" width="99.5" height="34.0" rx="8" fill="#ffffff" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="272.0" y="173.5" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">收货 MIGO 101</text>
+<path d="M 361 169 h 12" fill="none" stroke="#0a6ed1" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="376.4" y="158.0" width="98.9" height="34.0" rx="8" fill="#ffffff" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="387.4" y="173.5" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">发票校验 MIRO</text>
+<path d="M 476 169 h 12" fill="none" stroke="#0a6ed1" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="491.3" y="158.0" width="82.6" height="34.0" rx="8" fill="#ffffff" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="502.3" y="173.5" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">库存 MMBE</text>
+<path d="M 575 169 h 12" fill="none" stroke="#0a6ed1" stroke-width="1.3" marker-end="url(#ar)"/>
+<text x="58.0" y="206.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">输入：需求（部门/MRP/SD）与主数据（物料/供应商/信息记录）；输出：采购订单、物料凭证、发票凭证，以及自动生成的会计凭证。</text>
+<rect x="40.0" y="250.0" width="1320.0" height="128.0" rx="9" fill="#e6f2f2" stroke="#007272" stroke-width="1.4"/>
+<rect x="40.0" y="250.0" width="4.5" height="128.0" rx="2" fill="#007272" stroke="#007272" stroke-width="1.4"/>
+<text x="58.0" y="278.0" font-size="15.5" fill="#007272" text-anchor="start" font-weight="700">PP 生产计划（51 个教材任务）</text>
+<rect x="58.0" y="302.0" width="101.9" height="34.0" rx="8" fill="#ffffff" stroke="#007272" stroke-width="1.2"/>
+<text x="69.0" y="317.5" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">独立需求 MD61</text>
+<path d="M 161 313 h 12" fill="none" stroke="#007272" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="175.9" y="302.0" width="79.4" height="34.0" rx="8" fill="#ffffff" stroke="#007272" stroke-width="1.2"/>
+<text x="186.9" y="317.5" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">MRP MD02</text>
+<path d="M 256 313 h 12" fill="none" stroke="#007272" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="271.3" y="302.0" width="120.6" height="34.0" rx="8" fill="#ffffff" stroke="#007272" stroke-width="1.2"/>
+<text x="282.3" y="317.5" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">计划订单→生产订单</text>
+<path d="M 393 313 h 12" fill="none" stroke="#007272" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="407.9" y="302.0" width="142.2" height="34.0" rx="8" fill="#ffffff" stroke="#007272" stroke-width="1.2"/>
+<text x="418.9" y="317.5" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">发料 261 · 确认 CO11N</text>
+<path d="M 551 313 h 12" fill="none" stroke="#007272" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="566.2" y="302.0" width="135.6" height="34.0" rx="8" fill="#ffffff" stroke="#007272" stroke-width="1.2"/>
+<text x="577.2" y="317.5" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">入库 101 · 结算 KO88</text>
+<path d="M 703 313 h 12" fill="none" stroke="#007272" stroke-width="1.3" marker-end="url(#ar)"/>
+<text x="58.0" y="350.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">输入：销售需求与预测、BOM/工艺路线/工作中心；输出：生产订单、产成品库存、订单成本与差异。</text>
+<rect x="40.0" y="394.0" width="1320.0" height="128.0" rx="9" fill="#e6f2ec" stroke="#177245" stroke-width="1.4"/>
+<rect x="40.0" y="394.0" width="4.5" height="128.0" rx="2" fill="#177245" stroke="#177245" stroke-width="1.4"/>
+<text x="58.0" y="422.0" font-size="15.5" fill="#177245" text-anchor="start" font-weight="700">FI 财务会计（45 个教材任务）</text>
+<rect x="58.0" y="446.0" width="75.1" height="34.0" rx="8" fill="#ffffff" stroke="#177245" stroke-width="1.2"/>
+<text x="69.0" y="461.5" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">科目 FS00</text>
+<path d="M 134 457 h 12" fill="none" stroke="#177245" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="149.1" y="446.0" width="141.3" height="34.0" rx="8" fill="#ffffff" stroke="#177245" stroke-width="1.2"/>
+<text x="160.1" y="461.5" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">凭证 FB50/FB70/FB60</text>
+<path d="M 291 457 h 12" fill="none" stroke="#177245" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="306.4" y="446.0" width="119.7" height="34.0" rx="8" fill="#ffffff" stroke="#177245" stroke-width="1.2"/>
+<text x="317.4" y="461.5" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">收付款 F-28/F-53</text>
+<path d="M 427 457 h 12" fill="none" stroke="#177245" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="442.1" y="446.0" width="161.1" height="34.0" rx="8" fill="#ffffff" stroke="#177245" stroke-width="1.2"/>
+<text x="453.1" y="461.5" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">余额 FS10N/FD10N/FK10N</text>
+<path d="M 604 457 h 12" fill="none" stroke="#177245" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="619.2" y="446.0" width="75.1" height="34.0" rx="8" fill="#ffffff" stroke="#177245" stroke-width="1.2"/>
+<text x="630.2" y="461.5" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">报表 FSE2</text>
+<path d="M 695 457 h 12" fill="none" stroke="#177245" stroke-width="1.3" marker-end="url(#ar)"/>
+<text x="58.0" y="494.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">输入：所有模块的业务凭证（MM 收货、SD 开票、CO 结算）；输出：总账、应收应付、资产负债表与损益表。</text>
+<rect x="40.0" y="538.0" width="1320.0" height="128.0" rx="9" fill="#fdf3d7" stroke="#8d6e00" stroke-width="1.4"/>
+<rect x="40.0" y="538.0" width="4.5" height="128.0" rx="2" fill="#8d6e00" stroke="#8d6e00" stroke-width="1.4"/>
+<text x="58.0" y="566.0" font-size="15.5" fill="#8d6e00" text-anchor="start" font-weight="700">CO 管理会计（34 个教材任务）</text>
+<rect x="58.0" y="590.0" width="104.7" height="34.0" rx="8" fill="#ffffff" stroke="#8d6e00" stroke-width="1.2"/>
+<text x="69.0" y="605.5" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">成本中心 OKEON</text>
+<path d="M 164 601 h 12" fill="none" stroke="#8d6e00" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="178.7" y="590.0" width="98.1" height="34.0" rx="8" fill="#ffffff" stroke="#8d6e00" stroke-width="1.2"/>
+<text x="189.7" y="605.5" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">成本要素 KA01</text>
+<path d="M 278 601 h 12" fill="none" stroke="#8d6e00" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="292.9" y="590.0" width="98.1" height="34.0" rx="8" fill="#ffffff" stroke="#8d6e00" stroke-width="1.2"/>
+<text x="303.9" y="605.5" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">作业价格 KP26</text>
+<path d="M 392 601 h 12" fill="none" stroke="#8d6e00" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="407.0" y="590.0" width="142.2" height="34.0" rx="8" fill="#ffffff" stroke="#8d6e00" stroke-width="1.2"/>
+<text x="418.0" y="605.5" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">分配 KSV5 · 分摊 KSU5</text>
+<path d="M 550 601 h 12" fill="none" stroke="#8d6e00" stroke-width="1.3" marker-end="url(#ar)"/>
+<rect x="565.2" y="590.0" width="112.1" height="34.0" rx="8" fill="#ffffff" stroke="#8d6e00" stroke-width="1.2"/>
+<text x="576.2" y="605.5" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">结算 KO88 · 报表</text>
+<path d="M 678 601 h 12" fill="none" stroke="#8d6e00" stroke-width="1.3" marker-end="url(#ar)"/>
+<text x="58.0" y="638.0" font-size="12" fill="#354a5f" text-anchor="start" font-weight="400">输入：FI 的费用、MM 的领料与价差、PP 的订单工时与入库；输出：成本中心报表、订单成本、产品成本与差异分析。</text>
+</svg>

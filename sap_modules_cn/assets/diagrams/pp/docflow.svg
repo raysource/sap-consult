@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 348" width="1280" height="348" role="img" aria-label="端到端单据流：从独立需求到差异结算" font-family="'PingFang SC','Hiragino Sans GB','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<title>端到端单据流：从独立需求到差异结算</title>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0a6ed1"/></marker><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#007272"/></marker><marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ffffff"/></marker><marker id="arback" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M10,0 L0,5 L10,10 z" fill="#b3261e"/></marker></defs>
+<rect width="1280" height="348" fill="#ffffff"/>
+<text x="40.0" y="46.0" font-size="22" fill="#1d2d3e" text-anchor="start" font-weight="700">端到端单据流：从独立需求到差异结算</text>
+<text x="40.0" y="72.0" font-size="12.5" fill="#6b7a8d" text-anchor="start" font-weight="400">箭头方向 = 业务的推进顺序；小字是该步产生什么、动的是库存还是成本</text>
+<rect x="40.0" y="104.0" width="152.3" height="51.0" rx="9" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.5"/>
+<circle cx="58.0" cy="122.0" r="12" fill="#0a6ed1"/><text x="58.0" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">1</text>
+<text x="76.0" y="127.0" font-size="14" fill="#0a6ed1" text-anchor="start" font-weight="700">MD61 独立需求</text>
+<text x="52.0" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">周需求，计划的起点</text>
+<path d="M 194 130 H 218" fill="none" stroke="#0a6ed1" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="222.3" y="104.0" width="157.1" height="51.0" rx="9" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.5"/>
+<circle cx="240.3" cy="122.0" r="12" fill="#0a6ed1"/><text x="240.3" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">2</text>
+<text x="258.3" y="127.0" font-size="14" fill="#0a6ed1" text-anchor="start" font-weight="700">MD02 运行 MRP</text>
+<text x="234.3" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">按 BOM 逐层算净需求</text>
+<path d="M 381 130 H 405" fill="none" stroke="#0a6ed1" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="409.4" y="104.0" width="181.8" height="51.0" rx="9" fill="#e6f2f2" stroke="#007272" stroke-width="1.5"/>
+<circle cx="427.4" cy="122.0" r="12" fill="#007272"/><text x="427.4" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">3</text>
+<text x="445.4" y="127.0" font-size="14" fill="#007272" text-anchor="start" font-weight="700">计划订单 / 采购申请</text>
+<text x="421.4" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">自制件出计划订单，外购件出</text>
+<text x="421.4" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">采购申请</text>
+<path d="M 593 130 H 617" fill="none" stroke="#007272" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="621.2" y="104.0" width="155.8" height="51.0" rx="9" fill="#fdeae9" stroke="#b3261e" stroke-width="1.5"/>
+<circle cx="639.2" cy="122.0" r="12" fill="#b3261e"/><text x="639.2" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">4</text>
+<text x="657.2" y="127.0" font-size="14" fill="#b3261e" text-anchor="start" font-weight="700">生产订单 + 下达</text>
+<text x="633.2" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">MD04 转换，CO02</text>
+<text x="633.2" y="163.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">下达后才可用</text>
+<path d="M 779 130 H 803" fill="none" stroke="#b3261e" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="807.0" y="104.0" width="174.7" height="51.0" rx="9" fill="#fdeae9" stroke="#b3261e" stroke-width="1.5"/>
+<circle cx="825.0" cy="122.0" r="12" fill="#b3261e"/><text x="825.0" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">5</text>
+<text x="843.0" y="127.0" font-size="14" fill="#b3261e" text-anchor="start" font-weight="700">发料 261（MB1A）</text>
+<text x="819.0" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">材料成本进订单借方</text>
+<path d="M 984 130 H 1008" fill="none" stroke="#b3261e" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="1011.7" y="104.0" width="177.4" height="51.0" rx="9" fill="#fdf3d7" stroke="#8d6e00" stroke-width="1.5"/>
+<circle cx="1029.7" cy="122.0" r="12" fill="#8d6e00"/><text x="1029.7" y="126.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">6</text>
+<text x="1047.7" y="127.0" font-size="14" fill="#8d6e00" text-anchor="start" font-weight="700">工单确认（CO11N）</text>
+<text x="1023.7" y="146.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">作业成本进订单借方</text>
+<path d="M 1191 130 h 14 V 164 H 20 V 226 h -14" fill="none" stroke="#8d6e00" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+<rect x="40.0" y="200.0" width="153.6" height="51.0" rx="9" fill="#e6f2ec" stroke="#177245" stroke-width="1.5"/>
+<circle cx="58.0" cy="218.0" r="12" fill="#177245"/><text x="58.0" y="222.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">7</text>
+<text x="76.0" y="223.0" font-size="14" fill="#177245" text-anchor="start" font-weight="700">产成品收货 101</text>
+<text x="52.0" y="242.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">MIGO，按标准价把产出</text>
+<text x="52.0" y="259.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">记在贷方</text>
+<path d="M 196 226 H 220" fill="none" stroke="#177245" stroke-width="1.8" marker-end="url(#ar)"/>
+<rect x="223.6" y="200.0" width="150.0" height="51.0" rx="9" fill="#efeaf9" stroke="#5b3fa8" stroke-width="1.5"/>
+<circle cx="241.6" cy="218.0" r="12" fill="#5b3fa8"/><text x="241.6" y="222.3" font-size="11.5" fill="#ffffff" text-anchor="middle" font-weight="700">8</text>
+<text x="259.6" y="223.0" font-size="14" fill="#5b3fa8" text-anchor="start" font-weight="700">差异结算</text>
+<text x="235.6" y="242.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">CO03 看余额 → KO88</text>
+<text x="235.6" y="259.0" font-size="11.5" fill="#354a5f" text-anchor="start" font-weight="400">结算 → 报表</text>
+<rect x="40.0" y="300.0" width="1200.0" height="34.5" rx="8" fill="#e3f0fa" stroke="#0a6ed1" stroke-width="1.2"/>
+<text x="52.0" y="322.0" font-size="12.5" fill="#0854a0" text-anchor="start" font-weight="400">实训交作业要交的就是这条线上的「号码」：独立需求、计划订单、生产订单、物料凭证、会计凭证、确认凭证 —— 有号码才证明真的跑过。</text>
+</svg>

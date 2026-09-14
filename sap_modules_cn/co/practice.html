@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>实训：五个动手任务 · SAP CO 培训课程</title>
+<meta name="description" content="SAP CO（管理会计）培训课程：概念与定位（CO 与 FI 的分工）→ 组织结构（成本控制范围/标准层次/成本中心组）→ 主数据（成本要素/作业类型/统计指标/结算参数文件）→ 成本流（费用归集 → 重过账 → 分配分摊 → 结算 → 报表）+ 内部订单与产品成本 → 分步操作手顺 → SPRO 配置（34 个任务）→ 实训与自测。截图取自教材《S4.docx》的真实 SAP GUI 画面。">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mod.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo">CO</span><span class="txt">培训课程</span></a>
+    <nav class="main">
+      <a href="index.html" title="课程地图与学习路线">首页</a>
+      <a href="concept.html" title="CO 是什么、成本要素、与 FI 的分工">概念</a>
+      <a href="org.html" title="成本控制范围 / 标准层次 / 成本中心组">组织</a>
+      <a href="master.html" title="成本要素 / 成本中心 / 作业类型 / 统计指标">主数据</a>
+      <a href="flow.html" title="成本流与月结顺序">流程</a>
+      <a href="cca.html" title="成本要素 · 作业价格 · 重过账 · 分配与分摊">成本中心</a>
+      <a href="io.html" title="KO04 建单 · 归集费用 · KO88 结算">内部订单</a>
+      <a href="pc.html" title="CK11N/CK24 标准成本 · 订单成本 · 差异">产品成本</a>
+      <a href="config.html" title="SPRO 配置路线（34 个任务）">配置</a>
+      <a class="active" href="practice.html" title="动手任务与完成基准">实训</a>
+      <a href="instructor.html" title="课时 / 板书 / 必问 / 评分">讲师</a>
+      <a href="worksheet.html" title="记入表（可打印）">学员</a>
+      <a href="quiz.html" title="30 题自评（合格 75%）">自测</a>
+      <a href="glossary.html" title="中英对照 / T-code / 常用表">术语</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+<main class="page">
+<article>
+<p class="breadcrumb"><a href="index.html">课程地图</a> / <span>实训：五个动手任务</span></p>
+<div class="filterbar modsw"><a class="chip" href="../mm/index.html" title="SAP MM 培训课程">MM 物料管理</a><a class="chip" href="../pp/index.html" title="SAP PP 培训课程">PP 生产计划</a><a class="chip" href="../fi/index.html" title="SAP FI 培训课程">FI 财务会计</a><a class="chip on" href="../co/index.html" title="SAP CO 培训课程">CO 管理会计</a><a class="chip" href="../index.html" title="四个模块的总体视图与学习路线">总览</a></div>
+<h1>实训：五个动手任务</h1>
+<p class="kicker">做什么 · 完成基准 · 常见错误 · 对应画面</p>
+<p class="lead">五个实训任务，覆盖「组织与主数据 → 费用归集 → 分配分摊 → 内部订单结算」的完整链条。每个任务都有：做什么、完成基准（打勾）、常见错误、对应教材画面。<b>没有 SAP 环境也能做前两步的「纸上推演」</b>，第 3–5 步需要可用的系统。</p>
+<div class="note tip"><span class="t">环境准备清单</span>① 可登录的 SAP 系统（含 CO 模块权限）；② 已建好成本控制范围与公司代码（或使用课程提供的沙箱组织）；③ 能建成本要素、成本中心、作业类型与订单类型的权限；④ 打印 <a href="worksheet.html">学员记入表</a> 用来记凭证号与金额。达不到时：用 <a href="config.html">配置页</a> 的画面做「看图说话」——让学生指出每一步在哪个字段、会产生什么凭证。</div>
+<div class="toc"><a href="#p1">实训 1 读组织</a><a href="#p2">实训 2 建主数据</a><a href="#p3">实训 3 费用归集</a><a href="#p4">实训 4 分配与分摊</a><a href="#p5">实训 5 内部订单结算</a></div>
+<h2 id="p1">实训 1：把 CO 的组织结构画出来并核对（约 30 分钟）</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>做什么</th><th>完成基准</th><th>对应画面</th></tr></thead><tbody><tr><td>画出成本控制范围 → 公司代码 / 标准层次 → 成本中心的层级图</td><td>图上有教材场景值（C999、HQ 总部 2001–2006、MFG 制造部 1001/1002）</td><td><a href="config.html#t01">任务 01</a>–<a href="config.html#t04">04</a></td></tr><tr><td>说清成本控制范围与公司代码为什么是两个对象、怎么关联</td><td>能说出 OX19 的作用，并解释「一个控制范围可以包含多个公司代码」</td><td><a href="org.html#cc">组织页第 1 节</a></td></tr><tr><td>在自己的系统里查出控制范围与已分配的公司代码、列出某个组下的成本中心</td><td>给出事务码或截图（OKKP / OX19 / OKEON）</td><td>—</td></tr></tbody></table></div>
+<h2 id="p2">实训 2：建成本要素、作业类型与作业价格（约 60 分钟）</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>做什么</th><th>完成基准</th><th>对应画面</th></tr></thead><tbody><tr><td>用 KA01 建一个初级成本要素（对应一个损益类科目），用 KA06 建一个次级成本要素</td><td>记下两个编号与成本要素类别（初级 1、次级看用途 43/42/21）</td><td><a href="config.html#t05">任务 05</a> / <a href="config.html#t06">任务 06</a></td></tr><tr><td>用 KL01 建一个作业类型（单位 H），指定成本要素分配</td><td>作业类型编号记录下来，成本要素分配不为空</td><td><a href="config.html#t10">任务 10</a></td></tr><tr><td>用 KP26 给成本中心维护计划作业量与作业价格（固定/可变价格单位）</td><td>价格单位与计划作业量正确，报表上能看到「计划活动」那一列</td><td><a href="config.html#t12">任务 12</a></td></tr><tr><td>用 KK01 建一个统计指标（如面积 M2）</td><td>指标编号与单位记录下来</td><td><a href="config.html#t18">任务 18</a></td></tr></tbody></table></div>
+<div class="note warn"><span class="t">最常见的失败点</span>① 作业类型的<b>价格单位</b>没填全，作业成本会差几十倍；② 统计指标的<b>类别</b>选错（固定值 vs 总计值），KB31N 里录不进去。教材任务 12 的画面里价格单位是 00001、权数是 1，照着核对。</div>
+<h2 id="p3">实训 3：费用归集与报表核对（约 40 分钟）</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>做什么</th><th>完成基准</th><th>对应画面</th></tr></thead><tbody><tr><td>用 FB60（或 FB50）把一笔费用记到某个成本中心，行项目填成本中心</td><td>记下会计凭证号；成本中心有这笔费用</td><td><a href="config.html#t14">任务 14</a> / <a href="config.html#t15">15</a></td></tr><tr><td>跑成本中心报表（实际/计划/差异），确认金额出现</td><td>报表上能看到该成本要素的实际成本；能说出「过量/吸收不足」那一行的含义</td><td><a href="config.html#t16">任务 16</a></td></tr><tr><td>故意把费用记到另一个成本中心，再用 KB61 重过账改指</td><td>两张成本中心报表一增一减，FI 的会计凭证金额没变</td><td><a href="config.html#t17">任务 17</a></td></tr><tr><td>（加分）用 KSB1 查该成本中心的实际行项目，指出重过账那两行</td><td>能解释「CO 凭证 ≠ FI 凭证」</td><td>—</td></tr></tbody></table></div>
+<h2 id="p4">实训 4：统计指标 + 分配 + 分摊（约 60 分钟）</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>做什么</th><th>完成基准</th><th>对应画面</th></tr></thead><tbody><tr><td>用 KB31N 给若干成本中心录入统计指标实际值（面积）</td><td>各成本中心的实际值能在报表底部看到</td><td><a href="config.html#t19">任务 19</a></td></tr><tr><td>定义一个分配循环（发送方成本中心 + 成本要素，接收方成本中心组，追踪因素 = 统计指标实际值）</td><td>循环编号与有效起始日记录下来；段与接收方都能显示</td><td><a href="config.html#t20">任务 20</a></td></tr><tr><td>执行分配 KSV5（期间填当月），再看报表</td><td>发送方清零；接收方各自拿到按面积算出来的金额，成本要素还是原来的初级要素</td><td><a href="config.html#t21">任务 21</a> / <a href="config.html#t22">22</a></td></tr><tr><td>定义一个分摊循环（固定百分比 + 次级成本要素），执行 KSU5 并看报表</td><td>接收方报表上出现次级成本要素（如 802010），并能解释它「FI 里没有这个科目」</td><td><a href="config.html#t23">任务 23</a> / <a href="config.html#t24">24</a> / <a href="config.html#t26">26</a></td></tr></tbody></table></div>
+<h2 id="p5">实训 5：内部订单与结算（约 40 分钟）</h2>
+<div class="tblwrap"><table class="tbl"><thead><tr><th>做什么</th><th>完成基准</th><th>对应画面</th></tr></thead><tbody><tr><td>建一个订单类型（或使用系统已有的市场活动类型）并维护编号范围</td><td>订单类型能建单，编号范围已分配</td><td><a href="config.html#t27">任务 27</a></td></tr><tr><td>用 KO04 建一个内部订单，维护结算规则（按成本中心份额，合计 100%）</td><td>订单号记下来；结算规则份额合计 = 100%，结算成本要素有值</td><td><a href="config.html#t31">任务 31</a></td></tr><tr><td>用 FB50 把几笔费用归集到这个订单</td><td>订单实际行项目（KOB1 或 KO03）能看到这些费用</td><td><a href="config.html#t32">任务 32</a></td></tr><tr><td>用 KO88 结算（先测试运行，再正式运行），回报表确认</td><td>订单余额清零；接收方成本中心报表上出现结算进来的成本</td><td><a href="config.html#t33">任务 33</a> / <a href="config.html#t34">34</a></td></tr></tbody></table></div>
+<div class="box ok"><b class="t">交作业</b>把五个实训里记录的<b>编号与金额</b>填进 <a href="worksheet.html">学员记入表</a>：控制范围与成本中心 → 成本要素/作业类型/统计指标编号 → 费用凭证号（FI）与 CO 凭证号 → 分配/分摊的结果（发送方清零、接收方金额）→ 订单号与结算凭证号。讲师按 <a href="instructor.html#grade">讲师版评分标准</a> 打分。</div>
+</article>
+</main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <div class="cols">
+      <div>
+        <h5>SAP CO 培训课程</h5>
+        <p>管理会计：成本中心 · 内部订单 · 产品成本</p>
+        <p>课程总览：<a href="../index.html">SAP 模块培训课程（MM · PP · FI · CO）</a></p>
+      </div>
+      <div>
+        <h5>课程板块</h5>
+        <p><a href="concept.html">概念</a> · <a href="org.html">组织</a> ·
+        <a href="master.html">主数据</a> · <a href="flow.html">流程</a> ·
+        <a href="cca.html">成本中心</a> · <a href="config.html">配置</a></p>
+      </div>
+      <div>
+        <h5>课堂配套</h5>
+        <p><a href="practice.html">实训任务</a> · <a href="instructor.html">讲师版</a> ·
+        <a href="worksheet.html">学员版</a> · <a href="quiz.html">自测</a> ·
+        <a href="glossary.html">术语表</a></p>
+      </div>
+      <div>
+        <h5>看图说话</h5>
+        <p>截图取自教材《S4.docx》的真实 SAP GUI 画面（中文界面，保留原文件名可回查）；
+        流程图、结构图、思维导图为本站自绘 SVG。标准值随版本/行业方案而异，
+        页面标注的「在自系统里怎么确认」请在自己的系统里核对。</p>
+        <p>其他模块：<a href="../mm/index.html">MM 物料管理</a> · <a href="../pp/index.html">PP 生产计划</a> · <a href="../fi/index.html">FI 财务会计</a> · </p>
+      </div>
+    </div>
+    <p class="copy">© <span data-year>2026</span> SAP CO 培训课程 · 静态站点，可离线使用</p>
+  </div>
+</footer>
+<script src="../assets/main.js"></script>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/mod.js"></script>
+</body>
+</html>
