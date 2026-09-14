@@ -698,13 +698,19 @@ HEAD = `f0bcc698fbb97a1e1447c978af3e1ff9bffd9d66`（3 commit: 站点本体 → �
      スナップショットにも**入れていない**。ただし**併走セッションが自分で commit していた**
      （`cb2a6c7 sap_modules_cn: …（57 页）`）ので、親リポジトリには彼らの手で入っており、
      hub の `sap_modules_cn` カードは親リポジトリ上でも解決する。
-     → **スナップショットは依然として彼らの站を含まない**（`tools/make_snapshot.sh` の対象に入っていない）。
-     アーカイブは「9 sites + hub + 共有 tools」であって 10 sites の完全バックアップではない、と明記しておく
-     （入れるのは 1 行の追加だが、それはその站の担当者の判断にする）。
+   - **スナップショットの範囲**: 私の `…_9sites_20260914_223904_sapcn.tar.gz` は
+     「9 sites + hub + 共有 `tools/`」で、`sap_modules_cn` を含まない。ただし**19 秒後に併走セッションが
+     自分の手で 10 sites 版を取っている**（`_snapshots/sap_training_sites_10sites_20260914_223923_modules.tar.gz` /
+     58,997,334 B / 22:39:23）。つまり**全 10 sites の完全バックアップはそちらの名前で存在する**ので、
+     復元するときは用途で選ぶ（`sap_cn` を確実に含むのは私の 9sites 版、`sap_modules_cn` まで含むのは 10sites 版）。
+   - **`tools/make_snapshot.sh` は現在 10 sites 版**（併走セッションが `sap_modules_cn` を追加。私の `sap_cn` 行は
+     そのまま残っている）。私の commit `177c549` はこの作業コピーの内容をそのまま入れた（= repo 上のツールと
+     実際に使われたツールが一致している）。
    - **私の commit に入れたもの**: `sap_cn/`（320 files、入れ子リポジトリから plumbing で取り込み）、
      `PROGRESS.md`（§13 の保存節 + §1 の `sap_cn` 行の数字修正）、`tools/make_hub_page.py` と
-     `index.html`（= 併走セッションが `sap_modules_cn` を hub に登録した分を含む。書き込みは 08:3x で止まっており、
-     差分を読んで内容を確認した）、`tools/make_snapshot.sh`（私の `sap_cn` 対応）、`tools/README.md`（追記）。
+     `index.html`（= 併走セッションが `sap_modules_cn` を hub に登録した分を含む。書き込みは 08:3x と
+     22:39 のスナップショットで止まっていることを md5 の 2 回測定で確認し、差分を読んでから入れた）、
+     `tools/make_snapshot.sh`、`tools/README.md`（追記）。
    - 併走セッションの**未 commit の作業ファイルには触っていない**。
 
 5. **次にやるとよい順**（前節の続き）
