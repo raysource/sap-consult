@@ -1,0 +1,30 @@
+{
+ "site": "sap_modules_cn",
+ "modules": [
+  "mm",
+  "pp",
+  "fi",
+  "co"
+ ],
+ "pages": 57,
+ "tasks": 172,
+ "steps": 695,
+ "shot_refs": 1411,
+ "shot_unique": 940,
+ "diagrams": 32,
+ "quiz": 120,
+ "xlsx": 5,
+ "verify": "pages=56  shot=1411（去重 940）  dia=38  quiz=120 / RESULT: PASS",
+ "snapshot": "_snapshots/sap_training_sites_10sites_20260914_223923_modules.tar.gz",
+ "snapshot_size": "56 MB / 4560 files / gzip -t OK / 内含 sap_modules_cn 1088 项",
+ "commit": "cb2a6c77f71ff1469657920f2bd04dbbe36595d5（parent repo raysource/sap-consult, main）",
+ "commit_proof": "local HEAD == git ls-remote origin main == gh api commits/main",
+ "remote_check": "raw.githubusercontent 只读校验：index.html / mm/index.html / co/config.html / README.md / PP_课程大纲_学习WBS.xlsx / assets/diagrams/mm/mindmap.svg / assets/img/mm/t22/01_1_image612.png 全部 HTTP 200",
+ "freeze_note": "PROGRESS.md 在保存进度期间被併走セッション改写（82891 → 84426 bytes / 90s），按经验未在改写中编辑它；本站的交付记录改记在本文件（由 make_readme.py 生成）。",
+ "fixed_this_session": [
+  "build_pages.py 统计口径与 verify_site.py 对齐（原先首页放截图必然统计不一致 FAIL）→ 四个模块首页补上 6 张「代表性画面」",
+  "walk.render_task 把教材 values（{k,v} dict）渲染成「字段 / 值」两列表，不再打印生 dict",
+  "shot-grid 缩略图限制高度（竖长截图不再撑高整行）",
+  "svgkit：画布高度回填 + chip_rows 返回值语义修正（4 面板的图曾涨到 4642px → 688px）"
+ ]
+}

@@ -192,7 +192,29 @@ def main():
     A("- 术语按中文教学场景写，英文原名在每模块的 `glossary.html` 对照。")
     A("- 自绘图是**教学示意图**，不是 SAP 的官方结构图；数值为课程场景值。")
     A("")
-    A("## 7. 与 SD 课程站的关系")
+    dl = {}
+    dlp = os.path.join(ROOT, "work", "delivery.json")
+    if os.path.exists(dlp):
+        dl = json.load(open(dlp, encoding="utf-8"))
+    if dl:
+        A("## 7. 交付记录（本次会话）")
+        A("")
+        A("| 项 | 值 |")
+        A("|---|---|")
+        for k, label in (("verify", "验证结果"), ("snapshot", "快照（本站所在生态）"),
+                         ("snapshot_size", "快照内容"), ("commit", "Git 提交"),
+                         ("commit_proof", "提交证明"), ("remote_check", "远端只读校验"),
+                         ("freeze_note", "并发写注意")):
+            if dl.get(k):
+                A("| %s | %s |" % (label, dl[k]))
+        if dl.get("fixed_this_session"):
+            A("")
+            A("本次修掉的缺陷：")
+            A("")
+            for x in dl["fixed_this_session"]:
+                A("- %s" % x)
+        A("")
+    A("## 8. 与 SD 课程站的关系")
     A("")
     A("销售与分销（SD）已有独立课程站：`../sap_cn/`（16 页，线上 `https://sap-cn-sd.vercel.app/`）。"
       "本站不重复 SD 内容，但在每个模块的「集成关系」里指出与 SD 的交接点"

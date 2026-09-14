@@ -114,7 +114,26 @@ RESULT: PASS
 - 术语按中文教学场景写，英文原名在每模块的 `glossary.html` 对照。
 - 自绘图是**教学示意图**，不是 SAP 的官方结构图；数值为课程场景值。
 
-## 7. 与 SD 课程站的关系
+## 7. 交付记录（本次会话）
+
+| 项 | 值 |
+|---|---|
+| 验证结果 | pages=56  shot=1411（去重 940）  dia=38  quiz=120 / RESULT: PASS |
+| 快照（本站所在生态） | _snapshots/sap_training_sites_10sites_20260914_223923_modules.tar.gz |
+| 快照内容 | 56 MB / 4560 files / gzip -t OK / 内含 sap_modules_cn 1088 项 |
+| Git 提交 | cb2a6c77f71ff1469657920f2bd04dbbe36595d5（parent repo raysource/sap-consult, main） |
+| 提交证明 | local HEAD == git ls-remote origin main == gh api commits/main |
+| 远端只读校验 | raw.githubusercontent 只读校验：index.html / mm/index.html / co/config.html / README.md / PP_课程大纲_学习WBS.xlsx / assets/diagrams/mm/mindmap.svg / assets/img/mm/t22/01_1_image612.png 全部 HTTP 200 |
+| 并发写注意 | PROGRESS.md 在保存进度期间被併走セッション改写（82891 → 84426 bytes / 90s），按经验未在改写中编辑它；本站的交付记录改记在本文件（由 make_readme.py 生成）。 |
+
+本次修掉的缺陷：
+
+- build_pages.py 统计口径与 verify_site.py 对齐（原先首页放截图必然统计不一致 FAIL）→ 四个模块首页补上 6 张「代表性画面」
+- walk.render_task 把教材 values（{k,v} dict）渲染成「字段 / 值」两列表，不再打印生 dict
+- shot-grid 缩略图限制高度（竖长截图不再撑高整行）
+- svgkit：画布高度回填 + chip_rows 返回值语义修正（4 面板的图曾涨到 4642px → 688px）
+
+## 8. 与 SD 课程站的关系
 
 销售与分销（SD）已有独立课程站：`../sap_cn/`（16 页，线上 `https://sap-cn-sd.vercel.app/`）。本站不重复 SD 内容，但在每个模块的「集成关系」里指出与 SD 的交接点（MM 的 601 发货、FI 的应收账款、PP 的需求来源、CO 的获利分析）。
 
