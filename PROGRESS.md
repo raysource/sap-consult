@@ -680,8 +680,8 @@ HEAD = `f0bcc698fbb97a1e1447c978af3e1ff9bffd9d66`（3 commit: 站点本体 → �
 
    | リポジトリ | HEAD | 確認方法 |
    |---|---|---|
-   | `sap_cn/` → `raysource/sap_cn_sd`（public） | **`63604cba1c8e6fdd53c326ebe17229591fcf4935`** | `git rev-parse` == `git ls-remote origin main` == `gh api repos/raysource/sap_cn_sd/commits/main` |
-   | `training/` → `raysource/sap-consult`（public） | **`177c549ab2d6ad680b94017c2178e73827f7ea27`** | 同上（`gh api repos/raysource/sap-consult/commits/main`） |
+   | `sap_cn/` → `raysource/sap_cn_sd`（public） | `63604cba…` → `faedccbb5458464e6f083560fc9c82761785d922`（保存用スクリプト追加） | 各 push 後に `git rev-parse` == `git ls-remote origin main` == `gh api repos/raysource/sap_cn_sd/commits/main` |
+   | `training/` → `raysource/sap-consult`（public） | この保存で 4 commit 追加（起点 `8c68da8c…`）：`177c549a`（サイト + sap_cn 取り込み）→ `c9168572` → `1b8ac9a5`（PROGRESS 確定）→ 本表を確定する commit | 同上（`gh api repos/raysource/sap-consult/commits/main`）。**最新 HEAD は `git log --oneline -1` を見る**（この表は執筆時点の値なので、以後の commit で動く） |
 
    親リポジトリの commit 直前の HEAD は `8c68da8c…` だったが、**その間に併走セッションが自分の成果物を
    自分で commit していた**（`cb2a6c7 sap_modules_cn: SAP 全模块培训课件（…57 页）`）。私の commit はその上に載っている。
