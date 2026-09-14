@@ -680,24 +680,32 @@ HEAD = `f0bcc698fbb97a1e1447c978af3e1ff9bffd9d66`（3 commit: 站点本体 → �
 
    | リポジトリ | HEAD | 確認方法 |
    |---|---|---|
-   | `sap_cn/` → `raysource/sap_cn_sd`（public） | `6bfa0e1e…`（+ この保存で 1 commit 追加） | `git ls-remote origin main` と `gh api repos/…/commits/main` が一致 |
-   | `training/` → `raysource/sap-consult`（public） | 本節執筆時点では `8c68da8c…`（= 既に push 済みの旧 HEAD） | 本節・`index.html`・`tools/*` の更新は**この節のすぐ後に** commit + push し、結果の SHA は下の「追記」に書く |
+   | `sap_cn/` → `raysource/sap_cn_sd`（public） | **`63604cba1c8e6fdd53c326ebe17229591fcf4935`** | `git rev-parse` == `git ls-remote origin main` == `gh api repos/raysource/sap_cn_sd/commits/main` |
+   | `training/` → `raysource/sap-consult`（public） | **`177c549ab2d6ad680b94017c2178e73827f7ea27`** | 同上（`gh api repos/raysource/sap-consult/commits/main`） |
+
+   親リポジトリの commit 直前の HEAD は `8c68da8c…` だったが、**その間に併走セッションが自分の成果物を
+   自分で commit していた**（`cb2a6c7 sap_modules_cn: SAP 全模块培训课件（…57 页）`）。私の commit はその上に載っている。
+   index を汚していないこと（私の commit に入ったのは `sap_cn/` 320 + `PROGRESS.md` + `tools/` のみ）は
+   `git diff --cached --name-only` の出力で確認した（私の commit に他セッションのファイルは入っていない）。
 
    `sap_cn/` は `tools/include_nested_repo_files.sh` で**親リポジトリにも普通のファイルとして取り込んだ**
    （`.git` は保持したまま。script が「親で計算した blob SHA == 入れ子リポジトリの索引の SHA」を assert するので
    内容一致は証明済み）。`git ls-files sap_cn | wc -l` が `sap_cn` の tracked 数と一致することを確認。
 
-4. **保存していないもの（意図的・要判断）**
+4. **保存していないもの／保存したもの（要判断・実測）**
 
-   - **`sap_modules_cn/`（別セッションの WIP・1099 ファイル / 27 MB・`.git` なし）**: スナップショットにも
-     親リポジトリの commit にも入れていない。理由: ①作成中（その站の README/PROGRESS 側で完結していない）
-     ②`tools/make_snapshot.sh` の対象にまだ入っていない（入れるのはその担当者の判断）。
-     → ただし**hub（`index.html`）と PROGRESS §14 は彼らの更新を含む**ので、親リポジトリに push した
-     `index.html` の `sap_modules_cn` カードだけは、彼らが親リポジトリへ取り込むまでリンク切れになる
-     （同じ理由で `sap_cn` カードも、取り込み前は切れていた。今回の取り込みで解消）。
-   - **未 commit の他セッションの編集**は「読み切って内容を確認したものだけ」入れた（`index.html` /
-     `tools/make_hub_page.py` / `PROGRESS.md` の §14 と hub の `sap_modules_cn` 対応）。それ以外の
-     ファイルは触っていない。
+   - **`sap_modules_cn/`（別セッションの站・1099 ファイル / 27 MB・`.git` なし）**: 私の commit にも
+     スナップショットにも**入れていない**。ただし**併走セッションが自分で commit していた**
+     （`cb2a6c7 sap_modules_cn: …（57 页）`）ので、親リポジトリには彼らの手で入っており、
+     hub の `sap_modules_cn` カードは親リポジトリ上でも解決する。
+     → **スナップショットは依然として彼らの站を含まない**（`tools/make_snapshot.sh` の対象に入っていない）。
+     アーカイブは「9 sites + hub + 共有 tools」であって 10 sites の完全バックアップではない、と明記しておく
+     （入れるのは 1 行の追加だが、それはその站の担当者の判断にする）。
+   - **私の commit に入れたもの**: `sap_cn/`（320 files、入れ子リポジトリから plumbing で取り込み）、
+     `PROGRESS.md`（§13 の保存節 + §1 の `sap_cn` 行の数字修正）、`tools/make_hub_page.py` と
+     `index.html`（= 併走セッションが `sap_modules_cn` を hub に登録した分を含む。書き込みは 08:3x で止まっており、
+     差分を読んで内容を確認した）、`tools/make_snapshot.sh`（私の `sap_cn` 対応）、`tools/README.md`（追記）。
+   - 併走セッションの**未 commit の作業ファイルには触っていない**。
 
 5. **次にやるとよい順**（前節の続き）
 
